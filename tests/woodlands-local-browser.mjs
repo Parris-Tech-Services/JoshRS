@@ -42,15 +42,15 @@ try{
   const exported=JSON.parse(await readFile(await download.path(),'utf8'));
   assert.equal(exported.bank.logs,7);
   assert.equal(exported.bag.logs,0);
-  page.once('dialog',dialog=>dialog.accept());
+  page.on('dialog',dialog=>dialog.accept().catch(()=>{}));
   await page.locator('#reset-btn').click();
   await page.locator('#tab-town').click();
   assert.match(await page.locator('#bank-summary').innerText(),/Oak logs: 0/);
-  page.once('dialog',dialog=>dialog.accept());
+  
   await page.locator('#import-save-file').setInputFiles({name:'woodlands-save.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(exported))});
-  assert.match(await page.locator('#bank-summary').innerText(),/Oak logs: 7/);
+  await page.waitForFunction(()=>document.querySelector('#bank-summary')?.textContent?.includes('Oak logs: 7'));
   await page.locator('#import-save-file').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from('not-json')});
-  assert.match(await page.locator('#message').innerText(),/Invalid save/);
+  await page.waitForFunction(()=>document.querySelector('#message')?.textContent?.includes('Invalid save'));
   assert.match(await page.locator('#bank-summary').innerText(),/Oak logs: 7/);
   const merchant=makeState();merchant.x=19;merchant.y=12;merchant.questClaimed=true;
   merchant.bag.logs=3;merchant.bag.ore=1;merchant.bag.cooked=1;
