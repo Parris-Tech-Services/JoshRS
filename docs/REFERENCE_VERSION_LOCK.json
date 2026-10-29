@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "decision": "BASE-02",
+  "status": "adopted",
+  "selectedOption": "A",
+  "referenceGame": "RuneScape 2 (historical gameplay/visual reference only)",
+  "referenceDate": "2004-11-23",
+  "referenceRevision": 274,
+  "referenceProject": "Lost City / 2004Scape",
+  "engine": {
+    "repo": "LostCityRS/Engine-TS",
+    "branch": "274",
+    "pinnedCommit": "1d25566cb53e7af1b1cb18ade8af996316c19614"
+  },
+  "content": {
+    "repo": "LostCityRS/Content",
+    "branch": "274",
+    "pinnedCommit": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe"
+  },
+  "client": "browser bundle shipped with pinned engine; standalone Client-TS must be separately pinned and validated if introduced",
+  "excludedAsBaseline": [
+    "2007-based OSRS snapshot",
+    "current Old School RuneScape",
+    "2009Scape",
+    "RuneScape 3",
+    "post-2004 gameplay features"
+  ],
+  "releaseMode": "original-licensed-assets-only",
+  "assetRights": "No Jagex proprietary assets approved for public redistribution",
+  "brief": "docs/REFERENCE_VERSION_274.md",
+  "adoptedOn": "2026-10-30"
+}
