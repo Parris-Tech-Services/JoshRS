@@ -7,7 +7,7 @@ try {
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   const response=await page.goto('http://localhost:8888/rs2.cgi');
   assert.equal(response.status(),200);
-  await page.locator('#canvas').waitFor({state:'visible'});
+  await page.locator('canvas#canvas').waitFor({state:'visible'});
   await page.waitForTimeout(20000);
   assert.deepEqual(errors,[]);
   await page.screenshot({path:`full-world-${label}.png`,fullPage:true});
