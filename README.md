@@ -10,6 +10,8 @@ This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009
 
 **[Full classic MMO build and visual-fidelity checklist](docs/FULL_CLASSIC_MMO_CHECKLIST.md)** — 114 auditable tasks across 13 sections, covering the classic 3D interface, world, skills, combat, quests, multiplayer, permanent player saves, mobile UX, hosting, testing and release. The checkboxes distinguish verified existing Woodlands features from everything still required.
 
+**BASE-02 decision: [Option A — 23 November 2004, revision 274](docs/REFERENCE_VERSION_274.md) is the adopted visual and gameplay reference**, and [the version lock](docs/REFERENCE_VERSION_LOCK.json) is checked in CI. Do not mix in 2007-derived OSRS interfaces, modern OSRS features, or later era content without an explicit version-change decision. We are reproducing the historically recognisable *structure and feel* using original/cleared assets, not treating Jagex-owned art as open source.
+
 Important: **2004Scape (November 2004)** and **official Old School RuneScape (2007-derived)** are distinct historical versions. Original game software being MIT-licensed does not license Jagex-owned artwork, music, names, quest content or branding. The checklist therefore differentiates *exact historical asset reproduction requiring rights* from an independent original game that faithfully evokes the classic feel. No additional hosting purchase or asset rights are assumed.
 
 See also [multiplayer work tracker #5](https://github.com/Parris-Tech-Services/JoshRS/issues/5) and [self-hosting gate #3](https://github.com/Parris-Tech-Services/JoshRS/issues/3).
