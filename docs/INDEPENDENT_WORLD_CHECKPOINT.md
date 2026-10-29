@@ -10,6 +10,8 @@ Status: partially implemented; public launch blocked.
 - HTTP client endpoint returned 200; debug data endpoint returned 404.
 - Config generation tested twice, with authenticated login, non-admin player
   privileges, persistent-path symlinks and refusal to overwrite existing data.
+- Direct login-service test created an account with staffmodlevel 0 and rejected
+  its wrong password (responses 4 and 1 respectively). This is not browser login.
 - Nine existing JoshRS unit tests passed; shell scripts passed syntax checks.
 
 ## Added
@@ -24,7 +26,7 @@ clients, snapshots and restarts. These checks do not prove completed gameplay.
 
 - Successful Docker CI and browser run; the local environment has no Docker and
   Chromium cannot create its required socket here.
-- Account creation, wrong-password rejection, tutorial, skills/inventory/combat,
+- Browser account/login flow, tutorial, skills/inventory/combat,
   saved progress after reconnect and process restart, and a real restore drill.
 - Durable hosting with verified billing constraints, HTTPS/WebSocket routing,
   private access controls and scheduled off-site backups.

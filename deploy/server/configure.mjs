@@ -12,6 +12,8 @@ for (const [target, name] of [['db.sqlite','db.sqlite'], ['data/players','player
   if(!existing) fs.symlinkSync(dest,target);
 }
 const c=createDefaultWorldConfig();
+// Upstream true means a separate registration website, which this image does not run.
+c.website.registration=false;
 c.easyStartup=true;
 c.login.enabled=true;
 c.friend.enabled=true;
