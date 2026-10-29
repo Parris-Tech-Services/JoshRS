@@ -54,15 +54,19 @@ try{
   assert.match(await page.locator('#bank-summary').innerText(),/Oak logs: 7/);
   const merchant=makeState();merchant.x=19;merchant.y=12;merchant.questClaimed=true;
   merchant.bag.logs=3;merchant.bag.ore=1;merchant.bag.cooked=1;
-  await page.evaluate(value=>localStorage.setItem('joshrs-woodlands-v1',value),JSON.stringify(merchant));
-  await page.reload({waitUntil:'networkidle'});
-  await page.locator('#tab-town').click();
-  assert.equal(await page.locator('#buy-meal-btn').isEnabled(),true);
-  await page.locator('#order-btn').click();
-  assert.match(await page.locator('#order-progress').innerText(),/Delivered: 1/);
-  assert.equal(await page.locator('#gold').innerText(),'100');
-  await page.locator('#sell-logs-btn').click();
-  assert.equal(await page.locator('#gold').innerText(),'103');
+  // Use a fresh page: the game intentionally writes its in-memory state on
+  // pagehide, so overwriting localStorage just before reload would be undone.
+  const shop=await context.newPage();
+  shop.on('pageerror',error=>errors.push(error.message));
+  await shop.addInitScript(value=>localStorage.setItem('joshrs-woodlands-v1',value),JSON.stringify(merchant));
+  await shop.goto(origin+'/woodlands.html',{waitUntil:'networkidle'});
+  await shop.locator('#tab-town').click();
+  assert.equal(await shop.locator('#buy-meal-btn').isEnabled(),true);
+  await shop.locator('#order-btn').click();
+  assert.match(await shop.locator('#order-progress').innerText(),/Delivered: 1/);
+  assert.equal(await shop.locator('#gold').innerText(),'100');
+  await shop.locator('#sell-logs-btn').click();
+  assert.equal(await shop.locator('#gold').innerText(),'103');
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
   assert.ok(overflow<=2,device+' overflow '+overflow);
   assert.deepEqual(errors,[],device+' browser errors');
