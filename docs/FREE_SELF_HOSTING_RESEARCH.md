@@ -49,7 +49,7 @@ Tailscale Personal currently lists $0, six users and unlimited user devices. Ser
 3. Keep only `127.0.0.1:8888` published. Do not forward router ports or expose login, friends, logger or management ports.
 4. Install Tailscale on host and phone; join the same personal tailnet. Enable HTTPS as prompted.
 5. Run `tailscale serve --bg http://127.0.0.1:8888`. Record its real HTTPS hostname.
-6. Change `JOSHRS_ORIGIN` in the Compose environment to that exact HTTPS origin, without a trailing slash/path; recreate the world. The current Compose file hardcodes localhost, so merely exporting a shell variable will **not** change it.
+6. Change `JOSHRS_ORIGIN` in the Compose environment to that exact HTTPS origin, without a trailing slash/path; recreate the world. The Compose configuration now supports `JOSHRS_ORIGIN` interpolation; set the exact origin when recreating the container and confirm it in the resulting configuration. This is a private-access setting, not permission for public redistribution.
 7. Open `https://ACTUAL-HOSTNAME/rs2.cgi` on the phone with Tailscale connected. Verify game WebSocket upgrade, login and reconnect over mobile data, not only home Wi-Fi.
 8. Disable host sleep while serving; verify automatic restart after host reboot. Stop the world gracefully before maintenance.
 9. Keep the Vercel launcher. Once accepted, give its Play action the private HTTPS game URL. The server would be independently operated, although the URL differs from joshrs.vercel.app. Do not proxy the whole game through Vercel merely to hide that distinction.
