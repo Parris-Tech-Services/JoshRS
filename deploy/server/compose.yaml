@@ -1,5 +1,6 @@
 services:
   world:
+    image: joshrs-independent-world:274
     build:
       context: ../..
       dockerfile: deploy/server/Dockerfile
@@ -10,7 +11,7 @@ services:
       - '127.0.0.1:8888:8888'
     environment:
       PORT: '8888'
-      JOSHRS_ORIGIN: http://localhost:8888
+      JOSHRS_ORIGIN: ${JOSHRS_ORIGIN:-http://localhost:8888}
       JOSHRS_DATA_DIR: /data
     volumes:
       - world-data:/data
