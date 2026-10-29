@@ -14,6 +14,8 @@ Status: partially implemented; public launch blocked.
   its wrong password (responses 4 and 1 respectively). This is not browser login.
 - Nine existing JoshRS unit tests passed; shell scripts passed syntax checks.
 
+- GitHub run [40951856065](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/40951856065) passed for code commit `ad307ef8ca2cae93f4529d540485a508ba22ee44`: Docker build/start, protected HTTP routes, desktop/mobile canvas smoke checks, backup archive and restart. Browser tests only check a visible canvas and no page errors, not a completed login/playthrough.
+
 ## Added
 
 `deploy/server/` contains a pinned Docker source build, authenticated world
@@ -24,8 +26,6 @@ clients, snapshots and restarts. These checks do not prove completed gameplay.
 
 ## Still required
 
-- Successful Docker CI and browser run; the local environment has no Docker and
-  Chromium cannot create its required socket here.
 - Browser account/login flow, tutorial, skills/inventory/combat,
   saved progress after reconnect and process restart, and a real restore drill.
 - Durable hosting with verified billing constraints, HTTPS/WebSocket routing,
