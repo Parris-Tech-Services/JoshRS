@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {W,H,TASKS,terrain,objectAt,walkable,makeState,loadState,move,pathTo,xpNeeded,levelOf,totalLevel,lightFire,eat,interact,cook,completed} from "../core.mjs";
+import {W,H,TASKS,terrain,objectAt,walkable,makeState,loadState,move,pathTo,xpNeeded,levelOf,totalLevel,lightFire,eat,interact,cook,completed,nearNpc,depositAll,withdrawAll,sellOne,buyMeal,fulfilOrder,isValidSavedState} from "../core.mjs";
 test("fresh player is in bounds and has starter inventory",()=>{
  const s=makeState();assert.equal(walkable(s.x,s.y),true);assert.equal(s.bag.logs,0);assert.equal(s.hp,20);assert.equal(totalLevel(s),6);
 });
@@ -44,4 +44,54 @@ test("save round trip and corrupt save recovery",()=>{
  const s=makeState();s.bag.logs=4;s.progress.logs=4;const restored=loadState(JSON.stringify(s));
  assert.equal(restored.bag.logs,4);assert.deepEqual(loadState("invalid"),makeState());
  const invalid={...s,x:999};assert.deepEqual(loadState(JSON.stringify(invalid)),makeState());
+});
+
+test("bank deposits and withdrawals preserve items without minting resources",()=>{
+ const s=makeState();s.bag.logs=7;s.bag.ore=2;
+ assert.match(depositAll(s),/Stand beside/);
+ assert.equal(s.bank.logs,0);
+ s.x=17;s.y=12;
+ assert.equal(nearNpc(s,"banker"),true);
+ assert.match(depositAll(s),/stores 9/);
+ assert.equal(s.bag.logs,0);assert.equal(s.bank.logs,7);
+ assert.match(withdrawAll(s),/withdraw 9/);
+ assert.equal(s.bank.logs,0);assert.equal(s.bag.logs,7);
+ assert.equal(s.bag.ore,2);
+});
+test("trading requires the merchant and cannot create free coins or food",()=>{
+ const s=makeState();s.bag.logs=1;
+ assert.match(sellOne(s,"logs"),/Stand beside/);
+ s.x=19;s.y=12;
+ assert.equal(nearNpc(s,"merchant"),true);
+ assert.match(sellOne(s,"fish"),/no fish/);
+ assert.match(sellOne(s,"invalid"),/cannot be sold/);
+ assert.match(sellOne(s,"logs"),/3 coins/);
+ assert.equal(s.coins,28);assert.equal(s.bag.logs,0);
+ assert.match(buyMeal(s),/12 coins/);
+ assert.equal(s.coins,16);assert.equal(s.bag.cooked,1);
+ s.coins=0;assert.match(buyMeal(s),/need 12 coins/);
+});
+test("repeatable supplies require the tutorial and consume items each time",()=>{
+ const s=makeState();s.x=19;s.y=12;
+ s.bag={logs:2,ore:1,fish:0,cooked:1};
+ assert.match(fulfilOrder(s),/Finish Ranger/);
+ s.questClaimed=true;
+ assert.match(fulfilOrder(s),/Supply order complete/);
+ assert.equal(s.ordersFulfilled,1);assert.equal(s.coins,100);
+ assert.deepEqual(s.bag,{logs:0,ore:0,fish:0,cooked:0});
+ assert.match(fulfilOrder(s),/bring 2 logs/);
+ assert.equal(s.coins,100);assert.equal(s.ordersFulfilled,1);
+});
+test("bank, orders and portable saves survive an engine load round-trip",()=>{
+ const s=makeState();s.bank.logs=15;s.bank.fish=22;s.ordersFulfilled=4;
+ const raw=JSON.stringify(s);assert.equal(isValidSavedState(raw),true);
+ const restored=loadState(raw);assert.equal(restored.bank.logs,15);
+ assert.equal(restored.bank.fish,22);assert.equal(restored.ordersFulfilled,4);
+ assert.equal(isValidSavedState("invalid"),false);
+ assert.equal(isValidSavedState(JSON.stringify({...s,x:400})),false);
+ assert.equal(isValidSavedState(JSON.stringify({...s,version:22})),false);
+ assert.equal(isValidSavedState("a".repeat(1048577)),false);
+ const legacy=makeState();delete legacy.bank;delete legacy.ordersFulfilled;
+ const migrated=loadState(JSON.stringify(legacy));
+ assert.equal(migrated.bank.logs,0);assert.equal(migrated.ordersFulfilled,0);
 });
