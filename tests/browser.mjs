@@ -26,6 +26,16 @@ try{
   assert.ok(box&&box.width>200&&box.height>120,label+" game canvas not visible");
   assert.equal(await page.locator("#quest-list .task").count(),5);
   assert.equal(await page.locator("#skills-list .skill").count(),6);
+  // Confirm actual production has the newly deployed, independent game features.
+  await page.locator('#tab-town').click();
+  assert.equal(await page.locator('#panel-town').isVisible(),true);
+  assert.match(await page.locator('#bank-summary').innerText(),/Oak logs: 0/);
+  assert.ok(await page.locator('#deposit-btn').count()===1);
+  assert.ok(await page.locator('#buy-meal-btn').count()===1);
+  await page.locator('#tab-guide').click();
+  assert.equal(await page.locator('#export-save-btn').isVisible(),true);
+  assert.equal(await page.locator('#import-save-btn').isVisible(),true);
+
   overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
   assert.ok(overflow<=2,label+" Woodlands has horizontal overflow: "+overflow);
   if(label==="desktop"){
