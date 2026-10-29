@@ -6,9 +6,16 @@ export const OBJECTS = [
   ...[[28,8],[30,7],[32,6],[31,10],[34,13],[36,9],[33,4]].map(([x,y],i)=>({id:"rock"+i,x,y,type:"rock",name:"Copper rock"})),
   ...[[7,11],[7,16],[7,19]].map(([x,y],i)=>({id:"fish"+i,x,y,type:"fish",name:"Fishing spot"})),
   {id:"ranger",x:19,y:11,type:"npc",name:"Ranger Rowan"},
+  {id:"banker",x:16,y:12,type:"npc",name:"Banker Fern"},
+  {id:"merchant",x:20,y:12,type:"npc",name:"Merchant Mira"},
   {id:"moss1",x:25,y:17,type:"enemy",name:"Mossling"},
   {id:"moss2",x:33,y:18,type:"enemy",name:"Mossling"}
 ];
+export const GOODS = ["logs","ore","fish","cooked"];
+export const SELL_PRICES = Object.freeze({logs:3,ore:6,fish:5,cooked:9});
+export const MEAL_PRICE = 12;
+export const ORDER_COST = Object.freeze({logs:2,ore:1,cooked:1});
+export const ORDER_REWARD = 75;
 export const TASKS = [
  {key:"logs",need:3,title:"Chop 3 oak logs"},
  {key:"fires",need:1,title:"Light a campfire"},
@@ -27,14 +34,18 @@ export function objectAt(x,y){return OBJECTS.find(o=>o.x===x&&o.y===y) || null}
 export function walkable(x,y) {return terrain(x,y)!=="void"&&terrain(x,y)!=="water"&&!objectAt(x,y)}
 export function makeState() {
  return {version:1,x:18,y:13,hp:20,maxHp:20,coins:25,
-   bag:{logs:0,ore:0,fish:0,cooked:0},xp:Object.fromEntries(SKILLS.map(k=>[k,0])),
+   bag:{logs:0,ore:0,fish:0,cooked:0},bank:{logs:0,ore:0,fish:0,cooked:0},ordersFulfilled:0,xp:Object.fromEntries(SKILLS.map(k=>[k,0])),
    progress:{logs:0,fires:0,ore:0,fish:0,enemies:0},fires:[],defeated:[],questClaimed:false,run:false};
 }
 export function loadState(raw) {
  try {
   const s=JSON.parse(raw);if(!s||s.version!==1||!Number.isInteger(s.x)||!Number.isInteger(s.y)||!walkable(s.x,s.y))return makeState();
   const fresh=makeState();
-  for(const k of Object.keys(fresh.bag)) fresh.bag[k]=Math.max(0,Math.min(9999,Math.floor(Number(s.bag?.[k])||0)));
+  for(const k of GOODS) {
+   fresh.bag[k]=Math.max(0,Math.min(9999,Math.floor(Number(s.bag?.[k])||0)));
+   fresh.bank[k]=Math.max(0,Math.min(999999,Math.floor(Number(s.bank?.[k])||0)));
+  }
+  fresh.ordersFulfilled=Math.max(0,Math.min(99999,Math.floor(Number(s.ordersFulfilled)||0)));
   for(const k of SKILLS)fresh.xp[k]=Math.max(0,Math.min(99999999,Math.floor(Number(s.xp?.[k])||0)));
   for(const k of Object.keys(fresh.progress))fresh.progress[k]=Math.max(0,Math.min(99999,Math.floor(Number(s.progress?.[k])||0)));
   fresh.x=s.x;fresh.y=s.y;fresh.hp=Math.max(1,Math.min(20,Number(s.hp)||20));
@@ -103,7 +114,11 @@ export function interact(s,o){
  if(o.type==="tree"){s.bag.logs++;s.progress.logs++;s.xp.woodcutting+=25;return "You chop oak logs. +25 Woodcutting XP."+rewardIfReady(s)}
  if(o.type==="rock"){s.bag.ore++;s.progress.ore++;s.xp.mining+=30;return "You mine copper ore. +30 Mining XP."+rewardIfReady(s)}
  if(o.type==="fish"){s.bag.fish++;s.progress.fish++;s.xp.fishing+=20;return "You catch a river fish. +20 Fishing XP."+rewardIfReady(s)}
- if(o.type==="npc")return s.questClaimed?"Ranger Rowan: Fine work! There are more paths to explore.":"Ranger Rowan: Welcome! Try gathering wood, lighting a fire, mining, fishing and defeating a mossling.";
+ if(o.type==="npc"){
+  if(o.id==="banker")return "Banker Fern: Your supplies are safe here. Open the Town tab to deposit or withdraw items.";
+  if(o.id==="merchant")return "Merchant Mira: I buy gathered supplies and sell cooked fish. Open the Town tab to trade.";
+  return s.questClaimed?"Ranger Rowan: Well done! Complete a woodland supply order at the Town tab for more rewards.":"Ranger Rowan: Welcome! Try gathering wood, lighting a fire, mining, fishing and defeating a mossling.";
+ }
  if(o.type==="enemy"){
   if(s.defeated.includes(o.id))return "The mossling has already been defeated.";
   s.defeated.push(o.id);s.progress.enemies++;s.xp.combat+=50;s.coins+=15;s.hp=Math.max(1,s.hp-4);
@@ -115,4 +130,58 @@ export function cook(s){
  if(!s.fires.some(f=>Math.abs(f.x-s.x)+Math.abs(f.y-s.y)<=1))return "Stand by a lit campfire to cook.";
  if(s.bag.fish<1)return "You need to catch a fish first.";
  s.bag.fish--;s.bag.cooked++;s.xp.cooking+=30;return "You cook a delicious fish. +30 Cooking XP.";
+}
+
+/** All town services require physical proximity, including keyboard and touch access. */
+export function nearNpc(s,id){
+ const npc=OBJECTS.find(o=>o.id===id&&o.type==="npc");
+ return !!npc && Math.abs(s.x-npc.x)+Math.abs(s.y-npc.y)<=1;
+}
+export function depositAll(s){
+ if(!nearNpc(s,"banker"))return "Stand beside Banker Fern to store your supplies.";
+ let count=0;
+ for(const k of GOODS){const n=s.bag[k]||0;s.bank[k]+=n;s.bag[k]=0;count+=n}
+ return count?"Banker Fern stores "+count+" supplies safely.":"Your bag is already empty.";
+}
+export function withdrawAll(s){
+ if(!nearNpc(s,"banker"))return "Stand beside Banker Fern to withdraw your supplies.";
+ let count=0;
+ for(const k of GOODS){
+  const amount=Math.min(Math.max(0,9999-s.bag[k]),s.bank[k]);
+  s.bank[k]-=amount;s.bag[k]+=amount;count+=amount;
+ }
+ return count?"You withdraw "+count+" supplies from your bank.":"Nothing to withdraw, or your bag is full.";
+}
+export function sellOne(s,key){
+ if(!nearNpc(s,"merchant"))return "Stand beside Merchant Mira to trade.";
+ if(!Object.hasOwn(SELL_PRICES,key))return "This item cannot be sold.";
+ if(s.bag[key]<1)return "You have no "+key+" to sell.";
+ s.bag[key]--;s.coins+=SELL_PRICES[key];
+ return "Sold one "+key+" for "+SELL_PRICES[key]+" coins.";
+}
+export function buyMeal(s){
+ if(!nearNpc(s,"merchant"))return "Stand beside Merchant Mira to trade.";
+ if(s.coins<MEAL_PRICE)return "You need "+MEAL_PRICE+" coins to buy a cooked fish.";
+ if(s.bag.cooked>=9999)return "Your cooked-fish stack is full.";
+ s.coins-=MEAL_PRICE;s.bag.cooked++;
+ return "You buy a cooked fish for "+MEAL_PRICE+" coins.";
+}
+export function fulfilOrder(s){
+ if(!nearNpc(s,"merchant"))return "Stand beside Merchant Mira to deliver supplies.";
+ if(!s.questClaimed)return "Finish Ranger Rowan's Forest Apprentice quest before taking delivery orders.";
+ if(GOODS.some(k=>(ORDER_COST[k]||0)>s.bag[k]))return "Supply order: bring 2 logs, 1 ore and 1 cooked fish.";
+ for(const [k,n] of Object.entries(ORDER_COST))s.bag[k]-=n;
+ s.ordersFulfilled++;s.coins+=ORDER_REWARD;
+ s.xp.woodcutting+=25;s.xp.mining+=25;s.xp.cooking+=25;
+ return "Supply order complete! +"+ORDER_REWARD+" coins and +25 XP in three skills. Orders: "+s.ordersFulfilled+".";
+}
+export function isValidSavedState(raw){
+ try {
+  if(typeof raw!=="string"||raw.length>1048576)return false;
+  const s=JSON.parse(raw);
+  return !!s&&typeof s==="object"&&!Array.isArray(s)&&s.version===1&&
+   Number.isInteger(s.x)&&Number.isInteger(s.y)&&walkable(s.x,s.y)&&
+   s.bag&&typeof s.bag==="object"&&s.xp&&typeof s.xp==="object"&&
+   s.progress&&typeof s.progress==="object";
+ }catch{return false}
 }
