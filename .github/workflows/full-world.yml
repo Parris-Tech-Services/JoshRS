@@ -1,0 +1,44 @@
+name: Independent world build and HTTP checks
+on:
+  workflow_dispatch:
+  push:
+    paths: ['deploy/server/**', 'tests/full-world-browser.mjs', '.github/workflows/full-world.yml']
+jobs:
+  world:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose -f deploy/server/compose.yaml config -q
+      - run: docker compose -f deploy/server/compose.yaml up --build -d --wait --wait-timeout 600
+      - name: Confirm game page and protect data routes
+        run: |
+          curl --fail http://localhost:8888/rs2.cgi -o /tmp/client.html
+          grep -q 'client/client.js' /tmp/client.html
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8888/data/config/world.json)" = 404
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8888/setup/config)" = 404
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/full-world-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-world-client-screenshots
+          path: full-world-*.png
+          if-no-files-found: ignore
+      - name: Snapshot and restart
+        run: |
+          sh deploy/server/backup.sh
+          docker compose -f deploy/server/compose.yaml up -d --wait --wait-timeout 180
+          curl --fail http://localhost:8888/rs2.cgi -o /dev/null
+      - name: Logs
+        if: always()
+        run: docker compose -f deploy/server/compose.yaml logs --no-color
+      - name: Stop test world
+        if: always()
+        run: docker compose -f deploy/server/compose.yaml down
