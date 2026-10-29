@@ -22,6 +22,10 @@ The community Docker distribution at https://github.com/mserajnik/lost-city-rs-d
 
 Do not expose a private instance to the public internet without following its licence, security and asset-rights requirements. This is not the deployment running at JoshRS today.
 
+## Runnable private research server
+
+A pinned **revision 274 Docker Compose configuration** is in [deploy/local/compose.yaml](../deploy/local/compose.yaml), with full setup and storage instructions in [deploy/local/README.md](../deploy/local/README.md). It is bound to localhost and **not** an internet production deployment. The upstream image contains historical assets under separate copyright, so public redistribution is not assumed to be authorised.
+
 ## Current acceptance status
 
 - **Pass:** The original JoshRS Woodlands demo is independently deployed and tested on mobile and desktop.

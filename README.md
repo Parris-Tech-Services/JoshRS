@@ -1,4 +1,4 @@
-# JoshRS — Woodlands
+# JoshRS — Full 2004Scape launcher and Woodlands demo
 
 A **launch hub for the actual 2004Scape reconstruction** plus an original, small mobile-first browser RPG prototype (Woodlands). The full game link opens Lost City's official website. We do not self-host the full game or capture account credentials.
 
@@ -8,7 +8,7 @@ This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009
 
 ## Play
 
-- Opens straight into the world, no login or download needed.
+**Full MMO:** tap **Launch full 2004Scape** on the homepage to play at Lost City's own mobile/desktop browser site; a Lost City game account may be required. **Woodlands:** the separate original demo opens directly without login or download.
 - Tap a map location to move; tap a tree, rock, fishing spot, ranger or mossling to navigate toward and interact.
 - Arrow keys / WASD or on-screen movement pad; **E** to interact, **F** to light a campfire with gathered logs, **H** to eat a cooked fish.
 - Walk/run toggle; quests, inventory, six skills, XP, level progression, HP, coins, combat, cooking and automatic save.
@@ -42,6 +42,10 @@ Developers can optionally fetch code checkouts into a gitignored local workspace
 ## Licence
 
 Original JoshRS code is licensed under the MIT licence in [LICENSE](LICENSE). Upstream source remains with its own copyright owners, repository and licence. No affiliation with Jagex Ltd or the upstream communities.
+
+## Independent full-game research setup
+
+Use [deploy/local/README.md](deploy/local/README.md) and [deploy/local/compose.yaml](deploy/local/compose.yaml) to run a **private, local** 2004Scape 274 world via a third-party prebuilt community container. This is not running behind the JoshRS public website, and contains Jagex-owned assets outside the JoshRS repository. Review the upstream licence and rights before use; never expose an unprotected local instance to the public internet.
 
 ## Deployment
 

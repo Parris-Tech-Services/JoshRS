@@ -1,0 +1,31 @@
+# Private local research environment only — not a JoshRS public production service.
+# Based on the independently maintained https://github.com/mserajnik/lost-city-rs-deploy
+# See deploy/local/README.md, including licence and game-asset cautions.
+services:
+  app:
+    image: &app-image ghcr.io/mserajnik/lost-city-rs:274
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'nc', '-z', 'localhost', '8888']
+      interval: 1m
+      timeout: 3s
+      retries: 5
+      start_period: 5m
+    ports:
+      - '127.0.0.1:8888:8888'
+    volumes:
+      - ./storage/database:/opt/lost-city-rs/database
+      - ./storage/data/players:/opt/lost-city-rs/engine/data/players
+    environment: &app-environment
+      LOST_CITY_RS_DEPLOY_VERSION: '1'
+      TZ: Australia/Sydney
+      LOST_CITY_RS_UID: '1000'
+      LOST_CITY_RS_GID: '1000'
+      WEB_PORT: '8888'
+      NODE_MEMBERS: 'true'
+      NODE_XPRATE: '1'
+  check-deploy-version:
+    image: *app-image
+    profiles: ['tools']
+    entrypoint: ['check-deploy-version']
+    environment: *app-environment

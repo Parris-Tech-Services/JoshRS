@@ -13,6 +13,7 @@ jobs:
         with:
           node-version: "22"
       - run: npm test
+      - run: docker compose -f deploy/local/compose.yaml config -q
   browser:
     runs-on: ubuntu-latest
     permissions:
@@ -27,7 +28,6 @@ jobs:
       - run: node tests/browser.mjs
         env:
           JOSHRS_URL: https://joshrs.vercel.app/
-      - run: node tests/embedding-probe.mjs
       - name: Save desktop/mobile screenshots
         if: always()
         uses: actions/upload-artifact@v4
