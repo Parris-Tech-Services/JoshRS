@@ -1,0 +1,6 @@
+# Used exclusively by the restore drill. No listening port is published to the host.
+# Requires Docker Compose v2.24.4 or newer for !reset.
+services:
+  world:
+    ports: !reset []
+    restart: 'no'
