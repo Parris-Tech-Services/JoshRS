@@ -25,5 +25,11 @@ c.build.liveReload=false;
 c.web.port=Number(process.env.PORT || 8888);
 c.web.allowedOrigin=process.env.JOSHRS_ORIGIN || 'http://localhost:8888';
 if(!Number.isInteger(c.web.port)||c.web.port<1||c.web.port>65535) throw new Error('Invalid PORT');
-new URL(c.web.allowedOrigin);
+// Allow only a complete, exact browser origin (no paths, tokens or fragments).
+const origin=new URL(c.web.allowedOrigin);
+if (!['http:', 'https:'].includes(origin.protocol) || origin.username || origin.password ||
+    origin.pathname !== '/' || origin.search || origin.hash ||
+    origin.origin !== c.web.allowedOrigin) {
+  throw new Error('JOSHRS_ORIGIN must be an exact http(s) origin, without a trailing slash or path');
+}
 saveWorldConfig(c);
