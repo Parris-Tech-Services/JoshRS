@@ -6,6 +6,14 @@ A **launch hub for the actual 2004Scape reconstruction** plus an original, small
 
 This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009Scape. Their full MMO server backends, client assets, accounts and worlds are not embedded or deployed here. Upstream projects have different dependencies and licences. Do not present this as a deployment of their complete games.
 
+## Full independent classic MMORPG goal
+
+**[Full classic MMO build and visual-fidelity checklist](docs/FULL_CLASSIC_MMO_CHECKLIST.md)** — 114 auditable tasks across 13 sections, covering the classic 3D interface, world, skills, combat, quests, multiplayer, permanent player saves, mobile UX, hosting, testing and release. The checkboxes distinguish verified existing Woodlands features from everything still required.
+
+Important: **2004Scape (November 2004)** and **official Old School RuneScape (2007-derived)** are distinct historical versions. Original game software being MIT-licensed does not license Jagex-owned artwork, music, names, quest content or branding. The checklist therefore differentiates *exact historical asset reproduction requiring rights* from an independent original game that faithfully evokes the classic feel. No additional hosting purchase or asset rights are assumed.
+
+See also [multiplayer work tracker #5](https://github.com/Parris-Tech-Services/JoshRS/issues/5) and [self-hosting gate #3](https://github.com/Parris-Tech-Services/JoshRS/issues/3).
+
 ## Play
 
 **Full MMO:** tap **Launch full 2004Scape** on the homepage to play at Lost City's own mobile/desktop browser site; a Lost City game account may be required. **Woodlands:** the separate original demo opens directly without login or download.
