@@ -2,7 +2,7 @@
 
 An **original, playable, mobile-first browser RPG** and open-source MMORPG research hub.
 
-**Play:** use the live JoshRS deployment when available, or run the files locally. **Source:** https://github.com/Parris-Tech-Services/JoshRS
+**Play now:** https://joshrs.vercel.app/ (Vercel production). Or run the files locally. **Source:** https://github.com/Parris-Tech-Services/JoshRS
 
 This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009Scape. Their full MMO server backends, client assets, accounts and worlds are not embedded or deployed here. Upstream projects have different dependencies and licences. Do not present this as a deployment of their complete games.
 
@@ -37,7 +37,7 @@ Run tests: `npm test` (Node 20+).
 | OpenRSC | https://github.com/Open-RSC/Core-Framework | AGPL-3.0 | **No** — Java game server/client infrastructure |
 | 2009Scape | https://github.com/summerdevs/2009Scape | CC BY-NC-SA 4.0 (repository licence) | **No** — separate Java/Kotlin-era stack and client |
 
-Read [docs/UPSTREAM.md](docs/UPSTREAM.md) before reusing or modifying anything from those projects. All JoshRS Woodlands game code and procedural artwork are independently created, not reverse-engineered or copied assets. Study gameplay ideas without lifting Jagex intellectual property.
+Developers can optionally fetch code checkouts into a gitignored local workspace using \`bash scripts/fetch-upstreams.sh\` (large downloads; not part of production). Read [docs/UPSTREAM.md](docs/UPSTREAM.md) before reusing or modifying anything from those projects. All JoshRS Woodlands game code and procedural artwork are independently created, not reverse-engineered or copied assets. Study gameplay ideas without lifting Jagex intellectual property.
 
 ## Licence
 
