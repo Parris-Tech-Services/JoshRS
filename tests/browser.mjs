@@ -16,10 +16,10 @@ try{
   assert.ok(await page.locator(".scene").isVisible());
   let overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
   assert.ok(overflow<=2,label+" launcher has horizontal overflow: "+overflow);
-  const shortcut=await page.request.get(new URL("/play",URL).href,{maxRedirects:0});
+  const shortcut=await page.request.get(new globalThis.URL("/play",URL).href,{maxRedirects:0});
   assert.ok([301,302,307,308].includes(shortcut.status()),"Play shortcut is not a redirect: "+shortcut.status());
   assert.equal(shortcut.headers().location,"https://2004.lostcity.rs/detail");
-  res=await page.goto(new URL("/woodlands.html",URL).href,{waitUntil:"networkidle",timeout:45000});
+  res=await page.goto(new globalThis.URL("/woodlands.html",URL).href,{waitUntil:"networkidle",timeout:45000});
   assert.equal(res?.status(),200,label+" Woodlands returned non-200");
   await page.locator("#world").waitFor({state:"visible",timeout:15000});
   const canvas=page.locator("#world"),box=await canvas.boundingBox();
