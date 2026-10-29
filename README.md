@@ -13,6 +13,9 @@ This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009
 - Arrow keys / WASD or on-screen movement pad; **E** to interact, **F** to light a campfire with gathered logs, **H** to eat a cooked fish.
 - Walk/run toggle; quests, inventory, six skills, XP, level progression, HP, coins, combat, cooking and automatic save.
 - Progress is stored only in this browser's `localStorage`; clearing browser data erases it. The New game button resets after confirmation.
+- **Portable saves:** Open the Guide tab and use Export save file to download a JSON backup. Import save file restores it on another browser/device after confirmation; this is not automatic cloud sync.
+- **Oakvale town:** Banker Fern stores/returns gathered resources. Merchant Mira buys supplies and sells cooked fish. Both require standing beside the correct NPC.
+- **Repeatable deliveries:** After Forest Apprentice, bring 2 logs, 1 ore and 1 cooked fish to Mira for coins and bonus skill XP. Progress survives local saves.
 - Desktop and phone-responsive UI, labelled controls, tabbed dashboard, keyboard navigation and motion preferences.
 
 For local development use `python3 -m http.server 8000`, then open http://localhost:8000. Browsers generally restrict JavaScript modules when opening `file://` directly. No dependencies or backend needed.
@@ -25,7 +28,8 @@ Run tests: `npm test` (Node 20+).
 - `style.css`: responsive mobile/desktop experience.
 - `core.mjs`: dependency-free game rules, deterministic map, pathfinding, skills, player state and quest validation.
 - `app.mjs`: Canvas art renderer, DOM, pointer/keyboard/touch controls and save handling.
-- `tests/core.test.mjs`: deterministic game-engine regression tests.
+- `tests/core.test.mjs`: deterministic game-engine tests, trading rules, bank conservation, deliveries and save compatibility.
+- `tests/woodlands-local-browser.mjs`: starts a local static server and verifies bank, export/reset/import and merchant gameplay on desktop and mobile Chromium.
 - `docs/UPSTREAM.md`: source map, licence distinctions and actual setup requirements.
 
 ## Research: historical RuneScape community reconstructions
