@@ -6,12 +6,19 @@ on:
 jobs:
   world:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - run: docker compose -f deploy/server/compose.yaml config -q
+      - name: Validate Compose and configurable HTTPS origin
+        run: |
+          sh -n deploy/server/backup.sh
+          sh -n deploy/server/restore-drill.sh
+          docker compose -f deploy/server/compose.yaml config -q
+          docker compose -f deploy/server/compose.yaml -f deploy/server/compose.restore.yaml config -q
+          JOSHRS_ORIGIN=https://joshrs-test.example.ts.net docker compose -f deploy/server/compose.yaml config --format json > /tmp/joshrs-compose.json
+          node -e "const c=require('/tmp/joshrs-compose.json'); if(c.services.world.environment.JOSHRS_ORIGIN!=='https://joshrs-test.example.ts.net') process.exit(1)"
       - run: docker compose -f deploy/server/compose.yaml up --build -d --wait --wait-timeout 600
       - name: Confirm game page and protect data routes
         run: |
@@ -31,9 +38,13 @@ jobs:
           name: full-world-client-screenshots
           path: full-world-*.png
           if-no-files-found: ignore
-      - name: Snapshot and restart
+      - name: Backup, isolated restore and original-world restart
         run: |
+          docker compose -f deploy/server/compose.yaml exec -T world sh -c 'printf "restore-check-274\n" > /data/restore-probe.txt'
           sh deploy/server/backup.sh
+          backup="$(find deploy/server/backups -name 'world-*.tar.gz' -type f | sort | tail -n 1)"
+          test -n "$backup"
+          sh deploy/server/restore-drill.sh "$backup"
           docker compose -f deploy/server/compose.yaml up -d --wait --wait-timeout 180
           curl --fail http://localhost:8888/rs2.cgi -o /dev/null
       - name: Logs
