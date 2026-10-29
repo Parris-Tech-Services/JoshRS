@@ -1,59 +1,44 @@
 <!doctype html>
 <html lang="en-AU">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#101e1c">
-  <meta name="description" content="JoshRS Woodlands: a free, original, mobile-friendly browser RPG with skills, gathering, crafting and exploration.">
-  <title>JoshRS — Woodlands</title>
-  <link rel="stylesheet" href="./style.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101c17">
+<meta name="description" content="JoshRS: play the genuine open-source 2004Scape reconstruction on desktop or mobile, research the original source code, and follow the independent hosting project.">
+<link rel="stylesheet" href="./launcher.css">
+<title>JoshRS — Play the real 2004Scape</title>
 </head>
 <body>
-  <a class="skip" href="#game">Skip to game</a>
-  <header class="topbar">
-    <div class="brand"><div class="brand-mark" aria-hidden="true">J</div><div><strong>JoshRS</strong><span>Woodlands · A browser RPG</span></div></div>
-    <div class="top-actions"><span class="save-state" id="save-state" role="status">Saved locally</span><button id="help-btn" class="quiet" type="button">How to play</button><button id="reset-btn" class="quiet" type="button">New game</button></div>
-  </header>
-  <main>
-    <section class="intro" aria-labelledby="headline">
-      <div><p class="eyebrow">Free to play · No account required</p><h1 id="headline">Your adventure starts here.</h1><p>Chop trees, mine ore, catch fish, light fires, explore, and grow your skills. Progress saves automatically on this device.</p></div>
-      <div class="intro-stat"><span>THE WOODLANDS</span><strong>Chapter 01</strong><small>Forest Apprentice</small></div>
-    </section>
-    <div class="game-layout" id="game">
-      <section class="play-panel" aria-label="Game">
-        <div class="play-head"><div><span class="live-dot" aria-hidden="true"></span><strong>Oakvale</strong><span class="subdued"> / Starter forest</span></div><div><span id="coords">16, 12</span><span class="subdued"> · </span><span id="status-label">Exploring</span></div></div>
-        <div class="world-wrap"><canvas id="world" width="800" height="512" tabindex="0" role="img" aria-label="Interactive pixel-art world. Tap a tile or use arrow keys to move."></canvas><div class="canvas-label">Tap the map to move or select an object</div></div>
-        <div class="action-bar">
-          <button class="primary" id="interact-btn" type="button">Interact <span class="keycap">E</span></button>
-          <button id="light-btn" type="button">Light fire <span class="keycap">F</span></button>
-          <button id="eat-btn" type="button">Eat fish <span class="keycap">H</span></button>
-          <button id="run-btn" type="button" aria-pressed="false">Walk mode</button>
-        </div>
-        <div class="touch-layout">
-          <div class="dpad" aria-label="Movement controls"><button aria-label="Move up" data-step="0,-1" class="up">↑</button><button aria-label="Move left" data-step="-1,0" class="left">←</button><button aria-label="Move down" data-step="0,1" class="down">↓</button><button aria-label="Move right" data-step="1,0" class="right">→</button></div>
-          <div class="touch-help">Tap trees, rocks, water or creatures to interact.<br>Or move with these controls and press Interact.</div>
-        </div>
-        <div class="message" id="message" role="status" aria-live="polite">Welcome to Oakvale. Select a tree to begin.</div>
-      </section>
-      <aside class="side-panel" aria-label="Adventure dashboard">
-        <div class="player-bar"><div class="avatar" aria-hidden="true">J</div><div class="player-details"><strong>Adventurer</strong><span>Level <b id="total-level">1</b> · <span id="hp">20/20 HP</span></span></div><div class="gold"><span>Coins</span><strong id="gold">25</strong></div></div>
-        <div class="tabs" role="tablist" aria-label="Dashboard tabs"><button role="tab" id="tab-quests" aria-controls="panel-quests" aria-selected="true" data-tab="quests">Quest</button><button role="tab" id="tab-inventory" aria-controls="panel-inventory" aria-selected="false" data-tab="inventory">Bag</button><button role="tab" id="tab-skills" aria-controls="panel-skills" aria-selected="false" data-tab="skills">Skills</button><button role="tab" id="tab-guide" aria-controls="panel-guide" aria-selected="false" data-tab="guide">Guide</button></div>
-        <div class="tab-panel" id="panel-quests" role="tabpanel" aria-labelledby="tab-quests"><p class="eyebrow">Your first quest</p><h2>Forest Apprentice</h2><p class="subdued">Learn the ways of the woodland. Every task can be completed in this little world.</p><div id="quest-list" class="quest-list"></div><p id="quest-reward" class="quest-reward">Reward: 100 coins and 100 bonus XP</p></div>
-        <div class="tab-panel" id="panel-inventory" role="tabpanel" aria-labelledby="tab-inventory" hidden><h2>Your inventory</h2><p class="subdued">Tools are always with you. Gathered supplies are stored below.</p><div class="inventory-grid" id="inventory"></div><p class="tip">Logs make fires. Cook fish by interacting with a fire. Eat cooked fish to heal.</p></div>
-        <div class="tab-panel" id="panel-skills" role="tabpanel" aria-labelledby="tab-skills" hidden><h2>Skills</h2><div id="skills-list" class="skills-list"></div></div>
-        <div class="tab-panel" id="panel-guide" role="tabpanel" aria-labelledby="tab-guide" hidden><h2>How to play</h2><p>Move with WASD, arrow keys, the touch pad or tap the map. Tap a tree, rock, fishing spot or creature to walk over and interact.</p><p>Use <b>E</b> for a nearby resource, <b>F</b> to light logs, and <b>H</b> to eat cooked fish. Run mode increases movement speed.</p><p>Original world, art and game logic. This is not the full RuneScape or the upstream emulators.</p></div>
-      </aside>
-    </div>
-    <section class="sources" aria-labelledby="sources-title"><p class="eyebrow">Open-source research library</p><h2 id="sources-title">Explore the projects that inspired the research</h2><p>These independent upstream games are not installed inside JoshRS. Their source, setup instructions and hosted experiences are linked directly, with their own licensing requirements.</p>
-      <div class="source-cards">
-        <article><span class="source-tag">2004 era</span><h3>2004Scape / Lost City</h3><p>TypeScript server, reverse-engineered game engine and historical content.</p><div><a href="https://2004.lostcity.rs/" target="_blank" rel="noopener noreferrer">Official game</a><a href="https://github.com/LostCityRS/Server" target="_blank" rel="noopener noreferrer">Source & setup</a></div></article>
-        <article><span class="source-tag">Classic era</span><h3>OpenRSC</h3><p>Classic Java client/server project, distributed under AGPL-3.0.</p><div><a href="https://rsc.vet/" target="_blank" rel="noopener noreferrer">Official site</a><a href="https://github.com/Open-RSC/Core-Framework" target="_blank" rel="noopener noreferrer">Source & setup</a></div></article>
-        <article><span class="source-tag">2009 era</span><h3>2009Scape</h3><p>Community MMORPG reconstruction with a downloadable client.</p><div><a href="https://2009scape.org/" target="_blank" rel="noopener noreferrer">Official site</a><a href="https://github.com/summerdevs/2009Scape" target="_blank" rel="noopener noreferrer">Source & setup</a></div></article>
-      </div>
-    </section>
-  </main>
-  <dialog id="help-dialog" aria-labelledby="help-title"><h2 id="help-title">Welcome to JoshRS</h2><p>Choose your path: tap a tree to harvest logs, find rocks for mining, catch fish by the western lake, and light a fire to cook your catch.</p><p>On mobile, tap the world to explore or use the directional buttons. On desktop, use arrows or WASD and press E, F or H for actions.</p><form method="dialog"><button class="primary">Let's play</button></form></dialog>
-  <footer>JoshRS is an independent original game and open-source research hub. Not affiliated with Jagex or the upstream projects. <a href="https://github.com/Parris-Tech-Services/JoshRS" target="_blank" rel="noopener noreferrer">GitHub source</a></footer>
-  <script type="module" src="./app.mjs"></script>
-</body>
-</html>
+<a class="skip" href="#play">Skip to play</a>
+<header class="bar"><a class="brand" href="./" aria-label="JoshRS home"><span class="mark">J</span><span><strong>JoshRS</strong><small>Historical MMORPG research and play</small></span></a><nav aria-label="Main navigation"><a class="nav-current" href="#play">Play</a><a href="./woodlands.html">Woodlands demo</a><a href="#source">Source</a></nav></header>
+<main>
+<section class="hero" id="play">
+<div class="hero-copy">
+<p class="eyebrow">THE COMPLETE COMMUNITY RECONSTRUCTION</p>
+<h1>Play the real <em>2004Scape.</em></h1>
+<p class="lead">Skills. Quests. Combat. Trading. NPCs. An entire multiplayer world reconstructed through years of historical research and reverse engineering.</p>
+<div class="actions"><a class="cta" href="https://2004.lostcity.rs/detail" rel="noopener noreferrer">Launch full 2004Scape <span aria-hidden="true">↗</span></a><a class="secondary" href="https://2004.lostcity.rs/account/create" rel="noopener noreferrer">Create game account <span aria-hidden="true">↗</span></a></div>
+<p class="important"><strong>Official game, external website.</strong> The full game is hosted by Lost City, not JoshRS. The link opens their website so you can safely sign in there. It runs in mobile and desktop browsers.</p>
+</div>
+<div class="scene" aria-label="Illustrated woodland scene with mountains and a medieval adventurer" role="img">
+<div class="sun"></div><div class="hill hill-back"></div><div class="hill hill-mid"></div><div class="hill hill-front"></div><div class="tower"></div><div class="pine p1"></div><div class="pine p2"></div><div class="pine p3"></div><div class="pine p4"></div><div class="adventurer"><span class="head"></span><span class="body"></span><span class="sword"></span></div>
+<div class="scene-caption"><span class="lamp" aria-hidden="true"></span> REAL MMORPG · BROWSER PLAY</div>
+</div>
+</section>
+<section class="details" aria-label="What you get">
+<div class="feature"><span>01 / PLAY</span><strong>The full reconstructed world</strong><p>Choose your game world, create a character and explore the real 2004Scape community experience.</p></div>
+<div class="feature"><span>02 / DEVICES</span><strong>Phone, tablet and desktop</strong><p>Official mobile browser controls include tap interactions, camera drag and fullscreen support on compatible devices.</p></div>
+<div class="feature"><span>03 / SOURCE</span><strong>Inspectable open source</strong><p>The engine, client, setup and game script repositories are public. Game art has separate intellectual-property rights.</p></div>
+</section>
+<section class="note">
+<div><p class="eyebrow">WHY THE EXTERNAL LINK?</p><h2>Why isn't the game inside JoshRS yet?</h2><p>Lost City's pages explicitly prevent iframe embedding. Running a fully independent game at this domain instead requires deploying the real TypeScript server, compatible client, content, a database, persistent character saves, HTTPS and WebSockets. We must also respect Jagex's separate ownership of historical assets.</p><p>We've verified that embedding fails; we won't create a credential-intercepting proxy or pretend a redirect is our own hosted world.</p></div>
+<a class="secondary" href="https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/SELF_HOST.md" rel="noopener noreferrer">Independent-server plan</a>
+</section>
+<section class="sources" id="source"><p class="eyebrow">PROJECTS AND CODE</p><h2>Built on open research, with clear attribution.</h2>
+<div class="cards"><article><span class="tag">Primary game</span><h3>Lost City / 2004Scape</h3><p>The real server and player experience. Use its official website to play now.</p><a href="https://github.com/LostCityRS/Server" rel="noopener noreferrer">Server & setup ↗</a><a href="https://github.com/LostCityRS/Engine-TS" rel="noopener noreferrer">Engine ↗</a><a href="https://github.com/LostCityRS/Client-TS" rel="noopener noreferrer">Browser client ↗</a><a href="https://github.com/LostCityRS/Content" rel="noopener noreferrer">Game scripts ↗</a></article>
+<article><span class="tag">Classic research</span><h3>OpenRSC</h3><p>Separate RuneScape Classic reconstruction with its own Java client/server and AGPL licence.</p><a href="https://github.com/Open-RSC/Core-Framework" rel="noopener noreferrer">View code ↗</a></article>
+<article><span class="tag">2009 research</span><h3>2009Scape</h3><p>A separate recreation and launcher with a distinct licence and runtime.</p><a href="https://github.com/summerdevs/2009Scape" rel="noopener noreferrer">View code ↗</a></article></div>
+</section>
+<section class="demo"><div><span class="eyebrow">SEPARATE EXPERIMENT</span><h2>JoshRS Woodlands</h2><p>The earlier small original browser RPG is still available as a development demo, not as a substitute for full RuneScape.</p></div><a class="secondary" href="./woodlands.html">Open Woodlands demo</a></section>
+</main>
+<footer><span>JoshRS is independent and is not affiliated with Jagex or Lost City.</span><a href="https://github.com/Parris-Tech-Services/JoshRS" rel="noopener noreferrer">View JoshRS on GitHub ↗</a></footer>
+</body></html>

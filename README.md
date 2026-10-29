@@ -1,8 +1,8 @@
 # JoshRS — Woodlands
 
-An **original, playable, mobile-first browser RPG** and open-source MMORPG research hub.
+A **launch hub for the actual 2004Scape reconstruction** plus an original, small mobile-first browser RPG prototype (Woodlands). The full game link opens Lost City's official website. We do not self-host the full game or capture account credentials.
 
-**Play now:** https://joshrs.vercel.app/ (Vercel production). Or run the files locally. **Source:** https://github.com/Parris-Tech-Services/JoshRS
+**Open JoshRS:** https://joshrs.vercel.app/ — primary action launches the **real full 2004Scape** on the official Lost City website. The independently developed Woodlands demo is now at https://joshrs.vercel.app/woodlands.html, or run the files locally. **Source:** https://github.com/Parris-Tech-Services/JoshRS
 
 This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009Scape. Their full MMO server backends, client assets, accounts and worlds are not embedded or deployed here. Upstream projects have different dependencies and licences. Do not present this as a deployment of their complete games.
 
@@ -21,7 +21,7 @@ Run tests: `npm test` (Node 20+).
 
 ## Architecture
 
-- `index.html`: semantic app markup, dashboard and research library.
+- `index.html`: honest, responsive full-game launcher with official external play link and source references.\n- `launcher.css`: launcher-specific responsive styles.\n- `woodlands.html`: original mini-game with full controls, separate from the full game.
 - `style.css`: responsive mobile/desktop experience.
 - `core.mjs`: dependency-free game rules, deterministic map, pathfinding, skills, player state and quest validation.
 - `app.mjs`: Canvas art renderer, DOM, pointer/keyboard/touch controls and save handling.
@@ -45,4 +45,4 @@ Original JoshRS code is licensed under the MIT licence in [LICENSE](LICENSE). Up
 
 ## Deployment
 
-A static host can serve this project directly (no build step). Keep `index.html`, `style.css`, `core.mjs` and `app.mjs` at the site root. The GitHub Actions workflow executes `node --test` on every push. A production deployment is not considered verified until its build is READY and the public link returns a usable page.
+A static host can serve this portal and Woodlands demo directly (no build step). Keep `index.html`, `woodlands.html`, `launcher.css`, `style.css`, `core.mjs` and `app.mjs` at the site root. The `/play` shortcut redirects to the official full game, not a self-hosted world. See [docs/SELF_HOST.md](docs/SELF_HOST.md) for independent-server release criteria. The GitHub Actions workflow executes `node --test` on every push. A production deployment is not considered verified until its build is READY and the public link returns a usable page.

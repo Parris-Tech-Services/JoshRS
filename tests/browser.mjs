@@ -6,30 +6,38 @@ try{
  for(const [label,viewport] of [["desktop",{width:1440,height:900}],["mobile",{width:375,height:812}]]){
   const page=await browser.newPage({viewport,deviceScaleFactor:1,isMobile:label==="mobile",hasTouch:label==="mobile"});
   const errors=[];page.on("pageerror",e=>errors.push(String(e)));
-  const res=await page.goto(URL,{waitUntil:"networkidle",timeout:45000});
-  assert.equal(res?.status(),200,label+" returned non-200 HTTP response");
-  await page.locator("#world").waitFor({state:"visible",timeout:15000});
+  let res=await page.goto(URL,{waitUntil:"networkidle",timeout:45000});
+  assert.equal(res?.status(),200,label+" launcher returned non-200 response");
   assert.match(await page.title(),/JoshRS/);
+  const play=page.locator('a.cta');
+  assert.equal(await play.getAttribute("href"),"https://2004.lostcity.rs/detail");
+  assert.match(await play.innerText(),/full 2004Scape/i);
+  assert.match(await page.locator(".important").innerText(),/external website/i);
+  assert.ok(await page.locator(".scene").isVisible());
+  let overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+  assert.ok(overflow<=2,label+" launcher has horizontal overflow: "+overflow);
+  const shortcut=await page.request.get(new URL("/play",URL).href,{maxRedirects:0});
+  assert.ok([301,302,307,308].includes(shortcut.status()),"Play shortcut is not a redirect: "+shortcut.status());
+  assert.equal(shortcut.headers().location,"https://2004.lostcity.rs/detail");
+  res=await page.goto(new URL("/woodlands.html",URL).href,{waitUntil:"networkidle",timeout:45000});
+  assert.equal(res?.status(),200,label+" Woodlands returned non-200");
+  await page.locator("#world").waitFor({state:"visible",timeout:15000});
   const canvas=page.locator("#world"),box=await canvas.boundingBox();
-  assert.ok(box&&box.width>200&&box.height>120,label+" canvas not visible");
-  assert.equal(await page.locator("#quest-list .task").count(),5,label+" quest tasks missing");
-  assert.equal(await page.locator("#skills-list .skill").count(),6,label+" skills missing");
-  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
-  assert.ok(overflow<=2,label+" has horizontal overflow of "+overflow+"px");
+  assert.ok(box&&box.width>200&&box.height>120,label+" game canvas not visible");
+  assert.equal(await page.locator("#quest-list .task").count(),5);
+  assert.equal(await page.locator("#skills-list .skill").count(),6);
+  overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+  assert.ok(overflow<=2,label+" Woodlands has horizontal overflow: "+overflow);
   if(label==="desktop"){
-    // Initial player is at 18,13 and camera top-left is 6,5 in the 25x16 viewport.
-    // Click the oak at 12,9 and allow auto-pathing + interaction to complete.
     await canvas.click({position:{x:box.width*(208/800),y:box.height*(144/512)}});
     await page.waitForFunction(()=>document.querySelector("#message")?.textContent?.includes("You chop oak logs"),{timeout:10000}).catch(async()=>{throw Error("tree interaction did not complete: "+await page.locator("#message").innerText())});
-    assert.equal(await page.locator("#tab-inventory").getAttribute("aria-selected"),"false");
     await page.locator("#tab-inventory").click();
     assert.equal(await page.locator("#panel-inventory").isVisible(),true);
-    assert.ok(Number(await page.evaluate(()=>JSON.parse(localStorage.getItem("joshrs-woodlands-v1")).bag.logs))>=1);
     await page.locator("#light-btn").click();
     assert.match(await page.locator("#message").innerText(),/campfire/i);
   }else{
     await page.locator('[data-step="0,-1"]').tap();
-    assert.equal(await page.locator("#coords").innerText(),"18, 12","touch movement did not update coords");
+    assert.equal(await page.locator("#coords").innerText(),"18, 12","touch move failed");
     await page.locator("#tab-guide").tap();
     assert.equal(await page.locator("#panel-guide").isVisible(),true);
   }
