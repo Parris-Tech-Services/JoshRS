@@ -1,4 +1,4 @@
-import {W,H,VIEW_W,VIEW_H,TILE,SKILLS,OBJECTS,TASKS,terrain,objectAt,walkable,makeState,loadState,xpNeeded,levelOf,totalLevel,move,nearestObject,pathTo,completed,lightFire,eat,interact,cook} from "./core.mjs";
+import {W,H,VIEW_W,VIEW_H,TILE,SKILLS,OBJECTS,TASKS,terrain,objectAt,walkable,makeState,loadState,xpNeeded,levelOf,totalLevel,move,nearestObject,pathTo,completed,lightFire,eat,interact,cook,GOODS,SELL_PRICES,MEAL_PRICE,ORDER_REWARD,nearNpc,depositAll,withdrawAll,sellOne,buyMeal,fulfilOrder,isValidSavedState} from "./core.mjs";
 const $=id=>document.getElementById(id);
 const canvas=$("world"),ctx=canvas.getContext("2d");
 const STORAGE_KEY="joshrs-woodlands-v1";
@@ -68,7 +68,7 @@ function draw(){
   if(o.type==="enemy"&&state.defeated.includes(o.id))continue;
   const x=(o.x-cam.x)*TILE,y=(o.y-cam.y)*TILE;if(x<0||y<0||x>=canvas.width||y>=canvas.height)continue;
   if(selected===o.id){ctx.fillStyle="rgba(241,210,116,.28)";ctx.fillRect(x,y,32,32);ctx.strokeStyle="#f9d687";ctx.lineWidth=2;ctx.strokeRect(x+2,y+2,28,28);ctx.lineWidth=1}
-  if(o.type==="tree")drawTree(x,y);else if(o.type==="rock")drawRock(x,y);else if(o.type==="fish")drawFish(x,y);else if(o.type==="npc")drawFigure(x,y,"#b49a66",true);else drawEnemy(x,y);
+  if(o.type==="tree")drawTree(x,y);else if(o.type==="rock")drawRock(x,y);else if(o.type==="fish")drawFish(x,y);else if(o.type==="npc"){drawFigure(x,y,o.id==="banker"?"#688e9c":o.id==="merchant"?"#a77d59":"#b49a66",true);if(o.id!=="ranger"){ctx.fillStyle="#fff1c7";ctx.font="bold 11px system-ui";ctx.fillText(o.id==="banker"?"B":"M",x+12,y+5)}}else drawEnemy(x,y);
  }
  drawFigure((state.x-cam.x)*TILE,(state.y-cam.y)*TILE,"#456faf");
  ctx.strokeStyle="rgba(250,235,180,.8)";ctx.lineWidth=2;ctx.strokeRect((state.x-cam.x)*TILE+2,(state.y-cam.y)*TILE+2,28,28);ctx.lineWidth=1;
@@ -79,11 +79,19 @@ function updateUI(){
  $("quest-reward").textContent=state.questClaimed?"Quest complete! 100 coins + 100 bonus XP awarded.":"Reward: 100 coins + 100 Woodcutting XP";
  $("inventory").innerHTML=Object.keys(names).map(k=>'<div class="item"><div class="item-icon '+k+'">'+icons[k]+'</div><strong>'+names[k]+'</strong><span>'+state.bag[k]+'</span></div>').join("")+'<div class="tools-text">Equipped: Axe · Pickaxe · Fishing net · Tinderbox · Sword</div>';
  $("skills-list").innerHTML=SKILLS.map(k=>{const lvl=levelOf(state.xp[k]),start=xpNeeded(lvl),end=xpNeeded(Math.min(99,lvl+1)),pct=lvl===99?100:Math.max(0,Math.min(100,100*(state.xp[k]-start)/(end-start)));return '<div class="skill"><div><span>'+skillNames[k]+'</span><strong>Lv '+lvl+'</strong></div><div class="progress"><span style="width:'+pct+'%"></span></div><small>'+state.xp[k].toLocaleString()+' XP</small></div>'}).join("");
+ $("town-location").textContent=nearNpc(state,"banker")?"At Banker Fern":nearNpc(state,"merchant")?"At Merchant Mira":"Visit Fern or Mira in Oakvale to use town services.";
+ $("bank-summary").textContent=GOODS.map(k=>names[k]+": "+state.bank[k]).join(" · ");
+ $("order-progress").textContent=state.questClaimed?"Delivered: "+state.ordersFulfilled+" · Next order: 2 logs, 1 ore, 1 cooked fish · Reward: "+ORDER_REWARD+" coins.":"Finish Forest Apprentice to unlock repeatable delivery orders.";
+ for(const btn of document.querySelectorAll("[data-town-service]")){
+  const type=btn.dataset.townService;
+  btn.disabled=type==="bank"? !nearNpc(state,"banker"):!nearNpc(state,"merchant") || (type==="order"&&!state.questClaimed);
+ }
  draw();
 }
 function commit(message){save();updateUI();if(message)notify(message)}
 function doInteract(target){
  const msg=interact(state,target);commit(msg);
+ if(target?.id==="banker"||target?.id==="merchant")document.querySelector('[data-tab="town"]').click();
 }
 function doCook(){commit(cook(state))}
 function doLight(){commit(lightFire(state))}
@@ -122,6 +130,32 @@ $("run-btn").addEventListener("click",()=>{state.run=!state.run;commit(state.run
 document.querySelectorAll("[data-tab]").forEach(btn=>btn.addEventListener("click",()=>{for(const b of document.querySelectorAll("[data-tab]")){const active=b===btn;b.setAttribute("aria-selected",String(active));$("panel-"+b.dataset.tab).hidden=!active}}));
 $("help-btn").addEventListener("click",()=>$("help-dialog").showModal());
 $("reset-btn").addEventListener("click",()=>{if(!window.confirm("Start a new adventure? All locally saved progress will be erased."))return;stopWalk();state=makeState();selected=null;commit("A new adventure begins in Oakvale.")});
+// All trading, storage and orders are validated by the engine (not only button state).
+$("deposit-btn").addEventListener("click",()=>commit(depositAll(state)));
+$("withdraw-btn").addEventListener("click",()=>commit(withdrawAll(state)));
+document.querySelectorAll("[data-sell]").forEach(btn=>btn.addEventListener("click",()=>commit(sellOne(state,btn.dataset.sell))));
+$("buy-meal-btn").addEventListener("click",()=>commit(buyMeal(state)));
+$("order-btn").addEventListener("click",()=>commit(fulfilOrder(state)));
+// Portable, explicit offline save transfers. No server or third-party credentials.
+$("export-save-btn").addEventListener("click",()=>{
+ const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);const a=document.createElement("a");
+ a.href=url;a.download="joshrs-woodlands-save.json";document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ notify("Save downloaded. Keep the file somewhere safe; this device still saves automatically.");
+});
+$("import-save-btn").addEventListener("click",()=>$("import-save-file").click());
+$("import-save-file").addEventListener("change",async e=>{
+ const file=e.currentTarget.files?.[0];e.currentTarget.value="";
+ if(!file)return;
+ if(file.size>1048576){notify("That save file is too large (maximum 1 MB).");return}
+ try{
+  const raw=await file.text();
+  if(!isValidSavedState(raw)){notify("Invalid save file. Your current game has not been changed.");return}
+  if(!window.confirm("Replace your current Woodlands progress with this save file?"))return;
+  stopWalk();selected=null;state=loadState(raw);commit("Imported your saved adventure successfully.");
+ }catch{notify("Unable to read this save file. Your current game has not been changed.")}
+});
 walkingTimer=setInterval(()=>{if(steps.length)finishWalk()},170);
 window.addEventListener("pagehide",save);
 commit("Welcome to Oakvale. Tap a tree, rock or fishing spot to begin.");

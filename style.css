@@ -4,3 +4,15 @@
 @media(max-width:680px){.topbar{padding:12px 14px;flex-wrap:wrap}.brand{flex:1}.brand strong{font-size:19px}.brand span{font-size:10px}.top-actions{gap:0}.top-actions .quiet{font-size:12px;padding:7px}.save-state{display:none}.intro{padding:24px 15px 18px}.intro-stat{display:none}.intro h1{font-size:32px}.intro p:not(.eyebrow){font-size:13px}.game-layout{padding:0 9px;gap:12px}.play-head{padding:0 11px;font-size:12px}.play-head>div:last-child{font-size:10px}.play-head .subdued{display:none}.canvas-label{font-size:9px;padding:4px 6px}.action-bar{gap:7px;padding:9px}.action-bar button{font-size:12px;padding:10px 7px;min-height:46px;flex:1 1 45%}.keycap{display:none}.touch-layout{padding:12px 12px 4px}.touch-help{font-size:11px}.tab-panel{min-height:220px}.sources{padding:38px 15px 50px}.source-cards{grid-template-columns:1fr}.source-cards article{padding:17px}.sources h2{font-size:23px}}
 @media(max-width:375px){.brand span{display:none}.touch-help{max-width:134px}.dpad{grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px)}.dpad button{min-width:48px;min-height:48px}.play-head>div:last-child{display:none}}
 @media(prefers-reduced-motion:reduce){button{transition:none}}
+
+/* Original-game town economy and portable-save controls */
+.town-service{border-top:1px solid var(--line);padding:18px 0}
+.town-service h3,.tab-panel h3{font:600 19px Georgia,serif;margin:0 0 7px}
+.town-service p{color:var(--muted);line-height:1.55}
+.bank-summary{font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.town-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.town-actions button{font-size:12px;padding:12px 8px;min-height:44px;white-space:normal}
+button:disabled{opacity:.52;cursor:not-allowed;background:#26352e;border-color:#36483e}
+button:disabled:hover{background:#26352e;border-color:#36483e}
+#order-btn{width:100%;min-height:44px}
+@media(max-width:375px){.tabs{gap:0}.tabs button{font-size:11px;padding:10px 2px}}
