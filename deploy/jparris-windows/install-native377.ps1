@@ -22,12 +22,18 @@ if (@(Get-NetTCPConnection -State Listen -LocalPort $ports -ErrorAction Silently
 $sourceRoot=Join-Path $root 'content-factory/generated/native377'
 $manifest=Get-Content -LiteralPath (Join-Path $sourceRoot 'manifest.json') -Raw | ConvertFrom-Json
 if ($manifest.schema -ne 1 -or $manifest.includes_player_save_changes -ne $false -or
-    @($manifest.files).Count -ne 2 -or @($manifest.npc_names).Count -ne 1) {
+    @($manifest.files).Count -ne 2 -or @($manifest.npc_names).Count -lt 1 -or @($manifest.npc_names).Count -gt 20) {
     throw 'Unexpected content manifest; no changes made.'
 }
-$npc=[string]$manifest.npc_names[0]
-if ($npc -cnotmatch '^joshrs_[a-z0-9_]{1,60}$') { throw 'Invalid original NPC name.' }
+$npcNames=@($manifest.npc_names | ForEach-Object { [string]$_ })
+if(@($npcNames | Select-Object -Unique).Count -ne $npcNames.Count) { throw 'Duplicate NPC key.' }
+foreach($npc in $npcNames) {
+    if ($npc -cnotmatch '^joshrs_[a-z0-9_]{1,60}$') { throw 'Invalid original NPC name.' }
+}
 $planned=@()
+$previousHashes=@{}
+$previousHashes.Add('scripts/areas/joshrs_custom/configs/joshrs_original.npc', '959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556')
+$previousHashes.Add('scripts/areas/joshrs_custom/scripts/joshrs_original.rs2', '3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3')
 foreach ($entry in @($manifest.files)) {
     $rel=[string]$entry.path
     if ($rel -cnotmatch '^scripts/areas/joshrs_custom/(configs|scripts)/joshrs_[a-z0-9_]+\.(rs2|npc)$') {
@@ -40,7 +46,13 @@ foreach ($entry in @($manifest.files)) {
     if (-not $sha.Equals([string]$entry.sha256,[StringComparison]::OrdinalIgnoreCase)) { throw "Bad checksum: $rel" }
     if (Test-Path -LiteralPath $destination) {
         $present=(Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash
-        if (-not $present.Equals($sha,[StringComparison]::OrdinalIgnoreCase)) { throw "Existing custom file differs: $destination" }
+        $isApprovedPrevious=$false
+        if ($previousHashes.ContainsKey($rel)) {
+            $isApprovedPrevious=$present.Equals($previousHashes[$rel],[StringComparison]::OrdinalIgnoreCase)
+        }
+        if (-not $present.Equals($sha,[StringComparison]::OrdinalIgnoreCase) -and -not $isApprovedPrevious) {
+            throw "Existing custom file differs from any approved JoshRS version: $destination"
+        }
     }
     $planned+=@{Source=$source;Destination=$destination}
 }
@@ -51,7 +63,7 @@ foreach($path in @($packFile,$shared,$envFile)) {
     if(-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Required active game file missing: $path" }
 }
 $originalPack=[IO.File]::ReadAllText($packFile)
-$maxId=-1; $seenIds=@{}; $seenNames=@{}; $presentNpc=$false
+$maxId=-1; $seenIds=@{}; $seenNames=@{}
 foreach($row in ($originalPack -split '\r?\n')) {
     $line=$row.Trim()
     if(-not $line -or $line.StartsWith('//')) { continue }
@@ -60,9 +72,10 @@ foreach($row in ($originalPack -split '\r?\n')) {
     if($seenIds.ContainsKey($id) -or $seenNames.ContainsKey($name)) { throw 'Duplicate NPC registry entry.' }
     $seenIds[$id]=$true; $seenNames[$name]=$true
     if($id -gt $maxId) { $maxId=$id }
-    if($name -eq $npc) { $presentNpc=$true }
+    # Existing IDs and all existing NPC names are preserved.
 }
-if(-not $presentNpc -and $maxId -ge 65534) { throw 'No spare NPC ID.' }
+$missingNpcs=@($npcNames | Where-Object { -not $seenNames.ContainsKey($_) } | Sort-Object)
+if(($maxId + $missingNpcs.Count) -ge 65535) { throw 'Insufficient spare NPC IDs.' }
 $originalSource=[IO.File]::ReadAllText($shared)
 $originalEnv=[IO.File]::ReadAllText($envFile)
 $stock='if (Environment.BUILD_VERIFY && validate && !validate(client.dat, server.dat)) {'
@@ -84,8 +97,8 @@ if($originalEnv -notmatch '(?m)^[ \t]*JOSHRS_CUSTOM_NPCS[ \t]*=') {
     $newEnv=$originalEnv.TrimEnd([char[]]@([char]13,[char]10))+[Environment]::NewLine+'JOSHRS_CUSTOM_NPCS=true'+[Environment]::NewLine
 }
 Write-Host "Private game content: $contentDir"
-Write-Host "Original NPC: $npc"
-Write-Host $(if($presentNpc){'NPC ID already registered'}else{"New NPC ID: $($maxId+1)"})
+Write-Host "Approved original NPCs: $($npcNames -join ', ')"
+Write-Host "New NPC IDs allocated: $($missingNpcs.Count)"
 if(-not $Apply) { Write-Host 'CHECK ONLY; no changes made. Run JoshRS-Install-377-Content.cmd to install.'; exit 0 }
 if(-not (Get-Command npm.cmd -ErrorAction SilentlyContinue)) { throw 'npm.cmd is missing. Run JoshRS.cmd setup first.' }
 $backup=Join-Path $runtime ('native377-backups/install-'+(Get-Date -Format 'yyyyMMdd-HHmmss-fffffff'))
@@ -105,14 +118,20 @@ foreach($item in $items) {
 try {
     foreach($file in $planned) {
         New-Item -ItemType Directory -Path (Split-Path -Parent $file.Destination) -Force | Out-Null
-        if(-not (Test-Path -LiteralPath $file.Destination)) {
-            Copy-Item -LiteralPath $file.Source -Destination $file.Destination
+        $needsCopy=$true
+        if(Test-Path -LiteralPath $file.Destination) {
+            $existingHash=(Get-FileHash -LiteralPath $file.Destination -Algorithm SHA256).Hash
+            $expectedHash=(Get-FileHash -LiteralPath $file.Source -Algorithm SHA256).Hash
+            $needsCopy=-not $existingHash.Equals($expectedHash,[StringComparison]::OrdinalIgnoreCase)
         }
+        if($needsCopy) { Copy-Item -LiteralPath $file.Source -Destination $file.Destination -Force }
     }
-    if(-not $presentNpc) {
+    if($missingNpcs.Count -gt 0) {
         $nl=[Environment]::NewLine
         $sep=if($originalPack.EndsWith([string][char]10)){''}else{$nl}
-        [IO.File]::AppendAllText($packFile,$sep+[string]($maxId+1)+'='+$npc+$nl)
+        $rows=@()
+        foreach($npc in $missingNpcs) { $maxId++; $rows+=([string]$maxId+'='+$npc) }
+        [IO.File]::AppendAllText($packFile,$sep+($rows -join $nl)+$nl)
     }
     if($newSource -ne $originalSource) { [IO.File]::WriteAllText($shared,$newSource) }
     if($newEnv -ne $originalEnv) { [IO.File]::WriteAllText($envFile,$newEnv) }
@@ -131,7 +150,7 @@ try {
         }
     }
     Write-Host "377 content compiled. Safe local backup: $backup"
-    Write-Host 'Start JoshRS and test the new guide with the admin NPC spawn command.'
+    Write-Host 'Restart JoshRS; test all four NPCs using their named administrative spawn commands.'
 } catch {
     $reason=$_.Exception.Message
     foreach($item in $items) {
