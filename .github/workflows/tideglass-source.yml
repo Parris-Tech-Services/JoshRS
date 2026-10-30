@@ -21,7 +21,11 @@ jobs:
         run: node --test expansions/archaeology-island/tests/gameplay.test.mjs
       - name: Generate real 64x64 JM2 terrain source and validate count
         run: |
-          node expansions/archaeology-island/tools/build-jm2.mjs 90 90 m90_90.jm2
+          printf '0=cliff\n5=water\n9=road\n20=sandfloor\n28=grass\n' > /tmp/tideglass-flo.pack
+          printf '0=m40_55\n1=l40_55\n' > /tmp/tideglass-map.pack
+          node expansions/archaeology-island/tools/build-jm2.mjs 90 90 m90_90.jm2 /tmp/tideglass-flo.pack /tmp/tideglass-map.pack
+          grep -q 'u5' m90_90.jm2
+          grep -q 'u28' m90_90.jm2
           test "$(grep -c '^0 [0-9].*: h0 u[0-9] f[0-9]
         run: |
           node --input-type=module -e "
