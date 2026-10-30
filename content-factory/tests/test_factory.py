@@ -90,5 +90,18 @@ class FactoryTests(unittest.TestCase):
             tasks = factory.prepare_agent_queue(dest)['tasks']
             self.assertEqual([t['candidate_id'] for t in tasks], ['y'])
 
+    def test_agent_queue_rotates_without_repeating_first_page(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            dest = Path(tmp)
+            factory.put_json(dest/'packs/rotation.json', {'candidates': [
+                {'id':str(i),'status':'agent_review_required','source':'lostcity-content-377',
+                 'repo':'owner/approved','path':f'scripts/areas/area{i}/script.rs2',
+                 'url':'https://github.com/owner/approved'}
+                for i in range(5)]})
+            pages = [factory.prepare_agent_queue(dest, max_tasks=2) for _ in range(3)]
+            self.assertEqual([[t['candidate_id'] for t in p['tasks']] for p in pages],
+                             [['0','1'],['2','3'],['4','0']])
+            self.assertEqual(pages[-1]['next_rotation_offset'], 1)
+
 if __name__ == '__main__':
     unittest.main()

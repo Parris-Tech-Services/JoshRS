@@ -200,8 +200,15 @@ def prepare_agent_queue(dest: Path, max_tasks: int = 100) -> dict:
     records.sort(key=lambda row: (rank.get(row['status'], 9),
                                   0 if row['source'] == 'lostcity-content-377' else 1,
                                   row['repo'], row['path']))
+    # Persist a rotating cursor so a scheduled job doesn't rediscover the same
+    # first 100 work orders forever. New source paths enter in sorted order.
+    rotation_path = dest / "agent-queue-state.json"
+    previous = read_json(rotation_path, {"cursor": 0})
+    cursor = int(previous.get("cursor", 0)) % len(records) if records else 0
+    selection = [records[(cursor + i) % len(records)] for i in range(min(max_tasks, len(records)))] if records else []
+    next_cursor = (cursor + len(selection)) % len(records) if records else 0
     tasks = []
-    for row in records[:max_tasks]:
+    for row in selection:
         blocked = row['status'] in ('rights_review_required', 'blocked_reference_only')
         tasks.append({'work_id': '377-' + row['id'], 'candidate_id': row['id'],
                       'source': row['repo'], 'path': row['path'], 'reference_url': row['url'],
@@ -217,7 +224,11 @@ def prepare_agent_queue(dest: Path, max_tasks: int = 100) -> dict:
     queue = {'schema': 1, 'target': 'JoshRS local 377-wip',
              'note': 'Work orders only. Agents must implement and test; zero third-party assets copied.',
              'tasks': tasks}
-    put_json(dest / 'agent-work-orders.json', queue)
+    queue["candidate_pool"] = len(records)
+    queue["rotation_offset"] = cursor
+    queue["next_rotation_offset"] = next_cursor
+    put_json(dest / "agent-work-orders.json", queue)
+    put_json(rotation_path, {"schema": 1, "cursor": next_cursor, "pool_size": len(records)})
     return queue
 
 
