@@ -15,8 +15,8 @@ try {
     Assert ([IO.File]::ReadAllText($changed.BackupPath) -eq $original) 'original environment bytes should be preserved'
     $fixed=[IO.File]::ReadAllText($file)
     Assert ($fixed -match '(?m)^WEB_PORT=8888$') 'private Windows copy should use port 8888'
-    Assert ($fixed -match '(?m)^DB_BACKEND=sqlite$') 'database configuration must be preserved'
-    Assert ($fixed -match '(?m)^WEB_MANAGEMENT_PORT=8898$') 'management configuration must be preserved'
+    Assert ($fixed -match '(?m)^DB_BACKEND=sqlite\r?$') 'database configuration must be preserved'
+    Assert ($fixed -match '(?m)^WEB_MANAGEMENT_PORT=8898\r?$') 'management configuration must be preserved'
     $repeat=Repair-JoshRSLocalWebPort -EnvFile $file -GamePort 52402
     Assert (-not $repeat.Updated) 'repeated recovery must be idempotent'
     Assert ([IO.File]::ReadAllText($file) -eq $fixed) 'idempotence must not rewrite original'
