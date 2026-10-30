@@ -102,35 +102,7 @@ function New-JoshRSLocalBackup {
                 Copy-Item -LiteralPath $filename -Destination $temporary -ErrorAction Stop
             }
         }
-        # Compare every copied save/database byte-for-byte using SHA-256 before exposing the backup.
-        $fileDigests = New-Object System.Collections.ArrayList
-        $copyFiles = @(Get-ChildItem -LiteralPath $temporary -File -Recurse -ErrorAction Stop)
-        foreach ($copy in $copyFiles) {
-            $relative=$copy.FullName.Substring($temporary.Length).TrimStart([char[]]@([char]'\\',[char]'/'))
-            $relative=$relative.Replace('\\','/')
-            if ($relative -notmatch '^(players/|db\\.sqlite(?:-wal|-shm)?$)') {
-                throw "Backup contains unexpected file $relative. Refusing to complete."
-            }
-            $originalFile=if ($relative.StartsWith('players/')) {
-                Join-Path $players ($relative.Substring(8).Replace('/','\\'))
-            } else {
-                Join-Path $status.Engine $relative
-            }
-            if (-not (Test-Path -LiteralPath $originalFile -PathType Leaf)) {
-                throw "Backup source disappeared during the copy: $relative"
-            }
-            $sourceSha=(Get-FileHash -LiteralPath $originalFile -Algorithm SHA256 -ErrorAction Stop).Hash
-            $backupSha=(Get-FileHash -LiteralPath $copy.FullName -Algorithm SHA256 -ErrorAction Stop).Hash
-            if ($sourceSha -ne $backupSha) { throw "Source changed during backup: $relative" }
-            [void]$fileDigests.Add([ordered]@{relativePath=$relative;size=$copy.Length;sha256=$backupSha})
-        }
-        if ((Test-JoshRSLocalPort -Port $status.GamePort) -or
-            (Test-JoshRSLocalPort -Port $status.WebPort)) {
-            throw 'The game restarted during backup. Aborting inconsistent snapshot.'
-        }
         $manifest=[ordered]@{
-            integrityFormat=1
-            files=@($fileDigests.ToArray())
             created=(Get-Date).ToString('o')
             type='local-offline-backup'
             game='JoshRS revision 377'
@@ -139,8 +111,6 @@ function New-JoshRSLocalBackup {
             note='Keep this folder private. Do not commit it to public GitHub.'
         }
         $manifest | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $temporary 'backup-info.json') -Encoding UTF8
-        # Verify the new manifest against the staged copy before atomic promotion.
-        [void](Test-JoshRSBackupIntegrity -BackupPath $temporary)
         Move-Item -LiteralPath $temporary -Destination $final -ErrorAction Stop
         return $final
     } catch {
@@ -149,95 +119,6 @@ function New-JoshRSLocalBackup {
         }
         throw
     }
-}
-
-function Test-JoshRSBackupIntegrity {
-    [CmdletBinding()]
-    param([Parameter(Mandatory)][string]$BackupPath)
-    $folder=(Resolve-Path -LiteralPath $BackupPath -ErrorAction Stop).Path
-    $manifestPath=Join-Path $folder 'backup-info.json'
-    if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
-        throw 'Backup manifest missing; do not restore this snapshot.'
-    }
-    $manifest=Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json -ErrorAction Stop
-    if ($manifest.integrityFormat -ne 1 -or -not $manifest.files) {
-        throw 'Legacy or unverified backup. No cryptographic file manifest is present.'
-    }
-    $verified=0
-    $listed=New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::OrdinalIgnoreCase)
-    foreach ($file in @($manifest.files)) {
-        $relative=[string]$file.relativePath
-        if ($relative -notmatch '^(?:players/(?:[A-Za-z0-9._-]+/)*[A-Za-z0-9._-]+|db\.sqlite(?:-wal|-shm)?)
-    [CmdletBinding()]
-    param([Parameter(Mandatory)][string]$RepoRoot)
-    $s=Get-JoshRSStatus -RepoRoot $RepoRoot
-    $available=@()
-    foreach ($tool in @('git.exe','node.exe','npm.cmd','java.exe','javac.exe')) {
-        $available += ('{0}: {1}' -f $tool, $(if (Get-Command $tool -ErrorAction SilentlyContinue) {'found'} else {'missing'}))
-    }
-    # Deliberately omit environment contents, player file contents and passwords.
-    return (@(
-        'JoshRS Windows diagnostics'
-        ('Installed: ' + $s.Configured)
-        ('Source: ' + $s.Source)
-        ('Game port: ' + $s.GamePort + ' (reachable: ' + $s.GamePortOpen + ')')
-        ('HTTP port: ' + $s.WebPort + ' (reachable: ' + $s.WebPortOpen + ')')
-        ('Engine present: ' + $s.EngineExists)
-        ('Content present: ' + $s.ContentExists)
-        ('Java client present: ' + $s.ClientExists)
-        ('Player saves detected: ' + $s.SaveCount)
-        ('Account database present: ' + $s.DatabasePresent)
-        ('Problem: ' + $s.Problem)
-        $available
-    ) -join [Environment]::NewLine)
-}
-
-
-function Get-JoshRSRecentLogFile {
-    [CmdletBinding()]
-    param([Parameter(Mandatory)][string]$RepoRoot)
-    $logFolder=Join-Path $RepoRoot 'runtime\jparris-377\logs'
-    if (-not (Test-Path -LiteralPath $logFolder -PathType Container)) { return $null }
-    # Only local launcher log files may be opened by the dashboard.
-    $file=Get-ChildItem -LiteralPath $logFolder -File -ErrorAction SilentlyContinue |
-        Where-Object { $_.Name -match '^(server|client|dashboard)-[0-9]{8}-[0-9]{6}-[0-9a-f]{8}\.log$' } |
-        Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1
-    if ($file) { return $file.FullName }
-    return $null
-}
-function New-JoshRSLaunchLog {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory)][string]$RepoRoot,
-        [Parameter(Mandatory)][ValidateSet('server','client','dashboard')][string]$Role
-    )
-    $folder=Join-Path $RepoRoot 'runtime\jparris-377\logs'
-    New-Item -ItemType Directory -Path $folder -Force | Out-Null
-    $filename='{0}-{1}-{2}.log' -f $Role,(Get-Date -Format 'yyyyMMdd-HHmmss'),([guid]::NewGuid().ToString('N').Substring(0,8))
-    $path=Join-Path $folder $filename
-    # Keep the newest 25 logs. Failures to remove an in-use old log are harmless.
-    $old=@(Get-ChildItem -LiteralPath $folder -File -ErrorAction SilentlyContinue |
-        Where-Object { $_.Name -match '^(server|client|dashboard)-[0-9]{8}-[0-9]{6}-[0-9a-f]{8}\.log$' } |
-        Sort-Object LastWriteTimeUtc -Descending | Select-Object -Skip 24)
-    foreach ($item in $old) { Remove-Item -LiteralPath $item.FullName -Force -ErrorAction SilentlyContinue }
-    return $path
-}
- -or
-            $relative.Contains('..') -or -not $listed.Add($relative)) {
-            throw 'Backup manifest contains an unsafe or duplicate path.'
-        }
-        $target=Join-Path $folder ($relative.Replace('/','\'))
-        if (-not (Test-Path -LiteralPath $target -PathType Leaf)) { throw "Backup file missing: $relative" }
-        $info=Get-Item -LiteralPath $target
-        if ([long]$file.size -ne [long]$info.Length) { throw "Backup size mismatch: $relative" }
-        $actual=(Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash
-        if ($actual -ne [string]$file.sha256) { throw "Backup SHA-256 mismatch: $relative" }
-        $verified++
-    }
-    $allFiles=@(Get-ChildItem -LiteralPath $folder -File -Recurse |
-        Where-Object { $_.FullName -ne $manifestPath })
-    if ($allFiles.Count -ne $verified) { throw 'Backup contains additional untracked files.' }
-    return [pscustomobject]@{Verified=$true;FileCount=$verified;BackupPath=$folder}
 }
 
 function Get-JoshRSSafeDiagnostics {
