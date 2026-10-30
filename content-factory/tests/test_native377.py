@@ -50,24 +50,32 @@ class Native377Tests(unittest.TestCase):
             (out/'unknown.dat').write_bytes(b'not allowed')
             with self.assertRaises(ValueError): native377.build_native(intake,out)
 
-    def test_seven_real_trade_interactions_have_payment_and_capacity_guards(self):
+    def test_duplicate_npc_merchants_are_not_generated_or_deployed(self):
         with tempfile.TemporaryDirectory() as tmp:
             target=Path(tmp)/'overlay'
             manifest=native377.build_native(HERE_INTAKE, target)
-            self.assertEqual(set(manifest['gameplay_mechanics']),
-                             {'joshrs_timber_buyer','joshrs_ore_buyer','joshrs_trail_provisioner','joshrs_law_rune_vendor','joshrs_nature_rune_vendor','joshrs_crafting_supplier','joshrs_tool_supplier'})
-            self.assertEqual(len(manifest['npc_names']),8)
+            self.assertEqual(manifest['npc_names'], ['joshrs_woodland_guide'])
+            self.assertEqual(manifest['gameplay_mechanics'], [])
+            self.assertTrue(manifest['feature_gap_evidence_required'])
+            self.assertEqual(set(manifest['retired_unrequested_merchant_keys']),
+                             native377.RETIRED_UNREQUESTED_MERCHANTS)
             script=(target/'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2').read_text()
-            for item,needed,output,count in [('logs',3,'coins',12),('copper_ore',2,'coins',8),('coins',4,'cooked_meat',1),('coins',35,'lawrune',1),('coins',20,'naturerune',1),('coins',25,'amulet_mould',1),('coins',5,'chisel',1)]:
-                self.assertIn(f'if (inv_total(inv, {item}) < {needed})',script)
-                self.assertIn(f'inv_del(inv, {item}, {needed});',script)
-                self.assertIn(f'inv_add(inv, {output}, {count});',script)
-            self.assertIn('if (inv_freespace(inv) < 1)',script)
-            for key in manifest['npc_names']:
-                self.assertIn('[opnpc1,'+key+']',script)
-                self.assertIn('[debugproc,joshrs_spawn_'+key+']',script)
-            self.assertEqual(script.count('inv_del(inv,'),7)
-            self.assertEqual(script.count('if ($choice ! 1)'),7)
-            self.assertNotIn('!=',script)
+            config=(target/'scripts/areas/joshrs_custom/configs/joshrs_original.npc').read_text()
+            self.assertIn('[opnpc1,joshrs_woodland_guide]',script)
+            for name in native377.RETIRED_UNREQUESTED_MERCHANTS:
+                self.assertNotIn(name,script)
+                self.assertNotIn(name,config)
+            self.assertNotIn('inv_add(inv,',script)
+            self.assertNotIn('inv_del(inv,',script)
+
+    def test_new_npc_requires_verified_missing_feature_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            inp=Path(tmp)/'intake'
+            inp.mkdir()
+            (inp/'new.json').write_text(json.dumps({'schema':1,'entries':[
+                {'kind':'npc','key':'joshrs_another_supplier','name':'Supplier',
+                 'description':'One more vendor.', 'origin':'original_user_authored'}]}))
+            with self.assertRaisesRegex(ValueError, 'feature-gap'):
+                native377.build_native(inp,Path(tmp)/'out')
 
 if __name__=='__main__': unittest.main()
