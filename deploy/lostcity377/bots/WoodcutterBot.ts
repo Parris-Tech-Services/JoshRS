@@ -52,7 +52,7 @@ export function spawnWoodcutterBot(world: WorldRuntime): void {
         return;
     }
 
-    const player = PlayerLoading.load(USERNAME, Packet.alloc(0), null);
+    const player = PlayerLoading.load(USERNAME, new Packet(new Uint8Array(0)), null);
     player.x = START.x;
     player.z = START.z;
     player.level = START.level;
