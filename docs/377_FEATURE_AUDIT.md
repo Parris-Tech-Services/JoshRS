@@ -16,28 +16,19 @@ The factory uses exact revision and Git blob identities to classify candidate pa
 
 The live runner writes `content-factory/generated/rights-and-compatibility.json`, the rolling `agent-work-orders.json` and public-source manifests. They are **not** proof of completed feature ports. Third-party content remains untrusted.
 
-## Implemented original gameplay source
+## Existing features checked before implementing new ones
 
-The native generator now includes eight original JoshRS NPCs (seven server-authoritative inventory trades), with fixed code-reviewed recipes rather than untrusted scripts:
+The exact pinned Content SHA is `44eab09081ef0f6c5f3eaabd1897a588ad7d9e50`. Its `pack/obj.pack` already defines `lawrune`, `naturerune`, `amulet_mould` and `chisel`. Its `scripts/skill_crafting/scripts/jewellery/jewellery.rs2` already implements amulet-crafting interaction handlers. Latest upstream branch search also shows shops, monster drops and existing equipment mechanics, but latest-branch source is not automatically part of a pinned local installation.
 
-| NPC | Interaction | Rules |
-| --- | --- | --- |
-| Woodland Guide | Talk-to and original welcome dialogue | No item rewards |
-| Timber Buyer | Sells three ordinary logs | Receive twelve coins |
-| Ore Buyer | Sells two copper ores | Receive eight coins |
-| Trail Provisioner | Purchases one cooked meat | Pay four coins; requires free inventory slot |
-| Law Rune Vendor | Purchases one law rune | Pay 35 coins; requires free inventory slot |
-| Nature Rune Vendor | Purchases one nature rune | Pay 20 coins; requires free inventory slot |
-| Crafting Supplier | Purchases one amulet mould | Pay 25 coins; requires free inventory slot |
-| Tool Supplier | Purchases one chisel | Pay five coins; requires free inventory slot |
+**Correction, 31 October 2026:** Seven unrequested JoshRS trade NPCs were speculative rather than proven missing functionality. The game may already provide the same items through its native shops, drops and crafting. They have been removed from the generated native gameplay addon; only the original optional Woodland Guide remains. The initial barter drafts are not playable enhancements. A gated migration removes only those explicitly named temporary JoshRS NPC registry entries and backs up the original registry. No existing vanilla items, shops or saves are removed.
 
-These trades refer only to existing pinned 377 item identifiers. The generated files are native text-only `.npc` / `.rs2` source, not copyrighted cache data or client assets. The trading NPCs are manually spawnable for private game testing, not persistent map additions. User account/save changes are explicitly excluded.
+`content-factory/gap_audit.py` must check existing game definitions and mechanics against the pinned content before any new NPC is accepted. A new gameplay feature needs evidence of a *specific broken or absent interaction*, not simply an item identifier, file discovered on GitHub or compiler success. Source confirmation and in-game user-world verification are reported separately.
 
 ## What counts as verified
 
 - **Native source generated**: Python input schema and hash tests passed, source files available in repository.
 - **Compiler verified**: GitHub Actions `Verify native 377 content pack` cloned exact pins and produced nonempty server `script.dat` / `script.idx`, with scoped NPC checksum handling and other `BUILD_VERIFY` gates preserved.
-- **Gameplay verified**: Only when JParris Desktop starts the user's private runtime, the NPCs appear correctly, all seven trade paths work, the inventory stays consistent, and Elrothiro can log out and resume safely.
+- **Gameplay verified**: Only when JParris Desktop starts the user's private runtime, the NPCs appear correctly, the guide interaction works, the inventory stays consistent, and Elrothiro can log out and resume safely.
 
 The second stage does not imply the third. Check the current Actions result before claiming the second stage. Elrothiro's local world and player saves are not accessible on the GitHub-hosted runner.
 
