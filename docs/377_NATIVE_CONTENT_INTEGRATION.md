@@ -1,12 +1,14 @@
 # Native JoshRS 377 original-content integration
 
-## Actual implementation
+## Actual implementation and rollback of duplicate suppliers
 
-The content factory now produces eight original NPCs: the **Woodland Guide**, **Timber Buyer** (three logs for twelve coins), **Ore Buyer** (two copper ores for eight coins), **Trail Provisioner** (cooked meat for four coins), and four suppliers offering **law runes, nature runes, amulet moulds and chisels** for coins. Goods require sufficient inventory room. Each has a native revision-377 NPC definition, Talk-to RuneScript interaction and administrative spawn command. Unlike the research catalogue, these are native files under `content-factory/generated/native377/scripts/` that the pinned `LostCityRS/Engine-TS` compiler can pack.
+**Correction (31 October 2026):** The earlier eight-NPC pack included seven speculative merchants, including rune, amulet mould and tool sellers. Those were never established as missing features. They are **retired**. The current native overlay contains only the optional original Woodland Guide dialogue and temporary admin spawn. It does not duplicate base-game inventory trades, crafting or shops.
 
-The automated runner generates original overlay source every day and maintains a per-candidate licence/rights evidence ledger. The separate `Verify native 377 content pack` workflow checks the hashes, tests safety guards, clones the **exact pinned engine/content commits** into an ephemeral GitHub runner, registers unused NPC IDs, applies only a scoped intentional NPC-cache checksum exception, and compiles with `BUILD_VERIFY=true` and `BUILD_VERIFY_PACK=true`. No game cache assets or saves are committed to the repository.
+The pinned 377 object registry already includes law runes, nature runes, amulet moulds and chisels, and the jewellery scripts already include amulet-crafting handlers. The actual owner's world may have other existing custom content we cannot inspect via GitHub.
 
-**These tests do not prove a successful login or live NPC interaction on JParris Desktop.** The custom world and Elrothiro's saves are only available locally. The generated Trial Token is not yet a native item, and modern RuneScape updates are not automatically compatible with the old client.
+The `Verify native 377 content pack` workflow now checks the **pinned source for existing functionality** before compiling, runs Python safety tests, uses a clean temporary checkout, builds with narrow checksum exceptions and boots a disposable server for TCP/web listener testing. This is not a player login or in-game playtest. No player saves or game caches are committed.
+
+Previous JoshRS addon versions can be retired by the installer only when the old generated source has one of the approved exact hashes. The seven known `joshrs_` merchant registry lines may then be backed up and removed; all unrelated NPC IDs, player saves and custom script edits are left untouched. Unsupported customisations cause a fail-closed error.
 
 ## One-click installer (Windows)
 
