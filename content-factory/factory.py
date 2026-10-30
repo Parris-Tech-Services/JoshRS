@@ -192,6 +192,9 @@ def prepare_agent_queue(dest: Path, max_tasks: int = 100) -> dict:
     for path in sorted((dest / 'packs').glob('*.json')):
         pack = read_json(path, {'candidates': []})
         records.extend(pack.get('candidates', []))
+    # Development/debug/cheat code is inventoried, but never promoted as player-content work.
+    avoid = {'_test', '_unpack', 'test', 'tests', 'debug', 'cheats'}
+    records = [r for r in records if not (set(Path(r['path']).parts) & avoid)]
     rank = {'agent_review_required': 0, 'manual_port_required': 1,
             'rights_review_required': 2, 'blocked_reference_only': 3}
     records.sort(key=lambda row: (rank.get(row['status'], 9),
