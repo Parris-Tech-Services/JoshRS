@@ -2832,6 +2832,29 @@
       "outstanding_action": "Inspect source and all dependencies; separately verify original-game-content rights, then port and compile 377."
     },
     {
+      "review_id": "474afcb6bab1c92dd75b91c9",
+      "candidate_id": "befc54c89791810636ac",
+      "source": "lostcity-content-274",
+      "repo": "LostCityRS/Content",
+      "path": "scripts/tutorial/scripts/tut_doors_and_gates.rs2",
+      "blob_sha": "48c4201f1d4070e2b7bbe7b487e0bfa454dde9af",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/tutorial/scripts/tut_doors_and_gates.rs2",
+      "classification": "already_in_pinned_source",
+      "decision": "already_present_no_port_required",
+      "repository_software_license": "MIT",
+      "repository_license_evidence": "https://github.com/LostCityRS/Content/blob/377-wip/LICENSE",
+      "license_scope": "software_only_not_proof_of_game_data_or_asset_permission",
+      "source_code_reviewed_individually": false,
+      "game_content_rights_approved": false,
+      "external_assets_approved": false,
+      "compatible_with_pinned_377": true,
+      "native_377_compiled_as_new_feature": false,
+      "npc_or_player_interaction_tested": false,
+      "elrothiro_save_tested": false,
+      "outstanding_action": "No import: already included in pinned source; test locally before claiming functionality."
+    },
+    {
       "review_id": "477f415bfa5a232801a94db8",
       "candidate_id": "469e26ad7e600cadcc46",
       "source": "lostcity-content-274",
@@ -4578,29 +4601,6 @@
       "npc_or_player_interaction_tested": false,
       "elrothiro_save_tested": false,
       "outstanding_action": "Block until code/config, game dialogue and referenced assets have separate provenance checks."
-    },
-    {
-      "review_id": "57248d3eb3636b23866ce572",
-      "candidate_id": "cf85c0094e907c0306a5",
-      "source": "lostcity-content-274",
-      "repo": "LostCityRS/Content",
-      "path": "scripts/player/scripts/consumption/effects/scripts/anti_fire.rs2",
-      "blob_sha": "6318cd73c05a1928a9e7593df691d884db5825cd",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/player/scripts/consumption/effects/scripts/anti_fire.rs2",
-      "classification": "already_in_pinned_source",
-      "decision": "already_present_no_port_required",
-      "repository_software_license": "MIT",
-      "repository_license_evidence": "https://github.com/LostCityRS/Content/blob/377-wip/LICENSE",
-      "license_scope": "software_only_not_proof_of_game_data_or_asset_permission",
-      "source_code_reviewed_individually": false,
-      "game_content_rights_approved": false,
-      "external_assets_approved": false,
-      "compatible_with_pinned_377": true,
-      "native_377_compiled_as_new_feature": false,
-      "npc_or_player_interaction_tested": false,
-      "elrothiro_save_tested": false,
-      "outstanding_action": "No import: already included in pinned source; test locally before claiming functionality."
     }
   ]
 }
