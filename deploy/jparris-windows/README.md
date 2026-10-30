@@ -8,7 +8,7 @@ For the easiest experience, **double-click `JoshRS.cmd`** in the extracted JoshR
 
 **Improved first run:** the main button now says **Set Up and Play** until a game is configured. Click it after inserting your USB drive. JoshRS checks only the usual game locations on attached removable drives for a complete revision-377 source; it does not browse all your other files. If it finds exactly one game, it shows the path and separately confirms whether the Elrothiro save, account database and Java client are present. You must approve the import. If none or several are found, a folder picker appears instead. **It never silently chooses a clean game in place of your Fedora copy.**
 
-After the first successful installation, the main button becomes **Play JoshRS**. The desktop shortcut created during setup also opens the full dashboard. If its graphical window fails to initialize, an error dialog appears instead of silently disappearing.
+After the first successful installation, the main button becomes **Play JoshRS**. The desktop shortcut created during setup also opens the full dashboard. If its graphical window fails to initialize, an error dialog and a private diagnostic file appear instead of silently disappearing.
 
 The control window includes:
 
@@ -17,6 +17,8 @@ The control window includes:
 - **Install a clean 377 world:** obtains the pinned upstream engine, content and Java client, with a warning that your Fedora customizations and character are not part of the clean source.
 - **Back up my player saves:** offline copy of the whole players directory and SQLite account database (including WAL when present). The button is disabled if either game/network port is listening.
 - **Refresh status:** shows whether the expected TCP and HTTP listeners are responding. Port readiness alone does not prove a successful game login.
+- **Check / Repair Installation:** after a world is installed, the clean-install action changes to offline repair. It backs up saves, reinstalls dependencies, applies non-destructive migrations and recompiles Java without replacing your existing world.
+- **View logs:** opens the latest server, client or dashboard diagnostic in Notepad. Logs are private and rotated to at most 25 copies.
 - **Diagnostics:** copies a status report without reading or exposing local passwords, player contents or configuration secrets.
 - **Game files / Backups:** opens the correct private local folder in Windows Explorer.
 
@@ -55,7 +57,7 @@ Replace `E:\JoshRS` with the actual USB path. If the USB has `JoshRS\lostcity377
 
 ## Where the files go
 
-- All runtime and data are stored under `runtime/jparris-377/`. That directory is Git-ignored; it is never uploaded to GitHub by this launcher.
+- All runtime and data are stored under `runtime/jparris-377/`. That directory is Git-ignored; it is never uploaded to GitHub by this launcher. Startup logs under `runtime/jparris-377/logs/` remain local and may contain technical output; inspect before sharing.
 - `runtime/jparris-377/upstream/` contains three independent upstream repositories cloned at verified, pinned Git commit SHAs.
 - A supplied USB copy is **copied** into a timestamped `runtime/jparris-377/usb-YYYYMMDD-HHMMSS/` folder. Original USB files remain unchanged.
 - Any original player saves and SQLite database are backed up under `runtime/jparris-377/save-backups/` before installing/migrating the server.
@@ -85,7 +87,7 @@ The public JoshRS repository **does not vendor the game content or redistribute 
 - **Windows SmartScreen / execution policy:** run the extracted scripts directly from a folder you control; do not use random mirrored downloads.
 - **Missing Node/Java/Git:** use the setup installer prompts and reopen the terminal if the new PATH is not visible. Microsoft recommends JDK 21 with WinGet.
 - **Wrong USB copy:** if the original `engine/package.json`, `src/app.ts`, `src/engine/World.ts`, and `content/scripts/` are not present, choose the correct USB location. If the only copy available is an incomplete Google Drive directory tree, the customised world cannot be restored yet.
-- **Game server fails at startup:** inspect the separate server PowerShell window. The initial engine content/cache build can perform substantial work. Do not assume an open TCP port proves gameplay works.
+- **Game server fails at startup:** click **View logs** for the most recent report, or inspect the separate server PowerShell window. The initial engine content/cache build can perform substantial work. Do not assume an open TCP port proves gameplay works.
 - **Unable to log into your existing character:** check that the source USB snapshot includes `engine/data/players/main/elrothiro.sav` **and** the matching `engine/db.sqlite` account database. Missing either can prevent a faithful save/account restoration.
 - **Custom changes missing:** upstream repositories supply only vanilla revision-377 code. The USB copy must contain your modified Lua/Luna logic, teleport/map code, custom launchers and any other development edits. The clean upstream build cannot regenerate them.
 - **Browser download cannot play 377:** this revision is Java-only in the checked upstream set. Do not confuse it with the separately hosted 274 browser game.

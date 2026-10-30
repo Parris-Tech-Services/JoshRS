@@ -29,7 +29,7 @@ jobs:
       - name: Validate all Windows scripts, source lock and entrypoints
         shell: powershell
         run: |
-          $paths = @('deploy/jparris-windows/setup.ps1','deploy/jparris-windows/play.ps1','deploy/jparris-windows/test-bootstrap.ps1','deploy/jparris-windows/support.ps1','deploy/jparris-windows/control-center.ps1','deploy/jparris-windows/test-support.ps1','deploy/jparris-windows/discovery.ps1','deploy/jparris-windows/test-discovery.ps1')
+          $paths = @('deploy/jparris-windows/setup.ps1','deploy/jparris-windows/play.ps1','deploy/jparris-windows/test-bootstrap.ps1','deploy/jparris-windows/support.ps1','deploy/jparris-windows/control-center.ps1','deploy/jparris-windows/test-support.ps1','deploy/jparris-windows/discovery.ps1','deploy/jparris-windows/test-discovery.ps1','deploy/jparris-windows/launch-control-center.ps1','deploy/jparris-windows/test-recovery.ps1')
           foreach ($path in $paths) {
             $tokens = $null
             $errors = $null
@@ -60,6 +60,12 @@ jobs:
       - name: Construct JoshRS native control center
         shell: powershell
         run: '& .\deploy\jparris-windows\control-center.ps1 -ValidateUi'
+      - name: Verify dashboard launch recovery and rotating logs
+        shell: powershell
+        run: '& .\deploy\jparris-windows\test-recovery.ps1'
+      - name: Verify standalone Windows GUI entrypoint
+        shell: powershell
+        run: '& .\deploy\jparris-windows\launch-control-center.ps1 -ValidateLauncher -NoDialog'
 
   windows-engine-client-build:
     needs: windows-static
