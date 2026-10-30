@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 import hashlib
+import re
 import json
 from pathlib import Path
 import sys
@@ -82,8 +83,6 @@ def assess(row: dict) -> dict:
 
 def build_ledger(packs_dir: Path) -> dict:
     rows: dict[str, dict] = {}
-    sources = Counter()
-    conflicts = []
     for file in sorted(packs_dir.glob("*.json")):
         pack = json.loads(file.read_text(encoding="utf-8"))
         for row in pack.get("candidates", []):
@@ -95,7 +94,6 @@ def build_ledger(packs_dir: Path) -> dict:
                     or record["classification"] != "already_in_pinned_source"):
                     continue
             rows[key] = record
-            sources[record["classification"]] += 1
     decisions = Counter(r["decision"] for r in rows.values())
     return {
         "schema": 1,
@@ -109,20 +107,97 @@ def build_ledger(packs_dir: Path) -> dict:
     }
 
 
-def run(packs_dir: Path, output: Path) -> None:
+def run(packs_dir: Path, output: Path, batch_size: int = 200) -> dict:
+    """Store an index plus small GitHub-readable review shards (<1 MB each)."""
+    if not 1 <= batch_size <= 250:
+        raise ValueError("Evidence shard size must be 1..250")
     ledger = build_ledger(packs_dir)
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(ledger, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f'Per-candidate evidence generated: {ledger["total_unique_source_files"]} unique tracked metadata records, 0 falsely approved ports.')
+    generated = output.parent
+    generated.mkdir(parents=True, exist_ok=True)
+    shard_dir = generated / "candidate-evidence-shards"
+    shard_dir.mkdir(parents=True, exist_ok=True)
+    groups: dict[str, list[dict]] = {}
+    for record in ledger["reviews"]:
+        name = record["source"]
+        if not re.fullmatch(r"[a-z][a-z0-9_-]{1,70}", name):
+            raise ValueError("Unsafe evidence source filename")
+        groups.setdefault(name, []).append(record)
+    manifests = []
+    created = set()
+    for source, rows in sorted(groups.items()):
+        for index in range(0, len(rows), batch_size):
+            page = rows[index:index + batch_size]
+            filename = f"{source}-{index // batch_size:04d}.json"
+            content = (json.dumps({"schema": 1, "source": source, "reviews": page},
+                                  ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+            if len(content) >= 900_000:
+                raise ValueError("Evidence shard exceeds GitHub readable size")
+            (shard_dir / filename).write_bytes(content)
+            created.add(filename)
+            manifests.append({
+                "path": f"candidate-evidence-shards/{filename}",
+                "source": source,
+                "count": len(page),
+                "sha256": hashlib.sha256(content).hexdigest(),
+            })
+    # Remove stale *known-format* shards when a repo changes/retreats.
+    # Other files are never altered.
+    for old in shard_dir.iterdir():
+        if (old.is_file() and re.fullmatch(r"[a-z][a-z0-9_-]+-[0-9]{4}\.json", old.name)
+                and old.name not in created):
+            old.unlink()
+    summary = {k: v for k, v in ledger.items() if k != "reviews"}
+    summary["shard_count"] = len(manifests)
+    summary["shards"] = manifests
+    output.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    verify_shards(output)
+    print(f'Per-candidate review index published: {ledger["total_unique_source_files"]} unique files, '
+          f'{len(manifests)} readable shards, 0 auto-approved game assets.')
+    return summary
+
+
+def verify_shards(index_file: Path) -> int:
+    """Recount and check hashes, source labels, unique IDs and all manual-review gates."""
+    index = json.loads(index_file.read_text(encoding="utf-8"))
+    seen = set()
+    count = 0
+    for shard in index.get("shards", []):
+        path = Path(shard["path"])
+        if path.is_absolute() or ".." in path.parts or path.parts[0] != "candidate-evidence-shards" or len(path.parts) != 2:
+            raise ValueError("Unsafe shard index path")
+        data = (index_file.parent / path).read_bytes()
+        if hashlib.sha256(data).hexdigest() != shard["sha256"]:
+            raise ValueError("Evidence shard hash mismatch")
+        doc = json.loads(data)
+        if doc["source"] != shard["source"] or len(doc["reviews"]) != shard["count"]:
+            raise ValueError("Evidence index count/source mismatch")
+        for record in doc["reviews"]:
+            if (record["review_id"] in seen or
+                record["source"] != shard["source"] or
+                record["game_content_rights_approved"] is not False or
+                record["external_assets_approved"] is not False or
+                record["native_377_compiled_as_new_feature"] is not False or
+                record["npc_or_player_interaction_tested"] is not False or
+                record["elrothiro_save_tested"] is not False):
+                raise ValueError("Evidence duplicate or unjustified approval")
+            seen.add(record["review_id"])
+        count += len(doc["reviews"])
+    if count != index.get("total_unique_source_files") or len(index["shards"]) != index.get("shard_count"):
+        raise ValueError("Evidence index does not cover all candidates")
+    return count
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--packs", type=Path, default=ROOT / "generated/packs")
     parser.add_argument("--output", type=Path, default=ROOT / "generated/candidate-evidence.json")
+    parser.add_argument("--verify", action="store_true")
     args = parser.parse_args()
     try:
-        run(args.packs, args.output)
+        if args.verify:
+            print(f'Verified {verify_shards(args.output)} per-file evidence records.')
+        else:
+            run(args.packs, args.output)
     except (ValueError, OSError, KeyError, json.JSONDecodeError) as exc:
         print("Evidence audit blocked: " + str(exc), file=sys.stderr)
         raise SystemExit(1)

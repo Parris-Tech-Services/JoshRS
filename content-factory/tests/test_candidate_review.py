@@ -5,7 +5,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from candidate_review import assess, build_ledger, LICENSE_EVIDENCE
+from candidate_review import assess, build_ledger, run, verify_shards
 
 
 class CandidateEvidenceTests(unittest.TestCase):
@@ -61,5 +61,23 @@ class CandidateEvidenceTests(unittest.TestCase):
             self.assertEqual(x,build_ledger(root))
             self.assertEqual(next(z for z in x['reviews'] if z['blob_sha']=='abc')['classification'],
                              'already_in_pinned_source')
+
+    def test_shard_index_references_readable_complete_verified_pages(self):
+        with tempfile.TemporaryDirectory() as t:
+            root=Path(t); packs=root/'packs';packs.mkdir()
+            (packs/'a.json').write_text(json.dumps({'candidates': [
+                self.row(id=f'candidate-{i}',path=f'scripts/area/file{i}.rs2',blob_sha=f'hash{i}')
+                for i in range(5)]}))
+            output=root/'generated/candidate-evidence.json'
+            summary=run(packs,output,batch_size=2)
+            self.assertEqual(summary['total_unique_source_files'],5)
+            self.assertEqual(summary['shard_count'],3)
+            self.assertEqual(5,verify_shards(output))
+            self.assertNotIn('reviews',json.loads(output.read_text()))
+            for shard in summary['shards']:
+                self.assertLess((output.parent/shard['path']).stat().st_size,900_000)
+            target=output.parent/summary['shards'][0]['path']
+            target.write_text('modified by accident')
+            with self.assertRaises(ValueError):verify_shards(output)
 
 if __name__=='__main__':unittest.main()
