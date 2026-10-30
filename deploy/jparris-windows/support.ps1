@@ -172,7 +172,7 @@ function New-JoshRSLaunchLog {
     # Keep the newest 25 logs. Failures to remove an in-use old log are harmless.
     $old=@(Get-ChildItem -LiteralPath $folder -File -ErrorAction SilentlyContinue |
         Where-Object { $_.Name -match '^(server|client|dashboard)-[0-9]{8}-[0-9]{6}-[0-9a-f]{8}\.log$' } |
-        Sort-Object LastWriteTimeUtc -Descending | Select-Object -Skip 25)
+        Sort-Object LastWriteTimeUtc -Descending | Select-Object -Skip 24
     foreach ($item in $old) { Remove-Item -LiteralPath $item.FullName -Force -ErrorAction SilentlyContinue }
     return $path
 }
