@@ -23,6 +23,17 @@ if (-not (Test-Path -LiteralPath $savePath -PathType Leaf)) {
 $save=Get-Item -LiteralPath $savePath
 if ($save.Length -lt 32) { throw 'Elrothiro save is unexpectedly small. Do not restore or replace it.' }
 $hash=(Get-FileHash -LiteralPath $savePath -Algorithm SHA256).Hash
+$validator=Join-Path $RepoRoot 'tools\rs377-saves\inspect-save.mjs'
+if (-not (Test-Path -LiteralPath $validator -PathType Leaf)) { throw '377 save-format validator is missing. Update JoshRS first.' }
+$node=Get-Command node.exe -ErrorAction Stop
+$validationOutput=& $node.Source $validator $savePath
+if ($LASTEXITCODE -ne 0) { throw 'Elrothiro failed the native 377 save-format/CRC verification.' }
+$decoded=($validationOutput -join [Environment]::NewLine) | ConvertFrom-Json
+if (-not $decoded.valid -or $decoded.version -gt 7 -or $decoded.sha256 -ne $hash) {
+    throw 'Elrothiro save format, checksum or SHA-256 does not match.'
+}
+Write-Host "VALIDATED native 377 save version $($decoded.version), CRC32 $($decoded.crc32)."
+Write-Host "Total skill XP: $($decoded.totalSkillXP); playtime ticks: $($decoded.playtimeTicks)."
 Write-Host "ACTIVE ELROTHIRO SAVE FOUND: $($save.Length) bytes."
 Write-Host "Modified UTC: $($save.LastWriteTimeUtc.ToString('o'))"
 Write-Host "SHA-256: $hash"
