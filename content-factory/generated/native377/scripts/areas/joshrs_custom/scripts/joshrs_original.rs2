@@ -1,0 +1,10 @@
+// JoshRS original dialogue for Lost City 377. Administrative spawn only.
+
+[opnpc1,joshrs_woodland_guide]
+~chatnpc("<p,happy>Welcome to the woodland trail!");
+~chatnpc("<p,neutral>An original guide who welcomes explorers to the woodland trail.");
+mes("This original JoshRS guide is ready to talk.");
+
+[debugproc,joshrs_spawn_joshrs_woodland_guide]
+npc_add(coord, joshrs_woodland_guide, 500);
+mes("Woodland Guide has been summoned near you.");
