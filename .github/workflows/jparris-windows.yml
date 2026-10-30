@@ -33,7 +33,7 @@ jobs:
       - name: Validate all Windows scripts, source lock and entrypoints
         shell: powershell
         run: |
-          $paths = @('deploy/jparris-windows/setup.ps1','deploy/jparris-windows/play.ps1','deploy/jparris-windows/test-bootstrap.ps1','deploy/jparris-windows/support.ps1','deploy/jparris-windows/control-center.ps1','deploy/jparris-windows/test-support.ps1','deploy/jparris-windows/discovery.ps1','deploy/jparris-windows/test-discovery.ps1','deploy/jparris-windows/launch-control-center.ps1','deploy/jparris-windows/test-recovery.ps1','deploy/jparris-windows/jdk.ps1','deploy/jparris-windows/test-jdk.ps1','deploy/jparris-windows/web-port.ps1','deploy/jparris-windows/test-web-port.ps1','deploy/jparris-windows/custom-loc-core.ps1','deploy/jparris-windows/fix-custom-loc.ps1','deploy/jparris-windows/test-custom-loc.ps1','deploy/jparris-windows/save-integrity.ps1','deploy/jparris-windows/Protect-Elrothiro.ps1','deploy/jparris-windows/test-save-integrity.ps1')
+          $paths = @('deploy/jparris-windows/setup.ps1','deploy/jparris-windows/play.ps1','deploy/jparris-windows/test-bootstrap.ps1','deploy/jparris-windows/support.ps1','deploy/jparris-windows/control-center.ps1','deploy/jparris-windows/test-support.ps1','deploy/jparris-windows/discovery.ps1','deploy/jparris-windows/test-discovery.ps1','deploy/jparris-windows/launch-control-center.ps1','deploy/jparris-windows/test-recovery.ps1','deploy/jparris-windows/jdk.ps1','deploy/jparris-windows/test-jdk.ps1','deploy/jparris-windows/web-port.ps1','deploy/jparris-windows/test-web-port.ps1','deploy/jparris-windows/custom-loc-core.ps1','deploy/jparris-windows/fix-custom-loc.ps1','deploy/jparris-windows/test-custom-loc.ps1','deploy/jparris-windows/save-integrity.ps1','deploy/jparris-windows/Protect-Elrothiro.ps1','deploy/jparris-windows/test-save-integrity.ps1','deploy/jparris-windows/mobile-existing-game.ps1')
           foreach ($path in $paths) {
             $tokens = $null
             $errors = $null
@@ -56,6 +56,9 @@ jobs:
       - name: Exercise USB import and save preservation with synthetic files
         shell: powershell
         run: '& .\deploy\jparris-windows\test-bootstrap.ps1'
+      - name: Verify mobile-stream checker safely exits on unconfigured build runner
+        shell: powershell
+        run: '& .\deploy\jparris-windows\mobile-existing-game.ps1 -CheckOnly'
       - name: Validate offline backups and safe status report
         shell: powershell
         run: '& .\deploy\jparris-windows\test-support.ps1'
