@@ -21,7 +21,7 @@ class OverlayTests(unittest.TestCase):
 
     def test_cannot_clobber_modified_world_or_untrusted_manifest(self):
         with tempfile.TemporaryDirectory() as d:
-            root=Path(d); out=root/'generated'; target=root/'upstream'; (target/'scripts').mkdir(parents=True)
+            root=Path(d); out=root/'generated'; target=root/'upstream'; (target/'scripts').mkdir(parents=True); (target/'pack').mkdir(); (target/'pack/npc.pack').write_text('0=hans\n1=man\n')
             native377.build_native(Path(__file__).resolve().parents[1]/'intake',out)
             ov.apply_overlay(out,target)
             compiled=target/'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2'
