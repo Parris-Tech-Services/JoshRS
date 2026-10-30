@@ -3,13 +3,13 @@
 
 function Test-JoshRSJdk21 {
     [CmdletBinding()]
-    param([Parameter(Mandatory)][string]$Home)
-    if (-not $Home -or -not (Test-Path -LiteralPath (Join-Path $Home 'bin\javac.exe') -PathType Leaf) -or
-        -not (Test-Path -LiteralPath (Join-Path $Home 'bin\java.exe') -PathType Leaf)) {
+    param([Parameter(Mandatory)][string]$JdkDirectory)
+    if (-not $JdkDirectory -or -not (Test-Path -LiteralPath (Join-Path $JdkDirectory 'bin\javac.exe') -PathType Leaf) -or
+        -not (Test-Path -LiteralPath (Join-Path $JdkDirectory 'bin\java.exe') -PathType Leaf)) {
         return $false
     }
     try {
-        $compiler=Join-Path $Home 'bin\javac.exe'
+        $compiler=Join-Path $JdkDirectory 'bin\javac.exe'
         $version=(& $compiler -version 2>&1 | Out-String).Trim()
         return ($LASTEXITCODE -eq 0 -and $version -match '^javac 21(?:[.\s]|$)')
     } catch { return $false }
@@ -44,7 +44,7 @@ function Find-JoshRSJdk21 {
     $seen=New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::OrdinalIgnoreCase)
     foreach ($candidate in $candidates) {
         if (-not $seen.Add($candidate)) { continue }
-        if (Test-JoshRSJdk21 -Home $candidate) { return $candidate }
+        if (Test-JoshRSJdk21 -JdkDirectory $candidate) { return $candidate }
     }
     return $null
 }
@@ -52,29 +52,29 @@ function Find-JoshRSJdk21 {
 function Set-JoshRSJdk21 {
     [CmdletBinding()]
     param([switch]$InstallIfMissing,[string[]]$AdditionalHomes=@())
-    $home=Find-JoshRSJdk21 -AdditionalHomes $AdditionalHomes
-    if (-not $home -and $InstallIfMissing) {
+    $jdkPath=Find-JoshRSJdk21 -AdditionalHomes $AdditionalHomes
+    if (-not $jdkPath -and $InstallIfMissing) {
         if (-not (Get-Command winget.exe -ErrorAction SilentlyContinue)) {
             throw 'JDK 21 was not found. Install Eclipse Temurin JDK 21; Windows Package Manager (winget) is unavailable.'
         }
         Write-Host 'JDK 21 is not installed. Installing the free Eclipse Temurin JDK 21 (existing Java 17 is preserved)...'
         & winget.exe install --exact --id EclipseAdoptium.Temurin.21.JDK --source winget --accept-package-agreements --accept-source-agreements
         $exitCode=$LASTEXITCODE
-        $home=Find-JoshRSJdk21 -AdditionalHomes $AdditionalHomes
-        if (-not $home) {
+        $jdkPath=Find-JoshRSJdk21 -AdditionalHomes $AdditionalHomes
+        if (-not $jdkPath) {
             throw "JDK 21 could not be found after its installer returned $exitCode. Open a new PowerShell window or check the Eclipse Adoptium installation."
         }
     }
-    if (-not $home) {
+    if (-not $jdkPath) {
         throw 'JDK 21 not found. Install Eclipse Temurin JDK 21 and rerun JoshRS setup.'
     }
-    $env:JAVA_HOME=$home
-    $bin=Join-Path $home 'bin'
+    $env:JAVA_HOME=$jdkPath
+    $bin=Join-Path $jdkPath 'bin'
     $env:Path=$bin + ';' + $env:Path
     $version=(& javac.exe -version 2>&1 | Out-String).Trim()
     if ($LASTEXITCODE -ne 0 -or $version -notmatch '^javac 21(?:[.\s]|$)') {
         throw "JDK 21 selection failed: $version"
     }
-    Write-Host "Using JDK 21: $home (only in this JoshRS setup session)"
-    return $home
+    Write-Host "Using JDK 21: $jdkPath (only in this JoshRS setup session)"
+    return $jdkPath
 }
