@@ -32,6 +32,14 @@ jobs:
           done < <(git config --file .gitmodules --get-regexp '^submodule\..*\.path$' | sed 's/ /=/')
           [[ "$count" -eq 8 ]] || { echo "Expected eight links, got $count"; exit 1; }
           echo "Verified $count pinned Git submodules."
+      - name: Confirm source checkout for map tools and JAR inspection
+        shell: bash
+        run: |
+          set -euo pipefail
+          git submodule update --init --depth 1 -- integrations/reference-sources/rs-map-viewer integrations/reference-sources/jar-re
+          test -f integrations/reference-sources/rs-map-viewer/LICENSE
+          test -f integrations/reference-sources/jar-re/pom.xml
+          git submodule status -- integrations/reference-sources/rs-map-viewer integrations/reference-sources/jar-re
   windows-script:
     runs-on: windows-latest
     steps:
