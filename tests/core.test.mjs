@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {W,H,TASKS,terrain,objectAt,walkable,makeState,loadState,move,pathTo,xpNeeded,levelOf,totalLevel,lightFire,eat,interact,cook,completed,nearNpc,depositAll,withdrawAll,sellOne,buyMeal,fulfilOrder,isValidSavedState} from "../core.mjs";
+import {W,H,TASKS,terrain,objectAt,walkable,makeState,loadState,move,pathTo,xpNeeded,levelOf,totalLevel,lightFire,eat,interact,cook,completed,nearNpc,depositAll,withdrawAll,sellOne,buyMeal,fulfilOrder,isValidSavedState,MAX_BAG_STACK,MAX_BANK_STACK,MAX_COINS} from "../core.mjs";
 test("fresh player is in bounds and has starter inventory",()=>{
  const s=makeState();assert.equal(walkable(s.x,s.y),true);assert.equal(s.bag.logs,0);assert.equal(s.hp,20);assert.equal(totalLevel(s),6);
 });
@@ -94,4 +94,58 @@ test("bank, orders and portable saves survive an engine load round-trip",()=>{
  const legacy=makeState();delete legacy.bank;delete legacy.ordersFulfilled;
  const migrated=loadState(JSON.stringify(legacy));
  assert.equal(migrated.bank.logs,0);assert.equal(migrated.ordersFulfilled,0);
+});
+
+test("bank full stack cannot silently destroy stored items across a save/load cycle",()=>{
+ const s=makeState();s.x=17;s.y=12;
+ s.bag.logs=7;s.bank.logs=MAX_BANK_STACK-1;
+ assert.match(depositAll(s),/stores 1/);
+ assert.equal(s.bank.logs,MAX_BANK_STACK);
+ assert.equal(s.bag.logs,6);
+ assert.match(depositAll(s),/bag is already empty|bag|stores|nothing/i);
+ assert.equal(s.bag.logs,6);
+ const saved=loadState(JSON.stringify(s));
+ assert.equal(saved.bank.logs,MAX_BANK_STACK);
+ assert.equal(saved.bag.logs,6);
+ assert.equal(saved.bank.logs+saved.bag.logs,MAX_BANK_STACK+6);
+ saved.bag.logs=MAX_BAG_STACK;
+ assert.match(withdrawAll(saved),/Nothing to withdraw/);
+ assert.equal(saved.bank.logs,MAX_BANK_STACK);
+});
+
+test("unknown or forged targets must not generate resources, XP or coin rewards",()=>{
+ const s=makeState();s.x=11;s.y=9;
+ const before=JSON.stringify(s);
+ assert.match(interact(s,{id:"invented-tree",x:12,y:9,type:"tree",name:"Oak tree"}),/Unknown/);
+ assert.equal(JSON.stringify(s),before);
+ assert.match(interact(s,{id:"tree0",x:11,y:9,type:"tree",name:"Fake overlay"}),/Unknown/);
+ assert.equal(JSON.stringify(s),before);
+ assert.match(interact(s,objectAt(12,9)),/Woodcutting/);
+ assert.equal(s.bag.logs,1);
+});
+
+test("gathering and cooking respect persisted bag stack capacity",()=>{
+ const wood=makeState();wood.x=11;wood.y=9;wood.bag.logs=MAX_BAG_STACK;
+ assert.match(interact(wood,objectAt(12,9)),/full/);
+ assert.equal(wood.bag.logs,MAX_BAG_STACK);
+ assert.equal(wood.progress.logs,0);
+ assert.equal(wood.xp.woodcutting,0);
+ const fish=makeState();fish.x=8;fish.y=11;
+ fish.bag.fish=1;fish.bag.cooked=MAX_BAG_STACK;fish.fires=[{x:8,y:12}];
+ assert.match(cook(fish),/full/);
+ assert.equal(fish.bag.fish,1);
+ assert.equal(fish.bag.cooked,MAX_BAG_STACK);
+ assert.equal(fish.xp.cooking,0);
+});
+
+test("selling and supply orders never silently exceed the stored coin cap",()=>{
+ const s=makeState();s.x=19;s.y=12;s.bag.logs=3;s.coins=MAX_COINS;
+ assert.match(sellOne(s,"logs"),/coin pouch is full/);
+ assert.equal(s.bag.logs,3);
+ assert.equal(s.coins,MAX_COINS);
+ s.questClaimed=true;s.bag.ore=1;s.bag.cooked=1;
+ assert.match(fulfilOrder(s),/save limit/);
+ assert.deepEqual(s.bag,{logs:3,ore:1,fish:0,cooked:1});
+ assert.equal(s.ordersFulfilled,0);
+ assert.equal(s.coins,MAX_COINS);
 });
