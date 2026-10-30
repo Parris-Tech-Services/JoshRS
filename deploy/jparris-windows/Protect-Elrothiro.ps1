@@ -51,7 +51,10 @@ if ($status.DatabasePresent) {
             if (-not $dbReport.characterAccountPresent) {
                 Write-Warning 'Elrothiro account record NOT FOUND in the current SQLite DB; save alone cannot prove login restoration.'
             }
-        } else { Write-Warning 'Account DB integrity could not be verified. Do not presume that login recovery works.' }
+        } else {
+            Write-Warning 'Account DB integrity could not be verified. Do not presume that login recovery works.'
+            $global:LASTEXITCODE=0 # Database inspection is advisory; PowerShell must not report a failed backup.
+        }
     }
 }
 
