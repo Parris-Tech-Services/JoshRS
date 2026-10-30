@@ -30,6 +30,12 @@ See also [multiplayer work tracker #5](https://github.com/Parris-Tech-Services/J
 
 Source projects remain available as pinned submodules in [integrations/reference-sources](integrations/reference-sources/README.md). A pinned repository is not equivalent to a playable feature; client forks, modern RuneLite and Steam notes are not silently merged into your customised world. No save data is touched.
 
+## Play the existing Elrothiro on Android (LAN streaming)
+
+**[Setup guide](docs/PLAY_ELROTHIRO_ANDROID.md)** · Windows entrypoint: `JoshRS-Play-Android.cmd`.
+
+This optional, no-subscription Sunshine/Moonlight route streams the actual JParris Desktop Java client over your home Wi-Fi, preserving the existing world and Elrothiro save. It does **not** move saved characters to Vercel or claim native browser protocol compatibility. The Windows preflight checks the active 377 save before offering installation, and it never opens router ports.
+
 ## Protect the original Elrothiro character
 
 For your personalised revision-377 world, **log out and stop the game**, then double-click **`JoshRS-Backup-Elrothiro.cmd`**. This checks the active native `0x2004` version-7 save and CRC-32, inspects the local SQLite account database without reading passwords into logs, and makes an offline SHA-256-verified snapshot of all player and account data.
