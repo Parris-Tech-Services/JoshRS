@@ -10,7 +10,9 @@ try {
     $first=New-JoshRSLaunchLog -RepoRoot $root -Role 'server'
     Assert ($first -match 'server-[0-9]{8}-[0-9]{6}-[0-9a-f]{8}\.log$') 'server log must be timestamped'
     'TEST first log only' | Set-Content -LiteralPath $first
-    Assert ((Get-JoshRSRecentLogFile -RepoRoot $root) -eq $first) 'latest existing log should be discoverable'
+    $discovered=Get-JoshRSRecentLogFile -RepoRoot $root
+    Write-Host ('TRACE first=' + $first + ' discovered=' + $discovered + ' exists=' + (Test-Path -LiteralPath $first))
+    Assert ($discovered -eq $first) 'latest existing log should be discoverable'
     for ($i=0;$i -lt 29;$i++) {
         $file=New-JoshRSLaunchLog -RepoRoot $root -Role 'client'
         ('TEST record ' + $i) | Set-Content -LiteralPath $file
