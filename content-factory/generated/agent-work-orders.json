@@ -1,14 +1,14 @@
 {
-  "candidate_pool": 2575,
-  "next_rotation_offset": 100,
+  "candidate_pool": 1708,
+  "next_rotation_offset": 200,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
-  "rotation_offset": 0,
+  "rotation_offset": 100,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
     {
       "automatically_installed": false,
-      "candidate_id": "a2ae67f9449eacd9b62b",
+      "candidate_id": "c24dbf6a818a2512603d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -16,17 +16,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_abyss/scripts/abyss_inner.rs2",
+      "path": "scripts/areas/area_gnome/scripts/gnome_cook_book.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_abyss/scripts/abyss_inner.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_gnome/scripts/gnome_cook_book.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-a2ae67f9449eacd9b62b"
+      "work_id": "377-c24dbf6a818a2512603d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c1ff2ed1ccbf3d9f3fe2",
+      "candidate_id": "cdfb07d09acf45fc856c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -34,17 +34,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_abyss/scripts/abyss_outer.rs2",
+      "path": "scripts/areas/area_gnome/scripts/gnome_cook_book.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_abyss/scripts/abyss_outer.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_gnome/scripts/gnome_cook_book.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-c1ff2ed1ccbf3d9f3fe2"
+      "work_id": "377-cdfb07d09acf45fc856c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9ce0c6be65c1fcecc465",
+      "candidate_id": "2f3934b298ea9b87c455",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -52,17 +52,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_abyss/scripts/rcu_zammy_mage2.rs2",
+      "path": "scripts/areas/area_gnome/scripts/gnome_gate.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_abyss/scripts/rcu_zammy_mage2.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_gnome/scripts/gnome_gate.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-9ce0c6be65c1fcecc465"
+      "work_id": "377-2f3934b298ea9b87c455"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e0bc14a75838b901e050",
+      "candidate_id": "8e9732bafca4a823ece0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -70,17 +70,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/al_kharid_warrior.rs2",
+      "path": "scripts/areas/area_gnome/scripts/gnome_gate.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/al_kharid_warrior.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_gnome/scripts/gnome_gate.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-e0bc14a75838b901e050"
+      "work_id": "377-8e9732bafca4a823ece0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "96c9f1d744d5f2398f71",
+      "candidate_id": "58be1fab5be4f7727a7b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -88,17 +88,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/border_gate.rs2",
+      "path": "scripts/areas/area_gnome/scripts/gnome_gate.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/border_gate.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_gnome/scripts/gnome_gate.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-96c9f1d744d5f2398f71"
+      "work_id": "377-58be1fab5be4f7727a7b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0e405bc4f6f394db3e06",
+      "candidate_id": "94b4544807558c41932a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -106,17 +106,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/dommik.rs2",
+      "path": "scripts/areas/area_gnome/scripts/gnome_glider.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/dommik.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_gnome/scripts/gnome_glider.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-0e405bc4f6f394db3e06"
+      "work_id": "377-94b4544807558c41932a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1bd86298c4d3f11c9af2",
+      "candidate_id": "71b4701c1c2c08cb2f53",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -124,17 +124,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/gem_trader.rs2",
+      "path": "scripts/areas/area_gnome/scripts/gnome_glider.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/gem_trader.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_gnome/scripts/gnome_glider.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-1bd86298c4d3f11c9af2"
+      "work_id": "377-71b4701c1c2c08cb2f53"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "23492ad6b22cd6d7d542",
+      "candidate_id": "b3306acfc34b8d576518",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -142,17 +142,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/hassan.rs2",
+      "path": "scripts/areas/area_gnome/scripts/gnome_glider.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/hassan.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_gnome/scripts/gnome_glider.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-23492ad6b22cd6d7d542"
+      "work_id": "377-b3306acfc34b8d576518"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "df13af919020f1de0b98",
+      "candidate_id": "ed3e4586733476bb58e3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -160,17 +160,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/kebab_seller.rs2",
+      "path": "scripts/areas/area_gnome/scripts/gnome_trainer.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/kebab_seller.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_gnome/scripts/gnome_trainer.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-df13af919020f1de0b98"
+      "work_id": "377-ed3e4586733476bb58e3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a11a37c08f3f7370cf07",
+      "candidate_id": "cbb41777cd1b8a5f227c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -178,17 +178,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/louie_legs.rs2",
+      "path": "scripts/areas/area_gnome/scripts/heckel_funch.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/louie_legs.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_gnome/scripts/heckel_funch.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-a11a37c08f3f7370cf07"
+      "work_id": "377-cbb41777cd1b8a5f227c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "48718ff45185023f2ab0",
+      "candidate_id": "a264483269021b00fe52",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -196,17 +196,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/misc_locs.rs2",
+      "path": "scripts/areas/area_kalphite/scripts/kalphite.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/misc_locs.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_kalphite/scripts/kalphite.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-48718ff45185023f2ab0"
+      "work_id": "377-a264483269021b00fe52"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "50310ab9f63568078357",
+      "candidate_id": "4e9f692dc2765bf855a1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -214,17 +214,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/osman.rs2",
+      "path": "scripts/areas/area_kalphite/scripts/kalphite_queen.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/osman.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_kalphite/scripts/kalphite_queen.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-50310ab9f63568078357"
+      "work_id": "377-4e9f692dc2765bf855a1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2c2c39b0cf2161766b75",
+      "candidate_id": "528b21668792d841b687",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -232,17 +232,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/ranael.rs2",
+      "path": "scripts/areas/area_kalphite/scripts/kalphite_queen.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/ranael.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_kalphite/scripts/kalphite_queen.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-2c2c39b0cf2161766b75"
+      "work_id": "377-528b21668792d841b687"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5a7907a80cb460b919fb",
+      "candidate_id": "bdc661b683c771a97cff",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -250,17 +250,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/shantay.rs2",
+      "path": "scripts/areas/area_kalphite/scripts/kalphite_worker_spawn.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/shantay.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_kalphite/scripts/kalphite_worker_spawn.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-5a7907a80cb460b919fb"
+      "work_id": "377-bdc661b683c771a97cff"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "26f4df125e1397b10e48",
+      "candidate_id": "4361cd92200d42831eff",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -268,17 +268,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/shantay_chest.rs2",
+      "path": "scripts/areas/area_karamja/scripts/banana_tree.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/shantay_chest.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_karamja/scripts/banana_tree.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-26f4df125e1397b10e48"
+      "work_id": "377-4361cd92200d42831eff"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ad58ec502a2a2f6566fe",
+      "candidate_id": "8c767e1b905bb57bb1ac",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -286,17 +286,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/shantay_pass.rs2",
+      "path": "scripts/areas/area_karamja/scripts/banana_tree.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/shantay_pass.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_karamja/scripts/banana_tree.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-ad58ec502a2a2f6566fe"
+      "work_id": "377-8c767e1b905bb57bb1ac"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "79bafd8adf685f65d730",
+      "candidate_id": "909862653937553bbbe6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -304,17 +304,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/silk_trader.rs2",
+      "path": "scripts/areas/area_karamja/scripts/captain_shanks.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/silk_trader.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_karamja/scripts/captain_shanks.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-79bafd8adf685f65d730"
+      "work_id": "377-909862653937553bbbe6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d238c2b2b47f1070a33a",
+      "candidate_id": "854c95e4b937c0699042",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -322,17 +322,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/tanner.rs2",
+      "path": "scripts/areas/area_karamja/scripts/captain_shanks.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/tanner.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_karamja/scripts/captain_shanks.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-d238c2b2b47f1070a33a"
+      "work_id": "377-854c95e4b937c0699042"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2ede76615425d4577d99",
+      "candidate_id": "572112d77b29180be4b3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -340,17 +340,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/thkebabinstructs.rs2",
+      "path": "scripts/areas/area_karamja/scripts/customs_officer.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/thkebabinstructs.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_karamja/scripts/customs_officer.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-2ede76615425d4577d99"
+      "work_id": "377-572112d77b29180be4b3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9426c517f6c45ad44a85",
+      "candidate_id": "02361543ac50d9241ec6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -358,17 +358,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/thshantaydisc.rs2",
+      "path": "scripts/areas/area_karamja/scripts/customs_officer.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/thshantaydisc.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_karamja/scripts/customs_officer.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-9426c517f6c45ad44a85"
+      "work_id": "377-02361543ac50d9241ec6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a9b78aab68d91dd63f2a",
+      "candidate_id": "af10079b036880c3c4a1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -376,17 +376,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_alkharid/scripts/zeke.rs2",
+      "path": "scripts/areas/area_karamja/scripts/misc_locs.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_alkharid/scripts/zeke.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_karamja/scripts/misc_locs.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-a9b78aab68d91dd63f2a"
+      "work_id": "377-af10079b036880c3c4a1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7b248f43fda4272e214d",
+      "candidate_id": "6c9706c04b1633e883e6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -394,17 +394,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/aemad.rs2",
+      "path": "scripts/areas/area_karamja/scripts/misc_locs.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/aemad.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_karamja/scripts/misc_locs.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-7b248f43fda4272e214d"
+      "work_id": "377-6c9706c04b1633e883e6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "386236ac98ec8bc88b1b",
+      "candidate_id": "c5e5c051b0cd44b1f62f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -412,17 +412,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/archer.rs2",
+      "path": "scripts/areas/area_karamja/scripts/misc_locs.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/archer.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_karamja/scripts/misc_locs.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-386236ac98ec8bc88b1b"
+      "work_id": "377-c5e5c051b0cd44b1f62f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3b80e9a437025492b202",
+      "candidate_id": "684adcb420c72bb6dbee",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -430,17 +430,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/ardounge_monk.rs2",
+      "path": "scripts/areas/area_karamja/scripts/tbwt_tamayu_final.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/ardounge_monk.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_karamja/scripts/tbwt_tamayu_final.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-3b80e9a437025492b202"
+      "work_id": "377-684adcb420c72bb6dbee"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4b22b493cf6f50c9d1ef",
+      "candidate_id": "106867209131eb35a24f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -448,17 +448,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/baker.rs2",
+      "path": "scripts/areas/area_karamja/scripts/tbwt_tiadeche_final.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/baker.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_karamja/scripts/tbwt_tiadeche_final.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-4b22b493cf6f50c9d1ef"
+      "work_id": "377-106867209131eb35a24f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dbdaaa9c8dd4d1f87b4f",
+      "candidate_id": "588e4362e9213b7ea6e8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -466,17 +466,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/bartender.rs2",
+      "path": "scripts/areas/area_karamja/scripts/tbwt_timfraku.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/bartender.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_karamja/scripts/tbwt_timfraku.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-dbdaaa9c8dd4d1f87b4f"
+      "work_id": "377-588e4362e9213b7ea6e8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "39a975958ab655ba132a",
+      "candidate_id": "0c82b6f7d0430141d482",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -484,17 +484,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/brother_cedric.rs2",
+      "path": "scripts/areas/area_karamja/scripts/tbwt_tinsay_final.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/brother_cedric.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_karamja/scripts/tbwt_tinsay_final.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-39a975958ab655ba132a"
+      "work_id": "377-0c82b6f7d0430141d482"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "56b5b3d8b7c07f015c28",
+      "candidate_id": "b2837e3acdb67d22492d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -502,17 +502,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/brother_kojo.rs2",
+      "path": "scripts/areas/area_karamja/scripts/trufitus.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/brother_kojo.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_karamja/scripts/trufitus.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-56b5b3d8b7c07f015c28"
+      "work_id": "377-b2837e3acdb67d22492d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "841b40658d111ee8527e",
+      "candidate_id": "d3ac11022eb45c0d2896",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -520,17 +520,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/brother_omad.rs2",
+      "path": "scripts/areas/area_karamja/scripts/trufitus.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/brother_omad.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_karamja/scripts/trufitus.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-841b40658d111ee8527e"
+      "work_id": "377-d3ac11022eb45c0d2896"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8d290a7859b1f44db778",
+      "candidate_id": "8fbc421c2d7ce1ab4e9f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -538,17 +538,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/captain_barnaby.rs2",
+      "path": "scripts/areas/area_lostcity/scripts/doorman.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/captain_barnaby.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_lostcity/scripts/doorman.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-8d290a7859b1f44db778"
+      "work_id": "377-8fbc421c2d7ce1ab4e9f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "679b44a3c2aacfb390cb",
+      "candidate_id": "0462822f4946273e5f5c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -556,17 +556,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/caroline.rs2",
+      "path": "scripts/areas/area_lostcity/scripts/doorman.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/caroline.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_lostcity/scripts/doorman.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-679b44a3c2aacfb390cb"
+      "work_id": "377-0462822f4946273e5f5c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4953815bdb2af6917b96",
+      "candidate_id": "efe22a380380363aac9f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -574,17 +574,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/doors.rs2",
+      "path": "scripts/areas/area_lostcity/scripts/ladder_fairy.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/doors.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_lostcity/scripts/ladder_fairy.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-4953815bdb2af6917b96"
+      "work_id": "377-efe22a380380363aac9f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "17d9b33568c4c5cd4858",
+      "candidate_id": "19825447a05b1f65262f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -592,17 +592,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/elena.rs2",
+      "path": "scripts/areas/area_lumbridge/scripts/duke_horacio.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/elena.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_lumbridge/scripts/duke_horacio.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-17d9b33568c4c5cd4858"
+      "work_id": "377-19825447a05b1f65262f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d2b504d51fc596e335a9",
+      "candidate_id": "1a1812f32a825518c4d5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -610,17 +610,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/fionella.rs2",
+      "path": "scripts/areas/area_lumbridge/scripts/duke_horacio.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/fionella.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_lumbridge/scripts/duke_horacio.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-d2b504d51fc596e335a9"
+      "work_id": "377-1a1812f32a825518c4d5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f9e4162c0024506dd71c",
+      "candidate_id": "e883b370f35a43a7166d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -628,17 +628,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/fur_trader.rs2",
+      "path": "scripts/areas/area_lumbridge/scripts/duke_horacio.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/fur_trader.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_lumbridge/scripts/duke_horacio.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-f9e4162c0024506dd71c"
+      "work_id": "377-e883b370f35a43a7166d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9d2c1a79a7d8127cb333",
+      "candidate_id": "adc72edfa5c2b1a274a6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -646,17 +646,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/gem_merchant.rs2",
+      "path": "scripts/areas/area_lumbridge/scripts/father_aereck.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/gem_merchant.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_lumbridge/scripts/father_aereck.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-9d2c1a79a7d8127cb333"
+      "work_id": "377-adc72edfa5c2b1a274a6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b7de734d46306ef632af",
+      "candidate_id": "b3b35d184a89d91eadbe",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -664,17 +664,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/guide_book.rs2",
+      "path": "scripts/areas/area_lumbridge/scripts/father_aereck.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/guide_book.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_lumbridge/scripts/father_aereck.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-b7de734d46306ef632af"
+      "work_id": "377-b3b35d184a89d91eadbe"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "404b99340f67f925dd49",
+      "candidate_id": "d37413916223f6c11ffe",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -682,17 +682,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/holgart_ardougne.rs2",
+      "path": "scripts/areas/area_lumbridge/scripts/fred_the_farmer.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/holgart_ardougne.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_lumbridge/scripts/fred_the_farmer.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-404b99340f67f925dd49"
+      "work_id": "377-d37413916223f6c11ffe"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fb7eb3d158ed2174bed9",
+      "candidate_id": "6c9a1cfd0b15a8624fee",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -700,17 +700,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/horacio.rs2",
+      "path": "scripts/areas/area_lumbridge/scripts/fred_the_farmer.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/horacio.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_lumbridge/scripts/fred_the_farmer.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-fb7eb3d158ed2174bed9"
+      "work_id": "377-6c9a1cfd0b15a8624fee"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d59c06ac737762ec81ec",
+      "candidate_id": "b7900be3196d04c59687",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -718,17 +718,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/king_lathas.rs2",
+      "path": "scripts/areas/area_lumbridge/scripts/fred_the_farmer.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/king_lathas.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_lumbridge/scripts/fred_the_farmer.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-d59c06ac737762ec81ec"
+      "work_id": "377-b7900be3196d04c59687"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a80d23abbc3641ceba2f",
+      "candidate_id": "d3486247654dc63ce788",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -736,17 +736,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/man_east_ardougne.rs2",
+      "path": "scripts/areas/area_lumbridge/scripts/man.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/man_east_ardougne.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_lumbridge/scripts/man.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-a80d23abbc3641ceba2f"
+      "work_id": "377-d3486247654dc63ce788"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e84a73f6e0c7a05ee738",
+      "candidate_id": "9dda6f899f4794a930f1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -754,17 +754,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/necromancer_tower.rs2",
+      "path": "scripts/areas/area_lumbridge/scripts/man.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/necromancer_tower.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_lumbridge/scripts/man.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-e84a73f6e0c7a05ee738"
+      "work_id": "377-9dda6f899f4794a930f1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3eead1cb9b4c57c6e783",
+      "candidate_id": "92772c7d1fd8bd8c348e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -772,17 +772,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/rdpt_employee.rs2",
+      "path": "scripts/areas/area_mage_arena/scripts/battle_mage.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/rdpt_employee.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_mage_arena/scripts/battle_mage.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-3eead1cb9b4c57c6e783"
+      "work_id": "377-92772c7d1fd8bd8c348e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "62f16c78edfc02684333",
+      "candidate_id": "4cfcd293cb43ebd1baa9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -790,17 +790,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/siegfried_erkle.rs2",
+      "path": "scripts/areas/area_mage_arena/scripts/chamber.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/siegfried_erkle.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_mage_arena/scripts/chamber.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-62f16c78edfc02684333"
+      "work_id": "377-4cfcd293cb43ebd1baa9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "710370c56267928352e1",
+      "candidate_id": "5077f1a5a248d443943c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -808,17 +808,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/silk_merchant.rs2",
+      "path": "scripts/areas/area_mage_arena/scripts/chamber.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/silk_merchant.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_mage_arena/scripts/chamber.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-710370c56267928352e1"
+      "work_id": "377-5077f1a5a248d443943c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "58e564e9925bb89c7ca8",
+      "candidate_id": "62121a106bf02542b562",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -826,17 +826,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/silver_merchant.rs2",
+      "path": "scripts/areas/area_mage_arena/scripts/god_gear.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/silver_merchant.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_mage_arena/scripts/god_gear.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-58e564e9925bb89c7ca8"
+      "work_id": "377-62121a106bf02542b562"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "83c3f828712fc4663f44",
+      "candidate_id": "8cf5cba18d641a2e8794",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -844,17 +844,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/spice_seller.rs2",
+      "path": "scripts/areas/area_mage_arena/scripts/god_gear.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/spice_seller.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_mage_arena/scripts/god_gear.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-83c3f828712fc4663f44"
+      "work_id": "377-8cf5cba18d641a2e8794"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a43f0844c0f1fb9e83e2",
+      "candidate_id": "db48a442ec2aca73dc06",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -862,17 +862,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/wilderness_lever.rs2",
+      "path": "scripts/areas/area_mage_arena/scripts/kolodion.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/wilderness_lever.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_mage_arena/scripts/kolodion.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-a43f0844c0f1fb9e83e2"
+      "work_id": "377-db48a442ec2aca73dc06"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a87f4c45c827279ecfbd",
+      "candidate_id": "a66d53f22dab1d1ab40d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -880,17 +880,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/wizard_cromperty.rs2",
+      "path": "scripts/areas/area_mage_arena/scripts/kolodion.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/wizard_cromperty.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_mage_arena/scripts/kolodion.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-a87f4c45c827279ecfbd"
+      "work_id": "377-a66d53f22dab1d1ab40d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2ce0e3d658e62bca0d23",
+      "candidate_id": "06dc9fd87030015988c9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -898,17 +898,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/zenesha.rs2",
+      "path": "scripts/areas/area_mage_arena/scripts/mage_arena.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/zenesha.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_mage_arena/scripts/mage_arena.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-2ce0e3d658e62bca0d23"
+      "work_id": "377-06dc9fd87030015988c9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1168a4c1a249c6056022",
+      "candidate_id": "537f6e2f15be3493b30a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -916,17 +916,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_east/scripts/zoo_keeper.rs2",
+      "path": "scripts/areas/area_mage_arena/scripts/mage_arena.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_east/scripts/zoo_keeper.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_mage_arena/scripts/mage_arena.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-1168a4c1a249c6056022"
+      "work_id": "377-537f6e2f15be3493b30a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "289aabcd481b478b9022",
+      "candidate_id": "c7224b234002fdd9cf08",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -934,17 +934,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/carla.rs2",
+      "path": "scripts/areas/area_mage_arena/scripts/mage_arena.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/carla.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_mage_arena/scripts/mage_arena.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-289aabcd481b478b9022"
+      "work_id": "377-c7224b234002fdd9cf08"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3142f868780b9c80c792",
+      "candidate_id": "5f51fc2aacd987aa78be",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -952,17 +952,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/chadwell.rs2",
+      "path": "scripts/areas/area_mausoleum/scripts/holy_barrier.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/chadwell.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_mausoleum/scripts/holy_barrier.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-3142f868780b9c80c792"
+      "work_id": "377-5f51fc2aacd987aa78be"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a7a93ff5be9f957ecf39",
+      "candidate_id": "33e6f618fec4253bc376",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -970,17 +970,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/child.rs2",
+      "path": "scripts/areas/area_mausoleum/scripts/holy_barrier.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/child.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_mausoleum/scripts/holy_barrier.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-a7a93ff5be9f957ecf39"
+      "work_id": "377-33e6f618fec4253bc376"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c7f39d7e8414096a531c",
+      "candidate_id": "d9cd1184345ed1135170",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -988,17 +988,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/civilian.rs2",
+      "path": "scripts/areas/area_mausoleum/scripts/monuments.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/civilian.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_mausoleum/scripts/monuments.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-c7f39d7e8414096a531c"
+      "work_id": "377-d9cd1184345ed1135170"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ae3ca5cf79bdb4a7d1ed",
+      "candidate_id": "1b8803f324da68b9c7c7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1006,17 +1006,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/clerk.rs2",
+      "path": "scripts/areas/area_mausoleum/scripts/well.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/clerk.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_mausoleum/scripts/well.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-ae3ca5cf79bdb4a7d1ed"
+      "work_id": "377-1b8803f324da68b9c7c7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0b15fd9c6aa96439caf1",
+      "candidate_id": "af7c0c1cbe30a434a2ac",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1024,17 +1024,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/darkmage.rs2",
+      "path": "scripts/areas/area_mortmyre/scripts/snail.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/darkmage.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_mortmyre/scripts/snail.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-0b15fd9c6aa96439caf1"
+      "work_id": "377-af7c0c1cbe30a434a2ac"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "11f904b182be493ab2d3",
+      "candidate_id": "a899beda06e8f1087211",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1042,17 +1042,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/doors.rs2",
+      "path": "scripts/areas/area_mortmyre/scripts/vampire.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/doors.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_mortmyre/scripts/vampire.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-11f904b182be493ab2d3"
+      "work_id": "377-a899beda06e8f1087211"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ad6a9ded5c9a40cc8377",
+      "candidate_id": "05c5f838ecfcddee62ed",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1060,17 +1060,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/kilron.rs2",
+      "path": "scripts/areas/area_mortmyre/scripts/vampire_leech.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/kilron.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_mortmyre/scripts/vampire_leech.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-ad6a9ded5c9a40cc8377"
+      "work_id": "377-05c5f838ecfcddee62ed"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b0e49e1ca620eedf62da",
+      "candidate_id": "4d97b61190df8e7d62ab",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1078,17 +1078,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/man.rs2",
+      "path": "scripts/areas/area_paterdomus/scripts/paterdomus_members_gate.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/man.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/areas/area_paterdomus/scripts/paterdomus_members_gate.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-b0e49e1ca620eedf62da"
+      "work_id": "377-4d97b61190df8e7d62ab"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ab870b4110ec986c5886",
+      "candidate_id": "ff165effa52220e09ee8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1096,17 +1096,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/manhole.rs2",
+      "path": "scripts/areas/area_port_sarim/scripts/monk_of_entrana.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/manhole.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_port_sarim/scripts/monk_of_entrana.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-ab870b4110ec986c5886"
+      "work_id": "377-ff165effa52220e09ee8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "62e2d6ffbf145a1f737a",
+      "candidate_id": "7b9ac7854d3b1ca0da0d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1114,17 +1114,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/mourner.rs2",
+      "path": "scripts/areas/area_rimmington/scripts/rommik.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/mourner.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_rimmington/scripts/rommik.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-62e2d6ffbf145a1f737a"
+      "work_id": "377-7b9ac7854d3b1ca0da0d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "471dc7f7df0ba4bbfe64",
+      "candidate_id": "9e9b19b6f3c2b837aed2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1132,17 +1132,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/nurse_sarah.rs2",
+      "path": "scripts/areas/area_seers/scripts/coal_trucks.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/nurse_sarah.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_seers/scripts/coal_trucks.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-471dc7f7df0ba4bbfe64"
+      "work_id": "377-9e9b19b6f3c2b837aed2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "40d8bebe34eba3b1ea5b",
+      "candidate_id": "d768936c7af3b84e6a0f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1150,17 +1150,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/omart.rs2",
+      "path": "scripts/areas/area_seers/scripts/mcgrubors_wood.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/omart.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_seers/scripts/mcgrubors_wood.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-40d8bebe34eba3b1ea5b"
+      "work_id": "377-d768936c7af3b84e6a0f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a0a937b6feed17623272",
+      "candidate_id": "f0b8323166f4d5caeed2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1168,17 +1168,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/priest.rs2",
+      "path": "scripts/areas/area_seers/scripts/thormac.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/priest.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_seers/scripts/thormac.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-a0a937b6feed17623272"
+      "work_id": "377-f0b8323166f4d5caeed2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "48cf877a36f86d61c1ad",
+      "candidate_id": "1650fb23923cbffb1ce5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1186,17 +1186,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/recruiter.rs2",
+      "path": "scripts/areas/area_shilo/scripts/shilo_sandpit.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/recruiter.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_shilo/scripts/shilo_sandpit.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-48cf877a36f86d61c1ad"
+      "work_id": "377-1650fb23923cbffb1ce5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "97dfb4c644328edef314",
+      "candidate_id": "da85509564085da41ec0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1204,17 +1204,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_ardougne_west/scripts/woman.rs2",
+      "path": "scripts/areas/area_shilo/scripts/yohnus.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_ardougne_west/scripts/woman.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_shilo/scripts/yohnus.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-97dfb4c644328edef314"
+      "work_id": "377-da85509564085da41ec0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "74ad7645741b5ffcb4e6",
+      "candidate_id": "ee0ade45120d6ae45198",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1222,17 +1222,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2",
+      "path": "scripts/areas/area_taverly/dungeon/scripts/prison_doors.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_taverly/dungeon/scripts/prison_doors.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-74ad7645741b5ffcb4e6"
+      "work_id": "377-ee0ade45120d6ae45198"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d8aa9980f0ff6e7a4c11",
+      "candidate_id": "891f329fb061cbad55af",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1240,17 +1240,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_barbarian_outpost/scripts/gunnjorn.rs2",
+      "path": "scripts/areas/area_taverly/scripts/crystal_chest.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_barbarian_outpost/scripts/gunnjorn.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/areas/area_taverly/scripts/crystal_chest.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-d8aa9980f0ff6e7a4c11"
+      "work_id": "377-891f329fb061cbad55af"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "eb3767d9c78a4f5056d8",
+      "candidate_id": "2b3c9c783e02930996c7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1258,17 +1258,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_barbarian_outpost/scripts/outpost_gate.rs2",
+      "path": "package-lock.json",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_barbarian_outpost/scripts/outpost_gate.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/package-lock.json",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-eb3767d9c78a4f5056d8"
+      "work_id": "377-2b3c9c783e02930996c7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "79ca44a85fb43839f2d8",
+      "candidate_id": "834f22d11337f8d93ec3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1276,17 +1276,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_barbarian_village/scripts/barbarian.rs2",
+      "path": "package.json",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_barbarian_village/scripts/barbarian.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/package.json",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-79ca44a85fb43839f2d8"
+      "work_id": "377-834f22d11337f8d93ec3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bb9ba06286d16d7b5885",
+      "candidate_id": "24648072aa9ab12c18e2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1294,17 +1294,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_barbarian_village/scripts/beer_barrels.rs2",
+      "path": "src/Compiler.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_barbarian_village/scripts/beer_barrels.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/Compiler.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-bb9ba06286d16d7b5885"
+      "work_id": "377-24648072aa9ab12c18e2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "84cf27089ee9d74d60d7",
+      "candidate_id": "ff656d609740f637c3b9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1312,17 +1312,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_barbarian_village/scripts/gunthor_the_brave.rs2",
+      "path": "src/compiler/ParserErrorListener.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_barbarian_village/scripts/gunthor_the_brave.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/ParserErrorListener.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-84cf27089ee9d74d60d7"
+      "work_id": "377-ff656d609740f637c3b9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e217cbfdeef7db0b26ce",
+      "candidate_id": "ca9ba28fd18f13192c49",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1330,17 +1330,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_barbarian_village/scripts/peksa.rs2",
+      "path": "src/compiler/ScriptCompiler.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_barbarian_village/scripts/peksa.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/ScriptCompiler.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-e217cbfdeef7db0b26ce"
+      "work_id": "377-ca9ba28fd18f13192c49"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "990547a3453484f5478e",
+      "candidate_id": "d52b41523590858ccac6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1348,17 +1348,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_brimhaven/scripts/alfonse_the_waiter.rs2",
+      "path": "src/compiler/StrictFeatureLevel.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_brimhaven/scripts/alfonse_the_waiter.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/StrictFeatureLevel.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-990547a3453484f5478e"
+      "work_id": "377-d52b41523590858ccac6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3e1431b03b94ae36f81a",
+      "candidate_id": "e35b98bbe24cbf6daf97",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1366,17 +1366,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_brimhaven/scripts/bartender.rs2",
+      "path": "src/compiler/codegen/CodeGenerator.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_brimhaven/scripts/bartender.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/CodeGenerator.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-3e1431b03b94ae36f81a"
+      "work_id": "377-e35b98bbe24cbf6daf97"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ef44e4de2d0dbd3adafa",
+      "candidate_id": "75fa1dfb117a9fb9d3c3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1384,17 +1384,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_brimhaven/scripts/davon.rs2",
+      "path": "src/compiler/codegen/Instruction.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_brimhaven/scripts/davon.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/Instruction.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-ef44e4de2d0dbd3adafa"
+      "work_id": "377-75fa1dfb117a9fb9d3c3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "45fb105da66271193c95",
+      "candidate_id": "d3610540a113aa56c8e1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1402,17 +1402,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_brimhaven/scripts/hajedy.rs2",
+      "path": "src/compiler/codegen/Opcode.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_brimhaven/scripts/hajedy.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/Opcode.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-45fb105da66271193c95"
+      "work_id": "377-d3610540a113aa56c8e1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6e51b71fbc4009c2743c",
+      "candidate_id": "81bf6696039f872c64c0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1420,17 +1420,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_brimhaven/scripts/kangai_mau.rs2",
+      "path": "src/compiler/codegen/script/Block.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_brimhaven/scripts/kangai_mau.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/script/Block.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-6e51b71fbc4009c2743c"
+      "work_id": "377-81bf6696039f872c64c0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9fbc93cb487f26bca826",
+      "candidate_id": "165cc5a64c05ced92904",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1438,17 +1438,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_brimhaven/scripts/pineapple_plants.rs2",
+      "path": "src/compiler/codegen/script/Label.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_brimhaven/scripts/pineapple_plants.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/script/Label.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-9fbc93cb487f26bca826"
+      "work_id": "377-165cc5a64c05ced92904"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "54f4fb53217959774283",
+      "candidate_id": "60d95f69381f2b309ea9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1456,17 +1456,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_brimhaven/scripts/pirate_guard.rs2",
+      "path": "src/compiler/codegen/script/LabelGenerator.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_brimhaven/scripts/pirate_guard.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/script/LabelGenerator.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-54f4fb53217959774283"
+      "work_id": "377-60d95f69381f2b309ea9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3cf38d613c33e9522a6a",
+      "candidate_id": "6d153d5474f1d846691d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1474,17 +1474,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_burthorpe/scripts/citizen_burthrope.rs2",
+      "path": "src/compiler/codegen/script/RuneScript.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_burthorpe/scripts/citizen_burthrope.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/script/RuneScript.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-3cf38d613c33e9522a6a"
+      "work_id": "377-6d153d5474f1d846691d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1a4771377d6e73dc4ae0",
+      "candidate_id": "bbb378bde3a99d0d509a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1492,17 +1492,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_burthorpe/scripts/death_cook.rs2",
+      "path": "src/compiler/codegen/script/SwitchTable.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_burthorpe/scripts/death_cook.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/script/SwitchTable.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-1a4771377d6e73dc4ae0"
+      "work_id": "377-bbb378bde3a99d0d509a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "933d293745dc272e27fa",
+      "candidate_id": "6cbf7eb1e2b2d363eda2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1510,17 +1510,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_burthorpe/scripts/death_guard.rs2",
+      "path": "src/compiler/codegen/script/config/GraphGenerator.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_burthorpe/scripts/death_guard.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/script/config/GraphGenerator.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-933d293745dc272e27fa"
+      "work_id": "377-6cbf7eb1e2b2d363eda2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c8387679d7e0ea33ca23",
+      "candidate_id": "d661e637483711ec12c2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1528,17 +1528,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_burthorpe/scripts/death_servant.rs2",
+      "path": "src/compiler/codegen/script/config/InstructionNode.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_burthorpe/scripts/death_servant.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/script/config/InstructionNode.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-c8387679d7e0ea33ca23"
+      "work_id": "377-d661e637483711ec12c2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "75fe0b6d373848c824a9",
+      "candidate_id": "3fbf5ef699fbdeb49b01",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1546,17 +1546,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_burthorpe/scripts/death_shopkeeper.rs2",
+      "path": "src/compiler/codegen/script/config/PointerChecker.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_burthorpe/scripts/death_shopkeeper.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/script/config/PointerChecker.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-75fe0b6d373848c824a9"
+      "work_id": "377-3fbf5ef699fbdeb49b01"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b3da6366ec59a2bf7060",
+      "candidate_id": "fdc1ddb5108cc42f88a9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1564,17 +1564,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_burthorpe/scripts/death_troll_thrower.rs2",
+      "path": "src/compiler/codegen/script/config/PointerInstructionNode.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_burthorpe/scripts/death_troll_thrower.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/codegen/script/config/PointerInstructionNode.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-b3da6366ec59a2bf7060"
+      "work_id": "377-fdc1ddb5108cc42f88a9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "831962f632b769d11546",
+      "candidate_id": "84789a4129f502dffbb4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1582,17 +1582,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_burthorpe/scripts/death_white_knight.rs2",
+      "path": "src/compiler/configuration/SymbolLoader.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_burthorpe/scripts/death_white_knight.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/configuration/SymbolLoader.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-831962f632b769d11546"
+      "work_id": "377-84789a4129f502dffbb4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "36582922ab3c41abdfb1",
+      "candidate_id": "0993a5cf2a48ddd0c582",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1600,17 +1600,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_burthorpe/scripts/tostig.rs2",
+      "path": "src/compiler/configuration/command/CodeGeneratorContext.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_burthorpe/scripts/tostig.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/configuration/command/CodeGeneratorContext.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-36582922ab3c41abdfb1"
+      "work_id": "377-0993a5cf2a48ddd0c582"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "64500eaf7e2dc31cdc65",
+      "candidate_id": "5ee284cc4679012d5548",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1618,17 +1618,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_camelot/scripts/king_arthur.rs2",
+      "path": "src/compiler/configuration/command/DynamicCommandHandler.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_camelot/scripts/king_arthur.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/configuration/command/DynamicCommandHandler.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-64500eaf7e2dc31cdc65"
+      "work_id": "377-5ee284cc4679012d5548"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5ae848ad1430ed1afc13",
+      "candidate_id": "b87cb54c1bf987c173ab",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1636,17 +1636,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_camelot/scripts/merlin.rs2",
+      "path": "src/compiler/configuration/command/TypeCheckingContext.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_camelot/scripts/merlin.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/configuration/command/TypeCheckingContext.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-5ae848ad1430ed1afc13"
+      "work_id": "377-b87cb54c1bf987c173ab"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fa982db61a2775244d75",
+      "candidate_id": "9c435305ef2a896bf90f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1654,17 +1654,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_camelot/scripts/sir_bedivere.rs2",
+      "path": "src/compiler/diagnostics/Diagnostic.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_camelot/scripts/sir_bedivere.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/diagnostics/Diagnostic.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-fa982db61a2775244d75"
+      "work_id": "377-9c435305ef2a896bf90f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3976ef07569b3e938cd6",
+      "candidate_id": "ed91618de3c580eba071",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1672,17 +1672,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_camelot/scripts/sir_gawain.rs2",
+      "path": "src/compiler/diagnostics/DiagnosticMessage.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_camelot/scripts/sir_gawain.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/diagnostics/DiagnosticMessage.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-3976ef07569b3e938cd6"
+      "work_id": "377-ed91618de3c580eba071"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e9ddee189c51492c0f7a",
+      "candidate_id": "2e0ed3d7c02dc5e0a18b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1690,17 +1690,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_camelot/scripts/sir_kay.rs2",
+      "path": "src/compiler/diagnostics/DiagnosticType.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_camelot/scripts/sir_kay.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/diagnostics/DiagnosticType.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-e9ddee189c51492c0f7a"
+      "work_id": "377-2e0ed3d7c02dc5e0a18b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b0e72f8b3471a71e4685",
+      "candidate_id": "9a57935ca6ddece9e813",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1708,17 +1708,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_camelot/scripts/sir_lancelot.rs2",
+      "path": "src/compiler/diagnostics/Diagnostics.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_camelot/scripts/sir_lancelot.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/diagnostics/Diagnostics.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-b0e72f8b3471a71e4685"
+      "work_id": "377-9a57935ca6ddece9e813"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "06b99b72504ff814d9f5",
+      "candidate_id": "c564006ea395bdd974da",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1726,17 +1726,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_camelot/scripts/sir_lucan.rs2",
+      "path": "src/compiler/diagnostics/DiagnosticsHandler.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_camelot/scripts/sir_lucan.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/diagnostics/DiagnosticsHandler.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-06b99b72504ff814d9f5"
+      "work_id": "377-c564006ea395bdd974da"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "08b01ba5d5ab3d79026e",
+      "candidate_id": "ce78e07edf4d8e2a7400",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1744,17 +1744,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_camelot/scripts/sir_palomedes.rs2",
+      "path": "src/compiler/pointer/PointerHolder.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_camelot/scripts/sir_palomedes.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/pointer/PointerHolder.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-08b01ba5d5ab3d79026e"
+      "work_id": "377-ce78e07edf4d8e2a7400"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "605bdbf5d0ed5688a120",
+      "candidate_id": "165a25dbd37a9d8b6951",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1762,17 +1762,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_camelot/scripts/sir_pelleas.rs2",
+      "path": "src/compiler/pointer/PointerType.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_camelot/scripts/sir_pelleas.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/pointer/PointerType.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-605bdbf5d0ed5688a120"
+      "work_id": "377-165a25dbd37a9d8b6951"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0e2b3a5ce4e77ddc50e5",
+      "candidate_id": "63ee59920fb5c4147b67",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1780,17 +1780,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_camelot/scripts/sir_tristram.rs2",
+      "path": "src/compiler/preprocess/MacroProcessor.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_camelot/scripts/sir_tristram.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/preprocess/MacroProcessor.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-0e2b3a5ce4e77ddc50e5"
+      "work_id": "377-63ee59920fb5c4147b67"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c8914ca2996bf2715887",
+      "candidate_id": "a0f5b7a3d608c0d46168",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1798,13 +1798,13 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/areas/area_canafis/scripts/barker.rs2",
+      "path": "src/compiler/semantics/ScriptRegistration.ts",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_canafis/scripts/barker.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "reference_url": "https://github.com/LostCityRS/RuneScriptTS/blob/c4545540015e49e21b0747099d65132c697e5a42/src/compiler/semantics/ScriptRegistration.ts",
+      "source": "LostCityRS/RuneScriptTS",
+      "source_commit_sha": "c4545540015e49e21b0747099d65132c697e5a42",
       "status": "awaiting_agent_review",
-      "work_id": "377-c8914ca2996bf2715887"
+      "work_id": "377-a0f5b7a3d608c0d46168"
     }
   ]
 }

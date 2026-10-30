@@ -1,5 +1,53 @@
 // JoshRS original NPC definitions, no binary art or cache data.
 
+[joshrs_ore_buyer]
+name=Ore Buyer
+desc=I pay eight coins for two pieces of copper ore.
+model1=idk_man_hair_wildspikes
+model2=idk_man_jaw_none
+model3=obj_priest_gown_manwear
+model4=obj_viking_top_darkbrown_manwear
+model5=obj_macro_mime_legs_manwear
+head1=idk_man_hair_wildspikes_head
+walkanim=human_walk_f,human_walk_b,human_walk_l,human_walk_r
+readyanim=human_ready
+op1=Talk-to
+wanderrange=0
+maxrange=2
+moverestrict=nomove
+
+[joshrs_timber_buyer]
+name=Timber Buyer
+desc=I pay twelve coins for three ordinary logs.
+model1=idk_man_hair_wildspikes
+model2=idk_man_jaw_none
+model3=obj_priest_gown_manwear
+model4=obj_viking_top_darkbrown_manwear
+model5=obj_macro_mime_legs_manwear
+head1=idk_man_hair_wildspikes_head
+walkanim=human_walk_f,human_walk_b,human_walk_l,human_walk_r
+readyanim=human_ready
+op1=Talk-to
+wanderrange=0
+maxrange=2
+moverestrict=nomove
+
+[joshrs_trail_provisioner]
+name=Trail Provisioner
+desc=A hot meal costs four coins if your pack has room.
+model1=idk_man_hair_wildspikes
+model2=idk_man_jaw_none
+model3=obj_priest_gown_manwear
+model4=obj_viking_top_darkbrown_manwear
+model5=obj_macro_mime_legs_manwear
+head1=idk_man_hair_wildspikes_head
+walkanim=human_walk_f,human_walk_b,human_walk_l,human_walk_r
+readyanim=human_ready
+op1=Talk-to
+wanderrange=0
+maxrange=2
+moverestrict=nomove
+
 [joshrs_woodland_guide]
 name=Woodland Guide
 desc=An original guide who welcomes explorers to the woodland trail.

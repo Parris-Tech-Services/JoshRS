@@ -5,18 +5,26 @@
   "runtime_login_verified": false,
   "persistent_npc_spawns": false,
   "includes_player_save_changes": false,
-  "gameplay_scope": "Named NPC definitions, Talk-to dialogue and debug-session spawn commands; no native inventory item or persistent quest",
+  "gameplay_scope": "Original guide and three inventory-checked NPC trades for logs, copper ore and cooked meat; debug-session spawns only; no persistent quest",
   "files": [
     {
       "path": "scripts/areas/joshrs_custom/configs/joshrs_original.npc",
-      "sha256": "959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556"
+      "sha256": "9de0448895e455ff076f8a50ed019e4a0ef07527e197889fad6a37a9e7f50a20"
     },
     {
       "path": "scripts/areas/joshrs_custom/scripts/joshrs_original.rs2",
-      "sha256": "3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3"
+      "sha256": "7b2f053b9098572c5b3c6492a4cfafcc96f03ffe1b2895c9a41095e920431415"
     }
   ],
   "npc_names": [
+    "joshrs_ore_buyer",
+    "joshrs_timber_buyer",
+    "joshrs_trail_provisioner",
     "joshrs_woodland_guide"
+  ],
+  "gameplay_mechanics": [
+    "joshrs_ore_buyer",
+    "joshrs_timber_buyer",
+    "joshrs_trail_provisioner"
   ]
 }
