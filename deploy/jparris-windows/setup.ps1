@@ -116,6 +116,15 @@ if ($CheckOnly) {
     exit 0
 }
 
+# Do not switch the active world or migrate saves during a running game.
+# This check applies to direct command-line USB imports, not only the GUI.
+if ($UsbPath -and (Test-Path -LiteralPath $activeFile -PathType Leaf)) {
+    . (Join-Path $PSScriptRoot 'support.ps1')
+    $previous=Get-JoshRSStatus -RepoRoot $repo
+    if ($previous.GamePortOpen -or $previous.WebPortOpen) {
+        throw 'Your existing JoshRS world has an active port. Stop the server gracefully before importing another USB snapshot.'
+    }
+}
 Check-Requirements
 New-Item -ItemType Directory -Path $runtime -Force | Out-Null
 
