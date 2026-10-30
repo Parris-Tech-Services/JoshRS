@@ -1,0 +1,81 @@
+name: Verify native 377 content pack
+on:
+  pull_request:
+    paths:
+      - "content-factory/native377.py"
+      - "content-factory/generated/native377/**"
+      - "content-factory/intake/**"
+      - "content-factory/tests/**"
+      - ".github/workflows/377-native-compile.yml"
+  push:
+    branches: [main]
+    paths:
+      - "content-factory/native377.py"
+      - "content-factory/generated/native377/**"
+      - "content-factory/intake/**"
+      - "content-factory/tests/**"
+      - ".github/workflows/377-native-compile.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile-disposable-377:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Run Python safety tests
+        run: python -m unittest discover -s content-factory/tests -v
+      - name: Generate and verify immutable original content overlay
+        shell: bash
+        run: |
+          python content-factory/native377.py
+          git diff --exit-code -- content-factory/generated/native377
+          python content-factory/prepare_377_overlay.py --source content-factory/generated/native377 --dest "$RUNNER_TEMP/overlay-check"
+      - name: Clone exact pinned Lost City 377 engine/content in disposable runner
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          m=json.loads(Path("deploy/jparris-windows/upstreams.json").read_text())
+          root=Path(os.environ["RUNNER_TEMP"])/"joshrs-377-build"
+          root.mkdir(parents=True,exist_ok=True)
+          for key in ("engine","content"):
+              item=m[key]; directory=root/key
+              subprocess.run(["git","clone","--depth","1","--single-branch","--branch",item["branch"],item["url"],str(directory)],check=True)
+              actual=subprocess.check_output(["git","-C",str(directory),"rev-parse","HEAD"],text=True).strip()
+              if actual!=item["commit"]:
+                  subprocess.run(["git","-C",str(directory),"fetch","--depth","1","origin",item["commit"]],check=True)
+                  subprocess.run(["git","-C",str(directory),"checkout","--detach",item["commit"]],check=True)
+              actual=subprocess.check_output(["git","-C",str(directory),"rev-parse","HEAD"],text=True).strip()
+              if actual!=item["commit"]: raise SystemExit("Upstream pin mismatch")
+              print(key, actual)
+          PY
+      - name: Apply text-only overlay to disposable upstream content
+        shell: bash
+        run: |
+          python content-factory/prepare_377_overlay.py --source content-factory/generated/native377 --dest "$RUNNER_TEMP/joshrs-377-build/content"
+      - name: Compile with the actual Lost City 377 packer
+        shell: bash
+        env:
+          BUILD_SRC_DIR: ../content
+          BUILD_VERIFY: "true"
+          BUILD_VERIFY_PACK: "true"
+        run: |
+          cd "$RUNNER_TEMP/joshrs-377-build/engine"
+          npm ci --no-audit --no-fund
+          npm run build
+          test -s data/pack/server/script.dat
+          test -s data/pack/server/script.idx
+          echo "Native 377 RuneScript compiler/packer produced nonempty script files."
