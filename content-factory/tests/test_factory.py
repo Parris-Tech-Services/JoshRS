@@ -81,5 +81,14 @@ class FactoryTests(unittest.TestCase):
             self.assertFalse(q['tasks'][0]['automatically_installed'])
             self.assertEqual(q['tasks'][1]['status'], 'blocked_rights_review')
 
+    def test_cheats_not_promoted_to_agent_queue(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            dest = Path(tmp)
+            factory.put_json(dest/'packs/test.json', {'candidates': [
+                {'id':'x','status':'agent_review_required','source':'lostcity-content-377','repo':'a/b','path':'scripts/_test/scripts/cheats/cheat.rs2','url':'https://github.com/a/b'},
+                {'id':'y','status':'agent_review_required','source':'lostcity-content-377','repo':'a/b','path':'scripts/areas/area_alkharid/scripts/tanner.rs2','url':'https://github.com/a/b'}]})
+            tasks = factory.prepare_agent_queue(dest)['tasks']
+            self.assertEqual([t['candidate_id'] for t in tasks], ['y'])
+
 if __name__ == '__main__':
     unittest.main()
