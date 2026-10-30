@@ -36,8 +36,11 @@ jobs:
       - name: Build only legacy Parcel's deasync native binding in disposable runner
         working-directory: runtime/web377-build-test
         run: npm rebuild deasync --no-audit --no-fund
-      - name: Add Rust WebAssembly target for legacy client renderer
-        run: rustup target add wasm32-unknown-unknown
+      - name: Pin compatible Rust toolchain for 2020 WebAssembly dependencies
+        run: |
+          rustup toolchain install 1.68.2 --profile minimal
+          rustup target add wasm32-unknown-unknown --toolchain 1.68.2
+          rustup run 1.68.2 rustc --version
       - uses: jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa
         with:
           version: v0.13.1
@@ -45,6 +48,7 @@ jobs:
         working-directory: runtime/web377-build-test
         env:
           NODE_OPTIONS: --openssl-legacy-provider
+          RUSTUP_TOOLCHAIN: 1.68.2
         run: |
           npm run build
           test -f dist/index.html
