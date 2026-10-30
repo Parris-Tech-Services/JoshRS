@@ -1,0 +1,22 @@
+name: Elrothiro save-format integrity
+on:
+  push:
+    paths:
+      - 'tools/rs377-saves/**'
+      - '.github/workflows/elrothiro-save.yml'
+  pull_request:
+    paths:
+      - 'tools/rs377-saves/**'
+      - '.github/workflows/elrothiro-save.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node --test tools/rs377-saves/test/*.test.mjs
