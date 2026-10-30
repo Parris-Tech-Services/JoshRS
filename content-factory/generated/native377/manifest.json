@@ -5,28 +5,8 @@
   "runtime_login_verified": false,
   "persistent_npc_spawns": false,
   "includes_player_save_changes": false,
-  "gameplay_scope": "Original NPC interactions: seven server-side trades for resources, food, runes, crafting and tools; debug-session spawns only; no persistent quest",
-  "files": [
-    {
-      "path": "scripts/areas/joshrs_custom/configs/joshrs_original.npc",
-      "sha256": "1f60323e7478da0f0ff8845b19f850647c9818f301ad4a51eb78fef3dfdfd3bf"
-    },
-    {
-      "path": "scripts/areas/joshrs_custom/scripts/joshrs_original.rs2",
-      "sha256": "59c332a8d528b7dbdacbe468f45df3bc4cbb618396967d22dbddc1c9eda8cdfc"
-    }
-  ],
-  "npc_names": [
-    "joshrs_crafting_supplier",
-    "joshrs_law_rune_vendor",
-    "joshrs_nature_rune_vendor",
-    "joshrs_ore_buyer",
-    "joshrs_timber_buyer",
-    "joshrs_tool_supplier",
-    "joshrs_trail_provisioner",
-    "joshrs_woodland_guide"
-  ],
-  "gameplay_mechanics": [
+  "gameplay_scope": "Only the original woodland guide; speculative shops and duplicate item suppliers retired, no new gameplay trade claimed",
+  "retired_unrequested_merchant_keys": [
     "joshrs_crafting_supplier",
     "joshrs_law_rune_vendor",
     "joshrs_nature_rune_vendor",
@@ -34,5 +14,20 @@
     "joshrs_timber_buyer",
     "joshrs_tool_supplier",
     "joshrs_trail_provisioner"
-  ]
+  ],
+  "feature_gap_evidence_required": true,
+  "files": [
+    {
+      "path": "scripts/areas/joshrs_custom/configs/joshrs_original.npc",
+      "sha256": "959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556"
+    },
+    {
+      "path": "scripts/areas/joshrs_custom/scripts/joshrs_original.rs2",
+      "sha256": "3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3"
+    }
+  ],
+  "npc_names": [
+    "joshrs_woodland_guide"
+  ],
+  "gameplay_mechanics": []
 }
