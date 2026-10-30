@@ -113,3 +113,8 @@ These are *audit candidates*, **not claims of missing quests**. Capture quest-st
 - https://github.com/LostCityRS/Engine-TS/tree/377-wip — applicable game engine source.
 - https://github.com/LostCityRS/Content/tree/377-wip — matching content script reference.
 - https://github.com/Parris-Tech-Services/JoshRS/blob/main/deploy/jparris-windows/README.md — local imported 377 runtime & save safeguards.
+
+## Implementation progress (31 October 2026)
+
+- INT-05 / Q-07 — **Haunted Manor secret bookcase route: experimental targeted source patch prepared.** Pinned `quest_haunted.rs2` explicitly flags player-relative single-zone iteration as broken. The 377 engine confirms `LOC_FINDALLZONE` uses one zone. JoshRS `content-factory/patch_377_haunted.py` is fail-closed, idempotent and backs up the original source. Native CI builds a disposable world with the patch. **Do not mark the quest or route playable:** real game location/quest-stage tests on a disposable account remain outstanding, as does installation into the user's customised source.
+- Independent original Woodlands: local bank-cap and resource transaction conservation was fixed and tested in JoshRS PR #31, but that does **not** resolve the native 377 banking or independent multiplayer requirements.

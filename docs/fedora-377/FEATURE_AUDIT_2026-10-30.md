@@ -63,3 +63,9 @@ These are source-triage candidates, not yet marked as fixed:
 - [#29: reproduce and repair real interaction bugs](https://github.com/Parris-Tech-Services/JoshRS/issues/29): includes Haunted Manor route, Troll Romance sled, banking, shops and quest-specific doors/ladders. These are **not** marked fixed by this file.
 - [#30: local client and save evidence](https://github.com/Parris-Tech-Services/JoshRS/issues/30): test with disposable characters; preserve Elrothiro's production world.
 - [#28: historic cross-project gameplay comparison](https://github.com/Parris-Tech-Services/JoshRS/issues/28): no whole-game playable percentages have been proven.
+
+## 31 October 2026 — Haunted Manor source fix candidate
+
+The **exact pinned** Lost City revision-377 file `scripts/quests/quest_haunted/scripts/quest_haunted.rs2` contains a TODO stating that the bookcase door-opening route is broken when the player stands across a zone boundary (the lever route works). The pinned engine's `LOC_FINDALLZONE` iterator searches one eight-by-eight zone rather than all nearby zones. This is a concrete source-level defect, **not** a claim that every local saved world has the same bug.
+
+A narrowly scoped original code-only patch is staged in `content-factory/patch_377_haunted.py`. It locates each existing bookcase using the pinned proximity lookup across zones, requires both before moving the player, and backs up any original source before modification. The disposable 377 CI compiles it against the exact locked engine and content. **The live player interaction and quest completion are still NOT verified**, and no user's private world was patched in CI. Keep the in-game acceptance item open until a clean test character traverses both bookcase routes, pulls the lever, and logs out/reconnects with quest state preserved.
