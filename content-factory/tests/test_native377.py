@@ -8,6 +8,8 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import native377
 
+HERE_INTAKE = Path(__file__).resolve().parents[1] / 'intake'
+
 class Native377Tests(unittest.TestCase):
     def test_native_npc_overlay_is_reproducible_and_saves_safe(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -47,5 +49,23 @@ class Native377Tests(unittest.TestCase):
             out=Path(tmp)/'out';out.mkdir()
             (out/'unknown.dat').write_bytes(b'not allowed')
             with self.assertRaises(ValueError): native377.build_native(intake,out)
+
+    def test_three_real_trade_interactions_have_payment_and_capacity_guards(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target=Path(tmp)/'overlay'
+            manifest=native377.build_native(HERE_INTAKE, target)
+            self.assertEqual(set(manifest['gameplay_mechanics']),
+                             {'joshrs_timber_buyer','joshrs_ore_buyer','joshrs_trail_provisioner'})
+            self.assertEqual(len(manifest['npc_names']),4)
+            script=(target/'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2').read_text()
+            for item,needed,output,count in [('logs',3,'coins',12),('copper_ore',2,'coins',8),('coins',4,'cooked_meat',1)]:
+                self.assertIn(f'if (inv_total(inv, {item}) < {needed})',script)
+                self.assertIn(f'inv_del(inv, {item}, {needed});',script)
+                self.assertIn(f'inv_add(inv, {output}, {count});',script)
+            self.assertIn('if (inv_freespace(inv) < 1)',script)
+            for key in manifest['npc_names']:
+                self.assertIn('[opnpc1,'+key+']',script)
+                self.assertIn('[debugproc,joshrs_spawn_'+key+']',script)
+            self.assertEqual(script.count('inv_del(inv,'),3)
 
 if __name__=='__main__': unittest.main()
