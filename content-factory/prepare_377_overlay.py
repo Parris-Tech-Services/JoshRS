@@ -15,8 +15,8 @@ ALLOWED_PREFIX = ("scripts", "areas", "joshrs_custom")
 ALLOWED_EXT = {".rs2", ".npc"}
 # The exact two approved v1 outputs are the only upgradeable predecessors.
 APPROVED_PRIOR_HASHES = {
-    'scripts/areas/joshrs_custom/configs/joshrs_original.npc': '959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556',
-    'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2': '3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3'
+    'scripts/areas/joshrs_custom/configs/joshrs_original.npc': ('959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556', '9de0448895e455ff076f8a50ed019e4a0ef07527e197889fad6a37a9e7f50a20'),
+    'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2': ('3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3', '7b2f053b9098572c5b3c6492a4cfafcc96f03ffe1b2895c9a41095e920431415')
 }
 
 
