@@ -1,6 +1,6 @@
 # JoshRS 377 — one autonomous server-side woodcutter (experimental)
 
-**Status:** opt-in source patch for the **LostCityRS/Engine-TS `377-wip` branch**. This is not a deployed or play-tested bot on Josh's Fedora server yet. It does not modify the live JoshRS launcher or existing game saves.
+**Status:** opt-in source patch for **LostCityRS/Engine-TS `377-wip`**. **Verified in disposable GitHub Actions world:** compiled, started, active virtual player slot 1, selected real APLOC tree at 3099,3242, and gained a log plus 250 internal Woodcutting XP. [Full workflow evidence](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41004614145). **Not installed or personally play-tested on Josh's Fedora server.** Existing human game saves and public JoshRS launcher are unchanged.
 
 ## What this first bot does
 
@@ -47,7 +47,7 @@ JOSHRS_WOODCUTTER=1 npm run quickstart
 
 To disable, restart normally *without* setting `JOSHRS_WOODCUTTER=1`. Removing the patch completely requires restoring the backed-up `src/app.ts` and `src/engine/World.ts` and deleting `src/engine/bot/WoodcutterBot.ts` after taking a fresh copy of any local source edits.
 
-## Live acceptance (not yet verified)
+## Fedora live acceptance (not yet verified)
 
 1. Server starts on its existing ports with `JOSHRS_WOODCUTTER=1`; exactly one `oakwalker` appears, no duplicates after restarts.
 2. Second real client logs in independently and **sees** oakwalker in Draynor (not a fake NPC).
