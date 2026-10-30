@@ -55,8 +55,9 @@ function Ask-Yes([string]$message,[string]$heading='Please confirm') {
         [System.Windows.Forms.MessageBoxDefaultButton]::Button2)
     return ($answer -eq [System.Windows.Forms.DialogResult]::Yes)
 }
-function Start-GameTask([string]$file,[string]$path='') {
+function Start-GameTask([string]$file,[string]$path='',[switch]$SkipStart) {
     $extra=if($path){' -UsbPath "'+$path+'"'}else{''}
+    if ($SkipStart) { $extra += ' -SkipStart' }
     $arguments='-NoProfile -NoExit -ExecutionPolicy Bypass -File "'+$file+'"'+$extra
     Start-Process -FilePath 'powershell.exe' -ArgumentList $arguments -WorkingDirectory $script:RepoRoot
     $script:Hint.Text='A separate Windows terminal was opened. Setup and game output appear there.'
@@ -84,10 +85,11 @@ function Update-Dashboard {
         $script:DetailLabel.Text="Installed: $($s.Source). Game $($s.GamePort), HTTP $($s.WebPort)."
     }
     $script:SaveLabel.Text="Player save files: $($s.SaveCount)    Account database: $(if($s.DatabasePresent){'found'}else{'not found'})"
-    $script:StartButton.Enabled=$ready
+    $script:StartButton.Enabled=($ready -and -not ($s.GamePortOpen -xor $s.WebPortOpen))
+    $script:CleanButton.Text=if($ready){'CHECK / REPAIR INSTALLATION'}else{'INSTALL A CLEAN 377 WORLD'}
     $script:BackupButton.Enabled=($ready -and -not $s.GamePortOpen -and -not $s.WebPortOpen -and
         ($s.SavePresent -or $s.DatabasePresent))
-    $script:CleanButton.Enabled= -not $ready
+    $script:CleanButton.Enabled= -not ($s.GamePortOpen -or $s.WebPortOpen)
     $script:ImportButton.Enabled= -not ($s.GamePortOpen -or $s.WebPortOpen)
 }
 
@@ -121,10 +123,11 @@ $script:CleanButton=Add-Action $script:Form 'INSTALL A CLEAN 377 WORLD' 34 376 3
 $script:BackupButton=Add-Action $script:Form 'BACK UP MY PLAYER SAVES' 428 376 386 60 '#273D58' '#FFFFFF'
 
 [void](Add-Text $script:Form 'TOOLS & SUPPORT' 36 460 300 24 10 $true '#A9BBD2')
-$refresh=Add-Action $script:Form 'Refresh status' 34 492 183 47
-$diagnostics=Add-Action $script:Form 'Diagnostics' 226 492 184 47
-$openFiles=Add-Action $script:Form 'Game files' 420 492 191 47
-$openBackups=Add-Action $script:Form 'Backups' 620 492 194 47
+$refresh=Add-Action $script:Form 'Refresh status' 34 492 145 47
+$diagnostics=Add-Action $script:Form 'Diagnostics' 187 492 145 47
+$viewLogs=Add-Action $script:Form 'View logs' 340 492 145 47
+$openFiles=Add-Action $script:Form 'Game files' 493 492 145 47
+$openBackups=Add-Action $script:Form 'Backups' 646 492 168 47
 
 $script:SaveLabel=Add-Text $script:Form '' 36 552 775 23 10 $false '#BECFE3'
 $script:Hint=Add-Text $script:Form 'Local-only. No hosting subscription, WSL or router port forwarding required.' 36 582 779 32 10 $false '#96AFC9'
@@ -159,8 +162,17 @@ $script:ImportButton.Add_Click({
 })
 $script:CleanButton.Add_Click({
     try {
-        if (-not (Ask-Yes 'Install a NEW, clean revision-377 world? This will NOT contain your Fedora modifications or original Elrothiro progress.' 'Install clean world')) { return }
-        Start-GameTask (Join-Path $PSScriptRoot 'setup.ps1')
+        $s=Get-JoshRSStatus -RepoRoot $script:RepoRoot
+        if ($s.GamePortOpen -or $s.WebPortOpen) {
+            throw 'Stop the running server before checking or repairing its installed files.'
+        }
+        if ($s.Configured) {
+            if (-not (Ask-Yes 'Check and repair the CURRENT installed revision-377 world? This reinstalls dependencies, performs non-destructive SQLite migrations, recompiles the Java client and backs up character data before changes. It does not reset saves or switch to a clean game.' 'Repair existing world')) { return }
+            Start-GameTask (Join-Path $PSScriptRoot 'setup.ps1') '' -SkipStart
+        } else {
+            if (-not (Ask-Yes 'Install a NEW, clean revision-377 world? This will NOT contain your Fedora modifications or original Elrothiro progress.' 'Install clean world')) { return }
+            Start-GameTask (Join-Path $PSScriptRoot 'setup.ps1')
+        }
     } catch { Show-Problem $_.Exception.Message }
 })
 $script:BackupButton.Add_Click({
@@ -181,6 +193,16 @@ $diagnostics.Add_Click({
         Show-Note $message 'JoshRS diagnostics'
     } catch { Show-Problem $_.Exception.Message }
 })
+$viewLogs.Add_Click({
+    try {
+        $latest=Get-JoshRSRecentLogFile -RepoRoot $script:RepoRoot
+        if (-not $latest) {
+            Show-Note 'No startup logs have been recorded yet. Launch or repair JoshRS first.' 'JoshRS logs'
+            return
+        }
+        Start-Process -FilePath 'notepad.exe' -ArgumentList ('"'+$latest+'"')
+    } catch { Show-Problem $_.Exception.Message }
+})
 $openFiles.Add_Click({
     try {
         $s=Get-JoshRSStatus -RepoRoot $script:RepoRoot
@@ -198,8 +220,9 @@ $openBackups.Add_Click({
 
 Update-Dashboard
 if ($ValidateUi) {
-    if ($script:Form.Controls.Count -lt 12) { throw 'Control center failed to create its controls.' }
+    if ($script:Form.Controls.Count -lt 13) { throw 'Control center failed to create its controls.' }
     if ($script:StartButton.Text -ne 'PLAY JOSHRS') { throw 'Primary action is missing.' }
+    if ($viewLogs.Text -ne 'View logs') { throw 'Log viewer action is missing.' }
     Write-Host 'JoshRS native Windows UI constructed; primary controls present.'
     $script:Form.Dispose()
     return
