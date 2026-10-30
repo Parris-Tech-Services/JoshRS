@@ -30,7 +30,7 @@ def verified_files(source: Path) -> list[tuple[str, bytes]]:
             path.parts[:3] != ALLOWED_PREFIX or
             path.suffix not in ALLOWED_EXT or
             not path.name.startswith("joshrs_") or
-            name in seen or len(path.parts) != 6):
+            name in seen or len(path.parts) != 5):
             raise ValueError(f"Disallowed overlay path: {name}")
         seen.add(name)
         original = root.joinpath(*path.parts)
