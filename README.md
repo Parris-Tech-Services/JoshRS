@@ -6,6 +6,12 @@ A **launch hub for the actual 2004Scape reconstruction** plus an original, small
 
 This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009Scape. Their full MMO server backends, client assets, accounts and worlds are not embedded or deployed here. Upstream projects have different dependencies and licences. Do not present this as a deployment of their complete games.
 
+## Run your own revision-377 game on JParris Desktop (Windows)
+
+**One-time setup:** download/extract this GitHub repository, then double-click **`jparris-setup.cmd`**. To restore your Fedora customisation instead of a clean base world, drag the USB's JoshRS folder onto the setup script. After setup, double-click **`jparris-play.cmd`** to start your private local game server and original Java client. The setup retrieves pinned matching Lost City 377 sources and does not need WSL, Docker or paid hosting.
+
+**[Detailed Windows setup and USB migration guide](deploy/jparris-windows/README.md)**. The revision-377 desktop server is **not** the JoshRS public web launcher, does not automatically make your world mobile-playable, and still requires real gameplay/save restoration testing on JParris Desktop.
+
 ## Full independent classic MMORPG goal
 
 **[Full classic MMO build and visual-fidelity checklist](docs/FULL_CLASSIC_MMO_CHECKLIST.md)** — 114 auditable tasks across 13 sections, covering the classic 3D interface, world, skills, combat, quests, multiplayer, permanent player saves, mobile UX, hosting, testing and release. The checkboxes distinguish verified existing Woodlands features from everything still required.

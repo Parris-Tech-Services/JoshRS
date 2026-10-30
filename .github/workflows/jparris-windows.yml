@@ -1,0 +1,72 @@
+name: JParris Desktop 377 Windows bootstrap
+
+on:
+  push:
+    paths:
+      - 'jparris-setup.cmd'
+      - 'jparris-play.cmd'
+      - 'deploy/jparris-windows/**'
+      - '.github/workflows/jparris-windows.yml'
+  pull_request:
+    paths:
+      - 'jparris-setup.cmd'
+      - 'jparris-play.cmd'
+      - 'deploy/jparris-windows/**'
+      - '.github/workflows/jparris-windows.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-static:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate all Windows scripts, source lock and entrypoints
+        shell: pwsh
+        run: |
+          $paths = @('deploy/jparris-windows/setup.ps1','deploy/jparris-windows/play.ps1')
+          foreach ($path in $paths) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tokens,[ref]$errors)
+            if ($errors.Count) { throw "$path syntax errors: $($errors | Out-String)" }
+          }
+          $m = Get-Content 'deploy/jparris-windows/upstreams.json' -Raw | ConvertFrom-Json
+          foreach ($source in @($m.engine,$m.content,$m.client)) {
+            if ($source.commit -notmatch '^[0-9a-f]{40}$') { throw 'An upstream commit is not pinned to a SHA' }
+            if ($source.url -notlike 'https://github.com/LostCityRS/*.git') { throw 'Unapproved upstream source URL' }
+          }
+          if (($m.gamePort - 43594) -ne $m.clientPortOffset) { throw 'Game port and Java port offset disagree' }
+          if (($m.webPort - 80) -ne $m.clientPortOffset) { throw 'Web port and Java port offset disagree' }
+          if (-not (Test-Path 'jparris-setup.cmd')) { throw 'Setup entrypoint missing' }
+          if (-not (Test-Path 'jparris-play.cmd')) { throw 'Play entrypoint missing' }
+          & '.\deploy\jparris-windows\setup.ps1' -CheckOnly
+
+  windows-engine-client-build:
+    needs: windows-static
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Fetch pinned revision 377, migrate SQLite and compile Java client
+        shell: pwsh
+        run: |
+          & '.\deploy\jparris-windows\setup.ps1' -SkipStart
+      - name: Confirm expected local files
+        shell: pwsh
+        run: |
+          $state = Get-Content 'runtime/jparris-377/active.json' -Raw | ConvertFrom-Json
+          if (-not (Test-Path (Join-Path $state.engine 'src/app.ts'))) { throw 'Engine missing' }
+          if (-not (Test-Path (Join-Path $state.client 'build/classes/java/main/jagex2/client/Client.class'))) { throw 'Client class missing' }
+          if ($state.portOffset -ne 8808) { throw 'Client port offset wrong' }
