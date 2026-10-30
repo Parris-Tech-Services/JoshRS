@@ -56,3 +56,10 @@ These are source-triage candidates, not yet marked as fixed:
 - Keep the #377 baseline and subsequent OSRS update milestones separate. No RS3
   mechanics or later OSRS changes enter the historical branch without a dated
   version entry and prerequisite review.
+
+
+## Follow-up task lists — 31 October 2026
+
+- [#29: reproduce and repair real interaction bugs](https://github.com/Parris-Tech-Services/JoshRS/issues/29): includes Haunted Manor route, Troll Romance sled, banking, shops and quest-specific doors/ladders. These are **not** marked fixed by this file.
+- [#30: local client and save evidence](https://github.com/Parris-Tech-Services/JoshRS/issues/30): test with disposable characters; preserve Elrothiro's production world.
+- [#28: historic cross-project gameplay comparison](https://github.com/Parris-Tech-Services/JoshRS/issues/28): no whole-game playable percentages have been proven.
