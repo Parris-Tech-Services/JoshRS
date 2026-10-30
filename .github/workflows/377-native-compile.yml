@@ -45,7 +45,7 @@ jobs:
           $tokens = $null
           $errors = $null
           [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'deploy/jparris-windows/install-native377.ps1').Path, [ref]$tokens, [ref]$errors) | Out-Null
-          if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_.Message }; exit 1 }
+          if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Host "Line $($_.Extent.StartLineNumber): $($_.Message) Near: $($_.Extent.Text)" }; exit 1 }
       - name: Generate and verify immutable original content overlay
         shell: bash
         run: |
