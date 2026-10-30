@@ -70,5 +70,16 @@ class FactoryTests(unittest.TestCase):
             self.assertTrue(state['seed']['complete_pass'])
             self.assertTrue(all(c['native_runtime_verified'] is False for c in pack['candidates']))
 
+    def test_agent_queue_prioritises_safe_review_without_installation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            dest = Path(tmp)
+            factory.put_json(dest/'packs/sample.json', {'candidates': [
+                {'id':'1','status':'blocked_reference_only','source':'test','repo':'a/b','path':'client.class','url':'https://github.com/a/b'},
+                {'id':'2','status':'agent_review_required','source':'lostcity-content-377','repo':'a/b','path':'scripts/a.rs2','url':'https://github.com/a/b'}]})
+            q = factory.prepare_agent_queue(dest)
+            self.assertEqual(q['tasks'][0]['work_id'], '377-2')
+            self.assertFalse(q['tasks'][0]['automatically_installed'])
+            self.assertEqual(q['tasks'][1]['status'], 'blocked_rights_review')
+
 if __name__ == '__main__':
     unittest.main()

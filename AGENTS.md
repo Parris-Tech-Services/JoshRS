@@ -5,7 +5,7 @@ The playable revision-377 world is a separate local installation. Do not confuse
 ## First read
 - deploy/jparris-windows/upstreams.json: pinned engine/content/client commits and ports.
 - docs/377_CONTENT_FACTORY.md: discovery, permissions, conversion and acceptance rules.
-- content-factory/generated/catalog.json and content-factory/generated/packs/*.json when present.
+- content-factory/generated/catalog.json, content-factory/generated/agent-work-orders.json and content-factory/generated/packs/*.json when present.
 - content-factory/generated/original-content-specs.json for original, user-authored content.
 
 ## How to implement a candidate
