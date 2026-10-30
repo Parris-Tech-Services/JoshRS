@@ -14,7 +14,7 @@ try {
     Assert (Test-Path -LiteralPath $changed.BackupPath) 'original environment backup should exist'
     Assert ([IO.File]::ReadAllText($changed.BackupPath) -eq $original) 'original environment bytes should be preserved'
     $fixed=[IO.File]::ReadAllText($file)
-    Assert ($fixed -match '(?m)^WEB_PORT=8888$') 'private Windows copy should use port 8888'
+    Assert ($fixed -match '(?m)^WEB_PORT=8888\r?$') 'private Windows copy should use port 8888'
     Assert ($fixed -match '(?m)^DB_BACKEND=sqlite\r?$') 'database configuration must be preserved'
     Assert ($fixed -match '(?m)^WEB_MANAGEMENT_PORT=8898\r?$') 'management configuration must be preserved'
     $repeat=Repair-JoshRSLocalWebPort -EnvFile $file -GamePort 52402
@@ -28,7 +28,7 @@ try {
     [IO.File]::WriteAllText($file,"NODE_PORT=52402" + [Environment]::NewLine)
     $missing=Repair-JoshRSLocalWebPort -EnvFile $file -GamePort 52402
     Assert $missing.Updated 'implicit default port 80 should be repaired'
-    Assert ([IO.File]::ReadAllText($file) -match '(?m)^WEB_PORT=8888$') 'missing port should be appended'
+    Assert ([IO.File]::ReadAllText($file) -match '(?m)^WEB_PORT=8888\r?$') 'missing port should be appended'
     [IO.File]::WriteAllText($file,("WEB_PORT=80" + [Environment]::NewLine + "WEB_PORT=80"))
     $blocked=$false
     try{[void](Repair-JoshRSLocalWebPort -EnvFile $file -GamePort 52402)}catch{$blocked=$true}
