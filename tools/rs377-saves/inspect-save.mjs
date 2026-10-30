@@ -4,6 +4,8 @@
 // Read-only. Does not decode account secrets, edit saves or access the game server.
 import fs from 'node:fs'
 import crypto from 'node:crypto'
+import path from 'node:path'
+import {fileURLToPath} from 'node:url'
 const NAMES=['Attack','Defence','Strength','Hitpoints','Ranged','Prayer','Magic','Cooking','Woodcutting','Fletching','Fishing','Firemaking','Crafting','Smithing','Mining','Herblore','Agility','Thieving','Slayer','Farming','Runecraft']
 const TABLE=Array.from({length:256},(_,idx)=>{
  let n=idx
@@ -39,7 +41,7 @@ export function inspectSave(data){
   skills
  }
 }
-if(process.argv[1] && import.meta.url===new URL('file://'+process.argv[1].replace(/\\/g,'/')).href){
+if(process.argv[1] && path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  const args=process.argv.slice(2)
  if(args.length!==1){console.error('Usage: node inspect-save.mjs path/to/elrothiro.sav');process.exitCode=2}
  else{
