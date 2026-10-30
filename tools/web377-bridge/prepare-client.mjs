@@ -42,18 +42,28 @@ const saferPage=originalPage
  .replace('discord -> user','discord -&gt; user')
  .replace('Use any username/password to log in','Local development preview only. Never enter your real game credentials.')
 fs.writeFileSync(page,saferPage)
+// Keep Parcel's legacy wildcard cache import at runtime, but express it as
+// a typed CommonJS require: TS 3.9 cannot declare a module with two '*' chars.
+for(const fileName of ['osrs/Game.ts','osrs/GamePlayground.ts']){
+ const filePath=path.join(output,fileName)
+ const before=fs.readFileSync(filePath,'utf8')
+ const oldImport='import cacheIndices from "./../client_cache/*.idx*";'
+ if(!before.includes(oldImport))throw Error('Expected Parcel cache import missing: '+fileName)
+ fs.writeFileSync(filePath,before.replace(oldImport,
+  'const cacheIndices: { main_file_cache: string[] } = require("./../client_cache/*.idx*");'))
+}
 // Parcel's wildcard asset imports need ambient TypeScript declarations.
 // These are static typing aids, not cache files or publication permissions.
 fs.writeFileSync(path.join(output,'joshrs-asset-types.d.ts'),[
  "declare module '*.dat' { const files: Record<string,string>; export default files }",
- "declare module '*' { const files: { main_file_cache: string[] }; export default files }",
+ 
  "declare module '*.png' { const url: string; export default url }",
  ''
 ].join('\n'))
 const report={
  kind:'web377-local-sandbox',status:'SOURCE_PATCH_ONLY',playable:false,
  originalSource:source,workingCopy:output,
- fixes:['Repair WebSocket Socket.write$byte_A: send byte slice data, not function','Fix React JSX syntax in the developer contact text','Remove unsafe prototype advice to enter any real account credentials','Add TypeScript declarations for local static assets'],
+ fixes:['Repair WebSocket Socket.write$byte_A: send byte slice data, not function','Fix React JSX syntax in the developer contact text','Remove unsafe prototype advice to enter any real account credentials','Add TypeScript declarations for local static assets','Use typed require for Parcel wildcard index imports to preserve module type checks'],
  blockers:['Game TCP relay alone does not prove Apollo/Lost City login protocol compatibility','RSA public modulus must match target engine','Cache/update ports and formats unverified','Actual browser render and multiplayer login unverified'],
  privacy:'Private source sandbox; never commit Jagex client_cache or account data to public JoshRS.'
 }
