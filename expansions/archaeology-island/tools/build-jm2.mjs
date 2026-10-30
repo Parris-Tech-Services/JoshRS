@@ -21,7 +21,7 @@ for(const line of fs.readFileSync(floPath,'utf8').split(/\r?\n/)){
 for(const required of ['water','sandfloor','grass','road','cliff'])assert(floors.has(required),'Missing floor definition: '+required);
 const entries=fs.readFileSync(mapPath,'utf8').split(/\r?\n/).map(s=>s.trim());
 for(const name of ['m'+x+'_'+z,'l'+x+'_'+z]){
- assert(!entries.some(s=>new RegExp('^\d+='+name+'$').test(s)),'Mapsquare already exists in current pack: '+name);
+ assert(!entries.some(s=>s.split('=')[1]===name),'Mapsquare already exists in current pack: '+name);
 }
 const base=path.resolve(import.meta.dirname,'..');
 const m=JSON.parse(fs.readFileSync(path.join(base,'manifest.json'),'utf8'));
