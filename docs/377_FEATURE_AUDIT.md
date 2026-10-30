@@ -49,3 +49,10 @@ The `Verify native 377 content pack` workflow now compiles original source again
 ## Work-order deduplication
 
 Historical branches can contain the same script path at several revisions. The per-file provenance ledger retains every distinct blob for review, but the implementation queue now creates **one work item per upstream repository/path**, choosing the latest historical content revision as the starting reference rather than assigning an identical gameplay feature several times. The work queue reports `candidate_pool` (unique tasks), `raw_reference_versions` (all queued source-version records), and `deduplicated_reference_versions` (how many duplicate branch entries were removed). This is task deduplication, **not** proof that the feature has been ported, permitted or playtested.
+
+
+## Live follow-up checklist
+
+- [#28 — cross-project historical gameplay completeness](https://github.com/Parris-Tech-Services/JoshRS/issues/28) separates source entries, quest end-state traces and player-verified completion.
+- [#29 — player-observed 377 interaction gaps](https://github.com/Parris-Tech-Services/JoshRS/issues/29) must reproduce a broken interaction before approving a port or replacement NPC.
+- [#30 — local desktop/VM gameplay and Elrothiro save tests](https://github.com/Parris-Tech-Services/JoshRS/issues/30) remains unverified by GitHub-only checks.
