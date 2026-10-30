@@ -86,8 +86,9 @@ function Validate-Game([string]$engine, [string]$content) {
 }
 function Find-UsbGame([string]$location) {
     $p = (Resolve-Path -LiteralPath $location).Path
-    foreach ($candidate in @($p,(Join-Path $p 'JoshRS'),(Join-Path $p 'lostcity377'),
-        (Join-Path $p 'JoshRS\lostcity377'))) {
+    # Prefer the dedicated 377 checkout if both a root engine and a nested lostcity377 exist.
+    foreach ($candidate in @((Join-Path $p 'lostcity377'),(Join-Path $p 'JoshRS\lostcity377'),
+        $p,(Join-Path $p 'JoshRS'))) {
         if ((Test-Path -LiteralPath (Join-Path $candidate 'engine')) -and
             (Test-Path -LiteralPath (Join-Path $candidate 'content'))) { return $candidate }
     }
