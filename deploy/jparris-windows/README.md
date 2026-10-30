@@ -44,7 +44,7 @@ For customised save restoration, choose the actual USB copy, not the incomplete 
 
 You can still drag your USB JoshRS folder onto `jparris-setup.cmd` to skip the picker. Keep the extracted launcher folder in its permanent location so the shortcut keeps working. First setup needs internet access and can take several minutes. Approve any Windows tool-installation prompts. No WSL, Docker or paid host is needed.
 
-Setup checks Git, Node.js 24+ and JDK 21. Stop an existing world with **Ctrl+C** in its server window before rerunning setup; setup refuses to migrate an active configured world.
+Setup checks Git and Node.js 24+, then automatically selects an existing JDK 21 or installs the free Eclipse Temurin JDK 21 using Windows Package Manager. **Java 17 can remain installed**; JoshRS selects Java 21 for its own setup/client processes without changing your system-wide default. Approve the Windows installer prompt if required. Stop an existing world with **Ctrl+C** in its server window before rerunning setup; setup refuses to migrate an active configured world.
 
 Equivalent commands in Command Prompt opened in the extracted JoshRS root:
 
@@ -81,6 +81,18 @@ The public JoshRS repository **does not vendor the game content or redistribute 
 - Clicking Play will not start another server if the expected TCP port is already in use. It does not kill other Node or Java processes.
 - Windows PowerShell windows display server logs and the Java client. Stop the server gracefully with **Ctrl+C** in its window, rather than force-killing the process.
 - One-click setup is a **local desktop workflow**, not a remote mobile-browser server. The Java 377 client is not an Android browser client. Making it remotely accessible requires a separate secure network setup and mobile-compatible client.
+
+### If you previously saw "JDK 21 is required; found javac 17"
+
+Older launchers checked for Java's presence without installing the correct major version. Download the updated `main` launcher ZIP and extract it, then run `JoshRS.cmd` again. The revised setup automatically finds or installs JDK 21.
+
+If you don't want to re-download the launcher, the existing Windows PowerShell window can install JDK 21 with:
+
+```powershell
+winget install --id EclipseAdoptium.Temurin.21.JDK --exact --source winget --accept-package-agreements --accept-source-agreements
+```
+
+You must then use a PowerShell session where JDK 21 is selected before retrying the old setup. It is simpler to use the updated launcher, which makes that selection automatically. Do not uninstall JDK 17; other Windows software may depend on it.
 
 ## Troubleshooting
 
