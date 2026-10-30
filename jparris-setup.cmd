@@ -4,9 +4,9 @@ cd /d "%~dp0"
 echo JoshRS revision 377 - JParris Desktop setup
 echo.
 if "%~1"=="" (
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0deploy\jparris-windows\setup.ps1"
+  powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File "%~dp0deploy\jparris-windows\setup.ps1" -Interactive
 ) else (
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0deploy\jparris-windows\setup.ps1" -UsbPath "%~1"
+  powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File "%~dp0deploy\jparris-windows\setup.ps1" -UsbPath "%~1"
 )
 if errorlevel 1 (
   echo.

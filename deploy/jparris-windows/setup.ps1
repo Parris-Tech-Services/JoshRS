@@ -2,7 +2,8 @@
 param(
     [string]$UsbPath = '',
     [switch]$SkipStart,
-    [switch]$CheckOnly
+    [switch]$CheckOnly,
+    [switch]$Interactive
 )
 
 $ErrorActionPreference = 'Stop'
@@ -39,6 +40,7 @@ function Check-Requirements {
             if ($LASTEXITCODE -ne 0) { throw "Installer failed for $id. Check the message above and rerun setup." }
         }
         # Reload PATH after native installers complete.
+        $env:JAVA_HOME = [Environment]::GetEnvironmentVariable('JAVA_HOME','Machine')
         $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' +
             [Environment]::GetEnvironmentVariable('Path','User')
         $availableCount = @(Get-Command 'git.exe','node.exe','npm.cmd','java.exe','javac.exe' -ErrorAction SilentlyContinue).Count
@@ -49,6 +51,10 @@ function Check-Requirements {
     $nodeMajor = [int](& node.exe -p "Number(process.versions.node.split('.')[0])")
     if ($LASTEXITCODE -ne 0 -or $nodeMajor -lt [int]$manifest.nodeMinMajor) {
         throw "Node.js $($manifest.nodeMinMajor)+ is required. Update Node using: winget upgrade --id OpenJS.NodeJS.LTS --exact"
+    }
+    $javacVersion = (& javac.exe -version 2>&1 | Out-String).Trim()
+    if ($javacVersion -notmatch '^javac 21(?:\.|$)') {
+        throw "JDK 21 is required; found $javacVersion. Select JDK 21 in JAVA_HOME and PATH, then rerun setup."
     }
     Write-Host "Prerequisites OK: Node $(& node.exe --version), Git, Java compiler"
 }
@@ -116,6 +122,36 @@ if ($CheckOnly) {
     exit 0
 }
 
+if ($Interactive -and -not $UsbPath -and -not (Test-Path -LiteralPath $activeFile)) {
+    Write-Host '1. Restore my customised world and character from USB (recommended)'
+    Write-Host '2. Install a clean world without my saved character'
+    Write-Host 'Q. Cancel'
+    $choice = Read-Host 'Choose 1, 2 or Q'
+    if ($choice -eq '1') {
+        Add-Type -AssemblyName System.Windows.Forms
+        $picker = New-Object System.Windows.Forms.FolderBrowserDialog
+        $picker.Description = 'Select the JoshRS folder on your USB drive'
+        $picker.ShowNewFolderButton = $false
+        try {
+            if ($picker.ShowDialog() -ne [System.Windows.Forms.DialogResult]::OK) { throw 'Setup cancelled; no game files were changed.' }
+            $UsbPath = $picker.SelectedPath
+        } finally { $picker.Dispose() }
+    } elseif ($choice -ne '2') { throw 'Setup cancelled; no game files were changed.' }
+}
+# Reject incomplete or recursive copies before installing any software.
+if ($UsbPath) {
+    $source = Find-UsbGame $UsbPath
+    Validate-Game (Join-Path $source 'engine') (Join-Path $source 'content')
+    $sourcePrefix = $source.TrimEnd('\') + '\'
+    if ($runtime.StartsWith($sourcePrefix, [StringComparison]::OrdinalIgnoreCase)) {
+        throw 'Extract this launcher outside the USB game folder before importing it.'
+    }
+}
+if (Test-Path -LiteralPath $activeFile) {
+    $previous = Get-Content -LiteralPath $activeFile -Raw | ConvertFrom-Json
+    $listener = Get-NetTCPConnection -State Listen -LocalPort ([int]$previous.gamePort),([int]$previous.webPort) -ErrorAction SilentlyContinue
+    if ($listener) { throw 'Stop the running world with Ctrl+C in its server window before running setup. To play, use jparris-play.cmd.' }
+}
 Check-Requirements
 New-Item -ItemType Directory -Path $runtime -Force | Out-Null
 
@@ -209,6 +245,20 @@ Write-Host 'Compiling the revision 377 Java client...'
 Run-Native (Join-Path $client 'gradlew.bat') @('--no-daemon','classes') $client
 
 $state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort; webPort=$webPort; portOffset=$offset; source=$(if($UsbPath){'usb'}else{'upstream-or-existing'}) }
-$state | ConvertTo-Json | Set-Content -LiteralPath $activeFile -Encoding UTF8
+$pendingState = $activeFile + '.tmp'
+$state | ConvertTo-Json | Set-Content -LiteralPath $pendingState -Encoding UTF8
+Move-Item -LiteralPath $pendingState -Destination $activeFile -Force
+try {
+    $desktop = [Environment]::GetFolderPath('Desktop')
+    if ($desktop) {
+        $shell = New-Object -ComObject WScript.Shell
+        $shortcut = $shell.CreateShortcut((Join-Path $desktop 'Play JoshRS.lnk'))
+        $shortcut.TargetPath = Join-Path $repo 'jparris-play.cmd'
+        $shortcut.WorkingDirectory = $repo
+        $shortcut.Description = 'Start your local JoshRS world and game client'
+        $shortcut.Save()
+        Write-Host 'Created Play JoshRS on your desktop.'
+    }
+} catch { Write-Warning "Desktop shortcut unavailable. Use jparris-play.cmd: $_" }
 Write-Host "Setup complete. Game port: $gamePort; web port: $webPort; client offset: $offset"
 if (-not $SkipStart) { & (Join-Path $PSScriptRoot 'play.ps1') }
