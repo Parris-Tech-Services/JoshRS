@@ -145,3 +145,34 @@ function Get-JoshRSSafeDiagnostics {
         $available
     ) -join [Environment]::NewLine)
 }
+
+
+function Get-JoshRSRecentLogFile {
+    [CmdletBinding()]
+    param([Parameter(Mandatory)][string]$RepoRoot)
+    $logFolder=Join-Path $RepoRoot 'runtime\jparris-377\logs'
+    if (-not (Test-Path -LiteralPath $logFolder -PathType Container)) { return $null }
+    # Only local launcher log files may be opened by the dashboard.
+    $file=Get-ChildItem -LiteralPath $logFolder -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -match '^(server|client|dashboard)-[0-9]{8}-[0-9]{6}-[0-9a-f]{8}\.log$' } |
+        Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1
+    if ($file) { return $file.FullName }
+    return $null
+}
+function New-JoshRSLaunchLog {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string]$RepoRoot,
+        [Parameter(Mandatory)][ValidateSet('server','client','dashboard')][string]$Role
+    )
+    $folder=Join-Path $RepoRoot 'runtime\jparris-377\logs'
+    New-Item -ItemType Directory -Path $folder -Force | Out-Null
+    $filename='{0}-{1}-{2}.log' -f $Role,(Get-Date -Format 'yyyyMMdd-HHmmss'),([guid]::NewGuid().ToString('N').Substring(0,8))
+    $path=Join-Path $folder $filename
+    # Keep the newest 25 logs. Failures to remove an in-use old log are harmless.
+    $old=@(Get-ChildItem -LiteralPath $folder -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -match '^(server|client|dashboard)-[0-9]{8}-[0-9]{6}-[0-9a-f]{8}\.log$' } |
+        Sort-Object LastWriteTimeUtc -Descending | Select-Object -Skip 25)
+    foreach ($item in $old) { Remove-Item -LiteralPath $item.FullName -Force -ErrorAction SilentlyContinue }
+    return $path
+}
