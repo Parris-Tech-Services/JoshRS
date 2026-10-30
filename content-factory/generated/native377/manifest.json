@@ -5,26 +5,34 @@
   "runtime_login_verified": false,
   "persistent_npc_spawns": false,
   "includes_player_save_changes": false,
-  "gameplay_scope": "Original guide and three inventory-checked NPC trades for logs, copper ore and cooked meat; debug-session spawns only; no persistent quest",
+  "gameplay_scope": "Original NPC interactions: seven server-side trades for resources, food, runes, crafting and tools; debug-session spawns only; no persistent quest",
   "files": [
     {
       "path": "scripts/areas/joshrs_custom/configs/joshrs_original.npc",
-      "sha256": "9de0448895e455ff076f8a50ed019e4a0ef07527e197889fad6a37a9e7f50a20"
+      "sha256": "1f60323e7478da0f0ff8845b19f850647c9818f301ad4a51eb78fef3dfdfd3bf"
     },
     {
       "path": "scripts/areas/joshrs_custom/scripts/joshrs_original.rs2",
-      "sha256": "7b2f053b9098572c5b3c6492a4cfafcc96f03ffe1b2895c9a41095e920431415"
+      "sha256": "59c332a8d528b7dbdacbe468f45df3bc4cbb618396967d22dbddc1c9eda8cdfc"
     }
   ],
   "npc_names": [
+    "joshrs_crafting_supplier",
+    "joshrs_law_rune_vendor",
+    "joshrs_nature_rune_vendor",
     "joshrs_ore_buyer",
     "joshrs_timber_buyer",
+    "joshrs_tool_supplier",
     "joshrs_trail_provisioner",
     "joshrs_woodland_guide"
   ],
   "gameplay_mechanics": [
+    "joshrs_crafting_supplier",
+    "joshrs_law_rune_vendor",
+    "joshrs_nature_rune_vendor",
     "joshrs_ore_buyer",
     "joshrs_timber_buyer",
+    "joshrs_tool_supplier",
     "joshrs_trail_provisioner"
   ]
 }
