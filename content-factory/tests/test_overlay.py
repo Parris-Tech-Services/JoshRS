@@ -10,7 +10,7 @@ import prepare_377_overlay as ov
 class OverlayTests(unittest.TestCase):
     def test_valid_overlay_and_repeat(self):
         with tempfile.TemporaryDirectory() as d:
-            root=Path(d); out=root/'generated'; target=root/'upstream'; (target/'scripts').mkdir(parents=True)
+            root=Path(d); out=root/'generated'; target=root/'upstream'; (target/'scripts').mkdir(parents=True); (target/'pack').mkdir(); (target/'pack/npc.pack').write_text('0=hans\n1=man\n')
             source=Path(__file__).resolve().parents[1]/'intake'
             native377.build_native(source,out)
             self.assertEqual(2,ov.apply_overlay(out,target))
