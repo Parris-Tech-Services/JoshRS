@@ -19,6 +19,16 @@ The web client must be served locally with the **exact** browser origin specifie
 
 Use Ctrl+C to stop. Never modify the existing 377 Java client or stop a working game to try this bridge. Do not configure LAN/WAN listening, publish raw game ports or rely on the bridge for production authentication.
 
+## Prepare the upstream browser client in a private working copy
+
+If you have cloned the pinned `integrations/reference-sources/web-client-377` submodule, you can prepare a **non-destructive** corrected copy:
+
+```bash
+node tools/web377-bridge/prepare-client.mjs --source integrations/reference-sources/web-client-377 --output runtime/web377-sandbox-001
+```
+
+The script verifies the expected client source/port, copies it **only** into new `runtime/` workspace, excludes `test-rsa.pem`, corrects `Socket.write$byte_A` so it sends `bytes.slice()` instead of the `bytes.slice` function, and writes a detailed patch report. It refuses existing destinations. The original pinned source and customised 377 world are unchanged. **Do not upload the sandbox or bundled client cache to public GitHub.** The patch does not solve gameplay packet, RSA or cache mismatches.
+
 ## Integration acceptance gates
 1. Confirm the test suite succeeds and the `ws` dependency is installed from npm (source MIT; npm integrity checking).
 2. Prove the *correct* browser client cache has been loaded from an authorised local source. Keep Jagex cache and assets out of this public repo.
