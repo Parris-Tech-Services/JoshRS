@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [string]$UsbPath = '',
+    [string]$ResumeSnapshotPath = '',
     [switch]$SkipStart,
     [switch]$CheckOnly,
     [switch]$Interactive
@@ -12,6 +13,7 @@ $runtime = Join-Path $repo 'runtime\jparris-377'
 $manifest = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'upstreams.json') -Raw | ConvertFrom-Json
 $activeFile = Join-Path $runtime 'active.json'
 . (Join-Path $PSScriptRoot 'jdk.ps1')
+. (Join-Path $PSScriptRoot 'web-port.ps1')
 
 function Run-Native([string]$exe, [string[]]$arguments, [string]$workingDirectory) {
     Push-Location -LiteralPath $workingDirectory
@@ -128,7 +130,7 @@ try {
         throw 'JoshRS setup is already running in another window. Finish the first installation.'
     }
 
-if ($Interactive -and -not $UsbPath -and -not (Test-Path -LiteralPath $activeFile)) {
+if ($Interactive -and -not $UsbPath -and -not $ResumeSnapshotPath -and -not (Test-Path -LiteralPath $activeFile)) {
     Write-Host '1. Restore my customised world and character from USB (recommended)'
     Write-Host '2. Install a clean world without my saved character'
     Write-Host 'Q. Cancel'
@@ -144,7 +146,22 @@ if ($Interactive -and -not $UsbPath -and -not (Test-Path -LiteralPath $activeFil
         } finally { $picker.Dispose() }
     } elseif ($choice -ne '2') { throw 'Setup cancelled; no game files were changed.' }
 }
-# Reject incomplete or recursive copies before installing any software.
+if ($UsbPath -and $ResumeSnapshotPath) {
+    throw 'Choose USB import or resume existing copied snapshot; do not supply both.'
+}
+# Resume only a previously copied snapshot directly inside this launcher's
+# runtime folder. Never rewrite arbitrary USB or user-owned source paths.
+if ($ResumeSnapshotPath) {
+    $snapshot=(Resolve-Path -LiteralPath $ResumeSnapshotPath -ErrorAction Stop).Path
+    $runtimeFull=[System.IO.Path]::GetFullPath($runtime).TrimEnd('\')
+    $snapshotFull=[System.IO.Path]::GetFullPath($snapshot).TrimEnd('\')
+    if ((Split-Path -Parent $snapshotFull) -ne $runtimeFull -or
+        (Split-Path -Leaf $snapshotFull) -notmatch '^usb-[0-9]{8}-[0-9]{6}') {
+        throw 'Resume path must be an existing timestamped USB snapshot inside this launcher runtime.'
+    }
+    Validate-Game (Join-Path $snapshotFull 'engine') (Join-Path $snapshotFull 'content')
+}
+# Reject incomplete or recursive copies before installing software.
 if ($UsbPath) {
     $source = Find-UsbGame $UsbPath
     Validate-Game (Join-Path $source 'engine') (Join-Path $source 'content')
@@ -161,22 +178,31 @@ if (Test-Path -LiteralPath $activeFile) {
 Check-Requirements
 New-Item -ItemType Directory -Path $runtime -Force | Out-Null
 
-if ($UsbPath) {
-    $source = Find-UsbGame $UsbPath
-    Validate-Game (Join-Path $source 'engine') (Join-Path $source 'content')
-    $label = 'usb-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
-    $destination = Join-Path $runtime $label
-    if (Test-Path -LiteralPath $destination) { throw 'A snapshot with this timestamp already exists. Retry once the second changes.' }
-    Write-Host "Copying your original Fedora work to: $destination"
-    Copy-UsbFolder $source $destination
+if ($UsbPath -or $ResumeSnapshotPath) {
+    $source = $null
+    if ($ResumeSnapshotPath) {
+        $destination=$snapshotFull
+        Write-Host "Resuming previously copied Fedora game: $destination"
+    } else {
+        $source = Find-UsbGame $UsbPath
+        Validate-Game (Join-Path $source 'engine') (Join-Path $source 'content')
+        $label = 'usb-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
+        $destination = Join-Path $runtime $label
+        if (Test-Path -LiteralPath $destination) { throw 'A snapshot with this timestamp already exists. Retry once the second changes.' }
+        Write-Host "Copying your original Fedora work to: $destination"
+        Copy-UsbFolder $source $destination
+    }
     $engine = Join-Path $destination 'engine'
     $content = Join-Path $destination 'content'
     $client = Join-Path $destination 'client-java'
     if (-not (Test-Path -LiteralPath (Join-Path $client 'gradlew.bat'))) {
         # The original project sometimes keeps client-java beside lostcity377.
-        $other = @((Join-Path $source '..\client-java'),(Join-Path $source '..\..\client-java')) |
-            Where-Object { Test-Path -LiteralPath (Join-Path $_ 'gradlew.bat') } |
-            Select-Object -First 1
+        $other = $null
+        if ($source) {
+            $other = @((Join-Path $source '..\client-java'),(Join-Path $source '..\..\client-java')) |
+                Where-Object { Test-Path -LiteralPath (Join-Path $_ 'gradlew.bat') } |
+                Select-Object -First 1
+        }
         if ($other) { Copy-UsbFolder $other $client }
         else {
             Write-Warning 'Custom Java client not found on USB. A clean upstream Java client will be used; your custom world map will not appear until that client is imported.'
@@ -217,6 +243,15 @@ if (-not (Test-Path -LiteralPath $envFile)) {
     Write-Host 'Created local server configuration. No existing .env was overwritten.'
 }
 $gamePort = [int](EnvironmentValue $envFile 'NODE_PORT' '43594')
+if ($UsbPath -or $ResumeSnapshotPath) {
+    # Fedora may have configured WEB_PORT=80. The 377 Java client with
+    # NODE_PORT=52402 expects its update service on 8888 instead.
+    # Change only this private Windows snapshot and retain its original .env.
+    $portRepair=Repair-JoshRSLocalWebPort -EnvFile $envFile -GamePort $gamePort
+    if ($portRepair.Updated) {
+        Write-Host "Adjusted copied WEB_PORT to $($portRepair.WebPort); original .env backed up to $($portRepair.BackupPath)"
+    }
+}
 $webPort = [int](EnvironmentValue $envFile 'WEB_PORT' '80')
 $offset = $gamePort - 43594
 if ($offset -lt 0 -or $webPort -ne ($offset + 80)) {
@@ -250,7 +285,7 @@ Run-Native 'npm.cmd' @('run','sqlite:migrate') $engine
 Write-Host 'Compiling the revision 377 Java client...'
 Run-Native (Join-Path $client 'gradlew.bat') @('--no-daemon','classes') $client
 
-$state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort; webPort=$webPort; portOffset=$offset; source=$(if($UsbPath){'usb'}else{'upstream-or-existing'}) }
+$state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort; webPort=$webPort; portOffset=$offset; source=$(if($UsbPath -or $ResumeSnapshotPath){'usb'}else{'upstream-or-existing'}) }
 $pendingState = $activeFile + '.tmp'
 $state | ConvertTo-Json | Set-Content -LiteralPath $pendingState -Encoding UTF8
 Move-Item -LiteralPath $pendingState -Destination $activeFile -Force

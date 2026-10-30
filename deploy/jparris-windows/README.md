@@ -94,6 +94,20 @@ winget install --id EclipseAdoptium.Temurin.21.JDK --exact --source winget --acc
 
 You must then use a PowerShell session where JDK 21 is selected before retrying the old setup. It is simpler to use the updated launcher, which makes that selection automatically. Do not uninstall JDK 17; other Windows software may depend on it.
 
+### Resume after "WEB_PORT=80" configuration mismatch
+
+A Fedora game copy can contain `NODE_PORT=52402` but `WEB_PORT=80`. The revision-377 Java client configured with this game port expects its local HTTP/update server on **8888**. The revised installer fixes only that known mismatch in a private **Windows copy**, saves the original `.env` beside the copy, and leaves your USB untouched. It refuses to overwrite other unexpected custom port settings.
+
+If a previous setup already copied your USB before reporting a port error, resume the **same timestamped copy** instead of copying gigabytes again. Example:
+
+```powershell
+& 'C:\JoshRS-Launcher\JoshRS-main\deploy\jparris-windows\setup.ps1' -ResumeSnapshotPath 'C:\JoshRS-Launcher\JoshRS-main\runtime\jparris-377\usb-20261030-203927'
+```
+
+That exact example uses a local snapshot that was shown in the setup output. For other computers, replace it with the actual path printed by the earlier setup. The resume feature accepts only `usb-YYYYMMDD-HHMMSS` snapshots inside the launcher's own `runtime/jparris-377` folder. It does not change files on the original USB.
+
+If an existing custom world deliberately runs HTTP on another port, the installer stops rather than guessing. Verify the Java client's network settings before changing ports.
+
 ## Troubleshooting
 
 - **Windows SmartScreen / execution policy:** run the extracted scripts directly from a folder you control; do not use random mirrored downloads.
