@@ -243,7 +243,7 @@ def prepare_agent_queue(dest: Path, max_tasks: int = 100) -> dict:
 
     records.sort(key=lambda row: (rank.get(row['status'], 9),
                                   row['repo'], row['path'],
-                                  ref_recency(row), row['source'], row['blob_sha']))
+                                  ref_recency(row), row['source'], row.get('blob_sha', '')))
     # One implementation work item per repo/path. Historical branches are
     # alternative references, not separate missing features. Keep the latest
     # applicable branch as the starting point; all versions stay in evidence.
