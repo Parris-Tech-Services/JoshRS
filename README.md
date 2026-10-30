@@ -22,6 +22,14 @@ Important: **2004Scape (November 2004)** and **official Old School RuneScape (20
 
 See also [multiplayer work tracker #5](https://github.com/Parris-Tech-Services/JoshRS/issues/5) and [self-hosting gate #3](https://github.com/Parris-Tech-Services/JoshRS/issues/3).
 
+## Usable revision-377 developer integrations
+
+**[Interactive 377 Map Inspector](map-inspector.html)** — a read-only browser tool for loading actual `.jm2` sources, showing terrain/scenery/NPC positions, comparing modified maps against originals, checking IDs against `flo.pack` / `loc.pack` / `npc.pack`, and exporting compatibility reports. This feature is implemented and covered by desktop/mobile browser tests. It does not install or alter maps.
+
+**[Experimental local browser transport](tools/web377-bridge/README.md)** — tested WebSocket ↔ TCP relay for investigation of the separately sourced 377 browser client, plus an opt-in private sandbox patch for a verified byte-send bug. This is not a compatible login/client yet; the older Apollo protocol, RSA and cache handling must still be validated against JoshRS Lost City 377.
+
+Source projects remain available as pinned submodules in [integrations/reference-sources](integrations/reference-sources/README.md). A pinned repository is not equivalent to a playable feature; client forks, modern RuneLite and Steam notes are not silently merged into your customised world. No save data is touched.
+
 ## Automated 377 research and original-content preparation
 
 The [377 Content Factory](docs/377_CONTENT_FACTORY.md) uses a scheduled GitHub Actions runner to inventory public 377/community source *metadata* in rotating batches, track exact source hashes and prepare strictly original, user-authored integration specifications. [Agent instructions](AGENTS.md) tell Agy, Codex and Claude Code how to turn reviewed candidates into validated server content. See [generated packs](content-factory/generated/) as they appear. No Jagex-owned assets are copied or auto-installed; no discovered item is called playable before compiling and testing it in the real custom 377 world.
