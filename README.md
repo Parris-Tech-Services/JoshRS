@@ -8,7 +8,7 @@ This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009
 
 ## Run your own revision-377 game on JParris Desktop (Windows)
 
-**One-click Windows launcher:** download and extract this repository, then double-click **`JoshRS.cmd`**. A native control window lets you **Play JoshRS**, **Restore Fedora USB game**, **Install a clean revision-377 world**, **Back up saves**, **Check status** and view safe diagnostics. It retrieves pinned Lost City 377 sources as needed and does not need WSL, Docker or paid hosting. The existing `jparris-setup.cmd` and `jparris-play.cmd` commands still work.
+**One-click Windows launcher:** download and extract this repository, insert your Fedora USB backup, then double-click **`JoshRS.cmd`** and select **Set Up and Play**. The launcher detects a complete USB revision-377 game when possible, shows whether Elrothiro's save and account database are present, and asks before importing. After installation, use **Play JoshRS**, **Back Up Saves**, **Check Status** or safe diagnostics. It retrieves pinned Lost City 377 sources as needed and does not need WSL, Docker or paid hosting. The existing `jparris-setup.cmd` and `jparris-play.cmd` commands still work.
 
 **[Detailed Windows setup and USB migration guide](deploy/jparris-windows/README.md)**. The revision-377 desktop server is **not** the JoshRS public web launcher, does not automatically make your world mobile-playable, and still requires real gameplay/save restoration testing on JParris Desktop.
 

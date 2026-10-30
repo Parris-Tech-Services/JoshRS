@@ -1,9 +1,11 @@
 [CmdletBinding()]
 param([switch]$ValidateUi)
 
+try {
 $ErrorActionPreference='Stop'
 $script:RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 . (Join-Path $PSScriptRoot 'support.ps1')
+. (Join-Path $PSScriptRoot 'discovery.ps1')
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
@@ -61,6 +63,42 @@ function Start-GameTask([string]$file,[string]$path='') {
     Start-Process -FilePath 'powershell.exe' -ArgumentList $arguments -WorkingDirectory $script:RepoRoot
     $script:Hint.Text='A separate Windows terminal was opened. Setup and game output appear there.'
 }
+function Choose-UsbGameFolder {
+    $picker=[System.Windows.Forms.FolderBrowserDialog]::new()
+    try {
+        $picker.Description='Choose the JoshRS folder on your USB drive (or the folder containing lostcity377)'
+        $picker.ShowNewFolderButton=$false
+        if ($picker.ShowDialog($script:Form) -eq [System.Windows.Forms.DialogResult]::OK) {
+            return $picker.SelectedPath
+        }
+        return ''
+    } finally { $picker.Dispose() }
+}
+function Start-FirstRun {
+    $candidates=@(Get-JoshRSUsbCandidates)
+    $choice=''
+    if ($candidates.Count -eq 1) {
+        $candidate=$candidates[0]
+        $saveStatus=if($candidate.HasElrothiroSave){'Elrothiro save found'}else{'Elrothiro save NOT found'}
+        $dbStatus=if($candidate.HasDatabase){'account database found'}else{'account database NOT found'}
+        $clientStatus=if($candidate.HasClient){'Java client found'}else{'an upstream Java client will be downloaded'}
+        $message="Found a complete revision-377 source on a removable drive:" +
+            [Environment]::NewLine + [Environment]::NewLine + $candidate.Path +
+            [Environment]::NewLine + [Environment]::NewLine + $saveStatus + '; ' + $dbStatus + '; ' + $clientStatus +
+            [Environment]::NewLine + [Environment]::NewLine +
+            'Copy this Fedora game and set it up? The USB will not be changed.'
+        if (-not (Ask-Yes $message 'Found your Fedora game')) { return }
+        $choice=$candidate.Path
+    } else {
+        if ($candidates.Count -gt 1) {
+            Show-Note 'Multiple complete game copies were found. Choose the one you want to restore in the folder picker.' 'Choose your Fedora game'
+        } else {
+            Show-Note 'No complete JoshRS source was found automatically on removable drives. Choose your USB backup folder manually. The clean-world installer remains a separate option.' 'Locate your Fedora game'
+        }
+        $choice=Choose-UsbGameFolder
+    }
+    if ($choice) { Start-GameTask (Join-Path $PSScriptRoot 'setup.ps1') $choice }
+}
 function Update-Dashboard {
     $s=Get-JoshRSStatus -RepoRoot $script:RepoRoot
     $script:Current=$s
@@ -84,7 +122,8 @@ function Update-Dashboard {
         $script:DetailLabel.Text="Installed: $($s.Source). Game $($s.GamePort), HTTP $($s.WebPort)."
     }
     $script:SaveLabel.Text="Player save files: $($s.SaveCount)    Account database: $(if($s.DatabasePresent){'found'}else{'not found'})"
-    $script:StartButton.Enabled=$ready
+    $script:StartButton.Enabled=$true
+    $script:StartButton.Text=if($ready){'PLAY JOSHRS'}else{'SET UP AND PLAY'}
     $script:BackupButton.Enabled=($ready -and -not $s.GamePortOpen -and -not $s.WebPortOpen -and
         ($s.SavePresent -or $s.DatabasePresent))
     $script:CleanButton.Enabled= -not $ready
@@ -127,13 +166,16 @@ $openFiles=Add-Action $script:Form 'Game files' 420 492 191 47
 $openBackups=Add-Action $script:Form 'Backups' 620 492 194 47
 
 $script:SaveLabel=Add-Text $script:Form '' 36 552 775 23 10 $false '#BECFE3'
-$script:Hint=Add-Text $script:Form 'Local-only. No hosting subscription, WSL or router port forwarding required.' 36 582 779 32 10 $false '#96AFC9'
+$script:Hint=Add-Text $script:Form 'First run: Play looks for your Fedora USB copy. No paid hosting or WSL needed.' 36 582 779 32 10 $false '#96AFC9'
 
 $script:StartButton.Add_Click({
     try {
         $s=Get-JoshRSStatus -RepoRoot $script:RepoRoot
-        if (-not $s.Configured) { throw 'Choose Restore USB Game or Install Clean World first.' }
-        Start-GameTask (Join-Path $PSScriptRoot 'play.ps1')
+        if (-not $s.Configured) {
+            Start-FirstRun
+        } else {
+            Start-GameTask (Join-Path $PSScriptRoot 'play.ps1')
+        }
     } catch { Show-Problem $_.Exception.Message }
 })
 $script:ImportButton.Add_Click({
@@ -142,12 +184,8 @@ $script:ImportButton.Add_Click({
         if ($s.GamePortOpen -or $s.WebPortOpen) {
             throw 'The server appears active. Gracefully stop it first, then restore your USB game.'
         }
-        $picker=[System.Windows.Forms.FolderBrowserDialog]::new()
-        $picker.Description='Select the folder on your USB containing JoshRS or lostcity377'
-        $picker.ShowNewFolderButton=$false
-        $chosen=$picker.ShowDialog($script:Form)
-        if ($chosen -ne [System.Windows.Forms.DialogResult]::OK) { return }
-        $path=$picker.SelectedPath
+        $path=Choose-UsbGameFolder
+        if (-not $path) { return }
         $question=if($s.Configured){
             'This will install a new snapshot of your USB world and switch the active installation after setup succeeds. Existing saved worlds are kept. Continue?'
         }else{
@@ -199,7 +237,7 @@ $openBackups.Add_Click({
 Update-Dashboard
 if ($ValidateUi) {
     if ($script:Form.Controls.Count -lt 12) { throw 'Control center failed to create its controls.' }
-    if ($script:StartButton.Text -ne 'PLAY JOSHRS') { throw 'Primary action is missing.' }
+    if ($script:StartButton.Text -notin @('PLAY JOSHRS','SET UP AND PLAY')) { throw 'Primary action is missing.' }
     Write-Host 'JoshRS native Windows UI constructed; primary controls present.'
     $script:Form.Dispose()
     return
@@ -210,3 +248,22 @@ $timer.Add_Tick({ Update-Dashboard })
 $timer.Start()
 try { [void]$script:Form.ShowDialog() }
 finally { $timer.Stop(); $timer.Dispose(); $script:Form.Dispose() }
+} catch {
+    if ($ValidateUi) { throw }
+    # JoshRS.cmd hides its console. Show startup failures instead of silently
+    # closing when a script or framework error occurs before the GUI appears.
+    $details=$_.Exception.Message
+    try {
+        Add-Type -AssemblyName System.Windows.Forms
+        [void][System.Windows.Forms.MessageBox]::Show(
+            "JoshRS could not open the control center." + [Environment]::NewLine +
+            [Environment]::NewLine + $details + [Environment]::NewLine +
+            [Environment]::NewLine + 'You can still run jparris-play.cmd or jparris-setup.cmd directly to see logs.',
+            'JoshRS launcher error',
+            [System.Windows.Forms.MessageBoxButtons]::OK,
+            [System.Windows.Forms.MessageBoxIcon]::Error)
+    } catch {
+        Write-Error 'JoshRS startup failed. Open jparris-play.cmd to see the problem.'
+    }
+    exit 1
+}
