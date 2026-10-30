@@ -1,0 +1,37 @@
+name: Experimental 377 browser client build (private sandbox)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/web377-bridge/prepare-client.mjs'
+      - '.github/workflows/web377-client-build.yml'
+permissions:
+  contents: read
+jobs:
+  compile-upstream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch only pinned browser 377 source submodule
+        run: git submodule update --init -- integrations/reference-sources/web-client-377
+      - name: Prepare corrected isolated client (exclude test key)
+        run: node tools/web377-bridge/prepare-client.mjs --source integrations/reference-sources/web-client-377 --output runtime/web377-build-test
+      - name: Verify byte-send bug was repaired
+        run: |
+          grep -F 'this.client.send(bytes.slice());' runtime/web377-build-test/osrs/net/Socket.ts
+          test ! -e runtime/web377-build-test/test-rsa.pem
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install legacy pinned dependencies without lifecycle scripts
+        working-directory: runtime/web377-build-test
+        run: npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund
+      - name: Compile TypeScript browser client (no game server/account data)
+        working-directory: runtime/web377-build-test
+        run: ./node_modules/.bin/tsc --noEmit
+      - name: Preserve no proprietary caches or compiled client artifacts
+        run: echo 'Build checks only. No deployment, cache upload or public artifacts.'
