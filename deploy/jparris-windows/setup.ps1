@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [string]$UsbPath = '',
+    [string]$ResumeSnapshotPath = '',
     [switch]$SkipStart,
     [switch]$CheckOnly,
     [switch]$Interactive
@@ -12,6 +13,7 @@ $runtime = Join-Path $repo 'runtime\jparris-377'
 $manifest = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'upstreams.json') -Raw | ConvertFrom-Json
 $activeFile = Join-Path $runtime 'active.json'
 . (Join-Path $PSScriptRoot 'jdk.ps1')
+. (Join-Path $PSScriptRoot 'web-port.ps1')
 
 function Run-Native([string]$exe, [string[]]$arguments, [string]$workingDirectory) {
     Push-Location -LiteralPath $workingDirectory
@@ -128,7 +130,7 @@ try {
         throw 'JoshRS setup is already running in another window. Finish the first installation.'
     }
 
-if ($Interactive -and -not $UsbPath -and -not (Test-Path -LiteralPath $activeFile)) {
+if ($Interactive -and -not $UsbPath -and -not $ResumeSnapshotPath -and -not (Test-Path -LiteralPath $activeFile)) {
     Write-Host '1. Restore my customised world and character from USB (recommended)'
     Write-Host '2. Install a clean world without my saved character'
     Write-Host 'Q. Cancel'
@@ -143,6 +145,167 @@ if ($Interactive -and -not $UsbPath -and -not (Test-Path -LiteralPath $activeFil
             $UsbPath = $picker.SelectedPath
         } finally { $picker.Dispose() }
     } elseif ($choice -ne '2') { throw 'Setup cancelled; no game files were changed.' }
+}
+if ($UsbPath -and $ResumeSnapshotPath) {
+    throw 'Choose USB import or resume existing copied snapshot; do not supply both.'
+}
+# Resume only a previously copied snapshot directly inside this launcher's
+# runtime folder. Never rewrite arbitrary USB or user-owned source paths.
+if ($ResumeSnapshotPath) {
+    $snapshot=(Resolve-Path -LiteralPath $ResumeSnapshotPath -ErrorAction Stop).Path
+    $runtimeFull=[System.IO.Path]::GetFullPath($runtime).TrimEnd('\')
+    $snapshotFull=[System.IO.Path]::GetFullPath($snapshot).TrimEnd('\')
+    if ((Split-Path -Parent $snapshotFull) -ne $runtimeFull -or
+        (Split-Path -Leaf $snapshotFull) -notmatch '^usb-\d{8}-\d{6}
+if ($UsbPath) {
+    $source = Find-UsbGame $UsbPath
+    Validate-Game (Join-Path $source 'engine') (Join-Path $source 'content')
+    $sourcePrefix = $source.TrimEnd('\') + '\'
+    if ($runtime.StartsWith($sourcePrefix, [StringComparison]::OrdinalIgnoreCase)) {
+        throw 'Extract this launcher outside the USB game folder before importing it.'
+    }
+}
+if (Test-Path -LiteralPath $activeFile) {
+    $previous = Get-Content -LiteralPath $activeFile -Raw | ConvertFrom-Json
+    $listener = Get-NetTCPConnection -State Listen -LocalPort ([int]$previous.gamePort),([int]$previous.webPort) -ErrorAction SilentlyContinue
+    if ($listener) { throw 'Stop the running world with Ctrl+C in its server window before running setup. To play, use jparris-play.cmd.' }
+}
+Check-Requirements
+New-Item -ItemType Directory -Path $runtime -Force | Out-Null
+
+if ($UsbPath -or $ResumeSnapshotPath) {
+    $source = $null
+    if ($ResumeSnapshotPath) {
+        $destination=$snapshotFull
+        Write-Host "Resuming previously copied Fedora game: $destination"
+    } else {
+        $source = Find-UsbGame $UsbPath
+        Validate-Game (Join-Path $source 'engine') (Join-Path $source 'content')
+        $label = 'usb-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
+        $destination = Join-Path $runtime $label
+        if (Test-Path -LiteralPath $destination) { throw 'A snapshot with this timestamp already exists. Retry once the second changes.' }
+        Write-Host "Copying your original Fedora work to: $destination"
+        Copy-UsbFolder $source $destination
+    }
+    $engine = Join-Path $destination 'engine'
+    $content = Join-Path $destination 'content'
+    $client = Join-Path $destination 'client-java'
+    if (-not (Test-Path -LiteralPath (Join-Path $client 'gradlew.bat'))) {
+        # The original project sometimes keeps client-java beside lostcity377.
+        $other = $null
+        if ($source) {
+            $other = @((Join-Path $source '..\client-java'),(Join-Path $source '..\..\client-java')) |
+                Where-Object { Test-Path -LiteralPath (Join-Path $_ 'gradlew.bat') } |
+                Select-Object -First 1
+        }
+        if ($other) { Copy-UsbFolder $other $client }
+        else {
+            Write-Warning 'Custom Java client not found on USB. A clean upstream Java client will be used; your custom world map will not appear until that client is imported.'
+            $client = Join-Path $runtime 'upstream-client'
+            Get-PinnedRepo $manifest.client $client
+        }
+    }
+} elseif (Test-Path -LiteralPath $activeFile) {
+    $existing = Get-Content -LiteralPath $activeFile -Raw | ConvertFrom-Json
+    $engine = [string]$existing.engine
+    $content = [string]$existing.content
+    $client = [string]$existing.client
+    Write-Host "Reusing configured game: $engine"
+} else {
+    $base = Join-Path $runtime 'upstream'
+    $engine = Join-Path $base 'engine'
+    $content = Join-Path $base 'content'
+    $client = Join-Path $base 'client-java'
+    Write-Warning 'No USB folder supplied. This sets up CLEAN revision 377, not your personalised Fedora game or player.'
+    Get-PinnedRepo $manifest.engine $engine
+    Get-PinnedRepo $manifest.content $content
+    Get-PinnedRepo $manifest.client $client
+}
+Validate-Game $engine $content
+if (-not (Test-Path -LiteralPath (Join-Path $client 'gradlew.bat') -PathType Leaf)) {
+    throw "The Java client is incomplete: $client"
+}
+
+$envFile = Join-Path $engine '.env'
+if (-not (Test-Path -LiteralPath $envFile)) {
+    $values = @(
+        'WEB_PORT=8888','WEB_MANAGEMENT_PORT=8898','NODE_PORT=52402','NODE_ID=10',
+        'NODE_MEMBERS=true','DB_BACKEND=sqlite','LOGIN_SERVER=true',
+        'FRIEND_SERVER=true','LOGGER_SERVER=true','EASY_STARTUP=true',
+        'BUILD_SRC_DIR=../content'
+    )
+    [System.IO.File]::WriteAllLines($envFile, $values)
+    Write-Host 'Created local server configuration. No existing .env was overwritten.'
+}
+$gamePort = [int](EnvironmentValue $envFile 'NODE_PORT' '43594')
+if ($UsbPath -or $ResumeSnapshotPath) {
+    # Fedora may have configured WEB_PORT=80. The 377 Java client with
+    # NODE_PORT=52402 expects its update service on 8888 instead.
+    # Change only this private Windows snapshot and retain its original .env.
+    $portRepair=Repair-JoshRSLocalWebPort -EnvFile $envFile -GamePort $gamePort
+    if ($portRepair.Updated) {
+        Write-Host "Adjusted copied WEB_PORT to $($portRepair.WebPort); original .env backed up to $($portRepair.BackupPath)"
+    }
+}
+$webPort = [int](EnvironmentValue $envFile 'WEB_PORT' '80')
+$offset = $gamePort - 43594
+if ($offset -lt 0 -or $webPort -ne ($offset + 80)) {
+    throw "Java client requires WEB_PORT = NODE_PORT - 43594 + 80. Current values: game $gamePort, web $webPort. Resolve the original .env configuration before starting."
+}
+if ((EnvironmentValue $envFile 'DB_BACKEND' 'sqlite') -ne 'sqlite') {
+    throw 'The copied server uses a non-SQLite database. No automatic migration will be attempted. Review its database setup first.'
+}
+# Back up all character saves and the SQLite account database before migrations.
+$playerFolder = Join-Path $engine 'data\players'
+$dbFile = Join-Path $engine 'db.sqlite'
+if ((Test-Path -LiteralPath $playerFolder) -or (Test-Path -LiteralPath $dbFile)) {
+    $backup = Join-Path $runtime ('save-backups\' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+    New-Item -ItemType Directory -Path $backup -Force | Out-Null
+    if (Test-Path -LiteralPath $playerFolder) {
+        Copy-Item -LiteralPath $playerFolder -Destination (Join-Path $backup 'players') -Recurse -Force
+    }
+    foreach ($suffix in @('','.shm','-wal','-shm')) {
+        $sourceDb = $dbFile + $suffix
+        if (Test-Path -LiteralPath $sourceDb -PathType Leaf) {
+            Copy-Item -LiteralPath $sourceDb -Destination $backup -Force
+        }
+    }
+    Write-Host "Saved a private local backup before database migration: $backup"
+}
+Write-Host 'Installing engine dependencies...'
+$install = if (Test-Path -LiteralPath (Join-Path $engine 'package-lock.json')) { 'ci' } else { 'install' }
+Run-Native 'npm.cmd' @($install,'--no-audit','--no-fund') $engine
+Write-Host 'Applying non-destructive SQLite database migrations...'
+Run-Native 'npm.cmd' @('run','sqlite:migrate') $engine
+Write-Host 'Compiling the revision 377 Java client...'
+Run-Native (Join-Path $client 'gradlew.bat') @('--no-daemon','classes') $client
+
+$state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort; webPort=$webPort; portOffset=$offset; source=$(if($UsbPath -or $ResumeSnapshotPath){'usb'}else{'upstream-or-existing'}) }
+$pendingState = $activeFile + '.tmp'
+$state | ConvertTo-Json | Set-Content -LiteralPath $pendingState -Encoding UTF8
+Move-Item -LiteralPath $pendingState -Destination $activeFile -Force
+try {
+    $desktop = [Environment]::GetFolderPath('Desktop')
+    if ($desktop) {
+        $shell = New-Object -ComObject WScript.Shell
+        $shortcut = $shell.CreateShortcut((Join-Path $desktop 'Play JoshRS.lnk'))
+        $shortcut.TargetPath = Join-Path $repo 'JoshRS.cmd'
+        $shortcut.WorkingDirectory = $repo
+        $shortcut.Description = 'Open your JoshRS control center to play, restore and back up the game'
+        $shortcut.Save()
+        Write-Host 'Created Play JoshRS on your desktop.'
+    }
+} catch { Write-Warning "Desktop shortcut unavailable. Use jparris-play.cmd: $_" }
+Write-Host "Setup complete. Game port: $gamePort; web port: $webPort; client offset: $offset"
+if (-not $SkipStart) { & (Join-Path $PSScriptRoot 'play.ps1') }
+} finally {
+    if ($setupLock) { $setupMutex.ReleaseMutex() }
+    $setupMutex.Dispose()
+}
+) {
+        throw 'Resume path must be a previously copied usb-YYYYMMDD-HHMMSS folder directly inside this launcher runtime.'
+    }
+    Validate-Game (Join-Path $snapshotFull 'engine') (Join-Path $snapshotFull 'content')
 }
 # Reject incomplete or recursive copies before installing any software.
 if ($UsbPath) {
