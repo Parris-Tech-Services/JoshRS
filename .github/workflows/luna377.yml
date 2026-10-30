@@ -1,0 +1,23 @@
+name: Luna 377 duel and bot regression
+on:
+  push:
+    paths:
+      - 'tools/luna377/**'
+      - '.github/workflows/luna377.yml'
+  pull_request:
+    paths:
+      - 'tools/luna377/**'
+      - '.github/workflows/luna377.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run safe Luna duel source-audit regressions
+        run: node --test tools/luna377/test/*.test.mjs
