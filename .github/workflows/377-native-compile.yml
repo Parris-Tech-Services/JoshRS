@@ -39,6 +39,7 @@ jobs:
         run: |
           python content-factory/native377.py
           git diff --exit-code -- content-factory/generated/native377
+          mkdir -p "$RUNNER_TEMP/overlay-check/scripts"
           python content-factory/prepare_377_overlay.py --source content-factory/generated/native377 --dest "$RUNNER_TEMP/overlay-check"
       - name: Clone exact pinned Lost City 377 engine/content in disposable runner
         shell: bash
