@@ -54,3 +54,7 @@ The automated source scanner can classify large numbers of candidates and rotate
 The per-source scan batch has increased from 100 to 500 eligible paths per run (up to 1,000 supported), with a capped retained inventory of 12,000 per source. Do not mistake those limits for an exhaustive audit of all historical RuneScape content. A live client interaction and save restoration in the owner's local Windows world are required before claiming any feature playable for Elrothiro.
 
 The `Verify native 377 content pack` workflow now compiles original source against the exact pinned 377 commits, performs a disposable SQLite schema migration and boots the resulting game and web servers, checking that both listeners accept connections. **Listener success is not a player login or interaction test.**
+
+## Work-order deduplication
+
+Historical branches can contain the same script path at several revisions. The per-file provenance ledger retains every distinct blob for review, but the implementation queue now creates **one work item per upstream repository/path**, choosing the latest historical content revision as the starting reference rather than assigning an identical gameplay feature several times. The work queue reports `candidate_pool` (unique tasks), `raw_reference_versions` (all queued source-version records), and `deduplicated_reference_versions` (how many duplicate branch entries were removed). This is task deduplication, **not** proof that the feature has been ported, permitted or playtested.
