@@ -1,0 +1,46 @@
+name: Validate imported JoshRS reference sources
+on:
+  push:
+    paths:
+      - '.gitmodules'
+      - 'integrations/reference-sources/**'
+      - 'deploy/jparris-windows/get-reference-sources.ps1'
+      - '.github/workflows/reference-sources.yml'
+  pull_request:
+    paths:
+      - '.gitmodules'
+      - 'integrations/reference-sources/**'
+      - 'deploy/jparris-windows/get-reference-sources.ps1'
+      - '.github/workflows/reference-sources.yml'
+  workflow_dispatch:
+jobs:
+  gitlinks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate all pinned source directories
+        shell: bash
+        run: |
+          set -euo pipefail
+          count=0
+          while IFS='=' read -r key dir; do
+            [[ "$key" == submodule.*.path ]] || continue
+            if [[ -z "$dir" ]]; then echo "Empty gitmodule path"; exit 1; fi
+            mode="$(git ls-tree HEAD -- "$dir" | awk '{print $1}')"
+            [[ "$mode" == "160000" ]] || { echo "Not a pinned gitlink: $dir"; exit 1; }
+            count=$((count+1))
+          done < <(git config --file .gitmodules --get-regexp '^submodule\..*\.path$' | sed 's/ /=/')
+          [[ "$count" -eq 8 ]] || { echo "Expected eight links, got $count"; exit 1; }
+          echo "Verified $count pinned Git submodules."
+  windows-script:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse helper without executing it
+        shell: pwsh
+        run: |
+          $tokens=$null
+          $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile('deploy/jparris-windows/get-reference-sources.ps1',[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count -gt 0){$errors | Format-List; exit 1}
+          Write-Host 'PowerShell helper syntax valid.'
