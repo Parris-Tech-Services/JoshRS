@@ -1,0 +1,2014 @@
+diff --git a/.gitignore b/.gitignore
+index c2a0a6fa..f22515ce 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -10,6 +10,8 @@ data/config/
+ dump/
+ 
+ data/players/
++data/.josh-rs-377.pid
++logs/
+ 
+ node_modules/
+ 
+diff --git a/src/app.ts b/src/app.ts
+index 2a422200..03460aec 100644
+--- a/src/app.ts
++++ b/src/app.ts
+@@ -1,4 +1,6 @@
+ import fs from 'fs';
++import net from 'net';
++import path from 'path';
+ import { Worker } from 'worker_threads';
+ 
+ import { collectDefaultMetrics, register } from 'prom-client';
+@@ -11,6 +13,83 @@ import { printError, printInfo } from '#/util/Logger.js';
+ import { startManagementWeb, startWeb } from '#/web.js';
+ import OnDemand from '#/engine/OnDemand.js';
+ 
++const lockPath = path.resolve('data/.josh-rs-377.pid');
++let lockHeld = false;
++
++function acquireInstanceLock(): boolean {
++    fs.mkdirSync(path.dirname(lockPath), { recursive: true });
++
++    try {
++        const fd = fs.openSync(lockPath, 'wx');
++        fs.writeFileSync(fd, `${process.pid}\n`, 'utf8');
++        fs.closeSync(fd);
++        lockHeld = true;
++    } catch (err) {
++        if ((err as NodeJS.ErrnoException).code !== 'EEXIST') {
++            throw err;
++        }
++
++        const existingPid = Number.parseInt(fs.readFileSync(lockPath, 'utf8').trim(), 10);
++        if (Number.isInteger(existingPid) && existingPid > 0) {
++            try {
++                process.kill(existingPid, 0);
++                console.error(`JoshRS #377 is already running (PID ${existingPid}); exiting safely.`);
++                return false;
++            } catch (probeErr) {
++                if (probeErr instanceof Error && probeErr.message.includes('already running')) {
++                    throw probeErr;
++                }
++                // The recorded process is gone; reclaim the stale lock.
++            }
++        }
++
++        fs.unlinkSync(lockPath);
++        const fd = fs.openSync(lockPath, 'wx');
++        fs.writeFileSync(fd, `${process.pid}\n`, 'utf8');
++        fs.closeSync(fd);
++        lockHeld = true;
++    }
++
++    return true;
++}
++
++function releaseInstanceLock() {
++    if (!lockHeld) {
++        return;
++    }
++
++    try {
++        if (Number.parseInt(fs.readFileSync(lockPath, 'utf8').trim(), 10) === process.pid) {
++            fs.unlinkSync(lockPath);
++        }
++    } catch {
++        // The lock is only a guard; do not mask the original shutdown error.
++    }
++    lockHeld = false;
++}
++
++if (!acquireInstanceLock()) {
++    process.exit(0);
++}
++process.once('exit', releaseInstanceLock);
++
++async function assertPortAvailable(port: number) {
++    await new Promise<void>((resolve, reject) => {
++        const probe = net.createServer();
++        probe.once('error', reject);
++        probe.listen(port, '0.0.0.0', () => {
++            probe.close(err => (err ? reject(err) : resolve()));
++        });
++    }).catch(err => {
++        const code = (err as NodeJS.ErrnoException).code;
++        throw new Error(`JoshRS #377 cannot start: port ${port} is unavailable (${code ?? String(err)}).`);
++    });
++}
++
++await assertPortAvailable(Environment.NODE_PORT);
++await assertPortAvailable(Environment.WEB_PORT);
++await assertPortAvailable(Environment.WEB_MANAGEMENT_PORT);
++
+ if (OnDemand.cache.count(0) !== 9 || OnDemand.cache.count(2) === 0 || !fs.existsSync('data/pack/server/script.dat')) {
+     printInfo('Packing cache, please wait until you see the world is ready.');
+ 
+@@ -33,13 +112,13 @@ if (Environment.EASY_STARTUP) {
+     new Worker(new URL('./logger.ts', import.meta.url));
+ }
+ 
+-await World.start();
+-
+ const tcpServer = new TcpServer();
+-tcpServer.start();
+ 
+ await startWeb();
+ await startManagementWeb();
++await tcpServer.start();
++
++await World.start();
+ 
+ register.setDefaultLabels({ nodeId: Environment.NODE_ID });
+ collectDefaultMetrics({ register });
+diff --git a/src/engine/TeleportNetwork.ts b/src/engine/TeleportNetwork.ts
+new file mode 100644
+index 00000000..ba1561ae
+--- /dev/null
++++ b/src/engine/TeleportNetwork.ts
+@@ -0,0 +1,1177 @@
++import World from '#/engine/World.js';
++import LocType from '#/cache/config/LocType.js';
++import NpcType from '#/cache/config/NpcType.js';
++import { EntityLifeCycle } from '#/engine/entity/EntityLifeCycle.js';
++import Loc from '#/engine/entity/Loc.js';
++import Npc from '#/engine/entity/Npc.js';
++import Player from '#/engine/entity/Player.js';
++import { PlayerStat } from '#/engine/entity/PlayerStat.js';
++import { isMapBlocked, isZoneAllocated } from '#/engine/GameMap.js';
++import { LocShape } from '#/engine/routefinder/flags.js';
++import { printInfo } from '#/util/Logger.js';
++
++export type TeleportCategory = 'city' | 'training' | 'guild' | 'dungeon' | 'minigame' | 'other';
++
++export type TeleportRegion = 'Misthalin' | 'Asgarnia' | 'Kandarin' | 'Kharidian Desert' | 'Karamja' | 'Morytania' | 'Fremennik' | 'Wilderness' | 'Entrana';
++
++export interface StandardSpellRequirement {
++    magicLevel: number;
++    xp: number;
++    runes: { id: number; name: string; count: number }[];
++}
++
++export interface TeleportDestination {
++    id: string;
++    aliases: string[];
++    name: string;
++    region: TeleportRegion;
++    category: TeleportCategory;
++    x: number;
++    z: number;
++    level: number;
++    mapX: number;
++    mapZ: number;
++    dangerous: boolean;
++    riskWarning?: string;
++    description: string;
++    standardSpell?: StandardSpellRequirement;
++}
++
++export interface TeleportOptions {
++    confirmed?: boolean;
++    viaPortal?: boolean;
++    silent?: boolean;
++}
++
++export type TeleportFailureReason = 'INVALID_DESTINATION' | 'COORDINATES_REJECTED' | 'PLAYER_INVALID' | 'PERMISSION_DENIED' | 'WILDERNESS_BLOCKED' | 'MAGIC_LEVEL_LOW' | 'MISSING_RUNES' | 'CONFIRMATION_REQUIRED' | 'REGION_UNLOADED' | 'TILE_BLOCKED';
++
++export interface TeleportResult {
++    success: boolean;
++    destination?: TeleportDestination;
++    reason?: TeleportFailureReason;
++    message: string;
++    x?: number;
++    z?: number;
++    level?: number;
++    mapX?: number;
++    mapZ?: number;
++}
++
++// #377 Rune Obj IDs & Inventory ID
++export const INV_BACKPACK = 93;
++export const RUNE_FIRE = 554;
++export const RUNE_WATER = 555;
++export const RUNE_AIR = 556;
++export const RUNE_EARTH = 557;
++export const RUNE_LAW = 563;
++
++// #377 Teleport Animation, Spotanim & Synth Sound
++export const TELEPORT_SEQ_ID = 714; // human_castteleport
++export const TELEPORT_SPOTANIM_ID = 111; // teleport_casting
++export const TELEPORT_SYNTH_ID = 202; // teleport_all
++
++export const TELEPORT_DESTINATIONS: readonly TeleportDestination[] = [
++    // ---- Major Cities ----
++    {
++        id: 'varrock',
++        aliases: ['v', 'varrock_square', 'home'],
++        name: 'Varrock Square',
++        region: 'Misthalin',
++        category: 'city',
++        x: 3213,
++        z: 3424,
++        level: 0,
++        mapX: 3213,
++        mapZ: 3424,
++        dangerous: false,
++        description: 'Central marketplace of Misthalin, south of the Varrock fountain and Portal Hub.',
++        standardSpell: {
++            magicLevel: 25,
++            xp: 35,
++            runes: [
++                { id: RUNE_LAW, name: 'Law rune', count: 1 },
++                { id: RUNE_AIR, name: 'Air rune', count: 3 },
++                { id: RUNE_FIRE, name: 'Fire rune', count: 1 }
++            ]
++        }
++    },
++    {
++        id: 'varrock_portal_hub',
++        aliases: ['hub', 'portal_hub', 'portals', 'varrock_hub'],
++        name: 'Varrock Portal Hub',
++        region: 'Misthalin',
++        category: 'city',
++        x: 3211,
++        z: 3435,
++        level: 0,
++        mapX: 3211,
++        mapZ: 3435,
++        dangerous: false,
++        description: 'Gielinor Fast-Travel Portal Plaza north of Varrock fountain with bank chest and Teleport Guide.',
++        standardSpell: {
++            magicLevel: 25,
++            xp: 35,
++            runes: [
++                { id: RUNE_LAW, name: 'Law rune', count: 1 },
++                { id: RUNE_AIR, name: 'Air rune', count: 3 },
++                { id: RUNE_FIRE, name: 'Fire rune', count: 1 }
++            ]
++        }
++    },
++    {
++        id: 'lumbridge',
++        aliases: ['lumb', 'lumby', 'lumbridge_castle'],
++        name: 'Lumbridge',
++        region: 'Misthalin',
++        category: 'city',
++        x: 3222,
++        z: 3218,
++        level: 0,
++        mapX: 3222,
++        mapZ: 3218,
++        dangerous: false,
++        description: 'Courtyard of Lumbridge Castle beside the River Lum.',
++        standardSpell: {
++            magicLevel: 31,
++            xp: 41,
++            runes: [
++                { id: RUNE_LAW, name: 'Law rune', count: 1 },
++                { id: RUNE_AIR, name: 'Air rune', count: 3 },
++                { id: RUNE_EARTH, name: 'Earth rune', count: 1 }
++            ]
++        }
++    },
++    {
++        id: 'falador',
++        aliases: ['fally', 'falador_square'],
++        name: 'Falador',
++        region: 'Asgarnia',
++        category: 'city',
++        x: 2965,
++        z: 3379,
++        level: 0,
++        mapX: 2965,
++        mapZ: 3379,
++        dangerous: false,
++        description: 'White Knights capital of Asgarnia, near the western and eastern banks.',
++        standardSpell: {
++            magicLevel: 37,
++            xp: 48,
++            runes: [
++                { id: RUNE_LAW, name: 'Law rune', count: 1 },
++                { id: RUNE_AIR, name: 'Air rune', count: 3 },
++                { id: RUNE_WATER, name: 'Water rune', count: 1 }
++            ]
++        }
++    },
++    {
++        id: 'al_kharid',
++        aliases: ['alkharid', 'ak'],
++        name: 'Al Kharid',
++        region: 'Kharidian Desert',
++        category: 'city',
++        x: 3293,
++        z: 3174,
++        level: 0,
++        mapX: 3293,
++        mapZ: 3174,
++        dangerous: false,
++        description: 'Desert gateway town outside the Al Kharid Palace, close to bank, furnace and Shantay Pass.'
++    },
++    {
++        id: 'draynor_village',
++        aliases: ['draynor'],
++        name: 'Draynor Village',
++        region: 'Misthalin',
++        category: 'city',
++        x: 3093,
++        z: 3244,
++        level: 0,
++        mapX: 3093,
++        mapZ: 3244,
++        dangerous: false,
++        description: 'Market square and bank of Draynor Village near the willow trees.'
++    },
++    {
++        id: 'edgeville',
++        aliases: ['edge'],
++        name: 'Edgeville',
++        region: 'Misthalin',
++        category: 'city',
++        x: 3087,
++        z: 3496,
++        level: 0,
++        mapX: 3087,
++        mapZ: 3496,
++        dangerous: false,
++        description: 'Frontier town on the border of the Wilderness, right outside Edgeville Bank.'
++    },
++    {
++        id: 'barbarian_village',
++        aliases: ['barb_village', 'gunnarsgrunn'],
++        name: 'Barbarian Village',
++        region: 'Misthalin',
++        category: 'city',
++        x: 3083,
++        z: 3419,
++        level: 0,
++        mapX: 3083,
++        mapZ: 3419,
++        dangerous: false,
++        description: 'Stronghold of the Barbarians west of Varrock with helmet shop, mining rocks and fishing spot.'
++    },
++    {
++        id: 'port_sarim',
++        aliases: ['sarim', 'portsarim'],
++        name: 'Port Sarim',
++        region: 'Asgarnia',
++        category: 'city',
++        x: 3023,
++        z: 3208,
++        level: 0,
++        mapX: 3023,
++        mapZ: 3208,
++        dangerous: false,
++        description: 'Bustling Asgarnian seaport with ships to Karamja and Entrana.'
++    },
++    {
++        id: 'camelot',
++        aliases: ['cammy', 'camelot_castle'],
++        name: 'Camelot Castle',
++        region: 'Kandarin',
++        category: 'city',
++        x: 2757,
++        z: 3477,
++        level: 0,
++        mapX: 2757,
++        mapZ: 3477,
++        dangerous: false,
++        description: 'Gates of King Arthur and the Knights of the Round Table in Kandarin.',
++        standardSpell: {
++            magicLevel: 45,
++            xp: 55.5,
++            runes: [
++                { id: RUNE_LAW, name: 'Law rune', count: 1 },
++                { id: RUNE_AIR, name: 'Air rune', count: 5 }
++            ]
++        }
++    },
++    {
++        id: 'seers_village',
++        aliases: ['seers'],
++        name: "Seers' Village",
++        region: 'Kandarin',
++        category: 'city',
++        x: 2725,
++        z: 3485,
++        level: 0,
++        mapX: 2725,
++        mapZ: 3485,
++        dangerous: false,
++        description: "Seers' Village bank, flax fields, yew trees and elemental workshop."
++    },
++    {
++        id: 'catherby',
++        aliases: ['cath'],
++        name: 'Catherby',
++        region: 'Kandarin',
++        category: 'city',
++        x: 2804,
++        z: 3433,
++        level: 0,
++        mapX: 2804,
++        mapZ: 3433,
++        dangerous: false,
++        description: 'Peaceful coastal fishing and farming town south-east of Camelot.'
++    },
++    {
++        id: 'east_ardougne',
++        aliases: ['ardougne', 'ardy', 'east_ardy'],
++        name: 'East Ardougne',
++        region: 'Kandarin',
++        category: 'city',
++        x: 2662,
++        z: 3305,
++        level: 0,
++        mapX: 2662,
++        mapZ: 3305,
++        dangerous: false,
++        description: 'Market square of King Lathas in East Ardougne, famous for thieving stalls and banks.',
++        standardSpell: {
++            magicLevel: 51,
++            xp: 61,
++            runes: [
++                { id: RUNE_LAW, name: 'Law rune', count: 2 },
++                { id: RUNE_WATER, name: 'Water rune', count: 2 }
++            ]
++        }
++    },
++    {
++        id: 'west_ardougne',
++        aliases: ['west_ardy'],
++        name: 'West Ardougne',
++        region: 'Kandarin',
++        category: 'city',
++        x: 2529,
++        z: 3307,
++        level: 0,
++        mapX: 2529,
++        mapZ: 3307,
++        dangerous: false,
++        description: 'Walled western half of Ardougne beyond the mourners gate.'
++    },
++    {
++        id: 'yanille',
++        aliases: ['yan'],
++        name: 'Yanille',
++        region: 'Kandarin',
++        category: 'city',
++        x: 2605,
++        z: 3093,
++        level: 0,
++        mapX: 2605,
++        mapZ: 3093,
++        dangerous: false,
++        description: "Fortified southern Kandarin town housing the Wizards' Guild and Watchtower."
++    },
++
++    // ---- Training Locations & Guilds ----
++    {
++        id: 'al_kharid_mine',
++        aliases: ['ak_mine', 'scorpions'],
++        name: 'Al Kharid Mine',
++        region: 'Kharidian Desert',
++        category: 'training',
++        x: 3299,
++        z: 3285,
++        level: 0,
++        mapX: 3299,
++        mapZ: 3285,
++        dangerous: false,
++        description: 'Rich quarry north of Al Kharid containing iron, copper, tin, silver, coal, gold, mithril and adamantite.'
++    },
++    {
++        id: 'mining_guild',
++        aliases: ['mining'],
++        name: 'Mining Guild',
++        region: 'Asgarnia',
++        category: 'guild',
++        x: 3021,
++        z: 9739,
++        level: 0,
++        mapX: 3021,
++        mapZ: 3339,
++        dangerous: false,
++        description: 'Dwarven Mining Guild cavern beneath Falador packed with coal and mithril rocks.'
++    },
++    {
++        id: 'fishing_guild',
++        aliases: ['fishing'],
++        name: 'Fishing Guild',
++        region: 'Kandarin',
++        category: 'guild',
++        x: 2611,
++        z: 3391,
++        level: 0,
++        mapX: 2611,
++        mapZ: 3391,
++        dangerous: false,
++        description: 'Premier fishing docks north of Ardougne with lobster, tuna, swordfish and shark spots.'
++    },
++    {
++        id: 'crafting_guild',
++        aliases: ['crafting'],
++        name: 'Crafting Guild',
++        region: 'Asgarnia',
++        category: 'guild',
++        x: 2932,
++        z: 3288,
++        level: 0,
++        mapX: 2932,
++        mapZ: 3288,
++        dangerous: false,
++        description: 'Master Crafters guild south-west of Falador with gold/silver/clay rocks, pottery wheel and tanner.'
++    },
++    {
++        id: 'champions_guild',
++        aliases: ['champions', 'champ_guild'],
++        name: "Champions' Guild",
++        region: 'Misthalin',
++        category: 'guild',
++        x: 3191,
++        z: 3363,
++        level: 0,
++        mapX: 3191,
++        mapZ: 3363,
++        dangerous: false,
++        description: 'Renowned hall of heroes south-west of Varrock where Dragon Slayer begins.'
++    },
++    {
++        id: 'wizards_guild',
++        aliases: ['wizards', 'magic_guild'],
++        name: "Wizards' Guild",
++        region: 'Kandarin',
++        category: 'guild',
++        x: 2597,
++        z: 3087,
++        level: 0,
++        mapX: 2597,
++        mapZ: 3087,
++        dangerous: false,
++        description: 'Mystic tower in Yanille with rune shops and portals.'
++    },
++    {
++        id: 'barbarian_training',
++        aliases: ['barb_training', 'barb_hall'],
++        name: 'Barbarian Training Area',
++        region: 'Misthalin',
++        category: 'training',
++        x: 3079,
++        z: 3434,
++        level: 0,
++        mapX: 3079,
++        mapZ: 3434,
++        dangerous: false,
++        description: 'Barbarian longhall combat training grounds north of Gunnarsgrunn.'
++    },
++
++    // ---- Dungeons & Bosses ----
++    {
++        id: 'varrock_sewers',
++        aliases: ['sewers'],
++        name: 'Varrock Sewers',
++        region: 'Misthalin',
++        category: 'dungeon',
++        x: 3237,
++        z: 9859,
++        level: 0,
++        mapX: 3237,
++        mapZ: 3459,
++        dangerous: true,
++        riskWarning: 'Contains aggressive skeletons, zombies, ghosts, giant rats, and Moss Giants deeper within.',
++        description: 'Underground sewer network beneath Varrock with skeletons, zombies, red spiders and moss giants.'
++    },
++    {
++        id: 'edgeville_dungeon',
++        aliases: ['edge_dungeon', 'hill_giants'],
++        name: 'Edgeville Dungeon',
++        region: 'Misthalin',
++        category: 'dungeon',
++        x: 3096,
++        z: 9868,
++        level: 0,
++        mapX: 3096,
++        mapZ: 3468,
++        dangerous: true,
++        riskWarning: 'Contains aggressive monsters; the northern gate leads directly into the Wilderness dungeon.',
++        description: 'Entrance ladder to Edgeville Dungeon leading to Hill Giants, Hobgoblins, Chaos Druids and Vannaka.'
++    },
++    {
++        id: 'kalphite_lair',
++        aliases: ['kalphite', 'kq'],
++        name: 'Kalphite Lair Entrance',
++        region: 'Kharidian Desert',
++        category: 'dungeon',
++        x: 3227,
++        z: 3107,
++        level: 0,
++        mapX: 3227,
++        mapZ: 3107,
++        dangerous: true,
++        riskWarning: 'Located in the Kharidian Desert (desert heat) outside the Kalphite Queen hive.',
++        description: 'Desert tunnel entrance to the Kalphite Workers, Soldiers, Guardians and Kalphite Queen.'
++    },
++    {
++        id: 'kbd_lair_entrance',
++        aliases: ['kbd'],
++        name: 'King Black Dragon Ladder',
++        region: 'Wilderness',
++        category: 'dungeon',
++        x: 2273,
++        z: 4681,
++        level: 0,
++        mapX: 3017,
++        mapZ: 3849,
++        dangerous: true,
++        riskWarning: 'High-risk boss area: pulling the lever enters the King Black Dragon lair (dragonfire + poison/freeze).',
++        description: 'Safe chamber at the bottom of the Lava Maze ladder right beside the King Black Dragon lever.'
++    },
++    {
++        id: 'mage_bank',
++        aliases: ['mb', 'mage_arena'],
++        name: 'Mage Arena Bank',
++        region: 'Wilderness',
++        category: 'dungeon',
++        x: 2539,
++        z: 4716,
++        level: 0,
++        mapX: 3091,
++        mapZ: 3956,
++        dangerous: true,
++        riskWarning: 'Exiting via the web lever places you in Level 55 Deep Wilderness!',
++        description: 'Underground safe haven of Kolodion and Gundai in the deep Wilderness.'
++    },
++
++    // ---- Other Interesting Destinations & Minigames ----
++    {
++        id: 'taverley',
++        aliases: ['tav'],
++        name: 'Taverley',
++        region: 'Asgarnia',
++        category: 'other',
++        x: 2894,
++        z: 3455,
++        level: 0,
++        mapX: 2894,
++        mapZ: 3455,
++        dangerous: false,
++        description: 'Druidic village north-west of Falador near Taverley Dungeon and White Wolf Mountain.'
++    },
++    {
++        id: 'burthorpe',
++        aliases: ['burth'],
++        name: 'Burthorpe',
++        region: 'Asgarnia',
++        category: 'other',
++        x: 2899,
++        z: 3545,
++        level: 0,
++        mapX: 2899,
++        mapZ: 3545,
++        dangerous: false,
++        description: 'Principality of Burthorpe, home of the Imperial Guard, Heroes Guild, Turael and Rogue Den.'
++    },
++    {
++        id: 'rimmington',
++        aliases: ['rimm'],
++        name: 'Rimmington',
++        region: 'Asgarnia',
++        category: 'other',
++        x: 2957,
++        z: 3214,
++        level: 0,
++        mapX: 2957,
++        mapZ: 3214,
++        dangerous: false,
++        description: 'Quiet mining and crafting village in southern Asgarnia near Melzars Maze.'
++    },
++    {
++        id: 'brimhaven',
++        aliases: ['brim'],
++        name: 'Brimhaven',
++        region: 'Karamja',
++        category: 'other',
++        x: 2772,
++        z: 3181,
++        level: 0,
++        mapX: 2772,
++        mapZ: 3181,
++        dangerous: false,
++        description: 'Pirate haven on western Karamja near the Brimhaven Agility Arena and Dungeon.'
++    },
++    {
++        id: 'karamja',
++        aliases: ['musa_point', 'banana_plantation'],
++        name: 'Karamja (Musa Point)',
++        region: 'Karamja',
++        category: 'other',
++        x: 2916,
++        z: 3176,
++        level: 0,
++        mapX: 2916,
++        mapZ: 3176,
++        dangerous: false,
++        description: 'Eastern Karamja docks and lobster/tuna fishing pier near the volcano.'
++    },
++    {
++        id: 'tree_gnome_stronghold',
++        aliases: ['gnome', 'stronghold', 'tgs'],
++        name: 'Tree Gnome Stronghold',
++        region: 'Kandarin',
++        category: 'other',
++        x: 2461,
++        z: 3444,
++        level: 0,
++        mapX: 2461,
++        mapZ: 3444,
++        dangerous: false,
++        description: 'Heart of the Gnome Stronghold beside the Gnome Agility Course, Grand Tree and Nieve.'
++    },
++    {
++        id: 'castle_wars',
++        aliases: ['cw', 'castlewars'],
++        name: 'Castle Wars',
++        region: 'Kandarin',
++        category: 'minigame',
++        x: 2441,
++        z: 3090,
++        level: 0,
++        mapX: 2441,
++        mapZ: 3090,
++        dangerous: false,
++        description: 'Castle Wars lobby and one-click bank chest in south-western Kandarin.'
++    },
++    {
++        id: 'duel_arena',
++        aliases: ['duel', 'da'],
++        name: 'Al Kharid Duel Arena',
++        region: 'Kharidian Desert',
++        category: 'minigame',
++        x: 3366,
++        z: 3266,
++        level: 0,
++        mapX: 3366,
++        mapZ: 3266,
++        dangerous: false,
++        description: 'Grand desert amphitheatre north-east of Al Kharid with hospital healers and bank.'
++    },
++    {
++        id: 'shilo_village',
++        aliases: ['shilo'],
++        name: 'Shilo Village',
++        region: 'Karamja',
++        category: 'other',
++        x: 2852,
++        z: 2955,
++        level: 0,
++        mapX: 2852,
++        mapZ: 2955,
++        dangerous: false,
++        description: 'Fortified southern Karamja settlement with Duradel, gem rocks, bank and fly-fishing river.'
++    },
++    {
++        id: 'canifis',
++        aliases: ['morytania', 'can'],
++        name: 'Canifis',
++        region: 'Morytania',
++        category: 'other',
++        x: 3495,
++        z: 3488,
++        level: 0,
++        mapX: 3495,
++        mapZ: 3488,
++        dangerous: false,
++        description: 'Werewolf town in Morytania near the Slayer Tower and Mort Myre Swamp.'
++    },
++    {
++        id: 'rellekka',
++        aliases: ['fremennik', 'rell'],
++        name: 'Rellekka',
++        region: 'Fremennik',
++        category: 'other',
++        x: 2660,
++        z: 3657,
++        level: 0,
++        mapX: 2660,
++        mapZ: 3657,
++        dangerous: false,
++        description: 'Market hall of the Fremennik Province in northern Kandarin.'
++    },
++    {
++        id: 'entrana',
++        aliases: ['holy_island'],
++        name: 'Entrana',
++        region: 'Entrana',
++        category: 'other',
++        x: 2834,
++        z: 3335,
++        level: 0,
++        mapX: 2834,
++        mapZ: 3335,
++        dangerous: false,
++        description: 'Peaceful island of Saradominist monks with Law Altar and glassblowing furnace.'
++    },
++    {
++        id: 'watchtower',
++        aliases: ['wt'],
++        name: 'Watchtower',
++        region: 'Kandarin',
++        category: 'other',
++        x: 2549,
++        z: 3114,
++        level: 0,
++        mapX: 2549,
++        mapZ: 3114,
++        dangerous: false,
++        description: 'Ground floor entrance of the Yanille Watchtower.',
++        standardSpell: {
++            magicLevel: 58,
++            xp: 68,
++            runes: [
++                { id: RUNE_LAW, name: 'Law rune', count: 2 },
++                { id: RUNE_EARTH, name: 'Earth rune', count: 2 }
++            ]
++        }
++    },
++    {
++        id: 'barrows',
++        aliases: ['barrow'],
++        name: 'Barrows Mounds',
++        region: 'Morytania',
++        category: 'minigame',
++        x: 3565,
++        z: 3308,
++        level: 0,
++        mapX: 3565,
++        mapZ: 3308,
++        dangerous: true,
++        riskWarning: 'Digging on the mounds enters the Barrows crypts where Prayer drains continuously.',
++        description: 'Six ancient burial mounds of the Barrows Brothers in eastern Morytania.'
++    },
++    {
++        id: 'tzhaar',
++        aliases: ['fight_cave', 'fight_pits'],
++        name: 'TzHaar City',
++        region: 'Karamja',
++        category: 'minigame',
++        x: 2444,
++        z: 5172,
++        level: 0,
++        mapX: 2856,
++        mapZ: 3168,
++        dangerous: false,
++        description: 'Volcanic city beneath Karamja volcano near the TzHaar bank, Fight Pits and TzTok-Jad Fight Cave.'
++    }
++];
++
++const DEST_BY_ID = new Map<string, TeleportDestination>();
++const DEST_BY_ALIAS = new Map<string, TeleportDestination>();
++
++for (const dest of TELEPORT_DESTINATIONS) {
++    DEST_BY_ID.set(dest.id.toLowerCase(), dest);
++    DEST_BY_ALIAS.set(dest.id.toLowerCase(), dest);
++    for (const alias of dest.aliases) {
++        DEST_BY_ALIAS.set(alias.toLowerCase(), dest);
++    }
++}
++
++export interface SavedPosition {
++    x: number;
++    z: number;
++    level: number;
++}
++
++const lastOriginByPlayer = new Map<string, SavedPosition>();
++const lastDestinationByPlayer = new Map<string, string>();
++const recentDestinationsByPlayer = new Map<string, string[]>();
++const pendingDangerousConfirmation = new Map<string, string>();
++
++let hubSpawned = false;
++
++/**
++ * Look up a destination strictly by registered ID or alias.
++ * Never parses or accepts raw coordinates.
++ */
++export function findTeleportDestination(query: string): TeleportDestination | null {
++    if (!query || typeof query !== 'string') {
++        return null;
++    }
++    const clean = query.trim().toLowerCase();
++    if (!clean) {
++        return null;
++    }
++    return DEST_BY_ALIAS.get(clean) ?? null;
++}
++
++/**
++ * Search destinations by substring against name, id, aliases, region or category.
++ */
++export function searchTeleportDestinations(query: string, category?: TeleportCategory | 'all', region?: TeleportRegion | 'all'): TeleportDestination[] {
++    const q = (query ?? '').trim().toLowerCase();
++    return TELEPORT_DESTINATIONS.filter(d => {
++        if (category && category !== 'all' && d.category !== category) {
++            return false;
++        }
++        if (region && region !== 'all' && d.region !== region) {
++            return false;
++        }
++        if (!q) {
++            return true;
++        }
++        return d.name.toLowerCase().includes(q) || d.id.toLowerCase().includes(q) || d.region.toLowerCase().includes(q) || d.category.toLowerCase().includes(q) || d.aliases.some(a => a.toLowerCase().includes(q));
++    });
++}
++
++/**
++ * Convert any game coordinate (including dungeons/caves) into overworld map coordinates.
++ */
++export function toOverworldMapCoord(x: number, z: number, level: number = 0): { mapX: number; mapZ: number; underground: boolean } {
++    // TzHaar caves beneath Karamja volcano
++    if (x >= 2368 && x <= 2559 && z >= 5056 && z <= 5183) {
++        return { mapX: 2856, mapZ: 3168, underground: true };
++    }
++    // KBD lair
++    if (x >= 2240 && x <= 2303 && z >= 4672 && z <= 4735) {
++        return { mapX: 3017, mapZ: 3849, underground: true };
++    }
++    // Mage Arena Bank
++    if (x >= 2500 && x <= 2559 && z >= 4680 && z <= 4735) {
++        return { mapX: 3091, mapZ: 3956, underground: true };
++    }
++    // Standard RS2 underground caves (z offset by +6400)
++    if (z >= 9000) {
++        return { mapX: x, mapZ: z - 6400, underground: true };
++    }
++    return { mapX: x, mapZ: z, underground: level > 0 };
++}
++
++/**
++ * Compute Wilderness level for a tile (0 if not in Wilderness).
++ */
++export function getWildernessLevel(x: number, z: number): number {
++    // Overworld Wilderness: x in 2944..3391, z in 3520..3967
++    if (x >= 2944 && x <= 3391 && z >= 3520 && z <= 3967) {
++        return Math.floor((z - 3520) / 8) + 1;
++    }
++    // Underground Wilderness: x in 2944..3391, z in 9920..10367
++    if (x >= 2944 && x <= 3391 && z >= 9920 && z <= 10367) {
++        return Math.floor((z - 9920) / 8) + 1;
++    }
++    return 0;
++}
++
++/**
++ * Find a safe, walkable landing tile at or immediately adjacent to (targetX, targetZ, level).
++ */
++export function findSafeLandingTile(targetX: number, targetZ: number, level: number): { x: number; z: number } | null {
++    if (!isZoneAllocated(level, targetX, targetZ)) {
++        return null;
++    }
++    if (!isMapBlocked(targetX, targetZ, level)) {
++        return { x: targetX, z: targetZ };
++    }
++    const offsets = [
++        [0, -1],
++        [0, 1],
++        [-1, 0],
++        [1, 0],
++        [-1, -1],
++        [1, -1],
++        [-1, 1],
++        [1, 1],
++        [0, -2],
++        [0, 2],
++        [-2, 0],
++        [2, 0]
++    ];
++    for (const [dx, dz] of offsets) {
++        const nx = targetX + dx;
++        const nz = targetZ + dz;
++        if (isZoneAllocated(level, nx, nz) && !isMapBlocked(nx, nz, level)) {
++            return { x: nx, z: nz };
++        }
++    }
++    return null;
++}
++
++/**
++ * Execute a server-validated teleport request for a player.
++ * Never trusts raw client coordinates.
++ */
++export function executeTeleportRequest(player: Player | null | undefined, destQuery: string, options: TeleportOptions = {}): TeleportResult {
++    if (!player || typeof player.x !== 'number' || typeof player.z !== 'number' || player.x < 0 || player.z < 0) {
++        return {
++            success: false,
++            reason: 'PLAYER_INVALID',
++            message: 'Player session is not active.'
++        };
++    }
++
++    const raw = (destQuery ?? '').trim();
++    // Explicitly reject raw coordinate patterns (e.g. "3200,3200", "3200 3200", "0_50_50_0_0")
++    if (/^\d+\s*[,\s_]\s*\d+/.test(raw)) {
++        if (!options.silent) {
++            player.messageGame('Arbitrary coordinate teleports are not permitted through the destination network.');
++        }
++        return {
++            success: false,
++            reason: 'COORDINATES_REJECTED',
++            message: 'Arbitrary coordinate teleports are not permitted.'
++        };
++    }
++
++    const dest = findTeleportDestination(raw);
++    if (!dest) {
++        if (!options.silent) {
++            player.messageGame(`Unknown teleport destination: "${raw}". Use ::destinations or open the World Map.`);
++        }
++        return {
++            success: false,
++            reason: 'INVALID_DESTINATION',
++            message: `Unknown teleport destination: "${raw}".`
++        };
++    }
++
++    const isAdmin = player.staffModLevel >= 2;
++
++    // Permission & Rune enforcement for regular players (staffModLevel < 2)
++    if (!isAdmin) {
++        const wildyLevel = getWildernessLevel(player.x, player.z);
++        if (wildyLevel > 20) {
++            if (!options.silent) {
++                player.messageGame('A mysterious force blocks your teleport spell beyond level 20 Wilderness!');
++            }
++            return {
++                success: false,
++                destination: dest,
++                reason: 'WILDERNESS_BLOCKED',
++                message: 'Cannot teleport above level 20 Wilderness.'
++            };
++        }
++
++        if (!options.viaPortal) {
++            const spell = dest.standardSpell;
++            if (!spell) {
++                if (!options.silent) {
++                    player.messageGame(`Fast travel to ${dest.name} requires Admin privileges or visiting the Varrock Portal Hub.`);
++                }
++                return {
++                    success: false,
++                    destination: dest,
++                    reason: 'PERMISSION_DENIED',
++                    message: `Fast travel to ${dest.name} requires Admin privileges.`
++                };
++            }
++
++            const magicLevel = player.levels[PlayerStat.MAGIC] ?? 1;
++            if (magicLevel < spell.magicLevel) {
++                if (!options.silent) {
++                    player.messageGame(`You need a Magic level of ${spell.magicLevel} to cast teleport to ${dest.name}.`);
++                }
++                return {
++                    success: false,
++                    destination: dest,
++                    reason: 'MAGIC_LEVEL_LOW',
++                    message: `Requires Magic level ${spell.magicLevel}.`
++                };
++            }
++
++            for (const rune of spell.runes) {
++                if (player.invTotal(INV_BACKPACK, rune.id) < rune.count) {
++                    if (!options.silent) {
++                        player.messageGame(`You do not have enough ${rune.name}s to cast this teleport.`);
++                    }
++                    return {
++                        success: false,
++                        destination: dest,
++                        reason: 'MISSING_RUNES',
++                        message: `Missing required rune: ${rune.name}.`
++                    };
++                }
++            }
++        }
++    }
++
++    // Dangerous destination confirmation check
++    const alreadyConfirmed = options.confirmed === true || pendingDangerousConfirmation.get(player.username) === dest.id;
++    if (dest.dangerous && !alreadyConfirmed) {
++        pendingDangerousConfirmation.set(player.username, dest.id);
++        const warningMsg = `WARNING: ${dest.name} is dangerous (${dest.riskWarning ?? 'Hazardous area'}). Repeat command or use "::tele_dest ${dest.id} confirm" to proceed.`;
++        if (!options.silent) {
++            player.messageGame(warningMsg);
++        }
++        return {
++            success: false,
++            destination: dest,
++            reason: 'CONFIRMATION_REQUIRED',
++            message: warningMsg
++        };
++    }
++
++    // Validate map region & landing tile
++    if (!isZoneAllocated(dest.level, dest.x, dest.z)) {
++        if (!options.silent) {
++            player.messageGame(`Destination region for ${dest.name} is not loaded.`);
++        }
++        return {
++            success: false,
++            destination: dest,
++            reason: 'REGION_UNLOADED',
++            message: `Destination region for ${dest.name} is not loaded.`
++        };
++    }
++
++    const safeTile = findSafeLandingTile(dest.x, dest.z, dest.level);
++    if (!safeTile) {
++        if (!options.silent) {
++            player.messageGame(`Could not find a safe landing tile at ${dest.name}.`);
++        }
++        return {
++            success: false,
++            destination: dest,
++            reason: 'TILE_BLOCKED',
++            message: `Landing tile blocked at ${dest.name}.`
++        };
++    }
++
++    // Deduct runes for normal players casting standard spell
++    if (!isAdmin && !options.viaPortal && dest.standardSpell) {
++        for (const rune of dest.standardSpell.runes) {
++            player.invDel(INV_BACKPACK, rune.id, rune.count);
++        }
++    }
++
++    pendingDangerousConfirmation.delete(player.username);
++
++    // Record origin & history before moving
++    lastOriginByPlayer.set(player.username, {
++        x: player.x,
++        z: player.z,
++        level: player.level
++    });
++    lastDestinationByPlayer.set(player.username, dest.id);
++
++    const recent = recentDestinationsByPlayer.get(player.username) ?? [];
++    const filteredRecent = [dest.id, ...recent.filter(id => id !== dest.id)].slice(0, 10);
++    recentDestinationsByPlayer.set(player.username, filteredRecent);
++
++    // Clear active modals/interactions and perform teleport with authentic #377 visual/audio effects
++    player.closeModal();
++    player.clearInteraction();
++    player.clearWaypoints();
++    player.unsetMapFlag();
++
++    // Keep map teleports model-safe for the customised #377 client. The legacy
++    // purple cast animation/spot effect can leave the local player model in an
++    // unrecoverable render state after the region rebuild.
++
++    player.teleJump(safeTile.x, safeTile.z, dest.level);
++
++    const mapCoord = toOverworldMapCoord(safeTile.x, safeTile.z, dest.level);
++    const arrivalMsg = `Teleported to ${dest.name} (${dest.region}).`;
++    if (!options.silent) {
++        player.messageGame(arrivalMsg);
++    }
++
++    return {
++        success: true,
++        destination: dest,
++        message: arrivalMsg,
++        x: safeTile.x,
++        z: safeTile.z,
++        level: dest.level,
++        mapX: mapCoord.mapX,
++        mapZ: mapCoord.mapZ
++    };
++}
++
++/**
++ * Return player to their previous position before their last teleport (`::back`).
++ */
++export function returnToPreviousLocation(player: Player): TeleportResult {
++    const prev = lastOriginByPlayer.get(player.username);
++    if (!prev) {
++        player.messageGame('You do not have a previous teleport location recorded.');
++        return {
++            success: false,
++            reason: 'INVALID_DESTINATION',
++            message: 'No previous teleport location recorded.'
++        };
++    }
++
++    if (player.staffModLevel < 2 && getWildernessLevel(player.x, player.z) > 20) {
++        player.messageGame('Cannot return from above level 20 Wilderness.');
++        return {
++            success: false,
++            reason: 'WILDERNESS_BLOCKED',
++            message: 'Cannot return from above level 20 Wilderness.'
++        };
++    }
++
++    const safe = findSafeLandingTile(prev.x, prev.z, prev.level);
++    if (!safe) {
++        player.messageGame('Your previous location is no longer accessible.');
++        return {
++            success: false,
++            reason: 'TILE_BLOCKED',
++            message: 'Previous location blocked.'
++        };
++    }
++
++    const currentPos = { x: player.x, z: player.z, level: player.level };
++    lastOriginByPlayer.set(player.username, currentPos);
++
++    player.closeModal();
++    player.clearInteraction();
++    player.clearWaypoints();
++    player.unsetMapFlag();
++    player.teleJump(safe.x, safe.z, prev.level);
++
++    const mapCoord = toOverworldMapCoord(safe.x, safe.z, prev.level);
++    player.messageGame(`Returned to previous location (${safe.x}, ${safe.z}).`);
++    return {
++        success: true,
++        message: `Returned to (${safe.x}, ${safe.z}).`,
++        x: safe.x,
++        z: safe.z,
++        level: prev.level,
++        mapX: mapCoord.mapX,
++        mapZ: mapCoord.mapZ
++    };
++}
++
++export function getLastDestinationId(username: string): string | undefined {
++    return lastDestinationByPlayer.get(username);
++}
++
++export function getRecentDestinations(username: string): string[] {
++    return recentDestinationsByPlayer.get(username) ?? [];
++}
++
++/**
++ * Spawn the physical Varrock Teleport Portal Hub, Bank Chest, Teleport Guide NPC,
++ * and Return-to-Hub portals across major cities.
++ */
++export function spawnPortalHub(): void {
++    if (hubSpawned) {
++        return;
++    }
++    if (!isZoneAllocated(0, 3211, 3435)) {
++        return;
++    }
++    hubSpawned = true;
++
++    const hubLocs: { id: number; x: number; z: number; level: number; angle: number }[] = [
++        // Varrock North Plaza Portal Ring (3207..3215, 3434..3437)
++        { id: 7272, x: 3207, z: 3436, level: 0, angle: 1 }, // Lumbridge Portal
++        { id: 7273, x: 3209, z: 3437, level: 0, angle: 2 }, // Falador Portal
++        { id: 7288, x: 3211, z: 3437, level: 0, angle: 2 }, // Camelot & Seers Portal
++        { id: 7289, x: 3213, z: 3437, level: 0, angle: 2 }, // East Ardougne Portal
++        { id: 7315, x: 3215, z: 3436, level: 0, angle: 3 }, // Al Kharid & Desert Portal
++        { id: 7316, x: 3207, z: 3434, level: 0, angle: 1 }, // Guilds & Training Portal
++        { id: 7318, x: 3215, z: 3434, level: 0, angle: 3 }, // Dungeons & Minigames Portal
++        { id: 4483, x: 3208, z: 3434, level: 0, angle: 0 }, // Castlewars Bank Chest
++
++        // Return-to-Varrock-Hub Portals (7319 = rd_portal_room4_exit)
++        { id: 7319, x: 3224, z: 3220, level: 0, angle: 0 }, // Lumbridge Courtyard
++        { id: 7319, x: 2967, z: 3381, level: 0, angle: 0 }, // Falador Square
++        { id: 7319, x: 2759, z: 3479, level: 0, angle: 0 }, // Camelot Gates
++        { id: 7319, x: 2660, z: 3307, level: 0, angle: 0 }, // East Ardougne Market
++        { id: 7319, x: 3292, z: 3176, level: 0, angle: 0 }, // Al Kharid Palace
++        { id: 7319, x: 2606, z: 3095, level: 0, angle: 0 }, // Yanille
++        { id: 7319, x: 2443, z: 3092, level: 0, angle: 0 } // Castle Wars Lobby
++    ];
++
++    for (const entry of hubLocs) {
++        if (!isZoneAllocated(entry.level, entry.x, entry.z)) {
++            continue;
++        }
++        const type = LocType.get(entry.id);
++        if (!type) {
++            continue;
++        }
++        const loc = new Loc(entry.level, entry.x, entry.z, type.width, type.length, EntityLifeCycle.DESPAWN, entry.id, LocShape.CENTREPIECE_STRAIGHT, entry.angle);
++        World.addLoc(loc, -1);
++        // Ensure writeFullFollows always includes this permanent dynamic loc even on tick 0
++        loc.lastLifecycleTick = -1;
++    }
++
++    // Spawn the Gielinor Teleport Guide NPC (2244 = lumbridge_guide) at the center of the Varrock Portal Hub
++    const guideType = NpcType.get(2244);
++    if (guideType) {
++        const guideNpc = new Npc(0, 3211, 3436, guideType.size, guideType.size, EntityLifeCycle.RESPAWN, World.getNextNid(), guideType.id, guideType.blockwalk);
++        World.addNpc(guideNpc, -1);
++    }
++
++    printInfo('Spawned Varrock Teleport Portal Hub, Return Portals, Bank Chest, and Teleport Guide');
++}
+diff --git a/src/engine/World.ts b/src/engine/World.ts
+index 788395b8..e0c74382 100644
+--- a/src/engine/World.ts
++++ b/src/engine/World.ts
+@@ -301,6 +301,8 @@ class World {
+ 
+         if (!skipMaps) {
+             this.gameMap.init();
++            const { spawnPortalHub } = await import('#/engine/TeleportNetwork.js');
++            spawnPortalHub();
+         }
+ 
+         setTimeout(() => {
+@@ -741,6 +743,9 @@ class World {
+                 // world shutdown or x-logged / timed out for 60s: force logout
+                 player.loggingOut = true;
+                 force = true;
++            } else if (!isClientConnected(player) && this.currentTick >= player.preventLogoutUntil) {
++                // socket closed and not in combat lock: log out cleanly on next tick
++                player.requestIdleLogout = true;
+             } else if (this.currentTick - player.lastConnected >= World.TIMEOUT_NO_CONNECTION) {
+                 // connection lost for 30s: request idle logout
+                 player.requestIdleLogout = true;
+@@ -831,7 +836,10 @@ class World {
+ 
+                     if (other instanceof NetworkPlayer && player instanceof NetworkPlayer) {
+                         other.client = player.client;
++                        other.client.player = other;
+                         other.session = other.client.uuid;
++                        other.lastConnected = this.currentTick;
++                        other.lastResponse = this.currentTick;
+                         other.client.send(Uint8Array.from([15]));
+                     }
+ 
+@@ -856,6 +864,34 @@ class World {
+                     continue;
+                 }
+ 
++                if (!isClientConnected(other) && other instanceof NetworkPlayer && player instanceof NetworkPlayer && isClientConnected(player)) {
++                    other.client = player.client;
++                    other.client.player = other;
++                    other.session = other.client.uuid;
++                    other.client.state = 1;
++                    other.lastConnected = this.currentTick;
++                    other.lastResponse = this.currentTick;
++                    other.loggingOut = false;
++                    other.requestLogout = false;
++                    other.requestIdleLogout = false;
++                    other.lastRunEnergy = -1;
++                    other.lastStats.fill(-1);
++                    other.lastLevels.fill(-1);
++                    other.client.send(Uint8Array.from([2, Math.min(other.staffModLevel, 2), 1]));
++
++                    rsbuf.cleanupPlayerBuildArea(other.slot);
++                    other.onReconnect();
++
++                    this.friendThread.postMessage({
++                        type: 'player_login',
++                        username: other.username,
++                        chatModePrivate: other.privateChat,
++                        staffLvl: other.staffModLevel
++                    });
++
++                    continue player;
++                }
++
+                 if (player instanceof NetworkPlayer) {
+                     player.addSessionLog(LoggerEventType.ENGINE, 'Tried to log in - already logged in');
+                     player.client.send(Uint8Array.from([5]));
+diff --git a/src/engine/entity/PathingEntity.ts b/src/engine/entity/PathingEntity.ts
+index 130ebb20..4d2b56c4 100644
+--- a/src/engine/entity/PathingEntity.ts
++++ b/src/engine/entity/PathingEntity.ts
+@@ -1,6 +1,7 @@
+ import { CollisionFlag, CollisionType } from '#/engine/routefinder/index.js';
+ 
+ import LocType from '#/cache/config/LocType.js';
++import InvType from '#/cache/config/InvType.js';
+ import { CoordGrid } from '#/engine/CoordGrid.js';
+ import { BlockWalk } from '#/engine/entity/BlockWalk.js';
+ import Entity from '#/engine/entity/Entity.js';
+@@ -312,6 +313,16 @@ export default abstract class PathingEntity extends Entity {
+         this.lastStepZ = this.z;
+         this.tele = true;
+ 
++        // A #377 client rebuilds the local scene when a player teleports.  Re-send
++        // the current appearance with that update so the local player model cannot
++        // be left only in a stale region/model cache.  This does not alter worn
++        // items or player state; it only marks the existing appearance for output.
++        if (this instanceof Player) {
++            // Loaded players may still have the legacy -1 appearance selector.
++            // Always serialize the actual worn inventory after a teleport.
++            this.buildAppearance(InvType.WORN);
++        }
++
+         if (previousLevel != level) {
+             this.moveSpeed = MoveSpeed.INSTANT;
+             this.jump = true;
+diff --git a/src/engine/entity/Player.ts b/src/engine/entity/Player.ts
+index 65671256..d25d209e 100644
+--- a/src/engine/entity/Player.ts
++++ b/src/engine/entity/Player.ts
+@@ -699,27 +699,7 @@ export default class Player extends PathingEntity {
+     }
+ 
+     updateEnergy() {
+-        if (this.delayed) {
+-            return;
+-        }
+-        if (this.stepsTaken < 2) {
+-            const recovered = ((this.baseLevels[PlayerStat.AGILITY] / 6) | 0) + 8;
+-            this.runenergy = Math.min(this.runenergy + recovered, 10000);
+-        } else {
+-            const weightKg = this.runweight / 1000;
+-            const clampWeight = Math.min(Math.max(weightKg, 0), 64);
+-            const loss = (67 + (67 * clampWeight) / 64) | 0;
+-            this.runenergy = Math.max(this.runenergy - loss, 0);
+-        }
+-
+-        if (this.runenergy === 0) {
+-            this.run = 0;
+-            // todo: better way to sync engine varp
+-            this.setVar(VarPlayerType.RUN, this.run);
+-        }
+-        if (this.runenergy < 100) {
+-            this.tempRun = 0;
+-        }
++        this.runenergy = 10000;
+     }
+ 
+     blockWalkFlag(): CollisionFlag {
+diff --git a/src/network/game/client/handler/ClientCheatHandler.ts b/src/network/game/client/handler/ClientCheatHandler.ts
+index 18ba2f1a..8023120e 100644
+--- a/src/network/game/client/handler/ClientCheatHandler.ts
++++ b/src/network/game/client/handler/ClientCheatHandler.ts
+@@ -17,12 +17,14 @@ import VarPlayerType from '#/cache/config/VarPlayerType.js';
+ 
+ import { CoordGrid } from '#/engine/CoordGrid.js';
+ import World from '#/engine/World.js';
++import { executeTeleportRequest, getLastDestinationId, returnToPreviousLocation, searchTeleportDestinations, TELEPORT_DESTINATIONS } from '#/engine/TeleportNetwork.js';
+ import { EntityLifeCycle } from '#/engine/entity/EntityLifeCycle.js';
+ import Loc from '#/engine/entity/Loc.js';
+ import { MoveStrategy } from '#/engine/entity/MoveStrategy.js';
+ import { isClientConnected } from '#/engine/entity/NetworkPlayer.js';
+ import Npc from '#/engine/entity/Npc.js';
+ import Player, { getExpByLevel } from '#/engine/entity/Player.js';
++import { PlayerQueueType } from '#/engine/entity/PlayerQueueRequest.js';
+ import { PlayerStat, PlayerStatEnabled, PlayerStatMap } from '#/engine/entity/PlayerStat.js';
+ import ScriptProvider from '#/engine/script/ScriptProvider.js';
+ import ScriptRunner from '#/engine/script/ScriptRunner.js';
+@@ -54,6 +56,55 @@ export default class ClientCheatHandler extends ClientGameMessageHandler<ClientC
+             player.addSessionLog(LoggerEventType.MODERATOR, 'Ran cheat', cheat);
+         }
+ 
++        // Gielinor Fast Travel Network commands (validated server-side with permission & rune checks)
++        if (cmd === 'tele_dest' || cmd === 'ft') {
++            if (args.length < 1) {
++                player.messageGame('Usage: ::tele_dest <destination_id> [confirm]');
++                return true;
++            }
++            const confirmed = args[args.length - 1] === 'confirm' || args[args.length - 1] === 'yes';
++            const destId = confirmed && args.length > 1 ? args.slice(0, -1).join('_') : args.join('_');
++            executeTeleportRequest(player, destId, { confirmed });
++            return true;
++        } else if (cmd === 'hub') {
++            executeTeleportRequest(player, 'varrock_portal_hub', { confirmed: true });
++            return true;
++        } else if (cmd === 'back') {
++            returnToPreviousLocation(player);
++            return true;
++        } else if (cmd === 'lasttele') {
++            const lastId = getLastDestinationId(player.username);
++            if (!lastId) {
++                player.messageGame('No previous teleport destination found.');
++                return true;
++            }
++            executeTeleportRequest(player, lastId, { confirmed: true });
++            return true;
++        } else if (cmd === 'destinations') {
++            const filter = args[0]?.toLowerCase();
++            const matches = searchTeleportDestinations(filter ?? '');
++            player.messageGame(`Gielinor Fast Travel Network (${matches.length}/${TELEPORT_DESTINATIONS.length} destinations):`);
++            const preview = matches
++                .slice(0, 8)
++                .map(d => `${d.name} (${d.id})`)
++                .join(', ');
++            if (preview) {
++                player.messageGame(preview + (matches.length > 8 ? '...' : ''));
++            }
++            return true;
++        }
++
++        if (!Environment.NODE_PRODUCTION && player.staffModLevel >= 2 && (cmd === 'candle' || cmd === 'candlerestore')) {
++            const scriptName = cmd === 'candle' ? '[debugproc,candle_test]' : '[debugproc,candle_recover]';
++            const script = ScriptProvider.getByName(scriptName);
++            if (!script) {
++                player.messageGame('Candlelight diagnostic script is unavailable.');
++                return true;
++            }
++            player.executeScript(ScriptRunner.init(script, player), false);
++            return true;
++        }
++
+         if (!Environment.NODE_PRODUCTION && player.staffModLevel >= 4) {
+             // developer commands
+ 
+@@ -345,13 +396,71 @@ export default class ClientCheatHandler extends ClientGameMessageHandler<ClientC
+                     return false;
+                 }
+ 
+-                const obj = ObjType.getId(args[0]);
++                const lookupName = args[0] === 'amulet_of_fury' || args[0] === 'fury' ? 'enchanted_onyx_amulet' : args[0];
++                let obj = ObjType.getId(lookupName);
++                if (obj === -1) {
++                    const query = args[0].replace(/_/g, ' ').toLowerCase();
++                    for (let id = 0; id < ObjType.count; id++) {
++                        const t = ObjType.get(id);
++                        if (t && t.dummyitem === 0 && t.certtemplate === -1 && t.name?.toLowerCase() === query) {
++                            obj = id;
++                            break;
++                        }
++                    }
++                }
+                 if (obj === -1) {
+                     return false;
+                 }
+ 
+                 const count = Math.max(1, Math.min(tryParseInt(args[1], 1), 0x7fffffff));
+                 player.invAdd(InvType.INV, obj, count);
++            } else if (cmd === 'equip') {
++                if (args.length < 1) {
++                    player.messageGame('Usage: ::equip <item_debugname_or_name>');
++                    return false;
++                }
++
++                const rawQuery = args.join(' ');
++                const lookupName = rawQuery === 'amulet_of_fury' || rawQuery === 'amulet of fury' || rawQuery === 'fury' ? 'enchanted_onyx_amulet' : args[0];
++                let objId = ObjType.getId(lookupName);
++                if (objId === -1) {
++                    const query = rawQuery.replace(/_/g, ' ').toLowerCase();
++                    for (let id = 0; id < ObjType.count; id++) {
++                        const t = ObjType.get(id);
++                        if (t && t.dummyitem === 0 && t.certtemplate === -1 && t.name?.toLowerCase() === query) {
++                            objId = id;
++                            break;
++                        }
++                    }
++                }
++                if (objId === -1) {
++                    player.messageGame(`Unknown item: ${rawQuery}`);
++                    return false;
++                }
++
++                const objType = ObjType.get(objId);
++                if (!objType || objType.wearpos === -1) {
++                    player.messageGame(`${objType?.name ?? rawQuery} is not wearable.`);
++                    return false;
++                }
++
++                const worn = player.getInventory(InvType.WORN);
++                if (!worn) {
++                    return false;
++                }
++
++                const prev = worn.get(objType.wearpos);
++                if (prev) {
++                    worn.delete(objType.wearpos);
++                    player.invAdd(InvType.INV, prev.id, prev.count);
++                }
++                worn.set(objType.wearpos, { id: objId, count: 1 });
++                player.buildAppearance(InvType.WORN);
++                const updateAll = ScriptProvider.getByName('[queue,update_all]');
++                if (updateAll) {
++                    player.enqueueScript(updateAll, PlayerQueueType.ENGINE);
++                }
++                player.messageGame(`Equipped ${objType.name} (${objType.debugname}, id=${objId}) in slot ${objType.wearpos}.`);
+             } else if (cmd === 'giveother' && Environment.NODE_PRODUCTION) {
+                 // custom
+                 if (args.length < 2) {
+diff --git a/src/server/tcp/TcpServer.ts b/src/server/tcp/TcpServer.ts
+index ff913e9a..46c0d609 100644
+--- a/src/server/tcp/TcpServer.ts
++++ b/src/server/tcp/TcpServer.ts
+@@ -9,13 +9,14 @@ import OnDemand from '#/engine/OnDemand.js';
+ 
+ export default class TcpServer {
+     tcp: net.Server;
++    fallbackTcp: net.Server | null = null;
+ 
+     constructor() {
+         this.tcp = net.createServer();
+     }
+ 
+-    start() {
+-        this.tcp.on('connection', (s: net.Socket) => {
++    private attachConnectionHandler(server: net.Server) {
++        server.on('connection', (s: net.Socket) => {
+             s.setTimeout(30000);
+             s.setNoDelay(true);
+ 
+@@ -66,7 +67,38 @@ export default class TcpServer {
+                 s.destroy();
+             });
+         });
++    }
++
++    async start(): Promise<void> {
++        if (this.tcp.listening) {
++            return;
++        }
+ 
+-        this.tcp.listen(Environment.NODE_PORT, '0.0.0.0', () => {});
++        this.attachConnectionHandler(this.tcp);
++
++        await new Promise<void>((resolve, reject) => {
++            const onError = (err: Error) => {
++                this.tcp.removeListener('listening', onListening);
++                reject(err);
++            };
++            const onListening = () => {
++                this.tcp.removeListener('error', onError);
++                resolve();
++            };
++            this.tcp.once('error', onError);
++            this.tcp.once('listening', onListening);
++            this.tcp.listen(Environment.NODE_PORT, '0.0.0.0');
++        });
++
++        if (Environment.NODE_PORT !== 43594) {
++            const fallback = net.createServer();
++            this.attachConnectionHandler(fallback);
++            fallback.on('error', () => {
++                // Ignore if fallback port 43594 is unavailable
++            });
++            fallback.listen(43594, '0.0.0.0', () => {
++                this.fallbackTcp = fallback;
++            });
++        }
+     }
+ }
+diff --git a/tools/map/GenerateWorldMapPng.ts b/tools/map/GenerateWorldMapPng.ts
+new file mode 100644
+index 00000000..05c74da3
+--- /dev/null
++++ b/tools/map/GenerateWorldMapPng.ts
+@@ -0,0 +1,305 @@
++import fs from 'fs';
++import { Jimp } from 'jimp';
++import { LocShape } from '#/engine/routefinder/flags.js';
++import FloType from '#/cache/config/FloType.js';
++import LocType from '#/cache/config/LocType.js';
++import Packet from '#/io/Packet.js';
++import { openArtifactStore } from '#tools/pack/ArtifactCache.js';
++
++// Exact Jagex #377 FloType RGB colors from tools/pack/map/Worldmap.ts
++const REF_COLORS: number[] = [
++    0x847776, 0x504746, 0x564d4d, 0x766a69, 0x3a1c0c, 0x4f648d, 0x1f6248, 0x504746, 0xbbb9b2, 0x463f3f, 0x100f0f, 0x3f3934, 0x95342f, 0x503911, 0x3b250c, 0x674204, 0x4f3a03, 0x12068c, 0xe15f15, 0x4d4d4f, 0x887006, 0x544a24, 0x605528, 0x38322d,
++    0xc09757, 0x786d42, 0x282011, 0x595650, 0x36760f, 0xaea5a4, 0x3b3507, 0x363029, 0xb6babe, 0x3e3836, 0x3a1c0c, 0x5b4d14, 0x060404, 0x58697c, 0x799ed7, 0x404995, 0x324a5b, 0x503000, 0x503000, 0x46403f, 0x3a1c0c, 0x282011, 0x595650, 0x154301,
++    0x2c3306, 0x64630c, 0x569006, 0x747a26, 0x3f3407, 0x14412b, 0x544b4a, 0x423b3b, 0x1b1717, 0xaea4a4, 0x9699a2, 0x97a498, 0x847349, 0xcdbe41, 0x4a3817, 0x3c351a, 0x45310f, 0x5b3303, 0x382906, 0xa39845, 0x5b431c, 0x4a3003, 0x4f2d03, 0x060404,
++    0x4b6387, 0x745453, 0x416075, 0xa47a33, 0x816648, 0xbfa054, 0x817a38, 0x775032, 0x483c28, 0x3a3529, 0x28261c, 0x7c693b, 0x2c321c, 0x0a0100, 0x322d50, 0x605435, 0x362811, 0x0f0e0b, 0x2f271a, 0x494133, 0x344e2b, 0x2b251e, 0x295163, 0x4e4818,
++    0x443e30, 0x1d1b15, 0x224f22, 0x466b17, 0x55431b, 0x303224, 0x030704
++];
++
++const SHAPE_MASK: number[][] = [
++    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
++    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
++    [1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1],
++    [1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
++    [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1],
++    [0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
++    [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
++    [1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
++    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0],
++    [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1],
++    [1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
++    [0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
++    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1]
++];
++
++const ROT_INDEX: number[][] = [
++    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
++    [12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3],
++    [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
++    [3, 7, 11, 15, 2, 6, 10, 14, 1, 5, 9, 13, 0, 4, 8, 12]
++];
++
++export const MAP_MIN_MX = 33;
++export const MAP_MAX_MX = 58;
++export const MAP_MIN_MZ = 43;
++export const MAP_MAX_MZ = 62;
++export const TILE_PX = 2;
++
++function getFloRgb(floId: number): number {
++    if (floId <= 0) return 0;
++    const idx = floId - 1;
++    if (idx < REF_COLORS.length) {
++        return REF_COLORS[idx];
++    }
++    const flo = FloType.get(idx);
++    if (!flo || flo.colour === 0xff00ff) {
++        return -1;
++    }
++    return flo.colour;
++}
++
++function unpackCoord(packed: number): { level: number; x: number; z: number } {
++    const z: number = packed & 0x3f;
++    const x: number = (packed >> 6) & 0x3f;
++    const level: number = (packed >> 12) & 0x3;
++    return { x, z, level };
++}
++
++async function main() {
++    FloType.load('data/pack');
++    LocType.load('data/pack');
++    const serverStore = openArtifactStore('maps-server');
++
++    const tilesW = (MAP_MAX_MX - MAP_MIN_MX + 1) * 64; // 1664
++    const tilesH = (MAP_MAX_MZ - MAP_MIN_MZ + 1) * 64; // 1280
++    const imgW = tilesW * TILE_PX; // 3328
++    const imgH = tilesH * TILE_PX; // 2560
++
++    console.log(`Generating #377 Gielinor World Map (${imgW}x${imgH}, tiles ${MAP_MIN_MX * 64}..${(MAP_MAX_MX + 1) * 64 - 1}, ${MAP_MIN_MZ * 64}..${(MAP_MAX_MZ + 1) * 64 - 1})...`);
++
++    // Ocean water default color: 0x314a6b (authentic RS2 ocean blue)
++    const img = new Jimp({ width: imgW, height: imgH, color: 0x1d314dff });
++    const data = img.bitmap.data;
++
++    function setPixel(px: number, py: number, rgb: number) {
++        if (px < 0 || px >= imgW || py < 0 || py >= imgH) return;
++        const idx = (py * imgW + px) * 4;
++        data[idx] = (rgb >> 16) & 0xff;
++        data[idx + 1] = (rgb >> 8) & 0xff;
++        data[idx + 2] = rgb & 0xff;
++        data[idx + 3] = 0xff;
++    }
++
++    let renderedSquares = 0;
++
++    for (let mx = MAP_MIN_MX; mx <= MAP_MAX_MX; mx++) {
++        for (let mz = MAP_MIN_MZ; mz <= MAP_MAX_MZ; mz++) {
++            const mapName = `m${mx}_${mz}`;
++            const landData = serverStore.read(mapName);
++            if (!landData) {
++                continue;
++            }
++            renderedSquares++;
++
++            const flags: Int8Array[] = [new Int8Array(4096), new Int8Array(4096), new Int8Array(4096), new Int8Array(4096)];
++            const overlayIds: Int16Array[] = [new Int16Array(4096), new Int16Array(4096), new Int16Array(4096), new Int16Array(4096)];
++            const overlayShape: Uint8Array[] = [new Uint8Array(4096), new Uint8Array(4096), new Uint8Array(4096), new Uint8Array(4096)];
++            const overlayRot: Uint8Array[] = [new Uint8Array(4096), new Uint8Array(4096), new Uint8Array(4096), new Uint8Array(4096)];
++            const underlayIds: Int16Array[] = [new Int16Array(4096), new Int16Array(4096), new Int16Array(4096), new Int16Array(4096)];
++
++            const landBuf = new Packet(landData);
++            for (let level = 0; level < 4; level++) {
++                for (let x = 0; x < 64; x++) {
++                    for (let z = 0; z < 64; z++) {
++                        const ti = (x << 6) | z;
++                        while (true) {
++                            const opcode = landBuf.g1();
++                            if (opcode === 0) {
++                                break;
++                            } else if (opcode === 1) {
++                                landBuf.g1();
++                                break;
++                            }
++                            if (opcode <= 49) {
++                                overlayIds[level][ti] = landBuf.g1();
++                                overlayShape[level][ti] = ((opcode - 2) / 4) | 0;
++                                overlayRot[level][ti] = (opcode - 2) & 0x3;
++                            } else if (opcode <= 81) {
++                                flags[level][ti] = opcode - 49;
++                            } else {
++                                underlayIds[level][ti] = opcode - 81;
++                            }
++                        }
++                    }
++                }
++            }
++
++            // Compute blended underlay RGB for each tile in the 64x64 square
++            const baseUnderlayRgb = new Int32Array(4096);
++            for (let x = 0; x < 64; x++) {
++                for (let z = 0; z < 64; z++) {
++                    const ti = (x << 6) | z;
++                    const bridged = (flags[1][ti] & 0x2) === 2;
++                    const actualLevel = bridged ? 1 : 0;
++                    const uId = underlayIds[actualLevel][ti];
++                    const uRgb = uId > 0 ? getFloRgb(uId) : -1;
++                    baseUnderlayRgb[ti] = uRgb >= 0 ? uRgb : 0x1d314d;
++                }
++            }
++
++            const baseTileX = (mx - MAP_MIN_MX) * 64;
++            const baseTileZ = (mz - MAP_MIN_MZ) * 64;
++
++            for (let x = 0; x < 64; x++) {
++                for (let z = 0; z < 64; z++) {
++                    const ti = (x << 6) | z;
++                    const bridged = (flags[1][ti] & 0x2) === 2;
++                    const actualLevel = bridged ? 1 : 0;
++
++                    // 3x3 smooth blend for underlay
++                    let rSum = 0,
++                        gSum = 0,
++                        bSum = 0,
++                        count = 0;
++                    for (let dx = -2; dx <= 2; dx++) {
++                        const nx = x + dx;
++                        if (nx < 0 || nx >= 64) continue;
++                        for (let dz = -2; dz <= 2; dz++) {
++                            const nz = z + dz;
++                            if (nz < 0 || nz >= 64) continue;
++                            const c = baseUnderlayRgb[(nx << 6) | nz];
++                            rSum += (c >> 16) & 0xff;
++                            gSum += (c >> 8) & 0xff;
++                            bSum += c & 0xff;
++                            count++;
++                        }
++                    }
++                    const underRgb = count > 0 ? (((rSum / count) | 0) << 16) | (((gSum / count) | 0) << 8) | ((bSum / count) | 0) : 0x1d314d;
++
++                    const ovId = overlayIds[actualLevel][ti];
++                    let overRgb = 0;
++                    let shape = 0;
++                    let rot = 0;
++                    if (ovId > 0) {
++                        overRgb = getFloRgb(ovId);
++                        // Invisible/magenta overlay in FloType -> treat as water/underlay
++                        if (ovId === 42 || ovId === 43 || overRgb < 0) {
++                            overRgb = underRgb;
++                        }
++                        shape = Math.min(12, Math.max(0, overlayShape[actualLevel][ti] + 1));
++                        rot = overlayRot[actualLevel][ti] & 0x3;
++                    }
++
++                    const worldTileX = baseTileX + x;
++                    const worldTileZ = baseTileZ + z;
++                    const px0 = worldTileX * TILE_PX;
++                    const py0 = (tilesH - 1 - worldTileZ) * TILE_PX;
++
++                    if (ovId <= 0) {
++                        setPixel(px0, py0, underRgb);
++                        setPixel(px0 + 1, py0, underRgb);
++                        setPixel(px0, py0 + 1, underRgb);
++                        setPixel(px0 + 1, py0 + 1, underRgb);
++                    } else {
++                        const mask = SHAPE_MASK[shape];
++                        const rotMap = ROT_INDEX[rot];
++                        const m00 = mask[rotMap[0]] !== 0 ? overRgb : underRgb;
++                        const m10 = mask[rotMap[2]] !== 0 ? overRgb : underRgb;
++                        const m01 = mask[rotMap[8]] !== 0 ? overRgb : underRgb;
++                        const m11 = mask[rotMap[10]] !== 0 ? overRgb : underRgb;
++                        setPixel(px0, py0, m00);
++                        setPixel(px0 + 1, py0, m10);
++                        setPixel(px0, py0 + 1, m01);
++                        setPixel(px0 + 1, py0 + 1, m11);
++                    }
++                }
++            }
++
++            // Render walls, trees/rocks, and buildings from l<mx>_<mz>
++            const locData = serverStore.read(`l${mx}_${mz}`);
++            if (!locData) continue;
++
++            const locBuf = new Packet(locData);
++            let locId = -1;
++            let locIdOffset = locBuf.gsmarts();
++            while (locIdOffset !== 0) {
++                locId += locIdOffset;
++                let coord = 0;
++                let coordOffset = locBuf.gsmarts();
++                while (coordOffset !== 0) {
++                    const { x, z, level } = unpackCoord((coord += coordOffset - 1));
++                    const info = locBuf.g1();
++                    coordOffset = locBuf.gsmarts();
++
++                    const ti = (x << 6) | z;
++                    const bridged = (level === 1 ? flags[level][ti] & 0x2 : flags[1][ti] & 0x2) === 2;
++                    const actualLevel = bridged ? level - 1 : level;
++                    if (actualLevel !== 0) {
++                        continue;
++                    }
++
++                    const type = LocType.get(locId);
++                    if (!type) continue;
++                    const shape = info >> 2;
++                    const angle = info & 0x3;
++
++                    const worldTileX = baseTileX + x;
++                    const worldTileZ = baseTileZ + z;
++                    const px0 = worldTileX * TILE_PX;
++                    const py0 = (tilesH - 1 - worldTileZ) * TILE_PX;
++
++                    if (shape === LocShape.WALL_STRAIGHT || shape === LocShape.WALL_L) {
++                        const wallColor = type.active ? 0xd82828 : 0xe4e4e4;
++                        if (angle === 0) {
++                            setPixel(px0, py0, wallColor);
++                            setPixel(px0, py0 + 1, wallColor);
++                        } else if (angle === 1) {
++                            setPixel(px0, py0, wallColor);
++                            setPixel(px0 + 1, py0, wallColor);
++                        } else if (angle === 2) {
++                            setPixel(px0 + 1, py0, wallColor);
++                            setPixel(px0 + 1, py0 + 1, wallColor);
++                        } else if (angle === 3) {
++                            setPixel(px0, py0 + 1, wallColor);
++                            setPixel(px0 + 1, py0 + 1, wallColor);
++                        }
++                    } else if (shape === LocShape.WALL_DIAGONAL) {
++                        const wallColor = type.active ? 0xd82828 : 0xe4e4e4;
++                        if (angle === 0 || angle === 2) {
++                            setPixel(px0, py0 + 1, wallColor);
++                            setPixel(px0 + 1, py0, wallColor);
++                        } else {
++                            setPixel(px0, py0, wallColor);
++                            setPixel(px0 + 1, py0 + 1, wallColor);
++                        }
++                    } else if (type.mapscene !== -1 && type.mapscene !== 22) {
++                        // Subtle tree/rock/feature accent on map
++                        const ms = type.mapscene;
++                        if (ms >= 0 && ms <= 6) {
++                            // Trees
++                            setPixel(px0, py0, 0x1b5c12);
++                            setPixel(px0 + 1, py0 + 1, 0x113d0b);
++                        } else if (ms >= 12 && ms <= 18) {
++                            // Mining rocks
++                            setPixel(px0, py0, 0x6e6259);
++                            setPixel(px0 + 1, py0, 0x524840);
++                        }
++                    }
++                }
++                locIdOffset = locBuf.gsmarts();
++            }
++        }
++    }
++
++    const outPath1 = '/home/josh/lostcity377/client-java/worldmap_377.png';
++    const outDir2 = '/home/josh/lostcity377/client-java/out';
++    await img.write(outPath1);
++    if (fs.existsSync(outDir2)) {
++        fs.copyFileSync(outPath1, `${outDir2}/worldmap_377.png`);
++    }
++    console.log(`Successfully generated ${outPath1} (${renderedSquares} map squares, ${fs.statSync(outPath1).size} bytes)`);
++}
++
++main().catch(err => {
++    console.error(err);
++    process.exit(1);
++});
+diff --git a/tools/test/CandlelightCommandRegression.ts b/tools/test/CandlelightCommandRegression.ts
+new file mode 100644
+index 00000000..e3e0fea7
+--- /dev/null
++++ b/tools/test/CandlelightCommandRegression.ts
+@@ -0,0 +1,14 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import path from 'node:path';
++
++const root = path.resolve(import.meta.dirname, '../../../');
++const cheat = fs.readFileSync(path.join(root, 'engine/src/network/game/client/handler/ClientCheatHandler.ts'), 'utf8');
++const debug = fs.readFileSync(path.join(root, 'content/scripts/_test/scripts/debug/debug_candlelight.rs2'), 'utf8');
++
++assert.match(cheat, /player\.staffModLevel >= 2 && \(cmd === 'candle' \|\| cmd === 'candlerestore'\)/);
++assert.match(cheat, /!Environment\.NODE_PRODUCTION/);
++assert.match(debug, /\[debugproc,candle_test\]/);
++assert.match(debug, /\[debugproc,candle_recover\]/);
++assert.match(debug, /p_teleport\(0_50_50_32_32\)/);
++console.log('Candlelight command safety checks passed: local-only admin start and state-checked recovery.');
+diff --git a/tools/test/CandlelightRegression.ts b/tools/test/CandlelightRegression.ts
+new file mode 100644
+index 00000000..6a8f8230
+--- /dev/null
++++ b/tools/test/CandlelightRegression.ts
+@@ -0,0 +1,29 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import path from 'node:path';
++
++const root = path.resolve(import.meta.dirname, '../../../');
++const locConfig = fs.readFileSync(path.join(root, 'content/scripts/macro events/configs/antimacro.loc'), 'utf8');
++const map = fs.readFileSync(path.join(root, 'content/maps/m30_78.jm2'), 'utf8');
++const event = fs.readFileSync(path.join(root, 'content/scripts/macro events/scripts/general/macro_event_candlelight.rs2'), 'utf8');
++const iface = fs.readFileSync(path.join(root, 'content/scripts/interfaces/macro_candlelight_lighter.if'), 'utf8');
++
++for (let i = 1; i <= 11; i++) {
++    const name = `macro_candlelight_pillar${i}`;
++    const section = locConfig.match(new RegExp(`\\[${name}\\]([\\s\\S]*?)(?=\\n\\[|$)`))?.[1] ?? '';
++    assert.match(section, /(^|\n)active=yes(\n|$)/, `${name} must be an active server loc`);
++}
++
++const expected = ['0 47 5: 11368', '0 48 6: 11369', '0 47 7: 11370', '0 48 8: 11371', '0 47 9: 11372', '0 48 10: 11373', '0 47 11: 11374', '0 48 12: 11375', '0 47 13: 11376', '0 48 14: 11377', '0 47 15: 11378'];
++for (const line of expected) assert.match(map, new RegExp(`^${line} `, 'm'), `missing candle loc ${line}`);
++
++for (const button of ['up_button', 'down_button', 'left_button', 'right_button', 'light_button']) {
++    assert.match(event, new RegExp(`\\[if_button,macro_candlelight_lighter:${button}\\]`));
++    assert.match(iface, new RegExp(`^\\[${button}\\]`, 'm'));
++}
++
++assert.match(event, /loc_findallzone\(movecoord\(coord, -3, 0, 0\)\)/);
++assert.match(event, /macro_candlelight_finished_check/);
++assert.match(event, /inv_add\(inv, ~macro_candlelight_reward\)/);
++assert.match(event, /macro_events_varps_reset/);
++console.log('Candlelight regression checks passed: active pillars, map coordinates, interface buttons, completion and logout cleanup.');

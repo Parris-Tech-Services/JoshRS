@@ -1,0 +1,554 @@
+diff --git a/scripts/_test/scripts/debug/debug_candlelight.rs2 b/scripts/_test/scripts/debug/debug_candlelight.rs2
+index 4928ef5df..c866bc58b 100644
+--- a/scripts/_test/scripts/debug/debug_candlelight.rs2
++++ b/scripts/_test/scripts/debug/debug_candlelight.rs2
+@@ -13,3 +13,31 @@ if (p_finduid(uid) = false) {
+ %macro_candlelight_9 = 1;
+ %macro_candlelight_10 = 1;
+ %macro_candlelight_11 = 1;
++
++[debugproc,candle_test]
++if (p_finduid(uid) = false) {
++    return;
++}
++~macro_events_varps_reset;
++~macro_event_general_spawn(^macro_candlelight);
++
++[debugproc,candle_recover]
++if (p_finduid(uid) = false) {
++    return;
++}
++if (%macro_event ! ^macro_candlelight) {
++    mes("No active Pious Pete event was found.");
++    return;
++}
++if (%macro_event_target_coord ! null) {
++    p_teleport(%macro_event_target_coord);
++} else {
++    // Verified walkable Lumbridge square fallback for a stale pre-fix event.
++    p_teleport(0_50_50_32_32);
++}
++if (npc_finduid(%macro_event_uid) = true) {
++    npc_del;
++}
++~macro_events_varps_reset;
++~initalltabs;
++mes("Pious Pete event recovered safely; player state was preserved.");
+diff --git a/scripts/areas/area_varrock/scripts/champions_guild.rs2 b/scripts/areas/area_varrock/scripts/champions_guild.rs2
+index 9159a0bd2..17573a8f0 100644
+--- a/scripts/areas/area_varrock/scripts/champions_guild.rs2
++++ b/scripts/areas/area_varrock/scripts/champions_guild.rs2
+@@ -1,5 +1,5 @@
+ [oploc1,championdoor]
+-if (%qp < 32) {
++if (%qp < 32 & staffmodlevel < 2) {
+     mes("The door won't open - you need at least 32 Quest Points.");
+     ~chatnpc_specific("Guild master", guildmaster, "<p,angry>You have not proved yourself worthy to enter here yet.");
+     return;
+diff --git a/scripts/areas/area_varrock/scripts/teleport_hub.rs2 b/scripts/areas/area_varrock/scripts/teleport_hub.rs2
+new file mode 100644
+index 000000000..7ef0ae266
+--- /dev/null
++++ b/scripts/areas/area_varrock/scripts/teleport_hub.rs2
+@@ -0,0 +1,190 @@
++// Gielinor Teleport Portal Hub (Varrock North Plaza) & Teleport Guide
++
++[proc,hub_teleport_to](coord $dest, string $name)
++if_close;
++p_stopaction;
++if (~wilderness_level(coord) > 20 & staffmodlevel < 2) {
++    mes("A mysterious force blocks your teleport beyond level 20 Wilderness!");
++    return;
++}
++sound_synth(teleport_all, 1, 0);
++anim(human_castteleport, 0);
++spotanim_pl(teleport_casting, 92, 0);
++p_delay(2);
++p_telejump($dest);
++mes("You step through the portal and arrive at <$name>.");
++
++// Portal 1: Lumbridge Portal (3207, 3436)
++[oploc1,rd_portal_room1_entrance]
++~hub_teleport_to(0_50_50_22_18, "Lumbridge Castle");
++
++// Portal 2: Falador Portal (3209, 3437)
++[oploc1,rd_portal_room1_exit]
++~hub_teleport_to(0_46_52_21_51, "Falador Square");
++
++// Portal 3: Camelot & Seers' Portal (3211, 3437)
++[oploc1,rd_portal_room2_entrance]
++~hub_teleport_to(0_43_54_5_21, "Camelot Castle");
++
++// Portal 4: East Ardougne Portal (3213, 3437)
++[oploc1,rd_portal_room2_exit]
++~hub_teleport_to(0_41_51_38_41, "East Ardougne Market");
++
++// Portal 5: Al Kharid & Desert Portal (3215, 3436)
++[oploc1,rd_portal_room3_entrance]
++~hub_teleport_to(0_51_49_29_38, "Al Kharid Palace");
++
++// Portal 6: Guilds & Training Portal (3207, 3434)
++[oploc1,rd_portal_room3_exit]
++@hub_guilds_training_menu;
++
++// Portal 7: Dungeons, Minigames & Frontiers Portal (3215, 3434)
++[oploc1,rd_portal_room4_entrance]
++@hub_dungeons_minigames_menu;
++
++// Portal 8: Return-to-Varrock-Hub Portal (placed at Lumbridge, Falador, Camelot, Ardougne, Al Kharid, Yanille, Castle Wars)
++[oploc1,rd_portal_room4_exit]
++~hub_teleport_to(0_50_53_11_43, " the Varrock Portal Hub");
++
++// Gielinor Teleport Guide NPC (2244 = lumbridge_guide at 3211, 3436)
++[opnpc1,lumbridge_guide]
++~chatnpc("<p,happy>Welcome to the Gielinor Fast-Travel Plaza! Where in the world would you like to travel today?");
++@teleport_guide_main_menu;
++
++[label,teleport_guide_main_menu]
++def_int $cat = ~p_choice5_header(
++    "Major Cities (Misthalin & Asgarnia)", 1,
++    "Major Cities (Kandarin & Desert)", 2,
++    "Guilds & Training Locations", 3,
++    "Dungeons, Minigames & Other Regions", 4,
++    "Return Home (Varrock Square)", 5,
++    "Gielinor Teleport Guide"
++);
++if ($cat = 1) {
++    @hub_cities_east_menu;
++} else if ($cat = 2) {
++    @hub_cities_west_menu;
++} else if ($cat = 3) {
++    @hub_guilds_training_menu;
++} else if ($cat = 4) {
++    @hub_dungeons_minigames_menu;
++} else {
++    ~hub_teleport_to(0_50_53_13_32, "Varrock Square");
++}
++
++[label,hub_cities_east_menu]
++def_int $c1 = ~p_choice5_header(
++    "Lumbridge Castle (Misthalin)", 1,
++    "Falador Square (Asgarnia)", 2,
++    "Edgeville Bank (Misthalin)", 3,
++    "Draynor Village & Port Sarim", 4,
++    "Back to Main Menu", 5,
++    "Misthalin & Asgarnia Cities"
++);
++if ($c1 = 1) {
++    ~hub_teleport_to(0_50_50_22_18, "Lumbridge Castle");
++} else if ($c1 = 2) {
++    ~hub_teleport_to(0_46_52_21_51, "Falador Square");
++} else if ($c1 = 3) {
++    ~hub_teleport_to(0_48_54_15_40, "Edgeville");
++} else if ($c1 = 4) {
++    def_int $sub = ~p_choice4_header(
++        "Draynor Village Market", 1,
++        "Port Sarim Docks", 2,
++        "Barbarian Village", 3,
++        "Rimmington & Taverley", 4,
++        "Select Town"
++    );
++    if ($sub = 1) ~hub_teleport_to(0_48_50_21_44, "Draynor Village");
++    if ($sub = 2) ~hub_teleport_to(0_47_50_15_8, "Port Sarim");
++    if ($sub = 3) ~hub_teleport_to(0_48_53_11_27, "Barbarian Village");
++    if ($sub = 4) ~hub_teleport_to(0_45_53_14_63, "Taverley");
++} else {
++    @teleport_guide_main_menu;
++}
++
++[label,hub_cities_west_menu]
++def_int $c2 = ~p_choice5_header(
++    "Camelot & Seers' Village (Kandarin)", 1,
++    "Catherby Coast (Kandarin)", 2,
++    "East Ardougne Market (Kandarin)", 3,
++    "Yanille & Watchtower (South Kandarin)", 4,
++    "Al Kharid Palace (Kharidian Desert)", 5,
++    "Kandarin & Desert Cities"
++);
++if ($c2 = 1) {
++    ~hub_teleport_to(0_42_54_37_29, "Seers' Village");
++} else if ($c2 = 2) {
++    ~hub_teleport_to(0_43_53_52_41, "Catherby");
++} else if ($c2 = 3) {
++    ~hub_teleport_to(0_41_51_38_41, "East Ardougne");
++} else if ($c2 = 4) {
++    ~hub_teleport_to(0_40_48_45_21, "Yanille");
++} else {
++    ~hub_teleport_to(0_51_49_29_38, "Al Kharid");
++}
++
++[label,hub_guilds_training_menu]
++def_int $g = ~p_choice5_header(
++    "Mining Guild & Al Kharid Mine", 1,
++    "Fishing Guild (North of Ardougne)", 2,
++    "Crafting Guild & Champions' Guild", 3,
++    "Wizards' Guild (Yanille)", 4,
++    "Barbarian Training Longhall", 5,
++    "Guilds & Training Locations"
++);
++if ($g = 1) {
++    def_int $m = ~p_choice2_header("Mining Guild (Dwarven Mine)", 1, "Al Kharid Scorpion Mine", 2, "Select Mining Site");
++    if ($m = 1) ~hub_teleport_to(0_47_152_13_11, "the Mining Guild");
++    if ($m = 2) ~hub_teleport_to(0_51_51_35_21, "Al Kharid Mine");
++} else if ($g = 2) {
++    ~hub_teleport_to(0_40_52_51_63, "the Fishing Guild");
++} else if ($g = 3) {
++    def_int $cg = ~p_choice2_header("Crafting Guild", 1, "Champions' Guild", 2, "Select Guild");
++    if ($cg = 1) ~hub_teleport_to(0_45_51_52_24, "the Crafting Guild");
++    if ($cg = 2) ~hub_teleport_to(0_49_52_55_35, "the Champions' Guild");
++} else if ($g = 4) {
++    ~hub_teleport_to(0_40_48_37_15, "the Wizards' Guild");
++} else {
++    ~hub_teleport_to(0_48_53_7_42, "Barbarian Training Area");
++}
++
++[label,hub_dungeons_minigames_menu]
++def_int $d = ~p_choice5_header(
++    "Castle Wars & Duel Arena (Minigames)", 1,
++    "Tree Gnome Stronghold & Burthorpe", 2,
++    "Karamja, Brimhaven & TzHaar City", 3,
++    "Canifis (Morytania) & Rellekka (Fremennik)", 4,
++    "Dangerous Dungeons (Sewers, Edge Dungeon, Barrows)", 5,
++    "Minigames, Frontiers & Dungeons"
++);
++if ($d = 1) {
++    def_int $mg = ~p_choice2_header("Castle Wars Lobby", 1, "Al Kharid Duel Arena", 2, "Select Minigame");
++    if ($mg = 1) ~hub_teleport_to(0_38_48_9_18, "Castle Wars");
++    if ($mg = 2) ~hub_teleport_to(0_52_51_38_2, "the Duel Arena");
++} else if ($d = 2) {
++    def_int $tg = ~p_choice2_header("Tree Gnome Stronghold", 1, "Burthorpe", 2, "Select Destination");
++    if ($tg = 1) ~hub_teleport_to(0_38_53_29_52, "the Tree Gnome Stronghold");
++    if ($tg = 2) ~hub_teleport_to(0_45_55_19_25, "Burthorpe");
++} else if ($d = 3) {
++    def_int $kr = ~p_choice3_header("Karamja Docks (Musa Point)", 1, "Brimhaven", 2, "TzHaar City (Volcano)", 3, "Select Karamja Destination");
++    if ($kr = 1) ~hub_teleport_to(0_45_49_36_40, "Karamja");
++    if ($kr = 2) ~hub_teleport_to(0_43_49_20_45, "Brimhaven");
++    if ($kr = 3) ~hub_teleport_to(0_38_80_12_52, "TzHaar City");
++} else if ($d = 4) {
++    def_int $mr = ~p_choice2_header("Canifis (Morytania)", 1, "Rellekka (Fremennik)", 2, "Select Frontier");
++    if ($mr = 1) ~hub_teleport_to(0_54_54_39_32, "Canifis");
++    if ($mr = 2) ~hub_teleport_to(0_41_57_36_9, "Rellekka");
++} else {
++    ~mesbox("Warning: These dungeons contain aggressive monsters! Are you sure you wish to proceed?");
++    def_int $dg = ~p_choice4_header(
++        "Yes: Varrock Sewers (Dangerous)", 1,
++        "Yes: Edgeville Dungeon (Dangerous)", 2,
++        "Yes: Barrows Mounds (Dangerous)", 3,
++        "No, keep me safe in Varrock!", 4,
++        "Confirm Dangerous Teleport"
++    );
++    if ($dg = 1) ~hub_teleport_to(0_50_154_37_3, "Varrock Sewers");
++    if ($dg = 2) ~hub_teleport_to(0_48_154_24_12, "Edgeville Dungeon");
++    if ($dg = 3) ~hub_teleport_to(0_55_51_45_44, "Barrows Mounds");
++}
+diff --git a/scripts/areas/areas_heroes_guild/scripts/heroes_entrance.rs2 b/scripts/areas/areas_heroes_guild/scripts/heroes_entrance.rs2
+index da50dbad9..99aaa8bc9 100644
+--- a/scripts/areas/areas_heroes_guild/scripts/heroes_entrance.rs2
++++ b/scripts/areas/areas_heroes_guild/scripts/heroes_entrance.rs2
+@@ -2,7 +2,7 @@
+ [oploc1,herodoor_r] @open_heroes_guild(^right);
+ 
+ [label,open_heroes_guild](int $side) {
+-  if (%heroquest >= ^hero_complete) {
++  if (%heroquest >= ^hero_complete | staffmodlevel >= 2) {
+     ~open_and_close_double_door2(~check_axis_locactive(coord), $side, door_open);
+     return;
+   }
+diff --git a/scripts/areas/monastery/scripts/prayer_guild.rs2 b/scripts/areas/monastery/scripts/prayer_guild.rs2
+index c7073770f..2c8dad030 100644
+--- a/scripts/areas/monastery/scripts/prayer_guild.rs2
++++ b/scripts/areas/monastery/scripts/prayer_guild.rs2
+@@ -3,7 +3,7 @@
+ ~chatnpc("<p,neutral>We like it that way actually! We get disturbed less. We still get rather a large amount of travellers looking for sanctuary and healing here as it is!");
+ 
+ [oploc1,monasteryladder]
+-if (%prayer_guild < 1) {
++if (%prayer_guild < 1 & staffmodlevel < 2) {
+     if (npc_find(coord, abbot_langley, 5, 0) = true) {
+         ~chatnpc("<p,neutral>Only members of our order can go up there.");
+         @ask_to_join_abbot_langley2;
+diff --git a/scripts/macro events/configs/antimacro.loc b/scripts/macro events/configs/antimacro.loc
+index 090891297..0370affa3 100644
+--- a/scripts/macro events/configs/antimacro.loc	
++++ b/scripts/macro events/configs/antimacro.loc	
+@@ -1,4 +1,5 @@
+ [macro_candlelight_pillar1]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_1
+ multiloc=0,macro_candlelight_bob_pillar_unlit
+@@ -6,6 +7,7 @@ multiloc=1,macro_candlelight_bob_pillar_lit
+ multiloc=2,macro_candlelight_bob_pillar_burnt
+ 
+ [macro_candlelight_pillar2]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_2
+ multiloc=0,macro_candlelight_zam_pillar_unlit
+@@ -13,6 +15,7 @@ multiloc=1,macro_candlelight_zam_pillar_lit
+ multiloc=2,macro_candlelight_zam_pillar_burnt
+ 
+ [macro_candlelight_pillar3]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_3
+ multiloc=0,macro_candlelight_bob_pillar_unlit
+@@ -20,6 +23,7 @@ multiloc=1,macro_candlelight_bob_pillar_lit
+ multiloc=2,macro_candlelight_bob_pillar_burnt
+ 
+ [macro_candlelight_pillar4]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_4
+ multiloc=0,macro_candlelight_guth_pillar_unlit
+@@ -27,6 +31,7 @@ multiloc=1,macro_candlelight_guth_pillar_lit
+ multiloc=2,macro_candlelight_guth_pillar_burnt
+ 
+ [macro_candlelight_pillar5]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_5
+ multiloc=0,macro_candlelight_bob_pillar_unlit
+@@ -34,6 +39,7 @@ multiloc=1,macro_candlelight_bob_pillar_lit
+ multiloc=2,macro_candlelight_bob_pillar_burnt
+ 
+ [macro_candlelight_pillar6]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_6
+ multiloc=0,macro_candlelight_sara_pillar_unlit
+@@ -41,6 +47,7 @@ multiloc=1,macro_candlelight_sara_pillar_lit
+ multiloc=2,macro_candlelight_sara_pillar_burnt
+ 
+ [macro_candlelight_pillar7]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_7
+ multiloc=0,macro_candlelight_bob_pillar_unlit
+@@ -48,6 +55,7 @@ multiloc=1,macro_candlelight_bob_pillar_lit
+ multiloc=2,macro_candlelight_bob_pillar_burnt
+ 
+ [macro_candlelight_pillar8]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_8
+ multiloc=0,macro_candlelight_guth_pillar_unlit
+@@ -55,6 +63,7 @@ multiloc=1,macro_candlelight_guth_pillar_lit
+ multiloc=2,macro_candlelight_guth_pillar_burnt
+ 
+ [macro_candlelight_pillar9]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_9
+ multiloc=0,macro_candlelight_bob_pillar_unlit
+@@ -62,6 +71,7 @@ multiloc=1,macro_candlelight_bob_pillar_lit
+ multiloc=2,macro_candlelight_bob_pillar_burnt
+ 
+ [macro_candlelight_pillar10]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_10
+ multiloc=0,macro_candlelight_zam_pillar_unlit
+@@ -69,6 +79,7 @@ multiloc=1,macro_candlelight_zam_pillar_lit
+ multiloc=2,macro_candlelight_zam_pillar_burnt
+ 
+ [macro_candlelight_pillar11]
++active=yes
+ anim=candle_effect
+ multivar=macro_candlelight_11
+ multiloc=0,macro_candlelight_bob_pillar_unlit
+diff --git a/scripts/macro events/scripts/general/macro_event_candlelight.rs2 b/scripts/macro events/scripts/general/macro_event_candlelight.rs2
+index 26570cace..44e3b5d22 100644
+--- a/scripts/macro events/scripts/general/macro_event_candlelight.rs2	
++++ b/scripts/macro events/scripts/general/macro_event_candlelight.rs2	
+@@ -15,9 +15,10 @@ if (p_finduid(uid) = true) {
+     ~macro_candlelight_setup;
+     p_delay(2);
+     p_teleport(0_30_78_52_11);
+-    %macro_transmit = 0;
+-    // TODO: Does it "poof" with macro event disappear or not?
++    %macro_transmit = 1;
++    // Pete hands off to the priest in the room; start the actual puzzle now.
+     npc_del;
++    ~macro_candlelight_start;
+ }
+ 
+ [mapzone,0_30_78] 
+@@ -52,14 +53,31 @@ if(%macro_transmit = 0) {
+         ~chatnpc("<p,happy>Thank you for your help! I'll send you back now.");
+         p_teleport(%macro_event_target_coord);
+         inv_add(inv, ~macro_candlelight_reward);
++        if_close;
++        ~macro_events_varps_reset;
++        ~initalltabs;
+     }
+ }
+ 
+ [opnpc1,macro_priest]
+-if (uid ! %npc_macro_event_target) {
++if (%macro_event ! ^macro_candlelight) {
+     ~chatnpc("<p,neutral>I don't need your help right now.");
+     return;
+ }
++if (~macro_candlelight_finished_check = false) {
++    ~chatnpc("<p,angry>You aren't finished yet. There are still candles to light!");
++    ~macro_candlelight_start;
++    return;
++}
++~chatnpc("<p,happy>Thank you for your help! I'll send you back now.");
++~macro_candlelight_complete;
++
++[proc,macro_candlelight_complete]
++p_teleport(%macro_event_target_coord);
++inv_add(inv, ~macro_candlelight_reward);
++if_close;
++~macro_events_varps_reset;
++~initalltabs;
+ 
+ [oploc1,macro_candlelight_door]
+ mes("You can't open this door.");
+diff --git a/scripts/macro events/scripts/macro_events.rs2 b/scripts/macro events/scripts/macro_events.rs2
+index 941887f70..470152975 100644
+--- a/scripts/macro events/scripts/macro_events.rs2	
++++ b/scripts/macro events/scripts/macro_events.rs2	
+@@ -82,11 +82,33 @@ return(true);
+ [queue,macro_event_login]
+ def_int $macro_event = %macro_event;
+ %macro_event = 0;
++if ($macro_event = ^macro_candlelight) {
++    // Recover stale pre-fix saves that disconnected inside the candle room.
++    if (%macro_event_target_coord ! null) {
++        p_teleport(%macro_event_target_coord);
++    } else {
++        p_teleport(0_50_50_32_32);
++    }
++    ~macro_events_varps_reset;
++    return;
++}
+ if (nc_param(~macro_event_npc($macro_event), follow_player_on_logout) = ^true) {
+     ~macro_event_general_spawn($macro_event);
+ }
+ 
+ [proc,macro_event_logout]
++// Candlelight is a temporary instance.  Do not let a disconnect leave the
++// player inside the sealed room with no priest or taper to finish the event.
++if (%macro_event = ^macro_candlelight) {
++    if (%macro_event_target_coord ! null) {
++        p_teleport(%macro_event_target_coord);
++    }
++    if (npc_finduid(%macro_event_uid) = true) {
++        npc_del;
++    }
++    ~macro_events_varps_reset;
++    return;
++}
+ if (npc_finduid(%macro_event_uid) = true) {
+     %npc_macro_event_target = null;
+ }
+diff --git a/scripts/skill_cooking/scripts/cooking_guild.rs2 b/scripts/skill_cooking/scripts/cooking_guild.rs2
+index f9fd5131c..2c4ad6d91 100644
+--- a/scripts/skill_cooking/scripts/cooking_guild.rs2
++++ b/scripts/skill_cooking/scripts/cooking_guild.rs2
+@@ -1,6 +1,6 @@
+ [oploc1,chefdoor]
+ def_boolean $is_inside = ~check_axis(coord, loc_coord, loc_angle);
+-if ($is_inside = false) {
++if ($is_inside = false & staffmodlevel < 2) {
+     if (stat(cooking) < 32) {
+         mes("You need a cooking level of 32 to enter the Chef's Guild.");
+         def_string $fail_message = "<p,neutral>Sorry. Only the finest chefs are allowed in here. Get your cooking level up to 32"; 
+diff --git a/scripts/skill_crafting/scripts/crafting_guild/crafting_guild.rs2 b/scripts/skill_crafting/scripts/crafting_guild/crafting_guild.rs2
+index 8f5dc6f81..c89e68435 100644
+--- a/scripts/skill_crafting/scripts/crafting_guild/crafting_guild.rs2
++++ b/scripts/skill_crafting/scripts/crafting_guild/crafting_guild.rs2
+@@ -1,15 +1,17 @@
+ [oploc1,crafting_guild_door]
+ if (~check_axis(coord, loc_coord, loc_angle) = true) {
+-    if (stat(crafting) < 40) {
+-        ~chatnpc_specific(nc_name(master_crafter), master_crafter, "<p,neutral>Sorry only experienced craftsmen are allowed in here.|You must be level 40 or above to enter.");
+-        return;
+-    }
+-    if (inv_total(worn, brown_apron) < 1) {
+-        ~chatnpc_specific(nc_name(master_crafter), master_crafter, "<p,neutral>Where's your brown apron? You can't come in here unless you're wearing one.");
+-        if (inv_total(inv, brown_apron) < 1) {
+-            ~chatplayer("<p,neutral>Err... I haven't got one.");
++    if (staffmodlevel < 2) {
++        if (stat(crafting) < 40) {
++            ~chatnpc_specific(nc_name(master_crafter), master_crafter, "<p,neutral>Sorry only experienced craftsmen are allowed in here.|You must be level 40 or above to enter.");
++            return;
++        }
++        if (inv_total(worn, brown_apron) < 1) {
++            ~chatnpc_specific(nc_name(master_crafter), master_crafter, "<p,neutral>Where's your brown apron? You can't come in here unless you're wearing one.");
++            if (inv_total(inv, brown_apron) < 1) {
++                ~chatplayer("<p,neutral>Err... I haven't got one.");
++            }
++            return;
+         }
+-        return;
+     }
+     ~open_and_close_door(loc_param(next_loc_stage), true, false);
+     ~chatnpc_specific(nc_name(master_crafter), master_crafter, "<p,neutral>Welcome to the Guild of Master Craftsmen.");
+diff --git a/scripts/skill_magic/scripts/spells/teleport.rs2 b/scripts/skill_magic/scripts/spells/teleport.rs2
+index 44272b7cd..0fe71a69c 100644
+--- a/scripts/skill_magic/scripts/spells/teleport.rs2
++++ b/scripts/skill_magic/scripts/spells/teleport.rs2
+@@ -10,26 +10,28 @@ if_close;
+ if (p_finduid(uid) = true) {
+     // look for spell in db
+     def_dbrow $spell_data = ~get_spell_data($spell);
+-    if (~check_spell_requirements($spell_data)= false) {
+-        return;
+-    }
+-    if (~wilderness_level(coord) > 20) {
+-        mes("A mysterious force blocks your teleport spell!");
+-        mes("You can't use this teleport after level 20 wilderness.");
+-        return;
+-    }
+-    if($spell = ^ardougne_teleport & %elenaquest < ^elena_complete) {
+-        mes("You must have completed Plague City to use this spell.");
+-        return;
+-    }
+-    if($spell = ^watchtower_teleport & %itwatchtower < ^itwatchtower_complete) {
+-        mes("You must have completed Watch Tower to use this spell.");
+-        return;
+-    }
+-    // https://www.reddit.com/r/2007scape/comments/b4vdki/watchtower_teleport_not_working_despite/, https://runescape.salmoneus.net/forums/topic/212538-cant-do-ardougne-tele-why-is-it-so/
+-    if(($spell = ^ardougne_teleport & %elenaquest < ^elena_complete_read_scroll) | ($spell = ^watchtower_teleport & %itwatchtower < ^itwatchtower_complete_read_scroll)) {
+-        mes("You havn't learnt how to cast this spell yet.");
+-        return;
++    if (staffmodlevel < 2) {
++        if (~check_spell_requirements($spell_data)= false) {
++            return;
++        }
++        if (~wilderness_level(coord) > 20) {
++            mes("A mysterious force blocks your teleport spell!");
++            mes("You can't use this teleport after level 20 wilderness.");
++            return;
++        }
++        if($spell = ^ardougne_teleport & %elenaquest < ^elena_complete) {
++            mes("You must have completed Plague City to use this spell.");
++            return;
++        }
++        if($spell = ^watchtower_teleport & %itwatchtower < ^itwatchtower_complete) {
++            mes("You must have completed Watch Tower to use this spell.");
++            return;
++        }
++        // https://www.reddit.com/r/2007scape/comments/b4vdki/watchtower_teleport_not_working_despite/, https://runescape.salmoneus.net/forums/topic/212538-cant-do-ardougne-tele-why-is-it-so/
++        if(($spell = ^ardougne_teleport & %elenaquest < ^elena_complete_read_scroll) | ($spell = ^watchtower_teleport & %itwatchtower < ^itwatchtower_complete_read_scroll)) {
++            mes("You havn't learnt how to cast this spell yet.");
++            return;
++        }
+     }
+     if (~pre_tele_checks(coord) = false) {
+         return;
+@@ -39,7 +41,9 @@ if (p_finduid(uid) = true) {
+         return;
+     }
+     // delete runes and give xp
+-    ~delete_spell_runes($spell_data);
++    if (staffmodlevel < 2) {
++        ~delete_spell_runes($spell_data);
++    }
+     ~give_spell_xp($spell_data);
+     // give additional affects
+     // teleport player. Always a radius of 2

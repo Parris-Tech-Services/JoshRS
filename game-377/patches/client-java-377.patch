@@ -1,0 +1,2919 @@
+diff --git a/.gitignore b/.gitignore
+index 183e4e3..af854ff 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -2,7 +2,10 @@
+ /.idea/
+ 
+ build/
++out/
++display.properties
+ *.class
++*.josh-rs-377-client.pid
+ *.*~
+ 
+ hs_err_pid*.log
+diff --git a/gradle/wrapper/gradle-wrapper.properties b/gradle/wrapper/gradle-wrapper.properties
+index e2847c8..bad7c24 100644
+--- a/gradle/wrapper/gradle-wrapper.properties
++++ b/gradle/wrapper/gradle-wrapper.properties
+@@ -1,6 +1,6 @@
+ distributionBase=GRADLE_USER_HOME
+ distributionPath=wrapper/dists
+-distributionUrl=https\://services.gradle.org/distributions/gradle-8.11.1-bin.zip
++distributionUrl=https\://services.gradle.org/distributions/gradle-9.2.0-bin.zip
+ networkTimeout=10000
+ validateDistributionUrl=true
+ zipStoreBase=GRADLE_USER_HOME
+diff --git a/src/main/java/jagex2/client/Client.java b/src/main/java/jagex2/client/Client.java
+index 0fc9ef3..74205be 100644
+--- a/src/main/java/jagex2/client/Client.java
++++ b/src/main/java/jagex2/client/Client.java
+@@ -52,8 +52,12 @@ import java.applet.AppletContext;
+ import java.awt.Color;
+ import java.awt.Font;
+ import java.awt.Graphics;
++import java.awt.Graphics2D;
+ import java.io.DataInputStream;
+ import java.io.EOFException;
++import java.io.File;
++import java.io.FileInputStream;
++import java.io.FileOutputStream;
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.io.OutputStream;
+@@ -61,13 +65,21 @@ import java.math.BigInteger;
+ import java.net.InetAddress;
+ import java.net.Socket;
+ import java.net.URL;
++import java.awt.image.BufferedImage;
++import javax.imageio.ImageIO;
+ import java.util.Calendar;
+ import java.util.Date;
++import java.util.HashSet;
++import java.util.Properties;
++import java.util.Set;
+ import java.util.zip.CRC32;
+ import sign.signlink;
+ 
+ public class Client extends GameShell {
+ 
++	public static Client activeClient;
++	public static final java.util.concurrent.ConcurrentLinkedQueue<String> pendingCheatCommands = new java.util.concurrent.ConcurrentLinkedQueue<String>();
++
+ 	@ObfuscatedName("client.K")
+ 	public int[] jagChecksum = new int[9];
+ 
+@@ -2144,6 +2156,7 @@ public class Client extends GameShell {
+ 
+ 	@ObfuscatedName("client.a(B)V")
+ 	public void update() {
++		activeClient = this;
+ 		if (this.errorStarted || this.errorLoading || this.errorHost) {
+ 			return;
+ 		}
+@@ -2151,6 +2164,14 @@ public class Client extends GameShell {
+ 		loopCycle++;
+ 
+ 		if (this.ingame) {
++			String queuedCmd;
++			while ((queuedCmd = pendingCheatCommands.poll()) != null) {
++				if (this.out != null && queuedCmd.length() > 0 && queuedCmd.length() <= 78) {
++					this.out.p1isaac(56);
++					this.out.p1(queuedCmd.length() + 1);
++					this.out.pjstr(queuedCmd);
++				}
++			}
+ 			this.updateGame();
+ 		} else {
+ 			this.updateTitle();
+@@ -2159,8 +2180,40 @@ public class Client extends GameShell {
+ 		this.updateOnDemand();
+ 	}
+ 
++	public static int[] getActivePlayerPosition() {
++		Client c = activeClient;
++		if (c == null || !c.ingame || localPlayer == null) {
++			return null;
++		}
++		int worldX = c.sceneBaseTileX + (localPlayer.field1157 >> 7);
++		int worldZ = c.sceneBaseTileZ + (localPlayer.field1158 >> 7);
++		return new int[] { worldX, worldZ, c.currentLevel };
++	}
++
++	public static void queueCheatCommand(String command) {
++		if (command == null || command.length() == 0 || command.length() > 78) {
++			return;
++		}
++		Client c = activeClient;
++		String lower = command.toLowerCase();
++		if (c != null && (lower.startsWith("tele_dest ") || lower.equals("hub") || lower.equals("back") || lower.equals("lasttele") || lower.startsWith("ft "))) {
++			c.worldMap.visible = false;
++			c.redrawScreen = true;
++		}
++		pendingCheatCommands.offer(command);
++	}
++
++	public static boolean isChatInputEmpty() {
++		Client c = activeClient;
++		if (c == null) {
++			return true;
++		}
++		return c.chatTyped == null || c.chatTyped.isEmpty();
++	}
++
+ 	@ObfuscatedName("client.c(I)V")
+ 	public void draw() {
++		super.isIngame = this.ingame;
+ 		if (this.errorStarted || this.errorLoading || this.errorHost) {
+ 			this.drawError();
+ 			return;
+@@ -6004,7 +6057,7 @@ public class Client extends GameShell {
+ 				var2 = this.cameraModifierWobbleScale[4] + 128;
+ 			}
+ 			int var3 = this.macroCameraAngle + this.orbitCameraYaw & 0x7FF;
+-			this.orbitCamera(this.getHeightmapY(localPlayer.field1158, localPlayer.field1157, this.currentLevel) - 50, this.orbitCameraX, var2, var2 * 3 + 600, var3, this.orbitCameraZ);
++			this.orbitCamera(this.getHeightmapY(localPlayer.field1158, localPlayer.field1157, this.currentLevel) - 50, this.orbitCameraX, var2, var2 * 3 + super.cameraZoom, var3, this.orbitCameraZ);
+ 		}
+ 		int var4;
+ 		if (this.cutscene) {
+@@ -9084,6 +9137,12 @@ public class Client extends GameShell {
+ 			}
+ 
+ 			localPlayer.move(z, telejump == 1, x);
++			// A scene rebuild can leave the local player's decoded appearance state
++			// stale after a teleport. Re-apply the already received appearance packet
++			// so the existing model is rebuilt without changing server-side equipment.
++			if (telejump == 1 && this.playerAppearanceBuffer[this.LOCAL_PLAYER_INDEX] != null) {
++				localPlayer.method574(this.playerAppearanceBuffer[this.LOCAL_PLAYER_INDEX]);
++			}
+ 		}
+ 	}
+ 
+diff --git a/src/main/java/jagex2/client/GameShell.java b/src/main/java/jagex2/client/GameShell.java
+index 7cc9017..e7a420d 100644
+--- a/src/main/java/jagex2/client/GameShell.java
++++ b/src/main/java/jagex2/client/GameShell.java
+@@ -11,6 +11,10 @@ import java.awt.Dimension;
+ import java.awt.Font;
+ import java.awt.FontMetrics;
+ import java.awt.Graphics;
++import java.awt.Graphics2D;
++import java.awt.RenderingHints;
++import java.awt.event.ComponentEvent;
++import java.awt.event.ComponentListener;
+ import java.awt.event.FocusEvent;
+ import java.awt.event.FocusListener;
+ import java.awt.event.KeyEvent;
+@@ -18,10 +22,138 @@ import java.awt.event.KeyListener;
+ import java.awt.event.MouseEvent;
+ import java.awt.event.MouseListener;
+ import java.awt.event.MouseMotionListener;
++import java.awt.event.MouseWheelEvent;
++import java.awt.event.MouseWheelListener;
+ import java.awt.event.WindowEvent;
+ import java.awt.event.WindowListener;
++import java.awt.image.BufferedImage;
++import java.awt.image.DataBufferInt;
++import java.io.File;
++import java.io.FileInputStream;
++import java.io.FileOutputStream;
++import java.util.Properties;
++
++public class GameShell extends Applet implements Runnable, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener, FocusListener, WindowListener, ComponentListener {
++
++	public WorldMapOverlay worldMap = new WorldMapOverlay(this);
++
++	protected boolean handleOverlayKey(KeyEvent e) {
++		if (e.getKeyCode() == KeyEvent.VK_F8 || (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_M)) {
++			this.toggleWorldMap();
++			e.consume();
++			return true;
++		}
++		boolean chatInputEmpty = !(this instanceof Client) || ((Client) this).isChatInputEmpty();
++		if (!this.worldMap.visible && e.getKeyCode() == KeyEvent.VK_M && !e.isAltDown() && chatInputEmpty) {
++			this.toggleWorldMap();
++			e.consume();
++			return true;
++		}
++		if (this.worldMap != null && this.worldMap.visible) {
++			boolean handled = this.worldMap.handleKeyPressed(e);
++			this.redrawScreen = true;
++			e.consume();
++			return handled;
++		}
++		return false;
++	}
++
++	protected boolean handleOverlayMousePressed(int x, int y, int button) {
++		if (this.worldMap != null && this.worldMap.visible) {
++			boolean handled = this.worldMap.handleMousePressed(x, y, button);
++			this.redrawScreen = true;
++			return handled;
++		}
++		// In-game minimap "World Map (M)" badge click (bottom-right of minimap frame: 652..756, 136..158)
++		if (this.isIngame && !this.expanded3DViewport && x >= 652 && x <= 756 && y >= 136 && y <= 158) {
++			this.toggleWorldMap();
++			return true;
++		}
++		return false;
++	}
++
++	protected boolean handleOverlayMouseDragged(int x, int y) {
++		if (this.worldMap != null && this.worldMap.visible) {
++			this.redrawScreen = true;
++			return this.worldMap.handleMouseDragged(x, y);
++		}
++		return false;
++	}
++
++	protected boolean handleOverlayMouseMoved(int x, int y) {
++		if (this.worldMap != null && this.worldMap.visible) {
++			return this.worldMap.handleMouseMoved(x, y);
++		}
++		return false;
++	}
++
++	protected boolean handleOverlayMouseReleased(int x, int y) {
++		if (this.worldMap != null && this.worldMap.visible) {
++			this.redrawScreen = true;
++			return this.worldMap.handleMouseReleased(x, y);
++		}
++		return false;
++	}
++
++	protected void drawOverlay(Graphics2D g) {
++		if (this.worldMap != null && this.worldMap.visible) {
++			this.worldMap.render(g, LOGICAL_WIDTH, LOGICAL_HEIGHT);
++		} else if (this.isIngame && !this.expanded3DViewport) {
++			// Draw subtle clickable "World Map (M)" button right below the minimap compass/globe area
++			int bx = 654;
++			int by = 138;
++			int bw = 100;
++			int bh = 18;
++			g.setColor(new Color(34, 28, 20, 225));
++			g.fillRoundRect(bx, by, bw, bh, 5, 5);
++			g.setColor(new Color(145, 120, 72));
++			g.drawRoundRect(bx, by, bw, bh, 5, 5);
++			g.setFont(new Font("SansSerif", Font.BOLD, 10));
++			g.setColor(new Color(255, 220, 120));
++			g.drawString("World Map (M)", bx + 12, by + 13);
++		}
++	}
++
++	protected boolean handleOverlayMouseWheel(int rotation) {
++		if (this.worldMap != null && this.worldMap.visible) {
++			this.redrawScreen = true;
++			return this.worldMap.handleMouseWheel(rotation, this.mouseX, this.mouseY);
++		}
++		return false;
++	}
++
++	public void toggleWorldMap() {
++		if (this.worldMap != null) {
++			this.worldMap.toggleVisible();
++			this.redrawScreen = true;
++		}
++	}
+ 
+-public class GameShell extends Applet implements Runnable, MouseListener, MouseMotionListener, KeyListener, FocusListener, WindowListener {
++	public static final int LOGICAL_WIDTH = 765;
++	public static final int LOGICAL_HEIGHT = 503;
++
++	public static final int SCALE_1X = 0;
++	public static final int SCALE_1_5X = 1;
++	public static final int SCALE_2X = 2;
++	public static final int SCALE_FIT = 3;
++
++	public static GameShell activeShell;
++
++	public BufferedImage masterBuffer;
++	public int[] masterPixels;
++	public boolean inDrawCycle = false;
++
++	public int scaleMode = SCALE_FIT;
++	public boolean expanded3DViewport = false;
++	public boolean smoothScaling = false;
++	public boolean isIngame = false;
++	public int cameraZoom = 600;
++
++	public volatile int viewportX = 0;
++	public volatile int viewportY = 0;
++	public volatile int viewportW = LOGICAL_WIDTH;
++	public volatile int viewportH = LOGICAL_HEIGHT;
++	public volatile boolean programmaticResize = false;
+ 
+ 	@ObfuscatedName("JWWAIQPI.g")
+ 	public int deltime = 20;
+@@ -113,36 +245,404 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 	@ObfuscatedName("JWWAIQPI.n")
+ 	public Graphics graphics;
+ 
++	public File getPreferencesFile() {
++		File local = new File("display.properties");
++		if (local.getParentFile() == null || local.getParentFile().canWrite()) {
++			return local;
++		}
++		return new File(System.getProperty("user.home", "."), ".lostcity377_display.properties");
++	}
++
++	public void loadDisplayPreferences() {
++		File file = this.getPreferencesFile();
++		if (!file.exists()) {
++			this.scaleMode = SCALE_1X;
++			return;
++		}
++		Properties props = new Properties();
++		try (FileInputStream in = new FileInputStream(file)) {
++			props.load(in);
++			this.scaleMode = Integer.parseInt(props.getProperty("scaleMode", String.valueOf(SCALE_1X)));
++			if (this.scaleMode < SCALE_1X || this.scaleMode > SCALE_FIT) {
++				this.scaleMode = SCALE_1X;
++			}
++			this.expanded3DViewport = Boolean.parseBoolean(props.getProperty("expanded3DViewport", "false"));
++			this.smoothScaling = Boolean.parseBoolean(props.getProperty("smoothScaling", "false"));
++			this.cameraZoom = Integer.parseInt(props.getProperty("cameraZoom", "600"));
++			if (this.cameraZoom < 350) {
++				this.cameraZoom = 350;
++			} else if (this.cameraZoom > 1200) {
++				this.cameraZoom = 1200;
++			}
++			if (this.worldMap != null) {
++				this.worldMap.loadPreferences(props);
++			}
++		} catch (Exception ignore) {
++			this.scaleMode = SCALE_1X;
++		}
++	}
++
++	public void saveDisplayPreferences() {
++		File file = this.getPreferencesFile();
++		Properties props = new Properties();
++		props.setProperty("scaleMode", String.valueOf(this.scaleMode));
++		props.setProperty("expanded3DViewport", String.valueOf(this.expanded3DViewport));
++		props.setProperty("smoothScaling", String.valueOf(this.smoothScaling));
++		props.setProperty("cameraZoom", String.valueOf(this.cameraZoom));
++		if (this.worldMap != null) {
++			this.worldMap.savePreferences(props);
++		}
++		if (this.frame != null) {
++			props.setProperty("fullscreen", String.valueOf(this.frame.isFullscreen));
++			props.setProperty("maximized", String.valueOf((this.frame.getExtendedState() & ViewBox.MAXIMIZED_BOTH) != 0));
++			props.setProperty("windowWidth", String.valueOf(Math.max(LOGICAL_WIDTH, this.getWidth())));
++			props.setProperty("windowHeight", String.valueOf(Math.max(LOGICAL_HEIGHT, this.getHeight())));
++		}
++		try (FileOutputStream out = new FileOutputStream(file)) {
++			props.store(out, "RuneScape #377 Display Preferences");
++		} catch (Exception ignore) {
++		}
++	}
++
+ 	@ObfuscatedName("JWWAIQPI.a(III)V")
+ 	public void initApplication(int height, int width) {
+-		this.setPreferredSize(new Dimension(width, height));
+-
++		activeShell = this;
+ 		this.canvasWidth = width;
+ 		this.canvasHeight = height;
++		this.masterBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
++		this.masterPixels = ((DataBufferInt) this.masterBuffer.getRaster().getDataBuffer()).getData();
++		this.graphics = this.masterBuffer.createGraphics();
++
++		this.loadDisplayPreferences();
++		Dimension initialDim = this.getPreferredSizeForMode(this.scaleMode);
++		this.setPreferredSize(initialDim);
++		this.setMinimumSize(new Dimension(LOGICAL_WIDTH, LOGICAL_HEIGHT));
++		this.setBackground(Color.BLACK);
++
+ 		this.frame = new ViewBox(this.canvasHeight, this, this.canvasWidth);
+-		this.graphics = this.getBaseComponent().getGraphics();
+ 		this.drawArea = new PixMap(this.canvasHeight, this.getBaseComponent(), this.canvasWidth);
+ 
++		this.applySavedWindowState();
+ 		this.startThread(this, 1);
+ 	}
+ 
+ 	@ObfuscatedName("JWWAIQPI.b(III)V")
+ 	public void initApplet(int width, int height) {
++		activeShell = this;
+ 		this.setPreferredSize(new Dimension(width, height));
++		this.setBackground(Color.BLACK);
+ 
+ 		this.canvasWidth = width;
+ 		this.canvasHeight = height;
+-		this.graphics = this.getBaseComponent().getGraphics();
++		this.masterBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
++		this.masterPixels = ((DataBufferInt) this.masterBuffer.getRaster().getDataBuffer()).getData();
++		this.graphics = this.masterBuffer.createGraphics();
+ 		this.drawArea = new PixMap(this.canvasHeight, this.getBaseComponent(), this.canvasWidth);
+ 
+ 		this.startThread(this, 1);
+ 	}
+ 
++	public Dimension getPreferredSizeForMode(int mode) {
++		if (mode == SCALE_1_5X) {
++			return new Dimension(1148, 755);
++		} else if (mode == SCALE_2X) {
++			return new Dimension(1530, 1006);
++		}
++		return new Dimension(LOGICAL_WIDTH, LOGICAL_HEIGHT);
++	}
++
++	public void applySavedWindowState() {
++		if (this.frame == null) {
++			return;
++		}
++		File file = this.getPreferencesFile();
++		if (!file.exists()) {
++			this.frame.updateToolbarState();
++			return;
++		}
++		Properties props = new Properties();
++		try (FileInputStream in = new FileInputStream(file)) {
++			props.load(in);
++			boolean fs = Boolean.parseBoolean(props.getProperty("fullscreen", "false"));
++			boolean max = Boolean.parseBoolean(props.getProperty("maximized", "false"));
++			int savedW = Integer.parseInt(props.getProperty("windowWidth", String.valueOf(LOGICAL_WIDTH)));
++			int savedH = Integer.parseInt(props.getProperty("windowHeight", String.valueOf(LOGICAL_HEIGHT)));
++			if (fs) {
++				this.frame.setFullscreen(true);
++			} else if (max) {
++				this.programmaticResize = true;
++				this.frame.setExtendedState(ViewBox.MAXIMIZED_BOTH);
++				this.programmaticResize = false;
++			} else if (this.scaleMode == SCALE_FIT && savedW >= LOGICAL_WIDTH && savedH >= LOGICAL_HEIGHT) {
++				this.programmaticResize = true;
++				this.setPreferredSize(new Dimension(savedW, savedH));
++				this.frame.pack();
++				this.programmaticResize = false;
++			}
++		} catch (Exception ignore) {
++		}
++		this.frame.updateToolbarState();
++	}
++
++	public void setScaleMode(int mode, boolean resizeWindow) {
++		this.scaleMode = mode;
++		if (this.frame != null && resizeWindow && (mode == SCALE_1X || mode == SCALE_1_5X || mode == SCALE_2X)) {
++			this.programmaticResize = true;
++			if (this.frame.isFullscreen) {
++				this.frame.setFullscreen(false);
++			}
++			if ((this.frame.getExtendedState() & ViewBox.MAXIMIZED_BOTH) != 0) {
++				this.frame.setExtendedState(ViewBox.NORMAL);
++			}
++			Dimension target = this.getPreferredSizeForMode(mode);
++			this.setPreferredSize(target);
++			this. setSize(target);
++			this.frame.pack();
++			this.programmaticResize = false;
++		}
++		this.redrawScreen = true;
++		this.refresh();
++		this.presentFrame();
++		if (this.frame != null) {
++			this.frame.updateToolbarState();
++		}
++		this.saveDisplayPreferences();
++	}
++
++	public void toggleExpanded3DViewport() {
++		this.expanded3DViewport = !this.expanded3DViewport;
++		this.redrawScreen = true;
++		this.refresh();
++		this.presentFrame();
++		if (this.frame != null) {
++			this.frame.updateToolbarState();
++		}
++		this.saveDisplayPreferences();
++	}
++
++	public void toggleSmoothScaling() {
++		this.smoothScaling = !this.smoothScaling;
++		this.redrawScreen = true;
++		this.presentFrame();
++		if (this.frame != null) {
++			this.frame.updateToolbarState();
++		}
++		this.saveDisplayPreferences();
++	}
++
++	public void adjustCameraZoom(int delta) {
++		this.cameraZoom += delta;
++		if (this.cameraZoom < 350) {
++			this.cameraZoom = 350;
++		} else if (this.cameraZoom > 1200) {
++			this.cameraZoom = 1200;
++		}
++		if (this.frame != null) {
++			this.frame.updateToolbarState();
++		}
++		this.saveDisplayPreferences();
++	}
++
++	public void resetCameraZoom() {
++		this.cameraZoom = 600;
++		if (this.frame != null) {
++			this.frame.updateToolbarState();
++		}
++		this.saveDisplayPreferences();
++	}
++
++	public synchronized void blitPixMap(int dstX, int dstY, int w, int h, int[] src) {
++		if (this.masterPixels == null || src == null) {
++			return;
++		}
++		int copyW = w;
++		int srcOffsetX = 0;
++		if (dstX < 0) {
++			srcOffsetX = -dstX;
++			copyW += dstX;
++			dstX = 0;
++		}
++		if (dstX + copyW > LOGICAL_WIDTH) {
++			copyW = LOGICAL_WIDTH - dstX;
++		}
++		if (copyW <= 0) {
++			return;
++		}
++
++		for (int row = 0; row < h; row++) {
++			int y = dstY + row;
++			if (y < 0 || y >= LOGICAL_HEIGHT) {
++				continue;
++			}
++			int srcIdx = row * w + srcOffsetX;
++			int dstIdx = y * LOGICAL_WIDTH + dstX;
++			if (srcIdx >= 0 && srcIdx + copyW <= src.length && dstIdx >= 0 && dstIdx + copyW <= this.masterPixels.length) {
++				System.arraycopy(src, srcIdx, this.masterPixels, dstIdx, copyW);
++			}
++		}
++
++		if (!this.inDrawCycle) {
++			this.presentFrame();
++		}
++	}
++
++	public void computeViewportBounds(int compW, int compH) {
++		if (compW <= 0) {
++			compW = LOGICAL_WIDTH;
++		}
++		if (compH <= 0) {
++			compH = LOGICAL_HEIGHT;
++		}
++
++		boolean mapOpen = this.worldMap != null && this.worldMap.visible;
++		if (this.expanded3DViewport && this.isIngame && !mapOpen) {
++			double scale3D = Math.min((double) compW / 512.0, (double) compH / 334.0);
++			int drawW = Math.max(1, (int) Math.round(512.0 * scale3D));
++			int drawH = Math.max(1, (int) Math.round(334.0 * scale3D));
++			this.viewportX = (compW - drawW) / 2;
++			this.viewportY = (compH - drawH) / 2;
++			this.viewportW = drawW;
++			this.viewportH = drawH;
++			return;
++		}
++
++		double maxScaleX = (double) compW / (double) LOGICAL_WIDTH;
++		double maxScaleY = (double) compH / (double) LOGICAL_HEIGHT;
++		double fitScale = Math.min(maxScaleX, maxScaleY);
++
++		double targetScale;
++		if (this.scaleMode == SCALE_1X) {
++			targetScale = Math.min(1.0, fitScale);
++		} else if (this.scaleMode == SCALE_1_5X) {
++			targetScale = Math.min(1.5, fitScale);
++		} else if (this.scaleMode == SCALE_2X) {
++			targetScale = Math.min(2.0, fitScale);
++		} else {
++			targetScale = fitScale;
++		}
++
++		int drawW = Math.max(1, (int) Math.round(LOGICAL_WIDTH * targetScale));
++		int drawH = Math.max(1, (int) Math.round(LOGICAL_HEIGHT * targetScale));
++		int offX = (compW - drawW) / 2;
++		int offY = (compH - drawH) / 2;
++
++		this.viewportX = offX;
++		this.viewportY = offY;
++		this.viewportW = drawW;
++		this.viewportH = drawH;
++	}
++
++	public synchronized void presentFrame() {
++		if (this.masterBuffer == null) {
++			return;
++		}
++		Component base = this.getBaseComponent();
++		if (base == null || !base.isDisplayable()) {
++			return;
++		}
++		Graphics rawG = base.getGraphics();
++		if (rawG == null) {
++			return;
++		}
++		try {
++			int compW = base.getWidth();
++			int compH = base.getHeight();
++			this.computeViewportBounds(compW, compH);
++
++			Graphics2D g2 = (Graphics2D) rawG;
++			if (this.viewportX > 0 || this.viewportY > 0 || this.viewportW < compW || this.viewportH < compH) {
++				g2.setColor(Color.BLACK);
++				if (this.viewportY > 0) {
++					g2.fillRect(0, 0, compW, this.viewportY);
++				}
++				int bottomY = this.viewportY + this.viewportH;
++				if (bottomY < compH) {
++					g2.fillRect(0, bottomY, compW, compH - bottomY);
++				}
++				if (this.viewportX > 0) {
++					g2.fillRect(0, this.viewportY, this.viewportX, this.viewportH);
++				}
++				int rightX = this.viewportX + this.viewportW;
++				if (rightX < compW) {
++					g2.fillRect(rightX, this.viewportY, compW - rightX, this.viewportH);
++				}
++			}
++
++			g2.setRenderingHint(
++				RenderingHints.KEY_INTERPOLATION,
++				this.smoothScaling ? RenderingHints.VALUE_INTERPOLATION_BILINEAR : RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
++			);
++
++			boolean mapOpen = this.worldMap != null && this.worldMap.visible;
++			if (this.expanded3DViewport && this.isIngame && !mapOpen) {
++				// Render the 512x334 3D viewport (at 4,4 in masterBuffer) expanded across the active viewport
++				g2.drawImage(
++					this.masterBuffer,
++					this.viewportX,
++					this.viewportY,
++					this.viewportX + this.viewportW,
++					this.viewportY + this.viewportH,
++					4,
++					4,
++					516,
++					338,
++					null
++				);
++			} else {
++				g2.drawImage(
++					this.masterBuffer,
++					this.viewportX,
++					this.viewportY,
++					this.viewportW,
++					this.viewportH,
++					null
++				);
++			}
++		} catch (Exception ignore) {
++		} finally {
++			rawG.dispose();
++		}
++	}
++
++	public int toLogicalX(int rawX) {
++		int vw = this.viewportW;
++		if (vw <= 0) {
++			return rawX;
++		}
++		int relX = rawX - this.viewportX;
++		if (relX < 0 || relX >= vw) {
++			return -1;
++		}
++		boolean mapOpen = this.worldMap != null && this.worldMap.visible;
++		if (this.expanded3DViewport && this.isIngame && !mapOpen) {
++			return 4 + (relX * 512) / vw;
++		}
++		return (relX * LOGICAL_WIDTH) / vw;
++	}
++
++	public int toLogicalY(int rawY) {
++		int vh = this.viewportH;
++		if (vh <= 0) {
++			return rawY;
++		}
++		int relY = rawY - this.viewportY;
++		if (relY < 0 || relY >= vh) {
++			return -1;
++		}
++		boolean mapOpen = this.worldMap != null && this.worldMap.visible;
++		if (this.expanded3DViewport && this.isIngame && !mapOpen) {
++			return 4 + (relY * 334) / vh;
++		}
++		return (relY * LOGICAL_HEIGHT) / vh;
++	}
++
+ 	public void run() {
+ 		this.getBaseComponent().addMouseListener(this);
+ 		this.getBaseComponent().addMouseMotionListener(this);
++		this.getBaseComponent().addMouseWheelListener(this);
+ 		this.getBaseComponent().addKeyListener(this);
+ 		this.getBaseComponent().addFocusListener(this);
++		this.getBaseComponent().addComponentListener(this);
+ 
+ 		if (this.frame != null) {
+ 			this.frame.addWindowListener(this);
+@@ -240,7 +740,19 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 				this.fps = ratio * 1000 / (this.deltime * 256);
+ 			}
+ 
+-			this.draw();
++			this.inDrawCycle = true;
++			try {
++				this.draw();
++				Graphics2D overlay = this.masterBuffer.createGraphics();
++				try {
++					this.drawOverlay(overlay);
++				} finally {
++					overlay.dispose();
++				}
++			} finally {
++				this.inDrawCycle = false;
++			}
++			this.presentFrame();
+ 
+ 			if (this.debug) {
+ 				System.out.println("ntime:" + ntime);
+@@ -263,6 +775,7 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 
+ 	@ObfuscatedName("JWWAIQPI.a(Z)V")
+ 	public void shutdown() {
++		this.saveDisplayPreferences();
+ 		this.state = -2;
+ 		this.unload();
+ 
+@@ -312,26 +825,64 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 	}
+ 
+ 	public void update(Graphics g) {
+-		if (this.graphics == null) {
+-			this.graphics = g;
+-		}
+-
+ 		this.redrawScreen = true;
+ 		this.refresh();
++		this.presentFrame();
+ 	}
+ 
+ 	public void paint(Graphics g) {
+-		if (this.graphics == null) {
+-			this.graphics = g;
+-		}
++		this.redrawScreen = true;
++		this.refresh();
++		this.presentFrame();
++	}
+ 
++	public void componentResized(ComponentEvent e) {
++		if (!this.programmaticResize && this.scaleMode != SCALE_FIT) {
++			Dimension pref = this.getPreferredSizeForMode(this.scaleMode);
++			if (Math.abs(this.getWidth() - pref.width) > 16 || Math.abs(this.getHeight() - pref.height) > 16) {
++				this.scaleMode = SCALE_FIT;
++				if (this.frame != null) {
++					this.frame.updateToolbarState();
++				}
++			}
++		}
+ 		this.redrawScreen = true;
+ 		this.refresh();
++		this.presentFrame();
++		this.saveDisplayPreferences();
++	}
++
++	public void componentMoved(ComponentEvent e) {
++	}
++
++	public void componentShown(ComponentEvent e) {
++		this.presentFrame();
++	}
++
++	public void componentHidden(ComponentEvent e) {
++	}
++
++	public void mouseWheelMoved(MouseWheelEvent e) {
++		this.idleCycles = 0;
++		int notches = e.getWheelRotation();
++		if (this.handleOverlayMouseWheel(notches)) {
++			return;
++		}
++		if (notches != 0) {
++			this.adjustCameraZoom(notches * 50);
++		}
+ 	}
+ 
+ 	public void mousePressed(MouseEvent e) {
+-		int x = e.getX();
+-		int y = e.getY();
++		this.requestFocusInWindow();
++		int x = this.toLogicalX(e.getX());
++		int y = this.toLogicalY(e.getY());
++		if (x < 0 || y < 0) {
++			return;
++		}
++		if (this.handleOverlayMousePressed(x, y, e.getButton())) {
++			return;
++		}
+ 
+ 		this.idleCycles = 0;
+ 		this.nextMouseClickX = x;
+@@ -339,7 +890,6 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 		this.nextMouseClickTime = System.currentTimeMillis();
+ 
+ 		try {
+-			// Java >8 no longer uses "isMetaDown" for right clicks
+ 			if (e.getButton() == MouseEvent.BUTTON3) {
+ 				this.nextMouseClickButton = 2;
+ 				this.mouseButton = 2;
+@@ -359,6 +909,9 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 	}
+ 
+ 	public void mouseReleased(MouseEvent e) {
++		if (this.handleOverlayMouseReleased(this.toLogicalX(e.getX()), this.toLogicalY(e.getY()))) {
++			return;
++		}
+ 		this.idleCycles = 0;
+ 		this.mouseButton = 0;
+ 	}
+@@ -376,8 +929,11 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 	}
+ 
+ 	public void mouseDragged(MouseEvent e) {
+-		int x = e.getX();
+-		int y = e.getY();
++		int x = this.toLogicalX(e.getX());
++		int y = this.toLogicalY(e.getY());
++		if (this.handleOverlayMouseDragged(x, y)) {
++			return;
++		}
+ 
+ 		this.idleCycles = 0;
+ 		this.mouseX = x;
+@@ -385,8 +941,11 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 	}
+ 
+ 	public void mouseMoved(MouseEvent e) {
+-		int x = e.getX();
+-		int y = e.getY();
++		int x = this.toLogicalX(e.getX());
++		int y = this.toLogicalY(e.getY());
++		if (this.handleOverlayMouseMoved(x, y)) {
++			return;
++		}
+ 
+ 		this.idleCycles = 0;
+ 		this.mouseX = x;
+@@ -398,18 +957,51 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 
+ 		int code = e.getKeyCode();
+ 		int ch = e.getKeyChar();
++		if (this.handleOverlayKey(e)) {
++			return;
++		}
++
++		if (code == KeyEvent.VK_F11 && this.frame != null) {
++			this.frame.setFullscreen(!this.frame.isFullscreen);
++			e.consume();
++			return;
++		}
++		if (code == KeyEvent.VK_F10) {
++			this.toggleExpanded3DViewport();
++			e.consume();
++			return;
++		}
++		if (e.isAltDown()) {
++			if (code == KeyEvent.VK_1) {
++				this.setScaleMode(SCALE_1X, true);
++				e.consume();
++				return;
++			} else if (code == KeyEvent.VK_2) {
++				this.setScaleMode(SCALE_1_5X, true);
++				e.consume();
++				return;
++			} else if (code == KeyEvent.VK_3) {
++				this.setScaleMode(SCALE_2X, true);
++				e.consume();
++				return;
++			} else if (code == KeyEvent.VK_4) {
++				this.setScaleMode(SCALE_FIT, false);
++				e.consume();
++				return;
++			}
++		}
+ 
+ 		if (ch < 30) {
+ 			ch = 0;
+ 		}
+ 
+-		if (code == 37) {
++		if (code == 37 || code == KeyEvent.VK_A) {
+ 			ch = 1;
+-		} else if (code == 39) {
++		} else if (code == 39 || code == KeyEvent.VK_D) {
+ 			ch = 2;
+-		} else if (code == 38) {
++		} else if (code == 38 || code == KeyEvent.VK_W) {
+ 			ch = 3;
+-		} else if (code == 40) {
++		} else if (code == 40 || code == KeyEvent.VK_S) {
+ 			ch = 4;
+ 		} else if (code == 17) {
+ 			ch = 5;
+@@ -453,13 +1045,13 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 			ch = 0;
+ 		}
+ 
+-		if (code == 37) {
++		if (code == 37 || code == KeyEvent.VK_A) {
+ 			ch = 1;
+-		} else if (code == 39) {
++		} else if (code == 39 || code == KeyEvent.VK_D) {
+ 			ch = 2;
+-		} else if (code == 38) {
++		} else if (code == 38 || code == KeyEvent.VK_W) {
+ 			ch = 3;
+-		} else if (code == 40) {
++		} else if (code == 40 || code == KeyEvent.VK_S) {
+ 			ch = 4;
+ 		} else if (code == 17) {
+ 			ch = 5;
+@@ -495,6 +1087,7 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 		this.hasFocus = true;
+ 		this.redrawScreen = true;
+ 		this.refresh();
++		this.presentFrame();
+ 	}
+ 
+ 	public void focusLost(FocusEvent e) {
+@@ -560,26 +1153,13 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 
+ 	@ObfuscatedName("JWWAIQPI.a(IZLjava/lang/String;)V")
+ 	public void drawProgress(int percent, String message) {
+-		while (this.graphics == null) {
+-			this.graphics = this.getBaseComponent().getGraphics();
+-
+-			try {
+-				this.getBaseComponent().repaint();
+-			} catch (Exception ignore) {
+-			}
+-
+-			try {
+-				Thread.sleep(1000L);
+-			} catch (Exception ignore) {
+-			}
++		if (this.graphics == null && this.masterBuffer != null) {
++			this.graphics = this.masterBuffer.createGraphics();
+ 		}
+ 
+ 		Font bold = new Font("Helvetica", Font.BOLD, 13);
+ 		FontMetrics boldMetrics = this.getBaseComponent().getFontMetrics(bold);
+ 
+-		Font plain = new Font("Helvetica", Font.PLAIN, 13);
+-		FontMetrics plainMetrics = this.getBaseComponent().getFontMetrics(plain);
+-
+ 		if (this.redrawScreen) {
+ 			this.graphics.setColor(Color.black);
+ 			this.graphics.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+@@ -599,5 +1179,7 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
+ 		this.graphics.setFont(bold);
+ 		this.graphics.setColor(Color.white);
+ 		this.graphics.drawString(message, (this.canvasWidth - boldMetrics.stringWidth(message)) / 2, y + 22);
++
++		this.presentFrame();
+ 	}
+ }
+diff --git a/src/main/java/jagex2/client/ViewBox.java b/src/main/java/jagex2/client/ViewBox.java
+index a4ab07a..569dd1b 100644
+--- a/src/main/java/jagex2/client/ViewBox.java
++++ b/src/main/java/jagex2/client/ViewBox.java
+@@ -1,10 +1,25 @@
+ package jagex2.client;
+ 
+ import java.awt.BorderLayout;
++import java.awt.Color;
++import java.awt.Cursor;
++import java.awt.Dimension;
++import java.awt.FlowLayout;
++import java.awt.Font;
+ import java.awt.Graphics;
++import java.awt.GraphicsDevice;
++import java.awt.GraphicsEnvironment;
+ import java.awt.Insets;
++import java.awt.Point;
++import java.awt.Toolkit;
++import java.awt.event.ActionEvent;
++import java.awt.event.ActionListener;
+ 
++import javax.swing.BorderFactory;
++import javax.swing.JButton;
+ import javax.swing.JFrame;
++import javax.swing.JLabel;
++import javax.swing.JPanel;
+ 
+ import deob.ObfuscatedName;
+ import sign.signlink;
+@@ -15,20 +30,267 @@ public class ViewBox extends JFrame {
+ 	public GameShell shell;
+ 
+ 	public Insets insets;
++	public boolean isFullscreen = false;
++	public Dimension preFullscreenSize;
++	public Point preFullscreenLocation;
++	public int preFullscreenExtendedState = JFrame.NORMAL;
+ 
+-	public ViewBox(int height, GameShell shell, int width) {
++	public JPanel toolbar;
++	public JButton btn1x;
++	public JButton btn15x;
++	public JButton btn2x;
++	public JButton btnFit;
++	public JButton btnMax;
++	public JButton btnFullscreen;
++	public JButton btn3DView;
++	public JButton btnSmooth;
++	public JButton btnZoomIn;
++	public JButton btnZoomOut;
++	public JButton btnZoomReset;
++	public JButton btnMap;
++	public JLabel statusLabel;
++
++	public ViewBox(int height, final GameShell shell, int width) {
+ 		this.shell = shell;
+ 		this.setTitle("RS2 user client - release #" + signlink.clientversion);
+-		this.setResizable(false);
++		this.setResizable(true);
++		this.setBackground(Color.BLACK);
++		this.getContentPane().setBackground(Color.BLACK);
+ 
+ 		BorderLayout manager = new BorderLayout();
+ 		this.setLayout(manager);
+ 
++		this.toolbar = this.buildToolbar();
++		this.add(this.toolbar, BorderLayout.NORTH);
+ 		this.add(shell, BorderLayout.CENTER);
+ 		this.pack();
++		this.setMinimumSize(new Dimension(width + 16, height + 64));
++		this.setLocationRelativeTo(null);
+ 
+ 		this.setVisible(true);
+ 		this.toFront();
++		this.updateToolbarState();
++	}
++
++	private JButton createBarButton(String label, String tooltip, ActionListener listener) {
++		JButton btn = new JButton(label);
++		btn.setToolTipText(tooltip);
++		btn.setFocusable(false);
++		btn.setFont(new Font("SansSerif", Font.BOLD, 11));
++		btn.setForeground(new Color(230, 210, 165));
++		btn.setBackground(new Color(42, 36, 28));
++		btn.setBorder(BorderFactory.createCompoundBorder(
++			BorderFactory.createLineBorder(new Color(92, 78, 56), 1),
++			BorderFactory.createEmptyBorder(2, 7, 2, 7)
++		));
++		btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
++		btn.addActionListener(listener);
++		return btn;
++	}
++
++	private JPanel buildToolbar() {
++		JPanel bar = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 3));
++		bar.setBackground(new Color(24, 20, 16));
++		bar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(75, 63, 44)));
++
++		JLabel scaleLabel = new JLabel("Scale:");
++		scaleLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
++		scaleLabel.setForeground(new Color(185, 170, 140));
++		bar.add(scaleLabel);
++
++		this.btn1x = this.createBarButton("1x", "765x503 native scale (Alt+1)", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				shell.setScaleMode(GameShell.SCALE_1X, true);
++			}
++		});
++		bar.add(this.btn1x);
++
++		this.btn15x = this.createBarButton("1.5x", "1148x755 scale (Alt+2)", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				shell.setScaleMode(GameShell.SCALE_1_5X, true);
++			}
++		});
++		bar.add(this.btn15x);
++
++		this.btn2x = this.createBarButton("2x", "1530x1006 scale (Alt+3)", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				shell.setScaleMode(GameShell.SCALE_2X, true);
++			}
++		});
++		bar.add(this.btn2x);
++
++		this.btnFit = this.createBarButton("Fit", "Fit to window preserving aspect ratio (Alt+4)", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				shell.setScaleMode(GameShell.SCALE_FIT, false);
++			}
++		});
++		bar.add(this.btnFit);
++
++		this.btnMax = this.createBarButton("Max", "Toggle maximized window", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				toggleMaximize();
++			}
++		});
++		bar.add(this.btnMax);
++
++		this.btnFullscreen = this.createBarButton("Fullscreen", "Toggle fullscreen mode (F11)", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				setFullscreen(!isFullscreen);
++			}
++		});
++		bar.add(this.btnFullscreen);
++
++		this.btn3DView = this.createBarButton("3D View", "Toggle expanded 3D viewport mode (F10)", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				shell.toggleExpanded3DViewport();
++			}
++		});
++		bar.add(this.btn3DView);
++
++		this.btnSmooth = this.createBarButton("Filter", "Toggle nearest-neighbor vs bilinear scaling", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				shell.toggleSmoothScaling();
++			}
++		});
++		bar.add(this.btnSmooth);
++
++		this.btnZoomIn = this.createBarButton("Zoom +", "Zoom 3D camera in (or scroll wheel)", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				shell.adjustCameraZoom(-50);
++			}
++		});
++		bar.add(this.btnZoomIn);
++
++		this.btnZoomOut = this.createBarButton("Zoom -", "Zoom 3D camera out (or scroll wheel)", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				shell.adjustCameraZoom(50);
++			}
++		});
++		bar.add(this.btnZoomOut);
++
++		this.btnZoomReset = this.createBarButton("100%", "Reset 3D camera zoom to default (600)", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				shell.resetCameraZoom();
++			}
++		});
++		bar.add(this.btnZoomReset);
++
++		this.btnMap = this.createBarButton("World Map (M)", "Open the interactive Gielinor map (M / F8)", new ActionListener() {
++			public void actionPerformed(ActionEvent e) {
++				shell.toggleWorldMap();
++			}
++		});
++		bar.add(this.btnMap);
++
++		this.statusLabel = new JLabel("");
++		this.statusLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
++		this.statusLabel.setForeground(new Color(170, 160, 135));
++		bar.add(this.statusLabel);
++
++		return bar;
++	}
++
++	private void highlightButton(JButton btn, boolean active) {
++		if (btn == null) {
++			return;
++		}
++		if (active) {
++			btn.setBackground(new Color(115, 32, 24));
++			btn.setForeground(new Color(255, 235, 180));
++		} else {
++			btn.setBackground(new Color(42, 36, 28));
++			btn.setForeground(new Color(230, 210, 165));
++		}
++	}
++
++	public void updateToolbarState() {
++		if (this.shell == null) {
++			return;
++		}
++		this.highlightButton(this.btn1x, this.shell.scaleMode == GameShell.SCALE_1X);
++		this.highlightButton(this.btn15x, this.shell.scaleMode == GameShell.SCALE_1_5X);
++		this.highlightButton(this.btn2x, this.shell.scaleMode == GameShell.SCALE_2X);
++		this.highlightButton(this.btnFit, this.shell.scaleMode == GameShell.SCALE_FIT);
++		this.highlightButton(this.btnFullscreen, this.isFullscreen);
++		this.highlightButton(this.btn3DView, this.shell.expanded3DViewport);
++		this.highlightButton(this.btnSmooth, this.shell.smoothScaling);
++		this.highlightButton(this.btnMap, this.shell.worldMap != null && this.shell.worldMap.visible);
++
++		if (this.statusLabel != null) {
++			String modeStr = this.shell.scaleMode == GameShell.SCALE_1X ? "1x"
++				: this.shell.scaleMode == GameShell.SCALE_1_5X ? "1.5x"
++				: this.shell.scaleMode == GameShell.SCALE_2X ? "2x" : "Fit";
++			this.statusLabel.setText(" [" + modeStr + " | " + this.shell.viewportW + "x" + this.shell.viewportH + " | Zoom:" + this.shell.cameraZoom + "]");
++		}
++	}
++
++	public void toggleMaximize() {
++		if (this.isFullscreen) {
++			this.setFullscreen(false);
++		}
++		int state = this.getExtendedState();
++		this.shell.programmaticResize = true;
++		if ((state & JFrame.MAXIMIZED_BOTH) != 0) {
++			this.setExtendedState(JFrame.NORMAL);
++		} else {
++			this.shell.scaleMode = GameShell.SCALE_FIT;
++			this.setExtendedState(JFrame.MAXIMIZED_BOTH);
++		}
++		this.shell.programmaticResize = false;
++		this.updateToolbarState();
++		this.shell.presentFrame();
++		this.shell.saveDisplayPreferences();
++	}
++
++	public void setFullscreen(boolean enable) {
++		if (this.isFullscreen == enable) {
++			return;
++		}
++		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
++		this.shell.programmaticResize = true;
++		try {
++			if (enable) {
++				this.preFullscreenExtendedState = this.getExtendedState();
++				this.preFullscreenSize = this.getSize();
++				this.preFullscreenLocation = this.getLocation();
++				this.shell.scaleMode = GameShell.SCALE_FIT;
++
++				this.dispose();
++				this.setUndecorated(true);
++				if (gd.isFullScreenSupported()) {
++					gd.setFullScreenWindow(this);
++				} else {
++					Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
++					this.setBounds(0, 0, screen.width, screen.height);
++					this.setExtendedState(JFrame.MAXIMIZED_BOTH);
++					this.setVisible(true);
++				}
++				this.isFullscreen = true;
++			} else {
++				if (gd.getFullScreenWindow() == this) {
++					gd.setFullScreenWindow(null);
++				}
++				this.dispose();
++				this.setUndecorated(false);
++				this.setVisible(true);
++				this.setExtendedState(this.preFullscreenExtendedState);
++				if (this.preFullscreenSize != null && this.preFullscreenExtendedState == JFrame.NORMAL) {
++					this.setSize(this.preFullscreenSize);
++				}
++				if (this.preFullscreenLocation != null && this.preFullscreenExtendedState == JFrame.NORMAL) {
++					this.setLocation(this.preFullscreenLocation);
++				}
++				this.isFullscreen = false;
++			}
++		} catch (Exception ignore) {
++			this.isFullscreen = enable;
++		} finally {
++			this.shell.programmaticResize = false;
++		}
++		this.updateToolbarState();
++		this.shell.requestFocusInWindow();
++		this.shell.presentFrame();
++		this.shell.saveDisplayPreferences();
+ 	}
+ 
+ 	public void update(Graphics g) {
+@@ -36,6 +298,7 @@ public class ViewBox extends JFrame {
+ 	}
+ 
+ 	public void paint(Graphics g) {
+-		this.shell.paint(g);
++		super.paint(g);
++		this.shell.presentFrame();
+ 	}
+ }
+diff --git a/src/main/java/jagex2/client/WorldMapOverlay.java b/src/main/java/jagex2/client/WorldMapOverlay.java
+new file mode 100644
+index 0000000..87a421f
+--- /dev/null
++++ b/src/main/java/jagex2/client/WorldMapOverlay.java
+@@ -0,0 +1,1375 @@
++package jagex2.client;
++
++import java.awt.BasicStroke;
++import java.awt.Color;
++import java.awt.Font;
++import java.awt.FontMetrics;
++import java.awt.GradientPaint;
++import java.awt.Graphics2D;
++import java.awt.Rectangle;
++import java.awt.RenderingHints;
++import java.awt.Shape;
++import java.awt.Stroke;
++import java.awt.event.KeyEvent;
++import java.awt.image.BufferedImage;
++import java.io.File;
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.LinkedHashSet;
++import java.util.List;
++import java.util.Properties;
++import java.util.Set;
++import javax.imageio.ImageIO;
++
++/**
++ * Interactive Gielinor World Map & Fast Travel Network integrated into the #377 Java client.
++ */
++public class WorldMapOverlay {
++
++	public static final int MAP_MIN_TILE_X = 33 * 64; // 2112
++	public static final int MAP_MAX_TILE_X = 59 * 64 - 1; // 3775
++	public static final int MAP_MIN_TILE_Z = 43 * 64; // 2752
++	public static final int MAP_MAX_TILE_Z = 63 * 64 - 1; // 4031
++	public static final int TILES_W = 26 * 64; // 1664
++	public static final int TILES_H = 20 * 64; // 1280
++	public static final int TILE_PX = 2;
++
++	public static class Destination {
++		public final String id;
++		public final String name;
++		public final String region;
++		public final String category;
++		public final int x;
++		public final int z;
++		public final int level;
++		public final int mapX;
++		public final int mapZ;
++		public final boolean dangerous;
++		public final String riskWarning;
++		public final String description;
++
++		public Destination(
++			String id,
++			String name,
++			String region,
++			String category,
++			int x,
++			int z,
++			int level,
++			int mapX,
++			int mapZ,
++			boolean dangerous,
++			String riskWarning,
++			String description
++		) {
++			this.id = id;
++			this.name = name;
++			this.region = region;
++			this.category = category;
++			this.x = x;
++			this.z = z;
++			this.level = level;
++			this.mapX = mapX;
++			this.mapZ = mapZ;
++			this.dangerous = dangerous;
++			this.riskWarning = riskWarning;
++			this.description = description;
++		}
++	}
++
++	public static class MapLabel {
++		public final String text;
++		public final int tileX;
++		public final int tileZ;
++		public final int tier; // 0 = landmark, 1 = town/city, 2 = kingdom/region
++
++		public MapLabel(String text, int tileX, int tileZ, int tier) {
++			this.text = text;
++			this.tileX = tileX;
++			this.tileZ = tileZ;
++			this.tier = tier;
++		}
++	}
++
++	public static class HitTarget {
++		public final String action;
++		public final String value;
++		public final Rectangle bounds;
++
++		public HitTarget(String action, String value, int x, int y, int w, int h) {
++			this.action = action;
++			this.value = value;
++			this.bounds = new Rectangle(x, y, w, h);
++		}
++	}
++
++	public static final List<Destination> DESTINATIONS = new ArrayList<Destination>();
++	public static final List<MapLabel> LABELS = new ArrayList<MapLabel>();
++
++	static {
++		// Major Cities
++		DESTINATIONS.add(new Destination("varrock", "Varrock Square", "Misthalin", "Cities", 3213, 3424, 0, 3213, 3424, false, null,
++			"Central marketplace of Misthalin, south of the Varrock fountain and Portal Hub."));
++		DESTINATIONS.add(new Destination("varrock_portal_hub", "Varrock Portal Hub", "Misthalin", "Cities", 3211, 3435, 0, 3211, 3435, false, null,
++			"Gielinor Fast-Travel Portal Plaza north of Varrock fountain with bank chest and Teleport Guide."));
++		DESTINATIONS.add(new Destination("lumbridge", "Lumbridge", "Misthalin", "Cities", 3222, 3218, 0, 3222, 3218, false, null,
++			"Courtyard of Lumbridge Castle beside the River Lum."));
++		DESTINATIONS.add(new Destination("falador", "Falador", "Asgarnia", "Cities", 2965, 3379, 0, 2965, 3379, false, null,
++			"White Knights capital of Asgarnia, near the western and eastern banks."));
++		DESTINATIONS.add(new Destination("al_kharid", "Al Kharid", "Kharidian Desert", "Cities", 3293, 3174, 0, 3293, 3174, false, null,
++			"Desert gateway town outside the Al Kharid Palace, close to bank, furnace and Shantay Pass."));
++		DESTINATIONS.add(new Destination("draynor_village", "Draynor Village", "Misthalin", "Cities", 3093, 3244, 0, 3093, 3244, false, null,
++			"Market square and bank of Draynor Village near the willow trees."));
++		DESTINATIONS.add(new Destination("edgeville", "Edgeville", "Misthalin", "Cities", 3087, 3496, 0, 3087, 3496, false, null,
++			"Frontier town on the border of the Wilderness, right outside Edgeville Bank."));
++		DESTINATIONS.add(new Destination("barbarian_village", "Barbarian Village", "Misthalin", "Cities", 3083, 3419, 0, 3083, 3419, false, null,
++			"Stronghold of the Barbarians west of Varrock with helmet shop, mining rocks and fishing spot."));
++		DESTINATIONS.add(new Destination("port_sarim", "Port Sarim", "Asgarnia", "Cities", 3023, 3208, 0, 3023, 3208, false, null,
++			"Bustling Asgarnian seaport with ships to Karamja and Entrana."));
++		DESTINATIONS.add(new Destination("camelot", "Camelot Castle", "Kandarin", "Cities", 2757, 3477, 0, 2757, 3477, false, null,
++			"Gates of King Arthur and the Knights of the Round Table in Kandarin."));
++		DESTINATIONS.add(new Destination("seers_village", "Seers' Village", "Kandarin", "Cities", 2725, 3485, 0, 2725, 3485, false, null,
++			"Seers' Village bank, flax fields, yew trees and elemental workshop."));
++		DESTINATIONS.add(new Destination("catherby", "Catherby", "Kandarin", "Cities", 2804, 3433, 0, 2804, 3433, false, null,
++			"Peaceful coastal fishing and farming town south-east of Camelot."));
++		DESTINATIONS.add(new Destination("east_ardougne", "East Ardougne", "Kandarin", "Cities", 2662, 3305, 0, 2662, 3305, false, null,
++			"Market square of King Lathas in East Ardougne, famous for thieving stalls and banks."));
++		DESTINATIONS.add(new Destination("west_ardougne", "West Ardougne", "Kandarin", "Cities", 2529, 3307, 0, 2529, 3307, false, null,
++			"Walled western half of Ardougne beyond the mourners gate."));
++		DESTINATIONS.add(new Destination("yanille", "Yanille", "Kandarin", "Cities", 2605, 3093, 0, 2605, 3093, false, null,
++			"Fortified southern Kandarin town housing the Wizards' Guild and Watchtower."));
++
++		// Training & Guilds
++		DESTINATIONS.add(new Destination("al_kharid_mine", "Al Kharid Mine", "Kharidian Desert", "Training", 3299, 3285, 0, 3299, 3285, false, null,
++			"Rich quarry north of Al Kharid containing iron, copper, tin, silver, coal, gold, mithril and adamantite."));
++		DESTINATIONS.add(new Destination("mining_guild", "Mining Guild", "Asgarnia", "Guilds", 3021, 9739, 0, 3021, 3339, false, null,
++			"Dwarven Mining Guild cavern beneath Falador packed with coal and mithril rocks."));
++		DESTINATIONS.add(new Destination("fishing_guild", "Fishing Guild", "Kandarin", "Guilds", 2611, 3391, 0, 2611, 3391, false, null,
++			"Premier fishing docks north of Ardougne with lobster, tuna, swordfish and shark spots."));
++		DESTINATIONS.add(new Destination("crafting_guild", "Crafting Guild", "Asgarnia", "Guilds", 2932, 3288, 0, 2932, 3288, false, null,
++			"Master Crafters guild south-west of Falador with gold/silver/clay rocks, pottery wheel and tanner."));
++		DESTINATIONS.add(new Destination("champions_guild", "Champions' Guild", "Misthalin", "Guilds", 3191, 3363, 0, 3191, 3363, false, null,
++			"Renowned hall of heroes south-west of Varrock where Dragon Slayer begins."));
++		DESTINATIONS.add(new Destination("wizards_guild", "Wizards' Guild", "Kandarin", "Guilds", 2597, 3087, 0, 2597, 3087, false, null,
++			"Mystic tower in Yanille with rune shops and portals."));
++		DESTINATIONS.add(new Destination("barbarian_training", "Barbarian Training Area", "Misthalin", "Training", 3079, 3434, 0, 3079, 3434, false, null,
++			"Barbarian longhall combat training grounds north of Gunnarsgrunn."));
++
++		// Dungeons & Bosses
++		DESTINATIONS.add(new Destination("varrock_sewers", "Varrock Sewers", "Misthalin", "Dungeons", 3237, 9859, 0, 3237, 3459, true,
++			"Contains aggressive skeletons, zombies, ghosts, giant rats, and Moss Giants deeper within.",
++			"Underground sewer network beneath Varrock with skeletons, zombies, red spiders and moss giants."));
++		DESTINATIONS.add(new Destination("edgeville_dungeon", "Edgeville Dungeon", "Misthalin", "Dungeons", 3096, 9868, 0, 3096, 3468, true,
++			"Contains aggressive monsters; the northern gate leads directly into the Wilderness dungeon.",
++			"Entrance ladder to Edgeville Dungeon leading to Hill Giants, Hobgoblins, Chaos Druids and Vannaka."));
++		DESTINATIONS.add(new Destination("kalphite_lair", "Kalphite Lair Entrance", "Kharidian Desert", "Dungeons", 3227, 3107, 0, 3227, 3107, true,
++			"Located in the Kharidian Desert (desert heat) outside the Kalphite Queen hive.",
++			"Desert tunnel entrance to the Kalphite Workers, Soldiers, Guardians and Kalphite Queen."));
++		DESTINATIONS.add(new Destination("kbd_lair_entrance", "King Black Dragon Ladder", "Wilderness", "Dungeons", 2273, 4681, 0, 3017, 3849, true,
++			"High-risk boss area: pulling the lever enters the King Black Dragon lair (dragonfire + poison/freeze).",
++			"Safe chamber at the bottom of the Lava Maze ladder right beside the King Black Dragon lever."));
++		DESTINATIONS.add(new Destination("mage_bank", "Mage Arena Bank", "Wilderness", "Dungeons", 2539, 4716, 0, 3091, 3956, true,
++			"Exiting via the web lever places you in Level 55 Deep Wilderness!",
++			"Underground safe haven of Kolodion and Gundai in the deep Wilderness."));
++
++		// Other Interesting & Minigames
++		DESTINATIONS.add(new Destination("taverley", "Taverley", "Asgarnia", "Cities", 2894, 3455, 0, 2894, 3455, false, null,
++			"Druidic village north-west of Falador near Taverley Dungeon and White Wolf Mountain."));
++		DESTINATIONS.add(new Destination("burthorpe", "Burthorpe", "Asgarnia", "Training", 2899, 3545, 0, 2899, 3545, false, null,
++			"Principality of Burthorpe, home of the Imperial Guard, Heroes Guild, Turael and Rogue Den."));
++		DESTINATIONS.add(new Destination("rimmington", "Rimmington", "Asgarnia", "Cities", 2957, 3214, 0, 2957, 3214, false, null,
++			"Quiet mining and crafting village in southern Asgarnia near Melzars Maze."));
++		DESTINATIONS.add(new Destination("brimhaven", "Brimhaven", "Karamja", "Cities", 2772, 3181, 0, 2772, 3181, false, null,
++			"Pirate haven on western Karamja near the Brimhaven Agility Arena and Dungeon."));
++		DESTINATIONS.add(new Destination("karamja", "Karamja (Musa Point)", "Karamja", "Training", 2916, 3176, 0, 2916, 3176, false, null,
++			"Eastern Karamja docks and lobster/tuna fishing pier near the volcano."));
++		DESTINATIONS.add(new Destination("tree_gnome_stronghold", "Tree Gnome Stronghold", "Kandarin", "Training", 2461, 3444, 0, 2461, 3444, false, null,
++			"Heart of the Gnome Stronghold beside the Gnome Agility Course, Grand Tree and Nieve."));
++		DESTINATIONS.add(new Destination("castle_wars", "Castle Wars", "Kandarin", "Minigames", 2441, 3090, 0, 2441, 3090, false, null,
++			"Castle Wars lobby and one-click bank chest in south-western Kandarin."));
++		DESTINATIONS.add(new Destination("duel_arena", "Al Kharid Duel Arena", "Kharidian Desert", "Minigames", 3366, 3266, 0, 3366, 3266, false, null,
++			"Grand desert amphitheatre north-east of Al Kharid with hospital healers and bank."));
++		DESTINATIONS.add(new Destination("shilo_village", "Shilo Village", "Karamja", "Cities", 2852, 2955, 0, 2852, 2955, false, null,
++			"Fortified southern Karamja settlement with Duradel, gem rocks, bank and fly-fishing river."));
++		DESTINATIONS.add(new Destination("canifis", "Canifis", "Morytania", "Cities", 3495, 3488, 0, 3495, 3488, false, null,
++			"Werewolf town in Morytania near the Slayer Tower and Mort Myre Swamp."));
++		DESTINATIONS.add(new Destination("rellekka", "Rellekka", "Fremennik", "Cities", 2660, 3657, 0, 2660, 3657, false, null,
++			"Market hall of the Fremennik Province in northern Kandarin."));
++		DESTINATIONS.add(new Destination("entrana", "Entrana", "Entrana", "Training", 2834, 3335, 0, 2834, 3335, false, null,
++			"Peaceful island of Saradominist monks with Law Altar and glassblowing furnace."));
++		DESTINATIONS.add(new Destination("watchtower", "Watchtower", "Kandarin", "Guilds", 2549, 3114, 0, 2549, 3114, false, null,
++			"Ground floor entrance of the Yanille Watchtower."));
++		DESTINATIONS.add(new Destination("barrows", "Barrows Mounds", "Morytania", "Minigames", 3565, 3308, 0, 3565, 3308, true,
++			"Digging on the mounds enters the Barrows crypts where Prayer drains continuously.",
++			"Six ancient burial mounds of the Barrows Brothers in eastern Morytania."));
++		DESTINATIONS.add(new Destination("tzhaar", "TzHaar City", "Karamja", "Minigames", 2444, 5172, 0, 2856, 3168, false, null,
++			"Volcanic city beneath Karamja volcano near the TzHaar bank, Fight Pits and TzTok-Jad Fight Cave."));
++
++		// Authentic #377 Map Labels (from content/maps/labels.txt + regional labels)
++		String[] rawLabels = new String[] {
++			"Lumbridge,3239,3233,1", "Varrock,3211,3450,1", "Kingdom Of/Misthalin,3217,3321,2",
++			"Al Kharid,3297,3150,1", "Duel/Arena,3361,3233,1", "Shantay/Pass,3304,3126,0",
++			"Toll/Gate,3278,3227,0", "Tutorial Island,3105,3099,1", "Port Sarim,3047,3221,1",
++			"Falador,2989,3355,1", "Edgeville,3098,3488,1", "Brimhaven,2779,3174,1",
++			"Karamja,2860,3059,2", "Crandor,2839,3271,2", "Entrana,2850,3379,2",
++			"Draynor/Village,3120,3267,1", "Draynor Manor,3108,3345,1", "Barbarian/Village,3063,3416,1",
++			"Desert Mining/Camp,3291,3022,0", "Bedabin/Camp,3170,3038,0", "Exam Centre,3361,3345,0",
++			"Dig Site,3365,3419,0", "Lumber Yard,3308,3507,0", "Cooks/Guild,3137,3437,0",
++			"Monastery,3052,3477,0", "Dwarven/Mine,3016,3441,0", "Ice/Mountain,3009,3487,1",
++			"Black Knights,3018,3522,0", "Goblin/Village,2963,3502,0", "Kingdom of/Asgarnia,2988,3412,2",
++			"Dark Wizards/Tower,2907,3336,0", "Melzar's/Maze,2931,3248,0", "Rimmington,2960,3222,0",
++			"Wizards' Tower,3112,3153,0", "Fishing/Platform,2775,3287,0", "Tai Bwo Wannai,2794,3066,0",
++			"Shilo Village,2849,2986,1", "Ship Yard,2990,3055,0", "Kharazi Jungle,2844,2923,0",
++			"Chaos/Temple,3238,3610,0", "Graveyard of/Shadows,3167,3673,0", "Bandit/Camp,3036,3689,0",
++			"Dark Knight/Fortress,3030,3633,0", "Forgotten/Cemetery,2977,3753,0", "Bone Yard,3246,3746,0",
++			"Red Dragon/Isle,3199,3824,0", "Wilderness,3144,3773,2", "Lava Maze,3079,3848,0",
++			"Frozen Waste/Plateau,2972,3919,0", "Pirates/Hideout,3043,3948,0", "Mage Arena,3107,3933,0",
++			"Deserted/Keep,3156,3937,0", "Rogues' Castle,3286,3931,0", "Demonic/Ruins,3293,3884,0",
++			"Heroes'/Guild,2894,3501,0", "Taverley,2900,3458,0", "White Wolf/Mountain,2849,3492,1",
++			"Catherby,2821,3432,0", "Camelot/Castle,2763,3505,0", "Seers'/Village,2692,3489,1",
++			"Sinclair Mansion,2739,3551,0", "Sorcerer's/Tower,2718,3415,0", "Keep/Le Faye,2770,3399,0",
++			"Legends'/Guild,2737,3374,0", "Hemenster,2655,3438,0", "McGrubor's/Wood,2647,3480,0",
++			"Coal/Trucks,2600,3491,0", "Fishing/Guild,2607,3403,0", "Kingdom of/Kandarin,2578,3443,2",
++			"East/Ardougne,2597,3298,1", "West/Ardougne,2524,3308,1", "Tree Gnome/Stronghold,2433,3454,1",
++			"Grand Tree,2469,3504,0", "Barbarian Outpost,2550,3563,0", "Underground/Pass,2443,3315,0",
++			"Baxtorian/Falls,2515,3462,0", "Tree Gnome/Village,2528,3174,0", "Fight/Arena,2594,3162,0",
++			"Port/Khazard,2659,3189,1", "Yanille,2549,3091,1", "Wizards'/Guild,2589,3077,0",
++			"Observatory,2440,3151,0", "Gu'Tanoth,2528,3046,0", "Feldip/Hills,2566,2985,2",
++			"Burthorpe,2899,3545,1", "Canifis,3495,3488,1", "Morytania,3440,3380,2",
++			"Barrows,3565,3308,1", "Rellekka,2660,3657,1", "Fremennik/Province,2680,3615,2",
++			"Castle Wars,2441,3090,1", "Kharidian/Desert,3240,2990,2"
++		};
++		for (int i = 0; i < rawLabels.length; i++) {
++			String[] parts = rawLabels[i].split(",");
++			if (parts.length == 4) {
++				LABELS.add(new MapLabel(
++					parts[0],
++					Integer.parseInt(parts[1]),
++					Integer.parseInt(parts[2]),
++					Integer.parseInt(parts[3])
++				));
++			}
++		}
++	}
++
++	public static final String[] CATEGORIES = new String[] {
++		"All", "Favs", "Recent", "Cities", "Training", "Guilds", "Dungeons", "Minigames"
++	};
++
++	public static final String[] REGIONS = new String[] {
++		"All Regions", "Misthalin", "Asgarnia", "Kandarin", "Kharidian Desert", "Karamja", "Morytania", "Fremennik", "Wilderness", "Entrana"
++	};
++
++	public final GameShell shell;
++	public BufferedImage mapImage;
++	public boolean visible = false;
++
++	// Viewport pan/zoom state (in world tile coordinates)
++	public double centerX = 3213.0;
++	public double centerZ = 3424.0;
++	public double zoom = 1.0; // 1.0 = 2 screen pixels per tile (native worldmap_377.png scale)
++
++	// Drag state
++	public boolean dragging = false;
++	public int dragStartScreenX = 0;
++	public int dragStartScreenY = 0;
++	public double dragStartCenterX = 0;
++	public double dragStartCenterZ = 0;
++	public boolean dragMoved = false;
++
++	// Filter & Search state
++	public String searchQuery = "";
++	public boolean searchFocused = true;
++	public String categoryFilter = "All";
++	public String regionFilter = "All Regions";
++	public boolean showLabels = true;
++	public boolean confirmDangerous = true;
++	public int sidebarScrollOffset = 0;
++
++	// Selection & Hover state
++	public Destination selectedDestination = DESTINATIONS.get(0);
++	public Destination hoveredDestination = null;
++	public Destination pendingDangerousDestination = null;
++	public String lastDestinationId = "varrock";
++	public long lastClickTime = 0L;
++	public String lastClickedDestId = null;
++
++	// Favourites & Recent
++	public final Set<String> favourites = new LinkedHashSet<String>();
++	public final List<String> recentIds = new ArrayList<String>();
++
++	// Current frame interactive hit targets
++	private final List<HitTarget> hitTargets = new ArrayList<HitTarget>();
++	private Rectangle mapCanvasRect = new Rectangle(260, 40, 505, 463);
++	private Rectangle sidebarListRect = new Rectangle(0, 140, 260, 360);
++
++	public WorldMapOverlay(GameShell shell) {
++		this.shell = shell;
++		// Default favourites for convenience
++		this.favourites.add("varrock_portal_hub");
++		this.favourites.add("varrock");
++		this.favourites.add("lumbridge");
++		this.favourites.add("falador");
++		this.favourites.add("camelot");
++		this.favourites.add("east_ardougne");
++		this.loadMapImage();
++	}
++
++	public void loadMapImage() {
++		String[] candidatePaths = new String[] {
++			"worldmap_377.png",
++			"out/worldmap_377.png",
++			"../client-java/worldmap_377.png",
++			"/home/josh/dev/JoshRS/lostcity377/client-java/worldmap_377.png",
++			"/home/josh/lostcity377/client-java/worldmap_377.png"
++		};
++		for (int i = 0; i < candidatePaths.length; i++) {
++			File f = new File(candidatePaths[i]);
++			if (f.exists() && f.isFile()) {
++				try {
++					this.mapImage = ImageIO.read(f);
++					if (this.mapImage != null) {
++						System.out.println("World map loaded: " + f.getAbsolutePath() + " " + this.mapImage.getWidth() + "x" + this.mapImage.getHeight());
++						return;
++					}
++				} catch (Exception ignore) {
++				}
++			}
++		}
++	}
++
++	public void loadPreferences(Properties props) {
++		if (props == null) {
++			return;
++		}
++		try {
++			this.zoom = Double.parseDouble(props.getProperty("mapZoom", "1.0"));
++			if (this.zoom < 0.35) this.zoom = 0.35;
++			if (this.zoom > 4.0) this.zoom = 4.0;
++			this.centerX = Double.parseDouble(props.getProperty("mapCenterX", "3213.0"));
++			this.centerZ = Double.parseDouble(props.getProperty("mapCenterZ", "3424.0"));
++			this.showLabels = Boolean.parseBoolean(props.getProperty("mapShowLabels", "true"));
++			this.confirmDangerous = Boolean.parseBoolean(props.getProperty("mapConfirmDangerous", "true"));
++			this.categoryFilter = props.getProperty("mapCategoryFilter", "All");
++			this.regionFilter = props.getProperty("mapRegionFilter", "All Regions");
++			this.lastDestinationId = props.getProperty("mapLastDestination", "varrock");
++
++			String favStr = props.getProperty("mapFavourites", null);
++			if (favStr != null) {
++				this.favourites.clear();
++				String[] parts = favStr.split(",");
++				for (int i = 0; i < parts.length; i++) {
++					String id = parts[i].trim();
++					if (!id.isEmpty()) {
++						this.favourites.add(id);
++					}
++				}
++			}
++
++			String recStr = props.getProperty("mapRecent", null);
++			if (recStr != null) {
++				this.recentIds.clear();
++				String[] parts = recStr.split(",");
++				for (int i = 0; i < parts.length; i++) {
++					String id = parts[i].trim();
++					if (!id.isEmpty()) {
++						this.recentIds.add(id);
++					}
++				}
++			}
++		} catch (Exception ignore) {
++		}
++	}
++
++	public void savePreferences(Properties props) {
++		if (props == null) {
++			return;
++		}
++		props.setProperty("mapZoom", String.valueOf(this.zoom));
++		props.setProperty("mapCenterX", String.valueOf(this.centerX));
++		props.setProperty("mapCenterZ", String.valueOf(this.centerZ));
++		props.setProperty("mapShowLabels", String.valueOf(this.showLabels));
++		props.setProperty("mapConfirmDangerous", String.valueOf(this.confirmDangerous));
++		props.setProperty("mapCategoryFilter", this.categoryFilter);
++		props.setProperty("mapRegionFilter", this.regionFilter);
++		props.setProperty("mapLastDestination", this.lastDestinationId != null ? this.lastDestinationId : "varrock");
++		props.setProperty("mapFavourites", joinSet(this.favourites));
++		props.setProperty("mapRecent", joinList(this.recentIds));
++	}
++
++	private static String joinSet(Set<String> set) {
++		StringBuilder sb = new StringBuilder();
++		for (String s : set) {
++			if (sb.length() > 0) sb.append(",");
++			sb.append(s);
++		}
++		return sb.toString();
++	}
++
++	private static String joinList(List<String> list) {
++		StringBuilder sb = new StringBuilder();
++		for (int i = 0; i < list.size(); i++) {
++			if (i > 0) sb.append(",");
++			sb.append(list.get(i));
++		}
++		return sb.toString();
++	}
++
++	public static Destination getDestinationById(String id) {
++		if (id == null) return null;
++		for (int i = 0; i < DESTINATIONS.size(); i++) {
++			Destination d = DESTINATIONS.get(i);
++			if (d.id.equalsIgnoreCase(id)) {
++				return d;
++			}
++		}
++		return null;
++	}
++
++	public static int[] toOverworldMapCoord(int x, int z) {
++		if (x >= 2368 && x <= 2559 && z >= 5056 && z <= 5183) {
++			return new int[] { 2856, 3168, 1 };
++		}
++		if (x >= 2240 && x <= 2303 && z >= 4672 && z <= 4735) {
++			return new int[] { 3017, 3849, 1 };
++		}
++		if (x >= 2500 && x <= 2559 && z >= 4680 && z <= 4735) {
++			return new int[] { 3091, 3956, 1 };
++		}
++		if (z >= 9000) {
++			return new int[] { x, z - 6400, 1 };
++		}
++		return new int[] { x, z, 0 };
++	}
++
++	public List<Destination> getFilteredDestinations() {
++		List<Destination> result = new ArrayList<Destination>();
++		String q = this.searchQuery != null ? this.searchQuery.trim().toLowerCase() : "";
++
++		if ("Recent".equals(this.categoryFilter)) {
++			for (int i = 0; i < this.recentIds.size(); i++) {
++				Destination d = getDestinationById(this.recentIds.get(i));
++				if (d != null && matchesQueryAndRegion(d, q)) {
++					result.add(d);
++				}
++			}
++			return result;
++		}
++
++		for (int i = 0; i < DESTINATIONS.size(); i++) {
++			Destination d = DESTINATIONS.get(i);
++			if ("Favs".equals(this.categoryFilter)) {
++				if (!this.favourites.contains(d.id)) {
++					continue;
++				}
++			} else if (!"All".equals(this.categoryFilter)) {
++				if (!d.category.equalsIgnoreCase(this.categoryFilter)) {
++					continue;
++				}
++			}
++			if (matchesQueryAndRegion(d, q)) {
++				result.add(d);
++			}
++		}
++		return result;
++	}
++
++	private boolean matchesQueryAndRegion(Destination d, String q) {
++		if (!"All Regions".equals(this.regionFilter) && !d.region.equalsIgnoreCase(this.regionFilter)) {
++			return false;
++		}
++		if (q.isEmpty()) {
++			return true;
++		}
++		return d.name.toLowerCase().contains(q)
++			|| d.id.toLowerCase().contains(q)
++			|| d.region.toLowerCase().contains(q)
++			|| d.category.toLowerCase().contains(q)
++			|| d.description.toLowerCase().contains(q);
++	}
++
++	public void toggleVisible() {
++		this.setVisible(!this.visible);
++	}
++
++	public void setVisible(boolean open) {
++		this.visible = open;
++		this.pendingDangerousDestination = null;
++		if (open) {
++			this.centerOnPlayer();
++		}
++		if (this.shell != null) {
++			if (this.shell.frame != null) {
++				this.shell.frame.updateToolbarState();
++			}
++			this.shell.presentFrame();
++		}
++	}
++
++	public void centerOnPlayer() {
++		int[] pos = Client.getActivePlayerPosition();
++		if (pos != null && pos[0] > 0 && pos[1] > 0) {
++			int[] mapped = toOverworldMapCoord(pos[0], pos[1]);
++			this.centerX = mapped[0];
++			this.centerZ = mapped[1];
++			this.clampCenter();
++		}
++	}
++
++	public void clampCenter() {
++		if (this.centerX < MAP_MIN_TILE_X) this.centerX = MAP_MIN_TILE_X;
++		if (this.centerX > MAP_MAX_TILE_X) this.centerX = MAP_MAX_TILE_X;
++		if (this.centerZ < MAP_MIN_TILE_Z) this.centerZ = MAP_MIN_TILE_Z;
++		if (this.centerZ > MAP_MAX_TILE_Z) this.centerZ = MAP_MAX_TILE_Z;
++	}
++
++	public void adjustZoom(double factor, int pivotScreenX, int pivotScreenY) {
++		double oldZoom = this.zoom;
++		double newZoom = oldZoom * factor;
++		if (newZoom < 0.35) newZoom = 0.35;
++		if (newZoom > 4.0) newZoom = 4.0;
++		if (Math.abs(newZoom - oldZoom) < 1e-4) {
++			return;
++		}
++
++		if (this.mapCanvasRect.contains(pivotScreenX, pivotScreenY)) {
++			double tileUnderCursorX = this.screenToTileX(pivotScreenX);
++			double tileUnderCursorZ = this.screenToTileZ(pivotScreenY);
++			this.zoom = newZoom;
++			double newTileUnderCursorX = this.screenToTileX(pivotScreenX);
++			double newTileUnderCursorZ = this.screenToTileZ(pivotScreenY);
++			this.centerX += (tileUnderCursorX - newTileUnderCursorX);
++			this.centerZ += (tileUnderCursorZ - newTileUnderCursorZ);
++		} else {
++			this.zoom = newZoom;
++		}
++		this.clampCenter();
++		if (this.shell != null) {
++			this.shell.saveDisplayPreferences();
++			this.shell.presentFrame();
++		}
++	}
++
++	public double screenToTileX(int screenX) {
++		double cx = this.mapCanvasRect.x + this.mapCanvasRect.width / 2.0;
++		double pxPerTile = TILE_PX * this.zoom;
++		return this.centerX + (screenX - cx) / pxPerTile;
++	}
++
++	public double screenToTileZ(int screenY) {
++		double cy = this.mapCanvasRect.y + this.mapCanvasRect.height / 2.0;
++		double pxPerTile = TILE_PX * this.zoom;
++		return this.centerZ - (screenY - cy) / pxPerTile;
++	}
++
++	public int tileToScreenX(double tileX) {
++		double cx = this.mapCanvasRect.x + this.mapCanvasRect.width / 2.0;
++		double pxPerTile = TILE_PX * this.zoom;
++		return (int) Math.round(cx + (tileX - this.centerX) * pxPerTile);
++	}
++
++	public int tileToScreenY(double tileZ) {
++		double cy = this.mapCanvasRect.y + this.mapCanvasRect.height / 2.0;
++		double pxPerTile = TILE_PX * this.zoom;
++		return (int) Math.round(cy - (tileZ - this.centerZ) * pxPerTile);
++	}
++
++	public void toggleFavourite(String destId) {
++		if (destId == null) return;
++		if (this.favourites.contains(destId)) {
++			this.favourites.remove(destId);
++		} else {
++			this.favourites.add(destId);
++		}
++		if (this.shell != null) {
++			this.shell.saveDisplayPreferences();
++			this.shell.presentFrame();
++		}
++	}
++
++	public void requestTeleport(Destination dest, boolean forceConfirmed) {
++		if (dest == null) {
++			return;
++		}
++		if (dest.dangerous && this.confirmDangerous && !forceConfirmed) {
++			this.pendingDangerousDestination = dest;
++			if (this.shell != null) {
++				this.shell.presentFrame();
++			}
++			return;
++		}
++
++		this.pendingDangerousDestination = null;
++		this.lastDestinationId = dest.id;
++		this.recentIds.remove(dest.id);
++		this.recentIds.add(0, dest.id);
++		while (this.recentIds.size() > 10) {
++			this.recentIds.remove(this.recentIds.size() - 1);
++		}
++
++		Client.queueCheatCommand("tele_dest " + dest.id + " confirm");
++		this.visible = false;
++		if (this.shell != null) {
++			if (this.shell.frame != null) {
++				this.shell.frame.updateToolbarState();
++			}
++			this.shell.saveDisplayPreferences();
++			this.shell.presentFrame();
++		}
++	}
++
++	// ---- Input Event Handlers ----
++
++	public boolean handleMousePressed(int x, int y, int button) {
++		if (!this.visible) {
++			return false;
++		}
++
++		for (int i = this.hitTargets.size() - 1; i >= 0; i--) {
++			HitTarget t = this.hitTargets.get(i);
++			if (t.bounds.contains(x, y)) {
++				this.executeHitAction(t.action, t.value);
++				return true;
++			}
++		}
++
++		if (this.mapCanvasRect.contains(x, y)) {
++			// Check if user clicked a destination marker on the map
++			Destination clickedMarker = this.findMarkerAt(x, y);
++			if (clickedMarker != null) {
++				long now = System.currentTimeMillis();
++				boolean isDoubleClick = clickedMarker.id.equals(this.lastClickedDestId) && (now - this.lastClickTime < 420L);
++				this.selectedDestination = clickedMarker;
++				this.lastClickedDestId = clickedMarker.id;
++				this.lastClickTime = now;
++				if (isDoubleClick || button == 3) {
++					this.requestTeleport(clickedMarker, false);
++				} else if (this.shell != null) {
++					this.shell.presentFrame();
++				}
++				return true;
++			}
++
++			// Otherwise start click-and-drag pan
++			this.dragging = true;
++			this.dragMoved = false;
++			this.dragStartScreenX = x;
++			this.dragStartScreenY = y;
++			this.dragStartCenterX = this.centerX;
++			this.dragStartCenterZ = this.centerZ;
++			return true;
++		}
++
++		return true;
++	}
++
++	public boolean handleMouseDragged(int x, int y) {
++		if (!this.visible) {
++			return false;
++		}
++		if (this.dragging) {
++			int dx = x - this.dragStartScreenX;
++			int dy = y - this.dragStartScreenY;
++			if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
++				this.dragMoved = true;
++			}
++			double pxPerTile = TILE_PX * this.zoom;
++			this.centerX = this.dragStartCenterX - dx / pxPerTile;
++			this.centerZ = this.dragStartCenterZ + dy / pxPerTile;
++			this.clampCenter();
++			if (this.shell != null) {
++				this.shell.presentFrame();
++			}
++		}
++		return true;
++	}
++
++	public boolean handleMouseReleased(int x, int y) {
++		if (!this.visible) {
++			return false;
++		}
++		if (this.dragging) {
++			this.dragging = false;
++			if (this.dragMoved && this.shell != null) {
++				this.shell.saveDisplayPreferences();
++			}
++		}
++		return true;
++	}
++
++	public boolean handleMouseMoved(int x, int y) {
++		if (!this.visible) {
++			return false;
++		}
++		Destination hovered = this.mapCanvasRect.contains(x, y) ? this.findMarkerAt(x, y) : null;
++		if (hovered != this.hoveredDestination) {
++			this.hoveredDestination = hovered;
++			if (this.shell != null) {
++				this.shell.presentFrame();
++			}
++		}
++		return true;
++	}
++
++	public boolean handleMouseWheel(int notches, int x, int y) {
++		if (!this.visible) {
++			return false;
++		}
++		if (this.sidebarListRect.contains(x, y)) {
++			this.sidebarScrollOffset = Math.max(0, this.sidebarScrollOffset + notches * 2);
++			if (this.shell != null) {
++				this.shell.presentFrame();
++			}
++			return true;
++		}
++		double factor = notches < 0 ? 1.22 : (1.0 / 1.22);
++		this.adjustZoom(factor, x, y);
++		return true;
++	}
++
++	public boolean handleKeyPressed(KeyEvent e) {
++		if (!this.visible) {
++			return false;
++		}
++		int code = e.getKeyCode();
++		char ch = e.getKeyChar();
++
++		if (code == KeyEvent.VK_ESCAPE) {
++			if (this.pendingDangerousDestination != null) {
++				this.pendingDangerousDestination = null;
++			} else if (!this.searchQuery.isEmpty()) {
++				this.searchQuery = "";
++				this.sidebarScrollOffset = 0;
++			} else {
++				this.setVisible(false);
++			}
++			if (this.shell != null) {
++				this.shell.presentFrame();
++			}
++			return true;
++		}
++
++		if (code == KeyEvent.VK_ENTER) {
++			if (this.pendingDangerousDestination != null) {
++				this.requestTeleport(this.pendingDangerousDestination, true);
++			} else if (this.selectedDestination != null) {
++				this.requestTeleport(this.selectedDestination, false);
++			}
++			return true;
++		}
++
++		if (code == KeyEvent.VK_BACK_SPACE) {
++			if (!this.searchQuery.isEmpty()) {
++				this.searchQuery = this.searchQuery.substring(0, this.searchQuery.length() - 1);
++				this.sidebarScrollOffset = 0;
++				List<Destination> filtered = this.getFilteredDestinations();
++				if (!filtered.isEmpty()) {
++					this.selectedDestination = filtered.get(0);
++					this.centerX = this.selectedDestination.mapX;
++					this.centerZ = this.selectedDestination.mapZ;
++					this.clampCenter();
++				}
++				if (this.shell != null) {
++					this.shell.presentFrame();
++				}
++			}
++			return true;
++		}
++
++		// Arrow keys pan the map
++		double panStep = 24.0 / this.zoom;
++		if (code == KeyEvent.VK_LEFT) {
++			this.centerX -= panStep;
++			this.clampCenter();
++			if (this.shell != null) this.shell.presentFrame();
++			return true;
++		} else if (code == KeyEvent.VK_RIGHT) {
++			this.centerX += panStep;
++			this.clampCenter();
++			if (this.shell != null) this.shell.presentFrame();
++			return true;
++		} else if (code == KeyEvent.VK_UP) {
++			this.centerZ += panStep;
++			this.clampCenter();
++			if (this.shell != null) this.shell.presentFrame();
++			return true;
++		} else if (code == KeyEvent.VK_DOWN) {
++			this.centerZ -= panStep;
++			this.clampCenter();
++			if (this.shell != null) this.shell.presentFrame();
++			return true;
++		}
++
++		if (ch >= 32 && ch < 127 && !e.isControlDown() && !e.isAltDown()) {
++			if (this.searchQuery.length() < 28) {
++				this.searchQuery += ch;
++				this.sidebarScrollOffset = 0;
++				List<Destination> filtered = this.getFilteredDestinations();
++				if (!filtered.isEmpty()) {
++					this.selectedDestination = filtered.get(0);
++					this.centerX = this.selectedDestination.mapX;
++					this.centerZ = this.selectedDestination.mapZ;
++					this.clampCenter();
++				}
++				if (this.shell != null) {
++					this.shell.presentFrame();
++				}
++			}
++			return true;
++		}
++
++		return true;
++	}
++
++	private Destination findMarkerAt(int screenX, int screenY) {
++		List<Destination> filtered = this.getFilteredDestinations();
++		Destination best = null;
++		double bestDistSq = 13.0 * 13.0;
++		for (int i = 0; i < filtered.size(); i++) {
++			Destination d = filtered.get(i);
++			int mx = this.tileToScreenX(d.mapX);
++			int my = this.tileToScreenY(d.mapZ);
++			double dx = screenX - mx;
++			double dy = screenY - my;
++			double dSq = dx * dx + dy * dy;
++			if (dSq <= bestDistSq) {
++				bestDistSq = dSq;
++				best = d;
++			}
++		}
++		return best;
++	}
++
++	private void executeHitAction(String action, String value) {
++		if ("CLOSE_MAP".equals(action)) {
++			this.setVisible(false);
++		} else if ("CLEAR_SEARCH".equals(action)) {
++			this.searchQuery = "";
++			this.sidebarScrollOffset = 0;
++		} else if ("SET_CATEGORY".equals(action)) {
++			this.categoryFilter = value;
++			this.sidebarScrollOffset = 0;
++			if (this.shell != null) this.shell.saveDisplayPreferences();
++		} else if ("CYCLE_REGION".equals(action)) {
++			int idx = 0;
++			for (int i = 0; i < REGIONS.length; i++) {
++				if (REGIONS[i].equals(this.regionFilter)) {
++					idx = (i + 1) % REGIONS.length;
++					break;
++				}
++			}
++			this.regionFilter = REGIONS[idx];
++			this.sidebarScrollOffset = 0;
++			if (this.shell != null) this.shell.saveDisplayPreferences();
++		} else if ("SELECT_DEST".equals(action)) {
++			Destination d = getDestinationById(value);
++			if (d != null) {
++				long now = System.currentTimeMillis();
++				boolean isDouble = d.id.equals(this.lastClickedDestId) && (now - this.lastClickTime < 420L);
++				this.selectedDestination = d;
++				this.centerX = d.mapX;
++				this.centerZ = d.mapZ;
++				this.clampCenter();
++				this.lastClickedDestId = d.id;
++				this.lastClickTime = now;
++				if (isDouble) {
++					this.requestTeleport(d, false);
++					return;
++				}
++			}
++		} else if ("TOGGLE_FAV".equals(action)) {
++			this.toggleFavourite(value);
++			return;
++		} else if ("TELEPORT_NOW".equals(action)) {
++			Destination d = getDestinationById(value);
++			if (d != null) {
++				this.requestTeleport(d, false);
++				return;
++			}
++		} else if ("CONFIRM_DANGEROUS".equals(action)) {
++			if (this.pendingDangerousDestination != null) {
++				this.requestTeleport(this.pendingDangerousDestination, true);
++				return;
++			}
++		} else if ("CANCEL_DANGEROUS".equals(action)) {
++			this.pendingDangerousDestination = null;
++		} else if ("QUICK_HUB".equals(action)) {
++			Destination hub = getDestinationById("varrock_portal_hub");
++			this.requestTeleport(hub, true);
++			return;
++		} else if ("QUICK_VARROCK".equals(action)) {
++			Destination varrock = getDestinationById("varrock");
++			this.requestTeleport(varrock, true);
++			return;
++		} else if ("QUICK_LAST".equals(action)) {
++			Destination last = getDestinationById(this.lastDestinationId);
++			if (last != null) {
++				this.requestTeleport(last, false);
++				return;
++			}
++		} else if ("QUICK_BACK".equals(action)) {
++			Client.queueCheatCommand("back");
++			this.setVisible(false);
++			return;
++		} else if ("CENTER_PLAYER".equals(action)) {
++			this.centerOnPlayer();
++		} else if ("ZOOM_IN".equals(action)) {
++			this.adjustZoom(1.3, this.mapCanvasRect.x + this.mapCanvasRect.width / 2, this.mapCanvasRect.y + this.mapCanvasRect.height / 2);
++			return;
++		} else if ("ZOOM_OUT".equals(action)) {
++			this.adjustZoom(1.0 / 1.3, this.mapCanvasRect.x + this.mapCanvasRect.width / 2, this.mapCanvasRect.y + this.mapCanvasRect.height / 2);
++			return;
++		} else if ("ZOOM_RESET".equals(action)) {
++			this.zoom = 1.0;
++			if (this.shell != null) this.shell.saveDisplayPreferences();
++		} else if ("TOGGLE_LABELS".equals(action)) {
++			this.showLabels = !this.showLabels;
++			if (this.shell != null) this.shell.saveDisplayPreferences();
++		} else if ("TOGGLE_CONFIRM".equals(action)) {
++			this.confirmDangerous = !this.confirmDangerous;
++			if (this.shell != null) this.shell.saveDisplayPreferences();
++		} else if ("SCROLL_UP".equals(action)) {
++			this.sidebarScrollOffset = Math.max(0, this.sidebarScrollOffset - 4);
++		} else if ("SCROLL_DOWN".equals(action)) {
++			this.sidebarScrollOffset += 4;
++		}
++
++		if (this.shell != null) {
++			this.shell.presentFrame();
++		}
++	}
++
++	// ---- Rendering ----
++
++	public void render(Graphics2D g, int width, int height) {
++		this.hitTargets.clear();
++		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
++		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
++
++		int headerH = 42;
++		int sidebarW = Math.max(225, Math.min(310, width * 30 / 100));
++		this.mapCanvasRect = new Rectangle(sidebarW, headerH, Math.max(100, width - sidebarW), Math.max(100, height - headerH));
++
++		// 1. Header Bar (OSRS/RS2 Stone & Gold Trim)
++		g.setPaint(new GradientPaint(0, 0, new Color(46, 39, 29), 0, headerH, new Color(28, 23, 17)));
++		g.fillRect(0, 0, width, headerH);
++		g.setColor(new Color(118, 98, 64));
++		g.drawLine(0, headerH - 1, width, headerH - 1);
++
++		boolean compactHeader = width <= 840;
++		g.setFont(new Font("SansSerif", Font.BOLD, compactHeader ? 13 : 14));
++		g.setColor(new Color(255, 215, 110));
++		g.drawString(compactHeader ? "GIELINOR MAP & TELEPORTS" : "GIELINOR WORLD MAP & FAST TRAVEL", 10, 26);
++
++		// Header Quick Controls
++		int bx = sidebarW + 6;
++		int maxHeaderX = width - 76;
++		bx = this.drawHeaderButton(g, bx, 8, maxHeaderX, compactHeader ? "Hub" : "Portal Hub", "QUICK_HUB", new Color(42, 92, 85));
++		bx = this.drawHeaderButton(g, bx, 8, maxHeaderX, "Varrock", "QUICK_VARROCK", new Color(55, 48, 36));
++		bx = this.drawHeaderButton(g, bx, 8, maxHeaderX, compactHeader ? "Last" : "Last Dest", "QUICK_LAST", new Color(55, 48, 36));
++		bx = this.drawHeaderButton(g, bx, 8, maxHeaderX, compactHeader ? "Back" : "Return Prev", "QUICK_BACK", new Color(55, 48, 36));
++		bx = this.drawHeaderButton(g, bx, 8, maxHeaderX, compactHeader ? "Center" : "Center Me", "CENTER_PLAYER", new Color(44, 68, 95));
++		bx = this.drawHeaderButton(g, bx, 8, maxHeaderX, "Labels: " + (this.showLabels ? "ON" : "OFF"), "TOGGLE_LABELS", new Color(55, 48, 36));
++		bx = this.drawHeaderButton(g, bx, 8, maxHeaderX, (compactHeader ? "Risks: " : "Risk Warn: ") + (this.confirmDangerous ? "ON" : "OFF"), "TOGGLE_CONFIRM", new Color(55, 48, 36));
++
++		// Close button at top-right
++		int closeW = 68;
++		int closeX = width - closeW - 8;
++		this.drawButtonBox(g, closeX, 7, closeW, 27, "Close (M)", new Color(135, 34, 28), new Color(255, 230, 190));
++		this.hitTargets.add(new HitTarget("CLOSE_MAP", "", closeX, 7, closeW, 27));
++
++		// 2. Left Sidebar (Search, Region selector, Category tabs, Destination list)
++		this.renderSidebar(g, 0, headerH, sidebarW, height - headerH);
++
++		// 3. Map Viewport
++		this.renderMapViewport(g, this.mapCanvasRect);
++
++		// 4. Dangerous Teleport Confirmation Modal (if active)
++		if (this.pendingDangerousDestination != null) {
++			this.renderDangerousModal(g, width, height, this.pendingDangerousDestination);
++		}
++	}
++
++	private int drawHeaderButton(Graphics2D g, int x, int y, int maxX, String label, String action, Color bg) {
++		g.setFont(new Font("SansSerif", Font.BOLD, 11));
++		FontMetrics fm = g.getFontMetrics();
++		int w = fm.stringWidth(label) + 14;
++		int h = 26;
++		if (x + w < maxX) {
++			this.drawButtonBox(g, x, y, w, h, label, bg, new Color(240, 224, 185));
++			this.hitTargets.add(new HitTarget(action, "", x, y, w, h));
++		}
++		return x + w + 5;
++	}
++
++	private void drawButtonBox(Graphics2D g, int x, int y, int w, int h, String label, Color bg, Color fg) {
++		g.setColor(bg);
++		g.fillRoundRect(x, y, w, h, 6, 6);
++		g.setColor(new Color(130, 110, 74));
++		g.drawRoundRect(x, y, w, h, 6, 6);
++		g.setFont(new Font("SansSerif", Font.BOLD, 11));
++		FontMetrics fm = g.getFontMetrics();
++		g.setColor(fg);
++		g.drawString(label, x + (w - fm.stringWidth(label)) / 2, y + (h + fm.getAscent() - fm.getDescent()) / 2);
++	}
++
++	private void renderSidebar(Graphics2D g, int x, int y, int w, int h) {
++		g.setColor(new Color(30, 25, 19));
++		g.fillRect(x, y, w, h);
++		g.setColor(new Color(102, 85, 56));
++		g.drawLine(x + w - 1, y, x + w - 1, y + h);
++
++		int pad = 8;
++		int curY = y + pad;
++
++		// Search Box
++		int searchH = 28;
++		g.setColor(new Color(18, 15, 11));
++		g.fillRoundRect(x + pad, curY, w - pad * 2, searchH, 6, 6);
++		g.setColor(new Color(150, 125, 78));
++		g.drawRoundRect(x + pad, curY, w - pad * 2, searchH, 6, 6);
++
++		g.setFont(new Font("SansSerif", Font.PLAIN, 12));
++		if (this.searchQuery.isEmpty()) {
++			g.setColor(new Color(145, 132, 108));
++			g.drawString("Search towns, guilds, bosses... (type)", x + pad + 8, curY + 19);
++		} else {
++			g.setColor(new Color(255, 235, 175));
++			g.drawString(this.searchQuery + "|", x + pad + 8, curY + 19);
++			int clearX = x + w - pad - 22;
++			g.setColor(new Color(190, 90, 80));
++			g.drawString("X", clearX + 5, curY + 19);
++			this.hitTargets.add(new HitTarget("CLEAR_SEARCH", "", clearX, curY, 22, searchH));
++		}
++		curY += searchH + 6;
++
++		// Region Filter Selector
++		int regH = 24;
++		this.drawButtonBox(g, x + pad, curY, w - pad * 2, regH, "Region: " + this.regionFilter + " (click)", new Color(46, 39, 29), new Color(225, 208, 165));
++		this.hitTargets.add(new HitTarget("CYCLE_REGION", "", x + pad, curY, w - pad * 2, regH));
++		curY += regH + 6;
++
++		// Category Tabs (2 rows of 4)
++		int cols = 4;
++		int tabW = (w - pad * 2 - (cols - 1) * 4) / cols;
++		int tabH = 22;
++		for (int i = 0; i < CATEGORIES.length; i++) {
++			String cat = CATEGORIES[i];
++			int row = i / cols;
++			int col = i % cols;
++			int tx = x + pad + col * (tabW + 4);
++			int ty = curY + row * (tabH + 4);
++			boolean active = cat.equalsIgnoreCase(this.categoryFilter);
++			this.drawButtonBox(
++				g,
++				tx,
++				ty,
++				tabW,
++				tabH,
++				cat,
++				active ? new Color(128, 42, 28) : new Color(44, 37, 28),
++				active ? new Color(255, 235, 175) : new Color(205, 190, 155)
++			);
++			this.hitTargets.add(new HitTarget("SET_CATEGORY", cat, tx, ty, tabW, tabH));
++		}
++		curY += (tabH + 4) * 2 + 4;
++
++		// Destination List Header
++		List<Destination> filtered = this.getFilteredDestinations();
++		g.setFont(new Font("SansSerif", Font.BOLD, 11));
++		g.setColor(new Color(185, 168, 130));
++		g.drawString("Destinations (" + filtered.size() + ")", x + pad, curY + 12);
++
++		// Up / Down scroll buttons
++		int sbW = 24;
++		this.drawButtonBox(g, x + w - pad - sbW * 2 - 4, curY - 2, sbW, 18, "^", new Color(45, 38, 29), new Color(230, 210, 165));
++		this.hitTargets.add(new HitTarget("SCROLL_UP", "", x + w - pad - sbW * 2 - 4, curY - 2, sbW, 18));
++		this.drawButtonBox(g, x + w - pad - sbW, curY - 2, sbW, 18, "v", new Color(45, 38, 29), new Color(230, 210, 165));
++		this.hitTargets.add(new HitTarget("SCROLL_DOWN", "", x + w - pad - sbW, curY - 2, sbW, 18));
++		curY += 20;
++
++		int listH = y + h - curY - 6;
++		this.sidebarListRect = new Rectangle(x + pad, curY, w - pad * 2, listH);
++		int rowH = 30;
++		int maxVisibleRows = Math.max(1, listH / rowH);
++		if (this.sidebarScrollOffset > Math.max(0, filtered.size() - maxVisibleRows)) {
++			this.sidebarScrollOffset = Math.max(0, filtered.size() - maxVisibleRows);
++		}
++
++		for (int i = 0; i < maxVisibleRows && (i + this.sidebarScrollOffset) < filtered.size(); i++) {
++			Destination d = filtered.get(i + this.sidebarScrollOffset);
++			int ry = curY + i * rowH;
++			boolean isSel = this.selectedDestination != null && this.selectedDestination.id.equals(d.id);
++
++			g.setColor(isSel ? new Color(76, 58, 34) : (i % 2 == 0 ? new Color(36, 30, 23) : new Color(31, 26, 20)));
++			g.fillRoundRect(x + pad, ry, w - pad * 2, rowH - 2, 5, 5);
++			if (isSel) {
++				g.setColor(new Color(215, 175, 85));
++				g.drawRoundRect(x + pad, ry, w - pad * 2, rowH - 2, 5, 5);
++			}
++
++			// Favourite star toggle
++			boolean isFav = this.favourites.contains(d.id);
++			g.setFont(new Font("SansSerif", Font.BOLD, 13));
++			g.setColor(isFav ? new Color(255, 210, 60) : new Color(105, 95, 75));
++			g.drawString(isFav ? "★" : "☆", x + pad + 6, ry + 19);
++			this.hitTargets.add(new HitTarget("TOGGLE_FAV", d.id, x + pad + 2, ry, 22, rowH - 2));
++
++			// Destination Name + Region
++			g.setFont(new Font("SansSerif", Font.BOLD, 12));
++			g.setColor(d.dangerous ? new Color(255, 130, 110) : new Color(242, 228, 190));
++			g.drawString(d.name, x + pad + 24, ry + 14);
++
++			g.setFont(new Font("SansSerif", Font.PLAIN, 10));
++			g.setColor(new Color(165, 150, 120));
++			g.drawString(d.region + " • " + d.category + (d.dangerous ? " • RISK" : ""), x + pad + 24, ry + 25);
++
++			// Quick Go button on row
++			int goW = 34;
++			int goX = x + w - pad - goW - 4;
++			this.drawButtonBox(g, goX, ry + 4, goW, rowH - 10, "Go", new Color(38, 92, 52), new Color(235, 255, 225));
++			this.hitTargets.add(new HitTarget("TELEPORT_NOW", d.id, goX, ry + 4, goW, rowH - 10));
++
++			this.hitTargets.add(new HitTarget("SELECT_DEST", d.id, x + pad + 24, ry, w - pad * 2 - 24 - goW - 6, rowH - 2));
++		}
++	}
++
++	private void renderMapViewport(Graphics2D g, Rectangle rect) {
++		Shape oldClip = g.getClip();
++		g.setClip(rect.x, rect.y, rect.width, rect.height);
++
++		// Ocean backdrop
++		g.setColor(new Color(0x1d, 0x31, 0x4d));
++		g.fillRect(rect.x, rect.y, rect.width, rect.height);
++
++		// Draw #377 World Map Image
++		if (this.mapImage != null) {
++			int x0 = this.tileToScreenX(MAP_MIN_TILE_X);
++			int y0 = this.tileToScreenY(MAP_MAX_TILE_Z + 1);
++			int drawW = (int) Math.round(TILES_W * TILE_PX * this.zoom);
++			int drawH = (int) Math.round(TILES_H * TILE_PX * this.zoom);
++			g.setRenderingHint(
++				RenderingHints.KEY_INTERPOLATION,
++				this.zoom < 1.0 ? RenderingHints.VALUE_INTERPOLATION_BILINEAR : RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
++			);
++			g.drawImage(this.mapImage, x0, y0, drawW, drawH, null);
++		}
++
++		// Draw Authentic #377 Map Labels
++		if (this.showLabels) {
++			for (int i = 0; i < LABELS.size(); i++) {
++				MapLabel lbl = LABELS.get(i);
++				if (lbl.tier == 0 && this.zoom < 0.85) {
++					continue;
++				}
++				int lx = this.tileToScreenX(lbl.tileX);
++				int ly = this.tileToScreenY(lbl.tileZ);
++				if (lx < rect.x - 80 || lx > rect.x + rect.width + 80 || ly < rect.y - 40 || ly > rect.y + rect.height + 40) {
++					continue;
++				}
++
++				Font font = lbl.tier == 2
++					? new Font("Serif", Font.BOLD, 14)
++					: (lbl.tier == 1 ? new Font("SansSerif", Font.BOLD, 11) : new Font("SansSerif", Font.PLAIN, 10));
++				Color color = lbl.tier == 2
++					? new Color(255, 220, 115)
++					: (lbl.tier == 1 ? new Color(255, 255, 240) : new Color(220, 215, 195));
++
++				g.setFont(font);
++				FontMetrics fm = g.getFontMetrics();
++				String[] lines = lbl.text.split("/");
++				for (int lineIdx = 0; lineIdx < lines.length; lineIdx++) {
++					String line = lines[lineIdx];
++					int tw = fm.stringWidth(line);
++					int tx = lx - tw / 2;
++					int ty = ly + (lineIdx * 11) - ((lines.length - 1) * 5);
++					g.setColor(Color.BLACK);
++					g.drawString(line, tx + 1, ty + 1);
++					g.drawString(line, tx - 1, ty - 1);
++					g.setColor(color);
++					g.drawString(line, tx, ty);
++				}
++			}
++		}
++
++		// Draw Teleport Destination Markers
++		List<Destination> visibleDests = this.getFilteredDestinations();
++		for (int i = 0; i < visibleDests.size(); i++) {
++			Destination d = visibleDests.get(i);
++			int mx = this.tileToScreenX(d.mapX);
++			int my = this.tileToScreenY(d.mapZ);
++			if (mx < rect.x - 20 || mx > rect.x + rect.width + 20 || my < rect.y - 20 || my > rect.y + rect.height + 20) {
++				continue;
++			}
++
++			boolean isSel = this.selectedDestination != null && this.selectedDestination.id.equals(d.id);
++			boolean isHov = this.hoveredDestination != null && this.hoveredDestination.id.equals(d.id);
++			boolean isFav = this.favourites.contains(d.id);
++
++			int radius = isSel || isHov ? 8 : 6;
++			Color fill = d.dangerous
++				? new Color(220, 55, 45)
++				: ("Cities".equals(d.category) ? new Color(45, 175, 235)
++					: ("Guilds".equals(d.category) ? new Color(180, 110, 245) : new Color(65, 205, 105)));
++
++			if (isSel) {
++				g.setColor(new Color(255, 230, 90, 110));
++				g.fillOval(mx - radius - 5, my - radius - 5, (radius + 5) * 2, (radius + 5) * 2);
++			}
++
++			g.setColor(Color.BLACK);
++			g.fillOval(mx - radius - 1, my - radius - 1, (radius + 1) * 2, (radius + 1) * 2);
++			g.setColor(fill);
++			g.fillOval(mx - radius, my - radius, radius * 2, radius * 2);
++			g.setColor(isSel || isFav ? new Color(255, 225, 80) : Color.WHITE);
++			g.drawOval(mx - radius, my - radius, radius * 2, radius * 2);
++
++			// Inner nexus dot
++			g.fillOval(mx - 2, my - 2, 4, 4);
++		}
++
++		// Draw Live Player Marker
++		int[] playerPos = Client.getActivePlayerPosition();
++		if (playerPos != null && playerPos[0] > 0 && playerPos[1] > 0) {
++			int[] mapped = toOverworldMapCoord(playerPos[0], playerPos[1]);
++			int px = this.tileToScreenX(mapped[0]);
++			int py = this.tileToScreenY(mapped[1]);
++			int pulse = (int) ((System.currentTimeMillis() / 120L) % 6L);
++
++			g.setColor(new Color(0, 255, 140, 120));
++			g.fillOval(px - 8 - pulse, py - 8 - pulse, (8 + pulse) * 2, (8 + pulse) * 2);
++			g.setColor(Color.BLACK);
++			g.fillOval(px - 6, py - 6, 12, 12);
++			g.setColor(new Color(40, 255, 120));
++			g.fillOval(px - 5, py - 5, 10, 10);
++			g.setColor(Color.WHITE);
++			g.drawOval(px - 5, py - 5, 10, 10);
++
++			g.setFont(new Font("SansSerif", Font.BOLD, 11));
++			String youLabel = "YOU (" + playerPos[0] + ", " + playerPos[1] + (mapped[2] == 1 ? " Cave" : "") + ")";
++			g.setColor(Color.BLACK);
++			g.drawString(youLabel, px + 9, py + 5);
++			g.setColor(new Color(120, 255, 165));
++			g.drawString(youLabel, px + 8, py + 4);
++		}
++
++		// Zoom Overlay Controls (top-right of map viewport)
++		int zx = rect.x + rect.width - 138;
++		int zy = rect.y + 10;
++		this.drawButtonBox(g, zx, zy, 36, 26, "+", new Color(38, 32, 24), new Color(245, 225, 175));
++		this.hitTargets.add(new HitTarget("ZOOM_IN", "", zx, zy, 36, 26));
++		this.drawButtonBox(g, zx + 40, zy, 36, 26, "-", new Color(38, 32, 24), new Color(245, 225, 175));
++		this.hitTargets.add(new HitTarget("ZOOM_OUT", "", zx + 40, zy, 36, 26));
++		String zoomPct = (int) Math.round(this.zoom * 100) + "%";
++		this.drawButtonBox(g, zx + 80, zy, 48, 26, zoomPct, new Color(38, 32, 24), new Color(245, 225, 175));
++		this.hitTargets.add(new HitTarget("ZOOM_RESET", "", zx + 80, zy, 48, 26));
++
++		// Selected Destination Details Card (bottom-right of map viewport)
++		Destination cardDest = this.hoveredDestination != null ? this.hoveredDestination : this.selectedDestination;
++		if (cardDest != null) {
++			this.renderDestinationCard(g, rect, cardDest);
++		}
++
++		g.setClip(oldClip);
++	}
++
++	private void renderDestinationCard(Graphics2D g, Rectangle mapRect, Destination d) {
++		int cardW = Math.min(370, mapRect.width - 20);
++		int cardH = d.dangerous ? 118 : 98;
++		int cx = mapRect.x + mapRect.width - cardW - 12;
++		int cy = mapRect.y + mapRect.height - cardH - 12;
++
++		g.setColor(new Color(24, 20, 15, 238));
++		g.fillRoundRect(cx, cy, cardW, cardH, 10, 10);
++		g.setColor(d.dangerous ? new Color(205, 70, 55) : new Color(155, 130, 80));
++		g.drawRoundRect(cx, cy, cardW, cardH, 10, 10);
++
++		g.setFont(new Font("SansSerif", Font.BOLD, 14));
++		g.setColor(new Color(255, 220, 120));
++		g.drawString(d.name, cx + 12, cy + 22);
++
++		g.setFont(new Font("SansSerif", Font.PLAIN, 11));
++		g.setColor(new Color(185, 172, 140));
++		g.drawString(d.region + " • " + d.category + " • Tile (" + d.x + ", " + d.z + ", " + d.level + ")", cx + 12, cy + 38);
++
++		g.setColor(new Color(228, 218, 195));
++		String desc = d.description;
++		if (desc.length() > 56) {
++			desc = desc.substring(0, 54) + "...";
++		}
++		g.drawString(desc, cx + 12, cy + 55);
++
++		if (d.dangerous && d.riskWarning != null) {
++			g.setFont(new Font("SansSerif", Font.BOLD, 10));
++			g.setColor(new Color(255, 120, 105));
++			String warn = "⚠ " + d.riskWarning;
++			if (warn.length() > 60) {
++				warn = warn.substring(0, 58) + "...";
++			}
++			g.drawString(warn, cx + 12, cy + 72);
++		}
++
++		int btnY = cy + cardH - 32;
++		boolean isFav = this.favourites.contains(d.id);
++		this.drawButtonBox(
++			g,
++			cx + 12,
++			btnY,
++			96,
++			24,
++			isFav ? "★ Favourite" : "☆ Favourite",
++			new Color(52, 44, 32),
++			new Color(255, 215, 90)
++		);
++		this.hitTargets.add(new HitTarget("TOGGLE_FAV", d.id, cx + 12, btnY, 96, 24));
++
++		int teleW = cardW - 128;
++		this.drawButtonBox(
++			g,
++			cx + 116,
++			btnY,
++			teleW,
++			24,
++			"Teleport to " + d.name,
++			d.dangerous ? new Color(155, 42, 32) : new Color(38, 108, 56),
++			new Color(255, 245, 215)
++		);
++		this.hitTargets.add(new HitTarget("TELEPORT_NOW", d.id, cx + 116, btnY, teleW, 24));
++	}
++
++	private void renderDangerousModal(Graphics2D g, int width, int height, Destination d) {
++		g.setColor(new Color(0, 0, 0, 175));
++		g.fillRect(0, 0, width, height);
++
++		int mw = 420;
++		int mh = 175;
++		int mx = (width - mw) / 2;
++		int my = (height - mh) / 2;
++
++		g.setColor(new Color(34, 24, 20));
++		g.fillRoundRect(mx, my, mw, mh, 12, 12);
++		g.setColor(new Color(215, 75, 60));
++		g.drawRoundRect(mx, my, mw, mh, 12, 12);
++
++		g.setFont(new Font("SansSerif", Font.BOLD, 15));
++		g.setColor(new Color(255, 135, 115));
++		g.drawString("⚠ Confirm Dangerous Teleport: " + d.name, mx + 16, my + 28);
++
++		g.setFont(new Font("SansSerif", Font.PLAIN, 12));
++		g.setColor(new Color(240, 225, 200));
++		String risk = d.riskWarning != null ? d.riskWarning : "This destination contains dangerous monsters or PvP hazards.";
++		int split = Math.min(risk.length(), 58);
++		g.drawString(risk.substring(0, split), mx + 16, my + 58);
++		if (risk.length() > split) {
++			g.drawString(risk.substring(split).trim(), mx + 16, my + 76);
++		}
++		g.setColor(new Color(195, 180, 150));
++		g.drawString("Coordinates: (" + d.x + ", " + d.z + ", plane " + d.level + ") • Region: " + d.region, mx + 16, my + 102);
++
++		this.drawButtonBox(g, mx + 16, my + 125, 210, 32, "Proceed & Teleport (Enter)", new Color(165, 42, 32), new Color(255, 240, 215));
++		this.hitTargets.add(new HitTarget("CONFIRM_DANGEROUS", d.id, mx + 16, my + 125, 210, 32));
++
++		this.drawButtonBox(g, mx + 240, my + 125, 160, 32, "Cancel (Esc)", new Color(55, 48, 38), new Color(230, 215, 185));
++		this.hitTargets.add(new HitTarget("CANCEL_DANGEROUS", "", mx + 240, my + 125, 160, 32));
++	}
++}
+diff --git a/src/main/java/jagex2/client/WorldMapOverlayTest.java b/src/main/java/jagex2/client/WorldMapOverlayTest.java
+new file mode 100644
+index 0000000..d425c79
+--- /dev/null
++++ b/src/main/java/jagex2/client/WorldMapOverlayTest.java
+@@ -0,0 +1,132 @@
++package jagex2.client;
++
++import java.awt.Graphics2D;
++import java.awt.image.BufferedImage;
++import java.io.File;
++import java.util.List;
++import java.util.Properties;
++import javax.imageio.ImageIO;
++
++/**
++ * Automated verification suite for the client-side interactive WorldMapOverlay.
++ */
++public class WorldMapOverlayTest {
++
++	private static void assertTrue(boolean cond, String msg) {
++		if (!cond) {
++			throw new AssertionError("Assertion failed: " + msg);
++		}
++	}
++
++	private static void assertEquals(Object expected, Object actual, String msg) {
++		if (expected == null ? actual != null : !expected.equals(actual)) {
++			throw new AssertionError(msg + " - expected: " + expected + ", actual: " + actual);
++		}
++	}
++
++	public static void main(String[] args) throws Exception {
++		System.out.println("=== Running WorldMapOverlay Client Verification Suite ===");
++		WorldMapOverlay map = new WorldMapOverlay(null);
++
++		// 1. Verify worldmap_377.png loaded
++		assertTrue(map.mapImage != null, "worldmap_377.png must load");
++		assertEquals(Integer.valueOf(3328), Integer.valueOf(map.mapImage.getWidth()), "Map width");
++		assertEquals(Integer.valueOf(2560), Integer.valueOf(map.mapImage.getHeight()), "Map height");
++		System.out.println("  [PASS] Loaded worldmap_377.png (3328x2560)");
++
++		// 2. Verify destinations & labels
++		assertTrue(WorldMapOverlay.DESTINATIONS.size() >= 35, "Expected >= 35 destinations");
++		assertTrue(WorldMapOverlay.LABELS.size() >= 90, "Expected >= 90 map labels");
++		assertTrue(WorldMapOverlay.getDestinationById("varrock") != null, "Varrock present");
++		assertTrue(WorldMapOverlay.getDestinationById("varrock_portal_hub") != null, "Portal Hub present");
++		assertTrue(WorldMapOverlay.getDestinationById("yanille") != null, "Yanille present");
++		System.out.println("  [PASS] Verified " + WorldMapOverlay.DESTINATIONS.size() + " destinations and " + WorldMapOverlay.LABELS.size() + " map labels");
++
++		// 3. Verify zoom and pan math
++		BufferedImage canvas = new BufferedImage(1148, 755, BufferedImage.TYPE_INT_RGB);
++		Graphics2D g = canvas.createGraphics();
++		map.visible = true;
++		map.centerX = 3213.0;
++		map.centerZ = 3424.0;
++		map.zoom = 1.0;
++		map.render(g, 1148, 755);
++
++		int sx = map.tileToScreenX(3213);
++		int sy = map.tileToScreenY(3424);
++		double roundTripX = map.screenToTileX(sx);
++		double roundTripZ = map.screenToTileZ(sy);
++		assertTrue(Math.abs(roundTripX - 3213.0) < 1.0, "Round-trip tile X");
++		assertTrue(Math.abs(roundTripZ - 3424.0) < 1.0, "Round-trip tile Z");
++
++		map.adjustZoom(1.5, sx, sy);
++		assertTrue(Math.abs(map.zoom - 1.5) < 0.01, "Zoom in updated zoom factor");
++		map.handleMousePressed(sx + 50, sy + 50, 1);
++		map.handleMouseDragged(sx + 10, sy + 20);
++		map.handleMouseReleased(sx + 10, sy + 20);
++		assertTrue(map.centerX > 3213.0, "Dragging left pans centerX east");
++		System.out.println("  [PASS] Verified smooth zoom and click-and-drag pan coordinate math");
++
++		// 4. Verify search, category, and region filtering
++		map.searchQuery = "Varrock";
++		map.categoryFilter = "All";
++		map.regionFilter = "All Regions";
++		List<WorldMapOverlay.Destination> varrockMatches = map.getFilteredDestinations();
++		assertTrue(varrockMatches.size() >= 3, "Search 'Varrock' should match Varrock Square, Portal Hub, Varrock Sewers");
++
++		map.searchQuery = "";
++		map.categoryFilter = "Guilds";
++		List<WorldMapOverlay.Destination> guildMatches = map.getFilteredDestinations();
++		assertTrue(guildMatches.size() >= 5, "Category 'Guilds' should have >= 5 guilds");
++
++		map.categoryFilter = "Cities";
++		map.regionFilter = "Kandarin";
++		List<WorldMapOverlay.Destination> kandarinCities = map.getFilteredDestinations();
++		assertTrue(kandarinCities.size() >= 5, "Kandarin Cities should include Camelot, Seers, Catherby, Ardougne, Yanille");
++		map.categoryFilter = "All";
++		map.regionFilter = "All Regions";
++		System.out.println("  [PASS] Verified search, category, and region filtering");
++
++		// 5. Verify dangerous teleport confirmation & command queueing
++		Client.pendingCheatCommands.clear();
++		map.confirmDangerous = true;
++		WorldMapOverlay.Destination sewers = WorldMapOverlay.getDestinationById("varrock_sewers");
++		map.requestTeleport(sewers, false);
++		assertEquals(sewers, map.pendingDangerousDestination, "Dangerous destination must open confirmation modal first");
++		assertTrue(Client.pendingCheatCommands.isEmpty(), "Must not queue command before confirmation");
++
++		map.requestTeleport(sewers, true);
++		assertEquals(null, map.pendingDangerousDestination, "Confirmation clears pending modal");
++		assertEquals("tele_dest varrock_sewers confirm", Client.pendingCheatCommands.poll(), "Queued server teleport command");
++		System.out.println("  [PASS] Verified dangerous teleport confirmation modal & command queueing");
++
++		// 6. Verify preferences persistence (savePreferences -> loadPreferences)
++		map.toggleFavourite("yanille");
++		assertTrue(map.favourites.contains("yanille"), "Added Yanille to favourites");
++		Properties savedProps = new Properties();
++		map.savePreferences(savedProps);
++
++		WorldMapOverlay restored = new WorldMapOverlay(null);
++		restored.loadPreferences(savedProps);
++		assertEquals(Double.valueOf(map.zoom), Double.valueOf(restored.zoom), "Restored zoom");
++		assertTrue(restored.favourites.contains("yanille"), "Restored favourite 'yanille'");
++		assertTrue(restored.recentIds.contains("varrock_sewers"), "Restored recent destination 'varrock_sewers'");
++		System.out.println("  [PASS] Verified map preferences persistence (zoom, center, favourites, recents)");
++
++		// 7. Render preview image of the interactive World Map UI
++		map.visible = true;
++		map.centerX = 3150.0;
++		map.centerZ = 3380.0;
++		map.zoom = 1.15;
++		map.selectedDestination = WorldMapOverlay.getDestinationById("varrock_portal_hub");
++		map.render(g, 1148, 755);
++		g.dispose();
++
++		File previewOut = new File("/home/josh/.gemini/antigravity-cli/brain/daef29d7-525d-4b33-8178-d25d318bf5f2/worldmap_ui_preview.png");
++		if (previewOut.getParentFile() != null && previewOut.getParentFile().exists()) {
++			ImageIO.write(canvas, "png", previewOut);
++			System.out.println("  [PASS] Rendered World Map UI screenshot to " + previewOut.getAbsolutePath());
++		}
++
++		System.out.println("\nALL WORLD MAP OVERLAY CLIENT TESTS PASSED!");
++	}
++}
+diff --git a/src/main/java/jagex2/config/LocType.java b/src/main/java/jagex2/config/LocType.java
+index bce29cb..a386176 100644
+--- a/src/main/java/jagex2/config/LocType.java
++++ b/src/main/java/jagex2/config/LocType.java
+@@ -165,6 +165,23 @@ public class LocType {
+ 		var2.field1627 = arg0;
+ 		var2.method567();
+ 		var2.method568(field1621);
++		if (arg0 == 7272) {
++			var2.field1630 = "Lumbridge Portal";
++		} else if (arg0 == 7273) {
++			var2.field1630 = "Falador Portal";
++		} else if (arg0 == 7288) {
++			var2.field1630 = "Camelot & Seers Portal";
++		} else if (arg0 == 7289) {
++			var2.field1630 = "East Ardougne Portal";
++		} else if (arg0 == 7315) {
++			var2.field1630 = "Al Kharid Portal";
++		} else if (arg0 == 7316) {
++			var2.field1630 = "Guilds & Training Portal";
++		} else if (arg0 == 7318) {
++			var2.field1630 = "Dungeons & Minigames Portal";
++		} else if (arg0 == 7319) {
++			var2.field1630 = "Varrock Hub Return Portal";
++		}
+ 		return var2;
+ 	}
+ 
+diff --git a/src/main/java/jagex2/config/NpcType.java b/src/main/java/jagex2/config/NpcType.java
+index 2c89b5f..7fdef82 100644
+--- a/src/main/java/jagex2/config/NpcType.java
++++ b/src/main/java/jagex2/config/NpcType.java
+@@ -384,6 +384,9 @@ public class NpcType {
+ 		field1460.pos = field1453[arg0];
+ 		var2.field1431 = arg0;
+ 		var2.method470(field1460);
++		if (arg0 == 2244) {
++			var2.field1455 = "Gielinor Teleport Guide";
++		}
+ 		return var2;
+ 	}
+ }
+diff --git a/src/main/java/jagex2/dash3d/ClientPlayer.java b/src/main/java/jagex2/dash3d/ClientPlayer.java
+index 347ecb5..74af10d 100644
+--- a/src/main/java/jagex2/dash3d/ClientPlayer.java
++++ b/src/main/java/jagex2/dash3d/ClientPlayer.java
+@@ -175,32 +175,9 @@ public class ClientPlayer extends ClientEntity {
+ 			var6 = SeqType.field775[super.field1135].field777[super.field1136];
+ 		}
+ 		Model var11 = (Model) field1683.get(var4);
+-		if (var11 == null) {
+-			boolean var12 = false;
+-			for (int var13 = 0; var13 < 12; var13++) {
+-				int var14 = this.field1674[var13];
+-				if (var9 >= 0 && var13 == 3) {
+-					var14 = var9;
+-				}
+-				if (var8 >= 0 && var13 == 5) {
+-					var14 = var8;
+-				}
+-				if (var14 >= 256 && var14 < 512 && !IdkType.field1699[var14 - 256].method577()) {
+-					var12 = true;
+-				}
+-				if (var14 >= 512 && !ObjType.get(var14 - 512).method225(this.field1677)) {
+-					var12 = true;
+-				}
+-			}
+-			if (var12) {
+-				if (this.field1671 != -1L) {
+-					var11 = (Model) field1683.get(this.field1671);
+-				}
+-				if (var11 == null) {
+-					return null;
+-				}
+-			}
+-		}
++		// Do not discard the complete player because one worn item's model is
++		// unavailable. The component loop below skips only missing pieces and
++		// still renders the available body/equipment models.
+ 		if (var11 == null) {
+ 			Model[] var15 = new Model[12];
+ 			int var16 = 0;
+diff --git a/src/main/java/jagex2/graphics/PixMap.java b/src/main/java/jagex2/graphics/PixMap.java
+index 07db194..01e0d3a 100644
+--- a/src/main/java/jagex2/graphics/PixMap.java
++++ b/src/main/java/jagex2/graphics/PixMap.java
+@@ -1,6 +1,7 @@
+ package jagex2.graphics;
+ 
+ import deob.ObfuscatedName;
++import jagex2.client.GameShell;
+ import java.awt.Component;
+ import java.awt.Graphics;
+ import java.awt.Image;
+@@ -58,7 +59,11 @@ public class PixMap implements ImageProducer, ImageObserver {
+ 	@ObfuscatedName("ISZGOOMR.a(IILjava/awt/Graphics;Z)V")
+ 	public void draw(int y, int x, Graphics g) {
+ 		this.setPixels();
+-		g.drawImage(this.image, x, y, this);
++		if (GameShell.activeShell != null) {
++			GameShell.activeShell.blitPixMap(x, y, this.width, this.height, this.data);
++		} else if (g != null) {
++			g.drawImage(this.image, x, y, this);
++		}
+ 	}
+ 
+ 	public synchronized void addConsumer(ImageConsumer c) {
