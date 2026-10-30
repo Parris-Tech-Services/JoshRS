@@ -5,6 +5,7 @@ on:
       - "content-factory/native377.py"
       - "content-factory/smoke_377.py"
       - "content-factory/gap_audit.py"
+      - "content-factory/patch_377_haunted.py"
       - "content-factory/factory.py"
       - "content-factory/prepare_377_overlay.py"
       - "deploy/jparris-windows/install-native377.ps1"
@@ -80,6 +81,11 @@ jobs:
         run: |
           python content-factory/gap_audit.py --content "$RUNNER_TEMP/joshrs-377-build/content" --manifest "$RUNNER_TEMP/native377/manifest.json" --output "$RUNNER_TEMP/377-feature-gap-evidence.json"
           python -m json.tool "$RUNNER_TEMP/377-feature-gap-evidence.json" >/dev/null
+      - name: Repair pinned Haunted Manor broken cross-zone bookcase lookup (disposable)
+        shell: bash
+        run: |
+          python content-factory/patch_377_haunted.py --content "$RUNNER_TEMP/joshrs-377-build/content"
+          python content-factory/patch_377_haunted.py --content "$RUNNER_TEMP/joshrs-377-build/content" --apply
       - name: Apply text-only overlay to disposable upstream content
         shell: bash
         run: |
