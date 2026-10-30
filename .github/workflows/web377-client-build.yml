@@ -33,6 +33,9 @@ jobs:
       - name: Compile TypeScript browser client (no game server/account data)
         working-directory: runtime/web377-build-test
         run: ./node_modules/.bin/tsc --noEmit
+      - name: Build only legacy Parcel's deasync native binding in disposable runner
+        working-directory: runtime/web377-build-test
+        run: npm rebuild deasync --no-audit --no-fund
       - name: Bundle React and 377 renderer without publishing proprietary assets
         working-directory: runtime/web377-build-test
         env:
