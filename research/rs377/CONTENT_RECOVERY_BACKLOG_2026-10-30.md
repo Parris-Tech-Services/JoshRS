@@ -1,4 +1,7 @@
 # JoshRS revision 377 — historical content recovery backlog
+
+> **31 October 2026 task register:** [#29 — reproduce/repair real 377 interaction defects](https://github.com/Parris-Tech-Services/JoshRS/issues/29) tracks the P0 world-interaction checks below. [#28 — cross-project source vs playable quest completeness](https://github.com/Parris-Tech-Services/JoshRS/issues/28) tracks historical catalogues, six 377 configuration-only quest roots, and independently confirmed working content. [#30 — safe desktop playtests and Elrothiro persistence](https://github.com/Parris-Tech-Services/JoshRS/issues/30) tracks real-client acceptance. **All remain open; a listed item is not a proven missing mechanic.**
+
 **Prepared:** 30 October 2026 · **Audience:** Agy / JoshRS maintainers · **Status:** researched backlog, not implemented in running world.
 
 ## Critical scope and accuracy
