@@ -17,11 +17,17 @@ foreach($spec in $specs){
  if($spec.Experimental -and -not $IncludeExperimental){continue}
  $dest=Join-Path $repo $spec.Path
  if(Test-Path -LiteralPath $dest){
-   if(-not (Test-Path -LiteralPath (Join-Path $dest '.git'))){throw "Destination exists without a Git checkout: $dest. Refusing overwrite."}
-   $head=(& $exe.Source -C $dest rev-parse HEAD).Trim()
-   if($head -ne $spec.Commit){Write-Warning "Existing checkout differs for $($spec.Path): $head (expected $($spec.Commit)). No changes made."}
-   else{Write-Host "Already pinned: $($spec.Path)"}
-   continue
+   if(-not (Test-Path -LiteralPath $dest -PathType Container)){throw "Destination is a file: $dest"}
+   if(Test-Path -LiteralPath (Join-Path $dest '.git')){
+     $head=(& $exe.Source -C $dest rev-parse HEAD).Trim()
+     if($head -ne $spec.Commit){Write-Warning "Existing checkout differs for $($spec.Path): $head (expected $($spec.Commit)). No changes made."}
+     else{Write-Host "Already pinned: $($spec.Path)"}
+     continue
+   }
+   $children=@(Get-ChildItem -LiteralPath $dest -Force)
+   if($children.Count -gt 0){throw "Destination exists with files but no Git checkout: $dest. Refusing overwrite."}
+   # GitHub source ZIPs may contain empty placeholder directories for submodules.
+   Remove-Item -LiteralPath $dest -Force
  }
  New-Item -ItemType Directory -Path (Split-Path -Parent $dest) -Force | Out-Null
  & $exe.Source clone --quiet --no-checkout $spec.Url $dest
