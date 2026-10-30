@@ -94,3 +94,22 @@ jobs:
           test -s data/pack/server/script.dat
           test -s data/pack/server/script.idx
           echo "Native 377 RuneScript compiler/packer produced nonempty script files."
+      - name: Prepare disposable game database and boot compiled world
+        shell: bash
+        env:
+          DB_BACKEND: sqlite
+          EASY_STARTUP: "true"
+          LOGIN_SERVER: "true"
+          FRIEND_SERVER: "true"
+          LOGGER_SERVER: "true"
+          NODE_PROFILE: joshrs_ci_377
+          NODE_PORT: "15402"
+          WEB_PORT: "18880"
+          WEB_MANAGEMENT_PORT: "18881"
+          BUILD_SRC_DIR: ../content
+        run: |
+          cd "$RUNNER_TEMP/joshrs-377-build/engine"
+          npm run sqlite:migrate
+          cd "$GITHUB_WORKSPACE"
+          python content-factory/smoke_377.py --engine "$RUNNER_TEMP/joshrs-377-build/engine" --game-port 15402 --web-port 18880 --timeout 80
+
