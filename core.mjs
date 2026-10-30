@@ -209,7 +209,7 @@ export function isValidSavedState(raw){
   if(s.run!==undefined&&typeof s.run!=="boolean")return false;
   if(s.questClaimed!==undefined&&typeof s.questClaimed!=="boolean")return false;
   if(s.fires!==undefined&&(!Array.isArray(s.fires)||s.fires.length>60||
-      !s.fires.every(f=>f&&Number.isInteger(f.x)&&Number.isInteger(f.y)&&walkable(f.x,f.y))))return false;
+      !s.fires.every(f=>f&&Number.isInteger(f.x)&&Number.isInteger(f.y)&&terrain(f.x,f.y)!=="void")))return false;
   if(s.defeated!==undefined&&(!Array.isArray(s.defeated)||s.defeated.length>2||
       !s.defeated.every(id=>id==="moss1"||id==="moss2")||
       new Set(s.defeated).size!==s.defeated.length))return false;
