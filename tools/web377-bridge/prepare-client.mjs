@@ -46,7 +46,7 @@ fs.writeFileSync(page,saferPage)
 // These are static typing aids, not cache files or publication permissions.
 fs.writeFileSync(path.join(output,'joshrs-asset-types.d.ts'),[
  "declare module '*.dat' { const files: Record<string,string>; export default files }",
- "declare module '*.idx*' { const files: Record<string,string[]>; export default files }",
+ "declare module '*' { const files: { main_file_cache: string[] }; export default files }",
  "declare module '*.png' { const url: string; export default url }",
  ''
 ].join('\n'))
