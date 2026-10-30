@@ -58,7 +58,7 @@ class Native377Tests(unittest.TestCase):
                              {'joshrs_timber_buyer','joshrs_ore_buyer','joshrs_trail_provisioner','joshrs_law_rune_vendor','joshrs_nature_rune_vendor','joshrs_crafting_supplier','joshrs_tool_supplier'})
             self.assertEqual(len(manifest['npc_names']),8)
             script=(target/'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2').read_text()
-            for item,needed,output,count in [('logs',3,'coins',12),('copper_ore',2,'coins',8),('coins',4,'cooked_meat',1),('coins',35,'law_rune',1),('coins',20,'nature_rune',1),('coins',25,'amulet_mould',1),('coins',5,'chisel',1)]:
+            for item,needed,output,count in [('logs',3,'coins',12),('copper_ore',2,'coins',8),('coins',4,'cooked_meat',1),('coins',35,'lawrune',1),('coins',20,'naturerune',1),('coins',25,'amulet_mould',1),('coins',5,'chisel',1)]:
                 self.assertIn(f'if (inv_total(inv, {item}) < {needed})',script)
                 self.assertIn(f'inv_del(inv, {item}, {needed});',script)
                 self.assertIn(f'inv_add(inv, {output}, {count});',script)
