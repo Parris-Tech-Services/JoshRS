@@ -1,0 +1,21 @@
+name: JoshRS 377 map bridge validation
+on:
+  push:
+    paths:
+      - 'tools/rs377-map-bridge/**'
+      - '.github/workflows/rs377-map-bridge.yml'
+  pull_request:
+    paths:
+      - 'tools/rs377-map-bridge/**'
+      - '.github/workflows/rs377-map-bridge.yml'
+  workflow_dispatch:
+jobs:
+  offline-conversion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run synthetic map import regression test
+        run: node --test tools/rs377-map-bridge/test/audit-and-stage.test.mjs
