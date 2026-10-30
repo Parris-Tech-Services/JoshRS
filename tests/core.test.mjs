@@ -149,3 +149,32 @@ test("selling and supply orders never silently exceed the stored coin cap",()=>{
  assert.equal(s.ordersFulfilled,0);
  assert.equal(s.coins,MAX_COINS);
 });
+
+test("portable save import refuses silent quantity clamping or corrupted state",()=>{
+ const saved=makeState();
+ const good=JSON.stringify(saved);
+ assert.equal(isValidSavedState(good),true);
+ const invalid=[
+  {...saved,bag:{...saved.bag,logs:10000}},
+  {...saved,bank:{...saved.bank,ore:1000000}},
+  {...saved,coins:10000000},
+  {...saved,coins:-1},
+  {...saved,xp:{...saved.xp,woodcutting:100000000}},
+  {...saved,progress:{...saved.progress,fires:1.5}},
+  {...saved,ordersFulfilled:100000},
+  {...saved,hp:25},
+  {...saved,bag:{...saved.bag,logs:"42"}},
+  {...saved,fires:[{x:-1,y:2}]},
+  {...saved,defeated:["moss1","moss1"]},
+  {...saved,bank:[]},
+  {...saved,run:"true"}
+ ];
+ for(const [i,item] of invalid.entries())
+  assert.equal(isValidSavedState(JSON.stringify(item)),false,"bad save case "+i);
+ // Existing migration behaviour for older Woodlands exports remains valid.
+ const legacy={...saved};
+ delete legacy.bank;delete legacy.ordersFulfilled;
+ assert.equal(isValidSavedState(JSON.stringify(legacy)),true);
+ assert.equal(loadState(JSON.stringify(legacy)).bank.logs,0);
+ assert.equal(loadState(good).coins,saved.coins);
+});

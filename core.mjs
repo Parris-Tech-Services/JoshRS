@@ -189,9 +189,30 @@ export function isValidSavedState(raw){
  try {
   if(typeof raw!=="string"||raw.length>1048576)return false;
   const s=JSON.parse(raw);
-  return !!s&&typeof s==="object"&&!Array.isArray(s)&&s.version===1&&
-   Number.isInteger(s.x)&&Number.isInteger(s.y)&&walkable(s.x,s.y)&&
-   s.bag&&typeof s.bag==="object"&&s.xp&&typeof s.xp==="object"&&
-   s.progress&&typeof s.progress==="object";
+  if(!s||typeof s!=="object"||Array.isArray(s)||s.version!==1||
+     !Number.isInteger(s.x)||!Number.isInteger(s.y)||!walkable(s.x,s.y))return false;
+  // Imported JSON must not contain values that loadState would silently
+  // truncate. Optional legacy fields are accepted, and missing values use
+  // the existing migration defaults; explicit invalid values fail closed.
+  const validCount=(n,max)=>Number.isSafeInteger(n)&&n>=0&&n<=max;
+  const validRecord=(record,keys,max)=>record!==null&&typeof record==="object"&&!Array.isArray(record)&&
+    keys.every(key=>record[key]===undefined||validCount(record[key],max));
+  const progressKeys=Object.keys(makeState().progress);
+  if(!validRecord(s.bag,GOODS,MAX_BAG_STACK)||
+     !validRecord(s.xp,SKILLS,99999999)||
+     !validRecord(s.progress,progressKeys,99999))return false;
+  if(s.bank!==undefined&&!validRecord(s.bank,GOODS,MAX_BANK_STACK))return false;
+  if(s.coins!==undefined&&!validCount(s.coins,MAX_COINS))return false;
+  if(s.ordersFulfilled!==undefined&&!validCount(s.ordersFulfilled,99999))return false;
+  if(s.hp!==undefined&&(!Number.isSafeInteger(s.hp)||s.hp<1||s.hp>20))return false;
+  if(s.maxHp!==undefined&&s.maxHp!==20)return false;
+  if(s.run!==undefined&&typeof s.run!=="boolean")return false;
+  if(s.questClaimed!==undefined&&typeof s.questClaimed!=="boolean")return false;
+  if(s.fires!==undefined&&(!Array.isArray(s.fires)||s.fires.length>60||
+      !s.fires.every(f=>f&&Number.isInteger(f.x)&&Number.isInteger(f.y)&&terrain(f.x,f.y)!=="void")))return false;
+  if(s.defeated!==undefined&&(!Array.isArray(s.defeated)||s.defeated.length>2||
+      !s.defeated.every(id=>id==="moss1"||id==="moss2")||
+      new Set(s.defeated).size!==s.defeated.length))return false;
+  return true;
  }catch{return false}
 }
