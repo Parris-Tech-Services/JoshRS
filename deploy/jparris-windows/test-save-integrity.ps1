@@ -17,7 +17,7 @@ try {
     'app' | Set-Content (Join-Path $engine 'src\app.ts')
     'world' | Set-Content (Join-Path $engine 'src\engine\World.ts')
     'gradle' | Set-Content (Join-Path $client 'gradlew.bat')
-    'ACCOUNT-PROGRESS-TEST-SAVE-WITH-DATA' | Set-Content (Join-Path $engine 'data\players\main\elrothiro.sav')
+    [IO.File]::WriteAllBytes((Join-Path $engine 'data\players\main\elrothiro.sav'),[Convert]::FromBase64String('IAQABwyQDR4AAAAAAAAAAAAAAAAAAAAAAABDDQAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALaEoco='))
     'MOCK-DB-DO-NOT-TREAT-AS-SQLITE' | Set-Content (Join-Path $engine 'db.sqlite')
     'mock-wal' | Set-Content (Join-Path $engine 'db.sqlite-wal')
     @{engine=$engine;content=$content;client=$client;gamePort=54373;webPort=54374;source='test'} |
