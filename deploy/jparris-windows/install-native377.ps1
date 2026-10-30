@@ -30,10 +30,18 @@ if(@($npcNames | Select-Object -Unique).Count -ne $npcNames.Count) { throw 'Dupl
 foreach($npc in $npcNames) {
     if ($npc -cnotmatch '^joshrs_[a-z0-9_]{1,60}$') { throw 'Invalid original NPC name.' }
 }
+$approvedRetired=@('joshrs_timber_buyer','joshrs_ore_buyer','joshrs_trail_provisioner','joshrs_law_rune_vendor','joshrs_nature_rune_vendor','joshrs_crafting_supplier','joshrs_tool_supplier')
+$retiredNames=@($manifest.retired_unrequested_merchant_keys | ForEach-Object { [string]$_ })
+if(@($retiredNames | Select-Object -Unique).Count -ne $retiredNames.Count) { throw 'Duplicate retired NPC keys.' }
+foreach($retired in $retiredNames) {
+    if($approvedRetired -cnotcontains $retired -or $npcNames -ccontains $retired) {
+        throw 'Unapproved retired NPC key. No changes made.'
+    }
+}
 $planned=@()
 $previousHashes=@{}
-$previousHashes.Add('scripts/areas/joshrs_custom/configs/joshrs_original.npc', @('959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556','9de0448895e455ff076f8a50ed019e4a0ef07527e197889fad6a37a9e7f50a20'))
-$previousHashes.Add('scripts/areas/joshrs_custom/scripts/joshrs_original.rs2', @('3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3','7b2f053b9098572c5b3c6492a4cfafcc96f03ffe1b2895c9a41095e920431415'))
+$previousHashes.Add('scripts/areas/joshrs_custom/configs/joshrs_original.npc', @('959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556','9de0448895e455ff076f8a50ed019e4a0ef07527e197889fad6a37a9e7f50a20','1f60323e7478da0f0ff8845b19f850647c9818f301ad4a51eb78fef3dfdfd3bf'))
+$previousHashes.Add('scripts/areas/joshrs_custom/scripts/joshrs_original.rs2', @('3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3','7b2f053b9098572c5b3c6492a4cfafcc96f03ffe1b2895c9a41095e920431415','59c332a8d528b7dbdacbe468f45df3bc4cbb618396967d22dbddc1c9eda8cdfc'))
 foreach ($entry in @($manifest.files)) {
     $rel=[string]$entry.path
     if ($rel -cnotmatch '^scripts/areas/joshrs_custom/(configs|scripts)/joshrs_[a-z0-9_]+\.(rs2|npc)$') {
@@ -74,6 +82,7 @@ foreach($row in ($originalPack -split '\r?\n')) {
     if($id -gt $maxId) { $maxId=$id }
     # Existing IDs and all existing NPC names are preserved.
 }
+$retirePresent=@($retiredNames | Where-Object { $seenNames.ContainsKey($_) })
 $missingNpcs=@($npcNames | Where-Object { -not $seenNames.ContainsKey($_) } | Sort-Object)
 if(($maxId + $missingNpcs.Count) -ge 65535) { throw 'Insufficient spare NPC IDs.' }
 $originalSource=[IO.File]::ReadAllText($shared)
@@ -99,6 +108,7 @@ if($originalEnv -notmatch '(?m)^[ \t]*JOSHRS_CUSTOM_NPCS[ \t]*=') {
 Write-Host "Private game content: $contentDir"
 Write-Host "Approved original NPCs: $($npcNames -join ', ')"
 Write-Host "New NPC IDs allocated: $($missingNpcs.Count)"
+Write-Host "Retiring unrequested JoshRS vendor IDs: $($retirePresent.Count)"
 if(-not $Apply) { Write-Host 'CHECK ONLY; no changes made. Run JoshRS-Install-377-Content.cmd to install.'; exit 0 }
 if(-not (Get-Command npm.cmd -ErrorAction SilentlyContinue)) { throw 'npm.cmd is missing. Run JoshRS.cmd setup first.' }
 $backup=Join-Path $runtime ('native377-backups/install-'+(Get-Date -Format 'yyyyMMdd-HHmmss-fffffff'))
@@ -126,12 +136,24 @@ try {
         }
         if($needsCopy) { Copy-Item -LiteralPath $file.Source -Destination $file.Destination -Force }
     }
-    if($missingNpcs.Count -gt 0) {
+    if($missingNpcs.Count -gt 0 -or $retirePresent.Count -gt 0) {
         $nl=[Environment]::NewLine
-        $sep=if($originalPack.EndsWith([string][char]10)){''}else{$nl}
-        $rows=@()
-        foreach($npc in $missingNpcs) { $maxId++; $rows+=([string]$maxId+'='+$npc) }
-        [IO.File]::AppendAllText($packFile,$sep+($rows -join $nl)+$nl)
+        $existingRows=@($originalPack -split '\r?\n')
+        $keptRows=@()
+        foreach($entry in $existingRows) {
+            if($entry -match '^([0-9]+)=([^=]+)$') {
+                if($retirePresent -ccontains [string]$Matches[2]) { continue }
+            }
+            $keptRows+=([string]$entry)
+        }
+        while($keptRows.Count -gt 0 -and -not $keptRows[-1]) {
+            $keptRows=@($keptRows | Select-Object -SkipLast 1)
+        }
+        foreach($npc in $missingNpcs) {
+            $maxId++
+            $keptRows+=([string]$maxId+'='+$npc)
+        }
+        [IO.File]::WriteAllText($packFile,($keptRows -join $nl)+$nl)
     }
     if($newSource -ne $originalSource) { [IO.File]::WriteAllText($shared,$newSource) }
     if($newEnv -ne $originalEnv) { [IO.File]::WriteAllText($envFile,$newEnv) }
@@ -150,7 +172,7 @@ try {
         }
     }
     Write-Host "377 content compiled. Safe local backup: $backup"
-    Write-Host 'Restart JoshRS; test all four NPCs using their named administrative spawn commands.'
+    Write-Host 'Unrequested merchant NPCs retired; after restart, verify the original game shops and guide.'
 } catch {
     $reason=$_.Exception.Message
     foreach($item in $items) {
