@@ -18,4 +18,4 @@ jobs:
         with:
           node-version: '24'
       - name: Run synthetic map import regression test
-        run: node --test tools/rs377-map-bridge/test/audit-and-stage.test.mjs
+        run: node --test tools/rs377-map-bridge/test/*.test.mjs
