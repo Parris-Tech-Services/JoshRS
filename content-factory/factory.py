@@ -16,7 +16,7 @@ import urllib.parse
 import urllib.request
 
 ROOT = Path(__file__).resolve().parent
-MAX_BATCH = 40
+MAX_BATCH = 100
 MAX_RECORDED = 3000
 EXTENSIONS = {'.rs2', '.ts', '.tsx', '.kt', '.java', '.py', '.json', '.yml', '.yaml', '.toml', '.npc', '.obj', '.loc', '.seq', '.pack'}
 EXCLUDE = {'node_modules', 'vendor', 'dist', 'build', '.git', '.github', 'assets', 'sprites', 'textures', 'models', 'maps', 'cache', 'audio', 'music', 'songs', 'sound', 'images', 'media', 'fonts', 'generated', 'nonfree', 'third_party'}
@@ -58,12 +58,13 @@ def category(path: str, source: dict) -> str:
     return 'agent_review_required'
 
 
-def candidate(repo: str, tree_sha: str, entry: dict, source: dict) -> dict:
+def candidate(repo: str, tree_sha: str, entry: dict, source: dict, commit_sha: str | None = None) -> dict:
     path = entry['path']
     key = hashlib.sha256(f"{repo}:{tree_sha}:{path}:{entry['sha']}".encode()).hexdigest()[:20]
     return {'id': key, 'source': source['key'], 'repo': repo,
             'path': path, 'blob_sha': entry['sha'], 'source_tree_sha': tree_sha,
-            'url': f"https://github.com/{repo}/blob/{tree_sha}/{urllib.parse.quote(path, safe='/')}",
+            'url': f"https://github.com/{repo}/blob/{commit_sha or source.get('ref', tree_sha)}/{urllib.parse.quote(path, safe='/')}",
+            'source_commit_sha': commit_sha,
             'status': category(path, source), 'target': 'JoshRS 377-wip',
             'native_runtime_verified': False, 'rights_cleared_for_redistribution': False}
 
@@ -126,7 +127,10 @@ def scan(registry: list, dest: Path, batch_size: int, discover: bool) -> dict:
     for source in registry:
         repo, ref = source['repo'], source['ref']
         try:
-            tree = gh('repos/' + repo + '/git/trees/' + urllib.parse.quote(ref, safe='') + '?recursive=1')
+            revision = gh('repos/' + repo + '/commits/' + urllib.parse.quote(ref, safe=''))
+            if not revision.get('sha'):
+                raise ValueError('source revision could not be resolved')
+            tree = gh('repos/' + repo + '/git/trees/' + revision['sha'] + '?recursive=1')
             if tree.get('truncated'):
                 raise ValueError('GitHub tree truncated; cannot guarantee systematic inventory')
             if not isinstance(tree.get('tree'), list) or not tree.get('sha'):
@@ -137,14 +141,14 @@ def scan(registry: list, dest: Path, batch_size: int, discover: bool) -> dict:
             existing = read_json(dest / 'packs' / (source['key'] + '.json'), {'candidates': []})
             records = {r['id']: r for r in existing.get('candidates', [])} if old.get('tree_sha') == tree['sha'] else {}
             for entry in batch:
-                r = candidate(repo, tree['sha'], entry, source)
+                r = candidate(repo, tree['sha'], entry, source, revision['sha'])
                 records[r['id']] = r
             records = dict(sorted(records.items(), key=lambda kv: (kv[1]['path'], kv[0])))
             if len(records) > MAX_RECORDED:
                 # Rolling bounded staging: advance the cursor even for huge repositories.
                 # Older entries can be rediscovered on the next completed inventory pass.
                 records = dict(list(records.items())[-MAX_RECORDED:])
-            packs[source['key']] = {'source': source, 'tree_sha': tree['sha'], 'candidate_total': len(records),
+            packs[source['key']] = {'source': source, 'tree_sha': tree['sha'], 'commit_sha': revision['sha'], 'candidate_total': len(records),
                                     'cursor': next_cursor, 'candidates': list(records.values())}
             state[source['key']] = {'cursor': next_cursor, 'tree_sha': tree['sha'], 'complete_pass': next_cursor == 0}
             checked += 1
