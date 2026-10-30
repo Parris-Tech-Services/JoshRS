@@ -5,12 +5,14 @@ on:
     paths:
       - 'jparris-setup.cmd'
       - 'jparris-play.cmd'
+      - 'JoshRS.cmd'
       - 'deploy/jparris-windows/**'
       - '.github/workflows/jparris-windows.yml'
   pull_request:
     paths:
       - 'jparris-setup.cmd'
       - 'jparris-play.cmd'
+      - 'JoshRS.cmd'
       - 'deploy/jparris-windows/**'
       - '.github/workflows/jparris-windows.yml'
   workflow_dispatch:
@@ -27,7 +29,9 @@ jobs:
       - name: Validate all Windows scripts, source lock and entrypoints
         shell: pwsh
         run: |
-          $paths = @('deploy/jparris-windows/setup.ps1','deploy/jparris-windows/play.ps1')
+          $paths = @('deploy/jparris-windows/setup.ps1','deploy/jparris-windows/play.ps1',
+            'deploy/jparris-windows/support.ps1','deploy/jparris-windows/control-center.ps1',
+            'deploy/jparris-windows/test-support.ps1')
           foreach ($path in $paths) {
             $tokens = $null
             $errors = $null
@@ -43,7 +47,14 @@ jobs:
           if (($m.webPort - 80) -ne $m.clientPortOffset) { throw 'Web port and Java port offset disagree' }
           if (-not (Test-Path 'jparris-setup.cmd')) { throw 'Setup entrypoint missing' }
           if (-not (Test-Path 'jparris-play.cmd')) { throw 'Play entrypoint missing' }
+          if (-not (Test-Path 'JoshRS.cmd')) { throw 'Native dashboard entrypoint missing' }
           & '.\deploy\jparris-windows\setup.ps1' -CheckOnly
+      - name: Verify Windows status, backup and diagnostic logic
+        shell: powershell
+        run: .\deploy\jparris-windows\test-support.ps1
+      - name: Construct native control center without opening a window
+        shell: powershell
+        run: .\deploy\jparris-windows\control-center.ps1 -ValidateUi
 
   windows-engine-client-build:
     needs: windows-static
