@@ -54,10 +54,10 @@ class FactoryTests(unittest.TestCase):
 
     def test_full_scan_resume_and_persist(self):
         s = {'key':'seed','repo':'owner/repo','ref':'377','era':'377','policy':'review_only','license':'MIT'}
-        fake = {'sha':'a'*40,'tree':[{'type':'blob','path':f'scripts/{i:02d}.rs2','sha':str(i)} for i in range(5)]}
+        fake_tree = {'sha':'a'*40,'tree':[{'type':'blob','path':f'scripts/{i:02d}.rs2','sha':str(i)} for i in range(5)]}
         with tempfile.TemporaryDirectory() as tmp:
             dest = Path(tmp)
-            with patch.object(factory, 'gh', return_value=fake):
+            with patch.object(factory, 'gh', side_effect=lambda p: {'sha':'c'*40} if '/commits/' in p else fake_tree):
                 first = factory.scan([s], dest, 2, False)
                 self.assertEqual(first['checked'], 1)
                 second = factory.scan([s], dest, 2, False)
