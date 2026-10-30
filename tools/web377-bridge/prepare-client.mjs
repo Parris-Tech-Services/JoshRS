@@ -34,10 +34,18 @@ const before=fs.readFileSync(dst,'utf8')
 const fixed=before.replace('this.client.send(bytes.slice);','this.client.send(bytes.slice());')
 if(fixed===before)throw Error('No patch applied')
 fs.writeFileSync(dst,fixed)
+const page=path.join(output,'page/App.tsx')
+if(!fs.existsSync(page))throw Error('Pinned React entrypoint is missing')
+const originalPage=fs.readFileSync(page,'utf8')
+if(!originalPage.includes('discord -> user')||!originalPage.includes('Use any username/password to log in'))throw Error('Pinned React source changed; refusing to silently patch')
+const saferPage=originalPage
+ .replace('discord -> user','discord -&gt; user')
+ .replace('Use any username/password to log in','Local development preview only. Never enter your real game credentials.')
+fs.writeFileSync(page,saferPage)
 const report={
  kind:'web377-local-sandbox',status:'SOURCE_PATCH_ONLY',playable:false,
  originalSource:source,workingCopy:output,
- fixes:['Repair WebSocket Socket.write$byte_A: send byte slice data, not function'],
+ fixes:['Repair WebSocket Socket.write$byte_A: send byte slice data, not function','Fix React JSX syntax in the developer contact text','Remove unsafe prototype advice to enter any real account credentials'],
  blockers:['Game TCP relay alone does not prove Apollo/Lost City login protocol compatibility','RSA public modulus must match target engine','Cache/update ports and formats unverified','Actual browser render and multiplayer login unverified'],
  privacy:'Private source sandbox; never commit Jagex client_cache or account data to public JoshRS.'
 }
