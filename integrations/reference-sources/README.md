@@ -23,6 +23,8 @@ Agy working in `/home/josh/dev/JoshRS/` can run `git submodule update --init --r
 
 **Recommended first:** `runelite` (cache APIs), `rs-map-viewer` (map visualisation), `jar-re` (Java inspection). Experimental client forks do not speak to JoshRS 377 simply because their revision numbers are similar. Web-client uses Apollo / WebSockets versus JoshRS Lost City TCP and requires a protocol/authentication review.
 
+**Security warning:** The uploaded web-client 377 ZIP contains a bundled `test-rsa.pem` RSA private key, apparently a public upstream test fixture. Do **not** treat it as a secure key or use it for JoshRS production authentication. Browser porting must replace test credentials, prove the protocol is compatible, and keep all actual server keys private.
+
 **Copyright policy:** The browser client includes a Jagex game cache; refactored clients and native Steam notes lack clear redistribution permissions. Their **references are linked, not vendored**; do not copy their source or assets into the JoshRS public tree without a rights review. RuneScape icons in `runescape-worldmap` are acknowledged by its author as Jagex-owned. Map modifications (`edgeville_modified_trees.zip`) are staged via `tools/rs377-map-bridge/` and are **not directly installed or copied to GitHub**.
 
 ## Exact uploaded ZIP evidence
