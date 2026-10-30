@@ -13,6 +13,17 @@ foreach ($path in @($s.engine,$s.content,$s.client)) {
         throw "A required game directory is missing: $path. Restore your USB backup or rerun setup."
     }
 }
+if ($Role -ne 'Both') {
+    try {
+        . (Join-Path $PSScriptRoot 'support.ps1')
+        $logFile=New-JoshRSLaunchLog -RepoRoot $repo -Role $Role.ToLowerInvariant()
+        Start-Transcript -LiteralPath $logFile -ErrorAction Stop | Out-Null
+        Write-Host "JoshRS $Role startup log: $logFile"
+    } catch {
+        # A log failure must not prevent the game from starting.
+        Write-Warning "Unable to open a private startup log: $($_.Exception.Message)"
+    }
+}
 function Port-Open([int]$number) {
     $socket = New-Object System.Net.Sockets.TcpClient
     try {
