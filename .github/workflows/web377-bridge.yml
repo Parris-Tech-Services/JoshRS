@@ -1,0 +1,25 @@
+name: JoshRS experimental browser 377 transport
+on:
+  push:
+    paths:
+      - 'tools/web377-bridge/**'
+      - '.github/workflows/web377-bridge.yml'
+  pull_request:
+    paths:
+      - 'tools/web377-bridge/**'
+      - '.github/workflows/web377-bridge.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  binary-transport:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install isolated websocket dependency
+        run: npm install --prefix tools/web377-bridge --ignore-scripts --no-audit --no-fund
+      - name: Verify websocket-to-TCP binary forwarding and loopback restrictions
+        run: npm test --prefix tools/web377-bridge
