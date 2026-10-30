@@ -33,5 +33,12 @@ jobs:
       - name: Compile TypeScript browser client (no game server/account data)
         working-directory: runtime/web377-build-test
         run: ./node_modules/.bin/tsc --noEmit
+      - name: Bundle React and 377 renderer without publishing proprietary assets
+        working-directory: runtime/web377-build-test
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
+        run: |
+          npm run build
+          test -f dist/index.html
       - name: Preserve no proprietary caches or compiled client artifacts
         run: echo 'Build checks only. No deployment, cache upload or public artifacts.'
