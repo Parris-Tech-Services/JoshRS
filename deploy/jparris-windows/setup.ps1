@@ -41,8 +41,8 @@ function Check-Requirements {
         # Reload PATH after native installers complete.
         $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' +
             [Environment]::GetEnvironmentVariable('Path','User')
-        if (-not (Get-Command 'git.exe','node.exe','npm.cmd','java.exe','javac.exe' -ErrorAction SilentlyContinue |
-             Measure-Object).Count -eq 5) {
+        $availableCount = @(Get-Command 'git.exe','node.exe','npm.cmd','java.exe','javac.exe' -ErrorAction SilentlyContinue).Count
+        if ($availableCount -ne 5) {
             throw 'Tool installation finished. Close this terminal, open a new one and run setup again.'
         }
     }
@@ -54,7 +54,11 @@ function Check-Requirements {
 }
 function Get-PinnedRepo($spec, [string]$directory) {
     if (Test-Path -LiteralPath (Join-Path $directory '.git')) {
-        Write-Host "Reusing existing checkout: $directory"
+        $head = (& git.exe -C $directory rev-parse HEAD).Trim()
+        if ($head -ne [string]$spec.commit) {
+            throw "Existing upstream checkout has changed: $directory. Refusing to overwrite your files; inspect this checkout before reusing."
+        }
+        Write-Host "Reusing pinned checkout: $directory"
         return
     }
     if (Test-Path -LiteralPath $directory) {
@@ -178,12 +182,22 @@ if ($offset -lt 0 -or $webPort -ne ($offset + 80)) {
 if ((EnvironmentValue $envFile 'DB_BACKEND' 'sqlite') -ne 'sqlite') {
     throw 'The copied server uses a non-SQLite database. No automatic migration will be attempted. Review its database setup first.'
 }
-$save = Join-Path $engine 'data\players\main\elrothiro.sav'
-if (Test-Path -LiteralPath $save) {
+# Back up all character saves and the SQLite account database before migrations.
+$playerFolder = Join-Path $engine 'data\players'
+$dbFile = Join-Path $engine 'db.sqlite'
+if ((Test-Path -LiteralPath $playerFolder) -or (Test-Path -LiteralPath $dbFile)) {
     $backup = Join-Path $runtime ('save-backups\' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
     New-Item -ItemType Directory -Path $backup -Force | Out-Null
-    Copy-Item -LiteralPath $save -Destination (Join-Path $backup 'elrothiro.sav')
-    Write-Host "Saved a separate local backup of your character: $backup"
+    if (Test-Path -LiteralPath $playerFolder) {
+        Copy-Item -LiteralPath $playerFolder -Destination (Join-Path $backup 'players') -Recurse -Force
+    }
+    foreach ($suffix in @('','.shm','-wal','-shm')) {
+        $sourceDb = $dbFile + $suffix
+        if (Test-Path -LiteralPath $sourceDb -PathType Leaf) {
+            Copy-Item -LiteralPath $sourceDb -Destination $backup -Force
+        }
+    }
+    Write-Host "Saved a private local backup before database migration: $backup"
 }
 Write-Host 'Installing engine dependencies...'
 $install = if (Test-Path -LiteralPath (Join-Path $engine 'package-lock.json')) { 'ci' } else { 'install' }
