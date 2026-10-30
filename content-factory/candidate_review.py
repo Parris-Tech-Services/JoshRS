@@ -119,7 +119,7 @@ def run(packs_dir: Path, output: Path, batch_size: int = 200) -> dict:
     groups: dict[str, list[dict]] = {}
     for record in ledger["reviews"]:
         name = record["source"]
-        if not re.fullmatch(r"[a-z][a-z0-9_-]{1,70}", name):
+        if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{1,70}", name):
             raise ValueError("Unsafe evidence source filename")
         groups.setdefault(name, []).append(record)
     manifests = []
@@ -143,7 +143,7 @@ def run(packs_dir: Path, output: Path, batch_size: int = 200) -> dict:
     # Remove stale *known-format* shards when a repo changes/retreats.
     # Other files are never altered.
     for old in shard_dir.iterdir():
-        if (old.is_file() and re.fullmatch(r"[a-z][a-z0-9_-]+-[0-9]{4}\.json", old.name)
+        if (old.is_file() and re.fullmatch(r"[a-z0-9][a-z0-9_-]+-[0-9]{4}\.json", old.name)
                 and old.name not in created):
             old.unlink()
     summary = {k: v for k, v in ledger.items() if k != "reviews"}

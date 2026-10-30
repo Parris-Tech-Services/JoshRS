@@ -80,4 +80,15 @@ class CandidateEvidenceTests(unittest.TestCase):
             target.write_text('modified by accident')
             with self.assertRaises(ValueError):verify_shards(output)
 
+    def test_numerically_prefixed_reference(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            folder=Path(tmp)
+            src=folder/'packs'
+            src.mkdir()
+            (src/'test.json').write_text(json.dumps({'candidates':[self.row(source='2006scape-reference',repo='2006-Scape/2006Scape',status='blocked_reference_only')]}))
+            target=folder/'generated/candidate-evidence.json'
+            result=run(src,target)
+            self.assertEqual(1,result['total_unique_source_files'])
+            self.assertEqual(1,verify_shards(target))
+
 if __name__=='__main__':unittest.main()
