@@ -11,8 +11,9 @@ try {
     Assert ($first -match 'server-[0-9]{8}-[0-9]{6}-[0-9a-f]{8}\.log$') 'server log must be timestamped'
     'TEST first log only' | Set-Content -LiteralPath $first
     $discovered=Get-JoshRSRecentLogFile -RepoRoot $root
-    Write-Host ('TRACE first=' + $first + ' discovered=' + $discovered + ' exists=' + (Test-Path -LiteralPath $first))
-    Assert ($discovered -eq $first) 'latest existing log should be discoverable'
+    # GitHub runners sometimes expose the same TEMP folder via Windows short names (RUNNER~1).
+    # Compare canonical file names rather than different textual aliases for the same directory.
+    Assert ([IO.Path]::GetFileName($discovered) -eq [IO.Path]::GetFileName($first)) 'latest existing log should be discoverable'
     for ($i=0;$i -lt 29;$i++) {
         $file=New-JoshRSLaunchLog -RepoRoot $root -Role 'client'
         ('TEST record ' + $i) | Set-Content -LiteralPath $file
