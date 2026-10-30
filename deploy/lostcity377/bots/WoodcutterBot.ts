@@ -16,6 +16,7 @@ import { Interaction } from '#/engine/entity/Interaction.js';
 import Player from '#/engine/entity/Player.js';
 import { PlayerLoading } from '#/engine/entity/PlayerLoading.js';
 import { MoveSpeed } from '#/engine/entity/MoveSpeed.js';
+import { PlayerStat } from '#/engine/entity/PlayerStat.js';
 import ServerTriggerType from '#/engine/script/ServerTriggerType.js';
 import Packet from '#/io/Packet.js';
 import type World from '#/engine/World.js';
@@ -32,6 +33,10 @@ let bot: Player | null = null;
 let nextDecisionTick = 0;
 let fullReported = false;
 let noTreeReported = false;
+let joinedReported = false;
+let actionReported = false;
+let lastLogCount = 0;
+let lastWoodcutXp = 0;
 
 export function isWoodcutterBot(player: Player): boolean {
     return bot === player;
@@ -82,10 +87,25 @@ export function tickWoodcutterBot(world: WorldRuntime): void {
         return;
     }
 
+    if (!joinedReported) {
+        joinedReported = true;
+        console.info('[JoshRS bot] oakwalker is an active player in world slot '+player.slot+'.');
+    }
+
     // Artificial players have no network client to refresh these counters.
     // Otherwise World.processLogouts treats them as disconnected after 30-60s.
     player.lastConnected = world.currentTick;
     player.lastResponse = world.currentTick;
+
+    const inventoryNow = player.getInventory(InvType.INV);
+    const logsId = ObjType.getId('logs');
+    const logCount = logsId < 0 ? 0 : (inventoryNow?.getItemCount(logsId) ?? 0);
+    const wcXp = player.stats[PlayerStat.WOODCUTTING];
+    if (logCount > lastLogCount && wcXp > lastWoodcutXp) {
+        console.info('[JoshRS bot] NATIVE WOODCUTTING PROGRESS: '+logCount+' logs, '+wcXp+' internal XP.');
+    }
+    lastLogCount = logCount;
+    lastWoodcutXp = wcXp;
 
     if (world.currentTick < nextDecisionTick) return;
     nextDecisionTick = world.currentTick + DECISION_INTERVAL_TICKS;
@@ -134,7 +154,10 @@ export function tickWoodcutterBot(world: WorldRuntime): void {
     noTreeReported = false;
     player.clearPendingAction();
     player.moveSpeed = MoveSpeed.WALK;
-    player.setInteraction(Interaction.ENGINE, choice.loc, ServerTriggerType.APLOC1 + choice.option);
+    if (player.setInteraction(Interaction.ENGINE, choice.loc, ServerTriggerType.APLOC1 + choice.option) && !actionReported) {
+        actionReported = true;
+        console.info('[JoshRS bot] Native APLOC woodcutting action selected at '+choice.loc.x+','+choice.loc.z+'.');
+    }
 }
 
 function findChoppableTree(world: WorldRuntime, x: number, z: number, level: number) {
