@@ -28,22 +28,50 @@ function Start-RoleWindow([string]$role) {
     Start-Process -FilePath 'powershell.exe' -ArgumentList $command -WorkingDirectory $repo
 }
 if ($Role -eq 'Server') {
-    Push-Location -LiteralPath $s.engine
+    $mutex = [System.Threading.Mutex]::new($false, 'Local\JoshRS377GameServer')
+    $acquired = $false
     try {
-        Write-Host "Starting JoshRS revision 377 on TCP $($s.gamePort); press Ctrl+C to stop gracefully."
-        & npm.cmd run quickstart
-        if ($LASTEXITCODE -ne 0) { throw "Server exited with code $LASTEXITCODE" }
-    } finally { Pop-Location }
+        $acquired = $mutex.WaitOne(0)
+        if (-not $acquired) {
+            Write-Warning 'A JoshRS server launch is already active; duplicate launch prevented.'
+            return
+        }
+        if (Port-Open ([int]$s.gamePort)) {
+            Write-Warning 'The game port already has a listener. Not starting a duplicate server.'
+            return
+        }
+        Push-Location -LiteralPath $s.engine
+        try {
+            Write-Host "Starting JoshRS revision 377 on TCP $($s.gamePort); press Ctrl+C to stop gracefully."
+            & npm.cmd run quickstart
+            if ($LASTEXITCODE -ne 0) { throw "Server exited with code $LASTEXITCODE" }
+        } finally { Pop-Location }
+    } finally {
+        if ($acquired) { $mutex.ReleaseMutex() }
+        $mutex.Dispose()
+    }
     return
 }
 if ($Role -eq 'Client') {
-    Push-Location -LiteralPath $s.client
+    $mutex = [System.Threading.Mutex]::new($false, 'Local\JoshRS377JavaClient')
+    $acquired = $false
     try {
-        $clientArguments = "10 $($s.portOffset) highmem members 32"
-        Write-Host "Starting Java client (args: $clientArguments)"
-        & (Join-Path $s.client 'gradlew.bat') run "--args=$clientArguments"
-        if ($LASTEXITCODE -ne 0) { throw "Java client exited with code $LASTEXITCODE" }
-    } finally { Pop-Location }
+        $acquired = $mutex.WaitOne(0)
+        if (-not $acquired) {
+            Write-Warning 'The JoshRS Java client launcher is already running; duplicate launch prevented.'
+            return
+        }
+        Push-Location -LiteralPath $s.client
+        try {
+            $clientArguments = "10 $($s.portOffset) highmem members 32"
+            Write-Host "Starting Java client (args: $clientArguments)"
+            & (Join-Path $s.client 'gradlew.bat') run "--args=$clientArguments"
+            if ($LASTEXITCODE -ne 0) { throw "Java client exited with code $LASTEXITCODE" }
+        } finally { Pop-Location }
+    } finally {
+        if ($acquired) { $mutex.ReleaseMutex() }
+        $mutex.Dispose()
+    }
     return
 }
 
