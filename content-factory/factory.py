@@ -186,6 +186,38 @@ def discover_public_repos() -> list:
     return [found[k] for k in sorted(found)]
 
 
+def prepare_agent_queue(dest: Path, max_tasks: int = 100) -> dict:
+    """Produce safe work orders, never executable patches or automatic imports."""
+    records = []
+    for path in sorted((dest / 'packs').glob('*.json')):
+        pack = read_json(path, {'candidates': []})
+        records.extend(pack.get('candidates', []))
+    rank = {'agent_review_required': 0, 'manual_port_required': 1,
+            'rights_review_required': 2, 'blocked_reference_only': 3}
+    records.sort(key=lambda row: (rank.get(row['status'], 9),
+                                  0 if row['source'] == 'lostcity-content-377' else 1,
+                                  row['repo'], row['path']))
+    tasks = []
+    for row in records[:max_tasks]:
+        blocked = row['status'] in ('rights_review_required', 'blocked_reference_only')
+        tasks.append({'work_id': '377-' + row['id'], 'candidate_id': row['id'],
+                      'source': row['repo'], 'path': row['path'], 'reference_url': row['url'],
+                      'status': 'blocked_rights_review' if blocked else 'awaiting_agent_review',
+                      'source_commit_sha': row.get('source_commit_sha'),
+                      'implementation_instructions': [
+                          'Verify licence and provenance; do not import Jagex-owned assets',
+                          'Compare pinned 377 engine/content/client and local user customisations',
+                          'Create or port only rights-cleared 377-compatible source scripts and configs',
+                          'Repack and compile; test gameplay and save safety in the local client',
+                          'Record verified proof or mark blocked; never claim untested work as ready'],
+                      'playable_in_377': False, 'automatically_installed': False})
+    queue = {'schema': 1, 'target': 'JoshRS local 377-wip',
+             'note': 'Work orders only. Agents must implement and test; zero third-party assets copied.',
+             'tasks': tasks}
+    put_json(dest / 'agent-work-orders.json', queue)
+    return queue
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--live', action='store_true', help='inventory pinned/approved public sources via API')
@@ -203,6 +235,8 @@ def main() -> None:
         print(json.dumps(result, sort_keys=True))
     else:
         print('Offline mode: upstream discovery skipped.')
+    tasks = prepare_agent_queue(args.output)
+    print(f'Prepared {len(tasks["tasks"])} non-executable agent work orders.')
 
 
 if __name__ == '__main__':
