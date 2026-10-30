@@ -44,3 +44,28 @@ jobs:
       - name: Compile-check upstream 377 engine with inserted bot
         working-directory: engine
         run: npx tsc --noEmit
+      - name: Fetch matching revision 377 game content
+        run: git clone --branch 377-wip --depth 1 https://github.com/LostCityRS/Content.git content
+      - name: Start a disposable server and verify bot spawn
+        working-directory: engine
+        env:
+          JOSHRS_WOODCUTTER: '1'
+        run: |
+          set -eu
+          npm run quickstart > /tmp/woodcutter377.log 2>&1 &
+          pid=$!
+          trap 'kill -INT "$pid" 2>/dev/null || true; sleep 2; kill "$pid" 2>/dev/null || true; cat /tmp/woodcutter377.log | tail -60' EXIT
+          for n in $(seq 1 180); do
+            if grep -q 'One woodcutter queued' /tmp/woodcutter377.log && grep -q 'World ready' /tmp/woodcutter377.log; then
+              echo 'PASS: live 377 engine started and exactly one synthetic woodcutter queued'
+              sleep 8
+              if ! kill -0 "$pid" 2>/dev/null; then echo 'World terminated unexpectedly'; exit 1; fi
+              exit 0
+            fi
+            if ! kill -0 "$pid" 2>/dev/null; then
+              echo 'World exited unexpectedly'; exit 1
+            fi
+            sleep 1
+          done
+          echo 'Timed out starting revision 377 world'
+          exit 1
