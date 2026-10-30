@@ -36,6 +36,11 @@ jobs:
       - name: Build only legacy Parcel's deasync native binding in disposable runner
         working-directory: runtime/web377-build-test
         run: npm rebuild deasync --no-audit --no-fund
+      - name: Add Rust WebAssembly target for legacy client renderer
+        run: rustup target add wasm32-unknown-unknown
+      - uses: jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa
+        with:
+          version: v0.13.1
       - name: Bundle React and 377 renderer without publishing proprietary assets
         working-directory: runtime/web377-build-test
         env:
