@@ -25,6 +25,7 @@ try {
     $original=(Get-FileHash (Join-Path $engine 'data\players\main\elrothiro.sav') -Algorithm SHA256).Hash
     & (Join-Path $PSScriptRoot 'Protect-Elrothiro.ps1') -RepoRoot $root | Out-Null
     Assert (-not (Test-Path (Join-Path $root 'runtime\jparris-377\save-backups'))) 'inspection modified data'
+    & (Join-Path $PSScriptRoot 'Protect-Elrothiro.ps1') -RepoRoot $root -CandidateSavePath (Join-Path $engine 'data\players\main\elrothiro.sav') | Out-Null
     & (Join-Path $PSScriptRoot 'Protect-Elrothiro.ps1') -RepoRoot $root -CreateBackup | Out-Null
     $snap=@(Get-ChildItem (Join-Path $root 'runtime\jparris-377\save-backups') -Directory)
     Assert ($snap.Count -eq 1) 'backup should contain exactly one snapshot'
