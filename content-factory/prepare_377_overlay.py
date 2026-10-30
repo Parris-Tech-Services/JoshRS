@@ -13,6 +13,11 @@ import sys
 
 ALLOWED_PREFIX = ("scripts", "areas", "joshrs_custom")
 ALLOWED_EXT = {".rs2", ".npc"}
+# The exact two approved v1 outputs are the only upgradeable predecessors.
+APPROVED_V1 = {
+    'scripts/areas/joshrs_custom/configs/joshrs_original.npc': '959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556',
+    'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2': '3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3'
+}
 
 
 def verified_files(source: Path) -> list[tuple[str, bytes]]:
@@ -97,17 +102,27 @@ def apply_overlay(source: Path, destination: Path) -> int:
         if out.is_symlink():
             raise ValueError("Refusing symlink target")
         if out.exists() and out.read_bytes() != data:
-            raise ValueError(f"Refusing to overwrite existing custom content: {out}")
+            existing_hash = hashlib.sha256(out.read_bytes()).hexdigest()
+            if APPROVED_V1.get(name) != existing_hash:
+                raise ValueError(f"Refusing to overwrite unrecognised custom content: {out}")
     for name, data in files:
         out = target_root.joinpath(*PurePosixPath(name).parts)
         out.parent.mkdir(parents=True, exist_ok=True)
-        if not out.exists():
+        if out.exists() and out.read_bytes() != data:
+            previous = out.read_bytes()
+            previous_hash = hashlib.sha256(previous).hexdigest()[:12]
+            backup = out.with_name(out.name + '.joshrs-before-' + previous_hash + '.bak')
+            if backup.exists() and backup.read_bytes() != previous:
+                raise ValueError("Existing backup differs from expected previous source")
+            if not backup.exists():
+                backup.write_bytes(previous)
+        if not out.exists() or out.read_bytes() != data:
             out.write_bytes(data)
         if out.read_bytes() != data:
             raise ValueError(f"Write failed: {out}")
     if additions:
         old = pack.read_bytes()
-        backup = pack.with_name("npc.pack.joshrs-original.bak")
+        backup = pack.with_name("npc.pack.joshrs-before-" + hashlib.sha256(old).hexdigest()[:12] + ".bak")
         if backup.exists() and backup.read_bytes() != old:
             raise ValueError("NPC pack was modified after the JoshRS backup; manual review required")
         if not backup.exists():
