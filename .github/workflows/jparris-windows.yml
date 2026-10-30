@@ -7,6 +7,7 @@ on:
       - 'jparris-play.cmd'
       - 'JoshRS.cmd'
       - 'JoshRS-Backup-Elrothiro.cmd'
+      - 'JoshRS-Play-Android.cmd'
       - 'deploy/jparris-windows/**'
       - '.github/workflows/jparris-windows.yml'
   pull_request:
@@ -51,6 +52,7 @@ jobs:
           if (-not (Test-Path 'jparris-play.cmd')) { throw 'Play entrypoint missing' }
           if (-not (Test-Path 'JoshRS.cmd')) { throw 'Native control-center entrypoint missing' }
           if (-not (Test-Path 'JoshRS-Backup-Elrothiro.cmd')) { throw 'Elrothiro backup entrypoint missing' }
+          if (-not (Test-Path 'JoshRS-Play-Android.cmd')) { throw 'Mobile streaming entrypoint missing' }
           & '.\deploy\jparris-windows\setup.ps1' -CheckOnly
 
       - name: Exercise USB import and save preservation with synthetic files
