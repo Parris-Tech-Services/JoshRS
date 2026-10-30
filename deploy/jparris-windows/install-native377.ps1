@@ -30,10 +30,9 @@ if(@($npcNames | Select-Object -Unique).Count -ne $npcNames.Count) { throw 'Dupl
 foreach($npc in $npcNames) {
     if ($npc -cnotmatch '^joshrs_[a-z0-9_]{1,60}
 $planned=@()
-$previousHashes=@{
-    'scripts/areas/joshrs_custom/configs/joshrs_original.npc'='959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556'
-    'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2'='3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3'
-}
+$previousHashes=@{}
+$previousHashes['scripts/areas/joshrs_custom/configs/joshrs_original.npc']='959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556'
+$previousHashes['scripts/areas/joshrs_custom/scripts/joshrs_original.rs2']='3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3'
 foreach ($entry in @($manifest.files)) {
     $rel=[string]$entry.path
     if ($rel -cnotmatch '^scripts/areas/joshrs_custom/(configs|scripts)/joshrs_[a-z0-9_]+\.(rs2|npc)$') {
