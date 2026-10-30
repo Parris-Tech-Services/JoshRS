@@ -8,6 +8,8 @@ on:
       - "content-factory/factory.py"
       - "content-factory/sources.json"
       - "content-factory/intake/**"
+      - "content-factory/native377.py"
+      - "content-factory/prepare_377_overlay.py"
       - "content-factory/tests/**"
       - ".github/workflows/377-content-factory.yml"
 
@@ -35,11 +37,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python content-factory/factory.py --live --discover
+      - name: Generate native 377 original NPC overlay
+        run: python content-factory/native377.py
       - name: Validate generated JSON
         run: |
           python -m json.tool content-factory/generated/original-content-specs.json > /dev/null
           python -m json.tool content-factory/generated/catalog.json > /dev/null
           python -m json.tool content-factory/generated/state.json > /dev/null
+          python -m json.tool content-factory/generated/native377/manifest.json > /dev/null
       - name: Commit queued metadata and portable integration specs
         if: github.ref == 'refs/heads/main'
         run: |
@@ -49,6 +54,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changed inventory or specs."
           else
-            git commit -m "chore(377): rotate content research and original specs [skip ci]"
+            git commit -m "chore(377): rotate source research and native original content"
             git push origin HEAD:main
           fi
