@@ -17,6 +17,18 @@ $report=($summary -join [Environment]::NewLine)|ConvertFrom-Json
 if(-not $report.valid){throw 'Elrothiro save invalid'}
 Write-Host "Valid 377 Elrothiro save: $($report.bytes) bytes; skill XP $($report.totalSkillXP)."
 Write-Host "Configured game TCP port: $($s.GamePort); game listening: $($s.GamePortOpen)"
+$dbTool=Join-Path $repo 'tools\rs377-saves\inspect-account-db.mjs'
+$dbPath=Join-Path $s.Engine 'db.sqlite'
+if(-not(Test-Path -LiteralPath $dbTool -PathType Leaf) -or -not(Test-Path -LiteralPath $dbPath -PathType Leaf)){
+ throw 'No verified local account database/tool; do not attempt to stream a fresh replacement world.'
+}
+$dbOutput=& $node.Source $dbTool $dbPath
+if($LASTEXITCODE -ne 0){throw 'Active SQLite login database failed read-only inspection. Preserve original and investigate.'}
+$dbSummary=($dbOutput -join [Environment]::NewLine)|ConvertFrom-Json
+if(-not $dbSummary.sqliteVerified -or -not $dbSummary.characterAccountPresent){
+ throw 'Elrothiro login account NOT found in active SQLite. Character save is valid but cannot yet be logged into safely.'
+}
+Write-Host 'Active Elrothiro account record verified in SQLite (no password displayed).'
 Write-Host 'Sunshine does NOT replace the existing Java client or relocate player saves.'
 $sunshineExe=@(
  (Join-Path $env:ProgramFiles 'Sunshine\sunshine.exe'),
