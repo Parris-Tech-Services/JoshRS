@@ -1,0 +1,46 @@
+name: JoshRS revision 377 opt-in woodcutter patch
+
+on:
+  push:
+    paths:
+      - 'deploy/lostcity377/bots/**'
+      - 'scripts/install-lostcity377-woodcutter.mjs'
+      - '.github/workflows/woodcutter377.yml'
+  pull_request:
+    paths:
+      - 'deploy/lostcity377/bots/**'
+      - 'scripts/install-lostcity377-woodcutter.mjs'
+      - '.github/workflows/woodcutter377.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  typescript-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out JoshRS bot source and installer
+        uses: actions/checkout@v4
+      - name: Install Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Clone clean, pinned branch-377 engine (not Josh's Fedora data)
+        run: git clone --branch 377-wip --depth 1 https://github.com/LostCityRS/Engine-TS.git engine
+      - name: Dry-run and apply opt-in integration
+        run: |
+          node --check scripts/install-lostcity377-woodcutter.mjs
+          node scripts/install-lostcity377-woodcutter.mjs engine
+          node scripts/install-lostcity377-woodcutter.mjs engine --apply
+      - name: Verify safe defaults and exactly one bot
+        run: |
+          node -e "const fs=require('fs'); const app=fs.readFileSync('engine/src/app.ts','utf8'); const w=fs.readFileSync('engine/src/engine/World.ts','utf8'); const b=fs.readFileSync('engine/src/engine/bot/WoodcutterBot.ts','utf8'); for (const [ok,label] of [[app.includes('spawnWoodcutterBot(World)'), 'startup hook'], [w.includes('tickWoodcutterBot(this)'), 'world tick hook'], [w.includes('if (isWoodcutterBot(player)) continue'), 'autosave protection'], [w.includes('if (!isWoodcutterBot(player)) this.flushPlayer(player)'), 'logout protection'], [b.includes(\"JOSHRS_WOODCUTTER !== '1'\"),'opt-in gate']]) if(!ok)throw Error(label)"
+          if node scripts/install-lostcity377-woodcutter.mjs engine --apply; then echo 'ERROR: duplicate installation was incorrectly accepted'; exit 1; fi
+      - name: Install upstream TypeScript dependencies without install scripts
+        working-directory: engine
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Compile-check upstream 377 engine with inserted bot
+        working-directory: engine
+        run: npx tsc --noEmit
