@@ -156,7 +156,12 @@ if ($ResumeSnapshotPath) {
     $runtimeFull=[System.IO.Path]::GetFullPath($runtime).TrimEnd('\')
     $snapshotFull=[System.IO.Path]::GetFullPath($snapshot).TrimEnd('\')
     if ((Split-Path -Parent $snapshotFull) -ne $runtimeFull -or
-        (Split-Path -Leaf $snapshotFull) -notmatch '^usb-\d{8}-\d{6}
+        (Split-Path -Leaf $snapshotFull) -notmatch '^usb-[0-9]{8}-[0-9]{6}') {
+        throw 'Resume path must be an existing timestamped USB snapshot inside this launcher runtime.'
+    }
+    Validate-Game (Join-Path $snapshotFull 'engine') (Join-Path $snapshotFull 'content')
+}
+# Reject incomplete or recursive copies before installing software.
 if ($UsbPath) {
     $source = Find-UsbGame $UsbPath
     Validate-Game (Join-Path $source 'engine') (Join-Path $source 'content')
