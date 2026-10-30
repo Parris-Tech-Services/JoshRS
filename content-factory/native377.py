@@ -16,7 +16,7 @@ import sys
 from factory import normalize_owned
 
 ROOT = Path(__file__).resolve().parent
-ALLOWED = re.compile(r"^[A-Za-z][A-Za-z0-9 ,.'!?-]{0,55}$")
+ALLOWED = re.compile(r"^[A-Za-z][A-Za-z0-9 ,.'!?-]{0,200}$")
 NPC_MAX = 20
 
 # Model, head and animations are identifiers already defined by the upstream
@@ -36,8 +36,8 @@ moverestrict=nomove
 """
 
 
-def safe_line(value: str) -> str:
-    if not isinstance(value, str) or not ALLOWED.fullmatch(value):
+def safe_line(value: str, max_length: int = 200) -> str:
+    if not isinstance(value, str) or len(value) > max_length or not ALLOWED.fullmatch(value):
         raise ValueError("Unsafe or unsupported NPC dialogue text")
     return value
 
@@ -59,7 +59,7 @@ def build_native(source: Path, output: Path) -> dict:
     if len(ids) != len(set(ids)):
         raise ValueError("Duplicate NPC key")
     for r in specs:
-        safe_line(r["name"])
+        safe_line(r["name"], 56)
         safe_line(r["description"])
     if not specs:
         raise ValueError("No original user-authored NPC entries found")
