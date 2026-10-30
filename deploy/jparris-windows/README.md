@@ -108,6 +108,25 @@ That exact example uses a local snapshot that was shown in the setup output. For
 
 If an existing custom world deliberately runs HTTP on another port, the installer stops rather than guessing. Verify the Java client's network settings before changing ports.
 
+### Custom object definitions: `loc checksum mismatch!` in the RuneScape chat
+
+The game's development worker broadcasts **Packing changes** while rebuilding content. If that rebuild fails, it also sends **Check the console for more information**. The underlying `loc checksum mismatch!` comes from a **comparison with the original unmodified revision-377 location configuration**, not a check of Elrothiro's save file. A customised world can legitimately differ from the original CRC. A failed rebuild still deserves checking, though: the content may have other problems.
+
+**Preferred approach for the custom Fedora world:** keep the broad `BUILD_VERIFY=true` and `BUILD_VERIFY_PACK=true` checks, but explicitly allow the expected original *loc* checksum to differ, using a narrow, reversible modification to the **copied Windows runtime engine**. Other original config CRC checks and parsing errors remain active.
+
+1. Log out of Elrothiro and any other players. Stop the JoshRS server gracefully with **Ctrl+C** in the server console. Wait until the server game/HTTP ports close.
+2. Update your extracted JoshRS launcher to the latest GitHub `main` version (do not delete `runtime/`).
+3. In PowerShell, run from the extracted launcher root:
+
+```powershell
+& '.\deploy\jparris-windows\fix-custom-loc.ps1'
+```
+
+4. Read the confirmation that local backups were created under `runtime/jparris-377/custom-loc-backups/`. The tool refuses to touch the original USB, refuses to edit a clean upstream engine and stops if the custom packer's source code does not match the expected revision-377 implementation.
+5. Open `JoshRS.cmd` and start your world. Log in again. **Old chat messages won't disappear from existing chat history**, but subsequent intentional loc changes should no longer broadcast that checksum failure.
+
+This fix does **not** set `BUILD_VERIFY=false`. It adds `JOSHRS_CUSTOM_LOCS=true` to the copied world's private `.env`, and selectively bypasses only the original loc CRC comparison. This means a genuinely broken custom loc checksum is not detected by comparison to the original; parsing, other configuration CRC checks, pack ID checks and unrelated consistency checks still run. If a *different* error remains, read the actual server log rather than ignoring it.
+
 ## Troubleshooting
 
 - **Windows SmartScreen / execution policy:** run the extracted scripts directly from a folder you control; do not use random mirrored downloads.
