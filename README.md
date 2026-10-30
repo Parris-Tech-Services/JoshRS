@@ -16,6 +16,10 @@ Important: **2004Scape (November 2004)** and **official Old School RuneScape (20
 
 See also [multiplayer work tracker #5](https://github.com/Parris-Tech-Services/JoshRS/issues/5) and [self-hosting gate #3](https://github.com/Parris-Tech-Services/JoshRS/issues/3).
 
+## Revision 377 — opt-in autonomous player bot
+
+**[One real server-side woodcutter and safe installer](docs/377_ONE_BOT_WOODCUTTER.md)**. This is a **separate experimental 377-wip feature**, not an alteration to the locked November 2004 reference. The bot is disabled by default, does not require a second Java client, and was tested in a disposable 377 server: it appeared in an ordinary player slot, selected a real tree, gained a log and Woodcutting XP. It has **not** been installed on Josh's Fedora host; banking, quests, trading and persistent bot saves are later work.
+
 ## Play
 
 **Full MMO:** tap **Launch full 2004Scape** on the homepage to play at Lost City's own mobile/desktop browser site; a Lost City game account may be required. **Woodlands:** the separate original demo opens directly without login or download.
