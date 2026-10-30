@@ -58,14 +58,26 @@ jobs:
           for n in $(seq 1 180); do
             if grep -q 'One woodcutter queued' /tmp/woodcutter377.log && grep -q 'World ready' /tmp/woodcutter377.log; then
               echo 'PASS: live 377 engine started and exactly one synthetic woodcutter queued'
-              sleep 8
-              if ! kill -0 "$pid" 2>/dev/null; then echo 'World terminated unexpectedly'; exit 1; fi
-              exit 0
+              break
             fi
             if ! kill -0 "$pid" 2>/dev/null; then
               echo 'World exited unexpectedly'; exit 1
             fi
             sleep 1
           done
-          echo 'Timed out starting revision 377 world'
-          exit 1
+          if ! grep -q 'One woodcutter queued' /tmp/woodcutter377.log; then
+            echo 'Failed to queue the bot at startup'; exit 1
+          fi
+          for n in $(seq 1 120); do
+            if grep -q 'NATIVE WOODCUTTING PROGRESS' /tmp/woodcutter377.log; then
+              grep -q 'active player in world slot' /tmp/woodcutter377.log
+              grep -q 'Native APLOC woodcutting action selected' /tmp/woodcutter377.log
+              echo 'PASS: genuine player slot, native tree selection, logs and XP achieved'
+              exit 0
+            fi
+            if ! kill -0 "$pid" 2>/dev/null; then
+              echo 'Bot world terminated before woodcutting'; exit 1
+            fi
+            sleep 1
+          done
+          echo 'No verified native woodcutting progress within 120 seconds'; exit 1
