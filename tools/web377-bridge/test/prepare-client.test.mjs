@@ -16,6 +16,9 @@ test('sandbox client patch corrects real upstream bug without overwriting source
   fs.mkdirSync(path.join(src,'osrs/net'),{recursive:true})
   const bad='const x = ()=>{this.client.send(bytes.slice);}\n'
   fs.writeFileSync(path.join(src,'osrs/net/Socket.ts'),bad)
+  const indexImport='import cacheIndices from "./../client_cache/*.idx*";'
+  fs.writeFileSync(path.join(src,'osrs/Game.ts'),indexImport)
+  fs.writeFileSync(path.join(src,'osrs/GamePlayground.ts'),indexImport)
   fs.writeFileSync(path.join(src,'osrs/Configuration.ts'),'public static GAME_PORT: number = 43594\npublic static SERVER_ADDRESS: string = "127.0.0.1"')
   fs.writeFileSync(path.join(src,'package.json'),JSON.stringify({name:'webscape'}))
   fs.mkdirSync(path.join(src,'page'),{recursive:true})
@@ -30,6 +33,10 @@ test('sandbox client patch corrects real upstream bug without overwriting source
   assert.match(fs.readFileSync(path.join(out,'page/App.tsx'),'utf8'),/Never enter your real game credentials/)
   assert.equal(fs.readFileSync(path.join(src,'page/App.tsx'),'utf8'),'discord -> user\nUse any username/password to log in')
   assert.ok(fs.readFileSync(path.join(out,'joshrs-asset-types.d.ts'),'utf8').includes("declare module '*.dat'"))
+  for(const file of ['Game.ts','GamePlayground.ts']){
+    assert.match(fs.readFileSync(path.join(out,'osrs',file),'utf8'),/const cacheIndices:/)
+    assert.equal(fs.readFileSync(path.join(src,'osrs',file),'utf8'),indexImport)
+  }
   assert.equal(fs.existsSync(path.join(out,'test-rsa.pem')),false)
   assert.equal(JSON.parse(fs.readFileSync(path.join(out,'JOSHRS_PATCH_REPORT.json'))).playable,false)
   const rerun=spawnSync(process.execPath,[cmd,'--source',src,'--output',out],{encoding:'utf8'})
