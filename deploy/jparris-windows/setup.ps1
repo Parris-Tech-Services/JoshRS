@@ -264,11 +264,11 @@ try {
         $shortcut = $shell.CreateShortcut((Join-Path $desktop 'Play JoshRS.lnk'))
         $shortcut.TargetPath = Join-Path $repo 'JoshRS.cmd'
         $shortcut.WorkingDirectory = $repo
-        $shortcut.Description = 'Open JoshRS control center for revision-377 world, saves and diagnostics'
+        $shortcut.Description = 'Open your JoshRS control center to play, restore and back up the game'
         $shortcut.Save()
         Write-Host 'Created Play JoshRS on your desktop.'
     }
-} catch { Write-Warning "Desktop shortcut unavailable. Open JoshRS.cmd from the extracted folder: $_" }
+} catch { Write-Warning "Desktop shortcut unavailable. Use jparris-play.cmd: $_" }
 Write-Host "Setup complete. Game port: $gamePort; web port: $webPort; client offset: $offset"
 if (-not $SkipStart) { & (Join-Path $PSScriptRoot 'play.ps1') }
 } finally {

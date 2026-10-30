@@ -6,6 +6,10 @@ This is a **local Windows desktop game server and Java client** for JoshRS 377. 
 
 For the easiest experience, **double-click `JoshRS.cmd`** in the extracted JoshRS folder. It opens a native Windows control window rather than asking you to enter PowerShell commands.
 
+**Improved first run:** the main button now says **Set Up and Play** until a game is configured. Click it after inserting your USB drive. JoshRS checks only the usual game locations on attached removable drives for a complete revision-377 source; it does not browse all your other files. If it finds exactly one game, it shows the path and separately confirms whether the Elrothiro save, account database and Java client are present. You must approve the import. If none or several are found, a folder picker appears instead. **It never silently chooses a clean game in place of your Fedora copy.**
+
+After the first successful installation, the main button becomes **Play JoshRS**. The desktop shortcut created during setup also opens the full dashboard. If its graphical window fails to initialize, an error dialog and a private diagnostic file appear instead of silently disappearing.
+
 The control window includes:
 
 - **Play JoshRS:** starts the local revision-377 server and Java client using your currently configured world.
@@ -13,12 +17,12 @@ The control window includes:
 - **Install a clean 377 world:** obtains the pinned upstream engine, content and Java client, with a warning that your Fedora customizations and character are not part of the clean source.
 - **Back up my player saves:** offline copy of the whole players directory and SQLite account database (including WAL when present). The button is disabled if either game/network port is listening.
 - **Refresh status:** shows whether the expected TCP and HTTP listeners are responding. Port readiness alone does not prove a successful game login.
-- **Check / Repair Installation:** after a world is installed, the clean-install button becomes a repair action. With the server offline, it backs up player/account data, reinstalls missing dependencies, applies non-destructive database migrations and recompiles the Java client. It never intentionally resets your world or substitutes the clean upstream.
-- **View logs:** opens the latest private server, Java-client or dashboard-startup report in Notepad. The launcher retains at most 25 timestamped reports under `runtime/jparris-377/logs/`.
+- **Check / Repair Installation:** after a world is installed, the clean-install action changes to offline repair. It backs up saves, reinstalls dependencies, applies non-destructive migrations and recompiles Java without replacing your existing world.
+- **View logs:** opens the latest server, client or dashboard diagnostic in Notepad. Logs are private and rotated to at most 25 copies.
 - **Diagnostics:** copies a status report without reading or exposing local passwords, player contents or configuration secrets.
 - **Game files / Backups:** opens the correct private local folder in Windows Explorer.
 
-The dashboard refreshes automatically. If the hidden dashboard fails before opening, JoshRS displays a visible Windows error dialog and writes a private diagnostic report instead of silently disappearing. All existing `jparris-setup.cmd` and `jparris-play.cmd` scripts continue to work for direct command-line use. A command window remains open during setup and game launch so errors are visible. The dashboard is a convenient front end, **not** another server process.
+The dashboard refreshes automatically. All existing `jparris-setup.cmd` and `jparris-play.cmd` scripts continue to work for direct command-line use. A command window remains open during setup and game launch so errors are visible. The dashboard is a convenient front end, **not** another server process.
 
 ```text
 JoshRS.cmd                     Double-click to open the control center
@@ -33,10 +37,10 @@ For customised save restoration, choose the actual USB copy, not the incomplete 
 **On JParris Desktop:**
 
 1. Download the current [JoshRS GitHub ZIP](https://github.com/Parris-Tech-Services/JoshRS/archive/refs/heads/main.zip) and extract it somewhere permanent, such as `C:\JoshRS` (do not launch it from inside the compressed ZIP).
-2. **Double-click `jparris-play.cmd`.** On first use it opens setup automatically.
-3. Choose **1** to restore your customised USB world, then select its JoshRS folder in the folder picker. Choose **2** only if you want a clean world without your existing character.
+2. Plug in the USB drive containing your Fedora JoshRS game.
+3. **Double-click `JoshRS.cmd` and select `SET UP AND PLAY`.** Approve the detected copy, or choose its folder manually if needed.
 4. Setup installs missing tools, copies the game, backs up saves, migrates the database, compiles the client and opens the game.
-5. Afterwards, double-click **Play JoshRS** on your desktop to open the control centre, then press **Play JoshRS** to start the world.
+5. Later, open the **Play JoshRS** desktop shortcut or `JoshRS.cmd` and select `PLAY JOSHRS`.
 
 You can still drag your USB JoshRS folder onto `jparris-setup.cmd` to skip the picker. Keep the extracted launcher folder in its permanent location so the shortcut keeps working. First setup needs internet access and can take several minutes. Approve any Windows tool-installation prompts. No WSL, Docker or paid host is needed.
 
@@ -53,7 +57,7 @@ Replace `E:\JoshRS` with the actual USB path. If the USB has `JoshRS\lostcity377
 
 ## Where the files go
 
-- All runtime and data are stored under `runtime/jparris-377/`. That directory is Git-ignored; it is never uploaded to GitHub by this launcher. Log files under `runtime/jparris-377/logs/` are local-only and can include technical server output; do not publish them without reviewing them.
+- All runtime and data are stored under `runtime/jparris-377/`. That directory is Git-ignored; it is never uploaded to GitHub by this launcher. Startup logs under `runtime/jparris-377/logs/` remain local and may contain technical output; inspect before sharing.
 - `runtime/jparris-377/upstream/` contains three independent upstream repositories cloned at verified, pinned Git commit SHAs.
 - A supplied USB copy is **copied** into a timestamped `runtime/jparris-377/usb-YYYYMMDD-HHMMSS/` folder. Original USB files remain unchanged.
 - Any original player saves and SQLite database are backed up under `runtime/jparris-377/save-backups/` before installing/migrating the server.
@@ -83,7 +87,7 @@ The public JoshRS repository **does not vendor the game content or redistribute 
 - **Windows SmartScreen / execution policy:** run the extracted scripts directly from a folder you control; do not use random mirrored downloads.
 - **Missing Node/Java/Git:** use the setup installer prompts and reopen the terminal if the new PATH is not visible. Microsoft recommends JDK 21 with WinGet.
 - **Wrong USB copy:** if the original `engine/package.json`, `src/app.ts`, `src/engine/World.ts`, and `content/scripts/` are not present, choose the correct USB location. If the only copy available is an incomplete Google Drive directory tree, the customised world cannot be restored yet.
-- **Game server fails at startup:** click **View logs** to open the most recent startup report, or inspect the separate server PowerShell window. The initial engine content/cache build can perform substantial work. Do not assume an open TCP port proves gameplay works.
+- **Game server fails at startup:** click **View logs** for the most recent report, or inspect the separate server PowerShell window. The initial engine content/cache build can perform substantial work. Do not assume an open TCP port proves gameplay works.
 - **Unable to log into your existing character:** check that the source USB snapshot includes `engine/data/players/main/elrothiro.sav` **and** the matching `engine/db.sqlite` account database. Missing either can prevent a faithful save/account restoration.
 - **Custom changes missing:** upstream repositories supply only vanilla revision-377 code. The USB copy must contain your modified Lua/Luna logic, teleport/map code, custom launchers and any other development edits. The clean upstream build cannot regenerate them.
 - **Browser download cannot play 377:** this revision is Java-only in the checked upstream set. Do not confuse it with the separately hosted 274 browser game.
@@ -91,5 +95,3 @@ The public JoshRS repository **does not vendor the game content or redistribute 
 ## Verification limitations
 
 The Windows workflow runs under Windows PowerShell 5.1 (the same interpreter as the double-click launcher). It checks syntax, imports a synthetic USB fixture with spaces in its path, verifies save/database hashes, rejects incomplete copies, installs the pinned engine, migrates SQLite, compiles Java and starts a disposable world to check both listeners. These automated checks do not establish successful interactive game login or restoration of your actual Elrothiro save: those still require your USB files and JParris Desktop.
-
-The new log retention, hidden-dashboard error recovery, repaired desktop shortcut and offline repair-button workflow are covered by Windows CI checks. Automated tests still do not prove actual login on JParris Desktop.
