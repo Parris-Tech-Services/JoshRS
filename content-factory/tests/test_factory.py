@@ -19,7 +19,7 @@ class FactoryTests(unittest.TestCase):
     def test_status_never_autoverified(self):
         s = {'key': 'x', 'policy': 'review_only', 'era': '377'}
         c = factory.candidate('owner/repo', 'a' * 40, {'path': 'scripts/abc.rs2', 'sha': 'b' * 40}, s)
-        self.assertEqual(c['status'], 'agent_review_required')
+        self.assertEqual(c['status'], 'manual_port_required')
         self.assertFalse(c['native_runtime_verified'])
         self.assertFalse(c['rights_cleared_for_redistribution'])
         self.assertEqual(factory.category('configs/example.obj', s), 'rights_review_required')
@@ -102,6 +102,23 @@ class FactoryTests(unittest.TestCase):
             self.assertEqual([[t['candidate_id'] for t in p['tasks']] for p in pages],
                              [['0','1'],['2','3'],['4','0']])
             self.assertEqual(pages[-1]['next_rotation_offset'], 1)
+
+    def test_pinned_377_is_not_a_missing_feature(self):
+        import json
+        pins=json.loads((HERE.parent/'deploy/jparris-windows/upstreams.json').read_text())
+        src={'key':'lostcity-content-377','repo':'LostCityRS/Content','era':'377','policy':'review_only'}
+        c=factory.candidate(src['repo'],'a'*40, {'path':'scripts/areas/test.rs2','sha':'123'},src,pins['content']['commit'])
+        self.assertEqual(c['status'],'already_in_pinned_source')
+        self.assertFalse(c['native_runtime_verified'])
+
+    def test_historical_identical_blob_and_incompatible_engine(self):
+        s={'key':'lostcity-content-274','repo':'LostCityRS/Content','era':'pre377','policy':'review_only'}
+        self.assertEqual(factory.category('scripts/example.rs2',s,'274commit',{'scripts/example.rs2':'abc'},'abc'),'already_in_pinned_source')
+        self.assertEqual(factory.category('scripts/example.rs2',s,'274commit',{'scripts/example.rs2':'def'},'abc'),'manual_port_required')
+        s2={'key':'luna-377','repo':'luna-rs/luna','era':'377','policy':'review_only'}
+        self.assertEqual(factory.category('src/engine/test.kt',s2),'manual_port_required')
+        s3={'key':'other','repo':'someone/else','era':'other','policy':'metadata_only'}
+        self.assertEqual(factory.category('scripts/exam.rs2',s3),'blocked_reference_only')
 
 if __name__ == '__main__':
     unittest.main()
