@@ -28,7 +28,8 @@ if ($manifest.schema -ne 1 -or $manifest.includes_player_save_changes -ne $false
 $npcNames=@($manifest.npc_names | ForEach-Object { [string]$_ })
 if(@($npcNames | Select-Object -Unique).Count -ne $npcNames.Count) { throw 'Duplicate NPC key.' }
 foreach($npc in $npcNames) {
-    if ($npc -cnotmatch '^joshrs_[a-z0-9_]{1,60}
+    if ($npc -cnotmatch '^joshrs_[a-z0-9_]{1,60}$') { throw 'Invalid original NPC name.' }
+}
 $planned=@()
 $previousHashes=@{}
 $previousHashes.Add('scripts/areas/joshrs_custom/configs/joshrs_original.npc', '959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556')
