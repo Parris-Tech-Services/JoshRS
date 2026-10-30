@@ -9,7 +9,7 @@ The playable revision-377 world is a separate local installation. Do not confuse
 - content-factory/generated/original-content-specs.json for original, user-authored content.
 
 ## How to implement a candidate
-1. Check status, source repo, immutable source_tree_sha and blob_sha, original licence and asset provenance. Data labelled rights_review_required or blocked_reference_only must not be imported.
+1. First check the compatibility audit: `already_in_pinned_source` means the file is already present in the pinned 377 upstream (it may still require local world verification), and must never be treated as a missing gameplay feature. Then check status, source repo, immutable source_tree_sha and blob_sha, original licence and asset provenance. Data labelled rights_review_required or blocked_reference_only must not be imported.
 2. Compare functionality against installed 377-wip engine/content pins and actual local JoshRS customisations. Reference URLs are not runtime-ready assets.
 3. For cleared code ideas, write a fresh 377-compatible server-side implementation or a documented, licence-compliant port. Never import third-party proprietary models, game caches, maps, client jars, audio, graphics or credentials.
 4. Put scripts/configs in the actual active private content checkout, not the JoshRS launcher root. Preserve custom maps, accounts, saves and IDs. Never reset SQLite or overwrite Elrothiro data.
