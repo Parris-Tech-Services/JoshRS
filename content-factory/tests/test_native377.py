@@ -67,5 +67,7 @@ class Native377Tests(unittest.TestCase):
                 self.assertIn('[opnpc1,'+key+']',script)
                 self.assertIn('[debugproc,joshrs_spawn_'+key+']',script)
             self.assertEqual(script.count('inv_del(inv,'),3)
+            self.assertEqual(script.count('if ($choice ! 1)'),3)
+            self.assertNotIn('!=',script)
 
 if __name__=='__main__': unittest.main()
