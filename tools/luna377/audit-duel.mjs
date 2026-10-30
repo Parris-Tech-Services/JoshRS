@@ -3,6 +3,7 @@
 // Never reads .env/credentials, writes player files, or modifies game content.
 import fs from 'node:fs'
 import path from 'node:path'
+import {fileURLToPath} from 'node:url'
 
 const keywords = Object.freeze({
   challenge: /\bChallenge\b|challenge.{0,30}luna|luna.{0,30}challenge/i,
@@ -91,6 +92,6 @@ export function main(args){
  console.log(JSON.stringify(result,null,2))
  return result
 }
-if(process.argv[1]&&path.resolve(process.argv[1])===path.resolve(new URL(import.meta.url).pathname)){
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  try{main(process.argv.slice(2))}catch(err){console.error('Read-only Luna duel audit failed:',err.message);process.exitCode=1}
 }
