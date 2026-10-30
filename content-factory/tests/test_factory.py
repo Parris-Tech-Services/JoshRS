@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('factory', HERE / 'factory.py')
@@ -50,6 +51,24 @@ class FactoryTests(unittest.TestCase):
             factory.normalize_owned({**original, 'model_file':'unlicensed.dat'})
         with self.assertRaises(ValueError):
             factory.normalize_owned({**original, 'name':'bad\nname'})
+
+    def test_full_scan_resume_and_persist(self):
+        s = {'key':'seed','repo':'owner/repo','ref':'377','era':'377','policy':'review_only','license':'MIT'}
+        fake = {'sha':'a'*40,'tree':[{'type':'blob','path':f'scripts/{i:02d}.rs2','sha':str(i)} for i in range(5)]}
+        with tempfile.TemporaryDirectory() as tmp:
+            dest = Path(tmp)
+            with patch.object(factory, 'gh', return_value=fake):
+                first = factory.scan([s], dest, 2, False)
+                self.assertEqual(first['checked'], 1)
+                second = factory.scan([s], dest, 2, False)
+                self.assertEqual(second['checked'], 1)
+                third = factory.scan([s], dest, 2, False)
+                self.assertEqual(third['checked'], 1)
+            pack = json.loads((dest/'packs/seed.json').read_text())
+            state = json.loads((dest/'state.json').read_text())
+            self.assertEqual(len(pack['candidates']), 5)
+            self.assertTrue(state['seed']['complete_pass'])
+            self.assertTrue(all(c['native_runtime_verified'] is False for c in pack['candidates']))
 
 if __name__ == '__main__':
     unittest.main()
