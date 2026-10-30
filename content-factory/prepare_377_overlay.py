@@ -62,7 +62,7 @@ def registry_additions(source: Path, destination: Path) -> tuple[Path, list[str]
     for row in rows:
         if not row.strip() or row.lstrip().startswith("//"):
             continue
-        match = re.fullmatch(r"([0-9]+)=([^=\\r\\n]+)", row.strip())
+        match = re.fullmatch(r"([0-9]+)=([^=]+)", row.strip())
         if not match:
             raise ValueError("Invalid NPC pack registry row")
         num, name = int(match.group(1)), match.group(2)
