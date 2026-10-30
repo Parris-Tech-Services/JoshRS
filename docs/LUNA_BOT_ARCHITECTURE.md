@@ -32,9 +32,11 @@ collision or issue unchecked actions.
 ## First vertical slice
 
 The first native engine slice spawns Luna as a visible player in Lumbridge,
-walks her through collision-aware waypoints, and lets her speak at goal
-transitions. Woodcutting, banking, social interaction and persistent goal
-memory are the next task layers.
+walks her through collision-aware waypoints, lets her speak at goal
+transitions, invokes the existing validated woodcutting script, detects a full
+inventory, banks bot-owned items while retaining her axe, and returns to the
+trees. Social interaction and richer persistent goal memory remain next task
+layers.
 
 ## Acceptance criteria
 
