@@ -47,25 +47,36 @@ def allowed_path(path: str) -> bool:
     return len(p.parts) <= 12 and not any(s.lower() in EXCLUDE or s.startswith('.') for s in p.parts) and p.suffix.lower() in EXTENSIONS
 
 
-def category(path: str, source: dict) -> str:
+def category(path: str, source: dict, source_commit: str | None = None, baseline: dict | None = None, blob_sha: str | None = None) -> str:
+    """A listed source file is not a missing feature, and a licence is not asset permission."""
     p = path.lower()
     if source['policy'] == 'metadata_only':
         return 'blocked_reference_only'
+    pins = read_json(ROOT.parent / 'deploy/jparris-windows/upstreams.json', {})
+    pinned = any(source.get('repo') == 'LostCityRS/' + upstream and
+                 source_commit == pins.get(key, {}).get('commit')
+                 for key, upstream in (('content', 'Content'), ('engine', 'Engine-TS'), ('client', 'Client-Java')))
+    if pinned:
+        # Source is already part of the pinned upstream; local customised installs still need verification.
+        return 'already_in_pinned_source'
+    if source.get('repo') == 'LostCityRS/Content' and baseline and blob_sha and baseline.get(path) == blob_sha:
+        return 'already_in_pinned_source'
     if p.endswith(('.npc', '.obj', '.loc', '.seq', '.pack')):
         return 'rights_review_required'
-    if source['era'] != '377':
-        return 'manual_port_required'
-    return 'agent_review_required'
+    # Kotlin, Java, TypeScript and earlier RuneScript are not interchangeable with 377.
+    return 'manual_port_required'
 
 
-def candidate(repo: str, tree_sha: str, entry: dict, source: dict, commit_sha: str | None = None) -> dict:
+
+
+def candidate(repo: str, tree_sha: str, entry: dict, source: dict, commit_sha: str | None = None, baseline: dict | None = None) -> dict:
     path = entry['path']
     key = hashlib.sha256(f"{repo}:{tree_sha}:{path}:{entry['sha']}".encode()).hexdigest()[:20]
     return {'id': key, 'source': source['key'], 'repo': repo,
             'path': path, 'blob_sha': entry['sha'], 'source_tree_sha': tree_sha,
             'url': f"https://github.com/{repo}/blob/{commit_sha or source.get('ref', tree_sha)}/{urllib.parse.quote(path, safe='/')}",
             'source_commit_sha': commit_sha,
-            'status': category(path, source), 'target': 'JoshRS 377-wip',
+            'status': category(path, source, commit_sha, baseline, entry['sha']), 'target': 'JoshRS 377-wip',
             'native_runtime_verified': False, 'rights_cleared_for_redistribution': False}
 
 
@@ -124,6 +135,22 @@ def scan(registry: list, dest: Path, batch_size: int, discover: bool) -> dict:
     packs = {}
     errors = {}
     checked = 0
+    # Exact path+Git blob identity for pinned 377. No third-party content is downloaded.
+    # Uses the metadata tree from the content source already in the registry.
+    baseline = {}
+    for src in registry:
+        if src.get('key') != 'lostcity-content-377':
+            continue
+        try:
+            pinned_commit = gh('repos/' + src['repo'] + '/commits/' + urllib.parse.quote(src['ref'], safe=''))
+            pinned_tree = gh('repos/' + src['repo'] + '/git/trees/' + pinned_commit['sha'] + '?recursive=1')
+            pins = read_json(ROOT.parent / 'deploy/jparris-windows/upstreams.json', {})
+            if (pinned_commit['sha'] == pins.get('content', {}).get('commit') and
+                not pinned_tree.get('truncated')):
+                baseline = {e['path']: e['sha'] for e in pinned_tree['tree'] if e.get('type') == 'blob'}
+        except (urllib.error.URLError, TimeoutError, ValueError, KeyError):
+            baseline = {}
+        break
     for source in registry:
         repo, ref = source['repo'], source['ref']
         try:
@@ -140,8 +167,11 @@ def scan(registry: list, dest: Path, batch_size: int, discover: bool) -> dict:
             batch, next_cursor = select_batch(tree['tree'], cursor, batch_size)
             existing = read_json(dest / 'packs' / (source['key'] + '.json'), {'candidates': []})
             records = {r['id']: r for r in existing.get('candidates', [])} if old.get('tree_sha') == tree['sha'] else {}
+            for old_record in records.values():
+                old_record['status'] = category(old_record['path'], source, revision['sha'], baseline, old_record.get('blob_sha'))
+                old_record['native_runtime_verified'] = False
             for entry in batch:
-                r = candidate(repo, tree['sha'], entry, source, revision['sha'])
+                r = candidate(repo, tree['sha'], entry, source, revision['sha'], baseline)
                 records[r['id']] = r
             records = dict(sorted(records.items(), key=lambda kv: (kv[1]['path'], kv[0])))
             if len(records) > MAX_RECORDED:
@@ -162,6 +192,15 @@ def scan(registry: list, dest: Path, batch_size: int, discover: bool) -> dict:
     index = [{'key': s['key'], 'repo': s['repo'], 'era': s['era'], 'policy': s['policy'],
               'total_catalogued': packs[s['key']]['candidate_total'] if s['key'] in packs else None,
               'error': errors.get(s['key'])} for s in registry]
+    counts = {}
+    for file in sorted((dest / 'packs').glob('*.json')):
+        for entry in read_json(file, {}).get('candidates', []):
+            counts[entry['status']] = counts.get(entry['status'], 0) + 1
+    put_json(dest / 'rights-and-compatibility.json', {
+        'schema': 1, 'counts': counts, 'baseline_commit': read_json(ROOT.parent / 'deploy/jparris-windows/upstreams.json', {}).get('content', {}).get('commit'),
+        'policy': 'Baseline entries are not new features; file names and code licences do not license proprietary RuneScape assets.',
+        'imported_third_party_assets': 0, 'personalised_world_runtime_tests': 0,
+        'next_action': 'Manually review right-cleared differences and compile against pinned 377; do not auto-copy game assets.'})
     extra = discover_public_repos() if discover else []
     put_json(dest / 'catalog.json', {'format': 1, 'target': 'JoshRS 377', 'sources': index,
                                     'discovered_untrusted_repositories': extra, 'errors': errors,
@@ -192,9 +231,10 @@ def prepare_agent_queue(dest: Path, max_tasks: int = 100) -> dict:
     for path in sorted((dest / 'packs').glob('*.json')):
         pack = read_json(path, {'candidates': []})
         records.extend(pack.get('candidates', []))
-    # Development/debug/cheat code is inventoried, but never promoted as player-content work.
+    # Development, already-included upstream code and asset packs are not new gameplay work.
     avoid = {'_test', '_unpack', 'test', 'tests', 'debug', 'cheats'}
-    records = [r for r in records if not (set(Path(r['path']).parts) & avoid)]
+    records = [r for r in records if r.get('status') != 'already_in_pinned_source' and
+               not (set(Path(r['path']).parts) & avoid)]
     rank = {'agent_review_required': 0, 'manual_port_required': 1,
             'rights_review_required': 2, 'blocked_reference_only': 3}
     records.sort(key=lambda row: (rank.get(row['status'], 9),
