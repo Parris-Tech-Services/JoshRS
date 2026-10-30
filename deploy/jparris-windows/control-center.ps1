@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param([switch]$ValidateUi)
 
+try {
 $ErrorActionPreference='Stop'
 $script:RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 . (Join-Path $PSScriptRoot 'support.ps1')
@@ -247,3 +248,22 @@ $timer.Add_Tick({ Update-Dashboard })
 $timer.Start()
 try { [void]$script:Form.ShowDialog() }
 finally { $timer.Stop(); $timer.Dispose(); $script:Form.Dispose() }
+} catch {
+    if ($ValidateUi) { throw }
+    # JoshRS.cmd hides its console. Show startup failures instead of silently
+    # closing when a script or framework error occurs before the GUI appears.
+    $details=$_.Exception.Message
+    try {
+        Add-Type -AssemblyName System.Windows.Forms
+        [void][System.Windows.Forms.MessageBox]::Show(
+            "JoshRS could not open the control center." + [Environment]::NewLine +
+            [Environment]::NewLine + $details + [Environment]::NewLine +
+            [Environment]::NewLine + 'You can still run jparris-play.cmd or jparris-setup.cmd directly to see logs.',
+            'JoshRS launcher error',
+            [System.Windows.Forms.MessageBoxButtons]::OK,
+            [System.Windows.Forms.MessageBoxIcon]::Error)
+    } catch {
+        Write-Error 'JoshRS startup failed. Open jparris-play.cmd to see the problem.'
+    }
+    exit 1
+}
