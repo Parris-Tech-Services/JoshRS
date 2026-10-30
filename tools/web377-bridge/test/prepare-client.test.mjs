@@ -29,6 +29,7 @@ test('sandbox client patch corrects real upstream bug without overwriting source
   assert.match(fs.readFileSync(path.join(out,'page/App.tsx'),'utf8'),/discord -&gt; user/)
   assert.match(fs.readFileSync(path.join(out,'page/App.tsx'),'utf8'),/Never enter your real game credentials/)
   assert.equal(fs.readFileSync(path.join(src,'page/App.tsx'),'utf8'),'discord -> user\nUse any username/password to log in')
+  assert.match(fs.readFileSync(path.join(out,'joshrs-asset-types.d.ts'),'utf8'),/declare module '\\*\\.dat'/)
   assert.equal(fs.existsSync(path.join(out,'test-rsa.pem')),false)
   assert.equal(JSON.parse(fs.readFileSync(path.join(out,'JOSHRS_PATCH_REPORT.json'))).playable,false)
   const rerun=spawnSync(process.execPath,[cmd,'--source',src,'--output',out],{encoding:'utf8'})
