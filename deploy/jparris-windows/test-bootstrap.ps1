@@ -32,3 +32,6 @@ try {
     if (-not $rejected) { throw 'Incomplete USB accepted' }
     Write-Host 'PASS: nested folders with spaces, byte-identical save/database copying, dependency exclusion, incomplete-copy rejection.'
 } finally { Remove-Item -LiteralPath $fixture -Recurse -Force -ErrorAction SilentlyContinue }
+
+# Robocopy uses exit code 1 for successful copies; all assertions above passed.
+exit 0
