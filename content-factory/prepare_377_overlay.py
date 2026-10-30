@@ -15,9 +15,16 @@ ALLOWED_PREFIX = ("scripts", "areas", "joshrs_custom")
 ALLOWED_EXT = {".rs2", ".npc"}
 # The exact two approved v1 outputs are the only upgradeable predecessors.
 APPROVED_PRIOR_HASHES = {
-    'scripts/areas/joshrs_custom/configs/joshrs_original.npc': ('959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556', '9de0448895e455ff076f8a50ed019e4a0ef07527e197889fad6a37a9e7f50a20'),
-    'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2': ('3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3', '7b2f053b9098572c5b3c6492a4cfafcc96f03ffe1b2895c9a41095e920431415')
+    'scripts/areas/joshrs_custom/configs/joshrs_original.npc': ('959e1cd62c94ba13519433273247d0cd34078999100d3e708ad730d814599556', '9de0448895e455ff076f8a50ed019e4a0ef07527e197889fad6a37a9e7f50a20', '1f60323e7478da0f0ff8845b19f850647c9818f301ad4a51eb78fef3dfdfd3bf'),
+    'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2': ('3ad4811f35fa2524e95e8c024e923b6d23a9df55ee62b3f67fa4ad91152f43d3', '7b2f053b9098572c5b3c6492a4cfafcc96f03ffe1b2895c9a41095e920431415', '59c332a8d528b7dbdacbe468f45df3bc4cbb618396967d22dbddc1c9eda8cdfc')
 }
+
+
+RETIRED_MERCHANTS = frozenset({
+    'joshrs_timber_buyer', 'joshrs_ore_buyer', 'joshrs_trail_provisioner',
+    'joshrs_law_rune_vendor', 'joshrs_nature_rune_vendor',
+    'joshrs_crafting_supplier', 'joshrs_tool_supplier'
+})
 
 
 def verified_files(source: Path) -> list[tuple[str, bytes]]:
@@ -52,13 +59,17 @@ def verified_files(source: Path) -> list[tuple[str, bytes]]:
     return entries
 
 
-def registry_additions(source: Path, destination: Path) -> tuple[Path, list[str]]:
+def registry_additions(source: Path, destination: Path) -> tuple[Path, list[str], set[str]]:
     manifest = json.loads((source / "manifest.json").read_text(encoding="utf-8"))
     names = manifest.get("npc_names")
     if (not isinstance(names, list) or not names or len(names) > 20 or
         len(names) != len(set(names)) or
         any(not re.fullmatch(r"joshrs_[a-z0-9_]{1,60}", n) for n in names)):
         raise ValueError("Invalid NPC names in manifest")
+    retired = manifest.get("retired_unrequested_merchant_keys", [])
+    if (not isinstance(retired, list) or len(retired) != len(set(retired)) or
+        not set(retired).issubset(RETIRED_MERCHANTS) or set(retired).intersection(names)):
+        raise ValueError("Unapproved or conflicting retired NPC list")
     pack = destination / "pack/npc.pack"
     if pack.is_symlink() or not pack.is_file():
         raise ValueError("Missing or linked upstream NPC pack index")
@@ -83,7 +94,7 @@ def registry_additions(source: Path, destination: Path) -> tuple[Path, list[str]
             if maximum >= 65535:
                 raise ValueError("No spare NPC identifier capacity")
             additions.append(f"{maximum}={name}")
-    return pack, additions
+    return pack, additions, set(retired).intersection(present)
 
 
 def apply_overlay(source: Path, destination: Path) -> int:
@@ -93,7 +104,7 @@ def apply_overlay(source: Path, destination: Path) -> int:
         raise ValueError("Target content directory must exist")
     if not (target_root / "scripts").is_dir():
         raise ValueError("Target must be a Lost City content checkout (scripts/ missing)")
-    pack, additions = registry_additions(source, target_root)
+    pack, additions, retire_present = registry_additions(source, target_root)
     # Preflight every file before mutating any files.
     for name, data in files:
         out = target_root.joinpath(*PurePosixPath(name).parts)
@@ -120,17 +131,22 @@ def apply_overlay(source: Path, destination: Path) -> int:
             out.write_bytes(data)
         if out.read_bytes() != data:
             raise ValueError(f"Write failed: {out}")
-    if additions:
+    if additions or retire_present:
         old = pack.read_bytes()
         backup = pack.with_name("npc.pack.joshrs-before-" + hashlib.sha256(old).hexdigest()[:12] + ".bak")
         if backup.exists() and backup.read_bytes() != old:
             raise ValueError("NPC pack was modified after the JoshRS backup; manual review required")
         if not backup.exists():
             backup.write_bytes(old)
-        with pack.open("a", encoding="utf-8") as handle:
-            if old and not old.endswith(b"\n"):
-                handle.write("\n")
-            handle.write("\n".join(additions) + "\n")
+        rows = old.decode("utf-8").splitlines()
+        # Preserve every existing ID and all unrelated registrations; only
+        # explicit, audited JoshRS vendor names are retired.
+        rows = [row for row in rows if not (
+            re.fullmatch(r"[0-9]+=([^=]+)", row.strip()) and
+            row.strip().split("=", 1)[1] in retire_present)]
+        rows.extend(additions)
+        newline = "\r\n" if b"\r\n" in old else "\n"
+        pack.write_bytes((newline.join(rows) + newline).encode("utf-8"))
     return len(files)
 
 
