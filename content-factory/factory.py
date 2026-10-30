@@ -237,9 +237,22 @@ def prepare_agent_queue(dest: Path, max_tasks: int = 100) -> dict:
                not (set(Path(r['path']).parts) & avoid)]
     rank = {'agent_review_required': 0, 'manual_port_required': 1,
             'rights_review_required': 2, 'blocked_reference_only': 3}
+    def ref_recency(row):
+        match = re.fullmatch(r'lostcity-content-([0-9]+)', row['source'])
+        return -int(match.group(1)) if match else 0
+
     records.sort(key=lambda row: (rank.get(row['status'], 9),
-                                  0 if row['source'] == 'lostcity-content-377' else 1,
-                                  row['repo'], row['path']))
+                                  row['repo'], row['path'],
+                                  ref_recency(row), row['source'], row.get('blob_sha', '')))
+    # One implementation work item per repo/path. Historical branches are
+    # alternative references, not separate missing features. Keep the latest
+    # applicable branch as the starting point; all versions stay in evidence.
+    scanned_reference_versions = len(records)
+    distinct = {}
+    for row in records:
+        distinct.setdefault((row['repo'], row['path']), row)
+    records = sorted(distinct.values(),
+                     key=lambda row: (rank.get(row['status'], 9), row['repo'], row['path']))
     # Persist a rotating cursor so a scheduled job doesn't rediscover the same
     # first 100 work orders forever. New source paths enter in sorted order.
     rotation_path = dest / "agent-queue-state.json"
@@ -265,6 +278,8 @@ def prepare_agent_queue(dest: Path, max_tasks: int = 100) -> dict:
              'note': 'Work orders only. Agents must implement and test; zero third-party assets copied.',
              'tasks': tasks}
     queue["candidate_pool"] = len(records)
+    queue["raw_reference_versions"] = scanned_reference_versions
+    queue["deduplicated_reference_versions"] = scanned_reference_versions - len(records)
     queue["rotation_offset"] = cursor
     queue["next_rotation_offset"] = next_cursor
     put_json(dest / "agent-work-orders.json", queue)

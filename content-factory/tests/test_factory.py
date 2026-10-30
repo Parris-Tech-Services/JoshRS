@@ -120,5 +120,23 @@ class FactoryTests(unittest.TestCase):
         s3={'key':'other','repo':'someone/else','era':'other','policy':'metadata_only'}
         self.assertEqual(factory.category('scripts/exam.rs2',s3),'blocked_reference_only')
 
+    def test_historical_versions_are_one_work_order_preferring_latest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            dest=Path(tmp); (dest/'packs').mkdir()
+            for era in (225,254,274):
+                factory.put_json(dest/'packs'/f'content-{era}.json',{'candidates':[{
+                    'id':str(era),'status':'manual_port_required',
+                    'source':f'lostcity-content-{era}','repo':'LostCityRS/Content',
+                    'path':'scripts/areas/common/dialogue.rs2','blob_sha':f'blob-{era}',
+                    'url':f'https://github.com/LostCityRS/Content/blob/{era}/scripts/areas/common/dialogue.rs2',
+                    'source_commit_sha':f'commit-{era}'}]})
+            task=factory.prepare_agent_queue(dest)
+            self.assertEqual(1,task['candidate_pool'])
+            self.assertEqual(3,task['raw_reference_versions'])
+            self.assertEqual(2,task['deduplicated_reference_versions'])
+            self.assertEqual(1,len(task['tasks']))
+            self.assertEqual('274',task['tasks'][0]['candidate_id'])
+            self.assertFalse(task['tasks'][0]['playable_in_377'])
+
 if __name__ == '__main__':
     unittest.main()
