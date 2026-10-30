@@ -40,6 +40,21 @@ Write-Host "ACTIVE ELROTHIRO SAVE FOUND: $($save.Length) bytes."
 Write-Host "Modified UTC: $($save.LastWriteTimeUtc.ToString('o'))"
 Write-Host "SHA-256: $hash"
 Write-Host "Account database present: $($status.DatabasePresent)"
+if ($status.DatabasePresent) {
+    $accountTool=Join-Path $codeRoot 'tools\rs377-saves\inspect-account-db.mjs'
+    if (Test-Path -LiteralPath $accountTool -PathType Leaf) {
+        $dbPath=Join-Path $status.Engine 'db.sqlite'
+        $dbOutput=& $node.Source $accountTool $dbPath
+        if ($LASTEXITCODE -eq 0) {
+            $dbReport=($dbOutput -join [Environment]::NewLine) | ConvertFrom-Json
+            Write-Host "Account DB quick_check passed: $($dbReport.sqliteVerified). Account records: $($dbReport.accountRecords)."
+            if (-not $dbReport.characterAccountPresent) {
+                Write-Warning 'Elrothiro account record NOT FOUND in the current SQLite DB; save alone cannot prove login restoration.'
+            }
+        } else { Write-Warning 'Account DB integrity could not be verified. Do not presume that login recovery works.' }
+    }
+}
+
 Write-Host "Player save files detected: $($status.SaveCount)"
 Write-Host 'Binary save presence does not prove a successful game login or that it is your newest progress.'
 if ($CandidateSavePath) {
