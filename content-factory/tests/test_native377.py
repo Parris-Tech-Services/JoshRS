@@ -50,15 +50,15 @@ class Native377Tests(unittest.TestCase):
             (out/'unknown.dat').write_bytes(b'not allowed')
             with self.assertRaises(ValueError): native377.build_native(intake,out)
 
-    def test_three_real_trade_interactions_have_payment_and_capacity_guards(self):
+    def test_seven_real_trade_interactions_have_payment_and_capacity_guards(self):
         with tempfile.TemporaryDirectory() as tmp:
             target=Path(tmp)/'overlay'
             manifest=native377.build_native(HERE_INTAKE, target)
             self.assertEqual(set(manifest['gameplay_mechanics']),
-                             {'joshrs_timber_buyer','joshrs_ore_buyer','joshrs_trail_provisioner'})
-            self.assertEqual(len(manifest['npc_names']),4)
+                             {'joshrs_timber_buyer','joshrs_ore_buyer','joshrs_trail_provisioner','joshrs_law_rune_vendor','joshrs_nature_rune_vendor','joshrs_crafting_supplier','joshrs_tool_supplier'})
+            self.assertEqual(len(manifest['npc_names']),8)
             script=(target/'scripts/areas/joshrs_custom/scripts/joshrs_original.rs2').read_text()
-            for item,needed,output,count in [('logs',3,'coins',12),('copper_ore',2,'coins',8),('coins',4,'cooked_meat',1)]:
+            for item,needed,output,count in [('logs',3,'coins',12),('copper_ore',2,'coins',8),('coins',4,'cooked_meat',1),('coins',35,'lawrune',1),('coins',20,'naturerune',1),('coins',25,'amulet_mould',1),('coins',5,'chisel',1)]:
                 self.assertIn(f'if (inv_total(inv, {item}) < {needed})',script)
                 self.assertIn(f'inv_del(inv, {item}, {needed});',script)
                 self.assertIn(f'inv_add(inv, {output}, {count});',script)
@@ -66,8 +66,8 @@ class Native377Tests(unittest.TestCase):
             for key in manifest['npc_names']:
                 self.assertIn('[opnpc1,'+key+']',script)
                 self.assertIn('[debugproc,joshrs_spawn_'+key+']',script)
-            self.assertEqual(script.count('inv_del(inv,'),3)
-            self.assertEqual(script.count('if ($choice ! 1)'),3)
+            self.assertEqual(script.count('inv_del(inv,'),7)
+            self.assertEqual(script.count('if ($choice ! 1)'),7)
             self.assertNotIn('!=',script)
 
 if __name__=='__main__': unittest.main()

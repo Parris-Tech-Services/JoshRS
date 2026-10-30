@@ -16,8 +16,8 @@ import urllib.parse
 import urllib.request
 
 ROOT = Path(__file__).resolve().parent
-MAX_BATCH = 100
-MAX_RECORDED = 3000
+MAX_BATCH = 500
+MAX_RECORDED = 12000
 EXTENSIONS = {'.rs2', '.ts', '.tsx', '.kt', '.java', '.py', '.json', '.yml', '.yaml', '.toml', '.npc', '.obj', '.loc', '.seq', '.pack'}
 EXCLUDE = {'node_modules', 'vendor', 'dist', 'build', '.git', '.github', 'assets', 'sprites', 'textures', 'models', 'maps', 'cache', 'audio', 'music', 'songs', 'sound', 'images', 'media', 'fonts', 'generated', 'nonfree', 'third_party'}
 SAFE_NAME = re.compile(r'^[a-z][a-z0-9_-]{1,63}$')
@@ -175,8 +175,8 @@ def scan(registry: list, dest: Path, batch_size: int, discover: bool) -> dict:
                 records[r['id']] = r
             records = dict(sorted(records.items(), key=lambda kv: (kv[1]['path'], kv[0])))
             if len(records) > MAX_RECORDED:
-                # Rolling bounded staging: advance the cursor even for huge repositories.
-                # Older entries can be rediscovered on the next completed inventory pass.
+                # Bounded staging; reports only the last 12k when a single repo exceeds capacity.
+                # The cursor still rotates across all paths; do not claim full coverage until proven.
                 records = dict(list(records.items())[-MAX_RECORDED:])
             packs[source['key']] = {'source': source, 'tree_sha': tree['sha'], 'commit_sha': revision['sha'], 'candidate_total': len(records),
                                     'cursor': next_cursor, 'candidates': list(records.values())}
@@ -279,8 +279,8 @@ def main() -> None:
     parser.add_argument('--batch-size', type=int, default=MAX_BATCH)
     parser.add_argument('--output', type=Path, default=ROOT / 'generated')
     args = parser.parse_args()
-    if not 1 <= args.batch_size <= 100:
-        parser.error('batch-size must be 1..100')
+    if not 1 <= args.batch_size <= 1000:
+        parser.error('batch-size must be 1..1000')
     n = convert_owned(ROOT / 'intake', args.output / 'original-content-specs.json')
     print(f'Converted {n} original user-authored records to integration specifications (NOT native 377 packs).')
     if args.live:

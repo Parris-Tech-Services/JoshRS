@@ -2,9 +2,9 @@
 
 ## Actual implementation
 
-The content factory now produces four original NPCs: a **Woodland Guide**, a **Timber Buyer** (three logs for twelve coins), an **Ore Buyer** (two copper ores for eight coins), and a **Trail Provisioner** (four coins for cooked meat, only with free inventory space). Each has a native revision-377 NPC definition, Talk-to RuneScript interaction and administrative spawn command. Unlike the research catalogue, these are native files under `content-factory/generated/native377/scripts/` that the pinned `LostCityRS/Engine-TS` compiler can pack.
+The content factory now produces eight original NPCs: the **Woodland Guide**, **Timber Buyer** (three logs for twelve coins), **Ore Buyer** (two copper ores for eight coins), **Trail Provisioner** (cooked meat for four coins), and four suppliers offering **law runes, nature runes, amulet moulds and chisels** for coins. Goods require sufficient inventory room. Each has a native revision-377 NPC definition, Talk-to RuneScript interaction and administrative spawn command. Unlike the research catalogue, these are native files under `content-factory/generated/native377/scripts/` that the pinned `LostCityRS/Engine-TS` compiler can pack.
 
-The automated runner generates original overlay source every day. The separate `Verify native 377 content pack` workflow checks the hashes, tests safety guards, clones the **exact pinned engine/content commits** into an ephemeral GitHub runner, registers unused NPC IDs, applies only a scoped intentional NPC-cache checksum exception, and compiles with `BUILD_VERIFY=true` and `BUILD_VERIFY_PACK=true`. No game cache assets or saves are committed to the repository.
+The automated runner generates original overlay source every day and maintains a per-candidate licence/rights evidence ledger. The separate `Verify native 377 content pack` workflow checks the hashes, tests safety guards, clones the **exact pinned engine/content commits** into an ephemeral GitHub runner, registers unused NPC IDs, applies only a scoped intentional NPC-cache checksum exception, and compiles with `BUILD_VERIFY=true` and `BUILD_VERIFY_PACK=true`. No game cache assets or saves are committed to the repository.
 
 **These tests do not prove a successful login or live NPC interaction on JParris Desktop.** The custom world and Elrothiro's saves are only available locally. The generated Trial Token is not yet a native item, and modern RuneScape updates are not automatically compatible with the old client.
 
@@ -31,3 +31,7 @@ Each spawn is session-scoped (500 cycles) and does **not** create a persistent s
 ## Future game content
 
 Further implementation agents should take one rights-cleared work order, add real native scripts/definitions/locations as appropriate, run the same disposable build gate, then test in a backed-up local 377 world. Never automatically copy proprietary assets from later-game clients, cache dumps, mods or downloaded archives into JoshRS. Consult `AGENTS.md` and `content-factory/generated/agent-work-orders.json`.
+
+## Compiler and disposable smoke-test proof
+
+Automated PR checks build with the pinned engine and content sources, then launch a disposable server with SQLite and check the game/Web TCP listeners. Both must pass before merging any new native game logic. This tests that the compiled server **boots**, but does not exercise player login, trade interactions, live client rendering or Elrothiro's private character save. Existing customised scripts are accepted for upgrade only if their hashes match explicitly approved previous JoshRS releases; all other replacements fail closed and the installer backs up sources/packs locally.
