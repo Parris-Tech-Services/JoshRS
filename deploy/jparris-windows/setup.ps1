@@ -11,6 +11,7 @@ $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $runtime = Join-Path $repo 'runtime\jparris-377'
 $manifest = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'upstreams.json') -Raw | ConvertFrom-Json
 $activeFile = Join-Path $runtime 'active.json'
+. (Join-Path $PSScriptRoot 'jdk.ps1')
 
 function Run-Native([string]$exe, [string[]]$arguments, [string]$workingDirectory) {
     Push-Location -LiteralPath $workingDirectory
@@ -23,9 +24,7 @@ function Check-Requirements {
     $requirements = @(
         @{ command='git.exe'; package='Git.Git' },
         @{ command='node.exe'; package='OpenJS.NodeJS.LTS' },
-        @{ command='npm.cmd'; package='OpenJS.NodeJS.LTS' },
-        @{ command='java.exe'; package='EclipseAdoptium.Temurin.21.JDK' },
-        @{ command='javac.exe'; package='EclipseAdoptium.Temurin.21.JDK' }
+        @{ command='npm.cmd'; package='OpenJS.NodeJS.LTS' }
     )
     $missing = @($requirements | Where-Object { -not (Get-Command $_.command -ErrorAction SilentlyContinue) } |
         Select-Object -ExpandProperty package -Unique)
@@ -40,11 +39,10 @@ function Check-Requirements {
             if ($LASTEXITCODE -ne 0) { throw "Installer failed for $id. Check the message above and rerun setup." }
         }
         # Reload PATH after native installers complete.
-        $env:JAVA_HOME = [Environment]::GetEnvironmentVariable('JAVA_HOME','Machine')
         $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' +
             [Environment]::GetEnvironmentVariable('Path','User')
         $availableCount = @(Get-Command 'git.exe','node.exe','npm.cmd','java.exe','javac.exe' -ErrorAction SilentlyContinue).Count
-        if ($availableCount -ne 5) {
+        if ($availableCount -ne 3) {
             throw 'Tool installation finished. Close this terminal, open a new one and run setup again.'
         }
     }
@@ -52,11 +50,10 @@ function Check-Requirements {
     if ($LASTEXITCODE -ne 0 -or $nodeMajor -lt [int]$manifest.nodeMinMajor) {
         throw "Node.js $($manifest.nodeMinMajor)+ is required. Update Node using: winget upgrade --id OpenJS.NodeJS.LTS --exact"
     }
-    $javacVersion = (& javac.exe -version 2>&1 | Out-String).Trim()
-    if ($javacVersion -notmatch '^javac 21(?:\.|$)') {
-        throw "JDK 21 is required; found $javacVersion. Select JDK 21 in JAVA_HOME and PATH, then rerun setup."
-    }
-    Write-Host "Prerequisites OK: Node $(& node.exe --version), Git, Java compiler"
+    # Java 17 can coexist with JDK 21. Install or find 21 and use it only
+    # for this installation and the child Gradle/Java processes.
+    $selectedJdk=Set-JoshRSJdk21 -InstallIfMissing
+    Write-Host "Prerequisites OK: Node $(& node.exe --version), Git, JDK 21 at $selectedJdk"
 }
 function Get-PinnedRepo($spec, [string]$directory) {
     if (Test-Path -LiteralPath (Join-Path $directory '.git')) {

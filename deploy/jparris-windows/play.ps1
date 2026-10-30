@@ -2,6 +2,7 @@
 param([ValidateSet('Both','Server','Client')][string]$Role='Both')
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'jdk.ps1')
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $stateFile = Join-Path $repo 'runtime\jparris-377\active.json'
 if (-not (Test-Path -LiteralPath $stateFile)) {
@@ -37,6 +38,11 @@ function Start-RoleWindow([string]$role) {
     $command = "-NoProfile -NoExit -ExecutionPolicy Bypass -File " +
         ('"' + $PSCommandPath + '"') + " -Role $role"
     Start-Process -FilePath 'powershell.exe' -ArgumentList $command -WorkingDirectory $repo
+}
+# The logged-in Windows user may still have JDK 17 as their default Java.
+# Select JDK 21 before opening the Java client, including on future play sessions.
+if ($Role -in @('Both','Client')) {
+    $null=Set-JoshRSJdk21
 }
 if ($Role -eq 'Server') {
     $mutex = [System.Threading.Mutex]::new($false, 'Local\JoshRS377GameServer')
