@@ -30,6 +30,12 @@ See also [multiplayer work tracker #5](https://github.com/Parris-Tech-Services/J
 
 Source projects remain available as pinned submodules in [integrations/reference-sources](integrations/reference-sources/README.md). A pinned repository is not equivalent to a playable feature; client forks, modern RuneLite and Steam notes are not silently merged into your customised world. No save data is touched.
 
+## Protect the original Elrothiro character
+
+For your personalised revision-377 world, **log out and stop the game**, then double-click **`JoshRS-Backup-Elrothiro.cmd`**. This checks the active native `0x2004` version-7 save and CRC-32, inspects the local SQLite account database without reading passwords into logs, and makes an offline SHA-256-verified snapshot of all player and account data.
+
+[Recovery and verification guide](docs/ELROTHIRO_SAVE_RECOVERY.md). The tool can compare a recovery candidate against the active save **without restoring or overwriting anything**. A green backup report does not prove a real login; production browser gameplay and save restoration still need host testing. The independent Vercel Woodlands demo is not a substitute for Elrothiro's real character.
+
 ## Automated 377 research and original-content preparation
 
 The [377 Content Factory](docs/377_CONTENT_FACTORY.md) uses a scheduled GitHub Actions runner to inventory public 377/community source *metadata* in rotating batches, track exact source hashes and prepare strictly original, user-authored integration specifications. [Agent instructions](AGENTS.md) tell Agy, Codex and Claude Code how to turn reviewed candidates into validated server content. See [generated packs](content-factory/generated/) as they appear. No Jagex-owned assets are copied or auto-installed; no discovered item is called playable before compiling and testing it in the real custom 377 world.
