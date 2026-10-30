@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - "content-factory/native377.py"
+      - "deploy/jparris-windows/install-native377.ps1"
+      - "JoshRS-Install-377-Content.cmd"
       - "content-factory/patch_377_npc_crc.py"
       - "content-factory/generated/native377/**"
       - "content-factory/intake/**"
@@ -35,6 +37,13 @@ jobs:
           node-version: "24"
       - name: Run Python safety tests
         run: python -m unittest discover -s content-factory/tests -v
+      - name: Parse Windows installer PowerShell syntax
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'deploy/jparris-windows/install-native377.ps1').Path, [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_.Message }; exit 1 }
       - name: Generate and verify immutable original content overlay
         shell: bash
         run: |
