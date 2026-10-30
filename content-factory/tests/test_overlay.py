@@ -39,7 +39,7 @@ class OverlayTests(unittest.TestCase):
             (target/'scripts').mkdir(parents=True)
             (target/'pack').mkdir()
             pack=target/'pack/npc.pack'
-            pack.write_text('0=hans\\n1=joshrs_law_rune_vendor\\n2=joshrs_ore_buyer\\n3=custom_quest_npc\\n4=joshrs_woodland_guide\\n')
+            pack.write_text('0=hans\n1=joshrs_law_rune_vendor\n2=joshrs_ore_buyer\n3=custom_quest_npc\n4=joshrs_woodland_guide\n')
             native377.build_native(Path(__file__).resolve().parents[1]/'intake',source)
             self.assertEqual(2,ov.apply_overlay(source,target))
             updated=pack.read_text()
@@ -61,7 +61,7 @@ class OverlayTests(unittest.TestCase):
             target=root/'upstream'
             (target/'scripts').mkdir(parents=True)
             (target/'pack').mkdir()
-            (target/'pack/npc.pack').write_text('0=custom_quest_npc\\n')
+            (target/'pack/npc.pack').write_text('0=custom_quest_npc\n')
             native377.build_native(Path(__file__).resolve().parents[1]/'intake',source)
             m=source/'manifest.json'
             data=json.loads(m.read_text())
@@ -69,6 +69,6 @@ class OverlayTests(unittest.TestCase):
             m.write_text(json.dumps(data))
             with self.assertRaisesRegex(ValueError, 'retired'):
                 ov.apply_overlay(source,target)
-            self.assertEqual((target/'pack/npc.pack').read_text(),'0=custom_quest_npc\\n')
+            self.assertEqual((target/'pack/npc.pack').read_text(),'0=custom_quest_npc\n')
 
 if __name__=='__main__': unittest.main()
