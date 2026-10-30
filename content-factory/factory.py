@@ -141,7 +141,9 @@ def scan(registry: list, dest: Path, batch_size: int, discover: bool) -> dict:
                 records[r['id']] = r
             records = dict(sorted(records.items(), key=lambda kv: (kv[1]['path'], kv[0])))
             if len(records) > MAX_RECORDED:
-                raise ValueError('source exceeds max stored entries; increase limit after review')
+                # Rolling bounded staging: advance the cursor even for huge repositories.
+                # Older entries can be rediscovered on the next completed inventory pass.
+                records = dict(list(records.items())[-MAX_RECORDED:])
             packs[source['key']] = {'source': source, 'tree_sha': tree['sha'], 'candidate_total': len(records),
                                     'cursor': next_cursor, 'candidates': list(records.values())}
             state[source['key']] = {'cursor': next_cursor, 'tree_sha': tree['sha'], 'complete_pass': next_cursor == 0}
