@@ -65,7 +65,7 @@ def interaction_for_npc(key: str, description: str) -> str:
     rule = TRADE_RULES[key]
     parts = [f'~chatnpc("<p,neutral>{description}");',
              f'def_int $choice = ~p_choice2_header("{rule["option"]}", 1, "Not today.", 2, "Would you like to trade?");',
-             'if ($choice != 1) { return; }',
+             'if ($choice ! 1) { return; }',
              f'if (inv_total(inv, {rule["from_obj"]}) < {rule["from_qty"]}) {{',
              '    mes("You do not have enough supplies to complete this trade.");',
              '    return;',
