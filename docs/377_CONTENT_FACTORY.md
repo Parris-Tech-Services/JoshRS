@@ -13,7 +13,8 @@ GitHub Actions is configured daily at 03:21 UTC, on manual dispatch and for rele
 3. Discover further public repositories with bounded searches. New finds remain untrusted metadata-only; their code is never executed or automatically licenced.
 4. Stage generated/packs/<source>.json: source permalink, blob/tree SHA, risk/status. These are research/integration *queues*, not playable native game packs.
 5. Convert only strictly user-authored JSON records from intake into generated/original-content-specs.json. This structured specification is not a .dat/.idx cache, .rs2 script or compiled quest.
-6. Test all converters/safety guards before the workflow commits the generated files. Agy, Codex and Claude Code can then implement candidates in the actual private 377 content checkout.
+6. Rank candidate paths into generated/agent-work-orders.json, with explicit permissions and runtime-verification steps. These are work orders, not installed content.
+7. Test all converters/safety guards before the workflow commits the generated files. Agy, Codex and Claude Code can then implement candidates in the actual private 377 content checkout.
 
 ## Rights and compatibility
 
