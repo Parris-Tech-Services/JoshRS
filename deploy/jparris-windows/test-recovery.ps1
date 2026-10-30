@@ -42,3 +42,6 @@ Assert ($added.Count -eq 1) 'a launcher failure must produce one diagnostic log'
 Assert ((Get-Content -LiteralPath $added[0].FullName -Raw) -like '*Synthetic dashboard launch failure*') 'failure reason missing'
 Remove-Item -LiteralPath $added[0].FullName -Force
 Write-Host 'PASS: hidden dashboard failure emits a discoverable diagnostic log and a nonzero exit code'
+# The deliberately failed child returned 1 as tested above; clear it for CI success.
+$global:LASTEXITCODE=0
+exit 0
