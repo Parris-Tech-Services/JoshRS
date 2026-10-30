@@ -2,7 +2,8 @@
 param(
     [string]$RepoRoot='',
     [switch]$CreateBackup,
-    [string]$VerifyBackup=''
+    [string]$VerifyBackup='',
+    [string]$CandidateSavePath=''
 )
 $ErrorActionPreference='Stop'
 if (-not $RepoRoot) { $RepoRoot=Join-Path $PSScriptRoot '..\..' }
@@ -41,6 +42,20 @@ Write-Host "SHA-256: $hash"
 Write-Host "Account database present: $($status.DatabasePresent)"
 Write-Host "Player save files detected: $($status.SaveCount)"
 Write-Host 'Binary save presence does not prove a successful game login or that it is your newest progress.'
+if ($CandidateSavePath) {
+    $candidate=(Resolve-Path -LiteralPath $CandidateSavePath -ErrorAction Stop).Path
+    $output=& $node.Source $validator $candidate
+    if ($LASTEXITCODE -ne 0) { throw 'Recovery candidate failed revision-377 CRC verification. Do not restore.' }
+    $other=($output -join [Environment]::NewLine) | ConvertFrom-Json
+    Write-Host "Recovery candidate valid: $($other.bytes) bytes; SHA-256: $($other.sha256)."
+    if ($other.sha256 -eq $decoded.sha256) {
+        Write-Host 'Recovery candidate is byte-identical to the current active Elrothiro save.'
+    } else {
+        Write-Host "Compared with active: XP difference $($other.totalSkillXP - $decoded.totalSkillXP); playtime-tick difference $($other.playtimeTicks - $decoded.playtimeTicks)."
+        Write-Warning 'Differences do NOT prove which save has the latest items, quests or progress. No files have been restored.'
+    }
+}
+
 if ($CreateBackup) {
     if ($status.GamePortOpen -or $status.WebPortOpen) {
         throw 'Stop the game gracefully before backup. No copy made.'
