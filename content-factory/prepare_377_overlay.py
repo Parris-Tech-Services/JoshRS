@@ -7,6 +7,7 @@ Refuses unrecognised paths, symlink traversal and destructive replacements.
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path, PurePosixPath
 import sys
 
@@ -46,6 +47,40 @@ def verified_files(source: Path) -> list[tuple[str, bytes]]:
     return entries
 
 
+def registry_additions(source: Path, destination: Path) -> tuple[Path, list[str]]:
+    manifest = json.loads((source / "manifest.json").read_text(encoding="utf-8"))
+    names = manifest.get("npc_names")
+    if (not isinstance(names, list) or not names or len(names) > 20 or
+        len(names) != len(set(names)) or
+        any(not re.fullmatch(r"joshrs_[a-z0-9_]{1,60}", n) for n in names)):
+        raise ValueError("Invalid NPC names in manifest")
+    pack = destination / "pack/npc.pack"
+    if pack.is_symlink() or not pack.is_file():
+        raise ValueError("Missing or linked upstream NPC pack index")
+    rows = pack.read_text(encoding="utf-8").splitlines()
+    present, used, maximum = set(), set(), -1
+    for row in rows:
+        if not row.strip() or row.lstrip().startswith("//"):
+            continue
+        match = re.fullmatch(r"([0-9]+)=([A-Za-z0-9_]+)", row.strip())
+        if not match:
+            raise ValueError("Invalid NPC pack registry row")
+        num, name = int(match.group(1)), match.group(2)
+        if num in used or name in present:
+            raise ValueError("Duplicate NPC registry value")
+        used.add(num)
+        present.add(name)
+        maximum = max(maximum, num)
+    additions = []
+    for name in sorted(names):
+        if name not in present:
+            maximum += 1
+            if maximum >= 65535:
+                raise ValueError("No spare NPC identifier capacity")
+            additions.append(f"{maximum}={name}")
+    return pack, additions
+
+
 def apply_overlay(source: Path, destination: Path) -> int:
     files = verified_files(source)
     target_root = destination.resolve()
@@ -53,6 +88,7 @@ def apply_overlay(source: Path, destination: Path) -> int:
         raise ValueError("Target content directory must exist")
     if not (target_root / "scripts").is_dir():
         raise ValueError("Target must be a Lost City content checkout (scripts/ missing)")
+    pack, additions = registry_additions(source, target_root)
     # Preflight every file before mutating any files.
     for name, data in files:
         out = target_root.joinpath(*PurePosixPath(name).parts)
@@ -69,6 +105,17 @@ def apply_overlay(source: Path, destination: Path) -> int:
             out.write_bytes(data)
         if out.read_bytes() != data:
             raise ValueError(f"Write failed: {out}")
+    if additions:
+        old = pack.read_bytes()
+        backup = pack.with_name("npc.pack.joshrs-original.bak")
+        if backup.exists() and backup.read_bytes() != old:
+            raise ValueError("NPC pack was modified after the JoshRS backup; manual review required")
+        if not backup.exists():
+            backup.write_bytes(old)
+        with pack.open("a", encoding="utf-8") as handle:
+            if old and not old.endswith(b"\n"):
+                handle.write("\n")
+            handle.write("\n".join(additions) + "\n")
     return len(files)
 
 
