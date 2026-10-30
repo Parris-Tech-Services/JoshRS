@@ -4,6 +4,7 @@ on:
     paths:
       - "content-factory/native377.py"
       - "content-factory/smoke_377.py"
+      - "content-factory/gap_audit.py"
       - "content-factory/factory.py"
       - "content-factory/prepare_377_overlay.py"
       - "deploy/jparris-windows/install-native377.ps1"
@@ -74,6 +75,11 @@ jobs:
               if actual!=item["commit"]: raise SystemExit("Upstream pin mismatch")
               print(key, actual)
           PY
+      - name: Confirm existing items and mechanics in pinned 377 content
+        shell: bash
+        run: |
+          python content-factory/gap_audit.py --content "$RUNNER_TEMP/joshrs-377-build/content" --manifest "$RUNNER_TEMP/native377/manifest.json" --output "$RUNNER_TEMP/377-feature-gap-evidence.json"
+          python -m json.tool "$RUNNER_TEMP/377-feature-gap-evidence.json" >/dev/null
       - name: Apply text-only overlay to disposable upstream content
         shell: bash
         run: |
