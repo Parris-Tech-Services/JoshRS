@@ -42,6 +42,45 @@ def safe_line(value: str, max_length: int = 200) -> str:
     return value
 
 
+# These are ORIGINAL new game interactions, not copied RuneScape dialogue.
+# Item IDs are names from the already-pinned local 377 engine; no asset data is distributed.
+# Fixed rule IDs prevent public intake data from injecting arbitrary RuneScript.
+TRADE_RULES = {
+    'joshrs_timber_buyer': {'from_obj': 'logs', 'from_qty': 3, 'to_obj': 'coins', 'to_qty': 12,
+                            'option': 'Sell 3 logs for 12 coins.', 'result': 'You exchange three logs for twelve coins.', 'needs_space': False},
+    'joshrs_ore_buyer': {'from_obj': 'copper_ore', 'from_qty': 2, 'to_obj': 'coins', 'to_qty': 8,
+                         'option': 'Sell 2 copper ores for 8 coins.', 'result': 'You sell two copper ores for eight coins.', 'needs_space': False},
+    'joshrs_trail_provisioner': {'from_obj': 'coins', 'from_qty': 4, 'to_obj': 'cooked_meat', 'to_qty': 1,
+                                'option': 'Buy cooked meat for 4 coins.', 'result': 'You buy a warm meal for four coins.', 'needs_space': True},
+}
+
+
+def interaction_for_npc(key: str, description: str) -> str:
+    if key not in TRADE_RULES:
+        return (
+            f'~chatnpc("<p,happy>Welcome to the woodland trail!");\n'
+            f'~chatnpc("<p,neutral>{description}");\n'
+            'mes("This original JoshRS guide is ready to talk.");\n'
+        )
+    rule = TRADE_RULES[key]
+    parts = [f'~chatnpc("<p,neutral>{description}");',
+             f'def_int $choice = ~p_choice2_header("{rule["option"]}", 1, "Not today.", 2, "Would you like to trade?");',
+             'if ($choice != 1) { return; }',
+             f'if (inv_total(inv, {rule["from_obj"]}) < {rule["from_qty"]}) {{',
+             '    mes("You do not have enough supplies to complete this trade.");',
+             '    return;',
+             '}']
+    if rule['needs_space']:
+        parts.extend(['if (inv_freespace(inv) < 1) {',
+                      '    mes("Make room in your inventory before trading.");',
+                      '    return;',
+                      '}'])
+    parts.extend([f'inv_del(inv, {rule["from_obj"]}, {rule["from_qty"]});',
+                  f'inv_add(inv, {rule["to_obj"]}, {rule["to_qty"]});',
+                  f'mes("{rule["result"]}");'])
+    return '\n'.join(parts) + '\n'
+
+
 def build_native(source: Path, output: Path) -> dict:
     """Generate only original NPCs. Do not fabricate fully working items or quests."""
     specs = []
@@ -71,12 +110,10 @@ def build_native(source: Path, output: Path) -> dict:
         config += f"\n[{k}]\nname={name}\ndesc={description}\n{BASE_MODEL}"
         scripts += (
             f"\n[opnpc1,{k}]\n"
-            f'~chatnpc("<p,happy>Welcome to the woodland trail!");\n'
-            f'~chatnpc("<p,neutral>{description}");\n'
-            'mes("This original JoshRS guide is ready to talk.");\n'
-            f"\n[debugproc,joshrs_spawn_{k}]\n"
-            f"npc_add(coord, {k}, 500);\n"
-            f'mes("{name} has been summoned near you.");\n'
+            + interaction_for_npc(k, description)
+            + f"\n[debugproc,joshrs_spawn_{k}]\n"
+            + f"npc_add(coord, {k}, 500);\n"
+            + f'mes("{name} has been summoned near you.");\n'
         )
 
     base = Path("scripts/areas/joshrs_custom")
@@ -100,12 +137,13 @@ def build_native(source: Path, output: Path) -> dict:
         "runtime_login_verified": False,
         "persistent_npc_spawns": False,
         "includes_player_save_changes": False,
-        "gameplay_scope": "Named NPC definitions, Talk-to dialogue and debug-session spawn commands; no native inventory item or persistent quest",
+        "gameplay_scope": "Original guide and three inventory-checked NPC trades for logs, copper ore and cooked meat; debug-session spawns only; no persistent quest",
         "files": [
             {"path": name, "sha256": hashlib.sha256(body.encode("utf-8")).hexdigest()}
             for name, body in sorted(files.items())
         ],
         "npc_names": [r["key"] for r in sorted(specs, key=lambda v: v["key"])],
+        "gameplay_mechanics": [r["key"] for r in sorted(specs, key=lambda v: v["key"]) if r["key"] in TRADE_RULES],
     }
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
