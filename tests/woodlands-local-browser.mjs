@@ -49,6 +49,11 @@ try{
   
   await page.locator('#import-save-file').setInputFiles({name:'woodlands-save.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(exported))});
   await page.waitForFunction(()=>document.querySelector('#bank-summary')?.textContent?.includes('Oak logs: 7'));
+  // A well-formed but impossible bank quantity must not overwrite a real save.
+  const tampered={...exported,bank:{...exported.bank,logs:1000000}};
+  await page.locator('#import-save-file').setInputFiles({name:'overflow.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(tampered))});
+  await page.waitForFunction(()=>document.querySelector('#message')?.textContent?.includes('Invalid save'));
+  assert.match(await page.locator('#bank-summary').innerText(),/Oak logs: 7/);
   await page.locator('#import-save-file').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from('not-json')});
   await page.waitForFunction(()=>document.querySelector('#message')?.textContent?.includes('Invalid save'));
   assert.match(await page.locator('#bank-summary').innerText(),/Oak logs: 7/);
