@@ -1,6 +1,10 @@
 @echo off
 setlocal
 cd /d "%~dp0"
+if not exist "%~dp0runtime\jparris-377\active.json" (
+  call "%~dp0jparris-setup.cmd"
+  exit /b
+)
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0deploy\jparris-windows\play.ps1"
 if errorlevel 1 (
   echo.
@@ -8,5 +12,4 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
-echo Client and server windows opened, or existing world detected.
-pause
+exit /b 0

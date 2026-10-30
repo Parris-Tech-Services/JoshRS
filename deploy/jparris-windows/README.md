@@ -31,11 +31,14 @@ For customised save restoration, choose the actual USB copy, not the incomplete 
 **On JParris Desktop:**
 
 1. Download the current [JoshRS GitHub ZIP](https://github.com/Parris-Tech-Services/JoshRS/archive/refs/heads/main.zip) and extract it somewhere permanent, such as `C:\JoshRS` (do not launch it from inside the compressed ZIP).
-2. **To restore your actual customised Fedora world:** attach the USB copy and drag the **USB JoshRS folder** onto `jparris-setup.cmd`. The Windows launcher accepts the folder path as its only optional argument.
-3. **To try a clean upstream revision-377 world instead:** double-click `jparris-setup.cmd` normally, without a USB folder.
-4. After the initial setup, **double-click `jparris-play.cmd`** for later sessions.
+2. **Double-click `jparris-play.cmd`.** On first use it opens setup automatically.
+3. Choose **1** to restore your customised USB world, then select its JoshRS folder in the folder picker. Choose **2** only if you want a clean world without your existing character.
+4. Setup installs missing tools, copies the game, backs up saves, migrates the database, compiles the client and opens the game.
+5. Afterwards, double-click **Play JoshRS** on your desktop.
 
-Setup checks for Git, Node.js 24+, and JDK 21, using Windows Package Manager to install missing prerequisites where available. You may need to approve Windows installation prompts and rerun the setup script after opening a fresh terminal. It does **not** require WSL, Docker or a paid host.
+You can still drag your USB JoshRS folder onto `jparris-setup.cmd` to skip the picker. Keep the extracted launcher folder in its permanent location so the shortcut keeps working. First setup needs internet access and can take several minutes. Approve any Windows tool-installation prompts. No WSL, Docker or paid host is needed.
+
+Setup checks Git, Node.js 24+ and JDK 21. Stop an existing world with **Ctrl+C** in its server window before rerunning setup; setup refuses to migrate an active configured world.
 
 Equivalent commands in Command Prompt opened in the extracted JoshRS root:
 
@@ -85,4 +88,4 @@ The public JoshRS repository **does not vendor the game content or redistribute 
 
 ## Verification limitations
 
-GitHub can run a static PowerShell syntax/manifest check. Actual Windows engine installation, Gradle build, Fedora save restoration, game login and interactive client rendering require a real Windows test machine and are **not claimed as completed** by this source-only change.
+The Windows workflow runs under Windows PowerShell 5.1 (the same interpreter as the double-click launcher). It checks syntax, imports a synthetic USB fixture with spaces in its path, verifies save/database hashes, rejects incomplete copies, installs the pinned engine, migrates SQLite, compiles Java and starts a disposable world to check both listeners. These automated checks do not establish successful interactive game login or restoration of your actual Elrothiro save: those still require your USB files and JParris Desktop.
