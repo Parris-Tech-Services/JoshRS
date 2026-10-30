@@ -22,6 +22,14 @@ Important: **2004Scape (November 2004)** and **official Old School RuneScape (20
 
 See also [multiplayer work tracker #5](https://github.com/Parris-Tech-Services/JoshRS/issues/5) and [self-hosting gate #3](https://github.com/Parris-Tech-Services/JoshRS/issues/3).
 
+## Luna bot: fixing duels and improving AI
+
+**[Luna duel / smartest open-source bot comparison](docs/rs377/LUNA_DUEL_AND_SMART_BOTS_2026-10-31.md)** · [Live fix issue #34](https://github.com/Parris-Tech-Services/JoshRS/issues/34).
+
+The actual Java-client screenshot confirms Luna is visible but clicking **Challenge Luna** does not respond. The read-only `tools/luna377/audit-duel.mjs` utility traces the **active** 377 engine/content source to find the missing option/handler, with GitHub Actions regression coverage. The correct fix must be made and visually tested in the **personalised JParris Desktop runtime**, not guessed from a static menu or replaced by a different NPC.
+
+Current open-source bot inspirations: 2004SP Progressive (same Lost City TypeScript family), Luna-RS (revision 377 Java/Kotlin autonomous bot design), RS-SDK (agent observation), Microbot (modern OSRS client automation). No bot engine or live combat integration is claimed complete until tested in-game. Keep Elrothiro/Luna saves untouched and never use paid bot services.
+
 ## Usable revision-377 developer integrations
 
 **[Interactive 377 Map Inspector](map-inspector.html)** — a read-only browser tool for loading actual `.jm2` sources, showing terrain/scenery/NPC positions, comparing modified maps against originals, checking IDs against `flo.pack` / `loc.pack` / `npc.pack`, and exporting compatibility reports. This feature is implemented and covered by desktop/mobile browser tests. It does not install or alter maps.
