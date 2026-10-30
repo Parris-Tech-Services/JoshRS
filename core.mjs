@@ -14,6 +14,7 @@ export const OBJECTS = [
 export const GOODS = ["logs","ore","fish","cooked"];
 export const SELL_PRICES = Object.freeze({logs:3,ore:6,fish:5,cooked:9});
 export const MEAL_PRICE = 12;
+export const MAX_BAG_STACK = 9999, MAX_BANK_STACK = 999999, MAX_COINS = 9999999;
 export const ORDER_COST = Object.freeze({logs:2,ore:1,cooked:1});
 export const ORDER_REWARD = 75;
 export const TASKS = [
@@ -110,10 +111,13 @@ export function eat(s){
 }
 export function interact(s,o){
  if(!o)return "Move beside a tree, rock, fishing spot, ranger or mossling.";
+ // Treat input as a target request, not as an authority to invent resource nodes.
+ // Client-side validation is not server-side anti-cheat or authentication.
+ if(!OBJECTS.some(real=>real.id===o.id&&real.type===o.type&&real.x===o.x&&real.y===o.y))return "Unknown world object.";
  if(Math.abs(s.x-o.x)+Math.abs(s.y-o.y)>1)return "Move closer to "+o.name+".";
- if(o.type==="tree"){s.bag.logs++;s.progress.logs++;s.xp.woodcutting+=25;return "You chop oak logs. +25 Woodcutting XP."+rewardIfReady(s)}
- if(o.type==="rock"){s.bag.ore++;s.progress.ore++;s.xp.mining+=30;return "You mine copper ore. +30 Mining XP."+rewardIfReady(s)}
- if(o.type==="fish"){s.bag.fish++;s.progress.fish++;s.xp.fishing+=20;return "You catch a river fish. +20 Fishing XP."+rewardIfReady(s)}
+ if(o.type==="tree"){if(s.bag.logs>=MAX_BAG_STACK)return "Your log stack is full.";s.bag.logs++;s.progress.logs++;s.xp.woodcutting+=25;return "You chop oak logs. +25 Woodcutting XP."+rewardIfReady(s)}
+ if(o.type==="rock"){if(s.bag.ore>=MAX_BAG_STACK)return "Your ore stack is full.";s.bag.ore++;s.progress.ore++;s.xp.mining+=30;return "You mine copper ore. +30 Mining XP."+rewardIfReady(s)}
+ if(o.type==="fish"){if(s.bag.fish>=MAX_BAG_STACK)return "Your fish stack is full.";s.bag.fish++;s.progress.fish++;s.xp.fishing+=20;return "You catch a river fish. +20 Fishing XP."+rewardIfReady(s)}
  if(o.type==="npc"){
   if(o.id==="banker")return "Banker Fern: Your supplies are safe here. Open the Town tab to deposit or withdraw items.";
   if(o.id==="merchant")return "Merchant Mira: I buy gathered supplies and sell cooked fish. Open the Town tab to trade.";
@@ -129,6 +133,7 @@ export function interact(s,o){
 export function cook(s){
  if(!s.fires.some(f=>Math.abs(f.x-s.x)+Math.abs(f.y-s.y)<=1))return "Stand by a lit campfire to cook.";
  if(s.bag.fish<1)return "You need to catch a fish first.";
+ if(s.bag.cooked>=MAX_BAG_STACK)return "Your cooked-fish stack is full.";
  s.bag.fish--;s.bag.cooked++;s.xp.cooking+=30;return "You cook a delicious fish. +30 Cooking XP.";
 }
 
@@ -140,14 +145,17 @@ export function nearNpc(s,id){
 export function depositAll(s){
  if(!nearNpc(s,"banker"))return "Stand beside Banker Fern to store your supplies.";
  let count=0;
- for(const k of GOODS){const n=s.bag[k]||0;s.bank[k]+=n;s.bag[k]=0;count+=n}
+ for(const k of GOODS){
+  const n=Math.max(0,Math.min(s.bag[k]||0,MAX_BANK_STACK-(s.bank[k]||0)));
+  s.bank[k]+=n;s.bag[k]-=n;count+=n;
+ }
  return count?"Banker Fern stores "+count+" supplies safely.":"Your bag is already empty.";
 }
 export function withdrawAll(s){
  if(!nearNpc(s,"banker"))return "Stand beside Banker Fern to withdraw your supplies.";
  let count=0;
  for(const k of GOODS){
-  const amount=Math.min(Math.max(0,9999-s.bag[k]),s.bank[k]);
+  const amount=Math.min(Math.max(0,MAX_BAG_STACK-s.bag[k]),s.bank[k]);
   s.bank[k]-=amount;s.bag[k]+=amount;count+=amount;
  }
  return count?"You withdraw "+count+" supplies from your bank.":"Nothing to withdraw, or your bag is full.";
@@ -156,13 +164,14 @@ export function sellOne(s,key){
  if(!nearNpc(s,"merchant"))return "Stand beside Merchant Mira to trade.";
  if(!Object.hasOwn(SELL_PRICES,key))return "This item cannot be sold.";
  if(s.bag[key]<1)return "You have no "+key+" to sell.";
+ if(s.coins>MAX_COINS-SELL_PRICES[key])return "Your coin pouch is full; spend coins before selling.";
  s.bag[key]--;s.coins+=SELL_PRICES[key];
  return "Sold one "+key+" for "+SELL_PRICES[key]+" coins.";
 }
 export function buyMeal(s){
  if(!nearNpc(s,"merchant"))return "Stand beside Merchant Mira to trade.";
  if(s.coins<MEAL_PRICE)return "You need "+MEAL_PRICE+" coins to buy a cooked fish.";
- if(s.bag.cooked>=9999)return "Your cooked-fish stack is full.";
+ if(s.bag.cooked>=MAX_BAG_STACK)return "Your cooked-fish stack is full.";
  s.coins-=MEAL_PRICE;s.bag.cooked++;
  return "You buy a cooked fish for "+MEAL_PRICE+" coins.";
 }
@@ -170,6 +179,7 @@ export function fulfilOrder(s){
  if(!nearNpc(s,"merchant"))return "Stand beside Merchant Mira to deliver supplies.";
  if(!s.questClaimed)return "Finish Ranger Rowan's Forest Apprentice quest before taking delivery orders.";
  if(GOODS.some(k=>(ORDER_COST[k]||0)>s.bag[k]))return "Supply order: bring 2 logs, 1 ore and 1 cooked fish.";
+ if(s.ordersFulfilled>=99999||s.coins>MAX_COINS-ORDER_REWARD)return "Your orders or coin pouch have reached their save limit.";
  for(const [k,n] of Object.entries(ORDER_COST))s.bag[k]-=n;
  s.ordersFulfilled++;s.coins+=ORDER_REWARD;
  s.xp.woodcutting+=25;s.xp.mining+=25;s.xp.cooking+=25;
