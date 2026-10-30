@@ -1,0 +1,13 @@
+{
+  "name": "joshrs-377-websocket-bridge",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node cli.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "ws": "8.18.3"
+  }
+}
