@@ -1,0 +1,130 @@
+{
+  "schema": "joshrs-original-region-v1",
+  "id": "archaeology_island",
+  "title": "Tideglass Isle",
+  "status": "original-source-ready-not-377-cache-packed",
+  "coordinate_policy": "allocate only after 377 map-square collision audit",
+  "feature_flag": "JOSHRS_EXPANSION_TIDEGLASS",
+  "enabled_by_default": false,
+  "tiles": {
+    "width": 16,
+    "height": 16,
+    "legend": {
+      "~": "water",
+      ".": "sand",
+      "g": "grass",
+      "#": "cliff",
+      "p": "path",
+      "D": "dock",
+      "C": "camp",
+      "X": "excavation",
+      "T": "tree",
+      "R": "rock",
+      "E": "return dock"
+    },
+    "rows": [
+      "~~~~~~~~~~~~~~~~",
+      "~~~~~......~~~~~",
+      "~~~~........~~~~",
+      "~~~..ggggg...~~~",
+      "~~..gg##ggg...~~",
+      "~~..g###ggXg..~~",
+      "~...gggggggg..~~",
+      "~..gggpggggg..~~",
+      "~..gggpCgXgg..~~",
+      "~...ggpppggg..~~",
+      "~~..gggppggR..~~",
+      "~~...ggppggg..~~",
+      "~~~..Dppggg...~~",
+      "~~~~.EppgT...~~~",
+      "~~~~~......~~~~~",
+      "~~~~~~~~~~~~~~~~"
+    ]
+  },
+  "spawns": [
+    {
+      "id": "guide",
+      "role": "dialogue",
+      "cell": [
+        8,
+        8
+      ]
+    },
+    {
+      "id": "ferryman",
+      "role": "transport",
+      "cell": [
+        5,
+        13
+      ]
+    },
+    {
+      "id": "collector",
+      "role": "quest",
+      "cell": [
+        9,
+        9
+      ]
+    },
+    {
+      "id": "merchant",
+      "role": "trade",
+      "cell": [
+        7,
+        10
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "id": "specimen_clay",
+      "cell": [
+        11,
+        5
+      ]
+    },
+    {
+      "id": "specimen_shell",
+      "cell": [
+        10,
+        8
+      ]
+    },
+    {
+      "id": "specimen_stone",
+      "cell": [
+        12,
+        10
+      ]
+    }
+  ],
+  "quest": {
+    "id": "tideglass_first_find",
+    "required": [
+      "specimen_clay",
+      "specimen_shell",
+      "specimen_stone"
+    ],
+    "reward": {
+      "coins": 125,
+      "questPoints": 1
+    },
+    "once": true
+  },
+  "transport": {
+    "out": "safe_host_dock_coordinate_must_be_verified",
+    "back": "safe_existing_mainland_dock_must_be_verified"
+  },
+  "assets": [
+    "assets/original-props.obj",
+    "assets/ground-palette.svg"
+  ],
+  "implementation_requirements": [
+    "replace schematic tile grid with actual licensed-compatible 377 map encoding",
+    "obtain/produce compatible model formats",
+    "verify collision and safe spawn",
+    "wire RuneScript callbacks",
+    "snapshot saves before opt-in"
+  ],
+  "licence": "original project materials; do not imply Jagex endorsement"
+}
