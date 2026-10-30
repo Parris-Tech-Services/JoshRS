@@ -23,7 +23,8 @@ if (-not (Test-Path -LiteralPath $savePath -PathType Leaf)) {
 $save=Get-Item -LiteralPath $savePath
 if ($save.Length -lt 32) { throw 'Elrothiro save is unexpectedly small. Do not restore or replace it.' }
 $hash=(Get-FileHash -LiteralPath $savePath -Algorithm SHA256).Hash
-$validator=Join-Path $RepoRoot 'tools\rs377-saves\inspect-save.mjs'
+$codeRoot=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\..')).Path
+$validator=Join-Path $codeRoot 'tools\rs377-saves\inspect-save.mjs'
 if (-not (Test-Path -LiteralPath $validator -PathType Leaf)) { throw '377 save-format validator is missing. Update JoshRS first.' }
 $node=Get-Command node.exe -ErrorAction Stop
 $validationOutput=& $node.Source $validator $savePath
