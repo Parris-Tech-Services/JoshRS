@@ -26,6 +26,12 @@ See also [multiplayer work tracker #5](https://github.com/Parris-Tech-Services/J
 
 The [377 Content Factory](docs/377_CONTENT_FACTORY.md) uses a scheduled GitHub Actions runner to inventory public 377/community source *metadata* in rotating batches, track exact source hashes and prepare strictly original, user-authored integration specifications. [Agent instructions](AGENTS.md) tell Agy, Codex and Claude Code how to turn reviewed candidates into validated server content. See [generated packs](content-factory/generated/) as they appear. No Jagex-owned assets are copied or auto-installed; no discovered item is called playable before compiling and testing it in the real custom 377 world.
 
+### Native 377 content: compiled source and one-click local installation
+
+The [native 377 content integration](docs/377_NATIVE_CONTENT_INTEGRATION.md) now generates an **original Woodland Guide NPC**, native `.npc` config and `.rs2` Talk-to dialogue. A separate GitHub Actions job compiles the overlay against your **pinned 377 engine/content**, with scoped checksum handling that leaves other verification enabled. The existing daily factory generates and publishes the original source overlay. Third-party candidate repositories still require rights reviews and manual 377-compatible ports.
+
+On **JParris Desktop**, once your normal JoshRS world is installed, log out, stop the server, then double-click **`JoshRS-Install-377-Content.cmd`**. It validates source hashes, backs up local packs and sources, refuses to overwrite a different customised file, and rebuilds in your private runtime copy, not on the USB. The downloaded launcher ZIP and current local runtime must be together. Runtime login, character save restoration and the actual NPC interaction still need verification on your computer.
+
 ## Revision 377 — opt-in autonomous player bot
 
 **[One real server-side woodcutter and safe installer](docs/377_ONE_BOT_WOODCUTTER.md)**. This is a **separate experimental 377-wip feature**, not an alteration to the locked November 2004 reference. The bot is disabled by default, does not require a second Java client, and was tested in a disposable 377 server: it appeared in an ordinary player slot, selected a real tree, gained a log and Woodcutting XP. It has **not** been installed on Josh's Fedora host; banking, quests, trading and persistent bot saves are later work.
