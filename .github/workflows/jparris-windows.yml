@@ -26,6 +26,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - name: Validate all Windows scripts, source lock and entrypoints
         shell: powershell
         run: |
