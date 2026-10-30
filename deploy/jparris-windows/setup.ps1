@@ -262,9 +262,9 @@ try {
     if ($desktop) {
         $shell = New-Object -ComObject WScript.Shell
         $shortcut = $shell.CreateShortcut((Join-Path $desktop 'Play JoshRS.lnk'))
-        $shortcut.TargetPath = Join-Path $repo 'jparris-play.cmd'
+        $shortcut.TargetPath = Join-Path $repo 'JoshRS.cmd'
         $shortcut.WorkingDirectory = $repo
-        $shortcut.Description = 'Start your local JoshRS world and game client'
+        $shortcut.Description = 'Open your JoshRS control center to play, restore and back up the game'
         $shortcut.Save()
         Write-Host 'Created Play JoshRS on your desktop.'
     }
