@@ -26,6 +26,8 @@ jobs:
       - run: npm install --no-save playwright@1.57.0
       - run: npx playwright install --with-deps chromium
       - run: node tests/browser.mjs
+      - name: Verify revision 377 map inspector on desktop and mobile
+        run: node tests/map-inspector-browser.mjs
       - name: Exercise original-game town, saving and importing on desktop/mobile
         run: node tests/woodlands-local-browser.mjs
         env:
