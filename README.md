@@ -38,6 +38,10 @@ For your personalised revision-377 world, **log out and stop the game**, then do
 
 ## Automated 377 research and original-content preparation
 
+**[Current unfinished work register](research/rs377/UNFINISHED_WORK_REGISTER_2026-10-31.md)** — prioritised tasks, verified source findings, open GitHub issues and separate acceptance gates for the personalised 377 game, external RuneScape research and original Woodlands. The live to-do issues are [#28 historical content completeness](https://github.com/Parris-Tech-Services/JoshRS/issues/28), [#29 broken world interactions](https://github.com/Parris-Tech-Services/JoshRS/issues/29) and [#30 real-world save/client testing](https://github.com/Parris-Tech-Services/JoshRS/issues/30).
+
+
+
 The [377 Content Factory](docs/377_CONTENT_FACTORY.md) uses a scheduled GitHub Actions runner to inventory public 377/community source *metadata* in rotating batches, track exact source hashes and prepare strictly original, user-authored integration specifications. [Agent instructions](AGENTS.md) tell Agy, Codex and Claude Code how to turn reviewed candidates into validated server content. See [generated packs](content-factory/generated/) as they appear. No Jagex-owned assets are copied or auto-installed; no discovered item is called playable before compiling and testing it in the real custom 377 world.
 
 ### Native 377 content: compiled source and one-click local installation
