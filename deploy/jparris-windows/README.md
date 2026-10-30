@@ -2,6 +2,30 @@
 
 This is a **local Windows desktop game server and Java client** for JoshRS 377. It is separate from the revision-274 research instance and the Woodlands browser demo.
 
+## New: JoshRS Control Center
+
+For the easiest experience, **double-click `JoshRS.cmd`** in the extracted JoshRS folder. It opens a native Windows control window rather than asking you to enter PowerShell commands.
+
+The control window includes:
+
+- **Play JoshRS:** starts the local revision-377 server and Java client using your currently configured world.
+- **Restore my Fedora USB game:** opens a folder picker. Choose the USB's JoshRS folder; it copies your customised server, original content and saves to a new timestamped location and configures it. It refuses to switch worlds while the game is active.
+- **Install a clean 377 world:** obtains the pinned upstream engine, content and Java client, with a warning that your Fedora customizations and character are not part of the clean source.
+- **Back up my player saves:** offline copy of the whole players directory and SQLite account database (including WAL when present). The button is disabled if either game/network port is listening.
+- **Refresh status:** shows whether the expected TCP and HTTP listeners are responding. Port readiness alone does not prove a successful game login.
+- **Diagnostics:** copies a status report without reading or exposing local passwords, player contents or configuration secrets.
+- **Game files / Backups:** opens the correct private local folder in Windows Explorer.
+
+The dashboard refreshes automatically. All existing `jparris-setup.cmd` and `jparris-play.cmd` scripts continue to work for direct command-line use. A command window remains open during setup and game launch so errors are visible. The dashboard is a convenient front end, **not** another server process.
+
+```text
+JoshRS.cmd                     Double-click to open the control center
+jparris-setup.cmd              Old direct first-time setup (still supported)
+jparris-play.cmd               Old direct game launcher (still supported)
+```
+
+For customised save restoration, choose the actual USB copy, not the incomplete Google Drive folder view. The control center does not automatically merge a clean upstream client with your modified Fedora Java client.
+
 ## Start with minimal commands
 
 **On JParris Desktop:**

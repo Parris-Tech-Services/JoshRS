@@ -122,6 +122,15 @@ if ($CheckOnly) {
     exit 0
 }
 
+# Serialize setup so simultaneous launchers cannot migrate the same save files.
+$setupMutex=[System.Threading.Mutex]::new($false, 'Local\JoshRS377WindowsSetup')
+$setupLock=$false
+try {
+    $setupLock=$setupMutex.WaitOne(0)
+    if (-not $setupLock) {
+        throw 'JoshRS setup is already running in another window. Finish the first installation.'
+    }
+
 if ($Interactive -and -not $UsbPath -and -not (Test-Path -LiteralPath $activeFile)) {
     Write-Host '1. Restore my customised world and character from USB (recommended)'
     Write-Host '2. Install a clean world without my saved character'
@@ -262,3 +271,7 @@ try {
 } catch { Write-Warning "Desktop shortcut unavailable. Use jparris-play.cmd: $_" }
 Write-Host "Setup complete. Game port: $gamePort; web port: $webPort; client offset: $offset"
 if (-not $SkipStart) { & (Join-Path $PSScriptRoot 'play.ps1') }
+} finally {
+    if ($setupLock) { $setupMutex.ReleaseMutex() }
+    $setupMutex.Dispose()
+}
