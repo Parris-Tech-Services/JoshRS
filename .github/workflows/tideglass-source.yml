@@ -1,0 +1,34 @@
+name: Tideglass source checks
+on:
+  push:
+    paths:
+      - 'expansions/archaeology-island/**'
+      - '.github/workflows/tideglass-source.yml'
+  pull_request:
+    paths:
+      - 'expansions/archaeology-island/**'
+      - '.github/workflows/tideglass-source.yml'
+  workflow_dispatch:
+jobs:
+  source-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run standalone quest tests
+        run: node --test expansions/archaeology-island/tests/gameplay.test.mjs
+      - name: Validate terrain grid and asset references
+        run: |
+          node --input-type=module -e "
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const p='expansions/archaeology-island/';
+          const m=JSON.parse(fs.readFileSync(p+'manifest.json','utf8'));
+          assert.equal(m.tiles.rows.length,m.tiles.height);
+          for(const row of m.tiles.rows){assert.equal(row.length,m.tiles.width);for(const x of row)assert.ok(x in m.tiles.legend);}
+          for(const obj of [...m.spawns,...m.objects]){const [x,y]=obj.cell;assert.ok(x>=0&&x<m.tiles.width&&y>=0&&y<m.tiles.height);}
+          for(const asset of m.assets)assert.ok(fs.existsSync(p+asset));
+          console.log('Source grid and assets validated');
+          "
