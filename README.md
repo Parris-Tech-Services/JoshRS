@@ -22,6 +22,10 @@ Important: **2004Scape (November 2004)** and **official Old School RuneScape (20
 
 See also [multiplayer work tracker #5](https://github.com/Parris-Tech-Services/JoshRS/issues/5) and [self-hosting gate #3](https://github.com/Parris-Tech-Services/JoshRS/issues/3).
 
+## Automated 377 research and original-content preparation
+
+The [377 Content Factory](docs/377_CONTENT_FACTORY.md) uses a scheduled GitHub Actions runner to inventory public 377/community source *metadata* in rotating batches, track exact source hashes and prepare strictly original, user-authored integration specifications. [Agent instructions](AGENTS.md) tell Agy, Codex and Claude Code how to turn reviewed candidates into validated server content. See [generated packs](content-factory/generated/) as they appear. No Jagex-owned assets are copied or auto-installed; no discovered item is called playable before compiling and testing it in the real custom 377 world.
+
 ## Revision 377 — opt-in autonomous player bot
 
 **[One real server-side woodcutter and safe installer](docs/377_ONE_BOT_WOODCUTTER.md)**. This is a **separate experimental 377-wip feature**, not an alteration to the locked November 2004 reference. The bot is disabled by default, does not require a second Java client, and was tested in a disposable 377 server: it appeared in an ordinary player slot, selected a real tree, gained a log and Woodcutting XP. It has **not** been installed on Josh's Fedora host; banking, quests, trading and persistent bot saves are later work.

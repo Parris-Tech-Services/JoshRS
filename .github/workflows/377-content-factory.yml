@@ -1,0 +1,54 @@
+name: JoshRS 377 Content Factory
+on:
+  schedule:
+    - cron: "21 3 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "content-factory/factory.py"
+      - "content-factory/sources.json"
+      - "content-factory/intake/**"
+      - "content-factory/tests/**"
+      - ".github/workflows/377-content-factory.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: joshrs-377-content-factory
+  cancel-in-progress: false
+
+jobs:
+  scan-and-prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test converters and safety guards
+        run: python -m unittest discover -s content-factory/tests -v
+      - name: Discover public sources and prepare owned original records
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python content-factory/factory.py --live --discover
+      - name: Validate generated JSON
+        run: |
+          python -m json.tool content-factory/generated/original-content-specs.json > /dev/null
+          python -m json.tool content-factory/generated/catalog.json > /dev/null
+          python -m json.tool content-factory/generated/state.json > /dev/null
+      - name: Commit queued metadata and portable integration specs
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content-factory/generated/
+          if git diff --cached --quiet; then
+            echo "No changed inventory or specs."
+          else
+            git commit -m "chore(377): rotate content research and original specs [skip ci]"
+            git push origin HEAD:main
+          fi
