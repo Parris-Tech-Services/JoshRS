@@ -19,6 +19,25 @@ jobs:
           node-version: '24'
       - name: Run standalone quest tests
         run: node --test expansions/archaeology-island/tests/gameplay.test.mjs
+      - name: Generate real 64x64 JM2 terrain source and validate count
+        run: |
+          node expansions/archaeology-island/tools/build-jm2.mjs 90 90 m90_90.jm2
+          test "$(grep -c '^0 [0-9].*: h0 u[0-9] f[0-9]
+        run: |
+          node --input-type=module -e "
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const p='expansions/archaeology-island/';
+          const m=JSON.parse(fs.readFileSync(p+'manifest.json','utf8'));
+          assert.equal(m.tiles.rows.length,m.tiles.height);
+          for(const row of m.tiles.rows){assert.equal(row.length,m.tiles.width);for(const x of row)assert.ok(x in m.tiles.legend);}
+          for(const obj of [...m.spawns,...m.objects]){const [x,y]=obj.cell;assert.ok(x>=0&&x<m.tiles.width&&y>=0&&y<m.tiles.height);}
+          for(const asset of m.assets)assert.ok(fs.existsSync(p+asset));
+          console.log('Source grid and assets validated');
+          "
+ m90_90.jm2)" -eq 4096
+          grep -qx '==== MAP ====' m90_90.jm2
+          grep -qx '==== NPC ====' m90_90.jm2
       - name: Validate terrain grid and asset references
         run: |
           node --input-type=module -e "
