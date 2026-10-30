@@ -5,6 +5,7 @@ try {
 $ErrorActionPreference='Stop'
 $script:RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 . (Join-Path $PSScriptRoot 'support.ps1')
+. (Join-Path $PSScriptRoot 'save-integrity.ps1')
 . (Join-Path $PSScriptRoot 'discovery.ps1')
 
 Add-Type -AssemblyName System.Windows.Forms
@@ -215,10 +216,31 @@ $script:CleanButton.Add_Click({
 })
 $script:BackupButton.Add_Click({
     try {
+        $s=Get-JoshRSStatus -RepoRoot $script:RepoRoot
+        $saveFile=Join-Path $s.Engine 'data\players\main\elrothiro.sav'
+        $found=Test-Path -LiteralPath $saveFile -PathType Leaf
+        if ($found) {
+            $validator=Join-Path $script:RepoRoot 'tools\rs377-saves\inspect-save.mjs'
+            if (-not (Test-Path -LiteralPath $validator -PathType Leaf)) { throw 'The 377 save validator is missing. Update JoshRS.' }
+            $node=Get-Command node.exe -ErrorAction Stop
+            $output=& $node.Source $validator $saveFile
+            if ($LASTEXITCODE -ne 0) { throw 'Elrothiro failed revision-377 CRC verification. Do not replace this save.' }
+            $validation=($output -join [Environment]::NewLine) | ConvertFrom-Json
+            if (-not $validation.valid -or $validation.sha256 -ne (Get-FileHash -LiteralPath $saveFile -Algorithm SHA256).Hash) {
+                throw 'Elrothiro save failed SHA-256/CRC verification.'
+            }
+        }
         $folder=New-JoshRSLocalBackup -RepoRoot $script:RepoRoot
-        $message='Player data has been copied to a private folder:' + [Environment]::NewLine + [Environment]::NewLine + $folder +
-            [Environment]::NewLine + [Environment]::NewLine + 'Your live game files were not changed.'
-        Show-Note $message 'Backup created'
+        $proof=Write-JoshRSBackupIntegrity -BackupPath $folder -Engine $s.Engine
+        if (-not $proof.Verified) { throw 'The copied backup failed hash verification. Do not restore it.' }
+        $condition=if ($proof.ContainsElrothiro) {'Elrothiro is present and CRC-validated.'} else {'WARNING: Elrothiro is missing from this active game. Check which world was selected.'}
+        $message='VERIFIED OFFLINE SNAPSHOT: ' + $folder +
+            [Environment]::NewLine + [Environment]::NewLine +
+            'Files SHA-256 verified: ' + $proof.FileCount +
+            [Environment]::NewLine + $condition +
+            [Environment]::NewLine + 'Account database present: ' + $s.DatabasePresent +
+            [Environment]::NewLine + 'Live files were not modified. Keep an additional private copy off this computer.'
+        Show-Note $message 'Verified private player backup'
         Update-Dashboard
     } catch { Show-Problem $_.Exception.Message }
 })
