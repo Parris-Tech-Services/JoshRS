@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JoshRS 377 — Map Inspector</title>
+<style>
+:root{color-scheme:dark;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;--bg:#101723;--card:#192434;--outline:#34485c;--text:#ecf3fc;--muted:#afc2d3}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text)}main{max-width:1350px;margin:auto;padding:20px}h1{font-size:1.7rem;margin:.1em 0}h2{font-size:1rem;margin:.1em 0 1em}
+p{margin:.3em 0 1em;color:var(--muted)}a{color:#8cceff}.layout{display:grid;grid-template-columns:minmax(300px,390px) minmax(0,1fr);gap:18px;margin-top:20px}
+.panel{border:1px solid var(--outline);border-radius:14px;padding:18px;background:var(--card);min-width:0}
+label{display:block;font-weight:650;margin:12px 0 5px}input[type=file],select,button{width:100%;padding:10px;min-height:42px;color:var(--text);background:#111d2b;border:1px solid #53708c;border-radius:7px}
+button{cursor:pointer;background:#244a67;font-weight:650}button:hover{background:#306381}button:disabled{opacity:.45;cursor:not-allowed}input[type=range]{width:100%}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid #c8eaff;outline-offset:2px}
+small,.muted{color:var(--muted)}.status{min-height:38px;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+#grid{width:100%;height:auto;aspect-ratio:1;image-rendering:pixelated;cursor:crosshair;touch-action:manipulation;background:#334253;border:1px solid #718193;border-radius:4px}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:15px 0}.metric{background:#111d2b;padding:11px;border-radius:8px}.metric strong{display:block;font-size:1.35rem}.metric span{color:var(--muted);font-size:.85rem}
+#detail{white-space:pre-wrap;overflow-wrap:anywhere;min-height:98px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.84rem;background:#0d1723;border-radius:8px;padding:10px}
+.legend{font-size:.84rem;color:var(--muted);margin:10px 0;display:flex;gap:12px;flex-wrap:wrap}.legend span{display:inline-flex;align-items:center;gap:6px}.dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.banner{border-left:3px solid #a8c4e0;padding:7px 11px;background:#142333;color:#cadced;margin:16px 0}
+@media(max-width:850px){.layout{grid-template-columns:1fr}main{padding:12px}.panel{padding:13px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>JoshRS · Revision 377 Map Inspector</h1>
+<p>Inspect an actual 377 <code>.jm2</code> map, compare an imported version, and identify missing floor, NPC or location definitions. Files stay in your browser; nothing is uploaded or installed.</p>
+<div class="banner">Read-only engineering tool. Maps are visualised by floor ID, not proprietary RuneScape textures. A green map here does not prove a compatible in-game cache or collision map.</div>
+</header>
+<div class="layout">
+<section class="panel" aria-label="Import and analysis">
+<h2>Load source files</h2>
+<label for="base">Original .jm2 map (required)</label><input id="base" type="file" accept=".jm2,.txt">
+<label for="compare">Modified .jm2 map (optional)</label><input id="compare" type="file" accept=".jm2,.txt">
+<p><small>For Edgeville, compare two <code>m48_54.jm2</code> files. For Yanille, use <code>m40_48.jm2</code>. Staged maps are not safe to install without validation.</small></p>
+<label for="floorpack">flo.pack (optional)</label><input id="floorpack" type="file" accept=".pack,.txt">
+<label for="locpack">loc.pack (optional)</label><input id="locpack" type="file" accept=".pack,.txt">
+<label for="npcpack">npc.pack (optional)</label><input id="npcpack" type="file" accept=".pack,.txt">
+<div class="row">
+<div><label for="plane">Plane</label><select id="plane"><option value="0">Ground (0)</option><option value="1">First (1)</option><option value="2">Second (2)</option><option value="3">Third (3)</option></select></div>
+<div><label for="layer">Display</label><select id="layer"><option value="floor">Terrain</option><option value="overlay">Overlays</option><option value="height">Height</option><option value="flags">Flags</option><option value="diff">Differences</option></select></div>
+</div>
+<div class="metrics" id="metrics" aria-live="polite">
+<div class="metric"><strong>—</strong><span>Terrain records</span></div><div class="metric"><strong>—</strong><span>Scenery objects</span></div><div class="metric"><strong>—</strong><span>NPC spawns</span></div><div class="metric"><strong>—</strong><span>Changes</span></div>
+</div>
+<button id="export" disabled>Export JSON audit</button>
+<div id="status" role="status" aria-live="polite" class="status">Select a source .jm2 file to begin.</div>
+</section>
+<section class="panel" aria-label="Map visualisation">
+<h2>64 × 64 terrain grid</h2>
+<canvas id="grid" width="640" height="640" aria-label="Map square terrain, with scenery and NPC markers">Your browser does not support the canvas map.</canvas>
+<div class="legend"><span><i class="dot" style="background:#dca83e"></i>Scenery</span><span><i class="dot" style="background:#55d9ea"></i>NPC</span><span><i class="dot" style="background:#ff5872"></i>Changed</span><span><i class="dot" style="background:#6b7c8d"></i>Undefined tile</span></div>
+<label for="detail">Tile details</label><div id="detail" aria-live="polite">Select a tile on the map.</div>
+</section>
+</div>
+<p style="margin:18px 0"><small>Part of <a href="https://github.com/Parris-Tech-Services/JoshRS/tree/main/tools/rs377-map-bridge">JoshRS map bridge</a>. No account login, network calls, or third-party cookies.</small></p>
+</main>
+<script type="module">
+import {parseJm2,diffJm2,parsePack,missingReferences} from './tools/rs377-map-bridge/jm2-inspector.mjs'
+const el=id=>document.getElementById(id)
+const canvas=el('grid'),ctx=canvas.getContext('2d',{alpha:false})
+let base=null,edited=null,diff=null,packFlo=null,packLoc=null,packNpc=null
+const pos=(p,x,z)=>[p,x,z].join(':')
+const byCell=(items,p,x,z)=>items.filter(o=>o.plane===p&&o.x===x&&o.z===z)
+function floorColor(id){
+ if(id===null)return '#6b7c8d'
+ let n=(id*2654435761)>>>0
+ return 'hsl('+((n>>>16)%360)+' 38% '+(32+(n%28))+'%)'
+}
+function render(){
+ ctx.fillStyle='#536577';ctx.fillRect(0,0,640,640)
+ if(!base)return
+ const plane=+el('plane').value,mode=el('layer').value
+ const map=edited??base
+ const changed=new Set((diff?.tiles??[]).map(c=>c.key))
+ const changedLoc=new Set(diff?.locationKeys??[])
+ for(let x=0;x<64;x++)for(let z=0;z<64;z++){
+   const k=pos(plane,x,z),tile=map.tiles.get(k),px=x*10,py=(63-z)*10
+   let color=floorColor(tile?.underlay??null)
+   if(mode==='overlay')color=floorColor(tile?.overlay??null)
+   if(mode==='height'&&tile?.height!==null&&tile?.height!==undefined){
+     const light=Math.min(85,Math.max(15,45+tile.height/2))
+     color='hsl(200 15% '+light+'%)'
+   }
+   if(mode==='flags')color=tile?.flags?'#ce725f':'#42594b'
+   if(mode==='diff')color=changed.has(k)||changedLoc.has(k)?'#ff5872':'#334a4c'
+   ctx.fillStyle=color;ctx.fillRect(px,py,10,10)
+ }
+ if(mode!=='diff'){
+   const locs=map.locs.filter(o=>o.plane===plane)
+   ctx.fillStyle='#dca83e'
+   for(const item of locs)ctx.fillRect(item.x*10+3,(63-item.z)*10+3,4,4)
+   ctx.fillStyle='#55d9ea'
+   for(const item of map.npcs.filter(o=>o.plane===plane)){ctx.beginPath();ctx.arc(item.x*10+5,(63-item.z)*10+5,3.5,0,Math.PI*2);ctx.fill()}
+ }
+}
+function tileDetail(x,z) {
+ if(!base)return
+ const plane=+el('plane').value, k=pos(plane,x,z),map=edited??base
+ const t=map.tiles.get(k)
+ const out=['Tile: '+k,'Absolute: '+(map.region?(map.region.x*64+x)+', '+(map.region.z*64+z):'unknown region')]
+ out.push('Terrain: '+(t?JSON.stringify(t):'not explicitly defined'))
+ out.push('Scenery: '+JSON.stringify(byCell(map.locs,plane,x,z).map(o=>o.id)))
+ out.push('NPCs: '+JSON.stringify(byCell(map.npcs,plane,x,z).map(o=>o.id)))
+ if(diff)out.push('Different from original: '+((diff.tiles.some(v=>v.key===k)||diff.locationKeys.includes(k))?'yes':'no'))
+ el('detail').textContent=out.join('\n')
+}
+canvas.addEventListener('click',e=>{
+ const rect=canvas.getBoundingClientRect()
+ const x=Math.min(63,Math.floor((e.clientX-rect.left)/rect.width*64))
+ const z=63-Math.min(63,Math.floor((e.clientY-rect.top)/rect.height*64))
+ tileDetail(x,z)
+})
+async function change(){
+ try{
+  const f=el('base').files[0]
+  base=f?parseJm2(await f.text(),f.name):null
+  const other=el('compare').files[0]
+  edited=other?parseJm2(await other.text(),other.name):null
+  if(edited&&!base)throw Error('Load the original map first')
+  if(edited&&base?.region&&edited.region&&(base.region.x!==edited.region.x||base.region.z!==edited.region.z))throw Error('Files refer to different map squares')
+  diff=edited?diffJm2(base,edited):null
+  for(const [field,assign] of [['floorpack',x=>packFlo=x],['locpack',x=>packLoc=x],['npcpack',x=>packNpc=x]]){
+   const file=el(field).files[0];assign(file?parsePack(await file.text()):null)
+  }
+  if(!base){el('status').textContent='Select a .jm2 file.';el('export').disabled=true;render();return}
+  const map=edited??base
+  const changed=diff?diff.changedTiles+diff.changedLocations:0
+  const nums=[map.stats.tiles,map.stats.locations,map.stats.npcs,changed]
+  el('metrics').querySelectorAll('strong').forEach((e,i)=>e.textContent=nums[i].toLocaleString())
+  const missing=(packFlo&&packLoc&&packNpc)?missingReferences(map,packFlo,packLoc,packNpc):null
+  const messages=['Loaded '+map.name+'. '+(map.region?'Region '+map.region.x+'_'+map.region.z+'. ':''),
+   'Terrain '+map.stats.tiles+', scenery '+map.stats.locations+', NPCs '+map.stats.npcs+'.']
+  if(diff)messages.push('Compared with original: '+diff.changedTiles+' terrain changes; '+diff.changedLocations+' location tiles changed.')
+  if(missing)messages.push('Unknown floor IDs: '+missing.floors.length+', overlay IDs: '+missing.overlays.length+', loc IDs: '+missing.locations.length+', NPC IDs: '+missing.npcs.length+'.')
+  else messages.push('Upload flo.pack, loc.pack and npc.pack to check ID compatibility.')
+  el('status').textContent=messages.join('\n')
+  el('export').disabled=false
+  render()
+ }catch(error){
+  el('status').textContent='Cannot inspect: '+error.message
+  base=null;edited=null;diff=null;el('export').disabled=true;render()
+ }
+}
+for(const id of ['base','compare','floorpack','locpack','npcpack'])el(id).addEventListener('change',change)
+for(const id of ['plane','layer'])el(id).addEventListener('change',render)
+el('export').addEventListener('click',()=>{
+ if(!base)return
+ const map=edited??base
+ const output={source:map.name,region:map.region,stats:map.stats,comparison:diff?{changedTiles:diff.changedTiles,changedLocations:diff.changedLocations}:null,
+  missingReferences:(packFlo&&packLoc&&packNpc)?missingReferences(map,packFlo,packLoc,packNpc):null,
+  safeToInstall:false,reason:'Visual analysis only. Client-cache, collisions, quests and models need verification.'}
+ const blob=new Blob([JSON.stringify(output,null,2)],{type:'application/json'})
+ const url=URL.createObjectURL(blob)
+ const a=document.createElement('a');a.href=url;a.download='joshrs-377-map-audit.json';a.click()
+ setTimeout(()=>URL.revokeObjectURL(url),1000)
+})
+render()
+</script>
+</body>
+</html>
