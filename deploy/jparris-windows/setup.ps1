@@ -116,6 +116,15 @@ if ($CheckOnly) {
     exit 0
 }
 
+# Ensure two setup windows cannot clone, migrate or switch the same world concurrently.
+$setupMutex=[System.Threading.Mutex]::new($false, 'Local\JoshRS377WindowsSetup')
+$setupLock=$false
+try {
+    $setupLock=$setupMutex.WaitOne(0)
+    if (-not $setupLock) {
+        throw 'JoshRS setup is already running in another window. Complete that installation first.'
+    }
+
 # Do not switch the active world or migrate saves during a running game.
 # This check applies to direct command-line USB imports, not only the GUI.
 if ($UsbPath -and (Test-Path -LiteralPath $activeFile -PathType Leaf)) {
@@ -221,3 +230,7 @@ $state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort
 $state | ConvertTo-Json | Set-Content -LiteralPath $activeFile -Encoding UTF8
 Write-Host "Setup complete. Game port: $gamePort; web port: $webPort; client offset: $offset"
 if (-not $SkipStart) { & (Join-Path $PSScriptRoot 'play.ps1') }
+} finally {
+    if ($setupLock) { $setupMutex.ReleaseMutex() }
+    $setupMutex.Dispose()
+}
