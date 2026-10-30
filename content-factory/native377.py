@@ -52,6 +52,14 @@ TRADE_RULES = {
                          'option': 'Sell 2 copper ores for 8 coins.', 'result': 'You sell two copper ores for eight coins.', 'needs_space': False},
     'joshrs_trail_provisioner': {'from_obj': 'coins', 'from_qty': 4, 'to_obj': 'cooked_meat', 'to_qty': 1,
                                 'option': 'Buy cooked meat for 4 coins.', 'result': 'You buy a warm meal for four coins.', 'needs_space': True},
+    'joshrs_law_rune_vendor': {'from_obj': 'coins', 'from_qty': 35, 'to_obj': 'law_rune', 'to_qty': 1,
+                                'option': 'Buy a law rune for 35 coins.', 'result': 'You buy one law rune.', 'needs_space': True},
+    'joshrs_nature_rune_vendor': {'from_obj': 'coins', 'from_qty': 20, 'to_obj': 'nature_rune', 'to_qty': 1,
+                                'option': 'Buy a nature rune for 20 coins.', 'result': 'You buy one nature rune.', 'needs_space': True},
+    'joshrs_crafting_supplier': {'from_obj': 'coins', 'from_qty': 25, 'to_obj': 'amulet_mould', 'to_qty': 1,
+                                'option': 'Buy an amulet mould for 25 coins.', 'result': 'You buy an amulet mould.', 'needs_space': True},
+    'joshrs_tool_supplier': {'from_obj': 'coins', 'from_qty': 5, 'to_obj': 'chisel', 'to_qty': 1,
+                                'option': 'Buy a chisel for 5 coins.', 'result': 'You buy a chisel.', 'needs_space': True},
 }
 
 
@@ -137,7 +145,7 @@ def build_native(source: Path, output: Path) -> dict:
         "runtime_login_verified": False,
         "persistent_npc_spawns": False,
         "includes_player_save_changes": False,
-        "gameplay_scope": "Original guide and three inventory-checked NPC trades for logs, copper ore and cooked meat; debug-session spawns only; no persistent quest",
+        "gameplay_scope": "Original NPC interactions: seven server-side trades for resources, food, runes, crafting and tools; debug-session spawns only; no persistent quest",
         "files": [
             {"path": name, "sha256": hashlib.sha256(body.encode("utf-8")).hexdigest()}
             for name, body in sorted(files.items())
