@@ -46,9 +46,11 @@ foreach ($entry in @($manifest.files)) {
     if (-not $sha.Equals([string]$entry.sha256,[StringComparison]::OrdinalIgnoreCase)) { throw "Bad checksum: $rel" }
     if (Test-Path -LiteralPath $destination) {
         $present=(Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash
-        if (-not $present.Equals($sha,[StringComparison]::OrdinalIgnoreCase) -and
-            (-not $previousHashes.ContainsKey($rel) -or
-             -not $present.Equals($previousHashes[$rel],[StringComparison]::OrdinalIgnoreCase))) {
+        $isApprovedPrevious=$false
+        if ($previousHashes.ContainsKey($rel)) {
+            $isApprovedPrevious=$present.Equals($previousHashes[$rel],[StringComparison]::OrdinalIgnoreCase)
+        }
+        if (-not $present.Equals($sha,[StringComparison]::OrdinalIgnoreCase) -and -not $isApprovedPrevious) {
             throw "Existing custom file differs from any approved JoshRS version: $destination"
         }
     }
@@ -116,11 +118,13 @@ foreach($item in $items) {
 try {
     foreach($file in $planned) {
         New-Item -ItemType Directory -Path (Split-Path -Parent $file.Destination) -Force | Out-Null
-        if(-not (Test-Path -LiteralPath $file.Destination) -or
-            -not (Get-FileHash -LiteralPath $file.Destination -Algorithm SHA256).Hash.Equals(
-                (Get-FileHash -LiteralPath $file.Source -Algorithm SHA256).Hash,[StringComparison]::OrdinalIgnoreCase)) {
-            Copy-Item -LiteralPath $file.Source -Destination $file.Destination -Force
+        $needsCopy=$true
+        if(Test-Path -LiteralPath $file.Destination) {
+            $existingHash=(Get-FileHash -LiteralPath $file.Destination -Algorithm SHA256).Hash
+            $expectedHash=(Get-FileHash -LiteralPath $file.Source -Algorithm SHA256).Hash
+            $needsCopy=-not $existingHash.Equals($expectedHash,[StringComparison]::OrdinalIgnoreCase)
         }
+        if($needsCopy) { Copy-Item -LiteralPath $file.Source -Destination $file.Destination -Force }
     }
     if($missingNpcs.Count -gt 0) {
         $nl=[Environment]::NewLine
