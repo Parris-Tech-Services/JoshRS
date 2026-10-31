@@ -171,7 +171,7 @@ def dialogue_health(doc: dict) -> list[str]:
             valid_nexts = []
             for dest in nexts:
                 if not isinstance(dest, str) or dest not in by_id:
-                    errors.append(f"{key}: dangling or invalid branch")
+                    errors.append(f"{key}: dangling branch or invalid target")
                 else:
                     valid_nexts.append(dest)
             if node.get("exit") is True:
