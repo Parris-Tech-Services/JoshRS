@@ -6,15 +6,73 @@ on:
       - 'content-factory/tests/test_harvest_multi.py'
       - '.github/workflows/verify-harvest-metadata.yml'
   workflow_dispatch:
+  schedule:
+    - cron: '13 * * * *'
+permissions:
+  contents: read
 jobs:
   unit:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Test metadata-only adapters, safety and pagination (no network)
+      - name: Test metadata-only adapters and safe pagination (offline)
         run: python3 -m unittest discover -s content-factory/tests -p test_harvest_multi.py -v
+  harvest:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore most recent read-only metadata snapshot
+        uses: actions/cache/restore@v4
+        with:
+          path: /tmp/joshrs-rev377-metadata
+          key: joshrs-metadata-${{ github.run_id }}
+          restore-keys: |
+            joshrs-metadata-
+      - name: Collect public metadata only (never content, binaries or private files)
+        run: |
+          python3 content-factory/harvest_multi.py \
+            --source lostcity-content-377 \
+            --source lostcity-content-274 \
+            --source openrs2-377 \
+            --source 2009scape-gitlab \
+            --source 2009scape-hf \
+            --output /tmp/joshrs-rev377-metadata
+      - name: Summarise source errors without failing safe partial results
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path('/tmp/joshrs-rev377-metadata/catalog.json')
+          if p.exists():
+              d=json.loads(p.read_text())
+              with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as out:
+                  out.write('### Public source metadata only\n')
+                  out.write(f"Sources recorded: {len(d.get('sources', []))}\n\n")
+                  out.write(f"Errors this run: {len(d.get('errors', {}))}\n\n")
+                  out.write('No source assets, dialogue or game runtime copied.\n')
+          PY
+      - name: Save resumable public metadata snapshot
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: /tmp/joshrs-rev377-metadata
+          key: joshrs-metadata-${{ github.run_id }}
+      - name: Publish short-lived public metadata artifact for ChatGPT review
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: joshrs-rev377-source-metadata
+          path: /tmp/joshrs-rev377-metadata/
+          retention-days: 3
+          if-no-files-found: error
