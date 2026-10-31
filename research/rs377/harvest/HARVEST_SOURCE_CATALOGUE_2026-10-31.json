@@ -1,0 +1,148 @@
+{
+  "schema": "joshrs-377-harvest-sources-v1",
+  "generated_on": "2026-10-31",
+  "purpose": "research-only catalogue; NOT installable or proof of rights; complements content-factory/sources.json",
+  "rules": {
+    "provenance_required": true,
+    "licence_review_required": true,
+    "reference_revision_required": true,
+    "staging_only": true,
+    "never_publish_private_drive_ids": true,
+    "never_republish_jagex_assets": true,
+    "never_auto_deploy_live_game": true
+  },
+  "sources": [
+    {
+      "key": "lostcity377",
+      "source": "LostCityRS/Content",
+      "url": "https://github.com/LostCityRS/Content",
+      "kind": "native-source",
+      "target": "rev377",
+      "reference": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+      "mode": "pinned-git-tree-diff",
+      "allowed": "review-source-and-licence-cleared-code-only",
+      "block": "assets-and-proprietary-dialogue"
+    },
+    {
+      "key": "lostcity-older",
+      "source": "LostCityRS/Content 225/254/274",
+      "url": "https://github.com/LostCityRS/Content",
+      "kind": "historical-source",
+      "target": "pre377",
+      "reference": "pin-each-branch-per-run",
+      "mode": "git-diff-with-377-compatibility-review",
+      "allowed": "metadata-and-original-mechanics-specs",
+      "block": "blind-port-or-assets"
+    },
+    {
+      "key": "runescriptts",
+      "source": "LostCityRS/RuneScriptTS",
+      "url": "https://github.com/LostCityRS/RuneScriptTS",
+      "kind": "compiler-tool",
+      "target": "version-matched",
+      "reference": "pin-package-sha",
+      "mode": "install-compatible-tool-in-disposable-runner",
+      "allowed": "licence-cleared-tooling-after-validation",
+      "block": "using-newer-compiler-without-symbol-compatibility"
+    },
+    {
+      "key": "openrs2",
+      "source": "OpenRS2 Archive",
+      "url": "https://archive.openrs2.org/api",
+      "kind": "cache-provenance",
+      "target": "377",
+      "reference": "runescape/2696",
+      "mode": "api-metadata-only",
+      "allowed": "build-timestamp-archive-coverage-and-checksum-metadata",
+      "block": "automated-cache-asset-republication"
+    },
+    {
+      "key": "2009scape",
+      "source": "2009Scape/Server",
+      "url": "https://gitlab.com/2009scape/2009scape",
+      "kind": "later-era-code",
+      "target": "530",
+      "reference": "pin-gitlab-commit",
+      "mode": "gitlab-api-metadata-review",
+      "allowed": "mechanics-and-test-pattern-reference",
+      "block": "AGPL-copying-into-MIT-or-modern-ID-transplant"
+    },
+    {
+      "key": "2009scape-knowledge",
+      "source": "2009scape-wiki-api-data",
+      "url": "https://huggingface.co/datasets/arsalan-anwari/2009scape-wiki-api-data",
+      "kind": "knowledge-graph",
+      "target": "2009",
+      "reference": "pin-dataset-build-hash",
+      "mode": "dataset-card-schema-and-provenance-review",
+      "allowed": "schema-and-relationship-shape-reference",
+      "block": "assume-Apache-pipeline-licences-underlying-game-data"
+    },
+    {
+      "key": "osrsreboxed",
+      "source": "RSPSApp/osrsreboxed-db",
+      "url": "https://github.com/RSPSApp/osrsreboxed-db",
+      "kind": "modern-osrs-data",
+      "target": "modern-OSRS",
+      "reference": "pin-revision",
+      "mode": "github-tree-review-and-metadata-only",
+      "allowed": "NPC-option-shop-relation-schema-reference",
+      "block": "direct-ID-port-or-republish-NPC-dialogue-transcripts"
+    },
+    {
+      "key": "openrsc",
+      "source": "Open-RSC/Core-Framework",
+      "url": "https://github.com/Open-RSC/Core-Framework",
+      "kind": "rsc-code",
+      "target": "classic",
+      "reference": "pin-development-commit",
+      "mode": "github-source-review",
+      "allowed": "quest-state-and-acceptance-reference",
+      "block": "AGPL-copying-into-MIT-or-cross-era-ID-assumptions"
+    },
+    {
+      "key": "2006scape",
+      "source": "2006-Scape/2006Scape",
+      "url": "https://github.com/2006-Scape/2006Scape",
+      "kind": "rs2-code",
+      "target": "hybrid-2006-317",
+      "reference": "pin-master-commit",
+      "mode": "github-source-review",
+      "allowed": "quest-structure-reference",
+      "block": "GPL-code-copy-or-assume-native-377"
+    },
+    {
+      "key": "luna377",
+      "source": "luna-rs/luna",
+      "url": "https://github.com/luna-rs/luna",
+      "kind": "other-377-engine",
+      "target": "377",
+      "reference": "pin-master-commit",
+      "mode": "source-diff-review",
+      "allowed": "feature-behaviour-and-test-reference",
+      "block": "Kotlin-code-drop-in-to-TypeScript-or-silent-ports"
+    },
+    {
+      "key": "runewiki-data-api",
+      "source": "RuneWiki/RS-DataAPI",
+      "url": "https://github.com/RuneWiki/RS-DataAPI",
+      "kind": "cache-tool",
+      "target": "multiple-revisions",
+      "reference": "pin-commit",
+      "mode": "inspect-API-and-local-tool-licence",
+      "allowed": "authorised-tooling-metadata-only",
+      "block": "bulk-dump-and-redistribute-game-art"
+    },
+    {
+      "key": "private-drive377",
+      "source": "Owner's connected JoshRS/lostcity377 Drive snapshot",
+      "url": null,
+      "kind": "owner-snapshot",
+      "target": "377-possibly-stale",
+      "reference": "require-private-file-revision-and-compare-with-active",
+      "mode": "connected-drive-list-and-private-read",
+      "allowed": "private-metadata-and-diff-research",
+      "block": "publish-private-Drive-IDs-files-player-data-or-assume-live"
+    }
+  ]
+}
