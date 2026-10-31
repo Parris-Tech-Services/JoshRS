@@ -142,7 +142,8 @@ def scan(registry: list, dest: Path, batch_size: int, discover: bool) -> dict:
         if src.get('key') != 'lostcity-content-377':
             continue
         try:
-            pinned_commit = gh('repos/' + src['repo'] + '/commits/' + urllib.parse.quote(src['ref'], safe=''))
+            pin = read_json(ROOT.parent / 'deploy/jparris-windows/upstreams.json', {})['content']['commit']
+            pinned_commit = gh('repos/' + src['repo'] + '/commits/' + urllib.parse.quote(pin, safe=''))
             pinned_tree = gh('repos/' + src['repo'] + '/git/trees/' + pinned_commit['sha'] + '?recursive=1')
             pins = read_json(ROOT.parent / 'deploy/jparris-windows/upstreams.json', {})
             if (pinned_commit['sha'] == pins.get('content', {}).get('commit') and
@@ -151,8 +152,25 @@ def scan(registry: list, dest: Path, batch_size: int, discover: bool) -> dict:
         except (urllib.error.URLError, TimeoutError, ValueError, KeyError):
             baseline = {}
         break
+    # Reuse complete immutable tree identities; do not infer gaps from a partial cursor.
+    if baseline:
+        put_json(dest / 'pinned-377-index.json',
+                 {'schema': 1, 'revision': 377,
+                  'commit': read_json(ROOT.parent / 'deploy/jparris-windows/upstreams.json', {})['content']['commit'],
+                  'complete': True, 'paths': baseline})
+    else:
+        saved = read_json(dest / 'pinned-377-index.json', {})
+        pin = read_json(ROOT.parent / 'deploy/jparris-windows/upstreams.json', {})['content']['commit']
+        if saved.get('commit') == pin and saved.get('complete') is True:
+            baseline = saved.get('paths', {})
     for source in registry:
         repo, ref = source['repo'], source['ref']
+        # Pinned installed 377 upstreams are immutable baselines, not moving branches.
+        pinned = read_json(ROOT.parent / 'deploy/jparris-windows/upstreams.json', {})
+        key = {'LostCityRS/Content': 'content', 'LostCityRS/Engine-TS': 'engine',
+               'LostCityRS/Client-Java': 'client'}.get(repo)
+        if key and source.get('era') == '377':
+            ref = pinned[key]['commit']
         try:
             revision = gh('repos/' + repo + '/commits/' + urllib.parse.quote(ref, safe=''))
             if not revision.get('sha'):
@@ -293,6 +311,8 @@ def main() -> None:
     parser.add_argument('--discover', action='store_true', help='identify additional untrusted repos; metadata only')
     parser.add_argument('--batch-size', type=int, default=MAX_BATCH)
     parser.add_argument('--output', type=Path, default=ROOT / 'generated')
+    parser.add_argument('--source-metadata', action='store_true', help='bounded public metadata only; no downloads or imports')
+    parser.add_argument('--source-compare', action='store_true', help='compare reference identities against pinned 377 source')
     args = parser.parse_args()
     if not 1 <= args.batch_size <= 1000:
         parser.error('batch-size must be 1..1000')
@@ -304,6 +324,20 @@ def main() -> None:
         print(json.dumps(result, sort_keys=True))
     else:
         print('Offline mode: upstream discovery skipped.')
+    if args.source_metadata:
+        from harvest_multi import run as harvest_public_metadata
+        registry = json.loads((ROOT / 'sources.json').read_text(encoding='utf-8'))
+        result = harvest_public_metadata(registry, args.output / 'multi-source')
+        print('Existing public metadata harvester: ' + json.dumps(result, sort_keys=True))
+    if args.source_compare:
+        from harvest_match import match_all
+        result = match_all(args.output)
+        if result['status'].startswith('blocked'):
+            print('Comparison blocked: ' + result['message'])
+        else:
+            put_json(args.output / 'source-comparison.json', result)
+            print('377 comparison: ' + json.dumps(result['counts'], sort_keys=True) +
+                  ' (zero missing or playable inferred)')
     tasks = prepare_agent_queue(args.output)
     print(f'Prepared {len(tasks["tasks"])} non-executable agent work orders.')
 
