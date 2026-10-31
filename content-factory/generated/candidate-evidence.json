@@ -1,17 +1,17 @@
 {
   "schema": 1,
   "provenance": "read-only GitHub tree metadata; NOT individual source/rights review",
-  "total_unique_source_files": 6193,
+  "total_unique_source_files": 7695,
   "counts_by_decision": {
     "already_present_no_port_required": 2015,
     "blocked_game_content_rights": 1083,
-    "blocked_reference_only": 658,
-    "requires_individual_code_and_game_rights_review": 2437
+    "blocked_reference_only": 1660,
+    "requires_individual_code_and_game_rights_review": 2937
   },
   "total_approved_third_party_source_ports": 0,
   "total_verified_live_gameplay_candidates": 0,
   "code_license_not_equal_asset_rights": true,
-  "shard_count": 35,
+  "shard_count": 44,
   "shards": [
     {
       "path": "candidate-evidence-shards/2006scape-reference-0000.json",
@@ -191,19 +191,31 @@
       "path": "candidate-evidence-shards/luna-377-0000.json",
       "source": "luna-377",
       "count": 200,
-      "sha256": "5e0f7929765c7f8beabaa136864b831b875003ac98cdbb84139d9c08300e279e"
+      "sha256": "37ee08c23ef04748dead4f631e8d10730a4a463e3a9cc1e253223681d69ccc6b"
     },
     {
       "path": "candidate-evidence-shards/luna-377-0001.json",
       "source": "luna-377",
       "count": 200,
-      "sha256": "840a038fbf87d4faeb5013b3238963452f90f189984571f1c96d95b5c91ae92e"
+      "sha256": "05d9b8efb9ee5f1ad9d80b2684820a921bc7d1cf936aae63254484eba3fad9cb"
     },
     {
       "path": "candidate-evidence-shards/luna-377-0002.json",
       "source": "luna-377",
-      "count": 100,
-      "sha256": "bb57404d0b02a4319c946bce5351514e2e7a131e46c3d6a14127572af083d81d"
+      "count": 200,
+      "sha256": "8b51a7186c74b7364b572908030e42b4fe225b10db6d83703ab21637e1011fd0"
+    },
+    {
+      "path": "candidate-evidence-shards/luna-377-0003.json",
+      "source": "luna-377",
+      "count": 200,
+      "sha256": "ff824bc9c35f6891bbc10a9348a1e5adea1704355c4745e82c72d5396d508758"
+    },
+    {
+      "path": "candidate-evidence-shards/luna-377-0004.json",
+      "source": "luna-377",
+      "count": 200,
+      "sha256": "ef06935133541e8e0741ff565b10c836eed66df2e842a945774883b5b7436a54"
     },
     {
       "path": "candidate-evidence-shards/openrs2-tools-0000.json",
@@ -222,6 +234,48 @@
       "source": "openrs2-tools",
       "count": 139,
       "sha256": "94de88e9fb3504e371ff50911dc01f9a5bfb9340daeef925dd2bf667fef25a42"
+    },
+    {
+      "path": "candidate-evidence-shards/openrsc-quest-reference-0000.json",
+      "source": "openrsc-quest-reference",
+      "count": 200,
+      "sha256": "4b90f17071f6515910e8293ce0ad8009e1ad37aa3f36d5c3957930f802bc4cbc"
+    },
+    {
+      "path": "candidate-evidence-shards/openrsc-quest-reference-0001.json",
+      "source": "openrsc-quest-reference",
+      "count": 200,
+      "sha256": "25e9d042e7dabd145f46946dfeb540003f97784c1edf5abcf6a2971954f593ab"
+    },
+    {
+      "path": "candidate-evidence-shards/openrsc-quest-reference-0002.json",
+      "source": "openrsc-quest-reference",
+      "count": 100,
+      "sha256": "1891544047295683fc9a8ae5b0c352f3e7d9296beeb1948689f1340af8e36477"
+    },
+    {
+      "path": "candidate-evidence-shards/osrsreboxed-schema-0000.json",
+      "source": "osrsreboxed-schema",
+      "count": 200,
+      "sha256": "176544c08caa6f760179e336d434a35b4dd2dec4e2290659989330e63019e400"
+    },
+    {
+      "path": "candidate-evidence-shards/osrsreboxed-schema-0001.json",
+      "source": "osrsreboxed-schema",
+      "count": 200,
+      "sha256": "b5af247c47f2b4255c8dd7e88f3e3e333f1694f9938a2dd38a7d4dd138d9ea7d"
+    },
+    {
+      "path": "candidate-evidence-shards/osrsreboxed-schema-0002.json",
+      "source": "osrsreboxed-schema",
+      "count": 100,
+      "sha256": "85037cd73714f8c618248cf402a58eb85020be85a9b7582c9235abf1d67730c1"
+    },
+    {
+      "path": "candidate-evidence-shards/runewiki-dataapi-reference-0000.json",
+      "source": "runewiki-dataapi-reference",
+      "count": 2,
+      "sha256": "048ee643a6640f21ccc1b6f002c476d86135821d9c9c727f1233fb01bf30a124"
     }
   ]
 }
