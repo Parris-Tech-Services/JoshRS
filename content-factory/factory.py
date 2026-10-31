@@ -313,7 +313,6 @@ def main() -> None:
     parser.add_argument('--output', type=Path, default=ROOT / 'generated')
     parser.add_argument('--source-metadata', action='store_true', help='bounded public metadata only; no downloads or imports')
     parser.add_argument('--source-compare', action='store_true', help='compare reference identities against pinned 377 source')
-    parser.add_argument('--metadata-pages', type=int, default=2)
     args = parser.parse_args()
     if not 1 <= args.batch_size <= 1000:
         parser.error('batch-size must be 1..1000')
@@ -326,9 +325,10 @@ def main() -> None:
     else:
         print('Offline mode: upstream discovery skipped.')
     if args.source_metadata:
-        from harvest_sources import collect_all
-        result = collect_all(args.output, pages=args.metadata_pages)
-        print('Public metadata adapters: ' + json.dumps(result, sort_keys=True))
+        from harvest_multi import run as harvest_public_metadata
+        registry = json.loads((ROOT / 'sources.json').read_text(encoding='utf-8'))
+        result = harvest_public_metadata(registry, args.output / 'multi-source')
+        print('Existing public metadata harvester: ' + json.dumps(result, sort_keys=True))
     if args.source_compare:
         from harvest_match import match_all
         result = match_all(args.output)
