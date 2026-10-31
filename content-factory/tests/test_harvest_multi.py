@@ -42,6 +42,17 @@ class HarvestMultiTests(unittest.TestCase):
         self.assertFalse(harvest.allowed_metadata_path('maps/../secret.jm2'))
         self.assertFalse(harvest.allowed_metadata_path('maps/secret.dat'))
 
+    def test_pinned_377_uses_exact_lockfile_sha_not_branch(self):
+        lock=json.loads((HERE.parent/'deploy/jparris-windows/upstreams.json').read_text())
+        urls=[]
+        def reader(url):
+            urls.append(url)
+            return self.ghreader(url)
+        source={'key':'lostcity-content-377','repo':'LostCityRS/Content','ref':'377-wip','era':'377'}
+        harvest.github(source,reader=reader)
+        self.assertIn(lock['content']['commit'],urls[0])
+        self.assertNotIn('377-wip',urls[0])
+
     def test_github_pagination_is_resumable(self):
         s={'key':'x','repo':'a/b','ref':'377','era':'377'}
         first=harvest.github(s,reader=self.ghreader,limit=1)
