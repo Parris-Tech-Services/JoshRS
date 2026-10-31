@@ -1,16 +1,16 @@
 {
-  "candidate_pool": 8420,
+  "candidate_pool": 8920,
   "deduplicated_reference_versions": 1783,
-  "next_rotation_offset": 1600,
+  "next_rotation_offset": 1700,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
-  "raw_reference_versions": 10203,
-  "rotation_offset": 1500,
+  "raw_reference_versions": 10703,
+  "rotation_offset": 1600,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
     {
       "automatically_installed": false,
-      "candidate_id": "3dcf5690128be87bff03",
+      "candidate_id": "ce7b31c612d3f913dcb2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -18,17 +18,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/name/GenerateCommand.kt",
+      "path": "compress/src/main/kotlin/org/openrs2/compress/gzip/Gzip.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/GenerateCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/gzip/Gzip.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-3dcf5690128be87bff03"
+      "work_id": "377-ce7b31c612d3f913dcb2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "374c4fe4fa764decf1fe",
+      "candidate_id": "308161823363599db0fa",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -36,17 +36,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/name/ImportCommand.kt",
+      "path": "compress/src/main/kotlin/org/openrs2/compress/gzip/GzipLaxInputStream.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/ImportCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/gzip/GzipLaxInputStream.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-374c4fe4fa764decf1fe"
+      "work_id": "377-308161823363599db0fa"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "deca61fe2a7286ef06d4",
+      "candidate_id": "58a62a0a908ac4b39c9e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -54,17 +54,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/name/NameCommand.kt",
+      "path": "compress/src/main/kotlin/org/openrs2/compress/gzip/GzipLevelOutputStream.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/NameCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/gzip/GzipLevelOutputStream.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-deca61fe2a7286ef06d4"
+      "work_id": "377-58a62a0a908ac4b39c9e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "89e4956cf02130574e24",
+      "candidate_id": "323968d89ed47a9f1555",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -72,17 +72,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/name/NameDownloader.kt",
+      "path": "compress/src/main/kotlin/org/openrs2/compress/gzip/JagexGzipOutputStream.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/NameDownloader.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/gzip/JagexGzipOutputStream.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-89e4956cf02130574e24"
+      "work_id": "377-323968d89ed47a9f1555"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8a9bc23139d840b3f041",
+      "candidate_id": "a6215f66f433291e82ca",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -90,17 +90,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/name/NameImporter.kt",
+      "path": "compress/src/main/kotlin/org/openrs2/compress/lzma/Lzma.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/NameImporter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/lzma/Lzma.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-8a9bc23139d840b3f041"
+      "work_id": "377-a6215f66f433291e82ca"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dc81ee11e02a946749d2",
+      "candidate_id": "80394c0bc16f16655afe",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -108,17 +108,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/name/RuneStarNameDownloader.kt",
+      "path": "conf/src/main/kotlin/org/openrs2/conf/Config.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/RuneStarNameDownloader.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/conf/src/main/kotlin/org/openrs2/conf/Config.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-dc81ee11e02a946749d2"
+      "work_id": "377-80394c0bc16f16655afe"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a551514d0fc111af9342",
+      "candidate_id": "7f058ce60b2331f1fd1d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -126,17 +126,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/web/ByteUnits.kt",
+      "path": "conf/src/main/kotlin/org/openrs2/conf/ConfigModule.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/ByteUnits.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/conf/src/main/kotlin/org/openrs2/conf/ConfigModule.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-a551514d0fc111af9342"
+      "work_id": "377-7f058ce60b2331f1fd1d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "80d1f30feec88abf5964",
+      "candidate_id": "f8017a9e65dc179d8984",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -144,17 +144,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/web/ByteUnitsDialect.kt",
+      "path": "conf/src/main/kotlin/org/openrs2/conf/ConfigProvider.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/ByteUnitsDialect.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/conf/src/main/kotlin/org/openrs2/conf/ConfigProvider.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-80d1f30feec88abf5964"
+      "work_id": "377-f8017a9e65dc179d8984"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6da5514865f9c002836f",
+      "candidate_id": "bed542b1238fcc247508",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -162,17 +162,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/web/ByteUnitsExpressionFactory.kt",
+      "path": "conf/src/main/kotlin/org/openrs2/conf/CountryCode.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/ByteUnitsExpressionFactory.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/conf/src/main/kotlin/org/openrs2/conf/CountryCode.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-6da5514865f9c002836f"
+      "work_id": "377-bed542b1238fcc247508"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "651faefc2b3711ff929c",
+      "candidate_id": "9ea6af5dc24f88bfa0dd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -180,17 +180,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/web/CachesController.kt",
+      "path": "conf/src/main/kotlin/org/openrs2/conf/RsaKeyProvider.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/CachesController.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/conf/src/main/kotlin/org/openrs2/conf/RsaKeyProvider.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-651faefc2b3711ff929c"
+      "work_id": "377-9ea6af5dc24f88bfa0dd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "72ee2c04a2e468a9a1ad",
+      "candidate_id": "14c3d2a85cda8b2425fc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -198,17 +198,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/web/ClientsController.kt",
+      "path": "crc32/src/main/kotlin/org/openrs2/crc32/Crc32Command.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/ClientsController.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crc32/src/main/kotlin/org/openrs2/crc32/Crc32Command.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-72ee2c04a2e468a9a1ad"
+      "work_id": "377-14c3d2a85cda8b2425fc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1bcbe46ca6261e711abd",
+      "candidate_id": "4f67fc0594b34521f334",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -216,17 +216,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/web/KeysController.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/CryptoJacksonModule.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/KeysController.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/CryptoJacksonModule.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-1bcbe46ca6261e711abd"
+      "work_id": "377-4f67fc0594b34521f334"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e9e9d5dd9e4eac2fd483",
+      "candidate_id": "8091d614948779cda2de",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -234,17 +234,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/web/WebCommand.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/CryptoModule.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/WebCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/CryptoModule.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-e9e9d5dd9e4eac2fd483"
+      "work_id": "377-8091d614948779cda2de"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "50ff64a5214b9707a2d9",
+      "candidate_id": "1e9135bff6c27cfc3f8c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -252,17 +252,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/web/WebServer.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/IsaacRandom.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/WebServer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/IsaacRandom.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-50ff64a5214b9707a2d9"
+      "work_id": "377-1e9135bff6c27cfc3f8c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a690e58a476638b3f5b4",
+      "candidate_id": "79aaf21e934e57ba435a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -270,17 +270,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/world/World.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/NopStreamCipher.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/world/World.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/NopStreamCipher.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-a690e58a476638b3f5b4"
+      "work_id": "377-79aaf21e934e57ba435a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0d1c969d8bfeed070218",
+      "candidate_id": "57b58509c7bd586bb347",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -288,17 +288,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "archive/src/main/kotlin/org/openrs2/archive/world/WorldList.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/Pkcs12KeyStore.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/world/WorldList.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/Pkcs12KeyStore.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-0d1c969d8bfeed070218"
+      "work_id": "377-57b58509c7bd586bb347"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a22062b54dda0b689ea6",
+      "candidate_id": "2818d232b82c12f49b37",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -306,17 +306,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/AsmJacksonModule.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/Rsa.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/AsmJacksonModule.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/Rsa.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-a22062b54dda0b689ea6"
+      "work_id": "377-2818d232b82c12f49b37"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5b4eaab5d593077da186",
+      "candidate_id": "dbe902094fadee95c2fb",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -324,17 +324,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/AsmModule.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/Sha1.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/AsmModule.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/Sha1.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-5b4eaab5d593077da186"
+      "work_id": "377-dbe902094fadee95c2fb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "12bce7704c332ea68331",
+      "candidate_id": "e0503f6bbb559a2eaef6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -342,17 +342,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/ClassForNameUtils.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/StreamCipher.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/ClassForNameUtils.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/StreamCipher.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-12bce7704c332ea68331"
+      "work_id": "377-e0503f6bbb559a2eaef6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "38bac3a018b4279e2ee4",
+      "candidate_id": "af5e96328bbdcba360da",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -360,17 +360,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/ClassNameExtensions.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/SymmetricKey.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/ClassNameExtensions.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/SymmetricKey.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-38bac3a018b4279e2ee4"
+      "work_id": "377-af5e96328bbdcba360da"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3404797575b414504909",
+      "candidate_id": "c101f3e907b03d1a97af",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -378,17 +378,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/ClassNodeRemapper.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/SymmetricKeyDeserializer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/ClassNodeRemapper.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/SymmetricKeyDeserializer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-3404797575b414504909"
+      "work_id": "377-c101f3e907b03d1a97af"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9cd48748e69259f18f50",
+      "candidate_id": "609bcd48554dc526cea2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -396,17 +396,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/ClassVersionUtils.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/SymmetricKeySerializer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/ClassVersionUtils.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/SymmetricKeySerializer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-9cd48748e69259f18f50"
+      "work_id": "377-609bcd48554dc526cea2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5ebf878e760a935f2780",
+      "candidate_id": "d2884e16f4a307bcb0bc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -414,17 +414,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/InsnListUtils.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/ThreadLocalSecureRandom.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/InsnListUtils.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/ThreadLocalSecureRandom.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-5ebf878e760a935f2780"
+      "work_id": "377-d2884e16f4a307bcb0bc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a701a36ececa3f74f233",
+      "candidate_id": "31581157a200b1c5745e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -432,17 +432,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/InsnMatcher.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/Whirlpool.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/InsnMatcher.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/Whirlpool.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-a701a36ececa3f74f233"
+      "work_id": "377-31581157a200b1c5745e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "22b57fd83f54f61aff96",
+      "candidate_id": "dc8c23c1d856733139b7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -450,17 +450,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/InsnNodeUtils.kt",
+      "path": "crypto/src/main/kotlin/org/openrs2/crypto/Xtea.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/InsnNodeUtils.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/crypto/src/main/kotlin/org/openrs2/crypto/Xtea.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-22b57fd83f54f61aff96"
+      "work_id": "377-dc8c23c1d856733139b7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "85cca3c456b2c76f3ffb",
+      "candidate_id": "e16ce9a83d134f7c9a38",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -468,17 +468,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/MemberDesc.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/BackoffStrategy.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/MemberDesc.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/BackoffStrategy.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-85cca3c456b2c76f3ffb"
+      "work_id": "377-e16ce9a83d134f7c9a38"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "316ff2f06d7d616d0dc0",
+      "candidate_id": "4b81dad24b92a7854dc8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -486,17 +486,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/MemberRef.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/BinaryExponentialBackoffStrategy.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/MemberRef.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/BinaryExponentialBackoffStrategy.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-316ff2f06d7d616d0dc0"
+      "work_id": "377-4b81dad24b92a7854dc8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "03c0039f6a57b1293280",
+      "candidate_id": "d9f82650a0e58b556991",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -504,17 +504,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/MemberRefDeserializer.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/Database.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/MemberRefDeserializer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/Database.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-03c0039f6a57b1293280"
+      "work_id": "377-d9f82650a0e58b556991"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6981f48a895eecbbbbc5",
+      "candidate_id": "5b518e3189454a8c07f7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -522,17 +522,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/MemberRefKeyDeserializer.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/DeadlockDetector.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/MemberRefKeyDeserializer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/DeadlockDetector.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-6981f48a895eecbbbbc5"
+      "work_id": "377-5b518e3189454a8c07f7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fafec32a9b2ac0f2fb74",
+      "candidate_id": "1373d0e9dd530a6722ae",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -540,17 +540,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/MethodNodeUtils.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/DefaultDeadlockDetector.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/MethodNodeUtils.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/DefaultDeadlockDetector.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-fafec32a9b2ac0f2fb74"
+      "work_id": "377-1373d0e9dd530a6722ae"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fa5a2fdd9a3a699a3794",
+      "candidate_id": "37c7a8637f20672419f5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -558,17 +558,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/NopClassVisitor.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/FixedBackoffStrategy.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/NopClassVisitor.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/FixedBackoffStrategy.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-fa5a2fdd9a3a699a3794"
+      "work_id": "377-37c7a8637f20672419f5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "118ac6f76d244b2d4c01",
+      "candidate_id": "ab3c4f26335052636265",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -576,17 +576,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/StackMetadata.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/H2DeadlockDetector.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/StackMetadata.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/H2DeadlockDetector.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-118ac6f76d244b2d4c01"
+      "work_id": "377-ab3c4f26335052636265"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a0f205feff95e06a0e8b",
+      "candidate_id": "499dee5df301e74c699d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -594,17 +594,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/AsmClassMetadata.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/MysqlDeadlockDetector.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/AsmClassMetadata.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/MysqlDeadlockDetector.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-a0f205feff95e06a0e8b"
+      "work_id": "377-499dee5df301e74c699d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c1c575b9f552911faf4b",
+      "candidate_id": "a926eef5f391976897c0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -612,17 +612,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/ClassMetadata.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/PostgresDeadlockDetector.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/ClassMetadata.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/PostgresDeadlockDetector.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-c1c575b9f552911faf4b"
+      "work_id": "377-a926eef5f391976897c0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "21696a6d5cb584c179e0",
+      "candidate_id": "52db641a7f11e35d4027",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -630,17 +630,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/ClassPath.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/SqliteDeadlockDetector.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/ClassPath.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/SqliteDeadlockDetector.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-21696a6d5cb584c179e0"
+      "work_id": "377-52db641a7f11e35d4027"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b7ed207130a00ff7923e",
+      "candidate_id": "18301c9ed53607439403",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -648,17 +648,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/ExtendedRemapper.kt",
+      "path": "db/src/main/kotlin/org/openrs2/db/Transaction.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/ExtendedRemapper.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/db/src/main/kotlin/org/openrs2/db/Transaction.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-b7ed207130a00ff7923e"
+      "work_id": "377-18301c9ed53607439403"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "42628676a911f4c8a97a",
+      "candidate_id": "a5faf6567ebf4fb761d3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -666,17 +666,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/JsrInliner.kt",
+      "path": "decompiler/src/main/kotlin/org/openrs2/decompiler/DecompileCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/JsrInliner.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/decompiler/src/main/kotlin/org/openrs2/decompiler/DecompileCommand.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-42628676a911f4c8a97a"
+      "work_id": "377-a5faf6567ebf4fb761d3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "467bd4773d99f237bd51",
+      "candidate_id": "1dc5ce385cced4e653c1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -684,17 +684,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/Library.kt",
+      "path": "decompiler/src/main/kotlin/org/openrs2/decompiler/Decompiler.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/Library.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/decompiler/src/main/kotlin/org/openrs2/decompiler/Decompiler.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-467bd4773d99f237bd51"
+      "work_id": "377-1dc5ce385cced4e653c1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "68c06c3ec18da578f006",
+      "candidate_id": "aa7fb7eb4445a6879dcf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -702,17 +702,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/LibraryRemapper.kt",
+      "path": "decompiler/src/main/kotlin/org/openrs2/decompiler/DecompilerIo.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/LibraryRemapper.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/decompiler/src/main/kotlin/org/openrs2/decompiler/DecompilerIo.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-68c06c3ec18da578f006"
+      "work_id": "377-aa7fb7eb4445a6879dcf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "482c9c1cfe1768945859",
+      "candidate_id": "923aa2adcb6d5b889cdf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -720,17 +720,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/ReflectionClassMetadata.kt",
+      "path": "decompiler/src/main/kotlin/org/openrs2/decompiler/Library.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/ReflectionClassMetadata.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/decompiler/src/main/kotlin/org/openrs2/decompiler/Library.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-482c9c1cfe1768945859"
+      "work_id": "377-923aa2adcb6d5b889cdf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "27a60798c31a8bb70856",
+      "candidate_id": "9b9d7ca2da4bdcd31d0e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -738,17 +738,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/StackFrameClassWriter.kt",
+      "path": "decompiler/src/main/kotlin/org/openrs2/decompiler/Slf4jFernflowerLogger.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/StackFrameClassWriter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/decompiler/src/main/kotlin/org/openrs2/decompiler/Slf4jFernflowerLogger.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-27a60798c31a8bb70856"
+      "work_id": "377-9b9d7ca2da4bdcd31d0e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "48422cbd5f9b310f940b",
+      "candidate_id": "b026c2d6c5ef1a04b1cb",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -756,17 +756,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/AnyClassFilter.kt",
+      "path": "deob-annotations/src/main/java/org/openrs2/deob/annotation/OriginalArg.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/AnyClassFilter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-annotations/src/main/java/org/openrs2/deob/annotation/OriginalArg.java",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-48422cbd5f9b310f940b"
+      "work_id": "377-b026c2d6c5ef1a04b1cb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5985bdb084c17b9a7ffb",
+      "candidate_id": "5e8d31b99c67b34ee2de",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -774,17 +774,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/AnyMemberFilter.kt",
+      "path": "deob-annotations/src/main/java/org/openrs2/deob/annotation/OriginalClass.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/AnyMemberFilter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-annotations/src/main/java/org/openrs2/deob/annotation/OriginalClass.java",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-5985bdb084c17b9a7ffb"
+      "work_id": "377-5e8d31b99c67b34ee2de"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5a18007c173687acbc9b",
+      "candidate_id": "82abe31cf37e78ae497e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -792,17 +792,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/ClassFilter.kt",
+      "path": "deob-annotations/src/main/java/org/openrs2/deob/annotation/OriginalMember.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/ClassFilter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-annotations/src/main/java/org/openrs2/deob/annotation/OriginalMember.java",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-5a18007c173687acbc9b"
+      "work_id": "377-82abe31cf37e78ae497e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "037a1a2ab486c9c5d926",
+      "candidate_id": "4c32d8ce5945c4e31a00",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -810,17 +810,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/Glob.kt",
+      "path": "deob-annotations/src/main/java/org/openrs2/deob/annotation/Pc.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/Glob.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-annotations/src/main/java/org/openrs2/deob/annotation/Pc.java",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-037a1a2ab486c9c5d926"
+      "work_id": "377-4c32d8ce5945c4e31a00"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e472646450a039d1eca0",
+      "candidate_id": "0331bb9b187e7b514256",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -828,17 +828,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/GlobClassFilter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/AstDeobfuscator.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/GlobClassFilter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/AstDeobfuscator.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-e472646450a039d1eca0"
+      "work_id": "377-0331bb9b187e7b514256"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d0f070ed26cf0ae43772",
+      "candidate_id": "231ab9a53eba437aebec",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -846,17 +846,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/GlobMemberFilter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/AstDeobfuscatorModule.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/GlobMemberFilter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/AstDeobfuscatorModule.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-d0f070ed26cf0ae43772"
+      "work_id": "377-231ab9a53eba437aebec"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4befe1326bcd5164f30f",
+      "candidate_id": "74bd42783a0a66f6c0e7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -864,17 +864,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/MemberFilter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/DeobfuscateAstCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/MemberFilter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/DeobfuscateAstCommand.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-4befe1326bcd5164f30f"
+      "work_id": "377-74bd42783a0a66f6c0e7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5d42d077f2a44a625a4e",
+      "candidate_id": "59167e27cca00a2e5948",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -882,17 +882,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/UnionClassFilter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/Library.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/UnionClassFilter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/Library.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-5d42d077f2a44a625a4e"
+      "work_id": "377-59167e27cca00a2e5948"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fda3b511ee9c22bd8505",
+      "candidate_id": "9ee73a6c30e5b1bf6e0c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -900,17 +900,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/UnionMemberFilter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/LibraryGroup.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/UnionMemberFilter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/LibraryGroup.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-fda3b511ee9c22bd8505"
+      "work_id": "377-9ee73a6c30e5b1bf6e0c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3bea480d1f380d84a77c",
+      "candidate_id": "c0186318c88f5d048fa5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -918,17 +918,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/AbstractJarLibraryWriter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/gl/GlRegistry.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/AbstractJarLibraryWriter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/gl/GlRegistry.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-3bea480d1f380d84a77c"
+      "work_id": "377-c0186318c88f5d048fa5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "eb3dca5cb36b7ccfcea4",
+      "candidate_id": "a2a86ab20716e53115a0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -936,17 +936,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/CabLibraryReader.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/gl/GlRegistryProvider.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/CabLibraryReader.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/gl/GlRegistryProvider.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-eb3dca5cb36b7ccfcea4"
+      "work_id": "377-a2a86ab20716e53115a0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "409c8384f42d78f17d7c",
+      "candidate_id": "e52d504bc421d9375c4d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -954,17 +954,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/JarLibraryReader.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/AddSubTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/JarLibraryReader.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/AddSubTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-409c8384f42d78f17d7c"
+      "work_id": "377-e52d504bc421d9375c4d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3b21af14640d08c5901b",
+      "candidate_id": "d1b6e08792b867b2ffc2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -972,17 +972,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/JarLibraryWriter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/BinaryExprOrderTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/JarLibraryWriter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/BinaryExprOrderTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-3b21af14640d08c5901b"
+      "work_id": "377-d1b6e08792b867b2ffc2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "86720b93259750bc379a",
+      "candidate_id": "680e33bc72a546511d91",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -990,17 +990,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/LibraryReader.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/BitMaskTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/LibraryReader.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/BitMaskTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-86720b93259750bc379a"
+      "work_id": "377-680e33bc72a546511d91"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "915e110d7d791dd20b6b",
+      "candidate_id": "47a0fdabca5dc87ae2a6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1008,17 +1008,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/LibraryWriter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/CharLiteralTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/LibraryWriter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/CharLiteralTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-915e110d7d791dd20b6b"
+      "work_id": "377-47a0fdabca5dc87ae2a6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2edad4d11b407cbba346",
+      "candidate_id": "42bc7df0b3910f1e0fd3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1026,17 +1026,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/ManifestJarLibraryWriter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/ComplementTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/ManifestJarLibraryWriter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/ComplementTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-2edad4d11b407cbba346"
+      "work_id": "377-42bc7df0b3910f1e0fd3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "392125c926f22ae95bd7",
+      "candidate_id": "c2bd5f3b7bee06e1d21b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1044,17 +1044,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/Pack200LibraryReader.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/EncloseTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/Pack200LibraryReader.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/EncloseTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-392125c926f22ae95bd7"
+      "work_id": "377-c2bd5f3b7bee06e1d21b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bd7cd683d57dccbd94c2",
+      "candidate_id": "416ecc005e3cb6b14f35",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1062,17 +1062,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/Pack200LibraryWriter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/ForLoopConditionTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/Pack200LibraryWriter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/ForLoopConditionTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-bd7cd683d57dccbd94c2"
+      "work_id": "377-416ecc005e3cb6b14f35"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7bc1d3c01ce26d6f9d4e",
+      "candidate_id": "2fd4e0ff17fbbf69a21a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1080,17 +1080,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/PackClassLibraryReader.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/GlTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/PackClassLibraryReader.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/GlTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-7bc1d3c01ce26d6f9d4e"
+      "work_id": "377-2fd4e0ff17fbbf69a21a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "08b17cbd311ec2437b5b",
+      "candidate_id": "e355a821f0b2793246be",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1098,17 +1098,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/PackClassLibraryWriter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/HexLiteralTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/PackClassLibraryWriter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/HexLiteralTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-08b17cbd311ec2437b5b"
+      "work_id": "377-e355a821f0b2793246be"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3017468da6e6cf28d4f1",
+      "candidate_id": "a743afc878bf2b5ee204",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1116,17 +1116,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/io/SignedJarLibraryWriter.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/IdentityTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/SignedJarLibraryWriter.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/IdentityTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-3017468da6e6cf28d4f1"
+      "work_id": "377-a743afc878bf2b5ee204"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "104eb497cbf4c93d30a1",
+      "candidate_id": "5ccdaf1c0a0fd8a19f8e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1134,17 +1134,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/packclass/ConstantPool.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/IfElseTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/packclass/ConstantPool.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/IfElseTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-104eb497cbf4c93d30a1"
+      "work_id": "377-5ccdaf1c0a0fd8a19f8e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1e0e3c7024d2dd70ee55",
+      "candidate_id": "14e62a724a98872e44af",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1152,17 +1152,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/packclass/MemberRef.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/IncrementTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/packclass/MemberRef.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/IncrementTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-1e0e3c7024d2dd70ee55"
+      "work_id": "377-14e62a724a98872e44af"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ad79570feff421336ac9",
+      "candidate_id": "9207cefc2f0a1c8aef23",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1170,17 +1170,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/packclass/NameAndType.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/NegativeLiteralTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/packclass/NameAndType.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/NegativeLiteralTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-ad79570feff421336ac9"
+      "work_id": "377-9207cefc2f0a1c8aef23"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c844a2d4035ce1c21af9",
+      "candidate_id": "0acb7e6f14e1b1bd6fd2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1188,17 +1188,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/packclass/PackClass.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/NewInstanceTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/packclass/PackClass.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/NewInstanceTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-c844a2d4035ce1c21af9"
+      "work_id": "377-0acb7e6f14e1b1bd6fd2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0b79f2eccde9966d6d15",
+      "candidate_id": "33ec263b10db7b5a5ebf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1206,17 +1206,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "asm/src/main/kotlin/org/openrs2/asm/transform/Transformer.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/NotTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/transform/Transformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/NotTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-0b79f2eccde9966d6d15"
+      "work_id": "377-33ec263b10db7b5a5ebf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9144d107f079784a3394",
+      "candidate_id": "79dc3236088e11643879",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1224,17 +1224,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ArrayOrder.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/RedundantCastTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ArrayOrder.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/RedundantCastTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-9144d107f079784a3394"
+      "work_id": "377-79dc3236088e11643879"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f9da9513d1907849eafa",
+      "candidate_id": "0b29ae8949b67d485b45",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1242,17 +1242,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ByteBufExtensionGenerator.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/TernaryTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ByteBufExtensionGenerator.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/TernaryTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-f9da9513d1907849eafa"
+      "work_id": "377-0b29ae8949b67d485b45"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "53bbaccfcacb632b5c8b",
+      "candidate_id": "e0da85d2415807eb7d1f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1260,17 +1260,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ByteOrder.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/Transformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ByteOrder.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/Transformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-53bbaccfcacb632b5c8b"
+      "work_id": "377-e0da85d2415807eb7d1f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f92df04a07ccd202e2ee",
+      "candidate_id": "b48877aea1bb41a0e4b3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1278,17 +1278,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/GenerateBufferCommand.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/UnencloseTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/GenerateBufferCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/UnencloseTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-f92df04a07ccd202e2ee"
+      "work_id": "377-b48877aea1bb41a0e4b3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5f0f43ebd374ebbb5214",
+      "candidate_id": "f5471d33952e82d5c3e0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1296,17 +1296,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/IntType.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/ValueOfTransformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/IntType.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/transform/ValueOfTransformer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-5f0f43ebd374ebbb5214"
+      "work_id": "377-f5471d33952e82d5c3e0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b4824c66f283ffaaaf1f",
+      "candidate_id": "28059e0f4ae128863509",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1314,17 +1314,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/Signedness.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/util/ExprUtils.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/Signedness.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/util/ExprUtils.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-b4824c66f283ffaaaf1f"
+      "work_id": "377-28059e0f4ae128863509"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4bfc4af1ee783ed6f794",
+      "candidate_id": "93bf5a6fb295fcd89b2a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1332,17 +1332,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/Transformation.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/util/NodeUtils.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/Transformation.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/util/NodeUtils.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-4bfc4af1ee783ed6f794"
+      "work_id": "377-93bf5a6fb295fcd89b2a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d1aac769d1f8ce63f217",
+      "candidate_id": "e72a8e71c6d1fe08ff88",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1350,17 +1350,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer/src/main/kotlin/org/openrs2/buffer/Arena.kt",
+      "path": "deob-ast/src/main/kotlin/org/openrs2/deob/ast/util/TypeUtils.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/Arena.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-ast/src/main/kotlin/org/openrs2/deob/ast/util/TypeUtils.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-d1aac769d1f8ce63f217"
+      "work_id": "377-e72a8e71c6d1fe08ff88"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9d26b8c8f53a264e326f",
+      "candidate_id": "c3972ae87bb2b4bad1ed",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1368,17 +1368,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer/src/main/kotlin/org/openrs2/buffer/BitBuf.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/ArgPartition.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/BitBuf.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/ArgPartition.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-9d26b8c8f53a264e326f"
+      "work_id": "377-c3972ae87bb2b4bad1ed"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d94346a6268f055cb9ae",
+      "candidate_id": "0035574acb0189fb6a6c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1386,17 +1386,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer/src/main/kotlin/org/openrs2/buffer/BufferModule.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/ArgRef.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/BufferModule.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/ArgRef.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-d94346a6268f055cb9ae"
+      "work_id": "377-0035574acb0189fb6a6c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c1944fd02a0905049346",
+      "candidate_id": "66ef4469db701db9b674",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1404,17 +1404,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer/src/main/kotlin/org/openrs2/buffer/ByteBufBodyHandler.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/BytecodeDeobfuscator.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/ByteBufBodyHandler.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/BytecodeDeobfuscator.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-c1944fd02a0905049346"
+      "work_id": "377-66ef4469db701db9b674"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "75b845b678999b2b3d6a",
+      "candidate_id": "d52433f3bbc58ca7b746",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1422,17 +1422,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer/src/main/kotlin/org/openrs2/buffer/ByteBufExtensions.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/BytecodeDeobfuscatorModule.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/ByteBufExtensions.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/BytecodeDeobfuscatorModule.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-75b845b678999b2b3d6a"
+      "work_id": "377-d52433f3bbc58ca7b746"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "aaacb2d5cfaa0948beca",
+      "candidate_id": "e8e518ea984157dd2e5a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1440,17 +1440,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer/src/main/kotlin/org/openrs2/buffer/GeneratedByteBufExtensions.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/DeobfuscateBytecodeCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/GeneratedByteBufExtensions.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/DeobfuscateBytecodeCommand.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-aaacb2d5cfaa0948beca"
+      "work_id": "377-e8e518ea984157dd2e5a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "83aedac8ec9459e715be",
+      "candidate_id": "64ecaccde3074fa8f1b4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1458,17 +1458,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "buffer/src/main/kotlin/org/openrs2/buffer/ReferenceCountedExtensions.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/DeobfuscatorQualifier.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/ReferenceCountedExtensions.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/DeobfuscatorQualifier.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-83aedac8ec9459e715be"
+      "work_id": "377-64ecaccde3074fa8f1b4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "92cc6b7a37ad815c7b12",
+      "candidate_id": "79d8be518b9dcde8de50",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1476,17 +1476,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "cli/src/main/kotlin/org/openrs2/cli/OptionExtensions.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/OriginalPcTable.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/cli/src/main/kotlin/org/openrs2/cli/OptionExtensions.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/OriginalPcTable.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-92cc6b7a37ad815c7b12"
+      "work_id": "377-79d8be518b9dcde8de50"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a0925db0d0538bb7d3f0",
+      "candidate_id": "8f5a0a47e167a2011c47",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1494,17 +1494,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/CompressCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/Profile.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/CompressCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/Profile.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-a0925db0d0538bb7d3f0"
+      "work_id": "377-8f5a0a47e167a2011c47"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "cf79c5f906b835d1fd07",
+      "candidate_id": "b25d807ac3db63fea10d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1512,17 +1512,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/bzip2/Bunzip2Command.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/ProfileProvider.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/bzip2/Bunzip2Command.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/ProfileProvider.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-cf79c5f906b835d1fd07"
+      "work_id": "377-b25d807ac3db63fea10d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "79572ea861e6dffbb86d",
+      "candidate_id": "e3871c1ea9f8a2a6e2ec",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1530,17 +1530,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/bzip2/Bzip2Command.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/SignedClassUtils.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/bzip2/Bzip2Command.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/SignedClassUtils.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-79572ea861e6dffbb86d"
+      "work_id": "377-e3871c1ea9f8a2a6e2ec"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3c7dd00d54a17c1d0d7f",
+      "candidate_id": "acaad1614bfe91d2e417",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1548,17 +1548,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/deflate/DeflateCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/ConstSourceInterpreter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/deflate/DeflateCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/ConstSourceInterpreter.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-3c7dd00d54a17c1d0d7f"
+      "work_id": "377-acaad1614bfe91d2e417"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b049493de084a371b52e",
+      "candidate_id": "ce5eba9aee55b4d446fc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1566,17 +1566,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/deflate/InflateCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/ConstSourceValue.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/deflate/InflateCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/ConstSourceValue.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-b049493de084a371b52e"
+      "work_id": "377-ce5eba9aee55b4d446fc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "95d6a54070eb55bf54ae",
+      "candidate_id": "0d6675f69affeaf4df99",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1584,17 +1584,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GunzipCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/ControlFlowAnalyzer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GunzipCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/ControlFlowAnalyzer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-95d6a54070eb55bf54ae"
+      "work_id": "377-0d6675f69affeaf4df99"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "927509c1b4b8c1a68c0c",
+      "candidate_id": "17fb451d4dc0c6be99d4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1602,17 +1602,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GunzipLaxCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/ControlFlowGraph.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GunzipLaxCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/ControlFlowGraph.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-927509c1b4b8c1a68c0c"
+      "work_id": "377-17fb451d4dc0c6be99d4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f0879dcbb41f2c716864",
+      "candidate_id": "a033762ebe955c1edf9b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1620,17 +1620,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GzipCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/CopyAssignment.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GzipCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/CopyAssignment.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-f0879dcbb41f2c716864"
+      "work_id": "377-a033762ebe955c1edf9b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0cca2cb2657c83213ab7",
+      "candidate_id": "d979c166149e7a58563e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1638,17 +1638,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GzipJagexCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/CopyPropagationAnalyzer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GzipJagexCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/CopyPropagationAnalyzer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-0cca2cb2657c83213ab7"
+      "work_id": "377-d979c166149e7a58563e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "08f86d67d4792c5d10c2",
+      "candidate_id": "40c5ae6a2628aadd6c8a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1656,17 +1656,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/lzma/LzmaCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/DataFlowAnalyzer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/lzma/LzmaCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/DataFlowAnalyzer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-08f86d67d4792c5d10c2"
+      "work_id": "377-40c5ae6a2628aadd6c8a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e17f91108690a49a5f47",
+      "candidate_id": "ab9559be91d65381054a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1674,17 +1674,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/lzma/UnlzmaCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/FieldWriteAnalyzer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/lzma/UnlzmaCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/FieldWriteAnalyzer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-e17f91108690a49a5f47"
+      "work_id": "377-ab9559be91d65381054a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bbd8956d9f43cbfcb4f0",
+      "candidate_id": "dcd6d84b20387ad646d5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1692,17 +1692,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/pack200/Pack200Command.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/FieldWriteCount.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/pack200/Pack200Command.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/FieldWriteCount.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-bbd8956d9f43cbfcb4f0"
+      "work_id": "377-dcd6d84b20387ad646d5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c18edf32c691ecd2ba9f",
+      "candidate_id": "b9242d1d0370b0753e11",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1710,17 +1710,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/pack200/Unpack200Command.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/IntBranch.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/pack200/Unpack200Command.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/IntBranch.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-c18edf32c691ecd2ba9f"
+      "work_id": "377-b9242d1d0370b0753e11"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "180608034cbfd89fc2d1",
+      "candidate_id": "857048d79356de2c05dd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1728,17 +1728,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/packclass/PackClassCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/IntBranchResult.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/packclass/PackClassCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/IntBranchResult.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-180608034cbfd89fc2d1"
+      "work_id": "377-857048d79356de2c05dd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9c52844281170fcaa3a1",
+      "candidate_id": "5671c53f35445c942fa9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1746,17 +1746,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/packclass/UnpackClassCommand.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/IntInterpreter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/packclass/UnpackClassCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/IntInterpreter.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-9c52844281170fcaa3a1"
+      "work_id": "377-5671c53f35445c942fa9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "daa63d74a2a14a089b16",
+      "candidate_id": "eb29d0782ebf9912673c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1764,17 +1764,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress/src/main/kotlin/org/openrs2/compress/bzip2/Bzip2.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/IntValue.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/bzip2/Bzip2.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/IntValue.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-daa63d74a2a14a089b16"
+      "work_id": "377-eb29d0782ebf9912673c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5531c65b2590f85d3d3d",
+      "candidate_id": "69c63ab25a698026da14",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1782,17 +1782,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress/src/main/kotlin/org/openrs2/compress/bzip2/Bzip2OutputStream.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/IntValueSet.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/bzip2/Bzip2OutputStream.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/IntValueSet.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-5531c65b2590f85d3d3d"
+      "work_id": "377-69c63ab25a698026da14"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7ccade714a813cb1a396",
+      "candidate_id": "12f3a13350ec11f06d90",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1800,13 +1800,13 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "compress/src/main/kotlin/org/openrs2/compress/bzip2/LibBzip2.kt",
+      "path": "deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/LiveVariableAnalyzer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/bzip2/LibBzip2.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/deob-bytecode/src/main/kotlin/org/openrs2/deob/bytecode/analysis/LiveVariableAnalyzer.kt",
       "source": "openrs2/openrs2",
       "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-7ccade714a813cb1a396"
+      "work_id": "377-12f3a13350ec11f06d90"
     }
   ]
 }
