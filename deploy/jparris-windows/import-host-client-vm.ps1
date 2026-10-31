@@ -40,11 +40,11 @@ Write-Host 'No server, player saves or account database will be touched.'
 New-Item -ItemType Directory -Path $stage -Force | Out-Null
 $cleanStage = $false
 try {
-    $args = @($Source,$stage,'/E','/XJ','/R:1','/W:1',
+    $copyArgs = @($Source,$stage,'/E','/XJ','/R:1','/W:1',
         '/XD','.git','.gradle','build','node_modules','.idea','.vscode','logs',
         '/XF','*.sav','*.sqlite','*.sqlite3','db.sqlite','.env','*.log',
         '/NFL','/NDL','/NJH','/NJS','/NP')
-    & robocopy.exe @args | Out-Null
+    & robocopy.exe @copyArgs | Out-Null
     $copyCode = $LASTEXITCODE
     if ($copyCode -ge 8) {
         throw "Copy from VirtualBox shared folder failed (robocopy exit $copyCode)."
@@ -98,7 +98,7 @@ try {
     # Do not replace active JVM process files.
     $running = @(Get-CimInstance Win32_Process -Filter "Name='java.exe' OR Name='javaw.exe'" -ErrorAction SilentlyContinue |
         Where-Object { $_.CommandLine -and
-            $_.CommandLine.Contains($client, [StringComparison]::OrdinalIgnoreCase) })
+            $_.CommandLine.IndexOf($client, [StringComparison]::OrdinalIgnoreCase) -ge 0 })
     if ($running.Count -gt 0) {
         throw 'Sylvie client is still running. Close its RuneScape window and run this import again. The existing client has NOT been replaced.'
     }
@@ -117,7 +117,6 @@ try {
     }
     $notes = "Imported $stamp from VirtualBox shared client; host=$HostAddress; original VM client backed up locally to $backup"
     [System.IO.File]::WriteAllText($marker,$notes)
-    $cleanStage = $true
     Write-Host 'SUCCESS: Custom Java client installed into Sylvie VM.'
     Write-Host "Original VM client backup: $backup"
     Write-Host 'Launch the existing Play JoshRS - Second Player desktop shortcut.'
