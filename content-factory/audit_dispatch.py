@@ -19,6 +19,14 @@ VARROCK = (
     ("juliet", "scripts/areas/area_varrock/scripts/juliet.rs2", "opnpc1,juliet_multi_visible"),
     ("romeo", "scripts/areas/area_varrock/scripts/romeo.rs2", "opnpc1,romeo"),
 )
+# Git blob SHA-1 identities recorded from the exact pinned LostCity Content 377
+# commit 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50. These are metadata,
+# not game assets. A mismatch can be a legitimate local customisation.
+PINNED_BLOBS = {
+    "reldo": "a3af9aea051e92409b11c9d561a3381f2a824480",
+    "juliet": "510d1e770c86ae35da6bce3432074a7be44cce89",
+    "romeo": "b32098585ed83069be3cb0826551b20367970653",
+}
 UNIVERSAL = re.compile(r"hello[ ,]+adventurer|greetings[ ,]+adventurer", re.I)
 
 
@@ -32,6 +40,11 @@ def digest(path: Path) -> str:
     return h.hexdigest()
 
 
+def git_blob_sha1(data: bytes) -> str:
+    """Git object identity for exact file bytes; no dialogue is exported."""
+    return hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
+
+
 def audit(content_root: Path, script_pack: Path | None = None,
           index_pack: Path | None = None) -> dict:
     cases = []
@@ -41,9 +54,16 @@ def audit(content_root: Path, script_pack: Path | None = None,
                   "source_exists": False, "source_sha256": None,
                   "source_trigger_present": False,
                   "generic_literal_detected": False,
-                  "live_routing_verified": False}
+                  "live_routing_verified": False,
+                  "pinned_source_blob_sha1_expected": PINNED_BLOBS[key],
+                  "source_git_blob_sha1": None,
+                  "source_matches_pinned_377": None}
         if source.is_file() and source.stat().st_size <= 300_000:
-            value = source.read_text(encoding="utf-8")
+            raw = source.read_bytes()
+            value = raw.decode("utf-8")
+            result["source_git_blob_sha1"] = git_blob_sha1(raw)
+            result["source_matches_pinned_377"] = (
+                result["source_git_blob_sha1"] == PINNED_BLOBS[key])
             result["source_exists"] = True
             result["source_sha256"] = digest(source)
             result["source_trigger_present"] = bool(

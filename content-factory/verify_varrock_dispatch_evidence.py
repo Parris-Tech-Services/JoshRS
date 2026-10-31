@@ -17,6 +17,12 @@ EXPECTED = {
     "juliet": "opnpc1,juliet_multi_visible",
     "romeo": "opnpc1,romeo",
 }
+PINNED_BLOBS = {
+    "reldo": "a3af9aea051e92409b11c9d561a3381f2a824480",
+    "juliet": "510d1e770c86ae35da6bce3432074a7be44cce89",
+    "romeo": "b32098585ed83069be3cb0826551b20367970653",
+}
+GIT_SHA1 = re.compile(r"^[0-9a-f]{40}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 OUTCOMES = {"distinct_dialogue", "generic_greeting", "no_action", "crash", "unverified"}
 
@@ -43,6 +49,26 @@ def check_audit(audit: object) -> tuple[dict, dict]:
                 raise ValueError("missing or invalid source observation: " + field)
         if case["source_exists"] and not valid_sha(case.get("source_sha256")):
             raise ValueError("source exists without a valid sha256")
+        # Older audit reports remain accepted, but do not establish pin identity.
+        # New reports must be internally consistent and tied to the public
+        # pinned blob identities, never a self-declared alternate baseline.
+        pin_fields = ("pinned_source_blob_sha1_expected", "source_git_blob_sha1",
+                      "source_matches_pinned_377")
+        present = [field in case for field in pin_fields]
+        if any(present) and not all(present):
+            raise ValueError("incomplete pinned source identity evidence")
+        if all(present):
+            expected = PINNED_BLOBS[key]
+            if case["pinned_source_blob_sha1_expected"] != expected:
+                raise ValueError("unexpected pinned source blob for " + key)
+            observed, matches = case["source_git_blob_sha1"], case["source_matches_pinned_377"]
+            if case["source_exists"]:
+                if not isinstance(observed, str) or not GIT_SHA1.fullmatch(observed):
+                    raise ValueError("invalid Git blob SHA-1 for " + key)
+                if type(matches) is not bool or matches != (observed == expected):
+                    raise ValueError("contradictory pinned source comparison for " + key)
+            elif observed is not None or matches is not None:
+                raise ValueError("missing source cannot claim pinned identity")
         found[key] = case
     packs = audit.get("packs")
     if not isinstance(packs, dict):
@@ -99,6 +125,8 @@ def verify(audit: dict, live: dict | None = None) -> dict:
             state = "expected_source_trigger_missing"
         elif case["generic_literal_detected"]:
             state = "generic_literal_in_source_review_required"
+        elif case.get("source_matches_pinned_377") is False:
+            state = "source_differs_from_pinned_377_review_customizations"
         elif not source_pack_ready:
             state = "pack_fingerprint_missing"
         elif live is None:
@@ -118,6 +146,7 @@ def verify(audit: dict, live: dict | None = None) -> dict:
         result.append({
             "npc": key, "expected_trigger": EXPECTED[key], "classification": state,
             "source_trigger_present": case["source_trigger_present"],
+            "audited_source_matches_pinned_377": case.get("source_matches_pinned_377"),
             "agent3_relog_reported": bool(row and row["relog_checked"] and row["result"] == "distinct_dialogue" and pack_match),
             "verified_by_this_offline_tool": False,
         })
@@ -125,6 +154,8 @@ def verify(audit: dict, live: dict | None = None) -> dict:
         "schema": "joshrs-377-varrock-dispatch-evidence-v1",
         "source_pinned_commit_expected": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
         "source_pinned_commit_verified_by_this_tool": False,
+        "all_three_audited_source_blobs_match_pinned_377": all(
+            cases[key].get("source_matches_pinned_377") is True for key in EXPECTED),
         "source_pack_fingerprints_present": source_pack_ready,
         "agent3_observations_supplied": live is not None,
         "loaded_pack_sha256_matches_audited_files": pack_match,
