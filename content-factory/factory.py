@@ -152,6 +152,17 @@ def scan(registry: list, dest: Path, batch_size: int, discover: bool) -> dict:
         except (urllib.error.URLError, TimeoutError, ValueError, KeyError):
             baseline = {}
         break
+    # Reuse complete immutable tree identities; do not infer gaps from a partial cursor.
+    if baseline:
+        put_json(dest / 'pinned-377-index.json',
+                 {'schema': 1, 'revision': 377,
+                  'commit': read_json(ROOT.parent / 'deploy/jparris-windows/upstreams.json', {})['content']['commit'],
+                  'complete': True, 'paths': baseline})
+    else:
+        saved = read_json(dest / 'pinned-377-index.json', {})
+        pin = read_json(ROOT.parent / 'deploy/jparris-windows/upstreams.json', {})['content']['commit']
+        if saved.get('commit') == pin and saved.get('complete') is True:
+            baseline = saved.get('paths', {})
     for source in registry:
         repo, ref = source['repo'], source['ref']
         # Pinned installed 377 upstreams are immutable baselines, not moving branches.
