@@ -1,0 +1,125 @@
+{
+  "schema": "joshrs-rev377-candidate-v1",
+  "target_revision": 377,
+  "generated_on": "2026-10-31",
+  "policy": "Public pinned metadata only; no dialogue, game assets, private Drive or runtime exports. Source-traced is not playable.",
+  "candidates": [
+    {
+      "key": "lostcity-content-377:scripts/areas/area_varrock/scripts/reldo.rs2:44eab09081ef0f6c5f3eaabd1897a588ad7d9e50:reldo",
+      "source": {
+        "url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_varrock/scripts/reldo.rs2",
+        "commit": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+        "path": "scripts/areas/area_varrock/scripts/reldo.rs2",
+        "blob_sha": "a3af9aea051e92409b11c9d561a3381f2a824480",
+        "licence_review": "unresolved"
+      },
+      "target": {
+        "revision": 377,
+        "area": "Varrock",
+        "entity_type": "npc",
+        "id377": null,
+        "handler": "opnpc1:reldo"
+      },
+      "evidence": {
+        "baseline_source": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_varrock/scripts/reldo.rs2#L1",
+        "runtime": "unverified",
+        "issue": 36,
+        "source_observation": "Multi-topic branching (trade, occupation, quest and lore); existing canonical source.",
+        "spawn_region": "unverified",
+        "expected_live_pack": "unverified"
+      },
+      "classification": "existing_unverified",
+      "original_addition": false,
+      "stage": "source_traced",
+      "checks": {
+        "rights": "blocked",
+        "static": "not_run",
+        "compiler": "not_run",
+        "client": "not_run",
+        "persistence": "not_run"
+      },
+      "handoff": {
+        "owner": "Agy 1",
+        "task": "Compare loaded 377 pack trigger opnpc1:reldo with current fallback and any morph/category dispatch before altering dialogue; coordinate live replay with Agy 3."
+      }
+    },
+    {
+      "key": "lostcity-content-377:scripts/areas/area_varrock/scripts/juliet.rs2:44eab09081ef0f6c5f3eaabd1897a588ad7d9e50:juliet",
+      "source": {
+        "url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_varrock/scripts/juliet.rs2",
+        "commit": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+        "path": "scripts/areas/area_varrock/scripts/juliet.rs2",
+        "blob_sha": "510d1e770c86ae35da6bce3432074a7be44cce89",
+        "licence_review": "unresolved"
+      },
+      "target": {
+        "revision": 377,
+        "area": "Varrock",
+        "entity_type": "npc",
+        "id377": null,
+        "handler": "opnpc1:juliet_multi_visible"
+      },
+      "evidence": {
+        "baseline_source": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_varrock/scripts/juliet.rs2#L1",
+        "runtime": "unverified",
+        "issue": 36,
+        "source_observation": "Quest-state cases and message/inventory transitions already scripted.",
+        "spawn_region": "unverified",
+        "expected_live_pack": "unverified"
+      },
+      "classification": "existing_unverified",
+      "original_addition": false,
+      "stage": "source_traced",
+      "checks": {
+        "rights": "blocked",
+        "static": "not_run",
+        "compiler": "not_run",
+        "client": "not_run",
+        "persistence": "not_run"
+      },
+      "handoff": {
+        "owner": "Agy 1",
+        "task": "Compare loaded 377 pack trigger opnpc1:juliet_multi_visible with current fallback and any morph/category dispatch before altering dialogue; coordinate live replay with Agy 3."
+      }
+    },
+    {
+      "key": "lostcity-content-377:scripts/areas/area_varrock/scripts/romeo.rs2:44eab09081ef0f6c5f3eaabd1897a588ad7d9e50:romeo",
+      "source": {
+        "url": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_varrock/scripts/romeo.rs2",
+        "commit": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+        "path": "scripts/areas/area_varrock/scripts/romeo.rs2",
+        "blob_sha": "b32098585ed83069be3cb0826551b20367970653",
+        "licence_review": "unresolved"
+      },
+      "target": {
+        "revision": 377,
+        "area": "Varrock",
+        "entity_type": "npc",
+        "id377": null,
+        "handler": "opnpc1:romeo"
+      },
+      "evidence": {
+        "baseline_source": "https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/scripts/areas/area_varrock/scripts/romeo.rs2#L1",
+        "runtime": "unverified",
+        "issue": 36,
+        "source_observation": "Quest-state cases, player choices and progress updates already scripted.",
+        "spawn_region": "unverified",
+        "expected_live_pack": "unverified"
+      },
+      "classification": "existing_unverified",
+      "original_addition": false,
+      "stage": "source_traced",
+      "checks": {
+        "rights": "blocked",
+        "static": "not_run",
+        "compiler": "not_run",
+        "client": "not_run",
+        "persistence": "not_run"
+      },
+      "handoff": {
+        "owner": "Agy 1",
+        "task": "Compare loaded 377 pack trigger opnpc1:romeo with current fallback and any morph/category dispatch before altering dialogue; coordinate live replay with Agy 3."
+      }
+    }
+  ]
+}
