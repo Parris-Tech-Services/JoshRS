@@ -56,7 +56,7 @@ The source is in [second-player-vm.ps1](second-player-vm.ps1). All client files 
 The first launcher downloaded the whole JoshRS repository and stopped before installing its client. Reuse those existing setup files; fetch only the corrected script:
 
 ~~~powershell
-$p="$env:LOCALAPPDATA\JoshRS-SecondPlayer\launcher\JoshRS-main\deploy\jparris-windows";Invoke-WebRequest 'https://raw.githubusercontent.com/Parris-Tech-Services/JoshRS/main/deploy/jparris-windows/second-player-vm.ps1' -OutFile "$p\second-player-vm.ps1";powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$p\second-player-vm.ps1" -PlayerName Sylvie
+$p="$env:LOCALAPPDATA\JoshRS-SecondPlayer\launcher\JoshRS-main\deploy\jparris-windows";Invoke-WebRequest 'https://raw.githubusercontent.com/Parris-Tech-Services/JoshRS/main/deploy/jparris-windows/second-player-vm.ps1' -OutFile "$p\second-player-vm.ps1";powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$p\second-player-vm.ps1" -PlayerName SecondPlayer
 ~~~
 
 This is for existing installations only; new VM setups can use the one-time-install command above.
