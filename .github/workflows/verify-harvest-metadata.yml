@@ -1,0 +1,20 @@
+name: JoshRS metadata harvest verification
+on:
+  pull_request:
+    paths:
+      - 'content-factory/harvest_multi.py'
+      - 'content-factory/tests/test_harvest_multi.py'
+      - '.github/workflows/verify-harvest-metadata.yml'
+  workflow_dispatch:
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test metadata-only adapters, safety and pagination (no network)
+        run: python3 -m unittest discover -s content-factory/tests -p test_harvest_multi.py -v
