@@ -1,16 +1,16 @@
 {
-  "candidate_pool": 6420,
+  "candidate_pool": 6920,
   "deduplicated_reference_versions": 1783,
-  "next_rotation_offset": 1200,
+  "next_rotation_offset": 1300,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
-  "raw_reference_versions": 8203,
-  "rotation_offset": 1100,
+  "raw_reference_versions": 8703,
+  "rotation_offset": 1200,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
     {
       "automatically_installed": false,
-      "candidate_id": "ff7955bb55f780b0315c",
+      "candidate_id": "4225b3d2c3a032013670",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -18,17 +18,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/def/VarpChildDefinition.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/brain/BotEmotion.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/def/VarpChildDefinition.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/brain/BotEmotion.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-ff7955bb55f780b0315c"
+      "work_id": "377-4225b3d2c3a032013670"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "325a8e3090c6fc921a27",
+      "candidate_id": "00d4128017ccef7a3bf1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -36,17 +36,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/def/VarpDefinition.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/brain/BotPersonality.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/def/VarpDefinition.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/brain/BotPersonality.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-325a8e3090c6fc921a27"
+      "work_id": "377-00d4128017ccef7a3bf1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8fb231d9dd232c47b5fd",
+      "candidate_id": "4e8ab11bd4c1ee552c0c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -54,17 +54,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/def/WantedItemDefinition.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/brain/BotPersonalityManager.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/def/WantedItemDefinition.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/brain/BotPersonalityManager.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-8fb231d9dd232c47b5fd"
+      "work_id": "377-4e8ab11bd4c1ee552c0c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0c53c1c6e018461e3cec",
+      "candidate_id": "2f907cad844fbbdd942d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -72,17 +72,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/def/WeaponAnimationDefinition.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/brain/BotPkPreference.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/def/WeaponAnimationDefinition.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/brain/BotPkPreference.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-0c53c1c6e018461e3cec"
+      "work_id": "377-2f907cad844fbbdd942d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fd57eb93eb9233b9f8f8",
+      "candidate_id": "ef9c32478f8fd99988fd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -90,17 +90,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/def/WeaponDefinition.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/brain/BotPreference.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/def/WeaponDefinition.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/brain/BotPreference.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-fd57eb93eb9233b9f8f8"
+      "work_id": "377-ef9c32478f8fd99988fd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "26b3f6fea7b8d2897f39",
+      "candidate_id": "6a278e5289184e26f489",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -108,17 +108,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/def/WeaponModelDefinition.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/brain/BotReflex.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/def/WeaponModelDefinition.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/brain/BotReflex.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-26b3f6fea7b8d2897f39"
+      "work_id": "377-6a278e5289184e26f489"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7e1686601e970af6974f",
+      "candidate_id": "f9e6da1e7949590f8550",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -126,17 +126,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/def/WeaponSoundDefinition.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/brain/BotScavengingPreference.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/def/WeaponSoundDefinition.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/brain/BotScavengingPreference.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-7e1686601e970af6974f"
+      "work_id": "377-f9e6da1e7949590f8550"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2072c41ae95c45442681",
+      "candidate_id": "d37faa3f2bbcf383e53d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -144,17 +144,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/def/WeaponSpecialBarDefinition.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/injection/BotContextInjector.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/def/WeaponSpecialBarDefinition.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/injection/BotContextInjector.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-2072c41ae95c45442681"
+      "work_id": "377-d37faa3f2bbcf383e53d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "15cd4adae56f2284aa86",
+      "candidate_id": "fa09d7d346b33833c6f2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -162,17 +162,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/def/WeaponTypeDefinition.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/injection/BotContextInjectorManager.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/def/WeaponTypeDefinition.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/injection/BotContextInjectorManager.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-15cd4adae56f2284aa86"
+      "work_id": "377-fa09d7d346b33833c6f2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "00f7d39f06795aa9c0dc",
+      "candidate_id": "d77bd692915980cfd8d6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -180,17 +180,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/def/WidgetDefinition.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/io/BotChannel.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/def/WidgetDefinition.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/io/BotChannel.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-00f7d39f06795aa9c0dc"
+      "work_id": "377-d77bd692915980cfd8d6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "138837e543a56f62689f",
+      "candidate_id": "1e3735f0c031a4e4c8b6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -198,17 +198,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/Bank.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/io/BotClient.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/Bank.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/io/BotClient.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-138837e543a56f62689f"
+      "work_id": "377-1e3735f0c031a4e4c8b6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8cef63043bde22f3dd16",
+      "candidate_id": "606b69a29ea56bf3364a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -216,17 +216,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/DeathGroundItem.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/io/BotInputMessageHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/DeathGroundItem.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/io/BotInputMessageHandler.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-8cef63043bde22f3dd16"
+      "work_id": "377-606b69a29ea56bf3364a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "37892584be0dda5182a4",
+      "candidate_id": "3ce64998ae3292399760",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -234,17 +234,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/DynamicIndexedItem.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/io/BotMessage.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/DynamicIndexedItem.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/io/BotMessage.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-37892584be0dda5182a4"
+      "work_id": "377-3ce64998ae3292399760"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0d94b6da418510dc59a5",
+      "candidate_id": "22d56ce17ffca5b42bcc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -252,17 +252,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/DynamicItem.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/io/BotOutputMessageHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/DynamicItem.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/io/BotOutputMessageHandler.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-0d94b6da418510dc59a5"
+      "work_id": "377-22d56ce17ffca5b42bcc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "67d1b1e10c6c3afeea60",
+      "candidate_id": "3611d335baed7043700b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -270,17 +270,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/Equipment.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/schedule/BotScheduleService.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/Equipment.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/schedule/BotScheduleService.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-67d1b1e10c6c3afeea60"
+      "work_id": "377-3611d335baed7043700b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "974a0ecb6c53a5905f90",
+      "candidate_id": "fd73040b6fd87e272f7f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -288,17 +288,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/GroundItem.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/schedule/BotUsernameGenerator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/GroundItem.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/schedule/BotUsernameGenerator.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-974a0ecb6c53a5905f90"
+      "work_id": "377-fd73040b6fd87e272f7f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "759974abefd8f6cb92a2",
+      "candidate_id": "a3be0b70c8638baa87c6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -306,17 +306,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/GroundItemList.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/script/BotScriptManager.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/GroundItemList.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/script/BotScriptManager.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-759974abefd8f6cb92a2"
+      "work_id": "377-a3be0b70c8638baa87c6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f87db245a0ef7b8ee3bd",
+      "candidate_id": "5cbe91ec0b9053943b72",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -324,17 +324,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/IndexedItem.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/script/BotScriptSnapshot.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/IndexedItem.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/script/BotScriptSnapshot.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-f87db245a0ef7b8ee3bd"
+      "work_id": "377-5cbe91ec0b9053943b72"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a25db1ee1119afef07a5",
+      "candidate_id": "d81408a42c7fe24aa828",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -342,17 +342,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/Inventory.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/script/BotScriptStack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/Inventory.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/script/BotScriptStack.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-a25db1ee1119afef07a5"
+      "work_id": "377-d81408a42c7fe24aa828"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "cf6a788a8193fa865ccf",
+      "candidate_id": "33896c8b25d14204a128",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -360,17 +360,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/Item.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/speech/BotGeneralSpeechPool.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/Item.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/speech/BotGeneralSpeechPool.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-cf6a788a8193fa865ccf"
+      "work_id": "377-33896c8b25d14204a128"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "64e6ea2aec85309ab92a",
+      "candidate_id": "d742366c359b7b45bd01",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -378,17 +378,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/ItemContainer.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/speech/BotSpeech.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/ItemContainer.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/speech/BotSpeech.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-64e6ea2aec85309ab92a"
+      "work_id": "377-d742366c359b7b45bd01"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ff066623c590e5b8126d",
+      "candidate_id": "f67234c2c61caa904640",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -396,17 +396,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/ItemContainerListener.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/speech/BotSpeechPool.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/ItemContainerListener.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/speech/BotSpeechPool.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-ff066623c590e5b8126d"
+      "work_id": "377-f67234c2c61caa904640"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0ced9a825a41fe85c05a",
+      "candidate_id": "5a82c6a04c76daeed47d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -414,17 +414,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/ItemTracker.java",
+      "path": "src/main/java/io/luna/game/model/mob/bot/speech/BotSpeechStack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/ItemTracker.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/bot/speech/BotSpeechStack.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-0ced9a825a41fe85c05a"
+      "work_id": "377-5a82c6a04c76daeed47d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "96ca1980719fca4ed37e",
+      "candidate_id": "499cb505e0dc087e0b47",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -432,17 +432,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/RefreshListener.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/AmmoType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/RefreshListener.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/AmmoType.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-96ca1980719fca4ed37e"
+      "work_id": "377-499cb505e0dc087e0b47"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "342ddc2de6a942cb8679",
+      "candidate_id": "e52988ca77ebac717c6a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -450,17 +450,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/WeightListener.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/CombatAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/WeightListener.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/CombatAction.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-342ddc2de6a942cb8679"
+      "work_id": "377-e52988ca77ebac717c6a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "375c26dbaa1002d2d25e",
+      "candidate_id": "f85af11c5d46e99c7780",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -468,17 +468,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/economy/BatchPriceHistorySqlTask.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/CombatFormula.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/economy/BatchPriceHistorySqlTask.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/CombatFormula.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-375c26dbaa1002d2d25e"
+      "work_id": "377-f85af11c5d46e99c7780"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1484ba11fecd55b05a02",
+      "candidate_id": "959f2d30396f1ddd8bbc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -486,17 +486,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/economy/BatchPriceUpdateSqlTask.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/CombatImpactQueue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/economy/BatchPriceUpdateSqlTask.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/CombatImpactQueue.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-1484ba11fecd55b05a02"
+      "work_id": "377-959f2d30396f1ddd8bbc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9699e5b1f0afa77f7eb7",
+      "candidate_id": "530412884ed547fb523a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -504,17 +504,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/economy/CompletedTradeData.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/CombatRestriction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/economy/CompletedTradeData.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/CombatRestriction.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-9699e5b1f0afa77f7eb7"
+      "work_id": "377-530412884ed547fb523a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e0685adb32a145324daf",
+      "candidate_id": "211c007bb34ef6d07569",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -522,17 +522,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/economy/ItemPriceData.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/CombatSpell.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/economy/ItemPriceData.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/CombatSpell.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-e0685adb32a145324daf"
+      "work_id": "377-211c007bb34ef6d07569"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3212e9a02b985113b0c4",
+      "candidate_id": "ff762eafc13d1153916f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -540,17 +540,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/economy/LoadEconomySqlTask.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/CombatStance.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/economy/LoadEconomySqlTask.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/CombatStance.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-3212e9a02b985113b0c4"
+      "work_id": "377-ff762eafc13d1153916f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "53fd97b0925b346452cd",
+      "candidate_id": "1b6dda5ab9d199924366",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -558,17 +558,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/economy/SampleType.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/CombatStyle.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/economy/SampleType.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/CombatStyle.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-53fd97b0925b346452cd"
+      "work_id": "377-1b6dda5ab9d199924366"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b03d0211fdbccec2e01c",
+      "candidate_id": "755f5b1ae1a241237a7f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -576,17 +576,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/economy/WorldEconomy.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/PursuitAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/economy/WorldEconomy.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/PursuitAction.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-b03d0211fdbccec2e01c"
+      "work_id": "377-755f5b1ae1a241237a7f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0c62d46d8abf214a7000",
+      "candidate_id": "b82dc0be8ed16674bc3c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -594,17 +594,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/economy/WorldEconomySettings.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/RangedAmmoRecovery.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/economy/WorldEconomySettings.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/RangedAmmoRecovery.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-0c62d46d8abf214a7000"
+      "work_id": "377-b82dc0be8ed16674bc3c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0ed4662d35071a062556",
+      "candidate_id": "a7e30e128da67c62ce4c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -612,17 +612,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/shop/BuyPolicy.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/SpecialAttackType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/shop/BuyPolicy.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/SpecialAttackType.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-0ed4662d35071a062556"
+      "work_id": "377-a7e30e128da67c62ce4c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "45356ef05143b8c519bd",
+      "candidate_id": "a2d9e6485ad93f545b63",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -630,17 +630,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/shop/Currency.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/Weapon.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/shop/Currency.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/Weapon.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-45356ef05143b8c519bd"
+      "work_id": "377-a2d9e6485ad93f545b63"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bf950c880751d2f50837",
+      "candidate_id": "51b9d3c7fc9801629942",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -648,17 +648,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/shop/RestockPolicy.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/attack/CombatAttack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/shop/RestockPolicy.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/attack/CombatAttack.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-bf950c880751d2f50837"
+      "work_id": "377-51b9d3c7fc9801629942"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f546f34c4963a0ce4f8a",
+      "candidate_id": "99493a75e248a6c7439a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -666,17 +666,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/shop/RestockTask.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/attack/MagicCombatAttack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/shop/RestockTask.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/attack/MagicCombatAttack.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-f546f34c4963a0ce4f8a"
+      "work_id": "377-99493a75e248a6c7439a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c396c2d010f911e1d5a2",
+      "candidate_id": "de7a84c1c115f95525bc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -684,17 +684,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/shop/Shop.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/attack/MeleeCombatAttack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/shop/Shop.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/attack/MeleeCombatAttack.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-c396c2d010f911e1d5a2"
+      "work_id": "377-de7a84c1c115f95525bc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "83951aabb3ff3e6e11b5",
+      "candidate_id": "8fef41b7bace80ff788a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -702,17 +702,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/shop/ShopInterface.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/attack/PlayerMagicCombatAttack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/shop/ShopInterface.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/attack/PlayerMagicCombatAttack.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-83951aabb3ff3e6e11b5"
+      "work_id": "377-8fef41b7bace80ff788a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "39d7fa81623a613b2069",
+      "candidate_id": "0a06d3a999bd32ae17d6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -720,17 +720,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/shop/ShopListener.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/attack/PlayerMeleeCombatAttack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/shop/ShopListener.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/attack/PlayerMeleeCombatAttack.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-39d7fa81623a613b2069"
+      "work_id": "377-0a06d3a999bd32ae17d6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1407bdfb614a4204eeab",
+      "candidate_id": "dbeb5d652a07755ae3d8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -738,17 +738,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/item/shop/ShopManager.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/attack/PlayerRangedCombatAttack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/item/shop/ShopManager.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/attack/PlayerRangedCombatAttack.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-1407bdfb614a4204eeab"
+      "work_id": "377-dbeb5d652a07755ae3d8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5d828eed6473e227c320",
+      "candidate_id": "bc7f4d4f3f8ed83d2a22",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -756,17 +756,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/Mob.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/attack/RangedCombatAttack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/Mob.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/attack/RangedCombatAttack.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-5d828eed6473e227c320"
+      "work_id": "377-bc7f4d4f3f8ed83d2a22"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e265dfb08a1aae14c89a",
+      "candidate_id": "56b8c238b89ad408a164",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -774,17 +774,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/MobDeathAction.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/damage/CombatDamage.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/MobDeathAction.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/damage/CombatDamage.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-e265dfb08a1aae14c89a"
+      "work_id": "377-56b8c238b89ad408a164"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a4cf8df5fb3e6eaa57d7",
+      "candidate_id": "631c42fbaf5f3f248fdf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -792,17 +792,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/MobList.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/damage/CombatDamageAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/MobList.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/damage/CombatDamageAction.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-a4cf8df5fb3e6eaa57d7"
+      "work_id": "377-631c42fbaf5f3f248fdf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6eac7871513a2e518f33",
+      "candidate_id": "e7b4e8599d375379fc73",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -810,17 +810,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/Npc.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/damage/CombatDamageRequest.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/Npc.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/damage/CombatDamageRequest.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-6eac7871513a2e518f33"
+      "work_id": "377-e7b4e8599d375379fc73"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "14655b5426395d4983b4",
+      "candidate_id": "ac8f7a33656a107e8fb0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -828,17 +828,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/NpcAggression.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/damage/CombatDamageStack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/NpcAggression.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/damage/CombatDamageStack.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-14655b5426395d4983b4"
+      "work_id": "377-ac8f7a33656a107e8fb0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "55abd6f0281fc2420cd5",
+      "candidate_id": "dacc7ccfb577347dff90",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -846,17 +846,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/NpcAggressionProfile.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/damage/CombatDamageType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/NpcAggressionProfile.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/damage/CombatDamageType.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-55abd6f0281fc2420cd5"
+      "work_id": "377-dacc7ccfb577347dff90"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5d41b0f430118c352b2c",
+      "candidate_id": "9d084de8db4d89096a5a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -864,17 +864,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/Player.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/state/CombatContext.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/Player.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/state/CombatContext.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-5d41b0f430118c352b2c"
+      "work_id": "377-9d084de8db4d89096a5a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5adb7d5ef62875318958",
+      "candidate_id": "1c8704a9f7718e7d6108",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -882,17 +882,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/PlayerAggressionTolerance.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/state/NpcCombatContext.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/PlayerAggressionTolerance.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/state/NpcCombatContext.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-5adb7d5ef62875318958"
+      "work_id": "377-1c8704a9f7718e7d6108"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6892e94bb5ecae94d60e",
+      "candidate_id": "75541769e6a71eff478b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -900,17 +900,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/PlayerContextMenu.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/state/PlayerCombatContext.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/PlayerContextMenu.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/state/PlayerCombatContext.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-6892e94bb5ecae94d60e"
+      "work_id": "377-75541769e6a71eff478b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5c559e8fe8ca3444a85b",
+      "candidate_id": "bc1f110c7396d7d2fb68",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -918,17 +918,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/PlayerContextMenuOption.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/state/PlayerCombatWeapon.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/PlayerContextMenuOption.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/state/PlayerCombatWeapon.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-5c559e8fe8ca3444a85b"
+      "work_id": "377-bc1f110c7396d7d2fb68"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "77de3753ff3cd9e0725f",
+      "candidate_id": "2783825ba629083de8a6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -936,17 +936,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/PlayerCredentials.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/state/PlayerMagicCombat.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/PlayerCredentials.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/state/PlayerMagicCombat.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-77de3753ff3cd9e0725f"
+      "work_id": "377-2783825ba629083de8a6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "185e025cad1c4b267fae",
+      "candidate_id": "9cb390baf149b4530992",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -954,17 +954,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/PlayerMusic.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/state/PlayerRangedCombat.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/PlayerMusic.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/state/PlayerRangedCombat.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-185e025cad1c4b267fae"
+      "work_id": "377-9cb390baf149b4530992"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c9eec24408eff1570a4e",
+      "candidate_id": "21a907334a66349bef2c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -972,17 +972,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/PlayerPrivacy.java",
+      "path": "src/main/java/io/luna/game/model/mob/combat/state/PlayerWeaponSpecialBar.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/PlayerPrivacy.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/combat/state/PlayerWeaponSpecialBar.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-c9eec24408eff1570a4e"
+      "work_id": "377-21a907334a66349bef2c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ae24c9a483bbe506d8b2",
+      "candidate_id": "fccc321a7dac0ee777c7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -990,17 +990,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/PlayerRights.java",
+      "path": "src/main/java/io/luna/game/model/mob/controller/ControllerManager.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/PlayerRights.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/controller/ControllerManager.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-ae24c9a483bbe506d8b2"
+      "work_id": "377-fccc321a7dac0ee777c7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "35f2b9e71c098fda5549",
+      "candidate_id": "a8654ae6e8093e71db8b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1008,17 +1008,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/PrayerIcon.java",
+      "path": "src/main/java/io/luna/game/model/mob/controller/PlayerAreaListener.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/PrayerIcon.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/controller/PlayerAreaListener.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-35f2b9e71c098fda5549"
+      "work_id": "377-a8654ae6e8093e71db8b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e24f00252a336039d19e",
+      "candidate_id": "72053436020fefc39960",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1026,17 +1026,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/Skill.java",
+      "path": "src/main/java/io/luna/game/model/mob/controller/PlayerController.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/Skill.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/controller/PlayerController.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-e24f00252a336039d19e"
+      "work_id": "377-72053436020fefc39960"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "171335b0a914b0f01f6e",
+      "candidate_id": "4e47cd3730e524df7fff",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1044,17 +1044,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/SkillRestorationAction.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/DestroyItemDialogue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/SkillRestorationAction.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/DestroyItemDialogue.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-171335b0a914b0f01f6e"
+      "work_id": "377-4e47cd3730e524df7fff"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3917db8b46183454f025",
+      "candidate_id": "4669a4b1b4f384ab0209",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1062,17 +1062,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/SkillSet.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/DialogueInterface.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/SkillSet.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/DialogueInterface.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-3917db8b46183454f025"
+      "work_id": "377-4669a4b1b4f384ab0209"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f89b53af0b55f7d1f042",
+      "candidate_id": "1ba7ce8b70a97fbc9685",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1080,17 +1080,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/SkullIcon.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/DialogueQueue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/SkullIcon.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/DialogueQueue.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-f89b53af0b55f7d1f042"
+      "work_id": "377-1ba7ce8b70a97fbc9685"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "946002be2e6e98870db3",
+      "candidate_id": "c594533379e022434469",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1098,17 +1098,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/Spellbook.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/DialogueQueueBuilder.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/Spellbook.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/DialogueQueueBuilder.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-946002be2e6e98870db3"
+      "work_id": "377-c594533379e022434469"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ad91c0d9bce140f7f245",
+      "candidate_id": "fe713a138d9f089a3e58",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1116,17 +1116,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/attr/Attributable.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/DialogueUtils.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/attr/Attributable.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/DialogueUtils.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-ad91c0d9bce140f7f245"
+      "work_id": "377-fe713a138d9f089a3e58"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ec221c8e955af2c72b81",
+      "candidate_id": "e0bae194515ac7b9e609",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1134,17 +1134,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/attr/Attribute.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/Expression.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/attr/Attribute.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/Expression.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-ec221c8e955af2c72b81"
+      "work_id": "377-e0bae194515ac7b9e609"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "803bbd3a193b5cd0b523",
+      "candidate_id": "2f956fd1268f0382bf7a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1152,17 +1152,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/attr/AttributeMap.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/GiveItemDialogue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/attr/AttributeMap.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/GiveItemDialogue.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-803bbd3a193b5cd0b523"
+      "work_id": "377-2f956fd1268f0382bf7a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4415c9945906e372b14c",
+      "candidate_id": "e87f565723dfa5decdd1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1170,17 +1170,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/AbstractUpdateBlockSet.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/MakeItemDialogue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/AbstractUpdateBlockSet.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/MakeItemDialogue.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-4415c9945906e372b14c"
+      "work_id": "377-e87f565723dfa5decdd1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "725dc9c1a5984418cb07",
+      "candidate_id": "26634cbe7df5d7e1f2de",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1188,17 +1188,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/Animation.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/NpcDialogue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/Animation.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/NpcDialogue.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-725dc9c1a5984418cb07"
+      "work_id": "377-26634cbe7df5d7e1f2de"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c42b5a006586598e980e",
+      "candidate_id": "8373a1d6ecfa748d4146",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1206,17 +1206,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/AnimationUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/OptionDialogue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/AnimationUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/OptionDialogue.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-c42b5a006586598e980e"
+      "work_id": "377-8373a1d6ecfa748d4146"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2b38de1ca54eb0b2bdf3",
+      "candidate_id": "98214d3c70fb473687b9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1224,17 +1224,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/AppearanceUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/PlayerDialogue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/AppearanceUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/PlayerDialogue.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-2b38de1ca54eb0b2bdf3"
+      "work_id": "377-98214d3c70fb473687b9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "22bd7a201ab78b6811b8",
+      "candidate_id": "70a74dbb7677409358f0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1242,17 +1242,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/Chat.java",
+      "path": "src/main/java/io/luna/game/model/mob/dialogue/TextDialogue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/Chat.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/dialogue/TextDialogue.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-22bd7a201ab78b6811b8"
+      "work_id": "377-70a74dbb7677409358f0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "32df511d27dd2bd0f4ab",
+      "candidate_id": "0ab0c06e295f7fd6518f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1260,17 +1260,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/ChatUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/interact/InteractionAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/ChatUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/interact/InteractionAction.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-32df511d27dd2bd0f4ab"
+      "work_id": "377-0ab0c06e295f7fd6518f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9b1c835d067731fdd378",
+      "candidate_id": "dab3cde3469fff379712",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1278,17 +1278,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/ExactMovement.java",
+      "path": "src/main/java/io/luna/game/model/mob/interact/InteractionActionListener.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/ExactMovement.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/interact/InteractionActionListener.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-9b1c835d067731fdd378"
+      "work_id": "377-dab3cde3469fff379712"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ae1746131df6bde85346",
+      "candidate_id": "9e4bcaaaeb0d92914fe2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1296,17 +1296,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/ExactMovementUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/interact/InteractionPolicy.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/ExactMovementUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/interact/InteractionPolicy.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-ae1746131df6bde85346"
+      "work_id": "377-9e4bcaaaeb0d92914fe2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "55646fced1eb365cb3fa",
+      "candidate_id": "5309ba38084865e100cd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1314,17 +1314,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/FacePositionUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/interact/InteractionType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/FacePositionUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/interact/InteractionType.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-55646fced1eb365cb3fa"
+      "work_id": "377-5309ba38084865e100cd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8441f668194fce6dd981",
+      "candidate_id": "edacf60fcec44fdf81f6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1332,17 +1332,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/ForcedChatUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/NavigationAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/ForcedChatUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/NavigationAction.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-8441f668194fce6dd981"
+      "work_id": "377-edacf60fcec44fdf81f6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8a591570c1303c253d1f",
+      "candidate_id": "8807a2335b2e207916d3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1350,17 +1350,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/Graphic.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/NavigationRequest.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/Graphic.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/NavigationRequest.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-8a591570c1303c253d1f"
+      "work_id": "377-8807a2335b2e207916d3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dbf445349ea67e8e380f",
+      "candidate_id": "31bbcfa473d69c213242",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1368,17 +1368,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/GraphicUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/NavigationResult.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/GraphicUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/NavigationResult.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-dbf445349ea67e8e380f"
+      "work_id": "377-31bbcfa473d69c213242"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1ac301fab68280c811f0",
+      "candidate_id": "3a70cd63d0ca5437f7a3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1386,17 +1386,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/Hit.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/PathfinderType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/Hit.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/PathfinderType.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-1ac301fab68280c811f0"
+      "work_id": "377-3a70cd63d0ca5437f7a3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5e828613db7fbd4bb747",
+      "candidate_id": "0919b5e89f603aa1e520",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1404,17 +1404,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/InteractionUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/WalkingNavigator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/InteractionUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/WalkingNavigator.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-5e828613db7fbd4bb747"
+      "work_id": "377-0919b5e89f603aa1e520"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "737bb85fda26722b2751",
+      "candidate_id": "829669b0e19a73919265",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1422,17 +1422,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/LocalMobRepository.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/WalkingQueue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/LocalMobRepository.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/WalkingQueue.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-737bb85fda26722b2751"
+      "work_id": "377-829669b0e19a73919265"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a953bc9359a6fc9fec1d",
+      "candidate_id": "073af9186b481f10f9b0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1440,17 +1440,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/NoBlockValueException.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/wandering/DumbWanderingAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/NoBlockValueException.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/wandering/DumbWanderingAction.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-a953bc9359a6fc9fec1d"
+      "work_id": "377-073af9186b481f10f9b0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "26a031ef64803079ef5c",
+      "candidate_id": "44a73e7058929a25b40f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1458,17 +1458,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/NpcUpdateBlockSet.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/wandering/PatrolAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/NpcUpdateBlockSet.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/wandering/PatrolAction.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-26a031ef64803079ef5c"
+      "work_id": "377-44a73e7058929a25b40f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a1b461d55cc3affc9069",
+      "candidate_id": "2d0eb2c37efa156d40ed",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1476,17 +1476,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/PlayerAppearance.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/wandering/SmartWanderingAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/PlayerAppearance.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/wandering/SmartWanderingAction.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-a1b461d55cc3affc9069"
+      "work_id": "377-2d0eb2c37efa156d40ed"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d34330af45ca5c7f2e0c",
+      "candidate_id": "9d6e6208489a991ccba0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1494,17 +1494,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/PlayerModelAnimation.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/wandering/WanderingAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/PlayerModelAnimation.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/wandering/WanderingAction.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-d34330af45ca5c7f2e0c"
+      "work_id": "377-9d6e6208489a991ccba0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b30d20b214c251782f50",
+      "candidate_id": "a0e57dcecc46403583a5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1512,17 +1512,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/PlayerUpdateBlockSet.java",
+      "path": "src/main/java/io/luna/game/model/mob/movement/wandering/WanderingFrequency.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/PlayerUpdateBlockSet.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/movement/wandering/WanderingFrequency.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-b30d20b214c251782f50"
+      "work_id": "377-a0e57dcecc46403583a5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d99f86a0f79702d6c30f",
+      "candidate_id": "ce76319ed21c130ce8d2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1530,17 +1530,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/PrimaryHitUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/AbstractOverlay.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/PrimaryHitUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/AbstractOverlay.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-d99f86a0f79702d6c30f"
+      "work_id": "377-ce76319ed21c130ce8d2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3d4b15c1a92dbf53aba2",
+      "candidate_id": "8c870da2de9557537149",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1548,17 +1548,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/SecondaryHitUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/AbstractOverlaySet.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/SecondaryHitUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/AbstractOverlaySet.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-3d4b15c1a92dbf53aba2"
+      "work_id": "377-8c870da2de9557537149"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9e1fc6961fab4933f35c",
+      "candidate_id": "b7b9ebce1d37caa299b8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1566,17 +1566,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/TransformUpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/GameTabSet.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/TransformUpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/GameTabSet.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-9e1fc6961fab4933f35c"
+      "work_id": "377-b7b9ebce1d37caa299b8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "02e40293c4188aeff9f1",
+      "candidate_id": "e69b31fc8777eba3a514",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1584,17 +1584,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/UpdateBlock.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/InputOverlay.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/UpdateBlock.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/InputOverlay.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-02e40293c4188aeff9f1"
+      "work_id": "377-e69b31fc8777eba3a514"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dfc7f8e1fb85bc6b26dc",
+      "candidate_id": "8a063e627bcff47a2d9d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1602,17 +1602,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/UpdateBlockData.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/InventoryOverlayInterface.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/UpdateBlockData.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/InventoryOverlayInterface.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-dfc7f8e1fb85bc6b26dc"
+      "work_id": "377-8a063e627bcff47a2d9d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ed5736e4c12b47fc8dad",
+      "candidate_id": "ba022813e6197f9c7291",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1620,17 +1620,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/UpdateFlagSet.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/NumberInput.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/UpdateFlagSet.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/NumberInput.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-ed5736e4c12b47fc8dad"
+      "work_id": "377-ba022813e6197f9c7291"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "915782edd72d02dda024",
+      "candidate_id": "3dd3335f0f478acd858d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1638,17 +1638,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/block/UpdateState.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/OverlayState.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/block/UpdateState.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/OverlayState.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-915782edd72d02dda024"
+      "work_id": "377-3dd3335f0f478acd858d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "398cec357dcab1cf8735",
+      "candidate_id": "48174f80b8ebbd0e14ac",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1656,17 +1656,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/bot/Bot.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/OverlayType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/bot/Bot.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/OverlayType.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-398cec357dcab1cf8735"
+      "work_id": "377-48174f80b8ebbd0e14ac"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "de5c77f1532a389ce977",
+      "candidate_id": "b13bfba3a2510f1fe585",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1674,17 +1674,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/bot/BotClanRegistry.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/StandardInterface.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/bot/BotClanRegistry.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/StandardInterface.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-de5c77f1532a389ce977"
+      "work_id": "377-b13bfba3a2510f1fe585"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b76a4ed849b803b0d02b",
+      "candidate_id": "87b45fc4ec855cc83a6f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1692,17 +1692,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/bot/BotLogFileWriter.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/TextInput.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/bot/BotLogFileWriter.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/TextInput.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-b76a4ed849b803b0d02b"
+      "work_id": "377-87b45fc4ec855cc83a6f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "99f434d35a75213b354a",
+      "candidate_id": "4bec252121acaf90d48f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1710,17 +1710,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/bot/BotLogManager.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/WalkableInterface.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/bot/BotLogManager.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/WalkableInterface.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-99f434d35a75213b354a"
+      "work_id": "377-4bec252121acaf90d48f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dc6d20cfabba0b83ae93",
+      "candidate_id": "4ac49e1ceaec97f59bd1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1728,17 +1728,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/bot/BotManager.java",
+      "path": "src/main/java/io/luna/game/model/mob/overlay/WidgetOverlay.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/bot/BotManager.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/overlay/WidgetOverlay.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-dc6d20cfabba0b83ae93"
+      "work_id": "377-4ac49e1ceaec97f59bd1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b3d56a5eda12b06f51ec",
+      "candidate_id": "81ad53dff53d561425d2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1746,17 +1746,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/bot/BotRepository.java",
+      "path": "src/main/java/io/luna/game/model/mob/varp/PersistentVarp.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/bot/BotRepository.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/varp/PersistentVarp.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-b3d56a5eda12b06f51ec"
+      "work_id": "377-81ad53dff53d561425d2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "20a441ef6318ab5ff7fe",
+      "candidate_id": "ebeaeab2efd1df96bb21",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1764,17 +1764,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/bot/BotSettings.java",
+      "path": "src/main/java/io/luna/game/model/mob/varp/PersistentVarpManager.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/bot/BotSettings.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/varp/PersistentVarpManager.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-20a441ef6318ab5ff7fe"
+      "work_id": "377-ebeaeab2efd1df96bb21"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ff4c48238ac6d9303ea8",
+      "candidate_id": "0497da9769a559546dae",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1782,17 +1782,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/bot/brain/BotActivity.java",
+      "path": "src/main/java/io/luna/game/model/mob/varp/Varbit.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/bot/brain/BotActivity.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/varp/Varbit.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-ff4c48238ac6d9303ea8"
+      "work_id": "377-0497da9769a559546dae"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b9f38c7228c909abefe3",
+      "candidate_id": "6cd75d081a979ca7f53b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1800,13 +1800,13 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/game/model/mob/bot/brain/BotBrain.java",
+      "path": "src/main/java/io/luna/game/model/mob/varp/Varp.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9/src/main/java/io/luna/game/model/mob/bot/brain/BotBrain.java",
+      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/game/model/mob/varp/Varp.java",
       "source": "luna-rs/luna",
-      "source_commit_sha": "5baff09ca2ccd733c0c4e38d1986a5e6c9758ef9",
+      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
       "status": "awaiting_agent_review",
-      "work_id": "377-b9f38c7228c909abefe3"
+      "work_id": "377-6cd75d081a979ca7f53b"
     }
   ]
 }
