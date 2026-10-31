@@ -78,7 +78,14 @@ def github(source, state=None, reader=fetch, limit=MAX_RECORDS):
     repo = source['repo']
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repo):
         raise ValueError('bad GitHub repository')
-    ref = urllib.parse.quote(source['ref'], safe='')
+    ref_name = source['ref']
+    upstream = {'lostcity-content-377': 'content',
+                'lostcity-engine-377': 'engine',
+                'lostcity-client-377': 'client'}.get(source.get('key'))
+    if upstream:
+        pins = json.loads((ROOT.parent/'deploy/jparris-windows/upstreams.json').read_text(encoding='utf-8'))
+        ref_name = pins[upstream]['commit']
+    ref = urllib.parse.quote(ref_name, safe='')
     api = f'https://api.github.com/repos/{repo}'
     commit, _ = get(f'{api}/commits/{ref}', reader)
     sha = commit.get('sha', '')
