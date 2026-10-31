@@ -133,6 +133,10 @@ def verify(audit: dict, live: dict | None = None) -> dict:
             state = "awaiting_agent3_client_evidence"
         elif not pack_match:
             state = "loaded_pack_mismatch_investigate_first"
+        elif not row["click_reached_server"] and row["result"] in {"generic_greeting", "no_action", "crash"}:
+            # Without an observed server click, even a visible greeting is not
+            # evidence that a server-side fallback or NPC handler ran.
+            state = "server_click_unconfirmed_trace_transport_before_dialogue"
         elif row["result"] == "generic_greeting":
             state = "fallback_or_dispatch_suspected_not_proven"
         elif row["result"] == "distinct_dialogue":
