@@ -1,0 +1,127 @@
+{
+  "schema": "joshrs-377-quest-stage-qa-v1",
+  "revision": 377,
+  "pinned_content_commit": "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50",
+  "quest_key": "quest_romeojuliet",
+  "area": "Varrock",
+  "source_files": [
+    {
+      "path": "scripts/quests/quest_romeojuliet/configs/quest_romeojuliet.constant",
+      "blob": "1a17b0eea01dc0c870ef224cc36ccf7157acfe77"
+    },
+    {
+      "path": "scripts/areas/area_varrock/scripts/romeo.rs2",
+      "blob": "b32098585ed83069be3cb0826551b20367970653"
+    },
+    {
+      "path": "scripts/areas/area_varrock/scripts/juliet.rs2",
+      "blob": "510d1e770c86ae35da6bce3432074a7be44cce89"
+    }
+  ],
+  "stages": [
+    {
+      "symbol": "romeojuliet_not_started",
+      "value": 0
+    },
+    {
+      "symbol": "romeojuliet_spoken_romeo",
+      "value": 10
+    },
+    {
+      "symbol": "romeojuliet_spoken_juliet",
+      "value": 20
+    },
+    {
+      "symbol": "romeojuliet_passed_message",
+      "value": 30
+    },
+    {
+      "symbol": "romeojuliet_spoken_father",
+      "value": 40
+    },
+    {
+      "symbol": "romeojuliet_spoken_apothecary",
+      "value": 50
+    },
+    {
+      "symbol": "romeojuliet_juliet_crypt",
+      "value": 60
+    },
+    {
+      "symbol": "romeojuliet_complete",
+      "value": null
+    }
+  ],
+  "transitions": [
+    {
+      "from": "romeojuliet_not_started",
+      "to": "romeojuliet_spoken_romeo",
+      "actor": "Romeo",
+      "source_location": "romeo.rs2:43",
+      "trace": "source_traced",
+      "effect_to_check": "quest flag advances",
+      "test_result": "not_run"
+    },
+    {
+      "from": "romeojuliet_spoken_romeo",
+      "to": "romeojuliet_spoken_juliet",
+      "actor": "Juliet",
+      "source_location": "juliet.rs2:62-64",
+      "trace": "source_traced",
+      "effect_to_check": "message item awarded once",
+      "test_result": "not_run"
+    },
+    {
+      "from": "romeojuliet_spoken_juliet",
+      "to": "romeojuliet_passed_message",
+      "actor": "Romeo",
+      "source_location": "romeo.rs2:55-58",
+      "trace": "source_traced",
+      "effect_to_check": "one message removed",
+      "test_result": "not_run"
+    },
+    {
+      "from": "romeojuliet_passed_message",
+      "to": "romeojuliet_spoken_father",
+      "actor": null,
+      "source_location": null,
+      "trace": "unverified",
+      "effect_to_check": "find intervening handler",
+      "test_result": "not_run"
+    },
+    {
+      "from": "romeojuliet_spoken_father",
+      "to": "romeojuliet_spoken_apothecary",
+      "actor": null,
+      "source_location": null,
+      "trace": "unverified",
+      "effect_to_check": "find intervening handler",
+      "test_result": "not_run"
+    },
+    {
+      "from": "romeojuliet_spoken_apothecary",
+      "to": "romeojuliet_juliet_crypt",
+      "actor": "Juliet",
+      "source_location": "juliet.rs2:98-99",
+      "trace": "source_traced",
+      "effect_to_check": "one quest item removed",
+      "test_result": "not_run"
+    },
+    {
+      "from": "romeojuliet_juliet_crypt",
+      "to": "romeojuliet_complete",
+      "actor": "Romeo",
+      "source_location": "romeo.rs2:98",
+      "trace": "source_traced",
+      "effect_to_check": "completion queue scheduled; reward and persistence unverified",
+      "test_result": "not_run"
+    }
+  ],
+  "runtime": "unverified",
+  "client": "not_run",
+  "persistence": "not_run",
+  "completion_verified": false,
+  "rights": "reference_metadata_only",
+  "game_dialogue_copied": false,
+  "source_claim": "Source stage graph only; complete quest outcome not proven."
+}

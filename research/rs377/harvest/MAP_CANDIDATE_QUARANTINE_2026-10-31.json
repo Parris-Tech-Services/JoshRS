@@ -1,0 +1,40 @@
+{
+  "schema": "joshrs-377-map-quarantine-v1",
+  "revision": 377,
+  "generated_on": "2026-10-31",
+  "source": "tools/rs377-map-bridge/audit-and-stage.mjs recorded candidates",
+  "candidates": [
+    {
+      "area": "Yanille",
+      "unsupported_location_instances": 256,
+      "unsupported_distinct_ids": 16,
+      "trailing_bytes": 7,
+      "matching_runtime_pack_verified": false,
+      "loc_definition_reconciliation": "not_run",
+      "collision_walkpath_test": "not_run",
+      "rights_review": "unresolved",
+      "installable": false,
+      "live_world_modified": false
+    },
+    {
+      "area": "Edgeville",
+      "unsupported_location_instances": 266,
+      "unsupported_distinct_ids": 39,
+      "trailing_bytes": 741,
+      "matching_runtime_pack_verified": false,
+      "loc_definition_reconciliation": "not_run",
+      "collision_walkpath_test": "not_run",
+      "rights_review": "unresolved",
+      "installable": false,
+      "live_world_modified": false
+    }
+  ],
+  "checks": {
+    "map_region_coordinates": "unverified",
+    "npc_spawns": "unverified",
+    "doors_ladders": "unverified",
+    "quest_walk_paths": "unverified",
+    "jagex_assets_copied": false
+  },
+  "next": "Only reconcile unsupported loc definitions against exact matching pinned runtime; never install ZIPs without rights and collision/walk tests."
+}
