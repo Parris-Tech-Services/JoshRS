@@ -7,7 +7,7 @@ This is a **client-only** launcher for the existing JParris Desktop revision-377
 - Original JoshRS server already runs on the Windows host.
 - Windows 11 guest using VirtualBox's default NAT networking (guest normally 10.0.2.15, host reachable as 10.0.2.2).
 - Host has both game TCP 52402 and HTTP 8888 available to the guest.
-- Guest has internet access to fetch the pinned Java client and free Java/Git prerequisites.
+- Guest has internet access to fetch the pinned Java client and, if missing, a free portable Java 21 JDK. Git and winget are not required.
 - A separate game account for the second player. Account registration/login is handled by the game server, not this launcher.
 
 Check the connection **inside the VM**:
@@ -29,8 +29,8 @@ $ErrorActionPreference='Stop';$r=Join-Path $env:LOCALAPPDATA 'JoshRS-SecondPlaye
 
 What the script does:
 1. Checks the *existing* host's game and web ports **before installing**.
-2. Installs free Git for Windows and Eclipse Temurin JDK 21 only if needed.
-3. Downloads the pinned Client-Java source specified in upstreams.json.
+2. Uses an existing JDK 21 or downloads a portable Eclipse Temurin JDK 21 ZIP, verifying the provider's SHA-256 checksum. No Git or winget required.
+3. Downloads the pinned Client-Java source ZIP at the exact commit specified in upstreams.json.
 4. Patches **only the VM's local copy** of Client.java to connect to 10.0.2.2 and allows this host in the client's host validator.
 5. Compiles the client with the Gradle wrapper.
 6. Creates the VM desktop shortcut **Play JoshRS - Second Player**, and starts the Java game client.
@@ -50,3 +50,13 @@ Start the existing server on JParris Desktop first. Then remote into the VM and 
 - **Different game ports**: The helper currently uses the pinned launcher manifest (52402 and 8888). Verify actual ports on the host instead of changing the original server to fit the VM.
 
 The source is in [second-player-vm.ps1](second-player-vm.ps1). All client files are under %LOCALAPPDATA%\JoshRS-SecondPlayer on the VM and do not leave that Windows user profile unless explicitly copied.
+
+## Fast recovery after the first installer's missing Git/winget error
+
+The first launcher downloaded the whole JoshRS repository and stopped before installing its client. Reuse those existing setup files; fetch only the corrected script:
+
+~~~powershell
+$p="$env:LOCALAPPDATA\JoshRS-SecondPlayer\launcher\JoshRS-main\deploy\jparris-windows";Invoke-WebRequest 'https://raw.githubusercontent.com/Parris-Tech-Services/JoshRS/main/deploy/jparris-windows/second-player-vm.ps1' -OutFile "$p\second-player-vm.ps1";powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$p\second-player-vm.ps1" -PlayerName Sylvie
+~~~
+
+This is for existing installations only; new VM setups can use the one-time-install command above.
