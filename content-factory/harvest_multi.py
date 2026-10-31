@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parent
 HOSTS = frozenset({'api.github.com', 'gitlab.com', 'huggingface.co', 'archive.openrs2.org'})
 MAX_RESPONSE = 12_000_000
 MAX_RECORDS = 300
+MAX_STORED_PER_SOURCE = 12000
 SHA = re.compile(r'^[0-9a-f]{40}$')
 
 
@@ -62,6 +63,17 @@ def record(key, kind, repo, rev, path, blob=None, era='unknown', origin='public'
             'prepared': False, 'installed': False, 'playable_verified': False}
 
 
+def allowed_metadata_path(path):
+    """A map *filename* may be indexed; map bodies and assets are always excluded."""
+    if not isinstance(path, str) or len(path) > 240 or '\x00' in path:
+        return False
+    if factory.allowed_path(path):
+        return True
+    parts = path.split('/')
+    return (len(parts) >= 2 and len(parts) <= 6 and parts[0] == 'maps'
+            and path.endswith('.jm2') and all(x not in ('', '.', '..') and not x.startswith('.') for x in parts))
+
+
 def github(source, state=None, reader=fetch, limit=MAX_RECORDS):
     repo = source['repo']
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repo):
@@ -77,7 +89,7 @@ def github(source, state=None, reader=fetch, limit=MAX_RECORDS):
     if tree.get('truncated') or not isinstance(tree.get('tree'), list):
         raise ValueError('incomplete GitHub tree; refusing misleading inventory')
     paths = sorted((r for r in tree['tree'] if r.get('type') == 'blob' and
-                    factory.allowed_path(r.get('path', '')) and SHA.fullmatch(r.get('sha', ''))),
+                    allowed_metadata_path(r.get('path', '')) and SHA.fullmatch(r.get('sha', ''))),
                    key=lambda r: r['path'])
     offset = int(state.get('offset', 0)) if state and state.get('revision') == sha else 0
     if offset >= len(paths): offset = 0
@@ -106,7 +118,7 @@ def gitlab(source, state=None, reader=fetch, per_page=100, max_pages=2):
             raise ValueError('invalid GitLab tree response')
         for x in rows:
             path, blob = x.get('path', ''), x.get('id', '')
-            if x.get('type') == 'blob' and factory.allowed_path(path) and SHA.fullmatch(blob):
+            if x.get('type') == 'blob' and allowed_metadata_path(path) and SHA.fullmatch(blob):
                 records.append(record(source['key'], 'gitlab', repo, sha, path, blob, source['era']))
         next_page = headers.get('X-Next-Page', headers.get('x-next-page', '')).strip()
         if next_page and (not next_page.isdigit() or int(next_page) <= page):
@@ -132,7 +144,7 @@ def huggingface(source, reader=fetch):
         raise ValueError('invalid dataset index')
     # Dataset file *names* only; never fetch database contents or dialogue.
     rows = [record(source['key'], 'huggingface', repo, sha, x['rfilename'], None, source['era'])
-            for x in siblings if isinstance(x.get('rfilename'), str) and factory.allowed_path(x['rfilename'])]
+            for x in siblings if isinstance(x.get('rfilename'), str) and allowed_metadata_path(x['rfilename'])]
     return {'source': source['key'], 'revision': sha, 'records': rows[:MAX_RECORDS],
             'remaining': max(0, len(rows)-MAX_RECORDS), 'downloaded_data': False}
 
@@ -210,13 +222,26 @@ def run(sources, output: Path, wanted=None, reader=fetch, drive=None):
             errors[key] = str(exc)[:240]
     if drive:
         try: results.append(drive_manifest(drive))
-        except (OSError, ValueError, TypeError) as exc: errors['private-drive377'] = str(exc)[:240]
+        except (OSError, ValueError, TypeError): errors['private-drive377'] = 'private manifest unavailable or invalid (details withheld)'
     if not results:
         raise RuntimeError('No source succeeded; existing outputs preserved. '+str(errors))
-    # Atomic local results, avoid leaking paths from private Drive manifest.
+    # Merge the current bounded scan with previous records from the SAME revision;
+    # keep prior sources when an API fails and never silently call a partial tree complete.
+    previous = json.loads((output/'catalog.json').read_text()) if (output/'catalog.json').exists() else {}
+    old_sources = {x['source']: x for x in previous.get('sources', [])}
+    merged = dict(old_sources)
+    for result in results:
+        key = result['source']
+        prior = old_sources.get(key, {})
+        if prior.get('revision') == result.get('revision') and not result.get('private_only'):
+            existing = {x['id']: x for x in prior.get('records', [])}
+            existing.update({x['id']: x for x in result['records']})
+            result['records'] = sorted(existing.values(), key=lambda x: (x['path'], x['id']))[:MAX_STORED_PER_SOURCE]
+            result['complete_tree'] = bool(prior.get('complete_tree') or result.get('complete_tree'))
+        merged[key] = result
     output.mkdir(parents=True, exist_ok=True)
     write_json_atomic(output/'catalog.json', {'schema': 1, 'target': 'JoshRS rev377',
-        'sources': results, 'errors': errors, 'gameplay_verified': False,
+        'sources': [merged[k] for k in sorted(merged)], 'errors': errors, 'gameplay_verified': False,
         'disclaimer': 'Public source metadata, not installable content or game rights.'})
     write_json_atomic(output/'state.json', state)
     return {'sources_succeeded': len(results), 'sources_failed': len(errors),
