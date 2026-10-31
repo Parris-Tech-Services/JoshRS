@@ -90,7 +90,7 @@ class DialogueGraphExitGate(unittest.TestCase):
 
     def test_carriage_return_is_rejected(self):
         self.assert_problem([
-            node("start", "First\\rSecond.", ["finish"]),
+            node("start", "First" + chr(13) + "Second.", ["finish"]),
             node("finish", "Safe travels.", exit=True),
         ], "unsafe/empty dialogue")
 
