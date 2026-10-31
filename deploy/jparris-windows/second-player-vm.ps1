@@ -54,48 +54,94 @@ if (-not $gameReady -or -not $webReady) {
 }
 Write-Host 'Both host ports are reachable. This VM will NOT start a game server.'
 
-if (-not $PlayOnly) {
-    if (-not (Get-Command git.exe -ErrorAction SilentlyContinue)) {
-        if (-not (Get-Command winget.exe -ErrorAction SilentlyContinue)) {
-            throw 'Git is missing and winget is unavailable. Install free Git for Windows, then rerun.'
-        }
-        Write-Host 'Installing free Git for Windows...'
-        & winget.exe install --exact --id Git.Git --source winget --accept-package-agreements --accept-source-agreements
-        if ($LASTEXITCODE -ne 0) { throw 'Git installation failed. Read the installer message and retry.' }
-        $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' +
-            [Environment]::GetEnvironmentVariable('Path','User')
-        if (-not (Get-Command git.exe -ErrorAction SilentlyContinue)) {
-            throw 'Git installed but is not on PATH yet. Open a new PowerShell window and retry.'
-        }
+function Download-File([string]$url, [string]$destination) {
+    # curl.exe is bundled with supported Windows 11 systems and generally transfers faster
+    # than Windows PowerShell 5.1 Invoke-WebRequest for large binary files.
+    $curl = Get-Command curl.exe -ErrorAction SilentlyContinue
+    if ($curl) {
+        & $curl.Source -fL --retry 3 --connect-timeout 20 --progress-bar -o $destination $url
+        if ($LASTEXITCODE -ne 0) { throw "Download failed: $url" }
+    } else {
+        Invoke-WebRequest -Uri $url -UseBasicParsing -OutFile $destination
     }
+    if (-not (Test-Path -LiteralPath $destination -PathType Leaf) -or
+        (Get-Item -LiteralPath $destination).Length -eq 0) {
+        throw "Downloaded file is missing or empty: $destination"
+    }
+}
 
-    $null = Set-JoshRSJdk21 -InstallIfMissing
+function Enable-JoshRSGuestJava21 {
+    $portable = Join-Path $root 'jdk'
+    $homes = @(Get-ChildItem -LiteralPath $portable -Directory -ErrorAction SilentlyContinue |
+        Select-Object -ExpandProperty FullName)
+    $jdk = Find-JoshRSJdk21 -AdditionalHomes $homes
+    if (-not $jdk) {
+        if ($PlayOnly) { throw 'Java 21 missing. Run the installer again without -PlayOnly.' }
+        if ($env:PROCESSOR_ARCHITECTURE -notin @('AMD64','ARM64')) {
+            throw "Unsupported Windows CPU architecture: $env:PROCESSOR_ARCHITECTURE."
+        }
+        $arch = if ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64') { 'aarch64' } else { 'x64' }
+        Write-Host 'Java 21 not found. Downloading free portable Eclipse Temurin JDK 21 (no winget needed)...'
+        $metaUrl = "https://api.adoptium.net/v3/assets/latest/21/hotspot?architecture=$arch&image_type=jdk&os=windows&vendor=eclipse"
+        $assets = @(Invoke-RestMethod -Uri $metaUrl -UseBasicParsing)
+        $asset = $assets | Where-Object {
+            $_.binary.package.name -like '*.zip' -and $_.binary.package.checksum
+        } | Select-Object -First 1
+        if (-not $asset) { throw 'Could not find a zipped Eclipse Temurin JDK 21 for Windows.' }
+        $downloadLink = [string]$asset.binary.package.link
+        $checksum = [string]$asset.binary.package.checksum
+        if ($downloadLink -notmatch '^https://github\.com/adoptium/temurin21-binaries/') {
+            throw "Unexpected Java archive host: $downloadLink"
+        }
+        New-Item -ItemType Directory -Path $portable -Force | Out-Null
+        $zip = Join-Path $root 'jdk21.zip'
+        Download-File $downloadLink $zip
+        $actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash
+        if ($actual -ine $checksum) {
+            Remove-Item -LiteralPath $zip -Force
+            throw 'Downloaded Java 21 archive failed the official SHA-256 checksum.'
+        }
+        Write-Host 'Verified Java SHA-256. Extracting portable JDK...'
+        Expand-Archive -LiteralPath $zip -DestinationPath $portable -Force
+        Remove-Item -LiteralPath $zip -Force
+        $homes = @(Get-ChildItem -LiteralPath $portable -Directory | Select-Object -ExpandProperty FullName)
+        $jdk = Find-JoshRSJdk21 -AdditionalHomes $homes
+        if (-not $jdk) { throw 'Java archive extracted, but Java 21 compiler was not found.' }
+    }
+    $env:JAVA_HOME = $jdk
+    $env:Path = (Join-Path $jdk 'bin') + ';' + $env:Path
+    Write-Host "Using Java 21: $jdk"
+    return $jdk
+}
+
+if (-not $PlayOnly) {
     New-Item -ItemType Directory -Path $root -Force | Out-Null
+    $null = Enable-JoshRSGuestJava21
 
     $expected = [string]$manifest.client.commit
+    $pinFile = Join-Path $client 'source-pin.txt'
     if (-not (Test-Path -LiteralPath $client)) {
-        Write-Host 'Downloading only the pinned revision-377 Java client (not the game server)...'
-        & git.exe clone --depth 1 --single-branch --branch ([string]$manifest.client.branch) ([string]$manifest.client.url) $client
-        if ($LASTEXITCODE -ne 0) { throw 'Java client download failed.' }
-    }
-    if (-not (Test-Path -LiteralPath (Join-Path $client '.git') -PathType Container)) {
-        throw "Client folder is not a Git checkout; refusing to overwrite it: $client"
-    }
-    $head = (& git.exe -C $client rev-parse HEAD).Trim()
-    if ($LASTEXITCODE -ne 0) { throw 'Could not identify the existing Java client checkout.' }
-    if ($head -ne $expected) {
-        # Only allow an untouched initial clone to be pinned; don't reset a modified installation.
-        $dirty = & git.exe -C $client status --porcelain
-        if ($LASTEXITCODE -ne 0 -or $dirty) {
-            throw 'Existing Java client has modifications or an unexpected commit. Refusing to overwrite it.'
+        Write-Host 'Downloading only pinned Client-Java source as ZIP (no Git or winget needed)...'
+        $zip = Join-Path $root 'client-java.zip'
+        $stage = Join-Path $root 'client-unpack'
+        Download-File "https://github.com/LostCityRS/Client-Java/archive/$expected.zip" $zip
+        if (Test-Path -LiteralPath $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
+        Expand-Archive -LiteralPath $zip -DestinationPath $stage -Force
+        $unpacked = @(Get-ChildItem -LiteralPath $stage -Directory | Where-Object {
+            Test-Path -LiteralPath (Join-Path $_.FullName 'gradlew.bat') -PathType Leaf
+        })
+        if ($unpacked.Count -ne 1) { throw 'Downloaded Java client archive has an unexpected layout.' }
+        Move-Item -LiteralPath $unpacked[0].FullName -Destination $client
+        [System.IO.File]::WriteAllText($pinFile, $expected)
+        Remove-Item -LiteralPath $stage -Recurse -Force
+        Remove-Item -LiteralPath $zip -Force
+    } else {
+        # Never overwrite an existing client, custom code or incomplete checkout.
+        if (-not (Test-Path -LiteralPath $pinFile -PathType Leaf) -or
+            (Get-Content -LiteralPath $pinFile -Raw).Trim() -ne $expected) {
+            throw "Client directory exists but isn't our pinned ZIP install: $client. Refusing to overwrite it."
         }
-        & git.exe -C $client fetch --depth 1 origin $expected
-        if ($LASTEXITCODE -ne 0) { throw 'Could not fetch pinned client revision.' }
-        & git.exe -C $client checkout --detach $expected
-        if ($LASTEXITCODE -ne 0) { throw 'Could not check out pinned client revision.' }
-    }
-    if ((& git.exe -C $client rev-parse HEAD).Trim() -ne $expected) {
-        throw 'Java client does not match the pinned source revision.'
+        Write-Host 'Reusing previously downloaded pinned Java client.'
     }
     if (-not (Test-Path -LiteralPath $sourceFile -PathType Leaf)) {
         throw "Pinned client is missing source: $sourceFile"
@@ -152,7 +198,7 @@ if (-not $PlayOnly) {
     if (-not (Test-Path -LiteralPath $sourceFile -PathType Leaf)) {
         throw "Client-only setup has not completed. First rerun the launcher without -PlayOnly."
     }
-    $null = Set-JoshRSJdk21
+    $null = Enable-JoshRSGuestJava21
 }
 
 Write-Host "Launching the second client. Log in/create a DIFFERENT game account named '$PlayerName'."
