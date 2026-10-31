@@ -1,16 +1,16 @@
 {
-  "candidate_pool": 8791,
+  "candidate_pool": 8420,
   "deduplicated_reference_versions": 1783,
-  "next_rotation_offset": 1500,
+  "next_rotation_offset": 1600,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
-  "raw_reference_versions": 10574,
-  "rotation_offset": 1400,
+  "raw_reference_versions": 10203,
+  "rotation_offset": 1500,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
     {
       "automatically_installed": false,
-      "candidate_id": "71dd24ca2d7bd2752344",
+      "candidate_id": "3dcf5690128be87bff03",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -18,17 +18,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/login/LoginDecoder.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/name/GenerateCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/login/LoginDecoder.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/GenerateCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-71dd24ca2d7bd2752344"
+      "work_id": "377-3dcf5690128be87bff03"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "96e20126f57bbbd3a250",
+      "candidate_id": "374c4fe4fa764decf1fe",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -36,17 +36,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/login/LoginEncoder.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/name/ImportCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/login/LoginEncoder.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/ImportCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-96e20126f57bbbd3a250"
+      "work_id": "377-374c4fe4fa764decf1fe"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8b75d882ee6def654f29",
+      "candidate_id": "deca61fe2a7286ef06d4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -54,17 +54,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/login/LoginRequestMessage.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/name/NameCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/login/LoginRequestMessage.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/NameCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-8b75d882ee6def654f29"
+      "work_id": "377-deca61fe2a7286ef06d4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "279a331e0040f9eaa5a3",
+      "candidate_id": "89e4956cf02130574e24",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -72,17 +72,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/login/LoginResponse.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/name/NameDownloader.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/login/LoginResponse.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/NameDownloader.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-279a331e0040f9eaa5a3"
+      "work_id": "377-89e4956cf02130574e24"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "81ecda6b2356c1b64a56",
+      "candidate_id": "8a9bc23139d840b3f041",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -90,17 +90,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/login/LoginResponseMessage.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/name/NameImporter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/login/LoginResponseMessage.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/NameImporter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-81ecda6b2356c1b64a56"
+      "work_id": "377-8a9bc23139d840b3f041"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7b055cd74a41318837bc",
+      "candidate_id": "dc81ee11e02a946749d2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -108,17 +108,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/AddGraphicMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/name/RuneStarNameDownloader.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/AddGraphicMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/name/RuneStarNameDownloader.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-7b055cd74a41318837bc"
+      "work_id": "377-dc81ee11e02a946749d2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7254161a9ea2a2fe9708",
+      "candidate_id": "a551514d0fc111af9342",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -126,17 +126,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/AddGroundItemMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/web/ByteUnits.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/AddGroundItemMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/ByteUnits.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-7254161a9ea2a2fe9708"
+      "work_id": "377-a551514d0fc111af9342"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e4736c7d8d74074338ec",
+      "candidate_id": "80d1f30feec88abf5964",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -144,17 +144,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/AddLocalSoundMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/web/ByteUnitsDialect.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/AddLocalSoundMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/ByteUnitsDialect.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-e4736c7d8d74074338ec"
+      "work_id": "377-80d1f30feec88abf5964"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3072f13028ee0a93ffd7",
+      "candidate_id": "6da5514865f9c002836f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -162,17 +162,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/AddObjectMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/web/ByteUnitsExpressionFactory.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/AddObjectMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/ByteUnitsExpressionFactory.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-3072f13028ee0a93ffd7"
+      "work_id": "377-6da5514865f9c002836f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ce8081faea727b3264f2",
+      "candidate_id": "651faefc2b3711ff929c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -180,17 +180,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/AddProjectileMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/web/CachesController.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/AddProjectileMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/CachesController.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-ce8081faea727b3264f2"
+      "work_id": "377-651faefc2b3711ff929c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c3da4e78b2f5a51367f4",
+      "candidate_id": "72ee2c04a2e468a9a1ad",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -198,17 +198,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/AnimateGameObjectMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/web/ClientsController.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/AnimateGameObjectMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/ClientsController.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-c3da4e78b2f5a51367f4"
+      "work_id": "377-72ee2c04a2e468a9a1ad"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f19da0c430489778372b",
+      "candidate_id": "1bcbe46ca6261e711abd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -216,17 +216,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/AssignmentMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/web/KeysController.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/AssignmentMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/KeysController.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-f19da0c430489778372b"
+      "work_id": "377-1bcbe46ca6261e711abd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4ba53c5c57ac3427142f",
+      "candidate_id": "e9e9d5dd9e4eac2fd483",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -234,17 +234,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/CameraShakeMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/web/WebCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/CameraShakeMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/WebCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-4ba53c5c57ac3427142f"
+      "work_id": "377-e9e9d5dd9e4eac2fd483"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9f7a75bd57e377d8d242",
+      "candidate_id": "50ff64a5214b9707a2d9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -252,17 +252,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/ChunkPlacementMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/web/WebServer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/ChunkPlacementMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/web/WebServer.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-9f7a75bd57e377d8d242"
+      "work_id": "377-50ff64a5214b9707a2d9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6f8a4b2ffd83430e270d",
+      "candidate_id": "a690e58a476638b3f5b4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -270,17 +270,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/ClearChunkMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/world/World.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/ClearChunkMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/world/World.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-6f8a4b2ffd83430e270d"
+      "work_id": "377-a690e58a476638b3f5b4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9b685e71e052a211baf9",
+      "candidate_id": "0d1c969d8bfeed070218",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -288,17 +288,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/ClearHintMessageWriter.java",
+      "path": "archive/src/main/kotlin/org/openrs2/archive/world/WorldList.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/ClearHintMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/archive/src/main/kotlin/org/openrs2/archive/world/WorldList.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-9b685e71e052a211baf9"
+      "work_id": "377-0d1c969d8bfeed070218"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8ba5fe337ece11670cd3",
+      "candidate_id": "a22062b54dda0b689ea6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -306,17 +306,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/ClearWidgetItemsMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/AsmJacksonModule.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/ClearWidgetItemsMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/AsmJacksonModule.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-8ba5fe337ece11670cd3"
+      "work_id": "377-a22062b54dda0b689ea6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "45ee3c7a12c30a77fe62",
+      "candidate_id": "5b4eaab5d593077da186",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -324,17 +324,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/CloseWindowsMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/AsmModule.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/CloseWindowsMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/AsmModule.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-45ee3c7a12c30a77fe62"
+      "work_id": "377-5b4eaab5d593077da186"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "65c85267e3c6e89d1175",
+      "candidate_id": "12bce7704c332ea68331",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -342,17 +342,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/ContextMenuOptionMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/ClassForNameUtils.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/ContextMenuOptionMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/ClassForNameUtils.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-65c85267e3c6e89d1175"
+      "work_id": "377-12bce7704c332ea68331"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f1538772ac4d022b6e10",
+      "candidate_id": "38bac3a018b4279e2ee4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -360,17 +360,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/DialogueInterfaceMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/ClassNameExtensions.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/DialogueInterfaceMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/ClassNameExtensions.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-f1538772ac4d022b6e10"
+      "work_id": "377-38bac3a018b4279e2ee4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0bfa523f42faedc3dd1c",
+      "candidate_id": "3404797575b414504909",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -378,17 +378,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/FlashTabMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/ClassNodeRemapper.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/FlashTabMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/ClassNodeRemapper.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-0bfa523f42faedc3dd1c"
+      "work_id": "377-3404797575b414504909"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "141e41f3e5eb8b685eac",
+      "candidate_id": "9cd48748e69259f18f50",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -396,17 +396,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/ForceTabMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/ClassVersionUtils.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/ForceTabMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/ClassVersionUtils.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-141e41f3e5eb8b685eac"
+      "work_id": "377-9cd48748e69259f18f50"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "28d8e3b80ffec723cee8",
+      "candidate_id": "5ebf878e760a935f2780",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -414,17 +414,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/FriendsListStatusMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/InsnListUtils.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/FriendsListStatusMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/InsnListUtils.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-28d8e3b80ffec723cee8"
+      "work_id": "377-5ebf878e760a935f2780"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "01a0aa21ce2bc3664fe7",
+      "candidate_id": "a701a36ececa3f74f233",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -432,17 +432,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/FullScreenInterfaceMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/InsnMatcher.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/FullScreenInterfaceMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/InsnMatcher.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-01a0aa21ce2bc3664fe7"
+      "work_id": "377-a701a36ececa3f74f233"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "413807afdc84fe8aea80",
+      "candidate_id": "22b57fd83f54f61aff96",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -450,17 +450,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/GameChatboxMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/InsnNodeUtils.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/GameChatboxMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/InsnNodeUtils.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-413807afdc84fe8aea80"
+      "work_id": "377-22b57fd83f54f61aff96"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3d69233b745f16fc5a00",
+      "candidate_id": "85cca3c456b2c76f3ffb",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -468,17 +468,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/GroupedEntityMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/MemberDesc.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/GroupedEntityMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/MemberDesc.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-3d69233b745f16fc5a00"
+      "work_id": "377-85cca3c456b2c76f3ffb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "40abb2a96b65334c0ac0",
+      "candidate_id": "316ff2f06d7d616d0dc0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -486,17 +486,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/InterfaceMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/MemberRef.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/InterfaceMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/MemberRef.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-40abb2a96b65334c0ac0"
+      "work_id": "377-316ff2f06d7d616d0dc0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "073100e8f3fad1adbd5f",
+      "candidate_id": "03c0039f6a57b1293280",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -504,17 +504,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/InventoryOverlayMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/MemberRefDeserializer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/InventoryOverlayMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/MemberRefDeserializer.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-073100e8f3fad1adbd5f"
+      "work_id": "377-03c0039f6a57b1293280"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "62ff6f79d25b92b04a0b",
+      "candidate_id": "6981f48a895eecbbbbc5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -522,17 +522,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/JingleMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/MemberRefKeyDeserializer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/JingleMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/MemberRefKeyDeserializer.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-62ff6f79d25b92b04a0b"
+      "work_id": "377-6981f48a895eecbbbbc5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "de4739aac3323fe94866",
+      "candidate_id": "fafec32a9b2ac0f2fb74",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -540,17 +540,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/LogoutMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/MethodNodeUtils.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/LogoutMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/MethodNodeUtils.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-de4739aac3323fe94866"
+      "work_id": "377-fafec32a9b2ac0f2fb74"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1016125afbb1def7ee78",
+      "candidate_id": "fa5a2fdd9a3a699a3794",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -558,17 +558,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/MinimapStateMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/NopClassVisitor.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/MinimapStateMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/NopClassVisitor.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-1016125afbb1def7ee78"
+      "work_id": "377-fa5a2fdd9a3a699a3794"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "aa925f08a20610d5ac14",
+      "candidate_id": "118ac6f76d244b2d4c01",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -576,17 +576,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/MobHintMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/StackMetadata.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/MobHintMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/StackMetadata.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-aa925f08a20610d5ac14"
+      "work_id": "377-118ac6f76d244b2d4c01"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "924ca204b891f5001b26",
+      "candidate_id": "a0f205feff95e06a0e8b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -594,17 +594,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/MultiCombatMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/AsmClassMetadata.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/MultiCombatMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/AsmClassMetadata.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-924ca204b891f5001b26"
+      "work_id": "377-a0f205feff95e06a0e8b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "755ad4dddcc8ee4ecd46",
+      "candidate_id": "c1c575b9f552911faf4b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -612,17 +612,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/MusicMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/ClassMetadata.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/MusicMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/ClassMetadata.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-755ad4dddcc8ee4ecd46"
+      "work_id": "377-c1c575b9f552911faf4b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1e13fa5223b15d0794a3",
+      "candidate_id": "21696a6d5cb584c179e0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -630,17 +630,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/NpcUpdateMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/ClassPath.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/NpcUpdateMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/ClassPath.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-1e13fa5223b15d0794a3"
+      "work_id": "377-21696a6d5cb584c179e0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8680b7e6f8c37d5a69a6",
+      "candidate_id": "b7ed207130a00ff7923e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -648,17 +648,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/NumberInputMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/ExtendedRemapper.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/NumberInputMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/ExtendedRemapper.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-8680b7e6f8c37d5a69a6"
+      "work_id": "377-b7ed207130a00ff7923e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "48d89d4c3a75d3c8c450",
+      "candidate_id": "42628676a911f4c8a97a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -666,17 +666,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/PlayerUpdateMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/JsrInliner.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/PlayerUpdateMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/JsrInliner.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-48d89d4c3a75d3c8c450"
+      "work_id": "377-42628676a911f4c8a97a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bc641d36e5f2b827595a",
+      "candidate_id": "467bd4773d99f237bd51",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -684,17 +684,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/PositionHintMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/Library.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/PositionHintMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/Library.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-bc641d36e5f2b827595a"
+      "work_id": "377-467bd4773d99f237bd51"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "867edc84cf9729a4df35",
+      "candidate_id": "68c06c3ec18da578f006",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -702,17 +702,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/PrivateChatMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/LibraryRemapper.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/PrivateChatMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/LibraryRemapper.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-867edc84cf9729a4df35"
+      "work_id": "377-68c06c3ec18da578f006"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "db55c7fb2fb4ae3210ac",
+      "candidate_id": "482c9c1cfe1768945859",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -720,17 +720,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/RegionMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/ReflectionClassMetadata.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/RegionMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/ReflectionClassMetadata.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-db55c7fb2fb4ae3210ac"
+      "work_id": "377-482c9c1cfe1768945859"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "54b4d4ff4407912d537b",
+      "candidate_id": "27a60798c31a8bb70856",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -738,17 +738,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/RemoveGroundItemMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/classpath/StackFrameClassWriter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/RemoveGroundItemMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/classpath/StackFrameClassWriter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-54b4d4ff4407912d537b"
+      "work_id": "377-27a60798c31a8bb70856"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3ec24c9fd05db023658b",
+      "candidate_id": "48422cbd5f9b310f940b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -756,17 +756,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/RemoveObjectMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/AnyClassFilter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/RemoveObjectMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/AnyClassFilter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-3ec24c9fd05db023658b"
+      "work_id": "377-48422cbd5f9b310f940b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a4f3f44f924a032e8f51",
+      "candidate_id": "5985bdb084c17b9a7ffb",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -774,17 +774,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/ResetCameraMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/AnyMemberFilter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/ResetCameraMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/AnyMemberFilter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-a4f3f44f924a032e8f51"
+      "work_id": "377-5985bdb084c17b9a7ffb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ecde8cf5cbb827e5a308",
+      "candidate_id": "5a18007c173687acbc9b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -792,17 +792,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/SkillUpdateMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/ClassFilter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/SkillUpdateMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/ClassFilter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-ecde8cf5cbb827e5a308"
+      "work_id": "377-5a18007c173687acbc9b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e452b2f752be951590c9",
+      "candidate_id": "037a1a2ab486c9c5d926",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -810,17 +810,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/SoundMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/Glob.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/SoundMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/Glob.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-e452b2f752be951590c9"
+      "work_id": "377-037a1a2ab486c9c5d926"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "26eff2fd5374e2f3b21e",
+      "candidate_id": "e472646450a039d1eca0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -828,17 +828,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/SystemUpdateMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/GlobClassFilter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/SystemUpdateMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/GlobClassFilter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-26eff2fd5374e2f3b21e"
+      "work_id": "377-e472646450a039d1eca0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "cfaa4b260c1253d0f204",
+      "candidate_id": "d0f070ed26cf0ae43772",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -846,17 +846,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/TabInterfaceMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/GlobMemberFilter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/TabInterfaceMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/GlobMemberFilter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-cfaa4b260c1253d0f204"
+      "work_id": "377-d0f070ed26cf0ae43772"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "139a42aef8e70fe34fd2",
+      "candidate_id": "4befe1326bcd5164f30f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -864,17 +864,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/TextInputMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/MemberFilter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/TextInputMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/MemberFilter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-139a42aef8e70fe34fd2"
+      "work_id": "377-4befe1326bcd5164f30f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "22b9f53ea69e41ed0041",
+      "candidate_id": "5d42d077f2a44a625a4e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -882,17 +882,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/UpdateFriendsListMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/UnionClassFilter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/UpdateFriendsListMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/UnionClassFilter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-22b9f53ea69e41ed0041"
+      "work_id": "377-5d42d077f2a44a625a4e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c6eb7c4d59039ac48c84",
+      "candidate_id": "fda3b511ee9c22bd8505",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -900,17 +900,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/UpdateGroundItemMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/filter/UnionMemberFilter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/UpdateGroundItemMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/filter/UnionMemberFilter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-c6eb7c4d59039ac48c84"
+      "work_id": "377-fda3b511ee9c22bd8505"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a5f3407db5edc3d688a5",
+      "candidate_id": "3bea480d1f380d84a77c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -918,17 +918,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/UpdateIgnoreListMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/AbstractJarLibraryWriter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/UpdateIgnoreListMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/AbstractJarLibraryWriter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-a5f3407db5edc3d688a5"
+      "work_id": "377-3bea480d1f380d84a77c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e0c1a5cafa9267b1b87b",
+      "candidate_id": "eb3dca5cb36b7ccfcea4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -936,17 +936,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/UpdatePrivacyOptionMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/CabLibraryReader.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/UpdatePrivacyOptionMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/CabLibraryReader.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-e0c1a5cafa9267b1b87b"
+      "work_id": "377-eb3dca5cb36b7ccfcea4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "72b6ac59f4cdfeaa8298",
+      "candidate_id": "409c8384f42d78f17d7c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -954,17 +954,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/UpdateRunEnergyMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/JarLibraryReader.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/UpdateRunEnergyMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/JarLibraryReader.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-72b6ac59f4cdfeaa8298"
+      "work_id": "377-409c8384f42d78f17d7c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "01f50d408a22aca4126d",
+      "candidate_id": "3b21af14640d08c5901b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -972,17 +972,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/UpdateWeightMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/JarLibraryWriter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/UpdateWeightMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/JarLibraryWriter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-01f50d408a22aca4126d"
+      "work_id": "377-3b21af14640d08c5901b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1d98f52f4efcc7748333",
+      "candidate_id": "86720b93259750bc379a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -990,17 +990,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/VarpMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/LibraryReader.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/VarpMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/LibraryReader.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-1d98f52f4efcc7748333"
+      "work_id": "377-86720b93259750bc379a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "539b2a583335809dc60f",
+      "candidate_id": "915e110d7d791dd20b6b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1008,17 +1008,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WalkableInterfaceMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/LibraryWriter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WalkableInterfaceMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/LibraryWriter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-539b2a583335809dc60f"
+      "work_id": "377-915e110d7d791dd20b6b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "20f56f92102127f477e1",
+      "candidate_id": "2edad4d11b407cbba346",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1026,17 +1026,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetAnimationMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/ManifestJarLibraryWriter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetAnimationMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/ManifestJarLibraryWriter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-20f56f92102127f477e1"
+      "work_id": "377-2edad4d11b407cbba346"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "46733bd1db5b354d6a38",
+      "candidate_id": "392125c926f22ae95bd7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1044,17 +1044,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetColourMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/Pack200LibraryReader.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetColourMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/Pack200LibraryReader.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-46733bd1db5b354d6a38"
+      "work_id": "377-392125c926f22ae95bd7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "38009bdc8657c3b581cf",
+      "candidate_id": "bd7cd683d57dccbd94c2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1062,17 +1062,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetIndexedItemsMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/Pack200LibraryWriter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetIndexedItemsMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/Pack200LibraryWriter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-38009bdc8657c3b581cf"
+      "work_id": "377-bd7cd683d57dccbd94c2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c431be4782dfe98e233a",
+      "candidate_id": "7bc1d3c01ce26d6f9d4e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1080,17 +1080,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetItemModelMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/PackClassLibraryReader.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetItemModelMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/PackClassLibraryReader.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-c431be4782dfe98e233a"
+      "work_id": "377-7bc1d3c01ce26d6f9d4e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2687b74c2e738aa57183",
+      "candidate_id": "08b17cbd311ec2437b5b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1098,17 +1098,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetItemsMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/PackClassLibraryWriter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetItemsMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/PackClassLibraryWriter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-2687b74c2e738aa57183"
+      "work_id": "377-08b17cbd311ec2437b5b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0d49daaed21194c8dbea",
+      "candidate_id": "3017468da6e6cf28d4f1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1116,17 +1116,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetMobModelMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/io/SignedJarLibraryWriter.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetMobModelMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/io/SignedJarLibraryWriter.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-0d49daaed21194c8dbea"
+      "work_id": "377-3017468da6e6cf28d4f1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8bd157de58e643d9bb07",
+      "candidate_id": "104eb497cbf4c93d30a1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1134,17 +1134,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetModelMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/packclass/ConstantPool.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetModelMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/packclass/ConstantPool.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-8bd157de58e643d9bb07"
+      "work_id": "377-104eb497cbf4c93d30a1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bedb7ac66a4e5f8148fa",
+      "candidate_id": "1e0e3c7024d2dd70ee55",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1152,17 +1152,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetPositionMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/packclass/MemberRef.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetPositionMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/packclass/MemberRef.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-bedb7ac66a4e5f8148fa"
+      "work_id": "377-1e0e3c7024d2dd70ee55"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1b1f46c4924604f4c1be",
+      "candidate_id": "ad79570feff421336ac9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1170,17 +1170,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetScrollMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/packclass/NameAndType.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetScrollMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/packclass/NameAndType.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-1b1f46c4924604f4c1be"
+      "work_id": "377-ad79570feff421336ac9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3abb2a52bd71e64c7d85",
+      "candidate_id": "c844a2d4035ce1c21af9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1188,17 +1188,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetScrollPositionMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/packclass/PackClass.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetScrollPositionMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/packclass/PackClass.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-3abb2a52bd71e64c7d85"
+      "work_id": "377-c844a2d4035ce1c21af9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4b20c2a3c115695af7fa",
+      "candidate_id": "0b79f2eccde9966d6d15",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1206,17 +1206,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetTextMessageWriter.java",
+      "path": "asm/src/main/kotlin/org/openrs2/asm/transform/Transformer.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetTextMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/asm/src/main/kotlin/org/openrs2/asm/transform/Transformer.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-4b20c2a3c115695af7fa"
+      "work_id": "377-0b79f2eccde9966d6d15"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9e01aa53ca0ad28bf7e9",
+      "candidate_id": "9144d107f079784a3394",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1224,17 +1224,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/net/msg/out/WidgetVisibilityMessageWriter.java",
+      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ArrayOrder.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/net/msg/out/WidgetVisibilityMessageWriter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ArrayOrder.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-9e01aa53ca0ad28bf7e9"
+      "work_id": "377-9144d107f079784a3394"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "08a98cf048d47b221699",
+      "candidate_id": "f9da9513d1907849eafa",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1242,17 +1242,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/CacheDumpUtils.java",
+      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ByteBufExtensionGenerator.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/CacheDumpUtils.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ByteBufExtensionGenerator.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-08a98cf048d47b221699"
+      "work_id": "377-f9da9513d1907849eafa"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "efcc2bbb89b23d879c99",
+      "candidate_id": "53bbaccfcacb632b5c8b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1260,17 +1260,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/ExecutorUtils.java",
+      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ByteOrder.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/ExecutorUtils.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/ByteOrder.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-efcc2bbb89b23d879c99"
+      "work_id": "377-53bbaccfcacb632b5c8b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b2dd590a3f7d015368ce",
+      "candidate_id": "f92df04a07ccd202e2ee",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1278,17 +1278,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/GsonUtils.java",
+      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/GenerateBufferCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/GsonUtils.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/GenerateBufferCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-b2dd590a3f7d015368ce"
+      "work_id": "377-f92df04a07ccd202e2ee"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f2c194efd9e4535a16f2",
+      "candidate_id": "5f0f43ebd374ebbb5214",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1296,17 +1296,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/HashUtils.java",
+      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/IntType.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/HashUtils.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/IntType.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-f2c194efd9e4535a16f2"
+      "work_id": "377-5f0f43ebd374ebbb5214"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9f6efe14435b67556bf2",
+      "candidate_id": "b4824c66f283ffaaaf1f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1314,17 +1314,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/NumberUtils.java",
+      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/Signedness.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/NumberUtils.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/Signedness.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-9f6efe14435b67556bf2"
+      "work_id": "377-b4824c66f283ffaaaf1f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "cb9282a6b2030c70e51f",
+      "candidate_id": "4bfc4af1ee783ed6f794",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1332,17 +1332,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/OptionalUtils.java",
+      "path": "buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/Transformation.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/OptionalUtils.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer-generator/src/main/kotlin/org/openrs2/buffer/generator/Transformation.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-cb9282a6b2030c70e51f"
+      "work_id": "377-4bfc4af1ee783ed6f794"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "af97cfd2ccec0e06dfbc",
+      "candidate_id": "d1aac769d1f8ce63f217",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1350,17 +1350,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/RandomUtils.java",
+      "path": "buffer/src/main/kotlin/org/openrs2/buffer/Arena.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/RandomUtils.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/Arena.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-af97cfd2ccec0e06dfbc"
+      "work_id": "377-d1aac769d1f8ce63f217"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "69fd8c0a4b4b87401df7",
+      "candidate_id": "9d26b8c8f53a264e326f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1368,17 +1368,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/Rational.java",
+      "path": "buffer/src/main/kotlin/org/openrs2/buffer/BitBuf.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/Rational.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/BitBuf.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-69fd8c0a4b4b87401df7"
+      "work_id": "377-9d26b8c8f53a264e326f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2555bf0ffe5fc84ea5b9",
+      "candidate_id": "d94346a6268f055cb9ae",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1386,17 +1386,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/ReflectionUtils.java",
+      "path": "buffer/src/main/kotlin/org/openrs2/buffer/BufferModule.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/ReflectionUtils.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/BufferModule.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-2555bf0ffe5fc84ea5b9"
+      "work_id": "377-d94346a6268f055cb9ae"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "39711bb3922e04f8d2c9",
+      "candidate_id": "c1944fd02a0905049346",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1404,17 +1404,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/SqlConnectionPool.java",
+      "path": "buffer/src/main/kotlin/org/openrs2/buffer/ByteBufBodyHandler.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/SqlConnectionPool.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/ByteBufBodyHandler.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-39711bb3922e04f8d2c9"
+      "work_id": "377-c1944fd02a0905049346"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f6df23491aae207b7c45",
+      "candidate_id": "75b845b678999b2b3d6a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1422,17 +1422,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/SqlTask.java",
+      "path": "buffer/src/main/kotlin/org/openrs2/buffer/ByteBufExtensions.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/SqlTask.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/ByteBufExtensions.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-f6df23491aae207b7c45"
+      "work_id": "377-75b845b678999b2b3d6a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1123465550d52f86a259",
+      "candidate_id": "aaacb2d5cfaa0948beca",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1440,17 +1440,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/StringUtils.java",
+      "path": "buffer/src/main/kotlin/org/openrs2/buffer/GeneratedByteBufExtensions.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/StringUtils.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/GeneratedByteBufExtensions.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-1123465550d52f86a259"
+      "work_id": "377-aaacb2d5cfaa0948beca"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ea633a378929ef011fd2",
+      "candidate_id": "83aedac8ec9459e715be",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1458,17 +1458,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/logging/LoggingConfigurationFactory.java",
+      "path": "buffer/src/main/kotlin/org/openrs2/buffer/ReferenceCountedExtensions.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/logging/LoggingConfigurationFactory.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/buffer/src/main/kotlin/org/openrs2/buffer/ReferenceCountedExtensions.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-ea633a378929ef011fd2"
+      "work_id": "377-83aedac8ec9459e715be"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d4dd1b3dbb6ed4a4b7bd",
+      "candidate_id": "92cc6b7a37ad815c7b12",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1476,17 +1476,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/logging/LoggingSettings.java",
+      "path": "cli/src/main/kotlin/org/openrs2/cli/OptionExtensions.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/logging/LoggingSettings.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/cli/src/main/kotlin/org/openrs2/cli/OptionExtensions.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-d4dd1b3dbb6ed4a4b7bd"
+      "work_id": "377-92cc6b7a37ad815c7b12"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "74f193d06faad5b391b1",
+      "candidate_id": "a0925db0d0538bb7d3f0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1494,17 +1494,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/markov/MarkovChain.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/CompressCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/markov/MarkovChain.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/CompressCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-74f193d06faad5b391b1"
+      "work_id": "377-a0925db0d0538bb7d3f0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2c6c167284f9e3f6b021",
+      "candidate_id": "cf79c5f906b835d1fd07",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1512,17 +1512,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/markov/MarkovChainTypeAdapter.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/bzip2/Bunzip2Command.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/markov/MarkovChainTypeAdapter.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/bzip2/Bunzip2Command.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-2c6c167284f9e3f6b021"
+      "work_id": "377-cf79c5f906b835d1fd07"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a6291bd5e16a193a9228",
+      "candidate_id": "79572ea861e6dffbb86d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1530,17 +1530,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/markov/MarkovChainTypeAdapterFactory.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/bzip2/Bzip2Command.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/markov/MarkovChainTypeAdapterFactory.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/bzip2/Bzip2Command.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-a6291bd5e16a193a9228"
+      "work_id": "377-79572ea861e6dffbb86d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b871d87ea8b921532c17",
+      "candidate_id": "3c7dd00d54a17c1d0d7f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1548,17 +1548,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/FileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/deflate/DeflateCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/FileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/deflate/DeflateCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-b871d87ea8b921532c17"
+      "work_id": "377-3c7dd00d54a17c1d0d7f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "87672b7edc9055c1b735",
+      "candidate_id": "b049493de084a371b52e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1566,17 +1566,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/JsonFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/deflate/InflateCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/JsonFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/deflate/InflateCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-87672b7edc9055c1b735"
+      "work_id": "377-b049493de084a371b52e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2b0fe883bf41c13086c7",
+      "candidate_id": "95d6a54070eb55bf54ae",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1584,17 +1584,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/NewLineFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GunzipCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/NewLineFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GunzipCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-2b0fe883bf41c13086c7"
+      "work_id": "377-95d6a54070eb55bf54ae"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2e8ceb50057056ad7dd5",
+      "candidate_id": "927509c1b4b8c1a68c0c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1602,17 +1602,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/AmmoDefinitionFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GunzipLaxCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/AmmoDefinitionFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GunzipLaxCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-2e8ceb50057056ad7dd5"
+      "work_id": "377-927509c1b4b8c1a68c0c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0b02d4f398db4c461e52",
+      "candidate_id": "f0879dcbb41f2c716864",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1620,17 +1620,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/BossFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GzipCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/BossFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GzipCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-0b02d4f398db4c461e52"
+      "work_id": "377-f0879dcbb41f2c716864"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "74b8c99a60f70b4d99bd",
+      "candidate_id": "0cca2cb2657c83213ab7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1638,17 +1638,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/CombatSpellDefinitionFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GzipJagexCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/CombatSpellDefinitionFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/gzip/GzipJagexCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-74b8c99a60f70b4d99bd"
+      "work_id": "377-0cca2cb2657c83213ab7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e3090534b2918b95ffe4",
+      "candidate_id": "08f86d67d4792c5d10c2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1656,17 +1656,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/EquipmentDefinitionFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/lzma/LzmaCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/EquipmentDefinitionFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/lzma/LzmaCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-e3090534b2918b95ffe4"
+      "work_id": "377-08f86d67d4792c5d10c2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1969f6f74c54337e0847",
+      "candidate_id": "e17f91108690a49a5f47",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1674,17 +1674,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/EquipmentPoisonDefinitionFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/lzma/UnlzmaCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/EquipmentPoisonDefinitionFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/lzma/UnlzmaCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-1969f6f74c54337e0847"
+      "work_id": "377-e17f91108690a49a5f47"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6be6e2ef62593f055efe",
+      "candidate_id": "bbd8956d9f43cbfcb4f0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1692,17 +1692,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/ItemEconomyDefinitionFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/pack200/Pack200Command.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/ItemEconomyDefinitionFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/pack200/Pack200Command.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-6be6e2ef62593f055efe"
+      "work_id": "377-bbd8956d9f43cbfcb4f0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "39ca0f6a45c109933dcd",
+      "candidate_id": "c18edf32c691ecd2ba9f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1710,17 +1710,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/ItemNicknameDefinitionFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/pack200/Unpack200Command.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/ItemNicknameDefinitionFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/pack200/Unpack200Command.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-39ca0f6a45c109933dcd"
+      "work_id": "377-c18edf32c691ecd2ba9f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ca7ad9f1fd6a30f06bba",
+      "candidate_id": "180608034cbfd89fc2d1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1728,17 +1728,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/MessageRepositoryFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/packclass/PackClassCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/MessageRepositoryFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/packclass/PackClassCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-ca7ad9f1fd6a30f06bba"
+      "work_id": "377-180608034cbfd89fc2d1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "13847ae89530d42f5308",
+      "candidate_id": "9c52844281170fcaa3a1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1746,17 +1746,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/MusicDefinitionFileParser.java",
+      "path": "compress-cli/src/main/kotlin/org/openrs2/compress/cli/packclass/UnpackClassCommand.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/MusicDefinitionFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress-cli/src/main/kotlin/org/openrs2/compress/cli/packclass/UnpackClassCommand.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-13847ae89530d42f5308"
+      "work_id": "377-9c52844281170fcaa3a1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f0683ccede50b3cae444",
+      "candidate_id": "daa63d74a2a14a089b16",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1764,17 +1764,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/NpcCombatDefinitionFileParser.java",
+      "path": "compress/src/main/kotlin/org/openrs2/compress/bzip2/Bzip2.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/NpcCombatDefinitionFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/bzip2/Bzip2.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-f0683ccede50b3cae444"
+      "work_id": "377-daa63d74a2a14a089b16"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "caf0c00c06242562a6d6",
+      "candidate_id": "5531c65b2590f85d3d3d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1782,17 +1782,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/WantedItemDefinitionFileParser.java",
+      "path": "compress/src/main/kotlin/org/openrs2/compress/bzip2/Bzip2OutputStream.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/WantedItemDefinitionFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/bzip2/Bzip2OutputStream.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-caf0c00c06242562a6d6"
+      "work_id": "377-5531c65b2590f85d3d3d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e02c1a7d2145333227d3",
+      "candidate_id": "7ccade714a813cb1a396",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1800,13 +1800,13 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "src/main/java/io/luna/util/parser/impl/WeaponAnimationDefinitionFileParser.java",
+      "path": "compress/src/main/kotlin/org/openrs2/compress/bzip2/LibBzip2.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/luna-rs/luna/blob/6ebd323d6c57c8bdf37ebda6a6d1929514928f69/src/main/java/io/luna/util/parser/impl/WeaponAnimationDefinitionFileParser.java",
-      "source": "luna-rs/luna",
-      "source_commit_sha": "6ebd323d6c57c8bdf37ebda6a6d1929514928f69",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/compress/src/main/kotlin/org/openrs2/compress/bzip2/LibBzip2.kt",
+      "source": "openrs2/openrs2",
+      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
       "status": "awaiting_agent_review",
-      "work_id": "377-e02c1a7d2145333227d3"
+      "work_id": "377-7ccade714a813cb1a396"
     }
   ]
 }
