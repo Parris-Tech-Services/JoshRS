@@ -16,6 +16,18 @@
     {
       "path": "scripts/areas/area_varrock/scripts/juliet.rs2",
       "blob": "510d1e770c86ae35da6bce3432074a7be44cce89"
+    },
+    {
+      "path": "scripts/areas/area_varrock/scripts/father_lawrence.rs2",
+      "blob": "3a27730498262dd5d3af111051d7000e7028585b"
+    },
+    {
+      "path": "scripts/areas/area_varrock/scripts/apothecary.rs2",
+      "blob": "8f9cf52c687ec2619e8c560d2d06477e8db7952d"
+    },
+    {
+      "path": "pack/npc.pack",
+      "blob": "f10e96c32d870b0c3cad04b701e46dbd6e67dcc5"
     }
   ],
   "stages": [
@@ -83,20 +95,24 @@
     {
       "from": "romeojuliet_passed_message",
       "to": "romeojuliet_spoken_father",
-      "actor": null,
-      "source_location": null,
-      "trace": "unverified",
-      "effect_to_check": "find intervening handler",
-      "test_result": "not_run"
+      "actor": "Father Lawrence",
+      "source_location": "father_lawrence.rs2:54-62",
+      "trace": "source_traced",
+      "effect_to_check": "quest stage advances after dialogue with Father Lawrence; stage 30 to 40; real client not tested",
+      "test_result": "not_run",
+      "npc_id377": 640,
+      "handler_trigger": "opnpc1:father_lawrence"
     },
     {
       "from": "romeojuliet_spoken_father",
       "to": "romeojuliet_spoken_apothecary",
-      "actor": null,
-      "source_location": null,
-      "trace": "unverified",
-      "effect_to_check": "find intervening handler",
-      "test_result": "not_run"
+      "actor": "Apothecary",
+      "source_location": "apothecary.rs2:72-82",
+      "trace": "source_traced",
+      "effect_to_check": "quest stage advances after Apothecary first quest conversation; stage 40 to 50; potion acquisition remains separate and untested",
+      "test_result": "not_run",
+      "npc_id377": 638,
+      "handler_trigger": "opnpc1:apothecary"
     },
     {
       "from": "romeojuliet_spoken_apothecary",
@@ -123,5 +139,6 @@
   "completion_verified": false,
   "rights": "reference_metadata_only",
   "game_dialogue_copied": false,
-  "source_claim": "Source stage graph only; complete quest outcome not proven."
+  "source_claim": "Source graph now traces both intervening NPCs to pinned 377 opnpc1 handlers and stage writes. This proves source existence only; no live build, client quest completion or persistence proven.",
+  "source_npc_ids_from": "LostCityRS/Content pack/npc.pack at pinned commit; ID 640 father_lawrence, ID 638 apothecary"
 }
