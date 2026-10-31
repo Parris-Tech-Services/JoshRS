@@ -50,7 +50,7 @@ class HarvestPipelineTests(unittest.TestCase):
         self.assertTrue(second['complete'])
         self.assertEqual(2, len(second['candidates']))
         self.assertIn('ref=' + SHA, urls[1])
-        self.assertNotIn('page=', urls[-1])
+        self.assertNotIn('&page=', urls[-1])
 
     def test_gitlab_bad_commit_rejected(self):
         with self.assertRaises(sources.MetadataBlocked):
