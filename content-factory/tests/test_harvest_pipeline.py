@@ -121,9 +121,25 @@ class HarvestPipelineTests(unittest.TestCase):
             report = match.match_all(output)
             self.assertEqual(1, report['counts']['existing_unverified'])
             self.assertEqual(1, report['counts']['version_difference_unverified'])
-            self.assertEqual(1, report['counts']['unmapped_reference'])
+            self.assertEqual(1, report['counts']['unmapped_partial_inventory'])
+            self.assertFalse(report['baseline_complete'])
             self.assertEqual(0, report['missing_confirmed'])
             self.assertTrue(all(x['target_id377'] is None for x in report['rows']))
+
+    def test_full_377_index_permits_exact_nonmatch_classification(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)
+            factory.put_json(path/'packs/lostcity-content-377.json',
+                             {'commit_sha': PIN, 'candidates': []})
+            factory.put_json(path/'pinned-377-index.json', {'commit': PIN,
+                             'complete': True, 'paths': {'scripts/a.rs2': SHA}})
+            factory.put_json(path/'packs/earlier.json', {'candidates': [
+                {'id':'candidate','source':'older','path':'scripts/different.rs2',
+                 'blob_sha':'c'*40,'source_commit_sha':'d'*40}]})
+            report = match.match_all(path)
+            self.assertTrue(report['baseline_complete'])
+            self.assertEqual(1,report['counts']['unmapped_reference'])
+            self.assertEqual(0,report['missing_confirmed'])
 
     def test_stale_mutable_branch_baseline_rejected(self):
         with self.assertRaises(ValueError):
