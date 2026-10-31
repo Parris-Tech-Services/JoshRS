@@ -60,3 +60,48 @@ $p="$env:LOCALAPPDATA\JoshRS-SecondPlayer\launcher\JoshRS-main\deploy\jparris-wi
 ~~~
 
 This is for existing installations only; new VM setups can use the one-time-install command above.
+
+## Match the JParris Desktop custom zoom/map/fullscreen features
+
+The initial VM client is intentionally the clean pinned Client-Java 377. It may lack the host's custom zoom, scaling, fullscreen and world-map UI. Those are *client-side* changes, not features the game server can send to Sylvie.
+
+**Do not copy the server/engine/content/database or use the normal Set Up and Play launcher inside the VM.**
+
+Before starting, close Sylvie's RuneScape window, leaving the host game server and Elrothiro running.
+
+### 1. Share only the host's active custom Java client
+
+**On JParris Desktop's own PowerShell, not in the VM:**
+
+~~~powershell
+$p="$env:TEMP\share-active-client-vm.ps1";Invoke-WebRequest 'https://raw.githubusercontent.com/Parris-Tech-Services/JoshRS/main/deploy/jparris-windows/share-active-client-vm.ps1' -OutFile $p;powershell.exe -NoProfile -ExecutionPolicy Bypass -File $p
+~~~
+
+This reads the active client location from \`C:\JoshRS-Launcher\JoshRS-main\runtime\jparris-377\active.json\`, validates the source, and creates the **read-only, transient** VirtualBox share \`JoshRSClient\` for the already-running \`Windows 11\` guest. If paths or VM names differ, pass \`-ActiveStatePath\` or \`-VMName\` to the script explicitly; never guess a source and share an entire game/world folder.
+
+Guest Additions are needed in the VM for VirtualBox shared folders. On the VM's PowerShell verify:
+
+~~~powershell
+Test-Path '\\VBOXSVR\JoshRSClient\gradlew.bat'
+~~~
+
+Expect \`True\`. If \`False\`, use the VM menu **Devices > Insert Guest Additions CD Image**, install Guest Additions *inside the VM*, then reboot the VM if prompted; leave the JParris Desktop world running.
+
+### 2. Import the host client into Sylvie's VM
+
+**Inside the VM's PowerShell** (client closed):
+
+~~~powershell
+$p="$env:LOCALAPPDATA\JoshRS-SecondPlayer\launcher\JoshRS-main\deploy\jparris-windows";Invoke-WebRequest 'https://raw.githubusercontent.com/Parris-Tech-Services/JoshRS/main/deploy/jparris-windows/import-host-client-vm.ps1' -OutFile "$p\import-host-client-vm.ps1";powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$p\import-host-client-vm.ps1"
+~~~
+
+The importer:
+- Copies only the active Java client source to a disposable VM staging directory, excluding .git, build caches, private server data and player saves.
+- Repoints the staging client's HTTP and game network host from localhost to 10.0.2.2 and preserves existing custom UI code.
+- Compiles the staging client using the VM's working Java 21.
+- **Only after successful compilation and no running VM Java client**, moves the original VM client to a timestamped backup and swaps in the modified client.
+- Never writes to the read-only host share, changes game accounts or starts another server.
+
+When finished, double-click the existing **Play JoshRS - Second Player** shortcut inside the VM, log in as Sylvie, and manually verify Zoom / Fit / Fullscreen / World Map. If compilation fails or an unsupported custom network code path is found, the existing VM client is left untouched.
+
+**Important:** the command has not been run against the private host source. Compatibility and feature parity are *not* verified until Sylvie launches the imported custom build and tests those UI controls.
