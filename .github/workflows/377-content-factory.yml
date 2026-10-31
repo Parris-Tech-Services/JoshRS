@@ -1,13 +1,11 @@
 name: JoshRS 377 Content Factory
 on:
   schedule:
-    - cron: "21 * * * *"
+    - cron: "21 3 * * *"
   workflow_dispatch:
   push:
     paths:
       - "content-factory/factory.py"
-      - "content-factory/harvest_sources.py"
-      - "content-factory/harvest_match.py"
       - "content-factory/candidate_review.py"
       - "content-factory/sources.json"
       - "content-factory/intake/**"
@@ -39,7 +37,7 @@ jobs:
       - name: Discover public sources and prepare owned original records
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python content-factory/factory.py --live --discover --source-metadata --source-compare --metadata-pages 2
+        run: python content-factory/factory.py --live --discover
       - name: Evaluate provenance and status of every discovered candidate
         run: python content-factory/candidate_review.py
       - name: Generate native 377 original NPC overlay
@@ -51,10 +49,6 @@ jobs:
           python -m json.tool content-factory/generated/candidate-evidence.json > /dev/null
           python content-factory/candidate_review.py --verify
           python -m json.tool content-factory/generated/state.json > /dev/null
-          python -m json.tool content-factory/generated/source-metadata-report.json > /dev/null
-          python -m json.tool content-factory/generated/source-metadata-state.json > /dev/null
-          python -m json.tool content-factory/generated/pinned-377-index.json > /dev/null
-          python -m json.tool content-factory/generated/source-comparison.json > /dev/null
           python -m json.tool content-factory/generated/native377/manifest.json > /dev/null
       - name: Commit queued metadata and portable integration specs
         if: github.ref == 'refs/heads/main'
