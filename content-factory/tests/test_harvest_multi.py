@@ -42,6 +42,17 @@ class HarvestMultiTests(unittest.TestCase):
         self.assertFalse(harvest.allowed_metadata_path('maps/../secret.jm2'))
         self.assertFalse(harvest.allowed_metadata_path('maps/secret.dat'))
 
+    def test_pinned_377_uses_exact_lockfile_sha_not_branch(self):
+        lock=json.loads((HERE.parent/'deploy/jparris-windows/upstreams.json').read_text())
+        urls=[]
+        def reader(url):
+            urls.append(url)
+            return self.ghreader(url)
+        source={'key':'lostcity-content-377','repo':'LostCityRS/Content','ref':'377-wip','era':'377'}
+        harvest.github(source,reader=reader)
+        self.assertIn(lock['content']['commit'],urls[0])
+        self.assertNotIn('377-wip',urls[0])
+
     def test_github_pagination_is_resumable(self):
         s={'key':'x','repo':'a/b','ref':'377','era':'377'}
         first=harvest.github(s,reader=self.ghreader,limit=1)
@@ -57,17 +68,37 @@ class HarvestMultiTests(unittest.TestCase):
             harvest.github({'key':'a','repo':'a/b','ref':'main','era':'377'}, reader=reader)
 
     def test_gitlab_two_page_cursor(self):
+        seen=[]
         def reader(url):
-            if '/commits/' in url:return {'id':SHA1}
-            if url.endswith('&page=1'):return ([{'type':'blob','path':'scripts/npc/chat.rs2','id':SHA2}], {'X-Next-Page':'2'})
-            return ([],{})
+            seen.append(url)
+            if '/commits/' in url: return {'id':SHA1}
+            if 'page_token=' not in url:
+                return ([{'type':'blob','path':'scripts/npc/chat.rs2','id':SHA2}],
+                        {'Link':'<https://gitlab.com/api/v4/projects/2009scape%2F2009scape/repository/tree?page_token=abc123>; rel="next"'})
+            return ([{'type':'blob','path':'scripts/npc/second.rs2','id':SHA3}],{})
         s={'key':'2009scape-gitlab','repo':'2009scape/2009scape','ref':'master','era':'2009'}
         r1=harvest.gitlab(s,reader=reader,max_pages=1)
-        self.assertEqual(r1['next_page'],2)
+        self.assertEqual(r1['next_page_token'],'abc123')
         self.assertFalse(r1['complete_tree'])
-        r2=harvest.gitlab(s,state={'revision':SHA1,'page':2},reader=reader)
-        self.assertIsNone(r2['next_page'])
-        self.assertFalse(r2['complete_tree'])  # resumed scan != whole-tree proof
+        r2=harvest.gitlab(s,state={'revision':SHA1,'page_token':'abc123',
+                                   'first_page_seen':True},reader=reader)
+        self.assertIsNone(r2['next_page_token'])
+        self.assertTrue(r2['complete_tree'])
+        self.assertIn('pagination=keyset',seen[1])
+        self.assertNotIn('&page=',seen[-1])
+
+    def test_gitlab_rejects_unsafe_next_page_link(self):
+        with self.assertRaisesRegex(ValueError,'unsafe'):
+            harvest._gitlab_next_token({'Link':'<https://evil.invalid/repository/tree?page_token=secret>; rel="next"'})
+
+    def test_gitlab_rejects_unproven_full_page(self):
+        s={'key':'2009scape-gitlab','repo':'2009scape/2009scape','ref':'master','era':'2009'}
+        def reader(url):
+            if '/commits/' in url:return {'id':SHA1}
+            return ([{'type':'blob','path':f'scripts/npc/{i}.rs2','id':SHA2} for i in range(100)],{})
+        with self.assertRaisesRegex(ValueError,'continuation proof'):
+            harvest.gitlab(s,reader=reader,max_pages=1)
+
 
     def test_huggingface_and_openrs2_metadata_only(self):
         data={'sha':SHA1,'siblings':[{'rfilename':'README.md'},{'rfilename':'data/data.db'},{'rfilename':'assets/tree.png'},{'rfilename':'data/npc.json'}]}
