@@ -22,7 +22,7 @@ def audit_fixture(root):
     for key, rel, trigger in audit_mod.VARROCK:
         p = root / rel
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_bytes(('[' + trigger + ']\\nreturn;\\n').encode())
+        p.write_bytes(('[' + trigger + ']\nreturn;\n').encode())
     dat, idx = root / 'script.dat', root / 'script.idx'
     dat.write_bytes(b'disposable script pack test')
     idx.write_bytes(b'disposable script index test')
@@ -31,7 +31,7 @@ def audit_fixture(root):
 
 class SourcePinTests(unittest.TestCase):
     def test_git_object_hash_matches_git_hash_object(self):
-        sample = b'original-test-bytes\\n'
+        sample = b'original-test-bytes\n'
         proc = subprocess.run(['git', 'hash-object', '--stdin'], input=sample,
                               capture_output=True, check=True)
         self.assertEqual(audit_mod.git_blob_sha1(sample), proc.stdout.decode().strip())
