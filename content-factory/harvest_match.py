@@ -56,7 +56,8 @@ def classify(row: dict, pinned: dict, revision: str) -> dict:
     }
 
 
-def match_all(output: Path, pinned_commit: str | None = None) -> dict:
+def match_all(output: Path, pinned_commit: str | None = None,
+              multi_catalog: Path | None = None) -> dict:
     pins = json.loads(PIN_PATH.read_text(encoding="utf-8"))
     pinned_commit = pinned_commit or pins["content"]["commit"]
     pack_path = output / "packs/lostcity-content-377.json"
@@ -83,12 +84,14 @@ def match_all(output: Path, pinned_commit: str | None = None) -> dict:
             continue
         sources.extend(row for row in doc["candidates"]
                        if row.get("source") != "lostcity-content-377")
-    meta_path = output / "source-metadata-state.json"
+    # Consume the SINGLE existing harvest_multi.py catalogue, including a
+    # downloaded hourly GitHub Actions artifact when explicitly supplied.
+    meta_path = multi_catalog or (output / "multi-source/catalog.json")
     if meta_path.exists():
         info = json.loads(meta_path.read_text(encoding="utf-8"))
-        for entry in info.values():
+        for entry in info.get("sources", []):
             if isinstance(entry, dict):
-                sources.extend(entry.get("candidates", []))
+                sources.extend(entry.get("records", []))
     unique = {}
     for row in sources:
         if not isinstance(row, dict):
@@ -175,6 +178,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--output", type=Path, default=HERE / "generated")
     ap.add_argument("--proposals", type=Path)
+    ap.add_argument("--harvest-catalog", type=Path, help="output of the existing harvest_multi.py")
     opts = ap.parse_args()
     if opts.proposals:
         problems = dialogue_health(json.loads(opts.proposals.read_text(encoding="utf-8")))
@@ -182,7 +186,7 @@ def main() -> None:
             ap.exit(1, "\n".join(problems) + "\n")
         print("Original dialogue graph passes static checks; NOT playable")
         return
-    report = match_all(opts.output)
+    report = match_all(opts.output, multi_catalog=opts.harvest_catalog)
     if report["status"].startswith("blocked"):
         ap.exit(2, report["message"] + "\n")
     opts.output.mkdir(parents=True, exist_ok=True)
