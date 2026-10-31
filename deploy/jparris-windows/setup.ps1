@@ -14,6 +14,7 @@ $manifest = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'upstreams.json') 
 $activeFile = Join-Path $runtime 'active.json'
 . (Join-Path $PSScriptRoot 'jdk.ps1')
 . (Join-Path $PSScriptRoot 'web-port.ps1')
+. (Join-Path $PSScriptRoot 'save-integrity.ps1')
 
 function Run-Native([string]$exe, [string[]]$arguments, [string]$workingDirectory) {
     Push-Location -LiteralPath $workingDirectory
@@ -275,7 +276,11 @@ if ((Test-Path -LiteralPath $playerFolder) -or (Test-Path -LiteralPath $dbFile))
             Copy-Item -LiteralPath $sourceDb -Destination $backup -Force
         }
     }
-    Write-Host "Saved a private local backup before database migration: $backup"
+    $backupProof = Write-JoshRSBackupIntegrity -BackupPath $backup -Engine $engine
+    if (-not $backupProof.Verified) {
+        throw "Pre-migration backup failed SHA-256 verification at $backup. Aborting setup before database migration."
+    }
+    Write-Host "Saved and SHA-256 verified a private local backup before database migration ($($backupProof.FileCount) files): $backup"
 }
 Write-Host 'Installing engine dependencies...'
 $install = if (Test-Path -LiteralPath (Join-Path $engine 'package-lock.json')) { 'ci' } else { 'install' }

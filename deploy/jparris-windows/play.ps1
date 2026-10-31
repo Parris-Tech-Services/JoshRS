@@ -53,9 +53,20 @@ if ($Role -eq 'Server') {
             Write-Warning 'A JoshRS server launch is already active; duplicate launch prevented.'
             return
         }
-        if (Port-Open ([int]$s.gamePort)) {
-            Write-Warning 'The game port already has a listener. Not starting a duplicate server.'
+        if ((Port-Open ([int]$s.gamePort)) -or (Port-Open ([int]$s.webPort))) {
+            Write-Warning "Game port $($s.gamePort) or web port $($s.webPort) already has a listener. Not starting a duplicate server."
             return
+        }
+        $elrothiroSave = Join-Path $s.engine 'data\players\main\elrothiro.sav'
+        $validator = Join-Path $repo 'tools\rs377-saves\inspect-save.mjs'
+        if ((Test-Path -LiteralPath $elrothiroSave -PathType Leaf) -and (Test-Path -LiteralPath $validator -PathType Leaf)) {
+            $nodeCmd = Get-Command 'node.exe' -ErrorAction SilentlyContinue
+            if ($nodeCmd) {
+                $null = & $nodeCmd.Source $validator $elrothiroSave
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Elrothiro save failed revision-377 CRC verification ($elrothiroSave). Refusing to start server to protect your character; restore a verified backup from runtime\jparris-377\save-backups first."
+                }
+            }
         }
         Push-Location -LiteralPath $s.engine
         try {
