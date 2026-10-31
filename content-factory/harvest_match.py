@@ -114,7 +114,12 @@ def match_all(output: Path, pinned_commit: str | None = None,
 
 
 def dialogue_health(doc: dict) -> list[str]:
-    """Check new *original proposal* graphs, never retroactively rewrite canonical dialogue."""
+    """Fail closed for original NPC proposals, including non-terminating branches.
+
+    Every reachable choice must retain a route to an exit. Cycles are allowed
+    only when players can eventually choose to leave; a branch trapped in a
+    closed cycle is not a valid interactive dialogue.
+    """
     errors = []
     if not isinstance(doc, dict) or doc.get("schema") != "joshrs-377-original-dialogue-v1":
         return ["wrong proposal schema"]
@@ -125,7 +130,8 @@ def dialogue_health(doc: dict) -> list[str]:
     greetings = set()
     for entry in entries:
         if not isinstance(entry, dict):
-            errors.append("invalid entry"); continue
+            errors.append("invalid entry")
+            continue
         key = entry.get("key")
         if not isinstance(key, str) or not re.fullmatch(r"[a-z][a-z0-9_]+", key) or key in identifiers:
             errors.append("missing or duplicate NPC key")
@@ -137,40 +143,83 @@ def dialogue_health(doc: dict) -> list[str]:
             errors.append(f"{key}: no IDs may be assigned before live gap approval")
         nodes = entry.get("nodes")
         if not isinstance(nodes, list) or not nodes:
-            errors.append(f"{key}: nodes missing"); continue
-        by_id = {n.get("id"): n for n in nodes if isinstance(n, dict)}
+            errors.append(f"{key}: nodes missing")
+            continue
+        by_id = {}
+        for node in nodes:
+            node_id = node.get("id") if isinstance(node, dict) else None
+            if not isinstance(node_id, str) or not re.fullmatch(r"[a-z][a-z0-9_]{0,63}", node_id):
+                errors.append(f"{key}: invalid dialogue node id")
+            elif node_id in by_id:
+                errors.append(f"{key}: duplicate dialogue node id")
+            else:
+                by_id[node_id] = node
         if len(by_id) != len(nodes) or "start" not in by_id:
-            errors.append(f"{key}: invalid/duplicate dialogue nodes"); continue
-        endings = {k for k, v in by_id.items() if v.get("exit") is True}
+            errors.append(f"{key}: invalid/duplicate dialogue nodes")
+            continue
+
+        endings = set()
+        edges = {}
+        for node_id, node in by_id.items():
+            line = node.get("text")
+            if not isinstance(line, str) or not 2 <= len(line) <= 180 or any(ord(c) in (10, 13) or c in "<>" for c in line):
+                errors.append(f"{key}: unsafe/empty dialogue")
+            nexts = node.get("next", [])
+            if not isinstance(nexts, list):
+                errors.append(f"{key}: invalid branches")
+                nexts = []
+            valid_nexts = []
+            for dest in nexts:
+                if not isinstance(dest, str) or dest not in by_id:
+                    errors.append(f"{key}: dangling branch or invalid target")
+                else:
+                    valid_nexts.append(dest)
+            if node.get("exit") is True:
+                endings.add(node_id)
+                if valid_nexts:
+                    errors.append(f"{key}: exit node cannot have outgoing branches")
+            elif not valid_nexts:
+                errors.append(f"{key}: dead end")
+            edges[node_id] = valid_nexts
         if not endings:
             errors.append(f"{key}: no exit")
-        reachable, seen = ["start"], set()
-        while reachable:
-            node = reachable.pop()
-            if node in seen: continue
-            seen.add(node)
-            entry_node = by_id.get(node)
-            if entry_node is None:
-                errors.append(f"{key}: dangling branch {node}"); continue
-            line = entry_node.get("text", "")
-            if not isinstance(line, str) or not 2 <= len(line) <= 180 or any(c in line for c in "\n<>"):
-                errors.append(f"{key}: unsafe/empty dialogue")
-            nexts = entry_node.get("next", [])
-            if not isinstance(nexts, list):
-                errors.append(f"{key}: invalid branches"); continue
-            if not entry_node.get("exit") and not nexts:
-                errors.append(f"{key}: dead end")
-            reachable.extend(nexts)
-        if seen != set(by_id):
+
+        reachable = {"start"}
+        stack = ["start"]
+        while stack:
+            node_id = stack.pop()
+            for dest in edges[node_id]:
+                if dest not in reachable:
+                    reachable.add(dest)
+                    stack.append(dest)
+        if reachable != set(by_id):
             errors.append(f"{key}: unreachable node")
-        if not any(end in seen for end in endings):
-            errors.append(f"{key}: exit unreachable")
-        start = by_id["start"].get("text", "").lower().strip()
-        if start in greetings:
-            errors.append(f"{key}: repeated generic first line")
-        greetings.add(start)
-        if start in {"hello adventurer", "hello, adventurer!", "greetings adventurer"}:
-            errors.append(f"{key}: universal greeting refused")
+
+        # A reachable exit somewhere in the graph is not enough: every
+        # reachable branch must have a route to an exit. A closed subgraph
+        # (e.g. a self-loop or mutually recursive options) traps the player.
+        reverse = {node_id: [] for node_id in by_id}
+        for node_id, nexts in edges.items():
+            for dest in nexts:
+                reverse[dest].append(node_id)
+        can_exit = set(endings)
+        stack = list(endings)
+        while stack:
+            for parent in reverse[stack.pop()]:
+                if parent not in can_exit:
+                    can_exit.add(parent)
+                    stack.append(parent)
+        if reachable - can_exit:
+            errors.append(f"{key}: reachable branch cannot reach an exit")
+
+        start_text = by_id["start"].get("text")
+        if isinstance(start_text, str):
+            first_line = start_text.lower().strip()
+            if first_line in greetings:
+                errors.append(f"{key}: repeated generic first line")
+            greetings.add(first_line)
+            if first_line in {"hello adventurer", "hello, adventurer!", "greetings adventurer"}:
+                errors.append(f"{key}: universal greeting refused")
     return errors
 
 
