@@ -99,8 +99,27 @@ def github(source, state=None, reader=fetch, limit=MAX_RECORDS):
             'remaining': max(0, len(paths) - (offset+limit)), 'next_offset': next_offset}
 
 
+def _gitlab_next_token(headers):
+    """GitLab keyset tree pages link the next page with a page_token."""
+    link = next((v for k, v in headers.items() if k.lower() == 'link'), '')
+    for part in link.split(','):
+        if 'rel="next"' not in part and 'rel=next' not in part:
+            continue
+        match = re.search(r'<([^>]+)>', part)
+        if not match:
+            raise ValueError('invalid GitLab Link')
+        u = urllib.parse.urlsplit(match.group(1))
+        if u.scheme != 'https' or u.hostname != 'gitlab.com' or not u.path.endswith('/repository/tree'):
+            raise ValueError('unsafe GitLab next-page URL')
+        tokens = urllib.parse.parse_qs(u.query).get('page_token', [])
+        if len(tokens) != 1 or not re.fullmatch(r'[A-Za-z0-9_.%~-]{1,200}', tokens[0]):
+            raise ValueError('invalid GitLab keyset token')
+        return tokens[0]
+    return None
+
+
 def gitlab(source, state=None, reader=fetch, per_page=100, max_pages=2):
-    """Bounded pageable GitLab tree; incomplete pages are explicitly flagged."""
+    """Pin the commit; resume bounded *keyset* pagination without downloading files."""
     repo = source['repo']
     slug = urllib.parse.quote(repo, safe='')
     api = f'https://gitlab.com/api/v4/projects/{slug}/repository'
@@ -109,26 +128,43 @@ def gitlab(source, state=None, reader=fetch, per_page=100, max_pages=2):
     sha = commit.get('id', '')
     if not SHA.fullmatch(sha):
         raise ValueError('GitLab revision is not pinned')
-    start = state.get('page', 1) if state and state.get('revision') == sha else 1
-    page = start
+    same = bool(state and state.get('revision') == sha)
+    token = state.get('page_token') if same else None
+    if token is not None and not re.fullmatch(r'[A-Za-z0-9_.%~-]{1,200}', str(token)):
+        raise ValueError('unsafe saved GitLab pagination token')
+    first_page_seen = bool(state.get('first_page_seen')) if same else True
+    if same and state.get('scan_finished') is True:
+        return {'source':source['key'], 'revision':sha,
+                'complete_tree':bool(state.get('last_scan_complete')),
+                'records':[], 'next_page_token':None, 'scan_finished':True,
+                'first_page_seen':first_page_seen}
     records = []
+    finished = False
     for _ in range(max_pages):
-        rows, headers = get(f'{api}/tree?ref={sha}&recursive=true&per_page={per_page}&page={page}', reader)
+        query = {'ref':sha,'recursive':'true','pagination':'keyset','per_page':per_page}
+        if token:
+            query['page_token'] = token
+        rows, headers = get(api+'/tree?'+urllib.parse.urlencode(query), reader)
         if not isinstance(rows, list):
-            raise ValueError('invalid GitLab tree response')
-        for x in rows:
-            path, blob = x.get('path', ''), x.get('id', '')
-            if x.get('type') == 'blob' and allowed_metadata_path(path) and SHA.fullmatch(blob):
-                records.append(record(source['key'], 'gitlab', repo, sha, path, blob, source['era']))
-        next_page = headers.get('X-Next-Page', headers.get('x-next-page', '')).strip()
-        if next_page and (not next_page.isdigit() or int(next_page) <= page):
-            raise ValueError('invalid GitLab pagination')
-        if not next_page and len(rows) < per_page:
-            return {'source': source['key'], 'revision': sha, 'complete_tree': start == 1,
-                    'records': records, 'next_page': None}
-        page = int(next_page) if next_page else page + 1
-    return {'source': source['key'], 'revision': sha, 'complete_tree': False,
-            'records': records, 'next_page': page}
+            raise ValueError('invalid GitLab tree')
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            path, blob = row.get('path',''), row.get('id','')
+            if row.get('type') == 'blob' and allowed_metadata_path(path) and SHA.fullmatch(blob):
+                records.append(record(source['key'],'gitlab',repo,sha,path,blob,source['era']))
+        next_token = _gitlab_next_token(headers)
+        if next_token is None:
+            if len(rows) == per_page:
+                raise ValueError('full GitLab tree page without continuation proof')
+            token = None
+            finished = True
+            break
+        token = next_token
+    return {'source':source['key'], 'revision':sha,
+            'complete_tree':bool(finished and first_page_seen),
+            'records':records, 'next_page_token':token,
+            'scan_finished':finished, 'first_page_seen':first_page_seen}
 
 
 def huggingface(source, reader=fetch):
@@ -216,8 +252,12 @@ def run(sources, output: Path, wanted=None, reader=fetch, drive=None):
             result.update({'auto_import': False, 'rights_cleared': False,
                            'gameplay_verified': False, 'private_data_published': False})
             results.append(result)
-            state[key] = {'revision': result['revision'], 'page': result.get('next_page') or 1,
-                          'offset': result.get('next_offset', 0), 'last_scan_complete': result.get('complete_tree', True)}
+            state[key] = {'revision': result['revision'],
+                          'page_token': result.get('next_page_token'),
+                          'scan_finished': result.get('scan_finished', False),
+                          'first_page_seen': result.get('first_page_seen', True),
+                          'offset': result.get('next_offset', 0),
+                          'last_scan_complete': result.get('complete_tree', True)}
         except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:
             errors[key] = str(exc)[:240]
     if drive:
