@@ -162,7 +162,7 @@ def dialogue_health(doc: dict) -> list[str]:
         edges = {}
         for node_id, node in by_id.items():
             line = node.get("text")
-            if not isinstance(line, str) or not 2 <= len(line) <= 180 or any(c in line for c in "\\r\\n<>"):
+            if not isinstance(line, str) or not 2 <= len(line) <= 180 or any(ord(c) in (10, 13) or c in "<>" for c in line):
                 errors.append(f"{key}: unsafe/empty dialogue")
             nexts = node.get("next", [])
             if not isinstance(nexts, list):
