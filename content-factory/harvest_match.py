@@ -66,6 +66,14 @@ def match_all(output: Path, pinned_commit: str | None = None) -> dict:
                 "message": "Scan pinned LostCity Content exact commit before comparison"}
     pack = json.loads(pack_path.read_text(encoding="utf-8"))
     baseline = baseline_map(pack, pinned_commit)
+    full_index_path = output / "pinned-377-index.json"
+    baseline_complete = False
+    if full_index_path.exists():
+        index = json.loads(full_index_path.read_text(encoding="utf-8"))
+        if (index.get("commit") == pinned_commit and index.get("complete") is True
+                and isinstance(index.get("paths"), dict)):
+            baseline = index["paths"]
+            baseline_complete = True
     sources = []
     for file in sorted((output / "packs").glob("*.json")):
         doc = json.loads(file.read_text(encoding="utf-8"))
@@ -86,10 +94,15 @@ def match_all(output: Path, pinned_commit: str | None = None) -> dict:
         key = (row.get("source"), row.get("path"), row.get("blob_sha"), row.get("source_revision") or row.get("source_commit_sha"))
         unique[key] = classify(row, baseline, pinned_commit)
     matches = sorted(unique.values(), key=lambda r: (str(r["classification"]), str(r["source"]), str(r["path"])))
+    if not baseline_complete:
+        for item in matches:
+            if item["classification"] == "unmapped_reference":
+                item["classification"] = "unmapped_partial_inventory"
     counts = {k: sum(m["classification"] == k for m in matches) for k in
-              ("existing_unverified", "version_difference_unverified", "unmapped_reference")}
+              ("existing_unverified", "version_difference_unverified", "unmapped_reference", "unmapped_partial_inventory")}
     return {"schema": "joshrs-377-source-comparison-v1", "status": "metadata_compared_not_playtested",
             "pinned_commit": pinned_commit, "baseline_paths_indexed": len(baseline),
+            "baseline_complete": baseline_complete,
             "candidate_count": len(matches), "counts": counts,
             "missing_confirmed": 0, "client_verified": 0,
             "copying_or_auto_installing": False, "rows": matches[:12000]}
