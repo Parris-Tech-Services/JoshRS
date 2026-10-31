@@ -27,23 +27,27 @@ class HarvestMultiTests(unittest.TestCase):
         return ({'truncated':False,'tree':[
             {'type':'blob','path':'scripts/areas/lumbridge/scripts/chat.rs2','sha':SHA3},
             {'type':'blob','path':'assets/models/1.dat','sha':SHA3},
+            {'type':'blob','path':'maps/m44_51.jm2','sha':SHA3},
             {'type':'blob','path':'scripts/areas/varrock/configs/people.npc','sha':SHA2},
             {'type':'tree','path':'scripts/areas','sha':SHA2}]}, {})
 
     def test_github_metadata_only_and_exclusions(self):
         source={'key':'lostcity-content-377','repo':'LostCityRS/Content','ref':'377-wip','era':'377'}
         r=harvest.github(source, reader=self.ghreader)
-        self.assertEqual(len(r['records']),2)
+        self.assertEqual(len(r['records']),3)
         self.assertTrue(r['complete_tree'])
         self.assertTrue(all(x['installed'] is False and x['rights_cleared'] is False and x['missing_in_active_game'] is None for x in r['records']))
         self.assertFalse(any('assets' in x['path'] for x in r['records']))
+        self.assertTrue(any(x['path'].endswith('.jm2') for x in r['records']))
+        self.assertFalse(harvest.allowed_metadata_path('maps/../secret.jm2'))
+        self.assertFalse(harvest.allowed_metadata_path('maps/secret.dat'))
 
     def test_github_pagination_is_resumable(self):
         s={'key':'x','repo':'a/b','ref':'377','era':'377'}
         first=harvest.github(s,reader=self.ghreader,limit=1)
         second=harvest.github(s,{'revision':SHA1,'offset':first['next_offset']},reader=self.ghreader,limit=1)
         self.assertNotEqual(first['records'][0]['id'],second['records'][0]['id'])
-        self.assertEqual(second['next_offset'],0)
+        self.assertEqual(second['next_offset'],2)
 
     def test_reject_truncated_tree(self):
         def reader(u):
@@ -96,12 +100,24 @@ class HarvestMultiTests(unittest.TestCase):
             self.assertEqual(json.loads((p/'state.json').read_text()),{'original':True})
             self.assertFalse((p/'catalog.json').exists())
 
+    def test_catalogue_accumulates_across_increments_and_preserves_on_partial_failure(self):
+        s={'key':'lostcity-content-377','repo':'LostCityRS/Content','ref':'377-wip','era':'377'}
+        with tempfile.TemporaryDirectory() as t:
+            p=Path(t)
+            harvest.run([s],p,['lostcity-content-377'],reader=self.ghreader)
+            a=json.loads((p/'catalog.json').read_text())['sources'][0]['records']
+            self.assertEqual(len(a),3)
+            harvest.run([s],p,['openrs2-377'],reader=lambda u:[{'id':2696,'game':'runescape','builds':[{'major':377}]}])
+            after=json.loads((p/'catalog.json').read_text())['sources']
+            self.assertEqual(set(x['source'] for x in after),{'lostcity-content-377','openrs2-377'})
+            self.assertEqual(len([x for x in after if x['source']=='lostcity-content-377'][0]['records']),3)
+
     def test_success_writes_and_continues_state(self):
         s={'key':'lostcity-content-377','repo':'LostCityRS/Content','ref':'377-wip','era':'377'}
         with tempfile.TemporaryDirectory() as t:
             p=Path(t)
             r=harvest.run([s],p,['lostcity-content-377'],reader=self.ghreader)
-            self.assertEqual(r['candidate_records'],2)
+            self.assertEqual(r['candidate_records'],3)
             self.assertEqual(r['installed_content'],0)
             obj=json.loads((p/'catalog.json').read_text())
             self.assertFalse(obj['gameplay_verified'])
