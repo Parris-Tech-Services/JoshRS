@@ -1,16 +1,16 @@
 {
   "candidate_pool": 3091,
   "deduplicated_reference_versions": 1783,
-  "next_rotation_offset": 700,
+  "next_rotation_offset": 800,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
   "raw_reference_versions": 4874,
-  "rotation_offset": 600,
+  "rotation_offset": 700,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
     {
       "automatically_installed": false,
-      "candidate_id": "6a8b891152b313c0c60b",
+      "candidate_id": "f037fc82184dd5dff294",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -18,17 +18,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_seaslug/scripts/quest_seaslug.rs2",
+      "path": "scripts/skill_combat/scripts/player/specs/scripts/pvm_rune_claws.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_seaslug/scripts/quest_seaslug.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/specs/scripts/pvm_rune_claws.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-6a8b891152b313c0c60b"
+      "work_id": "377-f037fc82184dd5dff294"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6e5aa8235817d2ea76d5",
+      "candidate_id": "a980aab285de7cf8a5f1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -36,17 +36,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_seaslug/scripts/seaslug_journal.rs2",
+      "path": "scripts/skill_combat/scripts/player/specs/scripts/pvm_rune_thrownaxe.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_seaslug/scripts/seaslug_journal.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/specs/scripts/pvm_rune_thrownaxe.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-6e5aa8235817d2ea76d5"
+      "work_id": "377-a980aab285de7cf8a5f1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "88042dfb8dd41167e680",
+      "candidate_id": "52153117ddbcb04f7ecc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -54,17 +54,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_sheep/scripts/quest_sheep.rs2",
+      "path": "scripts/skill_combat/scripts/player/specwep.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_sheep/scripts/quest_sheep.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/specwep.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-88042dfb8dd41167e680"
+      "work_id": "377-52153117ddbcb04f7ecc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bc1e8540c50cef574518",
+      "candidate_id": "810617e2f495819e6b14",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -72,17 +72,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_sheep/scripts/sheep_journal.rs2",
+      "path": "scripts/skill_combat/scripts/poison.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_sheep/scripts/sheep_journal.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/poison.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-bc1e8540c50cef574518"
+      "work_id": "377-810617e2f495819e6b14"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "91ba704bd04828a520de",
+      "candidate_id": "71d5d5fb06d705ed3a3e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -90,17 +90,143 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_sheepherder/scripts/locs/sheepherder_furnace.rs2",
+      "path": "scripts/skill_combat/scripts/projectile.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/quests/quest_sheepherder/scripts/locs/sheepherder_furnace.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/projectile.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-71d5d5fb06d705ed3a3e"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "5ddcda2034ebf2303003",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_combat/scripts/pvp/pk_skull.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/pvp/pk_skull.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-5ddcda2034ebf2303003"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "277fd2b6a9af80683323",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_combat/scripts/pvp/pvp_combat.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/pvp/pvp_combat.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-277fd2b6a9af80683323"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "85c11aedeecaa1c4588b",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_combat/scripts/pvp/pvp_magic.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/pvp/pvp_magic.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-85c11aedeecaa1c4588b"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "6eca0d2fad0f9035b6ad",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_combat/scripts/pvp/pvp_melee.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/pvp/pvp_melee.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-6eca0d2fad0f9035b6ad"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "714b90e17123c8fcd4af",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_combat/scripts/pvp/pvp_ranged.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/pvp/pvp_ranged.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-714b90e17123c8fcd4af"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "7187dbac7efe0365afc0",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_combat/scripts/pvp/pvp_special_attack.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/pvp/pvp_special_attack.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-7187dbac7efe0365afc0"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "b588abf67a3a8c59c58b",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_combat/scripts/pvp/specs/scripts/pvp_dragon_dagger.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_combat/scripts/pvp/specs/scripts/pvp_dragon_dagger.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-91ba704bd04828a520de"
+      "work_id": "377-b588abf67a3a8c59c58b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5c77ce7298a509964b14",
+      "candidate_id": "d511929d8e725a70e95d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -108,17 +234,35 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_sheepherder/scripts/locs/sheepherder_gate.rs2",
+      "path": "scripts/skill_combat/scripts/pvp/specs/scripts/pvp_dragon_halberd.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/quests/quest_sheepherder/scripts/locs/sheepherder_gate.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/pvp/specs/scripts/pvp_dragon_halberd.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-d511929d8e725a70e95d"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "8b2c9f905c2bbf7dae84",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_combat/scripts/pvp/specs/scripts/pvp_dragon_longsword.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_combat/scripts/pvp/specs/scripts/pvp_dragon_longsword.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-5c77ce7298a509964b14"
+      "work_id": "377-8b2c9f905c2bbf7dae84"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "85391599cf162fc4c46b",
+      "candidate_id": "7c0f339666c5fe16989c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -126,17 +270,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_sheepherder/scripts/npcs/diseased_sheep.rs2",
+      "path": "scripts/skill_combat/scripts/pvp/specs/scripts/pvp_dragon_mace.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/quests/quest_sheepherder/scripts/npcs/diseased_sheep.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_combat/scripts/pvp/specs/scripts/pvp_dragon_mace.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-85391599cf162fc4c46b"
+      "work_id": "377-7c0f339666c5fe16989c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8ff32369f510778e7551",
+      "candidate_id": "cc667e403a716e326327",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -144,449 +288,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_sheepherder/scripts/quest_sheepherder.rs2",
+      "path": "scripts/skill_combat/scripts/pvp/specs/scripts/pvp_dragon_spear.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_sheepherder/scripts/quest_sheepherder.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-8ff32369f510778e7551"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "e133e6b902d94453a76a",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_sheepherder/scripts/sheepherder_journal.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_sheepherder/scripts/sheepherder_journal.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-e133e6b902d94453a76a"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "262a21d1a27629e77adb",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_squire/scripts/quest_squire.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_squire/scripts/quest_squire.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-262a21d1a27629e77adb"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "ccbae0c0935a297a7ee3",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_squire/scripts/squire_journal.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_squire/scripts/squire_journal.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-ccbae0c0935a297a7ee3"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "0f01352efeb37f8d6a06",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_tbwt/scripts/monkey.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tbwt/scripts/monkey.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-0f01352efeb37f8d6a06"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "53db7ea83a7d7cb8f609",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_tbwt/scripts/quest_tbwt.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tbwt/scripts/quest_tbwt.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-53db7ea83a7d7cb8f609"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "66a3edce5899bdee94b5",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_tbwt/scripts/tbwt_jogre_bones.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tbwt/scripts/tbwt_jogre_bones.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-66a3edce5899bdee94b5"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "91ff1e077351ec4de132",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_tbwt/scripts/tbwt_journal.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tbwt/scripts/tbwt_journal.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-91ff1e077351ec4de132"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "6810c7808c9927d4c67c",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_tbwt/scripts/tbwt_lubufu.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tbwt/scripts/tbwt_lubufu.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-6810c7808c9927d4c67c"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "0b83e1bb2d4ad1ff3258",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_tbwt/scripts/tbwt_tamayu.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tbwt/scripts/tbwt_tamayu.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-0b83e1bb2d4ad1ff3258"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "30cdf2cdb37e7fe11b89",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_tbwt/scripts/tbwt_tiadeche.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tbwt/scripts/tbwt_tiadeche.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-30cdf2cdb37e7fe11b89"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "6c712fddc59866ce2d03",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_tbwt/scripts/tbwt_tinsay.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tbwt/scripts/tbwt_tinsay.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-6c712fddc59866ce2d03"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "3640a55b567b3d9ecb5d",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_totem/scripts/quest_totem.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_totem/scripts/quest_totem.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-3640a55b567b3d9ecb5d"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "7d42d5e58337417afe58",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_totem/scripts/totem_journal.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_totem/scripts/totem_journal.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-7d42d5e58337417afe58"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "0324ed6c5bdb737ab3d1",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_tree/scripts/quest_tree.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tree/scripts/quest_tree.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-0324ed6c5bdb737ab3d1"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "eec724550d0f84bb8e34",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_tree/scripts/tree_journal.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tree/scripts/tree_journal.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-eec724550d0f84bb8e34"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "fc0f9f35acb64372b392",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_troll/scripts/quest_troll.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_troll/scripts/quest_troll.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-fc0f9f35acb64372b392"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "12489eecbcc18a55b4a5",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_troll/scripts/troll_champion.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_troll/scripts/troll_champion.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-12489eecbcc18a55b4a5"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "ac2f4a4c700067204d9d",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_troll/scripts/troll_eadgar.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_troll/scripts/troll_eadgar.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-ac2f4a4c700067204d9d"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "176d613f4a80f2b74fe5",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_troll/scripts/troll_journal.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_troll/scripts/troll_journal.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-176d613f4a80f2b74fe5"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "f97df3c42a26a5a4c765",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_troll/scripts/troll_spectator.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_troll/scripts/troll_spectator.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-f97df3c42a26a5a4c765"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "b410ceefe2e0da9c7e44",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_troll/scripts/troll_stronghold_camp_guard.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_troll/scripts/troll_stronghold_camp_guard.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-b410ceefe2e0da9c7e44"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "8625bc2abeafc18fa46a",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_upass/scripts/history_of_iban.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/scripts/history_of_iban.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-8625bc2abeafc18fa46a"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "3dc4a043850f7bbd35e1",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_upass/scripts/kalrag.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/scripts/kalrag.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-3dc4a043850f7bbd35e1"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "4dc6fa621e992911b1ff",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_upass/scripts/kardia.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/quests/quest_upass/scripts/kardia.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_combat/scripts/pvp/specs/scripts/pvp_dragon_spear.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-4dc6fa621e992911b1ff"
+      "work_id": "377-cc667e403a716e326327"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fb22ab4d4d4ccf24b887",
+      "candidate_id": "2bf0b6dd29602ae65ada",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -594,17 +306,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_upass/scripts/lord_iban.rs2",
+      "path": "scripts/skill_combat/scripts/pvp/specs/scripts/pvp_magic_longbow.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/quests/quest_upass/scripts/lord_iban.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_combat/scripts/pvp/specs/scripts/pvp_magic_longbow.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-fb22ab4d4d4ccf24b887"
+      "work_id": "377-2bf0b6dd29602ae65ada"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6b5e0ed33d6963aec238",
+      "candidate_id": "354377417cb11cb9d62e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -612,17 +324,53 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_upass/scripts/quest_upass.rs2",
+      "path": "scripts/skill_combat/scripts/pvp/specs/scripts/pvp_magic_shortbow.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/scripts/quest_upass.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_combat/scripts/pvp/specs/scripts/pvp_magic_shortbow.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
+      "status": "awaiting_agent_review",
+      "work_id": "377-354377417cb11cb9d62e"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "35953574514e50f0b994",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_combat/scripts/pvp/specs/scripts/pvp_rune_claws.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_combat/scripts/pvp/specs/scripts/pvp_rune_claws.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
+      "status": "awaiting_agent_review",
+      "work_id": "377-35953574514e50f0b994"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "e5a71af2d5f308311cd4",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_combat/scripts/weapon_poison.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/weapon_poison.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-6b5e0ed33d6963aec238"
+      "work_id": "377-e5a71af2d5f308311cd4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "eab0339cc86eac30a8f3",
+      "candidate_id": "a7db15c94f4faa6fabc3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -630,17 +378,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_upass/scripts/upass_bridge.rs2",
+      "path": "scripts/skill_cooking/scripts/cooking.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/scripts/upass_bridge.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_cooking/scripts/cooking.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-eab0339cc86eac30a8f3"
+      "work_id": "377-a7db15c94f4faa6fabc3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bbdd0e624ef6cccf2475",
+      "candidate_id": "1607f92e5d939d2626e9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -648,17 +396,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_upass/scripts/upass_grid.rs2",
+      "path": "scripts/skill_cooking/scripts/cooking_guild.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/scripts/upass_grid.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_cooking/scripts/cooking_guild.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-bbdd0e624ef6cccf2475"
+      "work_id": "377-1607f92e5d939d2626e9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "650ce041b18502d03d89",
+      "candidate_id": "9cf9f85293b383311c7a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -666,17 +414,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_upass/scripts/upass_journal.rs2",
+      "path": "scripts/skill_cooking/scripts/cooking_inv/scripts/cakes/cakes.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/scripts/upass_journal.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_cooking/scripts/cooking_inv/scripts/cakes/cakes.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-650ce041b18502d03d89"
+      "work_id": "377-9cf9f85293b383311c7a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "15df31e0195f8e9e52da",
+      "candidate_id": "e530118da5bf5924cfcc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -684,17 +432,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_upass/scripts/upass_obstacles.rs2",
+      "path": "scripts/skill_cooking/scripts/cooking_inv/scripts/oomlie_bird_meat/oomlie_bird_meat.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/scripts/upass_obstacles.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_cooking/scripts/cooking_inv/scripts/oomlie_bird_meat/oomlie_bird_meat.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-15df31e0195f8e9e52da"
+      "work_id": "377-e530118da5bf5924cfcc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "72df396cc392a0e0881d",
+      "candidate_id": "e096822cb2a3f9d6c3bb",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -702,17 +450,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_upass/scripts/upass_slave.rs2",
+      "path": "scripts/skill_cooking/scripts/cooking_inv/scripts/pizza/pizza.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/scripts/upass_slave.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_cooking/scripts/cooking_inv/scripts/pizza/pizza.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-72df396cc392a0e0881d"
+      "work_id": "377-e096822cb2a3f9d6c3bb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "138d7872606bf9c414c8",
+      "candidate_id": "e044618735045dd52744",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -720,17 +468,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_vampire/scripts/count_draynor.rs2",
+      "path": "scripts/skill_cooking/scripts/cooking_inv/scripts/stew/stew.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_vampire/scripts/count_draynor.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_cooking/scripts/cooking_inv/scripts/stew/stew.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-138d7872606bf9c414c8"
+      "work_id": "377-e044618735045dd52744"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b109295eb46d1575a644",
+      "candidate_id": "58aa5781d81f7834dd74",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -738,17 +486,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_vampire/scripts/quest_vampire.rs2",
+      "path": "scripts/skill_cooking/scripts/cooking_inv/scripts/wine/wine.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_vampire/scripts/quest_vampire.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_cooking/scripts/cooking_inv/scripts/wine/wine.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-b109295eb46d1575a644"
+      "work_id": "377-58aa5781d81f7834dd74"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "330d3c5f8214fcebbf3d",
+      "candidate_id": "7f59999c2d464191c9b5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -756,17 +504,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_vampire/scripts/vampire_journal.rs2",
+      "path": "scripts/skill_cooking/scripts/gnome_cooking/cutting_fruit.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_vampire/scripts/vampire_journal.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_cooking/scripts/gnome_cooking/cutting_fruit.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-330d3c5f8214fcebbf3d"
+      "work_id": "377-7f59999c2d464191c9b5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2b49c406ab23bcc1c167",
+      "candidate_id": "90ad596a099934eb1f4f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -774,17 +522,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/horror_rockcrab.rs2",
+      "path": "scripts/skill_cooking/scripts/gnome_cooking/gianne_dough.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/horror_rockcrab.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_cooking/scripts/gnome_cooking/gianne_dough.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-2b49c406ab23bcc1c167"
+      "work_id": "377-90ad596a099934eb1f4f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "cc7c5f89772bf7ccefab",
+      "candidate_id": "e38219ba6aef38d82276",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -792,17 +540,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/quest_viking.rs2",
+      "path": "scripts/skill_cooking/scripts/gnome_cooking/gnome_cooking.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/quest_viking.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_cooking/scripts/gnome_cooking/gnome_cooking.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-cc7c5f89772bf7ccefab"
+      "work_id": "377-e38219ba6aef38d82276"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "27a6a73aa3b374c6ef1d",
+      "candidate_id": "8bf4a2cc9c11d9a89565",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -810,17 +558,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_askelapen.rs2",
+      "path": "scripts/skill_crafting/scripts/battlestaves/battlestaves.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_askelapen.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/battlestaves/battlestaves.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-27a6a73aa3b374c6ef1d"
+      "work_id": "377-8bf4a2cc9c11d9a89565"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e56aa4bc3528100fe71d",
+      "candidate_id": "cb081184b404cd4c352a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -828,17 +576,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_brundt.rs2",
+      "path": "scripts/skill_crafting/scripts/crafting_guild/crafting_guild.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_brundt.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/crafting_guild/crafting_guild.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-e56aa4bc3528100fe71d"
+      "work_id": "377-cb081184b404cd4c352a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "33f2bdd8036c02e15dc4",
+      "candidate_id": "e1e093e0a826f19ce35c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -846,17 +594,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_citizen.rs2",
+      "path": "scripts/skill_crafting/scripts/dye_cape/dye_cape.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_citizen.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/dye_cape/dye_cape.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-33f2bdd8036c02e15dc4"
+      "work_id": "377-e1e093e0a826f19ce35c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "87bc1ef920289c0fea3a",
+      "candidate_id": "f7aad3ca88882c47ef98",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -864,17 +612,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_clothing_shopkeeper.rs2",
+      "path": "scripts/skill_crafting/scripts/gem/uncut_gem.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_clothing_shopkeeper.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/gem/uncut_gem.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-87bc1ef920289c0fea3a"
+      "work_id": "377-f7aad3ca88882c47ef98"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f56e3725d9f658b6a22c",
+      "candidate_id": "c64de913664055fff17a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -882,17 +630,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_fisherman.rs2",
+      "path": "scripts/skill_crafting/scripts/glass/glass.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_fisherman.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/glass/glass.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-f56e3725d9f658b6a22c"
+      "work_id": "377-c64de913664055fff17a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ef43e0271412eb0980f5",
+      "candidate_id": "8fe54f390d113cea4c9e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -900,17 +648,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_hallifred.rs2",
+      "path": "scripts/skill_crafting/scripts/jewellery/jewellery.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_hallifred.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/jewellery/jewellery.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-ef43e0271412eb0980f5"
+      "work_id": "377-8fe54f390d113cea4c9e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "df70ee9ee25228f6730a",
+      "candidate_id": "4a7001480587903a1ab7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -918,17 +666,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_journal.rs2",
+      "path": "scripts/skill_crafting/scripts/jewellery/stringing.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_journal.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/jewellery/stringing.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-df70ee9ee25228f6730a"
+      "work_id": "377-4a7001480587903a1ab7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e0a1b5f56bbc48c234aa",
+      "candidate_id": "3d6bc9d5c6c3a3d7a144",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -936,17 +684,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_longhall_barkeep.rs2",
+      "path": "scripts/skill_crafting/scripts/leather/leather.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_longhall_barkeep.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/leather/leather.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-e0a1b5f56bbc48c234aa"
+      "work_id": "377-3d6bc9d5c6c3a3d7a144"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c9c70a6a9f08a5f11889",
+      "candidate_id": "b00959b04320c3dfca74",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -954,17 +702,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_market.rs2",
+      "path": "scripts/skill_crafting/scripts/pottery/pottery.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_market.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/pottery/pottery.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-c9c70a6a9f08a5f11889"
+      "work_id": "377-b00959b04320c3dfca74"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f86003354bb1dee7f2b4",
+      "candidate_id": "5975d0e358b64eea8d1a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -972,17 +720,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_olaf.rs2",
+      "path": "scripts/skill_crafting/scripts/snelm/snelm.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_olaf.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/snelm/snelm.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-f86003354bb1dee7f2b4"
+      "work_id": "377-5975d0e358b64eea8d1a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "00f856c4462819bec018",
+      "candidate_id": "bf98ece735fe8880c84a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -990,17 +738,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_peer.rs2",
+      "path": "scripts/skill_crafting/scripts/spinning/spinning.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_peer.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/spinning/spinning.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-00f856c4462819bec018"
+      "work_id": "377-bf98ece735fe8880c84a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "57a85a48a27ac024f1e9",
+      "candidate_id": "cdc6ce4ccc59d31b09db",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1008,17 +756,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_reveller.rs2",
+      "path": "scripts/skill_crafting/scripts/studded/studded.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_reveller.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_crafting/scripts/studded/studded.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-57a85a48a27ac024f1e9"
+      "work_id": "377-cdc6ce4ccc59d31b09db"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "77b0818f536b6379a744",
+      "candidate_id": "1b7f124d28c0528a7caa",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1026,17 +774,35 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_sailor.rs2",
+      "path": "scripts/skill_firemaking/scripts/achey.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_sailor.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_firemaking/scripts/achey.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
+      "status": "awaiting_agent_review",
+      "work_id": "377-1b7f124d28c0528a7caa"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "da56bf68f6fa903e5e21",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_firemaking/scripts/firemaking.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_firemaking/scripts/firemaking.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-77b0818f536b6379a744"
+      "work_id": "377-da56bf68f6fa903e5e21"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b349cc239d1dc933d057",
+      "candidate_id": "90d1545abf0e1ce60e42",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1044,17 +810,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_sigil.rs2",
+      "path": "scripts/skill_fishing/scripts/fishing.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_sigil.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_fishing/scripts/fishing.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-b349cc239d1dc933d057"
+      "work_id": "377-90d1545abf0e1ce60e42"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e8899377617ef6d93eb5",
+      "candidate_id": "699bfa679e8cbbc61624",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1062,17 +828,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_sigmund.rs2",
+      "path": "scripts/skill_fishing/scripts/fishing_movement.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_sigmund.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_fishing/scripts/fishing_movement.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-e8899377617ef6d93eb5"
+      "work_id": "377-699bfa679e8cbbc61624"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f1cfc01c7943786dcccf",
+      "candidate_id": "45976051fe7758b4a3c0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1080,17 +846,53 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_thorvald.rs2",
+      "path": "scripts/skill_fishing/scripts/fishing_spots/freshfish.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_thorvald.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_fishing/scripts/fishing_spots/freshfish.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
+      "status": "awaiting_agent_review",
+      "work_id": "377-45976051fe7758b4a3c0"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "c32b77efab7ae43c3170",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_fishing/scripts/fishing_spots/lavafish.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_fishing/scripts/fishing_spots/lavafish.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
+      "status": "awaiting_agent_review",
+      "work_id": "377-c32b77efab7ae43c3170"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "56d2c22561b894e58457",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_fishing/scripts/fishing_spots/lavafish_loc.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_fishing/scripts/fishing_spots/lavafish_loc.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-f1cfc01c7943786dcccf"
+      "work_id": "377-56d2c22561b894e58457"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d6e12e1ccf0ba630ce32",
+      "candidate_id": "47069139357f8667cb2e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1098,17 +900,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_troll.rs2",
+      "path": "scripts/skill_fishing/scripts/fishing_spots/memberfish.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_troll.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_fishing/scripts/fishing_spots/memberfish.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-d6e12e1ccf0ba630ce32"
+      "work_id": "377-47069139357f8667cb2e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0d1358d4c6cf75a1f010",
+      "candidate_id": "bbc1e9627cb59ddcb1d7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1116,17 +918,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_viking/scripts/viking_weapon_salesman.rs2",
+      "path": "scripts/skill_fishing/scripts/fishing_spots/rarefish.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/scripts/viking_weapon_salesman.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_fishing/scripts/fishing_spots/rarefish.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-0d1358d4c6cf75a1f010"
+      "work_id": "377-bbc1e9627cb59ddcb1d7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dd9e3d46bb6a963f2154",
+      "candidate_id": "d977d00b67c2506bc6fa",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1134,17 +936,215 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_waterfall/scripts/hadley.rs2",
+      "path": "scripts/skill_fishing/scripts/fishing_spots/saltfish.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/quests/quest_waterfall/scripts/hadley.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_fishing/scripts/fishing_spots/saltfish.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
+      "status": "awaiting_agent_review",
+      "work_id": "377-d977d00b67c2506bc6fa"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "29b0a989c94fc73d9131",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_fishing/scripts/fishing_spots/slimeyfish.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_fishing/scripts/fishing_spots/slimeyfish.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-29b0a989c94fc73d9131"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "e9ef607d7cdd483ad49c",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_fishing/scripts/fishing_spots/tbwt.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_fishing/scripts/fishing_spots/tbwt.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-e9ef607d7cdd483ad49c"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "7100231df1c91d1bf7b7",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_fishing/scripts/fishing_spots/waterfall.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_fishing/scripts/fishing_spots/waterfall.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
+      "status": "awaiting_agent_review",
+      "work_id": "377-7100231df1c91d1bf7b7"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "ce27c5eb82f8caf3ce11",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_fletching/scripts/bolts.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_fletching/scripts/bolts.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-ce27c5eb82f8caf3ce11"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "7a7d9696a3fda422704d",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_fletching/scripts/cut_logs.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_fletching/scripts/cut_logs.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-7a7d9696a3fda422704d"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "1919c86f7a98c7656499",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_herblore/scripts/brewing/brew_potion.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_herblore/scripts/brewing/brew_potion.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-1919c86f7a98c7656499"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "9c08b7049750aaf5abbe",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_herblore/scripts/decanting/decant_potion.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_herblore/scripts/decanting/decant_potion.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-9c08b7049750aaf5abbe"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "a2df73699be102d462ab",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_herblore/scripts/emptying/empty_vial.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_herblore/scripts/emptying/empty_vial.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-a2df73699be102d462ab"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "b3e15cd46378c59165c5",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_herblore/scripts/grinding/grind_ingredient.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_herblore/scripts/grinding/grind_ingredient.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-b3e15cd46378c59165c5"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "0a3f29ab45a717ae6dbf",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_herblore/scripts/herblore.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_herblore/scripts/herblore.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-0a3f29ab45a717ae6dbf"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "80ce5ef7221fe8caa6cb",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_herblore/scripts/identifying/identify.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/fb64bc0b14f36920522f89d428799478e2c83995/scripts/skill_herblore/scripts/identifying/identify.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "fb64bc0b14f36920522f89d428799478e2c83995",
       "status": "awaiting_agent_review",
-      "work_id": "377-dd9e3d46bb6a963f2154"
+      "work_id": "377-80ce5ef7221fe8caa6cb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e15e914e669432407db7",
+      "candidate_id": "f66e701aeecc1a6c4a90",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1152,17 +1152,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_waterfall/scripts/hudon.rs2",
+      "path": "scripts/skill_magic/scripts/magic.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_waterfall/scripts/hudon.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_magic/scripts/magic.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-e15e914e669432407db7"
+      "work_id": "377-f66e701aeecc1a6c4a90"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6d98ae19803c5ec80c35",
+      "candidate_id": "4381d0540a476784869c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1170,17 +1170,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_waterfall/scripts/quest_waterfall.rs2",
+      "path": "scripts/skill_magic/scripts/spells/alchemy.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_waterfall/scripts/quest_waterfall.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_magic/scripts/spells/alchemy.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-6d98ae19803c5ec80c35"
+      "work_id": "377-4381d0540a476784869c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "678ffa0dd9a7e1233c0d",
+      "candidate_id": "f4841c0c9e3181213d77",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1188,71 +1188,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_waterfall/scripts/waterfall_journal.rs2",
+      "path": "scripts/skill_magic/scripts/spells/charge.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_waterfall/scripts/waterfall_journal.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-678ffa0dd9a7e1233c0d"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "574d9df1e7420153b275",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_zanaris/scripts/quest_zanaris.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_zanaris/scripts/quest_zanaris.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-574d9df1e7420153b275"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "6fc976a2bcc423319245",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_zanaris/scripts/zanaris_journal.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_zanaris/scripts/zanaris_journal.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-6fc976a2bcc423319245"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "c9354b74bfec62035a3b",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/quests/quest_zombiequeen/scripts/mosol_rei.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/quests/quest_zombiequeen/scripts/mosol_rei.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_magic/scripts/spells/charge.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-c9354b74bfec62035a3b"
+      "work_id": "377-f4841c0c9e3181213d77"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b6a03106d9f46809a317",
+      "candidate_id": "3efc129fa25dc41215ca",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1260,17 +1206,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_zombiequeen/scripts/quest_zombiequeen.rs2",
+      "path": "scripts/skill_magic/scripts/spells/charge_orb.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_zombiequeen/scripts/quest_zombiequeen.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_magic/scripts/spells/charge_orb.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-b6a03106d9f46809a317"
+      "work_id": "377-3efc129fa25dc41215ca"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "936b223f8fb3036a9d33",
+      "candidate_id": "19ade2b2e3f1b04e3531",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1278,17 +1224,143 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_zombiequeen/scripts/rashiliyia.rs2",
+      "path": "scripts/skill_magic/scripts/spells/convert_bones.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/quests/quest_zombiequeen/scripts/rashiliyia.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_magic/scripts/spells/convert_bones.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-19ade2b2e3f1b04e3531"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "cba84ae949fcea16d9a5",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_magic/scripts/spells/enchant.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_magic/scripts/spells/enchant.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-cba84ae949fcea16d9a5"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "bb27e069bf5232a920ce",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_magic/scripts/spells/superheat.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_magic/scripts/spells/superheat.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-bb27e069bf5232a920ce"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "639d5b5e1d14aa9ec216",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_magic/scripts/spells/telegrab.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_magic/scripts/spells/telegrab.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-639d5b5e1d14aa9ec216"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "7b52fa66ac0fad46f6cf",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_magic/scripts/spells/teleport.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_magic/scripts/spells/teleport.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-7b52fa66ac0fad46f6cf"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "b389841e1ad571d90671",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_mining/scripts/dwarf_mining_guild.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_mining/scripts/dwarf_mining_guild.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-b389841e1ad571d90671"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "40728ea69bfe18d34603",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_mining/scripts/mining.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_mining/scripts/mining.rs2",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "awaiting_agent_review",
+      "work_id": "377-40728ea69bfe18d34603"
+    },
+    {
+      "automatically_installed": false,
+      "candidate_id": "0b409861490779603bc5",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "scripts/skill_prayer/scripts/altar.rs2",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/altar.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-936b223f8fb3036a9d33"
+      "work_id": "377-0b409861490779603bc5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8691e23f61f17b6cab88",
+      "candidate_id": "fc9c0747daef1b306a51",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1296,17 +1368,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/quests/quest_zombiequeen/scripts/zombiequeen_journal.rs2",
+      "path": "scripts/skill_prayer/scripts/prayer.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_zombiequeen/scripts/zombiequeen_journal.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayer.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-8691e23f61f17b6cab88"
+      "work_id": "377-fc9c0747daef1b306a51"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ed4badd1db87e267209b",
+      "candidate_id": "dd4f1ebe869dadac9bac",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1314,17 +1386,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/shop/scripts/shop.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/clarity.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/shop/scripts/shop.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/clarity.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-ed4badd1db87e267209b"
+      "work_id": "377-dd4f1ebe869dadac9bac"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "74a4f31fb4d3cda021b7",
+      "candidate_id": "ebe1938d17211daa13ac",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1332,17 +1404,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_agility/scripts/agility.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/improvedreflexes.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_agility/scripts/agility.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/improvedreflexes.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-74a4f31fb4d3cda021b7"
+      "work_id": "377-ebe1938d17211daa13ac"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fc95d93cbff3e778c881",
+      "candidate_id": "1b995d19a15e0f027842",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1350,17 +1422,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_agility/scripts/barbarian_course.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/incrediblereflexes.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_agility/scripts/barbarian_course.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/incrediblereflexes.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-fc95d93cbff3e778c881"
+      "work_id": "377-1b995d19a15e0f027842"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "267c899a574ddc81421b",
+      "candidate_id": "c0bf133313529494e2ec",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1368,17 +1440,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_agility/scripts/gnome_course.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/protectfrommagic.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_agility/scripts/gnome_course.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/protectfrommagic.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-267c899a574ddc81421b"
+      "work_id": "377-c0bf133313529494e2ec"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c10033cfead368b9f7e2",
+      "candidate_id": "36648d94af993039eb81",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1386,17 +1458,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_agility/scripts/shortcuts.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/protectfrommelee.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_agility/scripts/shortcuts.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/protectfrommelee.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-c10033cfead368b9f7e2"
+      "work_id": "377-36648d94af993039eb81"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c7b9f978180a33ac7f6e",
+      "candidate_id": "21073761a2e4319e3e3e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1404,17 +1476,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_agility/scripts/wilderness_course.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/protectfrommissiles.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_agility/scripts/wilderness_course.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/protectfrommissiles.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-c7b9f978180a33ac7f6e"
+      "work_id": "377-21073761a2e4319e3e3e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "db32479a23bad740a11d",
+      "candidate_id": "cdecfaf044b790600c64",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1422,17 +1494,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/combat.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/protectitems.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/combat.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/protectitems.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-db32479a23bad740a11d"
+      "work_id": "377-cdecfaf044b790600c64"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f49a863ac52f9d075480",
+      "candidate_id": "084f05a067dfd15d9c2e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1440,17 +1512,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/npc/npc_combat.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/rapidheal.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/npc/npc_combat.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/rapidheal.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-f49a863ac52f9d075480"
+      "work_id": "377-084f05a067dfd15d9c2e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "055d54d9bb08349230aa",
+      "candidate_id": "b7fd77827afaffbd938e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1458,17 +1530,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/npc/npc_combat_magic.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/rapidrestore.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/npc/npc_combat_magic.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/rapidrestore.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-055d54d9bb08349230aa"
+      "work_id": "377-b7fd77827afaffbd938e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5f9d8ee482d2135d3543",
+      "candidate_id": "012157f07b0e21abcadc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1476,17 +1548,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/npc/npc_combat_melee.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/rockskin.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/npc/npc_combat_melee.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/rockskin.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-5f9d8ee482d2135d3543"
+      "work_id": "377-012157f07b0e21abcadc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "977cb6ce6288c7fda236",
+      "candidate_id": "ca2d1b1be55c5e4d2bda",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1494,17 +1566,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/npc/npc_combat_ranged.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/steelskin.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/npc/npc_combat_ranged.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/steelskin.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-977cb6ce6288c7fda236"
+      "work_id": "377-ca2d1b1be55c5e4d2bda"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "27562386e34112a3527e",
+      "candidate_id": "fc9d046d9c191839ec7d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1512,17 +1584,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/npc/npc_death.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/strengthburst.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/npc/npc_death.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/strengthburst.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-27562386e34112a3527e"
+      "work_id": "377-fc9d046d9c191839ec7d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d5b7bf7fdbe55d78a931",
+      "candidate_id": "eef9633a8b2bb40dee59",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1530,17 +1602,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/auto_cast.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/superhumanstrength.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/auto_cast.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/superhumanstrength.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-d5b7bf7fdbe55d78a931"
+      "work_id": "377-eef9633a8b2bb40dee59"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1bb212b53b6b653e0f80",
+      "candidate_id": "6988e14ee057f9e636bc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1548,17 +1620,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/auto_retaliate.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/thickskin.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/auto_retaliate.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/thickskin.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-1bb212b53b6b653e0f80"
+      "work_id": "377-6988e14ee057f9e636bc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a2cae481563def512912",
+      "candidate_id": "2eb9e414c39b4bdb8ace",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1566,17 +1638,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/player_attackstyles.rs2",
+      "path": "scripts/skill_prayer/scripts/prayers/ultimatestrength.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/player_attackstyles.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_prayer/scripts/prayers/ultimatestrength.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-a2cae481563def512912"
+      "work_id": "377-2eb9e414c39b4bdb8ace"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a3de0e013a5ff57baada",
+      "candidate_id": "0388aa92e096da98d62b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1584,17 +1656,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/player_combat.rs2",
+      "path": "scripts/skill_runecraft/scripts/essence_mine.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/player_combat.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_runecraft/scripts/essence_mine.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-a3de0e013a5ff57baada"
+      "work_id": "377-0388aa92e096da98d62b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "195b903c9e1350e3b581",
+      "candidate_id": "df4b2171dc54c33577a8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1602,17 +1674,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/player_combat_stat.rs2",
+      "path": "scripts/skill_runecraft/scripts/runecraft.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/player_combat_stat.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_runecraft/scripts/runecraft.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-195b903c9e1350e3b581"
+      "work_id": "377-df4b2171dc54c33577a8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e80e7b7d0b6d66bafe67",
+      "candidate_id": "13545f3d13eb25c6de65",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1620,17 +1692,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/player_magic.rs2",
+      "path": "scripts/skill_smithing/scripts/smelting/cannonballs.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/player_magic.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_smithing/scripts/smelting/cannonballs.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-e80e7b7d0b6d66bafe67"
+      "work_id": "377-13545f3d13eb25c6de65"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b9096efb12f62496d89e",
+      "candidate_id": "3d80f0ec7eee83e58ec6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1638,17 +1710,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/player_melee.rs2",
+      "path": "scripts/skill_smithing/scripts/smelting/smelting.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/player_melee.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_smithing/scripts/smelting/smelting.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-b9096efb12f62496d89e"
+      "work_id": "377-3d80f0ec7eee83e58ec6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "68644227cc81c114be94",
+      "candidate_id": "d51a87b955c9517766ac",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1656,17 +1728,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/player_ranged.rs2",
+      "path": "scripts/skill_smithing/scripts/smithing/dragon_sq.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/player_ranged.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_smithing/scripts/smithing/dragon_sq.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-68644227cc81c114be94"
+      "work_id": "377-d51a87b955c9517766ac"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6a161fbace0cddf75e21",
+      "candidate_id": "0b79cc122227a8f4dd4e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1674,17 +1746,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/player_special_attack.rs2",
+      "path": "scripts/skill_smithing/scripts/smithing/smithing.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/player_special_attack.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_smithing/scripts/smithing/smithing.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-6a161fbace0cddf75e21"
+      "work_id": "377-0b79cc122227a8f4dd4e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "12c1522feb421bacc863",
+      "candidate_id": "e6da2c4338de3a14d118",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1692,17 +1764,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/specs/scripts/pvm_dragon_dagger.rs2",
+      "path": "scripts/skill_thieving/scripts/chest/trapped_chest.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/specs/scripts/pvm_dragon_dagger.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/0561dddd04f371869781513166c560436ee2d832/scripts/skill_thieving/scripts/chest/trapped_chest.rs2",
       "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "source_commit_sha": "0561dddd04f371869781513166c560436ee2d832",
       "status": "awaiting_agent_review",
-      "work_id": "377-12c1522feb421bacc863"
+      "work_id": "377-e6da2c4338de3a14d118"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "af62d9b7d93268e6de5d",
+      "candidate_id": "43cb2329427fe5341353",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1710,17 +1782,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/specs/scripts/pvm_dragon_halberd.rs2",
+      "path": "scripts/skill_thieving/scripts/doors/locked_door.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/specs/scripts/pvm_dragon_halberd.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_thieving/scripts/doors/locked_door.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-af62d9b7d93268e6de5d"
+      "work_id": "377-43cb2329427fe5341353"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9b96f4afa8781008a732",
+      "candidate_id": "2b5241ec30db4a6b35a5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1728,85 +1800,13 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "scripts/skill_combat/scripts/player/specs/scripts/pvm_dragon_longsword.rs2",
+      "path": "scripts/skill_thieving/scripts/pickpocketing/pickpocket.rs2",
       "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/specs/scripts/pvm_dragon_longsword.rs2",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_thieving/scripts/pickpocketing/pickpocket.rs2",
       "source": "LostCityRS/Content",
       "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "awaiting_agent_review",
-      "work_id": "377-9b96f4afa8781008a732"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "ffefbb988a6504ca11bf",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/skill_combat/scripts/player/specs/scripts/pvm_dragon_mace.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/specs/scripts/pvm_dragon_mace.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-ffefbb988a6504ca11bf"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "85240e411545a5ce6801",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/skill_combat/scripts/player/specs/scripts/pvm_dragon_spear.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/specs/scripts/pvm_dragon_spear.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-85240e411545a5ce6801"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "704e0d0c9a216f271daf",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/skill_combat/scripts/player/specs/scripts/pvm_magic_longbow.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/specs/scripts/pvm_magic_longbow.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-704e0d0c9a216f271daf"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "7e3ea7650c121d6d59e6",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "scripts/skill_combat/scripts/player/specs/scripts/pvm_magic_shortbow.rs2",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/scripts/player/specs/scripts/pvm_magic_shortbow.rs2",
-      "source": "LostCityRS/Content",
-      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
-      "status": "awaiting_agent_review",
-      "work_id": "377-7e3ea7650c121d6d59e6"
+      "work_id": "377-2b5241ec30db4a6b35a5"
     }
   ]
 }
