@@ -74,13 +74,13 @@ class DialogueGraphExitGate(unittest.TestCase):
         self.assert_problem([
             node("start", "Pick an option.", [["bad"], "finish"]),
             node("finish", "Safe travels.", exit=True),
-        ], "dangling or invalid branch")
+        ], "dangling branch")
 
     def test_dangling_target_fails_closed(self):
         self.assert_problem([
             node("start", "Pick an option.", ["missing", "finish"]),
             node("finish", "Safe travels.", exit=True),
-        ], "dangling or invalid branch")
+        ], "dangling branch")
 
     def test_exit_node_cannot_continue(self):
         self.assert_problem([
