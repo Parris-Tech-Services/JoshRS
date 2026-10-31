@@ -1,90 +1,58 @@
-# JoshRS 377 source harvesting — implemented metadata pipeline
+# JoshRS 377: source matching, dispatch evidence and single-harvester workflow
 
-**31 October 2026. Scope:** personalised revision-377 research and original-content preparation ONLY. **Not an asset importer, server installer or a claim of functional NPC/quest/map content.**
+**31 October 2026 • Status: repository metadata and static QA, NOT live client gameplay.**
+This complements [PR #38](https://github.com/Parris-Tech-Services/JoshRS/pull/38), whose \`content-factory/harvest_multi.py\` is the **only** additional multi-provider harvester. Do not introduce a second importer or a second hourly source scan.
 
-## New working components
+## Implementation and responsibilities
 
-| File | Action | Safety boundary |
-| --- | --- | --- |
-| [factory.py](../../../content-factory/factory.py) | Owns existing GitHub tree cursor/pack work queue; resolves **exact pinned** Lost City engine, content and client commits; now offers \`--source-metadata\` and \`--source-compare\` | No source blobs, binaries or Jagex assets downloaded |
-| [harvest_sources.py](../../../content-factory/harvest_sources.py) | Adds bounded **GitLab 2009Scape**, **OpenRS2 377 cache metadata** and **Hugging Face knowledge-dataset metadata** reads; saves resumable GitLab keyset cursor | HTTPS hosts allowlisted, response capped, no API credentials, no cache downloads, blocked providers reported rather than faked |
-| [sources.json](../../../content-factory/sources.json) | Adds **OSRSReboxed**, **OpenRSC** and **RuneWiki RS-DataAPI** as metadata-only GitHub research sources, using existing GitHub scanner | All third-party rights remain unreviewed; later-era IDs not portable |
-| [harvest_match.py](../../../content-factory/harvest_match.py) | Exact pinned path/blob comparator, full-tree completeness flag and source-only classifications, plus independent original dialogue branch graph validator | No name-based ID mapping, no missing-feature claim from source differences, no auto deployment |
-| [harvest_evidence.py](../../../content-factory/harvest_evidence.py) | Explicit rev377 candidate stage / rights / tests gate | This is **declaration validation**, not proof that the live world works |
-| [audit_dispatch.py](../../../content-factory/audit_dispatch.py) | Read-only three-NPC Varrock source trigger and optional compiled script-pack checksum diagnostic | Logs only booleans/hash; cannot establish that running Java client loaded the pack |
+- \`content-factory/factory.py\` remains the original source and work-order owner. Its normal GitHub scans now use **exact pinned 377 commit SHAs** for Lost City Content, Engine-TS and Client-Java instead of mutable 377-wip branch heads. A complete, untruncated pinned Content tree persists as \`generated/pinned-377-index.json\` (path and Git blob SHA only).
+- \`content-factory/harvest_multi.py\`, merged earlier in PR #38, is the one public GitHub/GitLab/Hugging Face/OpenRS2 metadata collector. It keeps bounded source metadata, source revision, cursor and rights warning; no copyrighted assets are copied. \`factory.py --source-metadata\` calls this **same module**, not a competing implementation.
+- \`content-factory/sources.json\` now also lists OSRSReboxed, OpenRSC and RuneWiki RS-DataAPI as **metadata_only** GitHub sources using the *existing* factory scanner.
+- \`content-factory/harvest_match.py\` reads the existing factory's pinned 377 pack index, optionally the \`harvest_multi.py\` \`catalog.json\` (from a read-only run or downloaded GitHub artifact), and compares **exact path/blob identities**. It never guesses a 377 NPC or quest ID from a modern source name. Partial baselines say \`baseline_complete=false\` and carry \`unmapped_partial_inventory\`, never "missing".
+- \`content-factory/harvest_match.py --proposals original.json\` also validates original NPC dialogue graph syntax, distinct greetings, branch links, exits and provenance. It rejects speculative numeric IDs; this is a **non-installable proposal** gate.
+- \`content-factory/audit_dispatch.py\` is a local **read-only** source and script-pack fingerprint diagnostic for three known pinned 377 scripts: Reldo, Juliet and Romeo. It emits no dialogue text, account identifiers or private paths. Agent 1 still owns fixes; Agent 3 must establish what the real Java process has loaded.
+- Existing native 377 CI tests/compiles still run in disposable checkouts. They are not a substitute for actual client and relog/persistence evidence.
 
-The [three-NPC source-trace ledger](VARROCK_NPC_SOURCE_TRACE_2026-10-31.json) remains the grounded first candidate batch: Reldo, Juliet and Romeo. All already have pinned \`[opnpc1,...]\` script handlers; their real Java-client behaviour remains **unverified**. Agent 4's public report at [#35](https://github.com/Parris-Tech-Services/JoshRS/issues/35) says multiple headless trigger tests pass but the actual active server pack is older than current on-disk changes. Don't author replacement dialogue until the dispatch or pack regression is ruled out.
+## Commands
 
-## How to run
-
-All commands run locally against source-only checked-out JoshRS, never against the active production game directory.
+Run in a safe source checkout, NOT the active customised game directory:
 
 \`\`\`bash
-# Entire existing pipeline + bounded metadata scan and pinned source match:
-python content-factory/factory.py --live --source-metadata --source-compare --metadata-pages 2
-
-# Small independent metadata-only run (GitLab keyset cursor, OpenRS2, HF):
-python content-factory/harvest_sources.py --pages 1
-
-# Offline comparison of the existing generated candidate catalogues:
-python content-factory/harvest_match.py
-
-# Local pinned-content read-only diagnostic; use a disposable matching content checkout:
-python content-factory/audit_dispatch.py --content /path/to/disposable/pinned-377/content
-
-# Test new and existing safety functionality without network:
+python content-factory/factory.py --live --source-metadata --source-compare
+python content-factory/harvest_match.py --harvest-catalog /path/to/saved/public/catalog.json
+python content-factory/audit_dispatch.py --content /path/to/disposable/377/content
 python -m unittest discover -s content-factory/tests -v
 \`\`\`
 
-Do not commit or post source diagnostics captured from the personalised runtime, player saves, local credentials, IPs or private Drive filenames. Agent 3 should provide a sanitised handoff statement referencing only accepted build identities and test outcomes. \`audit_dispatch.py\` optionally hashes \`--script-dat\` and \`--script-idx\`; it never reads saves.
+The first command uses the **existing** \`harvest_multi.run()\` and stores metadata at \`content-factory/generated/multi-source\`. It can be slow: source providers may be rate-limited. For one public source, use \`python content-factory/harvest_multi.py --source 2009scape-gitlab\` or one of the existing registered source keys.
 
-## Evidence and checkpoint format
+\`harvest_match.py\` needs a source scan from **exact pinned Content commit** first; without it, it returns \`blocked_no_pinned_inventory\`. If \`generated/pinned-377-index.json\` exists for that SHA, the comparator uses that complete path inventory, not a 500-file scan cursor. Results always set \`missing_confirmed=0\` and \`client_verified=0\` until actual external QA evidence is separately established.
 
-\`content-factory/generated/\` contains provenance-first **non-executable** outputs:
+## One hourly schedule, separate coordination
 
-- \`state.json\`, \`packs/*.json\`: existing GitHub cursor and per-source candidates.
-- \`pinned-377-index.json\`: complete *read-only* path→Git-blob manifest from the exact pinned Content commit; only stored when the recursive tree is not truncated.
-- \`source-metadata-state.json\`: provider source revision, bounded candidate paths/identities and GitLab keyset continuation. Successful provider checkpoints remain intact when another source fails.
-- \`source-metadata-report.json\`: per-source \`metadata_only\` or \`blocked\`, complete/incomplete and candidate counts.
-- \`source-comparison.json\`: exact pinned file presence / blob-equality vs cross-era research. If the full pinned tree was unavailable, results explicitly say \`baseline_complete=false\`; all nonmatches are \`unmapped_partial_inventory\` and **never confirmed missing**.
-- \`agent-work-orders.json\`: existing rotating queue; agents still must independently verify gap, rights, compiler, actual gameplay and persistence.
+PR #38's [.github/workflows/verify-harvest-metadata.yml](../../../.github/workflows/verify-harvest-metadata.yml) already runs at **minute 13 UTC every hour**, publishing short-lived public metadata artifacts. This branch keeps the original full content factory's **daily** schedule unchanged. Do not double its source harvesting at another hourly minute. The separate ChatGPT hourly content contributor should read the latest saved artefact and current issues, then produce one small verified research or validation handoff.
 
-The GitHub content-factory workflow now checkpoints on \`21 * * * *\` (UTC), uses the existing job/concurrency group and tests before writes, and only commits metadata plus original authorised content specifications on main. The *ChatGPT hourly task* remains a separate contributor and should use these generated checkpoints when available rather than automatically touching the game or assuming the CI run actually published a new patch.
+## First live regression investigation: generic NPC greetings
 
-## Current source routes and the limitations
+Pinned Content \`44eab09081ef0f6c5f3eaabd1897a588ad7d9e50\` already has:
+- \`scripts/areas/area_varrock/scripts/reldo.rs2\`, \`[opnpc1,reldo]\`
+- \`scripts/areas/area_varrock/scripts/juliet.rs2\`, \`[opnpc1,juliet_multi_visible]\`
+- \`scripts/areas/area_varrock/scripts/romeo.rs2\`, \`[opnpc1,romeo]\`
 
-**GitHub (existing):** GitHub commit + recursive tree metadata; pin exact Lost City 377 SHA and blob identities. The 377 source defines numerous canonical NPC/loc/item/quest routes; source code existence does not prove live server loading.
+These are **existing source scripts**, not three confirmed broken NPCs. Source-trace metadata is in [Varrock ledger](VARROCK_NPC_SOURCE_TRACE_2026-10-31.json). Agent 4's headless reports show script-runner routing for some named NPCs, but this is not actual Java client playback. Agent 1 should inspect the active \`OPNPC1\` -> morph/multinpc/category script dispatch -> fallback and loaded \`script.dat/script.idx\`; Agent 3 should first checksum/backup the active state, then verify real click/quest branch and logout/relog on a disposable account. If the pack is stale, correct loading before writing replacement dialogue.
 
-**GitLab (new):** [2009Scape Server](https://gitlab.com/2009scape/2009scape), \`GET /api/v4/projects/2009scape%2F2009scape/repository/commits/master\`, then \`GET .../repository/tree?pagination=keyset&recursive=true&per_page=100&ref=<SHA>\`. Consume provider \`Link\` next-page token with an exact same-host/path check. GitLab documents [keyset repository-tree pagination](https://docs.gitlab.com/api/repositories/). 2009Scape is later-era and AGPL-licensed: no direct software or game-text copy into JoshRS. A partial cursor is **not** a complete inventory.
+## Source/legal limits
 
-**OpenRS2 (new):** [archive API](https://archive.openrs2.org/api) JSON \`/caches.json\`; locate **exact cache ID 2696** and allowlist only public id/game/build/time fields. Cache completeness proves neither gameplay nor rights; binaries/ZIPs are excluded. If provider schema, access or response cap differs, the adapter reports \`blocked\` instead of inventing data.
+- GitHub historical scripts: commit/tree/blob identities only until source and rights review. Exact SHA, source path, area and target era must accompany each claim.
+- GitLab [2009Scape](https://gitlab.com/2009scape/2009scape): later-era AGPL source, metadata and independent behavioural test ideas only; cannot be dropped into the MIT project.
+- [OpenRS2](https://archive.openrs2.org/api): cache identifier 2696 provenance only, not a game completion percentage; no archive/model/map binaries.
+- [Hugging Face knowledge dataset](https://huggingface.co/datasets/arsalan-anwari/2009scape-wiki-api-data): dataset card, file listing and schema relationships, not its game data.
+- [OSRSReboxed](https://github.com/RSPSApp/osrsreboxed-db), [OpenRSC](https://github.com/Open-RSC/Core-Framework), [RuneWiki](https://github.com/RuneWiki/RS-DataAPI): source/documentation references, not executable 377 IDs or copied dialogue.
+- User's personal Drive 377 snapshot: metadata and comparison stay private. No Drive IDs, account names, saves, credentials or raw scripts in public GitHub.
+- [Jagex Fan Content Policy §6.1.3](https://legal.jagex.com/docs/policies/fan-content-policy) excludes derivative game software and private servers from its standard permission. These components do not grant rights to distribute third-party game assets.
 
-**Hugging Face (new):** [2009Scape dataset card](https://huggingface.co/datasets/arsalan-anwari/2009scape-wiki-api-data) and public dataset API metadata (revision and safe source/README filenames only). No SQLite/parquet/game-data download. Pipeline or dataset-card licence is not an automatic game-data licence.
+## Reusable hourly acceptance contract
 
-**Other GitHub metadata sources (new registry additions):** [OSRSReboxed](https://github.com/RSPSApp/osrsreboxed-db) (shop/NPC schema shape), [OpenRSC](https://github.com/Open-RSC/Core-Framework) (historical quest flow structure), [RuneWiki API](https://github.com/RuneWiki/RS-DataAPI) (tooling). These use **the same** factory cursor and queue, not a second importer. Other already registered sources include 2006Scape, Luna, RuneScriptTS and historical Lost City branches.
+One geographic hub, at most three source-verified NPCs or a single quest/region issue. Check latest #35/#36 and ownership. Source discovery -> 377 exact-pin comparison -> gap/rights review -> if proven, original proposal -> static validation -> isolated compile -> Agent 1 implementation -> Agent 3 real Java-client and persistence verification. Preserve existing trading, bank, jewellery, rune, quest and shop behaviour. No auto merges into the active game, no speculative extra vendors and no false "playable" labels.
 
-**Rights:** [Jagex Fan Content Policy §6.1.3](https://legal.jagex.com/docs/policies/fan-content-policy) excludes game software and private servers from its standard fan-content permission. These tools handle allowable public *references* and original program logic, not Jagex assets, dialogue, clients, binaries, music or map packs. Rights to actual integration need separate review and any required authorisation.
-
-## What is automatically accomplished vs withheld
-
-| Outcome | Automatic | Held for agents |
-| --- | --- | --- |
-| Public tree/commit metadata and bounded source checkpoints | Yes, when API access and GitHub Actions are available | Provider auth errors or incomplete listings stay blocked |
-| Exact pinned 377 paths and blob change comparisons | Yes, when complete tree available | Actual user's active runtime may differ |
-| Detect duplicate reference paths and unsupported modern-only data | Yes, metadata-level | Entity ID/quest-stage mapping requires source/runtime evidence |
-| Original dialogue graph lint (unique greetings, reachable choices, exits) | Yes, for supplied *original* non-installable proposals | No speculative NPCs/IDs; no mass-script insertion |
-| Compile pinned content in disposable CI | Existing workflow (independent) | CI does not confirm installed active pack |
-| Generic NPC greeting root-cause and fix | Read-only diagnostic available | **Agent 1** owns trigger/morph/category/fallback; **Agent 3** owns loaded pack, client and relog |
-| Map ZIPs and quest mechanics | Metadata references only | Yanille/Edgeville loc ID problems blocked; quest progression/player verification needed |
-
-## One-vertical-slice hourly playbook
-
-1. Read Agent 4 [#35](https://github.com/Parris-Tech-Services/JoshRS/issues/35) newest report and [#36](https://github.com/Parris-Tech-Services/JoshRS/issues/36), then compare pinned index, latest metadata checkpoint and current code ownership.
-2. Continue the same area (Varrock first, max 3 existing NPCs) until each source handler is associated with a **specific** observed action, category/morph, runtime pack identity or explicit unknown. Avoid routine rewording of working canonical NPCs.
-3. Harvest a bounded batch **without binaries**, diff by immutable source revision and hash, and label missing IDs/paths unknown. Block on privacy and licence.
-4. If a gameplay gap is truly confirmed and rights permit, draft an *original* branching proposal and tests. Otherwise issue a reproducible dispatcher/pack handoff, not generic prose.
-5. Run local Python unit tests, ledger validation, pinned disposable compile if a compatible native patch exists, and check CI on the actual commit.
-6. Link one substantive file/validator or verified finding to #36 with exact stage (SOURCE-TRACED, STATIC-VALIDATED, COMPILED-DISPOSABLE, CLIENT-VERIFIED, PERSISTENT-PLAYABLE). Agent 1 integrates, Agent 3 backs up/QA-tests, Agent 4 reviews.
-7. Next hour resumes the checkpoint. Don't count file totals as game completion or claim deployment automatically.
-
-**Open blockers:** no authenticated direct control of JParris Desktop's active Java client from this GitHub-only lane; no verified runtime matching; no confirmed unscripted 377 NPC IDs; no authorisation to transplant game assets or protected text; CI compile success != gameplay.
+**Blocked:** no direct access to actual JParris Windows running process here, no validated live 377 pack fingerprint, and no NPC names or IDs specifically tied to the observed universal greeting. Therefore this repository work does not fix the live symptom; it creates safer diagnostics and stops duplicate content proposals.
