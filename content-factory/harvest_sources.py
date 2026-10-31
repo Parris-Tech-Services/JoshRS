@@ -105,12 +105,15 @@ def collect_gitlab(previous: dict, pages: int, fetch=request_json) -> dict:
     if not isinstance(sha, str) or not SHA.fullmatch(sha):
         raise MetadataBlocked("GitLab commit SHA missing")
     previous_same = previous.get("revision") == sha
+    if previous_same and previous.get("pass_finished") is True:
+        return previous
     token = previous.get("cursor") if previous_same else None
     if token is not None and (not isinstance(token, str) or not TOKEN.fullmatch(token)):
         raise MetadataBlocked("invalid saved GitLab cursor")
     existing = (previous.get("candidates", []) if previous_same else [])
     records = {x["id"]: x for x in existing if isinstance(x, dict) and "id" in x}
     complete = False
+    truncated_records = bool(previous.get("truncated_records")) if previous_same else False
     for _ in range(pages):
         params = {"recursive": "true", "pagination": "keyset", "per_page": "100", "ref": sha}
         if token:
@@ -134,10 +137,14 @@ def collect_gitlab(previous: dict, pages: int, fetch=request_json) -> dict:
             complete = True
             break
         if len(records) > MAX_FILES:
-            raise MetadataBlocked("GitLab metadata budget reached; refused partial overwrite")
-    if len(records) > MAX_FILES:
-        raise MetadataBlocked("GitLab item budget exceeded")
-    return {"revision": sha, "cursor": token, "complete": complete,
+            # Rotate a bounded review window while the provider cursor advances.
+            # A bounded window is NEVER represented as full inventory coverage.
+            records = {r["id"]: r for r in sorted(
+                records.values(), key=lambda x: x["path"])[-MAX_FILES:]}
+            truncated_records = True
+    return {"revision": sha, "cursor": token,
+            "pass_finished": complete, "complete": complete and not truncated_records,
+            "truncated_records": truncated_records,
             "candidates": sorted(records.values(), key=lambda x: x["path"])}
 
 
