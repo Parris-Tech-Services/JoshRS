@@ -76,6 +76,8 @@ def match_all(output: Path, pinned_commit: str | None = None) -> dict:
             baseline_complete = True
     sources = []
     for file in sorted((output / "packs").glob("*.json")):
+        if file.name == "lostcity-content-377.json":
+            continue  # A baseline row is never an external reference candidate.
         doc = json.loads(file.read_text(encoding="utf-8"))
         if not isinstance(doc.get("candidates"), list):
             continue
