@@ -1,12 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import net from 'node:net';
+import http from 'node:http';
 import {generateKeyPairSync} from 'node:crypto';
 import {once} from 'node:events';
 import {Session377} from '../../rs377-chatgpt-bridge/src/session.mjs';
 import {buildLogin} from '../../rs377-chatgpt-bridge/src/protocol.mjs';
 import {SKILLS377} from '../../rs377-chatgpt-bridge/src/observation.mjs';
-import {Native377BoundaryTransport,startAuthenticated377Gateway} from '../lib/native377-transport.mjs';
+import {Native377BoundaryTransport,startAuthenticated377Gateway,createLoopbackEngine377Source} from '../lib/native377-transport.mjs';
 import {BoundaryController} from '../lib/controller.mjs';
 import {ReplayLedger} from '../lib/recovery.mjs';
 import {createLoopbackGateway} from '../lib/gateway.mjs';
@@ -157,4 +158,35 @@ test('production gateway entrypoint cannot bind before native authentication',as
   const data=await resp.json();
   assert.equal(data.data.botName,BOT);
   assert.equal(data.data.worldId,WORLD);
+});
+
+test('task24 Engine-TS HTTP endpoint interoperates with gateway without inventing XP or quests',async t=>{
+  const tcp=await simulatedTcp(t);
+  let tick=300,requests=0;
+  const clock=setInterval(()=>tick++,600);t.after(()=>clearInterval(clock));
+  const engine=http.createServer((req,res)=>{
+    requests++;
+    if(req.method!=='GET'||req.url!=='/dev/rs377-observe'||req.headers.authorization!=='Bearer '+TOKEN){
+      res.writeHead(404);res.end();return;
+    }
+    const data=native(tick);data.skills=null;data.questStages=null;
+    data.equipment=null;data.nearbyNpcs=null;data.nearbyLocs=null;data.groundItems=null;
+    res.writeHead(200,{'content-type':'application/json'});
+    res.end(JSON.stringify({token:TOKEN,sequence:tick,observation:data}));
+  });
+  engine.listen(0,'127.0.0.1');await once(engine,'listening');
+  t.after(()=>new Promise(resolve=>engine.close(resolve)));
+  const port=engine.address().port;
+  assert.throws(()=>createLoopbackEngine377Source({port:8888,token:TOKEN}),/port/);
+  assert.throws(()=>createLoopbackEngine377Source({port,token:'short'}),/token/);
+  const nativeSource=createLoopbackEngine377Source({port,token:TOKEN});
+  const b=adapter(tcp.session,nativeSource);
+  await b.connect();
+  const observation=await b.observe();
+  assert.equal(observation.tick>=300,true);
+  assert.equal(observation.player.xp,null);
+  assert.equal(observation.player.questStages,null);
+  assert.equal(observation.player.inventory[0].id,1351);
+  assert.ok(requests>=2); // advancing actual 600ms timer, not repeated fake sequencer
+  b.close();
 });
