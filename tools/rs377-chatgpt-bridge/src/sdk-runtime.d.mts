@@ -1,6 +1,6 @@
 // This declaration describes the real exported JavaScript runtime, while the
 // contract probe imports the actual immutable upstream RS-SDK types.
-import type {BotAction, BotWorldState} from '../contracts/vendor/sdk/types';
+import type {BotAction, BotWorldState} from '../contracts/vendor/sdk/types.js';
 export interface Observation {
   player: {username: string};
   world: {instanceId: string};
