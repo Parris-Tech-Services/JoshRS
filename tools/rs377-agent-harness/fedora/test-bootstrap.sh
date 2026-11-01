@@ -41,3 +41,5 @@ fi
 [[ -L "$TMP/harness/research-checkouts/rs-sdk" ]]
 grep -q 'personal uncommitted work must survive rerun' "$TMP/harness/tools/rs377-agent-harness/README.md"
 echo 'PASS: Fedora bootstrap preserved worktrees and edits; doctor cannot fetch SDK.'
+
+bash "$ROOT/tools/rs377-agent-harness/fedora/test-failure-fixtures.sh"
