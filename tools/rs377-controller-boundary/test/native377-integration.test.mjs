@@ -4,6 +4,7 @@ import net from 'node:net';
 import {generateKeyPairSync} from 'node:crypto';
 import {once} from 'node:events';
 import {Session377} from '../../rs377-chatgpt-bridge/src/session.mjs';
+import {buildLogin} from '../../rs377-chatgpt-bridge/src/protocol.mjs';
 import {SKILLS377} from '../../rs377-chatgpt-bridge/src/observation.mjs';
 import {Native377BoundaryTransport} from '../lib/native377-transport.mjs';
 import {BoundaryController} from '../lib/controller.mjs';
@@ -44,6 +45,9 @@ async function simulatedTcp(t){
   tcp.listen(0,'127.0.0.1');await once(tcp,'listening');
   t.after(()=>new Promise(resolve=>tcp.close(resolve)));
   const port=tcp.address().port;
+  // Diagnose native codec errors independently before the network protocol.
+  const encoded=buildLogin({username:BOT,password:'fixture-only-password',publicKeyPem:key,crcs:Buffer.alloc(36,7),seed:[1,2,3,4]});
+  assert.equal(encoded.packet.readUInt16BE(3),377);
   const session=new Session377({target:{host:'127.0.0.1',port},username:BOT,
     password:'fixture-only-password',publicKeyPem:key,crcs:Buffer.alloc(36,7),
     timeoutMs:2000,seedFactory:()=>[1,2,3,4]});
