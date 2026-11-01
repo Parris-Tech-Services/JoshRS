@@ -16,10 +16,11 @@ try {
     $bad = [IO.File]::ReadAllText($source)
     $needle = '& (Join-Path $s.client ' + "'gradlew.bat')" + ' run "--args=$clientArguments"'
     if (-not $bad.Contains($needle)) { throw 'Expected base play.ps1 launch anchor missing' }
-    $bad = $bad.Replace($needle, @'
-            Write-Host "Starting Java client directly without Gradle daemon"
-            & java.exe -Djava2d.d3d=false -cp $env:CLASSPATH jagex2.client.Client $clientArguments
-'@.TrimEnd([char]13,[char]10))
+    $directJava = @(
+        '            Write-Host "Starting Java client directly without Gradle daemon"'
+        '            & java.exe -Djava2d.d3d=false -cp $env:CLASSPATH jagex2.client.Client $clientArguments'
+    ) -join [Environment]::NewLine
+    $bad = $bad.Replace($needle, $directJava)
     $target = Join-Path $scripts 'play.ps1'
     [IO.File]::WriteAllText($target,$bad)
     $active = @{ client = $client; engine = 'do-not-touch'; content = 'do-not-touch'; portOffset=8808 } | ConvertTo-Json
