@@ -59,6 +59,18 @@ def validate(data: dict, start: datetime, end: datetime, bot: str) -> dict:
         raise ValueError("Missing policy version")
     if type(data.get("online")) is not bool:
         raise ValueError("Online status must be a boolean, not guessed")
+    if data.get("phase") not in ("solo", "coop", "mixed"):
+        raise ValueError("Declared cooperation phase missing")
+    coops = data.get("cooperation_events")
+    if not isinstance(coops, list) or len(coops) > 20:
+        raise ValueError("Expected bounded cooperation events")
+    for event in coops:
+        if not isinstance(event, dict) or event.get("partner") not in BOTS or event["partner"] == bot:
+            raise ValueError("Cooperation partner must be the other bot")
+        if event.get("type") not in ("joint_combat", "trade", "quest", "resupply", "follow"):
+            raise ValueError("Unknown cooperation type")
+    if data["phase"] == "solo" and coops:
+        raise ValueError("Solo interval contains cooperation")
     if utc(data["window_start_utc"]) != start or utc(data["window_end_utc"]) != end:
         raise ValueError("Window mismatch")
     if data.get("cheats_enabled") is not False or data.get("xp_multiplier") != 1 or data.get("accelerated_time") is not False:
@@ -135,18 +147,32 @@ def scan(root: Path, hour: datetime) -> dict:
                 invalid.append({"bot": bot, "window_end_utc": iso(end), "error": str(error)[:150]})
     signatures = {(x["engine_sha"], x["content_sha"], x["tick_ms"], x["starting_signature"], x["world_mode"], x["ab_run_id"], x["policy_version"])
                   for values in reports.values() for x in values}
-    comparable = len(signatures) == 1 and all(len(reports[b]) == 6 for b in BOTS)
+    all_solo = all(snap["phase"] == "solo" for values in reports.values() for snap in values)
+    comparable = len(signatures) == 1 and all(len(reports[b]) == 6 for b in BOTS) and all_solo
     detail = {}
     bug_counts = {}
+    cooperation_events = []
     for bot, values in reports.items():
         gain = {skill: 0 for skill in SKILLS}
         new_quests = set()
         trace = []
         progress = []
         succeeded = failed = deaths = 0
+        phase_counts = {"solo": 0, "coop": 0, "mixed": 0}
+        solo_gain = {s: 0 for s in SKILLS}
+        coop_gain = {s: 0 for s in SKILLS}
         for snap in values:
+            phase_counts[snap["phase"]] += 1
+            for event in snap["cooperation_events"]:
+                cooperation_events.append({"bot": bot, "window_end_utc": snap["window_end_utc"],
+                                           "type": event["type"], "partner": event["partner"]})
             for skill in SKILLS:
-                gain[skill] += (snap["xp_after_tenths"][skill] - snap["xp_before_tenths"][skill])
+                delta = snap["xp_after_tenths"][skill] - snap["xp_before_tenths"][skill]
+                gain[skill] += delta
+                if snap["phase"] == "solo":
+                    solo_gain[skill] += delta
+                else:
+                    coop_gain[skill] += delta
             new_quests.update(snap["quests_verified_new"])
             succeeded += snap["successful_actions"]
             failed += snap["failed_actions"]
@@ -164,6 +190,9 @@ def scan(root: Path, hour: datetime) -> dict:
         minutes = len(values) * 10
         detail[bot] = {
             "policy": BOTS[bot], "intervals_received": len(values), "minutes_observed": minutes,
+            "phase_intervals": phase_counts,
+            "solo_xp": round(sum(solo_gain.values()) / 10, 1),
+            "coop_or_mixed_xp": round(sum(coop_gain.values()) / 10, 1),
             "total_xp_gained": round(sum(gain.values()) / 10, 1),
             "xp_per_hour_of_observed_time": round(sum(gain.values()) / 10 * 60 / minutes, 1) if minutes else None,
             "skill_xp_gained": {s: round(gain[s] / 10, 1) for s in SKILLS},
@@ -183,7 +212,7 @@ def scan(root: Path, hour: datetime) -> dict:
         "status": "COMPLETE" if comparable else "PARTIAL_OR_NOT_COMPARABLE",
         "comparable": comparable, "received": sum(len(v) for v in reports.values()),
         "expected": 12, "missing": missing, "invalid": invalid,
-        "bots": detail, "bug_candidates": bugs,
+        "bots": detail, "bug_candidates": bugs, "cooperation_events": cooperation_events,
         "interpretation": "Two distinct bot policies (n=1 per arm): descriptive AB data, NOT a statistically powered causal result.",
         "measurement": "1x wall-clock ten-minute windows; incomplete windows remain explicitly missing.",
     }
@@ -231,11 +260,13 @@ def svg_chart(result: dict, metric: str) -> str:
                 continue
             if metric == "xp":
                 # Each point marks a real 10-minute completed report, not a fabricated hour.
-                coords = " ".join(f'{80+i/5*650:.1f},{285-v/ceiling*195:.1f}' for i,v in enumerate(vals))
+                start_hour = utc(result["hour_start_utc"])
+                coords = " ".join(f'{80+((utc(point["end"])-start_hour).total_seconds()/3600)*650:.1f},{285-point["xp_gained"]/ceiling*195:.1f}' for point in result["bots"][bot]["progress"])
                 if len(vals) > 1:
                     parts.append(f'<polyline points="{coords}" fill="none" stroke="{colours[bot]}" stroke-width="2.5"/>')
-                for i,v in enumerate(vals):
-                    parts.append(f'<circle cx="{80+i/5*650:.1f}" cy="{285-v/ceiling*195:.1f}" r="5" fill="{colours[bot]}"/>')
+                for point in result["bots"][bot]["progress"]:
+                    x = 80 + ((utc(point["end"])-start_hour).total_seconds()/3600)*650
+                    parts.append(f'<circle cx="{x:.1f}" cy="{285-point["xp_gained"]/ceiling*195:.1f}" r="5" fill="{colours[bot]}"/>')
             else:
                 idx = 0 if bot == "Fred" else 1
                 v = vals[0]
@@ -256,7 +287,8 @@ def summary_md(result: dict) -> str:
              "|---|---:|---:|"]
     labels = [("intervals_received", "10-minute reports"), ("total_xp_gained", "XP gained"),
               ("xp_per_hour_of_observed_time", "Observed XP/hour"), ("successful_actions", "Successful actions"),
-              ("failed_actions", "Failed actions"), ("deaths", "Deaths")]
+              ("failed_actions", "Failed actions"), ("deaths", "Deaths"),
+              ("solo_xp", "Solo-only XP"), ("coop_or_mixed_xp", "Coop/mixed XP")]
     for key, label in labels:
         lines.append("| " + label + " | " + str(result["bots"]["Fred"][key]) + " | " + str(result["bots"]["George"][key]) + " |")
     lines += ["", "## Last reported positions (at most ten-minute resolution)", ""]
@@ -284,6 +316,12 @@ def summary_md(result: dict) -> str:
     for bug in result["bug_candidates"]:
         lines.append("- " + bug["id"] + " (" + bug["severity"] + "): " + ",".join(bug["bots"]) +
                      " reported in " + str(bug["count_reports"]) + " interval(s)")
+    lines += ["", "## Team cooperation", ""]
+    if not result["cooperation_events"]:
+        lines.append("No cooperation events reported.")
+    for event in result["cooperation_events"]:
+        lines.append("- " + event["bot"] + " and " + event["partner"] + ": " +
+                     event["type"] + " (" + event["window_end_utc"] + ")")
     lines += ["", "## Tracking gaps", ""]
     if not result["missing"] and not result["invalid"]:
         lines.append("All 12 expected bot-interval records received.")
