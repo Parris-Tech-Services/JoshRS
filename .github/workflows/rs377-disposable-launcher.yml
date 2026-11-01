@@ -1,0 +1,38 @@
+name: JoshRS 377 disposable Fedora launcher safety
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/rs377-disposable/**'
+      - '.github/workflows/rs377-disposable-launcher.yml'
+  pull_request:
+    paths:
+      - 'tools/rs377-disposable/**'
+      - '.github/workflows/rs377-disposable-launcher.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  syntax-and-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bash syntax
+        run: bash -n tools/rs377-disposable/start-isolated-joshrs377.sh
+      - name: Launcher fails closed without manifest and never launches on import
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f tools/rs377-disposable/start-isolated-joshrs377.sh
+          if bash tools/rs377-disposable/start-isolated-joshrs377.sh prepare >/tmp/output 2>&1; then
+            echo "Launcher should reject missing manifest"
+            exit 1
+          fi
+          grep -q 'Usage:' /tmp/output
+          grep -q 'node "$guard" --verify "$manifest"' tools/rs377-disposable/start-isolated-joshrs377.sh
+          grep -q 'git clone --no-hardlinks' tools/rs377-disposable/start-isolated-joshrs377.sh
+          grep -q 'NODE_XPRATE=1' tools/rs377-disposable/start-isolated-joshrs377.sh
+          grep -q 'NODE_PRODUCTION=false' tools/rs377-disposable/start-isolated-joshrs377.sh
+          grep -q '127.0.0.1' tools/rs377-disposable/start-isolated-joshrs377.sh
+          echo "Offline launcher safety gates passed; no game started"
