@@ -1,0 +1,20 @@
+name: JoshRS social preflight tests
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-social/**'
+      - '.github/workflows/rs377-social-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  no-downtime-social-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate read-only social preflight
+        run: node --test tools/rs377-social/check-social-readiness.test.mjs
