@@ -4,6 +4,8 @@
 
 This folder defines strict, zero-dependency building blocks for the independent revision-377 bot transport. It does not vendor Jagex content, an RS-SDK checkout or account credentials.
 
+**Agy delivery checklist:** [71 numbered tasks to one visible, truly playable companion in Elrothiro's server](../../docs/rs377/AGY_FEDORA_VISIBLE_COMPANION_TODO_2026-11-02.md). Treat the real-world identity/topology proof as mandatory before any production action.
+
 ## Fedora 44 / AVANCE-WS7 easiest setup
 
 Follow the [Fedora single-command bootstrap](../../docs/rs377/FEDORA44_AGY_RSSDK_SETUP_2026-11-02.md). It creates a separate Agy worktree, detects the previously used `/home/josh/dev/JoshRS/lostcity377` engine/client, runs these offline tests, and checks out the pinned RS-SDK source without touching the family game. **Fedora live integration is not yet verified**.
