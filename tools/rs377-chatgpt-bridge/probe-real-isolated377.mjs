@@ -151,19 +151,6 @@ try {
  });
  if(malformed.status===200)reject('malformed observer request was accepted');
 
- const wrongPassword=password.slice(0,-1)+(password.endsWith('x')?'y':'x');
- const invalidSession=new Session377({
-   target:{host:'127.0.0.1',port:gamePort,mode:'isolated'},
-   username,password:wrongPassword,publicKeyPem,crcs,timeoutMs:9000
- });
- let invalidPasswordRejected=false;
- try {await invalidSession.connect()}
- catch(error) {
-   invalidPasswordRejected=error instanceof Error&&
-     error.message==='377 authentication rejected with code 1';
- } finally {invalidSession.close()}
- if(!invalidPasswordRejected)reject('invalid native login credentials were not rejected');
-
  const otherName='HarnessOther';
  const otherSession=new Session377({
    target:{host:'127.0.0.1',port:gamePort,mode:'isolated'},
@@ -186,6 +173,32 @@ try {
  if(!afterOther||afterOther.player.username!==username||
     JSON.stringify(afterOther).toLowerCase().includes(otherName.toLowerCase()))
    reject("another player's identity or state leaked into the bot observation");
+
+ session.close();
+ let botOffline=false;
+ for(let i=0;i<30;i++) {
+   const offlineResponse=await fetch(observerUrl,{
+     headers:{authorization:'Bearer '+token},redirect:'error'
+   });
+   if(offlineResponse.status===409) {botOffline=true;break}
+   if(offlineResponse.status!==200)
+     reject('observer did not confirm the disposable bot logout');
+   await delay(100);
+ }
+ if(!botOffline)reject('disposable bot did not leave the isolated world before credential test');
+
+ const wrongPassword=password.slice(0,-1)+(password.endsWith('x')?'y':'x');
+ const invalidSession=new Session377({
+   target:{host:'127.0.0.1',port:gamePort,mode:'isolated'},
+   username,password:wrongPassword,publicKeyPem,crcs,timeoutMs:9000
+ });
+ let invalidPasswordRejected=false;
+ try {await invalidSession.connect()}
+ catch(error) {
+   invalidPasswordRejected=error instanceof Error&&
+     error.message==='377 authentication rejected with code 1';
+ } finally {invalidSession.close()}
+ if(!invalidPasswordRejected)reject('invalid native login credentials were not rejected');
 
  // This test proves fields are sampled from the actual isolated compiled
  // server, not that any specific NPC is spawned nearby or a quest was done.
