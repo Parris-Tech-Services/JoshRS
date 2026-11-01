@@ -39,8 +39,12 @@ const privatePem=await readFile('data/config/private.pem','utf8');
 const publicKeyPem=createPublicKey(privatePem).export({format:'pem',type:'spki'});
 const crcResponse=await fetch('http://127.0.0.1:'+webPort+'/crc0',{redirect:'error',signal:AbortSignal.timeout(3000)});
 if(!crcResponse.ok)reject('cache CRC request failed');
-const crcs=Buffer.from(await crcResponse.arrayBuffer());
-if(crcs.length!==36)reject('server did not return nine real cache CRC values');
+const crcAndHash=Buffer.from(await crcResponse.arrayBuffer());
+// Engine-TS CrcBuffer has 9 x uint32 cache CRCs followed by the
+// separate uint32 rolling cache hash (40 bytes total); login transmits
+// ONLY the first 36 bytes. Never invent or hardcode checksum values.
+if(crcAndHash.length!==40)reject('server did not return the 40-byte real CRC table');
+const crcs=Buffer.from(crcAndHash.subarray(0,36));
 
 const password=randomBytes(18).toString('base64url').slice(0,20);
 const session=new Session377({
