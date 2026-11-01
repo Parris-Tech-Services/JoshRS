@@ -1,0 +1,17 @@
+name: Task 15 Fedora entrypoint fixture
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-task15-entrypoint.sh'
+      - 'tools/test-rs377-task15-entrypoint.sh'
+      - '.github/workflows/task15-fedora-entrypoint.yml'
+  workflow_dispatch:
+jobs:
+  offline-fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax check
+        run: bash -n tools/rs377-task15-entrypoint.sh tools/test-rs377-task15-entrypoint.sh
+      - name: Reject foreign checkout without mutation
+        run: bash tools/test-rs377-task15-entrypoint.sh
