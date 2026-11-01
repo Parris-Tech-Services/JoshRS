@@ -1,5 +1,7 @@
 # JoshRS: outstanding work register (31 October 2026)
 
+> **Superseded as primary index (2 Nov 2026):** See the [project-wide master backlog](../../docs/JOSHRS_PROJECT_WIDE_MASTER_BACKLOG_2026-11-02.md) for the newer consolidated work across all known JoshRS tracks. This older document remains as dated historical evidence; it was not an exhaustive task inventory.
+
 **Status: PARTIALLY COMPLETE.** This register consolidates open work. The GitHub issues are the **actionable task lists**, while the documents below hold supporting evidence. A code directory, CI pass, NPC definition or factory candidate is not a working game feature.
 
 ## Target separation
