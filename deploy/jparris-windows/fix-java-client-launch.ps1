@@ -23,11 +23,11 @@ if ($before.Contains($marker)) {
     exit 0
 }
 $pattern = '(?ms)^[ \t]*if[ \t]*\([ \t]*\$Role[ \t]+-eq[ \t]+[''"]Client[''"][ \t]*\)[ \t]*\{.*?^\}[ \t]*(?=\r?\n|$)'
-$matches = [regex]::Matches($before,$pattern)
-if ($matches.Count -ne 1) {
-    throw "Expected exactly one top-level Client role block, found $($matches.Count). Refusing to overwrite Agy customisations."
+$clientBlocks = [regex]::Matches($before,$pattern)
+if ($clientBlocks.Count -ne 1) {
+    throw "Expected exactly one top-level Client role block, found $($clientBlocks.Count). Refusing to overwrite Agy customisations."
 }
-$old = $matches[0].Value
+$old = $clientBlocks[0].Value
 # Reject a different launch shape rather than blindly wiping local tweaks.
 if ($old -notmatch 'Java client|java client|gradlew|java\.exe|javaExe|jvmArgs') {
     throw 'Client branch does not match a recognised Java launcher. No changes made.'
@@ -52,7 +52,7 @@ if ($Role -eq 'Client') {
     return
 }
 '@
-$new = $before.Substring(0,$matches[0].Index) + $replacement + $before.Substring($matches[0].Index + $old.Length)
+$new = $before.Substring(0,$clientBlocks[0].Index) + $replacement + $before.Substring($clientBlocks[0].Index + $old.Length)
 $tokens = $null
 $errors = $null
 [void][System.Management.Automation.Language.Parser]::ParseInput($new,[ref]$tokens,[ref]$errors)
