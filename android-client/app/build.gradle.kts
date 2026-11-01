@@ -11,8 +11,8 @@ android {
         applicationId = "au.com.parristech.joshrs.android"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1-foundation"
+        versionCode = 2
+        versionName = "0.2-visual-prototype"
     }
 
     compileOptions {
