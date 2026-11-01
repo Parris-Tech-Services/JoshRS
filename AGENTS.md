@@ -4,6 +4,14 @@
 
 The playable revision-377 world is a separate local installation. Do not confuse it with Woodlands or the public 2004Scape launcher.
 
+## AI-bot task ownership (do not transfer ChatGPT's work to Agy)
+
+For the Elrothiro companion project, the [42-task ChatGPT-owned execution checklist](docs/rs377/CHATGPT_OWNED_AGY_PREPARATION_TODO_2026-11-02.md) is assigned to **ChatGPT**, not to Agy. ChatGPT should perform its own source audit, research, independent source/fixture development, tests, CI fixes and commits via available connected tools, rather than writing more instructions for Agy to do that work. Every task must have implementation and independent verification evidence before its checkbox is marked done.
+
+Agy's separate [71-task Fedora/shared-world checklist](https://github.com/Parris-Tech-Services/JoshRS/blob/feature/rs377-rssdk-claude-harness-20261102/docs/rs377/AGY_FEDORA_VISIBLE_COMPANION_TODO_2026-11-02.md) is on draft [PR #62](https://github.com/Parris-Tech-Services/JoshRS/pull/62). It covers on-machine implementation and real-world acceptance. Do not confuse these two checklists or assume draft branch files exist on `main`. Avoid duplicating or overwriting code already being edited by Agy.
+
+The necessary local tasks (finding the authoritative server Elrothiro actually uses, checking Fedora and live sessions, disposable bot credentials, proving two players in the same world, authorised deployment/rollback) cannot be certified from GitHub. Source CI, offline fixtures and standalone test servers do **not** prove a bot is visible and playable beside Elrothiro.
+
 ## First read
 - deploy/jparris-windows/upstreams.json: pinned engine/content/client commits and ports.
 - docs/377_CONTENT_FACTORY.md: discovery, permissions, conversion and acceptance rules.
