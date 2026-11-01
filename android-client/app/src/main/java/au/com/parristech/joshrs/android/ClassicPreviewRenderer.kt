@@ -34,7 +34,7 @@ class ClassicPreviewRenderer {
     fun camera(width: Int, height: Int): Camera {
         val w = width.toFloat()
         val h = height.toFloat()
-        val s = (w / 393f).coerceIn(.75f, 2.8f)
+        val s = min(w / 393f, h / 760f).coerceIn(.65f, 2.8f)
         val bottom = h * .73f
         return Camera(w, h, s, w / 2f, bottom * .48f, 22f * s, 11f * s, bottom)
     }
