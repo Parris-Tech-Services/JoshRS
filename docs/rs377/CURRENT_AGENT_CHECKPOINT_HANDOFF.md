@@ -44,6 +44,40 @@ node tools/rs377-companion-contract/src/run-integration.mjs --verify /tmp/joshrs
 
 If the temporary directory no longer exists, a new `--prepare` may be needed; do not claim that the world ever started. Next, **inspect** the existing local engine paths, services and configuration *names only* before deciding how to create a new isolated engine checkout. Do not run the historic `start-server.sh` against its potentially valuable saves.
 
+## Fedora installation identity checkpoint — operator output, 2 Nov 2026
+
+**Verified by supplied terminal output (read-only; no game started):**
+- `/home/josh/dev/JoshRS` **is not a Git repository**. It is a mixed working/game directory containing `engine/`, `content/` and `lostcity377/`, archives and large local files. `git rev-parse` there fails correctly; the JoshRS GitHub preflight script is not at that directory's root. **Do not `git init`, `git clean`, reset or replace this folder.**
+- `/home/josh/lostcity377` is a **symlink** to `/home/josh/dev/JoshRS/lostcity377`: these are **one installation, not two isolated worlds**.
+- The installed engine at `/home/josh/dev/JoshRS/lostcity377/engine` reports Git HEAD abbreviated **`8901ddaa`**. This is **not the pinned upstream revision** `b5ac859b47915afb545e60e4c1208f25d43cb3fb` in `deploy/jparris-windows/upstreams.json`; whether this reflects custom commits, different branch or pin divergence remains unverified until inspecting the full Git SHA/status. Do not switch to upstream SHA before checking working changes and saves.
+- On Fedora, `ss -ltnp` showed no listening game/web ports `52402` or `8888`, and `ps -eo pid,comm` found no `node`/`java`/`gradle` processes at that instant. **This does not say anything definitive about remote JParris Desktop.**
+- Installed scripts `start-server.sh` and `status-joshrs.sh` and `engine/package.json` exist. The local launch script contents have **not** been reviewed; running `start-server.sh` may load real local saves and is **not authorised** as an isolated test.
+- The already-prepared profile at `/tmp/joshrs-377-disposable-kVlUAJ/manifest.json` **passed `--verify`** with result `isolated_manifest_verified_no_game_started`, world `isolated-e4ae1c84bf29`, test ports game `53402`, web `8988`, login `53500`, Friends `55099`, logger `53501`, placeholder account `HarnessTest`. **No actual game instance or player account exists merely because the manifest passed.**
+- User has Fedora, ThinkPad and ProBook available now, **not** JParris Desktop. Java two-client acceptance can be attempted with the laptops later only after the separate disposable server and bot actually work.
+
+**Next local action: read-only installation/source identity inspection; no additional clones or repeat tests.**
+
+```bash
+BASE="$HOME/dev/JoshRS/lostcity377"
+echo "Canonical installation: $(readlink -f "$BASE")"
+echo "Alias: $(readlink -f "$HOME/lostcity377")"
+for part in engine content client-java; do
+  dir="$BASE/$part"
+  echo "=== $part ==="
+  if git -C "$dir" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    git -C "$dir" rev-parse HEAD
+    git -C "$dir" branch --show-current
+    git -C "$dir" status --short --untracked-files=no
+  else
+    echo "Not a Git worktree: $dir"
+  fi
+done
+echo "=== Existing server status (read-only diagnostic) ==="
+bash "$BASE/status-joshrs.sh"
+```
+
+**Do not** print `.env`, passwords, private keys, raw SQLite/player saves or service secrets; avoid starting `start-server.sh` until the source and data isolation are proven. GitHub-only agent work to implement/check real adapter, compile and CI remains ChatGPT/Claude/Codex responsibility; do not delegate that to Agy.
+
 ## Known defects and unverified gates
 
 - **#25 — PARTIALLY COMPLETE:** normal `BotAction` mapping and native dispatch scaffolding exist; pinned RS-SDK TypeScript compile + *real* `BotWorldState` ingestion and observed action effect remain unproven. Review open PRs #83/#84 and existing source first; do not duplicate them.
@@ -65,14 +99,15 @@ If the temporary directory no longer exists, a new `--prepare` may be needed; do
 
 ## Next local action
 
-**Agy's smallest safe action — verify the already-created disposable manifest, without starting or changing a game:**
+**The existing Fedora manifest is now verified. Do not repeat cloning, source tests or `--verify`.** The next step is the read-only installed-engine identity + server-status inspection shown in the [Fedora installation identity checkpoint](#fedora-installation-identity-checkpoint--operator-output-2-nov-2026). Do not run the historical server launcher or touch existing saves. The full 377 source must be reviewed before a *separate* disposable engine build and login.
 
 ```bash
-cd /home/josh/joshrs-test-L5aVBQ/JoshRS
-node tools/rs377-companion-contract/src/run-integration.mjs --verify /tmp/joshrs-377-disposable-kVlUAJ/manifest.json
+BASE="$HOME/dev/JoshRS/lostcity377"
+echo "Canonical: $(readlink -f "$BASE")"
+git -C "$BASE/engine" rev-parse HEAD
+git -C "$BASE/engine" status --short --untracked-files=no
+bash "$BASE/status-joshrs.sh"
 ```
-
-Fedora preflight, 115 offline tests and isolated profile preparation have already been completed by the operator; **do not assign reruns of these as new Agy work**. If the manifest has expired from `/tmp`, create a new profile; do not reuse any family saves. After verify, inspect local source/runtime layout before any separate disposable **engine startup**. ChatGPT/other GitHub-capable agents retain ownership of open adapter/source, CI and merge work.
 
 ## Checkpoint update protocol
 
