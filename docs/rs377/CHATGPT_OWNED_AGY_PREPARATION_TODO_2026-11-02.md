@@ -34,7 +34,7 @@ This is a **ChatGPT execution backlog**, not another list of instructions for Ag
 7. [x] **Audit pinned RS-SDK APIs precisely.** Compare the real `BotSDK`, `BotWorldState`, `BotAction`, WebSocket gateway and MCP entrypoints at the pinned SDK commit; record incompatible revision-specific client/server assumptions and legal adapter seams.
    **Evidence:** [pinned RS-SDK API audit](CHATGPT_TASK_07_PINNED_RSSDK_API_AUDIT_2026-11-02.md); source-level only, not a live adapter.
 8. [ ] **Write a 377-to-RS-SDK capability matrix.** For each normal bot action/observation mark `supported`, `needs source implementation`, `needs live validation`, or `not supported`; cite exact packet/event field and test source.
-9. [ ] **Review bot licence/security boundaries.** Record provenance of adopted upstream code, avoid copying proprietary Jagex caches/assets, credentials and server private keys, and flag untrusted chat/tool input and unsafe upstream `execute_code`.
+9. [x] **Review bot licence/security boundaries.** Record provenance of adopted upstream code, avoid copying proprietary Jagex caches/assets, credentials and server private keys, and flag untrusted chat/tool input and unsafe upstream `execute_code`.
 10. [ ] **Publish the smallest missing-facts checklist.** Enumerate only the genuinely on-machine information ChatGPT cannot observe: actual Elrothiro server identity, runtime endpoint, script load state, Agy local worktree changes, one test login and live game proof. Provide redacted read-only capture commands rather than asking broad questions.
 
 ## P0 — ChatGPT: remove Fedora setup friction by writing tested code
