@@ -13,8 +13,8 @@ const runtime=createSdk377Runtime({
   expectedWorld:'isolated-type-contract'
 });
 const action: BotAction = {type:'walkTo',x:3201,z:3202,reason:'typed test'};
-const result: Promise<unknown> = runtime.action(action);
-const state: Promise<unknown> = runtime.getSdkState();
+const result = runtime.action(action);
+const state: Promise<{state:BotWorldState;source:object}> = runtime.getSdkState();
 const checkState=(s:BotWorldState):number=>s.tick;
 const checkResult=(r:ActionResult):boolean=>r.success;
 void [result,state,checkState,checkResult];
