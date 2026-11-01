@@ -7,3 +7,11 @@ deploy/local/storage/
 
 deploy/server/backups/
 runtime/
+
+# Local bot credentials and machine-specific configuration
+.env
+.env.*
+!.env.example
+*.private.pem
+private.pem
+tools/rs377-bot-config.local.json
