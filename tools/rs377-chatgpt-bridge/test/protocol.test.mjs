@@ -81,8 +81,9 @@ test('RSA/public key login is revision 377, 9 CRC words, ISAAC deterministic, ne
   assert.equal(made.packet.readUInt16BE(3),377);
   assert.deepEqual([...made.packet.subarray(6,42)],Array(36).fill(5));
   assert.equal(made.packet.includes(Buffer.from('fixturePwd')),false);
+  const independent=new Isaac377([1,2,3,4]);
   assert.deepEqual(Array.from({length:10},()=>made.outboundIsaac.nextInt()),
-    Array.from({length:10},()=>new Isaac377([1,2,3,4]).nextInt()).map((v,i)=>v)); // validates repeatability
+    Array.from({length:10},()=>independent.nextInt())); // validates repeatability
 });
 test('login rejects missing CRC, private/short data and malformed credentials',()=>{
   const key=generateKeyPairSync('rsa',{modulusLength:1024}).publicKey.export({type:'spki',format:'pem'});
