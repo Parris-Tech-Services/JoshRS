@@ -25,6 +25,14 @@ while (($#)); do
   esac
   shift
 done
+if [[ "$MODE" == "doctor" && "$FETCH_SDK" -eq 1 ]]; then
+  echo "BLOCKED: --doctor is read-only; do not combine with --fetch-sdk." >&2
+  exit 2
+fi
+if ! command -v git >/dev/null 2>&1 || [[ "$(git -C "$ROOT" rev-parse --show-toplevel 2>/dev/null || true)" != "$ROOT" ]]; then
+  echo "BLOCKED: setup must run inside its own JoshRS Git worktree." >&2
+  exit 2
+fi
 printf 'JoshRS #377 Fedora RS-SDK harness preflight\nRepository: %s\n' "$ROOT"
 if [[ -r /etc/os-release ]]; then
   . /etc/os-release
@@ -85,7 +93,8 @@ if [[ "$MODE" == "prepare" ]]; then
 fi
 if (( FETCH_SDK )); then
   if ! command -v git >/dev/null 2>&1; then echo 'BLOCKED: Git required.' >&2; exit 2; fi
-  if [[ -e "$SDK_DIR" ]]; then
+  if [[ -e "$SDK_DIR" || -L "$SDK_DIR" ]]; then
+    if [[ -L "$SDK_DIR" ]]; then echo "BLOCKED: SDK directory is a symlink." >&2; exit 2; fi
     if ! git -C "$SDK_DIR" rev-parse --git-dir >/dev/null 2>&1; then
       echo "BLOCKED: existing non-Git directory at $SDK_DIR" >&2; exit 2
     fi
@@ -94,6 +103,9 @@ if (( FETCH_SDK )); then
       https://github.com/MaxBittker/rs-sdk|https://github.com/MaxBittker/rs-sdk.git|git@github.com:MaxBittker/rs-sdk.git) ;;
       *) echo 'BLOCKED: unexpected SDK Git remote.' >&2; exit 2 ;;
     esac
+    if [[ "$(git -C "$SDK_DIR" rev-parse --show-toplevel 2>/dev/null || true)" != "$SDK_DIR" ]]; then
+      echo "BLOCKED: SDK path is not the checkout root." >&2; exit 2
+    fi
     if [[ -n "$(git -C "$SDK_DIR" status --porcelain)" ]]; then
       echo 'BLOCKED: SDK checkout dirty; not modifying it.' >&2; exit 2
     fi
