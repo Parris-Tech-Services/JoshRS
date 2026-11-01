@@ -6,7 +6,7 @@ import {once} from 'node:events';
 import {Session377} from '../../rs377-chatgpt-bridge/src/session.mjs';
 import {buildLogin} from '../../rs377-chatgpt-bridge/src/protocol.mjs';
 import {SKILLS377} from '../../rs377-chatgpt-bridge/src/observation.mjs';
-import {Native377BoundaryTransport} from '../lib/native377-transport.mjs';
+import {Native377BoundaryTransport,startAuthenticated377Gateway} from '../lib/native377-transport.mjs';
 import {BoundaryController} from '../lib/controller.mjs';
 import {ReplayLedger} from '../lib/recovery.mjs';
 import {createLoopbackGateway} from '../lib/gateway.mjs';
@@ -135,4 +135,26 @@ test('HTTP gateway plus native auth requires lease and does not fake moved state
   const replay=await call('/act',{lease,actionId:'packet_walk_01',tool:'walk',
     args:{x:3201,z:3201}});
   assert.equal(replay.status,409);
+});
+
+test('production gateway entrypoint cannot bind before native authentication',async t=>{
+  const tcp=await simulatedTcp(t),b=adapter(tcp.session);
+  const dir=await mkdtemp(path.join(os.tmpdir(),'rs377-gateway-init-'));
+  t.after(()=>rm(dir,{recursive:true,force:true}));
+  const ledger=await new ReplayLedger(path.join(dir,'journal.json')).load();
+  const authToken='test-only-token-32-bytes-very-long-placeholder';
+  await assert.rejects(()=>startAuthenticated377Gateway({transport:b,ledger,authToken}),
+    /native_auth_and_fresh_ticks_required/);
+  assert.equal(tcp.packets.length,0);
+  await b.connect();
+  const gateway=await startAuthenticated377Gateway({transport:b,ledger,authToken});
+  t.after(()=>gateway.close());
+  assert.equal(gateway.address.host,'127.0.0.1');
+  const resp=await fetch('http://127.0.0.1:'+gateway.address.port+'/claim',{
+    method:'POST',headers:{'content-type':'application/json',Authorization:'Bearer '+authToken},
+    body:'{}'});
+  assert.equal(resp.status,200);
+  const data=await resp.json();
+  assert.equal(data.data.botName,BOT);
+  assert.equal(data.data.worldId,WORLD);
 });
