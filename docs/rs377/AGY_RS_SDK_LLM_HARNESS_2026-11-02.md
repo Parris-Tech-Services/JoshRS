@@ -7,6 +7,8 @@
 **Source pins:** [JoshRS #377](../../deploy/jparris-windows/upstreams.json): Engine-TS `b5ac859b47915afb545e60e4c1208f25d43cb3fb`; Content `44eab09081ef0f6c5f3eaabd1897a588ad7d9e50`; Client-Java `327880f6de74b40c420705bc42e4b34284885087`.  
 **RS-SDK reference at audit:** [MaxBittker/rs-sdk](https://github.com/MaxBittker/rs-sdk/tree/db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb), commit `db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb` (29 Oct 2026). Pin this checkout; don't assume the tip stays compatible.
 
+**Milestone-driven implementation order:** [71 numbered Fedora-to-Elrothiro companion tasks](AGY_FEDORA_VISIBLE_COMPANION_TODO_2026-11-02.md). First prove visible real bot login and movement in the same target world as Elrothiro, then wire in RS-SDK/LLM; current scaffold does not meet that acceptance.
+
 ## Exact strategic decision
 
 **Use RS-SDK as the *agent-facing API and MCP/gateway reference*, not its 274-ish modified game server. Keep JoshRS's existing private custom 377 engine, 600 ms tick, 1x XP, quests, accounts and content.**
