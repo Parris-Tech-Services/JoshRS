@@ -25,6 +25,8 @@ test('manifest rejects family world, real game ports, reused service ports, wron
   for(const x of [
    change(m=>{m.mode='family';}),change(m=>{m.host='0.0.0.0';}),
    change(m=>{m.ports.game=52402;}),change(m=>{m.ports.friends=m.ports.game;}),
+   change(m=>{m.root='/home/josh/dev/JoshRS/joshrs-377-disposable-abcdef1234';
+     m.paths=Object.fromEntries(Object.keys(m.paths).map(k=>[k,m.root+'/'+k]));}),
    change(m=>{m.paths.saves='/home/josh/dev/JoshRS/lostcity377/data/players';}),
    change(m=>{m.account='Elrothiro';}),change(m=>{m.tickMs=200;}),
    change(m=>{m.xpMultiplier=8;}),change(m=>{m.password='hidden';})
