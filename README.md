@@ -6,6 +6,12 @@ A **launch hub for the actual 2004Scape reconstruction** plus an original, small
 
 This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009Scape. Their full MMO server backends, client assets, accounts and worlds are not embedded or deployed here. Upstream projects have different dependencies and licences. Do not present this as a deployment of their complete games.
 
+## Current project-wide backlog and audit (2 Nov 2026)
+
+- **[Project-wide JoshRS master backlog](docs/JOSHRS_PROJECT_WIDE_MASTER_BACKLOG_2026-11-02.md)** — 377 gameplay, original Woodlands, autonomous bots, Android, Quest/World content, social, hosting and user-requested work.
+- **[Full GitHub and historical-work audit](docs/JOSHRS_REPOSITORY_AND_HISTORY_AUDIT_2026-11-02.md)** — reconciles all 12 open issues, 49 PRs (48 merged; #59 draft), 52 branch names and recoverable earlier JoshRS conversations. Explicitly records still-unverified source-tree/desktop/chat coverage; **a merged PR is not proof a feature works in the live client**.
+- **[111-task AI-agent sub-checklist](docs/rs377/AI_AGENTS_MASTER_TODO_2026-11-02.md)** and **[114-entry original MMO checklist](docs/FULL_CLASSIC_MMO_CHECKLIST.md)** remain separate detailed workstreams. Their overlapping entries must not be added as a count of unique unfinished defects.
+
 ## Run your own revision-377 game on JParris Desktop (Windows)
 
 **One-click Windows launcher:** download and extract this repository, insert your Fedora USB backup, then double-click **`JoshRS.cmd`** and select **Set Up and Play**. The launcher detects a complete USB revision-377 game when possible, shows whether Elrothiro's save and account database are present, and asks before importing. After installation, use **Play JoshRS**, **Check / Repair Installation**, **View Logs**, **Back Up Saves**, **Check Status** or safe diagnostics. It retrieves pinned Lost City 377 sources as needed and does not need WSL, Docker or paid hosting. The existing `jparris-setup.cmd` and `jparris-play.cmd` commands still work.
