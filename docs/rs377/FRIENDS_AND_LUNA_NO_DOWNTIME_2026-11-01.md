@@ -1,6 +1,6 @@
 # JoshRS friends + Luna — no-disconnect repair gate (1 November 2026)
 
-**State: diagnosis / review-only; NOT live-fixed.** Elrothiro and Sylvie are both logged in. This work must not restart their server, stop either client, open saves/SQLite or change the live engine environment.
+**State: diagnosis / review-only; NOT live-fixed.** Player A and Player B are both logged in. This work must not restart their server, stop either client, open saves/SQLite or change the live engine environment.
 
 ## Pinned source findings
 
@@ -15,11 +15,11 @@ Source baseline: LostCityRS/Engine-TS at b5ac859b47915afb545e60e4c1208f25d43cb3f
 - JParris setup.ps1 sets FRIEND_SERVER=true and EASY_STARTUP=true in a new config but preserves an existing customised game environment.
 - Luna is a server-side bot rather than a verified connected login. The normal friends server cannot be assumed to know her presence or route PMs to her companion controller.
 
-These source facts establish *likely failure branches*, not which one is active on JParris Desktop. Seeing Sylvie physically in-game while her name is Offline proves the social status is wrong from Elrothiro's perspective, not a specific root cause.
+These source facts establish *likely failure branches*, not which one is active on JParris Desktop. Seeing Player B physically in-game while her name is Offline proves the social status is wrong from Player A's perspective, not a specific root cause.
 
 ## Safe action during today's live session
 
-1. Set **Private chat → On** in both Java clients. With Private chat → Friends, each character must add the other; check Ignore as well. Try normal add/remove/re-add for Sylvie. Do not run admin/console or SQL commands.
+1. Set **Private chat → On** in both Java clients. With Private chat → Friends, each character must add the other; check Ignore as well. Try normal add/remove/re-add for Player B. Do not run admin/console or SQL commands.
 2. On JParris Desktop, use the new **read-only** checker from an up-to-date, extracted JoshRS checkout, without replacing runtime files:
 
     node "C:\JoshRS-Launcher\JoshRS-main\tools\rs377-social\check-social-readiness.mjs" "C:\JoshRS-Launcher\JoshRS-main"
@@ -35,7 +35,7 @@ These source facts establish *likely failure branches*, not which one is active 
 
 ## Work to finish later, with an approved safe deployment window
 
-**Agent 1 — genuine player social:** Trace world-to-Friends worker registration and FriendServer repository visibility. Prove Sylvie/Elrothiro show Online both directions, Private Chat ON/FRIENDS/OFF, ignore, add/remove, PM send/receive, logout/relogin and persistence against the correct NODE_PROFILE and database. Do not fake client-side Online by injecting one packet.
+**Agent 1 — genuine player social:** Trace world-to-Friends worker registration and FriendServer repository visibility. Prove Player B/Player A show Online both directions, Private Chat ON/FRIENDS/OFF, ignore, add/remove, PM send/receive, logout/relogin and persistence against the correct NODE_PROFILE and database. Do not fake client-side Online by injecting one packet.
 
 **Agent 2 — Luna social bot:** Provide synthetic or virtual presence for the existing companion without introducing a second game login, and route messages addressed to Luna through the companion controller. Return authentic private-message packets to the calling authorised player. Add visibility, consent, privacy and rate limits; never impersonate a human player or leak chat to third-party services. Coordinate shared changes to World.ts/Player.ts/FriendServer.ts with Agent 1.
 
