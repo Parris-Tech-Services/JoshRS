@@ -11,6 +11,25 @@ import {ReplayLedger} from './recovery.mjs';
 import {BoundaryController} from './controller.mjs';
 import {createLoopbackGateway} from './gateway.mjs';
 
+/**
+ * Real engine-backed observation source (task-24 management endpoint).
+ * Always dials localhost; never redirects or trusts caller-chosen URLs.
+ */
+export function createLoopbackEngine377Source({port,token,fetchImpl=fetch}={}){
+  if(!Number.isInteger(port)||port<1024||port>65535||
+     [52402,8888,43500,45099].includes(port))throw new Error('isolated_observer_port_required');
+  if(typeof token!=='string'||Buffer.byteLength(token)<32)throw new Error('strong_native_observer_token_required');
+  if(typeof fetchImpl!=='function')throw new Error('fetch_implementation_required');
+  const uri='http://127.0.0.1:'+port+'/dev/rs377-observe';
+  return Object.freeze({async read(){
+    const response=await fetchImpl(uri,{method:'GET',redirect:'error',
+      headers:{authorization:'Bearer '+token},signal:AbortSignal.timeout(3000)});
+    if(!response.ok)throw new Error('engine_observer_http_'+response.status);
+    const body=await response.text();
+    if(Buffer.byteLength(body)>65536)throw new Error('engine_observer_response_oversize');
+    return JSON.parse(body);
+  }});
+}
 const fail = why => { throw new Error(why); };
 const number = x => Number.isSafeInteger(x) && x>=0;
 const matchWorld = (s,botName,worldId) => {
@@ -117,9 +136,9 @@ export class Native377BoundaryTransport {
   async observe(){
     if(!this.connected||!this.session.status().authenticated)fail('native_not_authenticated');
     const s=await this.sample();
-    if(s.position===null||s.inventory===null||s.skills===null||s.questStages===null)
+    if(s.position===null||s.inventory===null)
       fail('required_native_state_missing');
-    const xp=Object.fromEntries(s.skills.map(x=>[x.name,x.xpTenths]));
+    const xp=s.skills===null?null:Object.fromEntries(s.skills.map(x=>[x.name,x.xpTenths]));
     return {observedAtMs:this.lastAdvanceAt,tick:s.tick,
       world:{mode:'isolated',revision:377,tickMs:600,xpMultiplier:1,instanceId:s.world.instanceId},
       player:{username:this.botName,isBot:true,x:s.position.x,z:s.position.z,
