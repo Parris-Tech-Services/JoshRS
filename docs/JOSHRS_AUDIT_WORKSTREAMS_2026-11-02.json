@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "scope": "Cross-project canonical outcomes; OVERLAPS fine-grained 111-item AI and 114-entry original MMO lists",
+  "audited_at": "2026-11-02",
+  "is_exhaustive": false,
+  "coverage": {
+    "open_issues": 12,
+    "prs": 49,
+    "merged_prs": 48,
+    "open_draft_prs": 1,
+    "branch_names": 52,
+    "known_chat_retrieval": "targeted only",
+    "code_tree_scan": false,
+    "windows_runtime_verified": false
+  },
+  "items": [
+    {
+      "id": "CRIT-01",
+      "priority": "P0",
+      "title": "Recover full active family world runtime: game 52402, login, web, Friends; preserve old saves and DB; reproduce process crash and authentication failure",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/rs377/AI_AGENTS_MASTER_TODO_2026-11-02.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "CRIT-02",
+      "priority": "P0",
+      "title": "Determine outcome and root cause of Party Chest accepted-items reset/Inventory.add wrappers; confirm recovered items in balloons and prevent the damaging clear flow on next deposit",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/52",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "CRIT-03",
+      "priority": "P0",
+      "title": "Confirm Sylvie's four-piece pink outfit (including the missing top/boots) and avoid silently replacing items before checking bank/inventory; verify Yrsa shop live",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/pull/51",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "CRIT-04",
+      "priority": "P0",
+      "title": "Prevent automatic engine reload, experimental scripts or bot loops from hanging production; verify safe rollback and friend/login service startup",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/30",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "GAME-01",
+      "priority": "P1",
+      "title": "Implement/verifiably test Luna popping Party Room balloons legitimately, without duplicating or consuming party drops",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/34",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "GAME-02",
+      "priority": "P1",
+      "title": "Implement Luna's real contextual assistance for questing, fishing, woodcutting, mining, banking and combat; preserve follow/chat and consent gates",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/rs377/LUNA_CONTEXT_AWARE_COMPANION_2026-10-31.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "GAME-03",
+      "priority": "P1",
+      "title": "Verify Pious Pete candle minigame repaired in personalised 377 runtime, including collision, dialog, puzzle and item state",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/377_NATIVE_CONTENT_INTEGRATION.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "GAME-04",
+      "priority": "P1",
+      "title": "Verify interactive 377 full-world map and 39-destination teleport network with real UI layering, click-to-open, camera focus and safe destinations; distinguish previously committed source vs loaded runtime",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/fedora-377/FEATURE_AUDIT_2026-10-30.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "GAME-05",
+      "priority": "P1",
+      "title": "Verify exact source-only fixes for the RuneScape login-region music and actual playback after clean relaunch",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/377_NATIVE_CONTENT_INTEGRATION.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "GAME-06",
+      "priority": "P1",
+      "title": "Review user-requested 200-level skill extensions and original 1–99 XP curve constraints as optional personalised-world feature; do not change existing 99s or live saves without opt-in",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/FULL_CLASSIC_MMO_CHECKLIST.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "GAME-07",
+      "priority": "P2",
+      "title": "Inventory/equipment QoL previously requested: gear preset manager, portable banking, protected admin panel and custom shortcuts; confirm scope before implementation and separate from 28+28 pouch",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/50",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "GAME-08",
+      "priority": "P1",
+      "title": "Add real meaningful NPC dialogue/branching to selected verified NPCs; fix generic greeting fallback and broken triggers using current packed scripts, no speculative replacements",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/36",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "GAME-09",
+      "priority": "P1",
+      "title": "Verify the client Skill Guide buttons and Quest Journal buttons are interactive and correct with 21 period-correct skills and available quests",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/29",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "GAME-10",
+      "priority": "P1",
+      "title": "Implement and test 28+28 accessible portable item storage with UI, atomic transfers and persistence, preserving all existing slots",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/50",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "MAP-01",
+      "priority": "P1",
+      "title": "Complete Tideglass Isle conversion from original concept/JM2 source to compatible 377 map/collision/models/NPC/RuneScript/quests and real-client gameplay",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/expansions/archaeology-island/README.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "MAP-02",
+      "priority": "P1",
+      "title": "Audit genuinely blank 377 terrain squares vs water, version gaps or map UI errors; keep 2026 OSRS and RS3 additions separately gated by assets and era",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/research/rs377/MAP_EXPANSION_2006_TO_2026_2026-10-30.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "MAP-03",
+      "priority": "P2",
+      "title": "Evaluate user-requested 25-quest/15-system and regional 2006–2026 expansion packs individually against existing content and legal art constraints; avoid bulk installs",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/research/rs377/CONTENT_RECOVERY_BACKLOG_2026-10-30.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "CLIENT-01",
+      "priority": "P1",
+      "title": "Bring Sylvie second-player VM to full customised desktop client parity: zoom, fullscreen, scaling, world map, control layout and chat; preserve separate saved identities",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/30",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "CLIENT-02",
+      "priority": "P1",
+      "title": "Fix Mac-to-Windows VM remote play (Royal TSX / RDP forwarding) and Chrome Remote Desktop click/crash problems, supported on older Mac",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/30",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "CLIENT-03",
+      "priority": "P1",
+      "title": "Resolve ProBook Java client resizing, black screen/stall and web server/Gradle startup through Tailscale; prove local gameplay and safe logout",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/30",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "CLIENT-04",
+      "priority": "P1",
+      "title": "Verify Android streaming of real saved Elrothiro gameplay from desktop with authenticated, private, non-destructive LAN/Tailscale connection",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/commit/0d6d3085e98b44d0021f232956b4dc4a9baf5b61",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "CLIENT-05",
+      "priority": "P1",
+      "title": "Complete native Kotlin Android app past offline original-isometric visual prototype to actual revision-377 client or compliant remote viewer; verify on Galaxy A55",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/pull/61",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "CLIENT-06",
+      "priority": "P1",
+      "title": "Verify browser 377 protocol bridge real login, cache, movement, persistence and mobile controls, not just a working TCP->WebSocket tunnel",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/tools/web377-bridge/README.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "CLIENT-07",
+      "priority": "P1",
+      "title": "Prove JParris Windows one-click setup from both Fedora USB and Google Drive recovery sources, full client build, customised world map, safe rollback, precise selected snapshot and preserved player state",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/30",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "BOT-01",
+      "priority": "P0",
+      "title": "Repair George no-grants Cook's Assistant test and implement every legitimate item-acquisition, dialogue, milling and delivery step (PR #59 draft); isolated real-time 600ms proof",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/pull/59",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "BOT-02",
+      "priority": "P0",
+      "title": "Replace family-world Fred/George four-waypoint patrol clients with authoritative same-world native action engine, persistent true progression, no duplicate identities",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/55",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "BOT-03",
+      "priority": "P1",
+      "title": "Build shared Observation377/Action377 planner and Barry/Larry/Gary/Rory personalities and genuine no-cheat quests; avoid 289/377 incompatibilities",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/rs377/AI_AGENTS_MASTER_TODO_2026-11-02.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "BOT-04",
+      "priority": "P1",
+      "title": "Repair telemetry: cross-window XP rollback, disconnected reports, 0/12 missing snapshots and separate production from isolated test worlds",
+      "execution_scope": "repo",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/55",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "BOT-05",
+      "priority": "P1",
+      "title": "Prove existing Luna Challenge/Friends/PM/follow/trade and contextual dragon assist work in correct combat/social rules; no silent actions",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/34",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "RESEARCH-01",
+      "priority": "P1",
+      "title": "Map all six configuration-only 377 quest roots, historical 104 quests and encounter/minigame sources to actual runnable state and playable outcomes",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/28",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "RESEARCH-02",
+      "priority": "P2",
+      "title": "Complete source-rights/licence and compatibility audit for historical engines and open-source RuneScape bot libraries before source reuse",
+      "execution_scope": "repo",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/28",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "WOOD-01",
+      "priority": "P1",
+      "title": "Deploy and verify original Woodlands item conservation and save-import fixes through actual Vercel served build, independent of 377",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/pull/33",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "WOOD-02",
+      "priority": "P1",
+      "title": "Finish authenticated server-authoritative zero-subscription original Woodlands multiplayer world, original 2004-look assets and existing 114-point MMO checklist",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/FULL_CLASSIC_MMO_CHECKLIST.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "HOST-01",
+      "priority": "P1",
+      "title": "Verify local/private historically sourced engine host fail-safe, backups and restore, origin binding and player login; don't publish proprietary assets",
+      "execution_scope": "runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/3",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "HOST-02",
+      "priority": "P2",
+      "title": "Demonstrate independent original no-cost hosting, origin limits, real mobile/desktop gameplay, rights clearance and complete rollback proof",
+      "execution_scope": "repo+runtime",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/5",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "QA-01",
+      "priority": "P0",
+      "title": "Review CI: Vercel build-rate-limit on Android commit is not a pass/fail on Android game functionality; native engine/Java clients require separate tests",
+      "execution_scope": "repo",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/pull/61",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "QA-02",
+      "priority": "P1",
+      "title": "Make GitHub progress evidence coherent across issues, 49 PRs, 52 branches and active source documents; preserve merged ≠ deployed ≠ playable states",
+      "execution_scope": "repo",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/JOSHRS_PROJECT_WIDE_MASTER_BACKLOG_2026-11-02.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "QA-03",
+      "priority": "P1",
+      "title": "Audit possible unmerged source living in 51 non-main GitHub branches, comparing each to main; don't assume a branch's existence proves work undone",
+      "execution_scope": "repo",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/branches",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "QA-04",
+      "priority": "P1",
+      "title": "Run full code-tree TODO/FIXME and filename/schema scan on an authorised repo checkout, as connected GitHub code search returns no private results; collect test/artifact evidence",
+      "execution_scope": "repo+runner",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "QA-05",
+      "priority": "P1",
+      "title": "Reconcile closed/merged PR descriptions: source-only, isolated CI, real client and save verification; reopen/track missing acceptance via issue without undoing merged patches",
+      "execution_scope": "repo",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/pulls?q=is%3Apr+is%3Aclosed",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    },
+    {
+      "id": "QA-06",
+      "priority": "P1",
+      "title": "Reconcile further historical JoshRS ChatGPT requests with repository source; prior conversations cannot be exhaustively enumerated by current context retrieval",
+      "execution_scope": "history",
+      "evidence_url": "https://github.com/Parris-Tech-Services/JoshRS/blob/main/docs/JOSHRS_PROJECT_WIDE_MASTER_BACKLOG_2026-11-02.md",
+      "status": "UNVERIFIED_OR_PARTIAL",
+      "source": "repository_and_history_audit_2026-11-02",
+      "checked_at": "2026-11-02"
+    }
+  ]
+}
