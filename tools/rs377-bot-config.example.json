@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "mode": "offline",
+  "productionEnabled": false,
+  "game": {
+    "host": "127.0.0.1",
+    "port": 52402,
+    "revision": 377,
+    "worldId": "REPLACE_WITH_VERIFIED_WORLD_ID"
+  },
+  "gateway": {
+    "enabled": false,
+    "url": "ws://127.0.0.1:REPLACE_PORT",
+    "control": false
+  },
+  "account": {
+    "username": "REPLACE_DISPOSABLE_BOT_USERNAME",
+    "passwordEnv": "JOSHRS_BOT_PASSWORD",
+    "neverUseFamilyAccount": true
+  },
+  "safety": {
+    "requireExplicitLiveApproval": true,
+    "allowAdminMutations": false,
+    "allowSaveWrites": false
+  }
+}
