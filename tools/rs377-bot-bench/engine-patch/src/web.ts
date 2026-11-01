@@ -277,9 +277,12 @@ management.get('/dev/rs377-observe', async (req, reply) => {
     // would mutate game state during a read. Access ONLY existing bot.invs.
     const inventory = bot.invs.get(InvType.INV);
     const worn = bot.invs.get(InvType.WORN);
+    // No allocated container means there are no items in this player's
+    // private inventory map; return the actual empty logical inventory.
+    // This never allocates a container or touches any other player's map.
     const projectItems = (inv: typeof inventory) => inv ?
         inv.items.flatMap((item, slot) =>
-            item ? [{ slot, id: item.id, count: item.count }] : []) : null;
+            item ? [{ slot, id: item.id, count: item.count }] : []) : [];
 
     // Same visibility predicate as OpNpcHandler. Never list distant or
     // invisible NPCs or any other human player's state.
