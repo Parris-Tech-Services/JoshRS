@@ -43,7 +43,12 @@ if [[ ! -f "$TARGET/tools/rs377-agent-harness/fedora/setup.sh" ]]; then
   echo 'BLOCKED: worktree does not contain Fedora harness setup; refusing to alter it.' >&2
   exit 2
 fi
-echo 'Running safe Fedora checks and separate RS-SDK source checkout.'
-bash "$TARGET/tools/rs377-agent-harness/fedora/setup.sh" --prepare --fetch-sdk "$@"
+SDK_OPTIONS=(--fetch-sdk)
+if [[ "${1:-}" == "--no-sdk" ]]; then
+  SDK_OPTIONS=()
+  shift
+fi
+echo 'Running safe Fedora tests; RS-SDK source fetched unless --no-sdk was given.'
+bash "$TARGET/tools/rs377-agent-harness/fedora/setup.sh" --prepare "${SDK_OPTIONS[@]}" "$@"
 printf '\nFor Agy (not the production server):\n  cd %q && agy\n' "$TARGET"
 echo 'Agy: read the Fedora work order in docs/rs377/AGY_RS_SDK_LLM_HARNESS_2026-11-02.md'
