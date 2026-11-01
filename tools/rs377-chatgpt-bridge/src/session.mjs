@@ -101,9 +101,13 @@ export class Session377 {
     return result;
   }
   send(action) {
+    return this.sendPacket(buildAction(action));
+  }
+  sendPacket(packet) {
     if(this.stage!=='authenticated'||this.closed||!this.socket||this.socket.destroyed)
       throw new Error('No authenticated disposable bot session');
-    const packet=buildAction(action);
+    if(!packet||!Number.isInteger(packet.opcode)||!Buffer.isBuffer(packet.body))
+      throw new Error('Validated native 377 packet required');
     if(!this.socket.write(framePacket(packet,this.isaac))) {
       // Backpressure means queued; it does not prove an effect.
       return {status:'queued_unverified',hasWorldState:false};
