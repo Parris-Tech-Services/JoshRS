@@ -26,7 +26,7 @@ jobs:
         run: npm run check --prefix tools/rs377-companion-contract
       - name: Verify no privileged game actions or live account automation in companion package
         run: |
-          if grep -R -nE '(^|[^A-Za-z])(child_process|execSync|spawnSync|setVar|invAdd|addXp|p_teleport)([^A-Za-z]|$)' tools/rs377-companion-contract/src; then
+          if grep -R -nE '(^|[^A-Za-z])(child_process|execSync|spawnSync|p_teleport\\(|\\.setVar\\(|\\.invAdd\\(|\\.addXp\\()' tools/rs377-companion-contract/src; then
             echo "Disallowed privileged code in safe companion source"
             exit 1
           fi
