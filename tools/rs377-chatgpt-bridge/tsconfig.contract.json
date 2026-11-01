@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "skipLibCheck": false,
+    "strict": true,
+    "types": ["node"]
+  },
+  "files": ["sdk-contract.check.ts", ".pinned/sdk/types.ts", ".pinned/sdk/ge-types.d.ts"]
+}
