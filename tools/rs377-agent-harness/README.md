@@ -6,6 +6,27 @@ This folder defines strict, zero-dependency building blocks for the independent 
 
 **Agy delivery checklist:** [71 numbered tasks to one visible, truly playable companion in Elrothiro's server](../../docs/rs377/AGY_FEDORA_VISIBLE_COMPANION_TODO_2026-11-02.md). Treat the real-world identity/topology proof as mandatory before any production action.
 
+## Native revision-377 TCP code now implemented
+
+Agy can **reuse actual source**, rather than rewriting the RSA/ISAAC login from scratch:
+
+- [native377/codec.mjs](src/native377/codec.mjs): public RSA key only, random ISAAC seeds, revision-377 login+CRC framing, normal gameclick and NO_TIMEOUT packets.
+- [native377/client.mjs](src/native377/client.mjs): one real TCP bot login session (no auto reconnect), bounded timeout, explicit private-network target, explicit family-world approval and normal walking packet; **does not decode incoming world state**.
+- [native377/cli.mjs](src/native377/cli.mjs): offline doctor and deliberately approval-gated single login/move entrypoint with a bot-only password file (mode 0600), public RSA key and 36-byte cache CRC file. Normal login may create a new account; **never test against the family server casually**.
+- [native377-codec.test.mjs](test/native377-codec.test.mjs), [native377-client.test.mjs](test/native377-client.test.mjs) and [native377-cli.test.mjs](test/native377-cli.test.mjs): local mock TCP handshake, production safety and CLI tests.
+
+Safe to run without any game account or network connection:
+
+```sh
+cd tools/rs377-agent-harness
+npm run doctor
+npm run check
+```
+
+For an **isolated disposable world only**, Agy supplies these environment variables via a private noncommitted secret mechanism: `JOSHRS_BOT_USERNAME`, `JOSHRS_BOT_PASSWORD_FILE`, `JOSHRS_BOT_RSA_PUBLIC_FILE`, `JOSHRS_BOT_CRC_FILE`, `JOSHRS_BOT_ACCOUNT_APPROVED=YES`, plus optional `JOSHRS_BOT_HOST`/`JOSHRS_BOT_PORT`. `node src/native377/cli.mjs --login` logs in once; optional `--walk=3233,3217` emits only one normal movement packet. The key file must contain a **public** RSA PEM, not private.pem. The CLI cannot read the bot's position or assert the movement worked yet.
+
+**Next real implementation:** use a legitimate revision-377 world-state decode/observer to feed `Observation377`, then map verified actions to the actual RS-SDK gateway. Do not mark connected gameplay or RS-SDK support as complete merely because the TCP fixture works.
+
 ## Fedora 44 / AVANCE-WS7 easiest setup
 
 Follow the [Fedora single-command bootstrap](../../docs/rs377/FEDORA44_AGY_RSSDK_SETUP_2026-11-02.md). It creates a separate Agy worktree, detects the previously used `/home/josh/dev/JoshRS/lostcity377` engine/client, runs these offline tests, and checks out the pinned RS-SDK source without touching the family game. **Fedora live integration is not yet verified**.
