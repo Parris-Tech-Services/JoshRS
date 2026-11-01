@@ -274,5 +274,5 @@ management.get('/prometheus', async (_req, reply) => {
 });
 
 export async function startManagementWeb() {
-    await management.listen({ port: Environment.WEB_MANAGEMENT_PORT, host: '0.0.0.0' });
+    await management.listen({ port: Environment.WEB_MANAGEMENT_PORT, host: '127.0.0.1' });
 }
