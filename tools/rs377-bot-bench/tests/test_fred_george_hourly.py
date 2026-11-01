@@ -19,7 +19,7 @@ def sample(bot, end, *, exp=fg.EXPERIMENT, start_sig="abcdef0123456789"):
     return {
         "schema": fg.SCHEMA, "experiment_id": exp, "bot": bot,
         "policy": fg.BOTS[bot], "world_mode": "isolated", "ab_run_id": "trial_fred_george_01",
-        "policy_version": "v1", "online": True,
+        "policy_version": "v1", "online": True, "phase": "solo", "cooperation_events": [],
         "window_start_utc": fg.iso(end - timedelta(minutes=10)),
         "window_end_utc": fg.iso(end),
         "fresh_account": True, "items_seeded": False, "cheats_enabled": False,
@@ -94,6 +94,35 @@ class FredGeorgeTests(unittest.TestCase):
                 put(root, "George", end, start_sig="123456789abcdef0")
             result = fg.scan(root, HOUR)
             self.assertFalse(result["comparable"])
+
+    def test_cooperation_is_tracked_separately_and_ab_not_comparable(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)
+            for minute in range(10, 61, 10):
+                end = HOUR + timedelta(minutes=minute)
+                for bot in fg.BOTS:
+                    put(root, bot, end)
+            end = HOUR + timedelta(minutes=30)
+            put(root, "Fred", end, phase="coop",
+                cooperation_events=[{"type": "joint_combat", "partner": "George"}])
+            put(root, "George", end, phase="coop",
+                cooperation_events=[{"type": "joint_combat", "partner": "Fred"}])
+            result = fg.scan(root, HOUR)
+            self.assertFalse(result["comparable"])
+            self.assertEqual(result["received"], 12)
+            self.assertEqual(result["bots"]["Fred"]["solo_xp"], 125.0)
+            self.assertEqual(result["bots"]["Fred"]["coop_or_mixed_xp"], 25.0)
+            self.assertEqual(len(result["cooperation_events"]), 2)
+            self.assertIn("joint_combat", fg.summary_md(result))
+
+    def test_forged_solo_cooperation_rejected(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)
+            end = HOUR + timedelta(minutes=10)
+            put(root, "Fred", end, cooperation_events=[{"type": "trade", "partner": "George"}])
+            result = fg.scan(root, HOUR)
+            self.assertEqual(result["received"], 0)
+            self.assertEqual(len(result["invalid"]), 1)
 
     def test_bad_xp_flags_dates_are_flagged_not_accepted(self):
         with tempfile.TemporaryDirectory() as t:
