@@ -16,7 +16,7 @@ test "$(git hash-object "$TMP/contracts/vendor/sdk/types.ts")" = "$TYPES_BLOB"
 curl --fail --location --silent --show-error --retry 2 --max-time 35 \
   "https://raw.githubusercontent.com/MaxBittker/rs-sdk/$SDK_SHA/sdk/ge-types.d.ts" \
   -o "$TMP/contracts/vendor/sdk/ge-types.d.ts"
-$TYPES_BLOB" = "ec59cef4f878c908481f68bd42cf698b68cdf579" || exit 2
+test "$(git hash-object "$TMP/contracts/vendor/sdk/ge-types.d.ts")" = "9c34ef56f77f743a7af17f19a860d9c993a11c07"
 cp "$ROOT/contracts/sdk-contract-check.ts" "$TMP/contracts/"
 cp "$ROOT/contracts/tsconfig.json" "$TMP/contracts/"
 mkdir -p "$TMP/src"
