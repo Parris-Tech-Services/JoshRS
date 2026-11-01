@@ -15,12 +15,18 @@ if (-not $active.engine) { throw 'Missing active 377 engine path. No changes mad
 $engine=(Resolve-Path -LiteralPath ([string]$active.engine) -ErrorAction Stop).Path
 # Accept only the explicitly configured engine under runtime/<snapshot>/engine.
 # Compare the actual ancestor directory instead of mixing "/" and "\" separators.
-$canonicalRuntime=(Resolve-Path -LiteralPath $runtime -ErrorAction Stop).Path
-$actualRuntime=Split-Path -Parent (Split-Path -Parent $engine)
-if (-not [string]::Equals($canonicalRuntime.TrimEnd('\','/'),
-        $actualRuntime.TrimEnd('\','/'),[StringComparison]::OrdinalIgnoreCase) -or
-    (Split-Path -Leaf $engine) -cne 'engine') {
-    throw 'Active engine is not a private JoshRS 377 runtime copy. No changes made.'
+$canonicalRuntime=[IO.DirectoryInfo]::new(
+    (Resolve-Path -LiteralPath $runtime -ErrorAction Stop).Path).FullName
+$engineDirectory=[IO.DirectoryInfo]::new($engine)
+$actualRuntime=$engineDirectory.Parent.Parent.FullName
+$underPrivateRuntime=[string]::Equals(
+    $canonicalRuntime.TrimEnd('\','/'),$actualRuntime.TrimEnd('\','/'),
+    [StringComparison]::OrdinalIgnoreCase)
+$isEngineFolder=[string]::Equals(
+    $engineDirectory.Name,'engine',[StringComparison]::OrdinalIgnoreCase)
+if (-not $underPrivateRuntime -or -not $isEngineFolder) {
+    throw ('Active engine is not a private JoshRS 377 runtime copy. ' +
+           "Private runtime match=$underPrivateRuntime; engine folder match=$isEngineFolder. No changes made.")
 }
 $source=Join-Path $engine 'src/app.ts'
 $envPath=Join-Path $engine '.env'
