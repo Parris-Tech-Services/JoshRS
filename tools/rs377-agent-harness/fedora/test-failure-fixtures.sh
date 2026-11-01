@@ -23,7 +23,6 @@ mkdir "$TMP/harness"
 echo preserve > "$TMP/harness/marker"
 (cd "$TMP/source"; fail env JOSHRS_HARNESS_WORKTREE="$TMP/harness" bash "$BOOT" --no-sdk)
 grep -qx preserve "$TMP/harness/marker"
-rmdir "$TMP/harness" 2>/dev/null || true
 rm "$TMP/harness/marker"
 rmdir "$TMP/harness"
 # Missing Node/npm in prepare must fail without modifying source.
@@ -35,6 +34,20 @@ mkdir -p "$TMP/source/research-checkouts/rs-sdk"
 git -C "$TMP/source/research-checkouts/rs-sdk" init -q
 git -C "$TMP/source/research-checkouts/rs-sdk" remote add origin https://example.invalid/other.git
 (cd "$TMP/source"; fail bash "$TMP/source/tools/rs377-agent-harness/fedora/setup.sh" --doctor --fetch-sdk)
-# A wrong SDK commit must never be silently accepted.
-test ! -f "$TMP/source/research-checkouts/rs-sdk/.git/HEAD.mutated"
+# Failed fetch: force an invalid SDK commit in a local fixture with no network.
+# A mock git executable fails fetch while delegating other commands.
+mkdir -p "$TMP/mockbin"
+REAL_GIT="$(command -v git)"
+cat > "$TMP/mockbin/git" <<EOF
+#!/usr/bin/env bash
+if [[ "\$1" == "-C" && "\$3" == "fetch" ]]; then exit 37; fi
+exec "$REAL_GIT" "\$@"
+EOF
+chmod +x "$TMP/mockbin/git"
+# Use an expected upstream URL, but no pinned commit exists in this empty repository.
+git -C "$TMP/source/research-checkouts/rs-sdk" remote set-url origin https://github.com/MaxBittker/rs-sdk.git
+(cd "$TMP/source"; fail env PATH="$TMP/mockbin:$PATH" bash "$TMP/source/tools/rs377-agent-harness/fedora/setup.sh" --prepare --fetch-sdk)
+[[ "$(git -C "$TMP/source/research-checkouts/rs-sdk" rev-parse --is-inside-work-tree)" == true ]]
+# A local checkout at the wrong commit must not be accepted as pinned.
+[[ "$(git -C "$TMP/source/research-checkouts/rs-sdk" rev-parse HEAD 2>/dev/null || true)" != db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb ]]
 echo 'PASS: negative fixtures preserve source and reject unsafe setup'
