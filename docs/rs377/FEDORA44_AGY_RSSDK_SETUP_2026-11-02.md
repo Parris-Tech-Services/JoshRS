@@ -2,6 +2,8 @@
 
 **Owner: Agy now.** This workstation had a working custom JoshRS 377 environment on 30 October 2026, but its *current* runtime and Agy sessions have not been remotely inspected. This document is grounded in the user's older JoshRS Fedora conversations, not the Windows JParrisDesktop installation.
 
+**Next implementation checklist:** [71 numbered tasks for a fully playable shared-world companion](AGY_FEDORA_VISIBLE_COMPANION_TODO_2026-11-02.md). Essential correction: check whether Elrothiro is on JParrisDesktop Windows or another authoritative server, not the separate Fedora test world.
+
 ## Previously confirmed local environment
 
 - **Host:** AVANCE-WS7, Fedora Linux 44; controller with an HP ProDesk 400 G6 Mini (i5-10500T, 24 GB RAM).
