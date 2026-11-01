@@ -71,17 +71,27 @@ export async function loadVerifiedManifest(filename){
  * getWorldIdentity()/observeBot()/observeClient() and bounded dispatch().
  * No real adapter is shipped here; the offline fake is always labelled.
  */
-export async function runIsolatedIntegration({manifest,adapter}={}){
+async function boundedOperation(operation,timeoutMs){
+  let timer;
+  try{
+    return await Promise.race([
+      Promise.resolve().then(operation),
+      new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Isolated #377 adapter timed out')),timeoutMs);})
+    ]);
+  }finally{clearTimeout(timer);}
+}
+export async function runIsolatedIntegration({manifest,adapter,timeoutMs=3000}={}){
   verifyIsolationManifest(manifest);
+  if(!Number.isInteger(timeoutMs)||timeoutMs<100||timeoutMs>10000)throw Error('Invalid adapter timeout');
   if(!adapter||typeof adapter.getWorldIdentity!=='function'||
     typeof adapter.observeBot!=='function'||typeof adapter.dispatch!=='function')
     throw Error('Actual isolated 377 adapter required; fixture cannot certify live gameplay');
-  const id=await adapter.getWorldIdentity();
+  const id=await boundedOperation(()=>adapter.getWorldIdentity(),timeoutMs);
   if(id?.worldId!==manifest.worldId||id?.revision!==377||id?.mode!=='isolated'||
     id?.tickMs!==600||id?.xpMultiplier!==1||id?.host!=='127.0.0.1'||
     id?.gamePort!==manifest.ports.game||id?.account!==manifest.account)
     throw Error('Actual world identity/config differs from disposable manifest');
-  const before=await adapter.observeBot();
+  const before=await boundedOperation(()=>adapter.observeBot(),timeoutMs);
   if(before?.player?.username!==manifest.account||!Number.isSafeInteger(before.tick))
     throw Error('Missing fresh normal bot observation');
   // No automatic login/registration or mutation. The real adapter is
