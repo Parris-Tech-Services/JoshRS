@@ -71,7 +71,7 @@ export function mapSdkAction(action,snapshot) {
     }
     case 'pickupItem': {
       exact(a,['x','z','itemId']);verifiedGround(snapshot,a);
-      return packet({type:'ground',x:a.x,z:a.z,itemId:a.itemId,option:1});
+      return packet({type:'ground',x:a.x,z:a.z,itemId:a.itemId,option:3});
     }
     case 'interactGroundItem': {
       exact(a,['x','z','itemId','optionIndex']);verifiedGround(snapshot,a);
@@ -99,16 +99,26 @@ export function mapSdkAction(action,snapshot) {
       return packet({type:'item_on_loc',slot:a.itemSlot,itemId:item.id,
         componentId:3214,x:a.x,z:a.z,locId:a.locId});
     }
+    case 'dropItem': {
+      exact(a,['slot']);
+      const item=pickSlot(snapshot.inventory,a.slot);
+      if(!item)reject('inventory slot not observed');
+      return packet({type:'held',slot:a.slot,itemId:item.id,componentId:3214,option:5});
+    }
     case 'clickDialogOption': {
       exact(a,['optionIndex','guard']);
       const d=snapshot.dialogue;
       if(!d||!d.isOpen||!d.pageId)reject('no verified active dialogue page');
       if(!a.guard||a.guard.pageId!==d.pageId)reject('stale or unguarded dialogue');
       const opt=d.options.find(o=>o.index===a.optionIndex&&o.componentId===a.guard.componentId);
-      if(!opt)reject('dialogue option no longer available');
-      // The 377 RESUME_PAUSEBUTTON decoder is a different mechanic from an
-      // SDK option selection; mapping generic 377 component bytes is unsafe.
-      reject('dialogue page action needs verified 377 IF_BUTTON/component routing');
+      if(!opt||!isNum(opt.componentId))reject('dialogue option no longer available');
+      if(a.optionIndex===0) {
+        return packet({type:'dialog_resume',componentId:opt.componentId});
+      }
+      if(validOption(a.optionIndex)) {
+        return packet({type:'if_button',componentId:opt.componentId});
+      }
+      reject('dialogue option must be 0 (continue) or 1..5 (choice)');
     }
     default:reject('unsupported, dangerous or unverified RS-SDK action '+String(a?.type).slice(0,40));
   }

@@ -51,9 +51,19 @@ test('maps visible 377 normal actions only and preserves source exact opcodes',(
   assert.equal(r.packet.opcode,28);assert.equal(r.result,'dispatched_unverified');
   assert.equal(mapSdkAction({type:'interactNpc',npcIndex:12,optionIndex:1,reason:'Talk'},o).packet.opcode,112);
   assert.equal(mapSdkAction({type:'interactLoc',x:3221,z:3217,locId:10,optionIndex:1,reason:'Chop'},o).packet.opcode,181);
-  assert.equal(mapSdkAction({type:'pickupItem',x:3220,z:3218,itemId:1925,reason:'Take'},o).packet.opcode,77);
+  assert.equal(mapSdkAction({type:'pickupItem',x:3220,z:3218,itemId:1925,reason:'Take'},o).packet.opcode,71);
   assert.equal(mapSdkAction({type:'useItemOnLoc',itemSlot:0,x:3221,z:3217,locId:10,reason:'Use'},o).packet.opcode,152);
   assert.equal(mapSdkAction({type:'useInventoryItem',slot:0,interfaceId:3214,optionIndex:1,reason:'Use'},o).packet.opcode,203);
+  assert.equal(mapSdkAction({type:'dropItem',slot:0,reason:'Drop'},o).packet.opcode,4);
+  const withDlg=raw();
+  withDlg.dialogue={isOpen:true,pageId:'dlg-4882-10-4-12',isWaiting:true,options:[
+    {index:0,text:'Click here to continue',componentId:4882},
+    {index:1,text:'Yes please.',componentId:2461}
+  ]};
+  const od=validateObservation(withDlg,opts);
+  assert.equal(mapSdkAction({type:'clickDialogOption',optionIndex:0,guard:{pageId:'dlg-4882-10-4-12',componentId:4882},reason:'Continue'},od).packet.opcode,226);
+  assert.equal(mapSdkAction({type:'clickDialogOption',optionIndex:1,guard:{pageId:'dlg-4882-10-4-12',componentId:2461},reason:'Select 1'},od).packet.opcode,79);
+  assert.throws(()=>mapSdkAction({type:'clickDialogOption',optionIndex:1,guard:{pageId:'dlg-stale',componentId:2461},reason:'Stale'},od),/stale/);
 });
 test('rejects not visible, hostile injected actions, arbitrary stage/XP writes, unguarded dialogs',()=>{
   const o=validateObservation(raw(),opts);
