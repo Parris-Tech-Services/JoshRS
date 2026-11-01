@@ -24,9 +24,14 @@ export function verifyIsolationManifest(m,{rootHint=null}={}){
     m.host!=='127.0.0.1'||m.account!=='HarnessTest'||
     !/^isolated-[a-z0-9]{12}$/.test(m.worldId??''))throw Error('Unsafe or nonisolated manifest');
   allowedPorts(m.ports);
-  if(typeof m.root!=='string'||!path.isAbsolute(m.root)||!m.root.includes('joshrs-377-disposable-'))
+  if(typeof m.root!=='string'||!path.isAbsolute(m.root))
     throw Error('Unexpected disposable test root');
   const root=path.resolve(m.root);
+  // A convincing folder name inside a user's *real* JoshRS source/runtime is
+  // not isolation. Only one freshly generated child of OS tmpdir is permitted.
+  if(path.dirname(root)!==path.resolve(os.tmpdir())||
+    !/^joshrs-377-disposable-[A-Za-z0-9_-]{6,}$/.test(path.basename(root)))
+    throw Error('Disposable root must be a direct child of OS temporary directory');
   if(rootHint&&root!==path.resolve(rootHint))throw Error('Manifest root mismatch');
   if(!['saves','db','reports','cache'].every(n=>m.paths?.[n]===path.join(root,n)))
     throw Error('Manifest paths must be dedicated test directories');
