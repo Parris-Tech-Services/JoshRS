@@ -20,3 +20,11 @@
 - Engine-TS World.ts and RS-SDK gateway.ts and mcp/execute-code.ts inspected at pinned commits.
 - Task 16 config and .gitignore safeguards tested in rs377-bot-safety workflow; no live host security audit performed.
 - Before release: inventory actual imported third-party code and notices, run secret scanning on Git history, review asset provenance, pen-test authenticated gateway, and verify real host firewall/ACLs. These are **not complete** here.
+
+## Pinned licence inventory
+- JoshRS: MIT (2026 Parris Tech Services).
+- Engine-TS at b5ac859b: MIT (2023–2026 Lost City).
+- Content at 44eab090: MIT (2023–2026 Lost City).
+- RS-SDK at db0cc51e: MIT (2025 Lost City).
+- Client-Java at 327880f6: complete 109-entry pinned Git tree has no LICENSE, COPYING or NOTICE file. Its redistribution licence is unresolved. Related projects' MIT notices do not automatically apply.
+- Original game assets and client binaries require separate rights review. This task is a source-security and provenance review, not permission to redistribute those materials.
