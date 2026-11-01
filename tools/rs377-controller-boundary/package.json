@@ -4,5 +4,5 @@
   "type": "module",
   "private": true,
   "engines": {"node": ">=20"},
-  "scripts": {"test": "node --test test/*.test.mjs", "check": "node --check lib/guard.mjs && node --check lib/outcomes.mjs && node --check lib/recovery.mjs && node --check lib/executor.mjs && node --check lib/controller.mjs && node --check lib/gateway.mjs && node --check lib/companion.mjs && node --check lib/evidence.mjs && node --check lib/disposable.mjs && npm test"}
+  "scripts": {"test": "node --test test/*.test.mjs", "check": "node --check lib/guard.mjs && node --check lib/native377-transport.mjs && node --check lib/outcomes.mjs && node --check lib/recovery.mjs && node --check lib/executor.mjs && node --check lib/controller.mjs && node --check lib/gateway.mjs && node --check lib/companion.mjs && node --check lib/evidence.mjs && node --check lib/disposable.mjs && npm test"}
 }
