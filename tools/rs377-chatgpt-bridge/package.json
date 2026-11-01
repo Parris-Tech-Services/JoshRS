@@ -1,0 +1,8 @@
+{
+  "name":"@joshrs/rs377-chatgpt-bridge",
+  "version":"0.1.0",
+  "private":true,
+  "type":"module",
+  "scripts":{"test":"node --test test/*.test.mjs","check":"node --check src/protocol.mjs && node --check src/session.mjs && node --check src/observation.mjs && node --check src/sdk-bridge.mjs && npm test"},
+  "engines":{"node":">=22"}
+}
