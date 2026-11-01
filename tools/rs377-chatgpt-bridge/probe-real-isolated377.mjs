@@ -14,6 +14,7 @@ import {createEngine377Observer} from './src/engine-observer.mjs';
 import {SKILLS377} from './src/observation.mjs';
 import {createSdk377Runtime} from './src/sdk-runtime.mjs';
 import {createSdk377Gateway} from './src/sdk-gateway.mjs';
+import {createSdk377WebSocket} from './src/sdk-websocket.mjs';
 
 const required=(name)=>{
   const value=process.env[name];
@@ -152,6 +153,70 @@ try {
    await gateway.close();
  }
  if(!moved)reject('SDK walk action had no observed position change on isolated real engine');
+
+ // Prove the *actual pinned upstream WebSocket envelope* (sdk_connect /
+ // sdk_connected / sdk_action / sdk_action_result) with the SAME normal TCP
+ // game session and a fresh authenticated native 377 observer. This is a
+ // subset while full BotWorldState remains unsupported and clearly rejected.
+ const websocketToken=randomBytes(32).toString('hex');
+ const wsObserver=createEngine377Observer({port:managementPort,token,
+   botName:username,expectedWorld});
+ const wsRuntime=createSdk377Runtime({
+   session,observer:wsObserver,botName:username,expectedWorld
+ });
+ const webSocketGateway=createSdk377WebSocket({runtime:wsRuntime,botName:username,
+   token:websocketToken});
+ let websocketVerified=false;
+ await webSocketGateway.listen(18883);
+ const sdkSocket=new WebSocket('ws://127.0.0.1:18883/gateway');
+ const sdkReplies=[];
+ const waitWs=(predicate,timeout=8000)=>new Promise((resolve,reject)=>{
+   const started=Date.now();
+   const timer=setInterval(()=>{
+     const found=sdkReplies.find(predicate);
+     if(found){clearInterval(timer);resolve(found)}
+     else if(Date.now()-started>timeout){clearInterval(timer);reject(new Error('real upstream SDK wire response timeout'))}
+   },35);
+ });
+ sdkSocket.addEventListener('message',e=>{
+   try{sdkReplies.push(JSON.parse(e.data))}catch{}
+ });
+ try {
+   await new Promise((resolve,reject)=>{
+     const timer=setTimeout(()=>reject(new Error('WebSocket TCP open timeout')),3000);
+     sdkSocket.addEventListener('open',()=>{clearTimeout(timer);resolve()},{once:true});
+     sdkSocket.addEventListener('error',()=>{clearTimeout(timer);reject(new Error('WebSocket transport error'))},{once:true});
+   });
+   sdkSocket.send(JSON.stringify({type:'sdk_connect',username,password:websocketToken,
+     clientId:'isolated-joshrs-ci-probe',mode:'control'}));
+   await waitWs(msg=>msg.type==='sdk_connected'&&msg.success===true);
+   // It MUST NOT send invented sdk_state for unknown UI/shop/bank fields.
+   await waitWs(msg=>msg.type==='sdk_error'&&msg.error==='authoritative_sdk_state_incomplete');
+   const before=moved.position;
+   const trials=[[before.x+1,before.z],[before.x,before.z+1],
+     [before.x-1,before.z],[before.x,before.z-1]];
+   for(let trial=0;trial<trials.length;trial++){
+     const [x,z]=trials[trial];
+     const actionId='isolated-genuine-'+trial;
+     await delay(750);
+     sdkSocket.send(JSON.stringify({type:'sdk_action',username,actionId,
+       action:{type:'walkTo',x,z,running:false,reason:'live pinned SDK WebSocket acceptance'},
+       actionTimeoutMs:5500}));
+     const result=await waitWs(msg=>msg.type==='sdk_action_result'&&msg.actionId===actionId,9000);
+     if(result.result?.success===true && result.result?.phase==='completion' &&
+         result.result?.data?.verifiedEffect===true){
+       await delay(650);
+       const after=await reader.observe();
+       if(after.position.x!==x||after.position.z!==z)
+         reject('upstream SDK gateway reported an unobserved target');
+       moved=after;websocketVerified=true;break;
+     }
+   }
+   if(!websocketVerified)reject('real upstream SDK WebSocket walked no reachable tile');
+ } finally {
+   sdkSocket.close();
+   await webSocketGateway.close();
+ }
  const savedPosition={...moved.position};
  // Client close is NOT a verified logout/save. Let the actual 377 idle
  // logout/save flow finish; look for the server-generated CRC save on disk.
@@ -217,6 +282,7 @@ try {
    visibleNpcCount:later.nearbyNpcs.length,dialogueFlagsObserved:true,
    sdkStateComplete:false,
    genuineSdkGatewayAction:true,walkObserved:true,
+   genuineSdkWebSocketAction:websocketVerified,
    dispatchAttemptCount,saveRelogVerified:true,
    familyWorldTouched:false
  }));
