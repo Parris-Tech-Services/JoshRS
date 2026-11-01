@@ -19,7 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Bash syntax
-        run: bash -n tools/rs377-disposable/start-isolated-joshrs377.sh
+        run: |
+          bash -n tools/rs377-disposable/start-isolated-joshrs377.sh
+          bash -n tools/rs377-disposable/recover-failed-loc-build.sh
+          bash -n tools/rs377-disposable/test-recover.sh
+      - name: Recover real-script failure fixture with scoped loc CRC exception
+        run: bash tools/rs377-disposable/test-recover.sh
       - name: Launcher fails closed without manifest and never launches on import
         shell: bash
         run: |
