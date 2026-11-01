@@ -280,6 +280,7 @@ management.get('/dev/rs377-observe', async (req, reply) => {
     const expected = `Bearer ${token ?? ''}`;
     if (process.env.RS377_OBSERVER_ENABLED !== 'true' ||
         process.env.RS377_OBSERVER_ISOLATED !== 'true' ||
+        process.env.NODE_XPRATE !== '1' ||
         !token || Buffer.byteLength(token) < 32 ||
         !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName ?? '') ||
         !/^isolated-[a-z0-9_-]{4,64}$/i.test(instanceId ?? '') ||
