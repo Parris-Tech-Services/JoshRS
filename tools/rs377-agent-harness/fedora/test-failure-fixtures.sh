@@ -30,6 +30,7 @@ mkdir "$TMP/empty-bin"
 for tool in bash dirname pwd git uname; do ln -s "$(command -v "$tool")" "$TMP/empty-bin/$tool"; done
 (cd "$TMP/source"; fail env PATH="$TMP/empty-bin" bash "$TMP/source/tools/rs377-agent-harness/fedora/setup.sh" --prepare)
 grep -q "Node 20+ and npm needed" "$TMP/output"
+[[ ! -e "$TMP/source/research-checkouts/rs-sdk" ]]
 # SDK checkout with unexpected origin must be refused, not modified.
 mkdir -p "$TMP/source/research-checkouts/rs-sdk"
 git -C "$TMP/source/research-checkouts/rs-sdk" init -q
@@ -41,7 +42,7 @@ mkdir -p "$TMP/mockbin"
 REAL_GIT="$(command -v git)"
 cat > "$TMP/mockbin/git" <<EOF
 #!/usr/bin/env bash
-if [[ "\$1" == "-C" && "\$3" == "fetch" ]]; then exit 37; fi
+if [[ "\$1" == "-C" && "\$3" == "fetch" ]]; then echo fetch-invoked > "$TMP/fetch-invoked"; exit 37; fi
 exec "$REAL_GIT" "\$@"
 EOF
 chmod +x "$TMP/mockbin/git"
@@ -51,6 +52,7 @@ git -C "$TMP/source/research-checkouts/rs-sdk" config user.name Fixture
  git -C "$TMP/source/research-checkouts/rs-sdk" config user.email fixture@example.invalid
  git -C "$TMP/source/research-checkouts/rs-sdk" commit -qm wrong-pin --allow-empty
 (cd "$TMP/source"; fail env PATH="$TMP/mockbin:$PATH" bash "$TMP/source/tools/rs377-agent-harness/fedora/setup.sh" --prepare --fetch-sdk)
+[[ -f "$TMP/fetch-invoked" ]]
 [[ "$(git -C "$TMP/source/research-checkouts/rs-sdk" rev-parse --is-inside-work-tree)" == true ]]
 # A local checkout at the wrong commit must not be accepted as pinned.
 [[ "$(git -C "$TMP/source/research-checkouts/rs-sdk" rev-parse HEAD 2>/dev/null || true)" != db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb ]]
