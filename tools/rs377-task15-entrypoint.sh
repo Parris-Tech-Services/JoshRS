@@ -24,4 +24,4 @@ else
 fi
 echo 'NEXT REAL TASK: implement a native revision-377 inbound world-state observer and verify isolated two-client gameplay.'
 echo 'WORK ORDER: docs/rs377/AGY_RS_SDK_LLM_HARNESS_2026-11-02.md'
-echo 'WORKTREE: ${JOSHRS_HARNESS_WORKTREE:-$HOME/dev/JoshRS-rssdk-harness}'
+printf 'WORKTREE: %s\n' "${JOSHRS_HARNESS_WORKTREE:-$HOME/dev/JoshRS-rssdk-harness}"
