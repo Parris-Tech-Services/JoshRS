@@ -34,8 +34,11 @@ const checkNearby=(a,name,idField)=>{
 export function validateObservation(raw,{botName,expectedWorld}={}) {
   if(!raw||typeof raw!=='object'||Array.isArray(raw))fail('missing raw input');
   const own=['world','player','tick','position','skills','inventory','equipment',
-    'nearbyNpcs','nearbyLocs','groundItems','dialogue','questStages','sdkDetails'];
+    'nearbyNpcs','nearbyLocs','groundItems','dialogue','questStages','sdkDetails','unsupported'];
   if(Object.keys(raw).some(k=>!own.includes(k)))fail('unexpected top-level observation fields');
+  // Revalidating an already sanitized snapshot is safe; unsupported is a
+  // derived field and is always recalculated, never trusted from the caller.
+  if('unsupported' in raw && !Array.isArray(raw.unsupported))fail('invalid unsupported marker');
   if(!raw.world||Object.keys(raw.world).some(k=>!['mode','revision','tickMs','xpMultiplier','instanceId','sourceSha'].includes(k)))
     fail('unexpected world fields');
   if(!raw.player||Object.keys(raw.player).some(k=>!['username','isBot'].includes(k)))
