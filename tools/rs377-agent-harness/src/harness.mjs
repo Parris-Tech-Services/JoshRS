@@ -24,7 +24,14 @@ function evidence(before,after) {
  * dispatch(action): Promise<{accepted:boolean}>. The real adapter must
  * authenticate a disposable bot session and use legitimate game inputs.
  */
-export function createHarness(transport,{allowedBots=['HarnessTest'],enableIsolatedActions=false}={}) {
+export function createHarness(transport,{
+  allowedBots=['HarnessTest'], enableIsolatedActions=false,
+  maxWaitMs=0, pollIntervalMs=250
+}={}) {
+  if(!Number.isInteger(maxWaitMs)||maxWaitMs<0||maxWaitMs>30000)
+    throw new Error('Invalid bounded action observation timeout');
+  if(!Number.isInteger(pollIntervalMs)||pollIntervalMs<50||pollIntervalMs>1000)
+    throw new Error('Invalid polling interval');
   if(!transport||typeof transport.observe!=='function'||typeof transport.dispatch!=='function')throw new Error('Invalid transport');
   let busy=false;
   return {
@@ -40,15 +47,21 @@ export function createHarness(transport,{allowedBots=['HarnessTest'],enableIsola
         if(!enableIsolatedActions)return {status:'dry_run',action,evidence:[],beforeTick:before.tick};
         const ack=await transport.dispatch(action);
         if(!ack||ack.accepted!==true)return {status:'rejected',action,evidence:[],beforeTick:before.tick};
-        const after=validateSnapshot(await transport.observe(),allowedBots);
-        if(after.world.instanceId!==before.world.instanceId||after.player.username!==before.player.username)
-          throw new Error('World or player identity changed during action');
-        if(after.tick<before.tick)throw new Error('World tick went backwards');
-        const changes=evidence(before,after);
+        const deadline=Date.now()+maxWaitMs;
+        let after,changes;
+        while(true){
+          after=validateSnapshot(await transport.observe(),allowedBots);
+          if(after.world.instanceId!==before.world.instanceId||after.player.username!==before.player.username)
+            throw new Error('World or player identity changed during action');
+          if(after.tick<before.tick)throw new Error('World tick went backwards');
+          changes=evidence(before,after);
+          if(changes.length||Date.now()>=deadline)break;
+          await new Promise(resolve=>setTimeout(resolve,Math.min(pollIntervalMs,Math.max(1,deadline-Date.now()))));
+        }
         return {
           status:changes.length?'observed_effect':'unverified_dispatch',
           action,evidence:changes,beforeTick:before.tick,afterTick:after.tick,
-          note:changes.length?'State changed, not proof the high-level objective completed':'Packet dispatch alone is not successful gameplay'
+          note:changes.length?'State changed, not proof the high-level objective completed':'No observed effect within bounded poll window; packet dispatch alone is not successful gameplay'
         };
       } finally {busy=false;}
     }
