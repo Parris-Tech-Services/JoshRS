@@ -1,0 +1,70 @@
+name: JoshRS backup static site (GitHub Pages, independent of Vercel)
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - woodlands.html
+      - launcher.css
+      - style.css
+      - app.mjs
+      - core.mjs
+      - map-inspector.html
+      - tools/rs377-map-bridge/jm2-inspector.mjs
+      - .github/workflows/joshrs-backup-pages.yml
+  pull_request:
+    paths:
+      - .github/workflows/joshrs-backup-pages.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: joshrs-backup-pages
+  cancel-in-progress: false
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Package only public static launcher and demo files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p backup-site/tools/rs377-map-bridge
+          for file in index.html woodlands.html launcher.css style.css app.mjs core.mjs map-inspector.html tools/rs377-map-bridge/jm2-inspector.mjs; do
+            test -f "$file"
+            cp "$file" "backup-site/$file"
+          done
+          touch backup-site/.nojekyll
+          ! grep -R -E 'BEGIN (RSA |OPENSSH )?PRIVATE KEY|ghp_[A-Za-z0-9]{30,}' backup-site/
+          test -s backup-site/index.html
+          test -s backup-site/woodlands.html
+          test -s backup-site/app.mjs
+          node --check backup-site/app.mjs
+          node --check backup-site/core.mjs
+          echo "Static backup validated; no 377 server, accounts, or saves packaged."
+      - uses: actions/upload-artifact@v4
+        with:
+          name: joshrs-static-backup
+          path: backup-site/
+          retention-days: 14
+      - name: Upload Pages artifact (main only)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: backup-site/
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url }}
+    steps:
+      - id: publish
+        uses: actions/deploy-pages@v4
