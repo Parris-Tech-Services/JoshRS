@@ -23,9 +23,11 @@ cp "$ROOT/src/sdk-runtime.d.mts" "$TMP/src/"
 # Declaration must remain adjacent to the actual JS implementation in the repo.
 # The probe compiles the genuine upstream contract, not a search/grep stand-in.
 cd "$TMP/contracts"
-if ! command -v tsc >/dev/null 2>&1; then
-  echo 'TypeScript compiler (tsc) is required; no false success' >&2; exit 2
+if command -v tsc >/dev/null 2>&1; then
+  tsc --version
+  tsc -p tsconfig.json
+else
+  echo 'TypeScript compiler (tsc) is required; no false success' >&2
+  exit 2
 fi
-tsc --version
-tsc -p tsconfig.json
 echo 'PASS: TypeScript imported pinned SDK BotAction/BotWorldState/ActionResult'
