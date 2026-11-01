@@ -28,7 +28,8 @@ const GAME_SOURCE_ALLOWLIST=Object.freeze([
 
 function runReadOnly(command,args){
   // No shell, stdin or network probe. Capture Java's version (printed to stderr).
-  const result=spawnSync(command,args,{encoding:'utf8',timeout:2500,maxBuffer:65536,stdio:['ignore','pipe','pipe']});
+  const result=spawnSync(command,args,{encoding:'utf8',timeout:2500,maxBuffer:65536,stdio:['ignore','pipe','pipe'],
+    env:{...process.env,GIT_OPTIONAL_LOCKS:'0'}});
   return {ok:result.status===0&&!result.error,
     stdout:typeof result.stdout==='string'?result.stdout:'',
     stderr:typeof result.stderr==='string'?result.stderr:'',
