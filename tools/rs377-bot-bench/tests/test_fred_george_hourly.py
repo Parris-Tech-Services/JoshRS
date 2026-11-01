@@ -18,7 +18,9 @@ def sample(bot, end, *, exp=fg.EXPERIMENT, start_sig="abcdef0123456789"):
     after = {**values, "Woodcutting": 350 if bot == "Fred" else 200}
     return {
         "schema": fg.SCHEMA, "experiment_id": exp, "bot": bot,
-        "policy": fg.BOTS[bot], "window_start_utc": fg.iso(end - timedelta(minutes=10)),
+        "policy": fg.BOTS[bot], "world_mode": "isolated", "ab_run_id": "trial_fred_george_01",
+        "policy_version": "v1", "online": True,
+        "window_start_utc": fg.iso(end - timedelta(minutes=10)),
         "window_end_utc": fg.iso(end),
         "fresh_account": True, "items_seeded": False, "cheats_enabled": False,
         "accelerated_time": False, "xp_multiplier": 1, "tick_ms": 600,
