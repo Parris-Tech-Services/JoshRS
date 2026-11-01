@@ -3,7 +3,7 @@
  * This file lives alongside a vendored byte-for-byte upstream type definition
  * fetched by CI; never use a hand-written stand-in for BotAction/WorldState.
  */
-import type {BotAction, BotWorldState, ActionResult} from './vendor/sdk/types';
+import type {BotAction, BotWorldState, ActionResult} from './vendor/sdk/types.js';
 import {createSdk377Runtime} from '../src/sdk-runtime.mjs';
 
 const runtime=createSdk377Runtime({
