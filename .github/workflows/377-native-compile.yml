@@ -18,6 +18,7 @@ on:
       - "deploy/jparris-windows/yrsa377/**"
       - "JoshRS-Fix-Yrsa.cmd"
       - ".github/workflows/377-native-compile.yml"
+      - "tools/rs377-bot-bench/engine-patch/src/web.ts"
   push:
     branches: [main]
     paths:
@@ -29,6 +30,7 @@ on:
       - "content-factory/intake/**"
       - "content-factory/tests/**"
       - ".github/workflows/377-native-compile.yml"
+      - "tools/rs377-bot-bench/engine-patch/src/web.ts"
   workflow_dispatch:
 
 permissions:
@@ -149,6 +151,9 @@ jobs:
           src=src.replace(needle,"!(extension === '.inv' && process.env.JOSHRS_CUSTOM_INVS === 'true') && "+needle)
           file.write_text(src)
           PY
+      - name: Overlay isolated observer server patch onto disposable pinned engine
+        shell: bash
+        run: cp tools/rs377-bot-bench/engine-patch/src/web.ts "$RUNNER_TEMP/joshrs-377-build/engine/src/web.ts"
       - name: Compile with the actual Lost City 377 packer
         shell: bash
         env:
@@ -172,6 +177,7 @@ jobs:
           LOGIN_SERVER: "true"
           FRIEND_SERVER: "true"
           LOGGER_SERVER: "true"
+          RS377_OBSERVER_PROBE: "true"
           NODE_PROFILE: joshrs_ci_377
           NODE_PORT: "15402"
           WEB_PORT: "18880"

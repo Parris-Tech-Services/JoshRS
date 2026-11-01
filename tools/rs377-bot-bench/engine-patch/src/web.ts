@@ -11,7 +11,6 @@ import { CrcBuffer, CrcTable } from '#/cache/CrcTable.js';
 
 import OnDemand from '#/engine/OnDemand.js';
 import World from '#/engine/World.js';
-import { isBotPlayer } from '#/engine/entity/Player.js';
 import InvType from '#/cache/config/InvType.js';
 import { timingSafeEqual } from 'node:crypto';
 
@@ -215,54 +214,58 @@ export async function startWeb() {
 
 const management = Fastify();
 
-// Explicitly enabled, authenticated local diagnostics for the development bot.
-management.addHook('onRequest', async (req, reply) => {
-    if (!req.url.startsWith('/dev/luna')) return;
-    const token = process.env.LUNA_CONTROL_TOKEN;
-    const supplied = req.headers.authorization ?? '';
-    const expected = `Bearer ${token ?? ''}`;
-    if (!Environment.DEV_LUNA_BOT || !token || !['127.0.0.1', '::1'].includes(req.ip) || Buffer.byteLength(supplied) !== Buffer.byteLength(expected) || !timingSafeEqual(Buffer.from(supplied), Buffer.from(expected))) {
-        return reply.code(404).send();
-    }
-});
-
-management.get('/dev/luna', async () => {
-    const describe = (name: string) => {
-        const player = World.getPlayerByUsername(name);
-        if (!player) return null;
-        return {
-            name: player.username,
-            slot: player.slot,
-            x: player.x,
-            z: player.z,
-            plane: player.level,
-            member: World.players[player.slot] === player,
-            active: player.isActive,
-            loggingOut: player.loggingOut,
-            lastAppearance: player.lastAppearance,
-            spotanim: player.spotanimId,
-            animation: player.animId,
-            inventory: player.getInventory(InvType.INV)?.items,
-            activity: isBotPlayer(player) ? player.activity : undefined
-        };
-    };
-    return { tick: World.currentTick, luna: describe('Luna'), owner: describe('elrothiro') };
-});
-
-management.post<{ Body: { mode?: string } }>('/dev/luna', async (req, reply) => {
-    const mode = req.body?.mode;
-    if (mode !== 'follow' && mode !== 'work' && mode !== 'bank') return reply.code(400).send({ error: 'Expected follow, work, or bank' });
-    const bot = World.getPlayerByUsername('Luna');
-    if (!isBotPlayer(bot)) return reply.code(409).send({ error: 'Luna is not in this world' });
-    bot.setMode(mode);
-    return { mode: bot.mode };
-});
-
 management.register(FastifyView, {
     engine: {
         ejs
     },
     root: 'view'
+});
+
+
+/**
+ * Task 24: read-only, opt-in, loopback-only isolated 377 bot telemetry.
+ * This endpoint is dormant unless every explicit isolated-world guard is set.
+ * It never exports another player, credentials, saves or private key.
+ */
+management.get('/dev/rs377-observe', async (req, reply) => {
+    const token = process.env.RS377_OBSERVER_TOKEN;
+    const botName = process.env.RS377_OBSERVER_BOT;
+    const instanceId = process.env.RS377_OBSERVER_WORLD;
+    const sourceSha = process.env.RS377_OBSERVER_SOURCE_SHA;
+    const supplied = req.headers.authorization ?? '';
+    const expected = `Bearer ${token ?? ''}`;
+    if (process.env.RS377_OBSERVER_ENABLED !== 'true' ||
+        process.env.RS377_OBSERVER_ISOLATED !== 'true' ||
+        process.env.NODE_XPRATE !== '1' ||
+        !token || Buffer.byteLength(token) < 32 ||
+        !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName ?? '') ||
+        !/^isolated-[a-z0-9_-]{4,64}$/i.test(instanceId ?? '') ||
+        !/^[a-f0-9]{40}$/i.test(sourceSha ?? '') ||
+        !['127.0.0.1', '::1'].includes(req.ip) ||
+        Buffer.byteLength(supplied) !== Buffer.byteLength(expected) ||
+        !timingSafeEqual(Buffer.from(supplied), Buffer.from(expected))) {
+        return reply.code(404).send();
+    }
+    const bot = World.getPlayerByUsername(botName!);
+    if (!bot || !bot.isActive || !bot.client) {
+        return reply.code(409).send({ error: 'disposable_network_bot_not_online' });
+    }
+    const inventory = bot.getInventory(InvType.INV);
+    const items = inventory ? inventory.items.flatMap((item, slot) =>
+        item ? [{ slot, id: item.id, count: item.count }] : []) : null;
+    const observation = {
+        world: { mode: 'isolated', revision: 377, tickMs: 600,
+            xpMultiplier: 1, instanceId: instanceId!, sourceSha: sourceSha! },
+        player: { username: bot.username, isBot: true },
+        tick: World.currentTick,
+        position: { x: bot.x, z: bot.z, plane: bot.level },
+        skills: null,
+        inventory: items,
+        equipment: null,
+        nearbyNpcs: null, nearbyLocs: null, groundItems: null,
+        dialogue: null, questStages: null, sdkDetails: null
+    };
+    return { token, sequence: World.currentTick, observation };
 });
 
 management.get('/prometheus', async (_req, reply) => {
