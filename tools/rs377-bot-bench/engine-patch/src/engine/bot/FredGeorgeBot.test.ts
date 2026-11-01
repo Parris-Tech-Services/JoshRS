@@ -81,38 +81,95 @@ test('2. Fresh Fred & George accounts reach mainland with identical starting_sig
     assert.equal(PlayerLoading.verify(new Packet(fs.readFileSync(georgeSav))), true);
 });
 
-test("3. George (quest_first) opens Lumbridge Castle doors, starts Cook's Assistant, and completes hand-in for 3000 tenths Cooking XP", async () => {
+test("3. NO-CHEAT: George walks the real world, collects all three ingredients, and finishes Cook's Assistant unaided", async () => {
     await ensureWorld();
-    const george = World.getPlayerByUsername('George');
-    assert.ok(george, 'George should be online');
+
+    // This is an end-to-end acceptance test, not a shortcut for testing the Cook's hand-in.
+    // Never call invAdd, change quest varps, teleport, award XP, or manufacture the ingredients.
+    // Keep the isolated save directory fresh per test invocation; production saves are never touched.
+    const botSource = fs.readFileSync(path.join(process.cwd(), 'src/engine/bot/FredGeorgeBot.ts'), 'utf8');
+    assert.doesNotMatch(
+        botSource,
+        /\b(?:player|fred|george)\.(?:invAdd|setVar|teleport|addXp|giveXp)\s*\(/,
+        'Bot policy must not directly grant progress or bypass normal world travel'
+    );
 
     const cookVarp = VarPlayerType.getId('cookquest');
     assert.notEqual(cookVarp, -1);
-
-    // Run ticks until George navigates the 3 Lumbridge Castle doors and starts Cook's Assistant (%cookquest = 1)
-    for (let i = 0; i < 220 && (george.getVar(cookVarp) as number) === 0; i++) {
-        World.cycle(false);
+    const ingredients = ['bucket_milk', 'egg', 'pot_flour'] as const;
+    const ingredientIds = Object.fromEntries(ingredients.map(name => [name, ObjType.getId(name)]));
+    for (const name of ingredients) {
+        assert.notEqual(ingredientIds[name], -1, `Missing genuine ${name} item definition`);
     }
-    assert.equal(george.getVar(cookVarp), 1, "George should start Cook's Assistant (%cookquest = 1)");
 
-    // Place the 3 quest ingredients (bucket_milk, egg, pot_flour) and verify George hands them in to complete %cookquest = 2
-    george.invAdd(InvType.INV, ObjType.getId('bucket_milk'), 1);
-    george.invAdd(InvType.INV, ObjType.getId('egg'), 1);
-    george.invAdd(InvType.INV, ObjType.getId('pot_flour'), 1);
+    const collected = new Set<string>();
+    const visited = new Set<string>();
+    const landmarks = [
+        { key: 'dairy_cow', x: 3253, z: 3272 },
+        { key: 'chicken_coop', x: 3230, z: 3299 },
+        { key: 'windmill', x: 3166, z: 3306 }
+    ] as const;
+    let started = false;
+    let completed = false;
+    let cookingXp = 0;
+    let lastStage = -1;
 
-    for (let i = 0; i < 120 && (george.getVar(cookVarp) as number) < 2; i++) {
+    // 5,000 ordinary 600 ms world ticks = 50 minutes of in-game time, with no tick-rate boost.
+    // The test deliberately FAILS if the bot cannot solve collection/pathfinding itself.
+    for (let tick = 0; tick < 5000 && !completed; tick++) {
         World.cycle(false);
-    }
-    assert.equal(george.getVar(cookVarp), 2, "George should complete Cook's Assistant (%cookquest = 2)");
-    assert.ok(george.stats[PlayerStat.COOKING] >= 3000, 'George should earn 300.0 Cooking XP (3000 tenths)');
+        const george = World.getPlayerByUsername('George');
+        if (!george) {
+            // Logout/relogin is a normal persistence check; never recreate or advance the account here.
+            if (World.logoutRequests.size > 0) {
+                await new Promise(resolve => setTimeout(resolve, 15));
+            }
+            continue;
+        }
 
-    // Ensure relog verification after quest completion finishes so George is back online for test 4
-    for (let i = 0; i < 20; i++) {
+        const stage = george.getVar(cookVarp) as number;
+        lastStage = stage;
+        if (stage >= 1) started = true;
+        for (const landmark of landmarks) {
+            if (george.level === 0 && Math.abs(george.x - landmark.x) + Math.abs(george.z - landmark.z) <= 22) {
+                visited.add(landmark.key);
+            }
+        }
+        const inventory = george.getInventory(InvType.INV);
+        for (const name of ingredients) {
+            if ((inventory?.getItemCount(ingredientIds[name]) ?? 0) > 0) {
+                collected.add(name);
+            }
+        }
+        cookingXp = george.stats[PlayerStat.COOKING];
+        if (stage >= 2) completed = true;
+    }
+
+    const diagnostics = `quest_stage=${lastStage}; collected=${Array.from(collected).join(',')}; visited=${Array.from(visited).join(',')}`;
+    assert.ok(started, `George never started Cook's Assistant: ${diagnostics}`);
+    assert.deepEqual(
+        [...collected].sort(),
+        [...ingredients].sort(),
+        `George must obtain milk, egg and flour himself through actual world interactions: ${diagnostics}`
+    );
+    assert.deepEqual(
+        [...visited].sort(),
+        landmarks.map(place => place.key).sort(),
+        `George must physically visit the dairy cow, chicken coop and windmill: ${diagnostics}`
+    );
+    assert.ok(completed, `George must complete the FULL quest without grants: ${diagnostics}`);
+    assert.ok(cookingXp >= 3000, 'George must receive the genuine 300.0 Cooking XP quest reward');
+
+    // His completed quest must survive logout/relogin before the test is considered a success.
+    for (let i = 0; i < 40; i++) {
         World.cycle(false);
         if (World.logoutRequests.size > 0) {
             await new Promise(resolve => setTimeout(resolve, 15));
         }
     }
+    const afterRelog = World.getPlayerByUsername('George');
+    assert.ok(afterRelog, 'George must return online after his quest-completion save/reload');
+    assert.equal(afterRelog.getVar(cookVarp), 2, 'Quest completion must persist across logout/relogin');
 });
 
 test('4. Elrothiro social locator commands (::wherefred, ::wheregeorge, ::wherebots) and Private Message reply', async () => {
