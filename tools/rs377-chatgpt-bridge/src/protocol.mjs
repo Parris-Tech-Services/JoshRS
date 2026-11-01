@@ -29,6 +29,7 @@ export const OPCODES = Object.freeze({
   NO_TIMEOUT:40, MOVE_GAMECLICK:28, MOVE_OPCLICK:247,
   NPC:[112,67,13,42,8], LOC:[181,241,50,136,55],
   GROUND:[77,100,71,54,230], INV:[3,177,91,231,158],
+  HELD:[203,24,161,228,4],
   ITEM_ON_LOC:152, DIALOG_RESUME:226, PUBLIC_CHAT:49
 });
 function option(n) {return uint(n,5,'option') || (()=>{throw new RangeError('Option must be 1..5')})()}
@@ -38,6 +39,7 @@ export function buildAction(action) {
   const fields = {
     walk:['x','z','running'], npc:['npcSlot','option'], loc:['x','z','locId','option'],
     ground:['x','z','itemId','option'], inventory:['componentId','itemId','slot','option'],
+    held:['componentId','itemId','slot','option'],
     item_on_loc:['x','z','locId','componentId','itemId','slot'],
     dialog_resume:['componentId'], chat:['wordpack','color','effect'], keepalive:[], logout:[]
   }[action.type];
@@ -54,13 +56,10 @@ export function buildAction(action) {
     }
     case 'loc': {
       const n=option(action.option),x=tile(action.x,'x'),z=tile(action.z,'z'),id=word(action.locId,'locId');
-      return payload(OPCODES.LOC[n-1],Buffer.concat([
-        [null,[p2alt2(x),p2alt1(z),p2alt1(id)],[p2(id),p2(x),p2alt2(z)],
-          [p2alt2(z),p2alt1(id),p2alt3(x)],[p2(x),p2alt1(z),p2(id)],
-          [p2alt1(id),p2alt1(z),p2(x)]][n][0],
-        ...[null,[p2alt2(x),p2alt1(z),p2alt1(id)],[p2(id),p2(x),p2alt2(z)],
-          [p2alt2(z),p2alt1(id),p2alt3(x)],[p2(x),p2alt1(z),p2(id)],
-          [p2alt1(id),p2alt1(z),p2(x)]][n].slice(1)]));
+      const variants=[null,[p2alt2(x),p2alt1(z),p2alt1(id)],
+        [p2(id),p2(x),p2alt2(z)],[p2alt2(z),p2alt1(id),p2alt3(x)],
+        [p2(x),p2alt1(z),p2(id)],[p2alt1(id),p2alt1(z),p2(x)]];
+      return payload(OPCODES.LOC[n-1],Buffer.concat(variants[n]));
     }
     case 'ground': {
       const n=option(action.option),x=tile(action.x,'x'),z=tile(action.z,'z'),id=word(action.itemId,'itemId');
@@ -78,6 +77,16 @@ export function buildAction(action) {
         [p2alt3(com),p2alt1(slot),p2(id)],
         [p2alt3(slot),p2alt3(id),p2alt1(com)]];
       return payload(OPCODES.INV[n-1],Buffer.concat(variants[n]));
+    }
+    case 'held': {
+      const n=option(action.option),id=word(action.itemId,'itemId'),
+        slot=word(action.slot,'slot'),com=word(action.componentId,'componentId');
+      const variants=[null,[p2alt2(com),p2alt1(slot),p2alt1(id)],
+        [p2alt1(com),p2alt1(id),p2alt2(slot)],
+        [p2alt3(slot),p2alt3(id),p2alt1(com)],
+        [p2alt1(slot),p2alt2(id),p2(com)],
+        [p2alt1(slot),p2alt3(id),p2alt3(com)]];
+      return payload(OPCODES.HELD[n-1],Buffer.concat(variants[n]));
     }
     case 'item_on_loc': {
       const x=tile(action.x,'x'),z=tile(action.z,'z'),id=word(action.locId,'locId');
