@@ -11,7 +11,6 @@ import { CrcBuffer, CrcTable } from '#/cache/CrcTable.js';
 
 import OnDemand from '#/engine/OnDemand.js';
 import World from '#/engine/World.js';
-import { isBotPlayer } from '#/engine/entity/Player.js';
 import InvType from '#/cache/config/InvType.js';
 import { timingSafeEqual } from 'node:crypto';
 
@@ -215,49 +214,6 @@ export async function startWeb() {
 
 const management = Fastify();
 
-// Explicitly enabled, authenticated local diagnostics for the development bot.
-management.addHook('onRequest', async (req, reply) => {
-    if (!req.url.startsWith('/dev/luna')) return;
-    const token = process.env.LUNA_CONTROL_TOKEN;
-    const supplied = req.headers.authorization ?? '';
-    const expected = `Bearer ${token ?? ''}`;
-    if (!Environment.DEV_LUNA_BOT || !token || !['127.0.0.1', '::1'].includes(req.ip) || Buffer.byteLength(supplied) !== Buffer.byteLength(expected) || !timingSafeEqual(Buffer.from(supplied), Buffer.from(expected))) {
-        return reply.code(404).send();
-    }
-});
-
-management.get('/dev/luna', async () => {
-    const describe = (name: string) => {
-        const player = World.getPlayerByUsername(name);
-        if (!player) return null;
-        return {
-            name: player.username,
-            slot: player.slot,
-            x: player.x,
-            z: player.z,
-            plane: player.level,
-            member: World.players[player.slot] === player,
-            active: player.isActive,
-            loggingOut: player.loggingOut,
-            lastAppearance: player.lastAppearance,
-            spotanim: player.spotanimId,
-            animation: player.animId,
-            inventory: player.getInventory(InvType.INV)?.items,
-            activity: isBotPlayer(player) ? player.activity : undefined
-        };
-    };
-    return { tick: World.currentTick, luna: describe('Luna'), owner: describe('elrothiro') };
-});
-
-management.post<{ Body: { mode?: string } }>('/dev/luna', async (req, reply) => {
-    const mode = req.body?.mode;
-    if (mode !== 'follow' && mode !== 'work' && mode !== 'bank') return reply.code(400).send({ error: 'Expected follow, work, or bank' });
-    const bot = World.getPlayerByUsername('Luna');
-    if (!isBotPlayer(bot)) return reply.code(409).send({ error: 'Luna is not in this world' });
-    bot.setMode(mode);
-    return { mode: bot.mode };
-});
-
 management.register(FastifyView, {
     engine: {
         ejs
@@ -291,7 +247,7 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         return reply.code(404).send();
     }
     const bot = World.getPlayerByUsername(botName!);
-    if (!bot || !bot.isActive || !bot.client || isBotPlayer(bot)) {
+    if (!bot || !bot.isActive || !bot.client) {
         return reply.code(409).send({ error: 'disposable_network_bot_not_online' });
     }
     const inventory = bot.getInventory(InvType.INV);
