@@ -113,12 +113,57 @@ export function mapSdkAction(action,snapshot) {
     default:reject('unsupported, dangerous or unverified RS-SDK action '+String(a?.type).slice(0,40));
   }
 }
-const requiredItem=(v)=>dataOnly(v)&&typeof v.name==='string'&&Array.isArray(v.optionsWithIndex);
-const requiredNpc=(v)=>dataOnly(v)&&typeof v.name==='string'&&Array.isArray(v.optionsWithIndex)&&
-  typeof v.kind==='string';
-const requiredLoc=(v)=>dataOnly(v)&&typeof v.name==='string'&&Array.isArray(v.optionsWithIndex)&&
-  isNum(v.level);
-const requiredGround=(v)=>dataOnly(v)&&typeof v.name==='string'&&isNum(v.distance);
+// The following validators mirror all REQUIRED properties at the pinned
+// MaxBittker/rs-sdk sdk/types.ts blob ec59cef4... . Optional properties are
+// not invented. Refuse an incomplete game source rather than emit fake state.
+const isBool=x=>typeof x==='boolean';
+const isStr=x=>typeof x==='string';
+const isInteger=x=>Number.isSafeInteger(x);
+const isNonnegative=x=>Number.isFinite(x)&&x>=0;
+const present=(o,shape)=>dataOnly(o)&&Object.entries(shape).every(([k,test])=>test(o[k]));
+const opt=v=>present(v,{text:isStr,opIndex:isInteger});
+const dialogOpt=v=>present(v,{index:isInteger,text:isStr});
+const requiredItem=v=>present(v,{slot:isNum,id:isNum,name:isStr,count:isNum,
+  optionsWithIndex:x=>Array.isArray(x)&&x.every(opt)});
+const requiredNpc=v=>present(v,{kind:x=>x==='npc',id:isNum,index:isNum,name:isStr,
+  combatLevel:isNum,x:isNum,z:isNum,distance:isNonnegative,
+  hp:x=>x===null||isNum(x),maxHp:x=>x===null||isNum(x),
+  healthPercent:x=>x===null||isNonnegative(x),targetIndex:isInteger,
+  inCombat:isBool,lastCombatTick:x=>x===null||isInteger(x),
+  animId:isInteger,spotanimId:isInteger,
+  optionsWithIndex:x=>Array.isArray(x)&&x.every(opt),
+  options:x=>Array.isArray(x)&&x.every(isStr)});
+const requiredPlayer=v=>present(v,{kind:x=>x==='player',index:isNum,name:isStr,
+  combatLevel:isNum,x:isNum,z:isNum,distance:isNonnegative});
+const requiredLoc=v=>present(v,{id:isNum,name:isStr,x:isNum,z:isNum,level:isNum,
+  distance:isNonnegative,optionsWithIndex:x=>Array.isArray(x)&&x.every(opt),
+  options:x=>Array.isArray(x)&&x.every(isStr)});
+const requiredGround=v=>present(v,{id:isNum,name:isStr,count:isNum,x:isNum,z:isNum,
+  distance:isNonnegative});
+const requiredPlayerState=v=>present(v,{name:isStr,combatLevel:isNum,hp:isNum,maxHp:isNum,
+  x:isNum,z:isNum,worldX:isNum,worldZ:isNum,level:isNum,
+  runEnergy:isNonnegative,runWeight:isNonnegative,animId:isInteger,spotanimId:isInteger,
+  combat:c=>present(c,{inCombat:isBool,targetIndex:isInteger,
+    targetType:x=>['npc','player','none'].includes(x),lastDamageTick:isInteger}),
+  isDead:isBool,lifeId:isNum,respawnCount:isNum,
+  lastDeathTick:x=>x===null||isInteger(x)});
+const requiredDialog=d=>present(d,{isOpen:isBool,
+  options:a=>Array.isArray(a)&&a.every(dialogOpt),isWaiting:isBool});
+const requiredInterface=i=>present(i,{isOpen:isBool,interfaceId:isInteger,
+  options:a=>Array.isArray(a)&&a.every(x=>present(x,{index:isInteger,text:isStr,componentId:isNum}))});
+const shopItem=i=>present(i,{slot:isNum,id:isNum,name:isStr,count:isNum,
+  baseCost:isNonnegative,buyPrice:isNonnegative,sellPrice:isNonnegative});
+const requiredShop=s=>present(s,{isOpen:isBool,title:isStr,shopItems:a=>Array.isArray(a)&&a.every(shopItem),
+  playerItems:a=>Array.isArray(a)&&a.every(shopItem)});
+const bankItem=i=>present(i,{slot:isNum,id:isNum,name:isStr,count:isNum});
+const requiredBank=b=>present(b,{isOpen:isBool,items:a=>Array.isArray(a)&&a.every(bankItem),noteMode:isBool});
+const requiredPrayer=p=>present(p,{activePrayers:a=>Array.isArray(a)&&a.length===15&&a.every(isBool),
+  prayerPoints:isNum,prayerLevel:isNum});
+const chatMsg=m=>present(m,{type:isInteger,text:isStr,sender:isStr,tick:isNum,fromSelf:isBool});
+const recentDialog=d=>present(d,{text:a=>Array.isArray(a)&&a.every(isStr),tick:isNum,interfaceId:isNum});
+const combatEvent=e=>present(e,{tick:isNum,type:x=>['damage_taken','damage_dealt','kill'].includes(x),
+  damage:isNum,sourceType:x=>['player','npc','other_player'].includes(x),sourceIndex:isInteger,
+  targetType:x=>['player','npc','other_player'].includes(x),targetIndex:isInteger});
 const metadata={contract:'MaxBittker/rs-sdk@db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb',
   semantics:'source-only typed conversion; no actual SDK gateway/real observer wired'};
 export function toBotWorldState(raw,{botName,expectedWorld}={}) {
@@ -126,19 +171,23 @@ export function toBotWorldState(raw,{botName,expectedWorld}={}) {
   if(s.unsupported.length)missing(s.unsupported.join(', '));
   const e=s.sdkDetails;
   for(const k of requiredExtra)if(e[k]===null||e[k]===undefined)missing('sdkDetails.'+k);
-  if(!e.player||e.player.name!==s.player.username||e.player.worldX!==s.position.x||
-     e.player.worldZ!==s.position.z||e.player.level!==s.position.plane||
-     !e.player.combat||!isNum(e.player.hp)||!isNum(e.player.maxHp))
-    missing('consistent full PlayerState');
+  if(!requiredPlayerState(e.player)||e.player.name!==s.player.username||
+     e.player.x!==s.position.x||e.player.z!==s.position.z||
+     e.player.worldX!==s.position.x||e.player.worldZ!==s.position.z||
+     e.player.level!==s.position.plane)missing('consistent full PlayerState');
   if(!Array.isArray(s.inventory)||!s.inventory.every(requiredItem)||
      !Array.isArray(s.equipment)||!s.equipment.every(requiredItem))missing('inventory names/options');
   if(!s.nearbyNpcs.every(requiredNpc)||!s.nearbyLocs.every(requiredLoc)||
      !s.groundItems.every(requiredGround))missing('nearby entity SDK properties');
-  if(!Array.isArray(e.nearbyPlayers)||!Array.isArray(e.gameMessages)||!Array.isArray(e.recentDialogs)||
-     !Array.isArray(e.combatEvents)||!dataOnly(e.prayers)||!dataOnly(e.interface)||
-     !dataOnly(e.shop)||!dataOnly(e.bank))missing('SDK collection/interface properties');
-  if(typeof e.modalOpen!=='boolean'||!isNum(e.modalInterface))missing('modal information');
-  if(!dataOnly(s.dialogue)||typeof s.dialogue.isWaiting!=='boolean')missing('dialogue wait status');
+  if(!Array.isArray(e.nearbyPlayers)||!e.nearbyPlayers.every(requiredPlayer)||
+     !Array.isArray(e.gameMessages)||!e.gameMessages.every(chatMsg)||
+     !Array.isArray(e.recentDialogs)||!e.recentDialogs.every(recentDialog)||
+     !Array.isArray(e.combatEvents)||!e.combatEvents.every(combatEvent)||
+     !requiredPrayer(e.prayers)||!requiredInterface(e.interface)||
+     !requiredShop(e.shop)||!requiredBank(e.bank))
+       missing('complete verified SDK collection/interface properties');
+  if(typeof e.modalOpen!=='boolean'||!isInteger(e.modalInterface))missing('modal information');
+  if(!requiredDialog(s.dialogue))missing('verified dialogue properties');
   // SDK experience uses ordinary fractional XP. Native 377 stores XP in tenths.
   const skills=s.skills.map(v=>({name:v.name,level:v.level,baseLevel:v.baseLevel,
     experience:v.xpTenths/10}));
