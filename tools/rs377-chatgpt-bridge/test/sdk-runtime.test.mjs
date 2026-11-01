@@ -27,3 +27,26 @@ test('refuses unauthenticated session, missing visibility, wrong world and fake 
  await assert.rejects(()=>other.action({type:'walkTo',x:3201,z:3201,reason:'Move'}),/world_changed/);
  assert.equal(sent,0);
 });
+
+test('refuses a second packet in the same server tick and dispatches on a fresh tick',async()=>{
+ let tick=10;const packets=[];
+ const session={status:()=>({authenticated:true}),sendPacket:p=>{packets.push(p);return {status:'dispatched_unverified'}}};
+ const observer={observe:async()=>({...base,tick})};
+ const sdk=createSdk377Runtime({session,observer,...options});
+ await sdk.action({type:'walkTo',x:3201,z:3201,reason:'Normal movement'});
+ await assert.rejects(()=>sdk.action({type:'walkTo',x:3202,z:3202,reason:'Replay'}),/replay_or_stale_tick/);
+ assert.equal(packets.length,1);
+ tick=11;
+ await sdk.action({type:'walkTo',x:3202,z:3202,reason:'New tick'});
+ assert.equal(packets.length,2);
+});
+test('rejects concurrent SDK actions while an observation is in flight',async()=>{
+ let release;const pending=new Promise(resolve=>{release=resolve});
+ const session={status:()=>({authenticated:true}),sendPacket:()=>({status:'dispatched_unverified'})};
+ let reads=0;
+ const observer={observe:async()=>{reads++;await pending;return {...base,tick:reads}}};
+ const sdk=createSdk377Runtime({session,observer,...options});
+ const first=sdk.action({type:'walkTo',x:3201,z:3201,reason:'First'});
+ await assert.rejects(()=>sdk.action({type:'walkTo',x:3202,z:3202,reason:'Second'}),/concurrent_sdk_action_refused/);
+ release();await first;
+});
