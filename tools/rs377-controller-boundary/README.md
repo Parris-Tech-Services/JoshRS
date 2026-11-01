@@ -20,7 +20,7 @@ The `Native377BoundaryTransport` uses the actual `Session377` RSA/ISAAC login/cl
 
 ```js
 import {Session377} from '../rs377-chatgpt-bridge/src/session.mjs';
-import {Native377BoundaryTransport,startAuthenticated377Gateway} from './lib/native377-transport.mjs';
+import {Native377BoundaryTransport,startAuthenticated377Gateway,createLoopbackEngine377Source} from './lib/native377-transport.mjs';
 import {ReplayLedger} from './lib/recovery.mjs';
 
 // All values must be obtained from the AUTHORISED DISPOSABLE test environment.
@@ -31,8 +31,11 @@ const session = new Session377({
   username: disposableBotName, password: botPassword,
   publicKeyPem: trustedGamePublicKey, crcs: actualCacheCrc36
 });
+const nativeSource = createLoopbackEngine377Source({
+  port: isolatedEngineManagementPort, token: nativeObserverSecret
+});
 const transport = new Native377BoundaryTransport({
-  session, nativeSource: authenticatedNativeReadSource,
+  session, nativeSource,
   observerToken: nativeObserverSecret,
   botName: disposableBotName, worldId: trustedIsolatedWorldId
 });
@@ -45,9 +48,11 @@ const {address,close} = await startAuthenticated377Gateway({
 // Shut down with await close(). Never expose it to the public Internet.
 ```
 
-**Verified security gates:** localhost binding and host/origin checking; strong bearer auth; controller leases; bot/world scope; validated normal actions; stale/unverifiable state refusal; 1 action per real observed tick plus minute rate limits; bounded bodies/state and timeouts; cancellation/stop; durable no-replay journal. The real TCP integration is opt-in, never auto-started or production-connected.
+**Verified source-level and simulated-TCP security gates:** localhost binding and host/origin checking; strong bearer auth; controller leases; bot/world scope; validated normal actions; stale/unverifiable state refusal; 1 action per real observed tick plus minute rate limits; bounded bodies/state and timeouts; cancellation/stop; durable no-replay journal. The real TCP integration is opt-in, never auto-started or production-connected.
 
-**Unverified blockers to end-to-end completion:** no actual #377 native observer producer has been installed or authenticated on Fedora/Windows; the isolated test server in CI accepts an emulated login and emits fixture observations, not a real Engine-TS game world. We have NOT authenticated a bot to the authoritative server, observed its real game ticks, or performed two-player security checks. Production/family deployment remains disabled. Do not describe the full live integration as verified.
+**Current task-24 integration:** [the actual opt-in Engine-TS telemetry endpoint](../rs377-bot-bench/engine-patch/src/web.ts) is present on `main` and [its localhost HTTP reader](../rs377-chatgpt-bridge/src/engine-observer.mjs) has source tests. The new `createLoopbackEngine377Source` calls that exact endpoint from loopback only, refuses production management ports, validates bearer responses and coalesces repeated reads within 600 ms. It correctly preserves `skills:null`, `questStages:null` because those values are not yet exposed by the real source. There is no synthetic XP, zero quest progression or fabricated success. A separate CI test uses a locally hosted HTTP endpoint with the task-24 wire format; that simulation is not a real game login. [Latest passing security CI](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41358127810): 38/38 tests green.
+
+**Unverified blockers to end-to-end completion:** the actual #377 native observer producer has not been shown authenticated with an online disposable account on Fedora/Windows; the isolated test server in CI accepts an emulated login and emits fixture observations, not a real Engine-TS game world. We have NOT authenticated a bot to the authoritative server, observed its real game ticks, or performed two-player security checks. Production/family deployment remains disabled. Do not describe the full live integration as verified.
 
 ## Verify offline
 
