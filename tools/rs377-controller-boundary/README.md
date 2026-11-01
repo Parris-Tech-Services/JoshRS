@@ -10,6 +10,45 @@
 - **29 — Deterministic goals:** `DeterministicGoalExecutor` accepts *only* a short list of typed legal gameplay steps (maximum 12 by default), has a minimum 10-tick interval between model plans, at most one new step per tick, and stops immediately if any step is unverified/failed. No unrestricted LLM-to-socket/game-console pass-through.
 - **30 — Provider-neutral tools:** standard JSON-schema `MODEL_TOOL_DECLARATIONS` for `observe`, `walk`, `npc_option`, `loc_option`, `ground_take`, `inventory_option`, `item_on_loc`, `dialog_option`, `wait`, `stop`, `report`; no `execute_code`, shell, script, admin, teleport, item grant or save edit. HTTP provides `/tools`, `/observe`, `/act`, `/report`, `/stop` and `/goal`/`/step` for deterministic queued steps. No AI provider/API key needed for the implementation or tests.
 
+## Task 26 native-auth integration (2 Nov 2026)
+
+**New tested source:** [`lib/native377-transport.mjs`](lib/native377-transport.mjs) and [`test/native377-integration.test.mjs`](test/native377-integration.test.mjs). [Passing CI run 41357708477](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41357708477): **37 tests passed, 0 failed**, including five tests of real loopback Node TCP socket handshakes and an authenticated-observer boundary. This is an **offline simulated game server**, NOT Elrothiro's server.
+
+The `Native377BoundaryTransport` uses the actual `Session377` RSA/ISAAC login/client packet implementation from `../rs377-chatgpt-bridge/src/session.mjs`. It requires a separate authenticated `createNative377Observer` message source, matching bot identity, 377/600ms/1x XP/isolation, pinned source hash, and **at least two successive advancing engine ticks**. A missing source, wrong bearer token, wrong world, wrong player, stale tick or failed TCP login refuses readiness. It translates only observed, legitimate #377 packets; unobserved NPC/loc/item targets and unverified dialogue commands fail closed. An action dispatch stays `unverified` until real game effects are seen.
+
+**Recommended fail-closed startup** (not a ready-to-run live configuration):
+
+```js
+import {Session377} from '../rs377-chatgpt-bridge/src/session.mjs';
+import {Native377BoundaryTransport,startAuthenticated377Gateway} from './lib/native377-transport.mjs';
+import {ReplayLedger} from './lib/recovery.mjs';
+
+// All values must be obtained from the AUTHORISED DISPOSABLE test environment.
+// The native source must produce real bot-only engine/client observations;
+// it is NOT implemented by this repository and cannot be replaced with a fixture.
+const session = new Session377({
+  target: {host: isolatedHost, port: isolatedGamePort, mode: 'isolated'},
+  username: disposableBotName, password: botPassword,
+  publicKeyPem: trustedGamePublicKey, crcs: actualCacheCrc36
+});
+const transport = new Native377BoundaryTransport({
+  session, nativeSource: authenticatedNativeReadSource,
+  observerToken: nativeObserverSecret,
+  botName: disposableBotName, worldId: trustedIsolatedWorldId
+});
+await transport.connect(); // authenticated login AND real tick progression required
+const ledger = await new ReplayLedger(privateAbsoluteJournalFile).load();
+const {address,close} = await startAuthenticated377Gateway({
+  transport, ledger, authToken: localGatewayBearerSecret
+});
+// The HTTP gateway binds to 127.0.0.1:EPHEMERAL_PORT only.
+// Shut down with await close(). Never expose it to the public Internet.
+```
+
+**Verified security gates:** localhost binding and host/origin checking; strong bearer auth; controller leases; bot/world scope; validated normal actions; stale/unverifiable state refusal; 1 action per real observed tick plus minute rate limits; bounded bodies/state and timeouts; cancellation/stop; durable no-replay journal. The real TCP integration is opt-in, never auto-started or production-connected.
+
+**Unverified blockers to end-to-end completion:** no actual #377 native observer producer has been installed or authenticated on Fedora/Windows; the isolated test server in CI accepts an emulated login and emits fixture observations, not a real Engine-TS game world. We have NOT authenticated a bot to the authoritative server, observed its real game ticks, or performed two-player security checks. Production/family deployment remains disabled. Do not describe the full live integration as verified.
+
 ## Verify offline
 
 ```sh
