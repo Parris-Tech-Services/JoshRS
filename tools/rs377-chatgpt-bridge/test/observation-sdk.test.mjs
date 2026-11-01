@@ -69,6 +69,11 @@ test('rejects not visible, hostile injected actions, arbitrary stage/XP writes, 
 });
 test('can translate a complete *supplied* SDK-compatible observation but not synthesize missing required data',()=>{
   const x=raw();
+  x.nearbyNpcs[0]={...x.nearbyNpcs[0],combatLevel:1,distance:1,hp:null,maxHp:null,
+    healthPercent:null,targetIndex:-1,inCombat:false,lastCombatTick:null,
+    animId:-1,spotanimId:-1,options:['Talk-to']};
+  x.nearbyLocs[0]={...x.nearbyLocs[0],distance:1,options:['Chop']};
+  x.groundItems[0]={...x.groundItems[0],count:1};
   x.sdkDetails={
     player:{name:'HarnessBot',combatLevel:3,hp:10,maxHp:10,x:3222,z:3218,
       worldX:3222,worldZ:3218,level:0,runEnergy:100,runWeight:0,animId:-1,
