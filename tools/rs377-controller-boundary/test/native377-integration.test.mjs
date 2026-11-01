@@ -34,7 +34,9 @@ function source({token=TOKEN,advance=true,wrongBot=false}={}){
 }
 async function simulatedTcp(t){
   let packets=[];
+  const sockets=new Set();
   const tcp=net.createServer(s=>{
+    sockets.add(s);s.on('close',()=>sockets.delete(s));
     let stage=0;
     s.on('data',b=>{
       packets.push(Buffer.from(b));
@@ -43,7 +45,7 @@ async function simulatedTcp(t){
     });
   });
   tcp.listen(0,'127.0.0.1');await once(tcp,'listening');
-  t.after(()=>new Promise(resolve=>tcp.close(resolve)));
+  t.after(async()=>{for(const socket of sockets)socket.destroy();await new Promise(resolve=>tcp.close(resolve));});
   const port=tcp.address().port;
   // Diagnose native codec errors independently before the network protocol.
   const encoded=buildLogin({username:BOT,password:'test-password',publicKeyPem:key,crcs:Buffer.alloc(36,7),seed:[1,2,3,4]});
