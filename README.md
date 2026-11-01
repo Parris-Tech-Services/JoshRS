@@ -38,6 +38,10 @@ Current open-source bot inspirations: 2004SP Progressive (same Lost City TypeScr
 
 Source projects remain available as pinned submodules in [integrations/reference-sources](integrations/reference-sources/README.md). A pinned repository is not equivalent to a playable feature; client forks, modern RuneLite and Steam notes are not silently merged into your customised world. No save data is touched.
 
+## Repair Yrsa's Rellekka clothing shop in the private 377 world
+
+The original 377 content already includes Yrsa's 21-item wardrobe (11 cloaks), but her **Trade** action can display "Nothing interesting happens." The [tested native RuneScript patch](deploy/jparris-windows/yrsa377/README.md) adds that missing interaction. Once both players have logged out and you have gracefully stopped the local world, double-click **JoshRS-Fix-Yrsa.cmd** in an updated extracted JoshRS launcher. It backs up files and compiles locally without changing saves or the existing quests. CI compiles and boots a disposable server, but **real client purchase and save persistence still need verification** on JParris Desktop.
+
 ## Play the existing Elrothiro on Android (LAN streaming)
 
 **[Setup guide](docs/PLAY_ELROTHIRO_ANDROID.md)** · Windows entrypoint: `JoshRS-Play-Android.cmd`.
