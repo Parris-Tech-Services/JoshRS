@@ -15,6 +15,35 @@
 | **ChatGPT #36**: real-gameplay acceptance *evaluator and negative tests*, not real gameplay | `tools/rs377-companion-contract/src/gameplay-acceptance.mjs`, `test/gameplay-acceptance.test.mjs`, `package.json`; [merge `5bd5d025bbd82191fe0add4481141ffb251dffb7`](https://github.com/Parris-Tech-Services/JoshRS/commit/5bd5d025bbd82191fe0add4481141ffb251dffb7) | [Main JoshRS checks success](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41358284463) (including `npm test`); targeted contract tests can be run with `npm run check --prefix tools/rs377-companion-contract`. No genuine NPC/bank/XP/relog capture yet. |
 | **ChatGPT #12**: bootstrap failure fixtures | `tools/rs377-agent-harness/fedora/test-bootstrap.sh` on [draft PR #76](https://github.com/Parris-Tech-Services/JoshRS/pull/76) | [Checklist #12](CHATGPT_OWNED_AGY_PREPARATION_TODO_2026-11-02.md) records Codespaces evidence. **Draft branch**, not merged to `main`; do not assign its GitHub merge to Agy. |
 
+## Fedora workstation checkpoint — user-supplied terminal output, 2 Nov 2026
+
+**Evidence classification:** Actual local Fedora process output **provided by the operator**; it is not a repository CI run and does not establish that a real server, player or bot logged in. The source test commands were executed in an independent shallow clone; existing Agy/game worktrees were not modified by them.
+
+| Observed fact | Exact result |
+| --- | --- |
+| Machine/environment | `AVANCE-WS7`, Fedora 44 KDE, Node **v26.5.0**, npm **11.17.0**, Git **2.56.0**, Java **25.0.4.1**, Gradle wrapper **9.2.0**, Agy on PATH |
+| Clean test checkout | `/home/josh/joshrs-test-L5aVBQ/JoshRS`, `main` **`9c3f9e8ebf07d4174f7cf1f52b9ea9ba952af43b`** (actual operator output) |
+| Separate Agy checkout (read-only observed) | `/home/josh/dev/JoshRS-rssdk-harness`, branch `agy/rs377-rssdk-fedora`, **`4d87f95f97fdc733907be944df0558dedc7622d5`**, no tracked changes reported |
+| SDK protocol/adapter | `npm run check --prefix tools/rs377-chatgpt-bridge` — **33 passed, 0 failed** on Fedora clone |
+| Controller boundary/security/evidence | `npm run check --prefix tools/rs377-controller-boundary` — **48 passed, 0 failed** on Fedora clone |
+| Companion and gameplay evidence contracts | `npm run check --prefix tools/rs377-companion-contract` — **34 passed, 0 failed** on Fedora clone |
+| **Total** | **115/115 passing source/fixture tests**; includes simulated TCP/gameplay tests, **no** verified real game |
+| Listener observation | None seen on Fedora ports `52402,8888,8898,45099,43500,43501,53402,8988`; no server running on any *checked* port at that moment, not proof none elsewhere |
+| Game source paths reported present | `/home/josh/dev/JoshRS/lostcity377`, `/home/josh/lostcity377`; the old Fedora world may contain valuable saves — **never start/overwrite it to satisfy disposable testing** |
+| Safe temporary test profile | `/tmp/joshrs-377-disposable-kVlUAJ/manifest.json`, world `isolated-e4ae1c84bf29`, test ports `53402/8988/53500/55099/53501`, account placeholder `HarnessTest`; `prepared_no_game_started` |
+| Network | `eno1` default interface; no Tailscale interface detected in the reported Fedora preflight |
+
+**Meaning:** The **Fedora read-only environment diagnostic** and the three **Fedora offline test suites** are now *verified by operator output*, not merely Linux CI. The **actual disposable 377 engine/server, normal bot login, native adapter, SDK action effect, two Java clients, same-world Elrothiro/Sylvie and persistent autonomous gameplay are still unverified**. There is no JParris Desktop access at this checkpoint; Fedora, ThinkPad and ProBook are available.
+
+**Immediate safe next command on Fedora (verify existing generated manifest, not create another checkout):**
+
+```bash
+cd /home/josh/joshrs-test-L5aVBQ/JoshRS
+node tools/rs377-companion-contract/src/run-integration.mjs --verify /tmp/joshrs-377-disposable-kVlUAJ/manifest.json
+```
+
+If the temporary directory no longer exists, a new `--prepare` may be needed; do not claim that the world ever started. Next, **inspect** the existing local engine paths, services and configuration *names only* before deciding how to create a new isolated engine checkout. Do not run the historic `start-server.sh` against its potentially valuable saves.
+
 ## Known defects and unverified gates
 
 - **#25 — PARTIALLY COMPLETE:** normal `BotAction` mapping and native dispatch scaffolding exist; pinned RS-SDK TypeScript compile + *real* `BotWorldState` ingestion and observed action effect remain unproven. Review open PRs #83/#84 and existing source first; do not duplicate them.
@@ -36,16 +65,17 @@
 
 ## Next local action
 
-**Agy's smallest safe action — one read-only Fedora preflight, no game restart or login:**
+**Agy's smallest safe action — verify the already-created disposable manifest, without starting or changing a game:**
 
 ```bash
-cd /home/josh/dev/JoshRS && node tools/rs377-bot-preflight/fedora-preflight.mjs
+cd /home/josh/joshrs-test-L5aVBQ/JoshRS
+node tools/rs377-companion-contract/src/run-integration.mjs --verify /tmp/joshrs-377-disposable-kVlUAJ/manifest.json
 ```
 
-Its redacted output establishes current checkout SHA/branch and available listeners, **not** a shared world. Only after reviewing that result should a separate read-only world-identity check be considered. **ChatGPT's immediate independent action** is to inspect current PRs #83/#84/#86 and finish/testing remaining GitHub-only adapter and evidence work; no Agy delegation.
+Fedora preflight, 115 offline tests and isolated profile preparation have already been completed by the operator; **do not assign reruns of these as new Agy work**. If the manifest has expired from `/tmp`, create a new profile; do not reuse any family saves. After verify, inspect local source/runtime layout before any separate disposable **engine startup**. ChatGPT/other GitHub-capable agents retain ownership of open adapter/source, CI and merge work.
 
 ## Checkpoint update protocol
 
 At **every merge, significant PR, CI failure/fix or local test result**, the active GitHub-capable agent must (1) check real `main` SHA and open PRs, (2) edit this single handoff with exact **full commits, changed file paths, passing test commands + run links, failing tests/known defects, implementation boundary and single next local action**, (3) update the 42-task checkbox **only for independently verified acceptance**, (4) run `node tools/rs377-handoff/verify.mjs` and `node --test tools/rs377-handoff/verify.test.mjs`, (5) commit and verify the file on GitHub. Never claim a CI run for a different SHA tests the new commit; label fixture tests **offline**. Do not expand this into repeated general prompts to Agy.
 
-**Separate five-state acceptance verdicts:** GitHub source **PARTIALLY COMPLETE**; Fedora preflight on actual host **UNVERIFIED**; disposable normal #377 bot session **UNVERIFIED**; same-world Elrothiro bot **UNVERIFIED**; fully autonomous playable bot **UNVERIFIED**.
+**Separate five-state acceptance verdicts:** GitHub source **PARTIALLY COMPLETE**; Fedora preflight on actual host **VERIFIED READ-ONLY (operator output)**; disposable normal #377 bot session **UNVERIFIED**; same-world Elrothiro bot **UNVERIFIED**; fully autonomous playable bot **UNVERIFIED**.
