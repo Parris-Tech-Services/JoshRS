@@ -51,6 +51,14 @@ def validate(data: dict, start: datetime, end: datetime, bot: str) -> dict:
         raise ValueError("Wrong schema/experiment")
     if data.get("bot") != bot or data.get("policy") != BOTS[bot]:
         raise ValueError("Wrong bot or pre-registered AB policy")
+    if data.get("world_mode") not in ("isolated", "family_world"):
+        raise ValueError("Unknown world mode")
+    if not re.fullmatch(r"[a-zA-Z0-9_-]{4,64}", str(data.get("ab_run_id", ""))):
+        raise ValueError("Missing AB run ID")
+    if not re.fullmatch(r"[a-zA-Z0-9_.-]{1,32}", str(data.get("policy_version", ""))):
+        raise ValueError("Missing policy version")
+    if type(data.get("online")) is not bool:
+        raise ValueError("Online status must be a boolean, not guessed")
     if utc(data["window_start_utc"]) != start or utc(data["window_end_utc"]) != end:
         raise ValueError("Window mismatch")
     if data.get("cheats_enabled") is not False or data.get("xp_multiplier") != 1 or data.get("accelerated_time") is not False:
@@ -125,7 +133,7 @@ def scan(root: Path, hour: datetime) -> dict:
                 reports[bot].append(data)
             except (ValueError, KeyError, TypeError, json.JSONDecodeError, UnicodeDecodeError) as error:
                 invalid.append({"bot": bot, "window_end_utc": iso(end), "error": str(error)[:150]})
-    signatures = {(x["engine_sha"], x["content_sha"], x["tick_ms"], x["starting_signature"])
+    signatures = {(x["engine_sha"], x["content_sha"], x["tick_ms"], x["starting_signature"], x["world_mode"], x["ab_run_id"], x["policy_version"])
                   for values in reports.values() for x in values}
     comparable = len(signatures) == 1 and all(len(reports[b]) == 6 for b in BOTS)
     detail = {}
@@ -162,6 +170,7 @@ def scan(root: Path, hour: datetime) -> dict:
             "new_quests_verified": sorted(new_quests), "successful_actions": succeeded,
             "failed_actions": failed, "deaths": deaths,
             "latest_location": values[-1]["location"] if values else None,
+            "last_reported_online": values[-1]["online"] if values else None,
             "route_points": trace[-360:], "progress": progress,
         }
     bugs = [{**{k: v for k, v in record.items() if k != "bots"},
@@ -250,6 +259,16 @@ def summary_md(result: dict) -> str:
               ("failed_actions", "Failed actions"), ("deaths", "Deaths")]
     for key, label in labels:
         lines.append("| " + label + " | " + str(result["bots"]["Fred"][key]) + " | " + str(result["bots"]["George"][key]) + " |")
+    lines += ["", "## Last reported positions (at most ten-minute resolution)", ""]
+    for bot in BOTS:
+        location = result["bots"][bot]["latest_location"]
+        if location:
+            lines.append("- " + bot + ": " + html.escape(location["region"]) +
+                         " (x=" + str(location["x"]) + ", z=" + str(location["z"]) +
+                         ", plane=" + str(location["plane"]) + "); online at last sample: " +
+                         str(result["bots"][bot]["last_reported_online"]))
+        else:
+            lines.append("- " + bot + ": UNKNOWN (no sample received)")
     lines += ["", "## Skill XP earned this hour", "",
               "| Skill | Fred | George |", "|---|---:|---:|"]
     for skill in SKILLS:
