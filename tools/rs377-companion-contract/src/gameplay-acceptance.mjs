@@ -4,7 +4,8 @@
  * Cross-check evidence with independently captured engine/client/DB logs.
  */
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
-const inventory=(s,id)=>s.inventory.filter(x=>x.id===id).reduce((a,x)=>a+x.count,0);
+const countItems=(items,id)=>items.filter(x=>x.id===id).reduce((a,x)=>a+x.count,0);
+const inventory=(s,id)=>countItems(s.inventory,id);
 const forbidden=new Set(['grant','invAdd','addXp','setVar','teleport','admin','quest_stage_write','synthetic_quest_stage','mock_state']);
 const types=new Set(['npc_dialogue_open','npc_dialogue_choice','loc_interaction','item_gathered','bank_deposit','bank_withdraw','logout','relogin','save_verified','quest_hand_in']);
 export function checkGameplayAcceptance({snapshots,events,botName,worldId,sourceSha,evidenceOrigin='fixture',logItemId,bankItemId=logItemId,skill='Woodcutting'}={}){
@@ -40,7 +41,7 @@ export function checkGameplayAcceptance({snapshots,events,botName,worldId,source
   fail('gathering_requires_real_xp_and_inventory_increase');
  if(!has('bank_deposit','engine-377-authoritative')||!has('bank_withdraw','engine-377-authoritative'))
   fail('normal_bank_deposit_and_withdraw_not_observed');
- if(!sorted.some(s=>inventory(s.bank,bankItemId)>inventory(first.bank,bankItemId)))
+ if(!sorted.some(s=>countItems(s.bank,bankItemId)>countItems(first.bank,bankItemId)))
   fail('bank_item_delta_not_observed');
  if(!has('logout','native-client-377')||!has('relogin','native-client-377')||
   !has('save_verified','db-377-persistence'))fail('persistent_recovery_not_verified');
