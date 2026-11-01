@@ -61,6 +61,8 @@ jobs:
           node --check tools/rs377-companion-contract/src/gameplay-acceptance.mjs
       - name: Top-level website and project regression fixtures
         run: npm test
+      - name: Install pinned isolated WebSocket gateway dependency
+        run: npm --prefix tools/rs377-chatgpt-bridge install --ignore-scripts --no-audit --no-fund
       - name: Revision-377 protocol and genuine RS-SDK bridge source regression
         run: npm run check --prefix tools/rs377-chatgpt-bridge
       - name: Revision-377 controller safety, identity and replay regression
