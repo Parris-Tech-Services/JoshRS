@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "check": "node --check src/guard.mjs && node --check src/harness.mjs && node --check src/fixture-transport.mjs && node --check src/rssdk-actions.mjs && node --check src/native377/codec.mjs && node --check src/native377/client.mjs && npm test"
+    "check": "node --check src/guard.mjs && node --check src/harness.mjs && node --check src/fixture-transport.mjs && node --check src/rssdk-actions.mjs && node --check src/native377/codec.mjs && node --check src/native377/client.mjs && node --check src/native377/cli.mjs && npm test",
+    "doctor": "node src/native377/cli.mjs --doctor"
   },
   "engines": {
     "node": ">=20"
