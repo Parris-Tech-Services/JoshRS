@@ -11,7 +11,7 @@ const actions=['npc_option','loc_option','bank_deposit'].map((kind,i)=>({kind,tr
 const expectation={itemId:1511,bankItemId:100,skill:'Woodcutting',xpGainTenths:150,npcId:7,objectId:1276};
 const run=x=>evaluateRealGameplay({before,after,actions,expectation,relogin,...x});
 test('all seven independently observed outcomes',()=>assert.equal(run().outcome,'pass'));
-test('dispatch alone is insufficient',()=>assert.equal(run({after:before,relogin:null}).outcome,'blocked'));
+test('dispatch alone is insufficient',()=>assert.throws(()=>run({after:before,relogin:null}),/independent_world/));
 test('missing disk-backed relogin blocks acceptance',()=>assert.equal(run({relogin:null}).outcome,'blocked'));
 test('rejects synthetic state and quest-stage writes',()=>{assert.throws(()=>run({after:{...after,provenance:{...after.provenance,synthetic:true}}}));assert.throws(()=>run({after:{...after,questStages:{quest:1}}}));assert.throws(()=>run({actions:[{...actions[0],questStageWrite:true}]}))});
 test('requires 1x XP, bank, dialogue and object effects',()=>{for(const change of [{skills:[]},{bank:[]},{dialogue:null},{objectEvents:[]}])assert.equal(run({after:{...after,...change},relogin:null}).outcome,'blocked')});
