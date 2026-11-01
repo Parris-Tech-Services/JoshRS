@@ -94,7 +94,7 @@ try {
     [IO.File]::WriteAllText($envPath,$loggerDisabled)
     $blocked=$false
     try { & $fix -Apply } catch {
-        $blocked=($_.Exception.Message -like '*requires a controlled Agy review*')
+        $blocked=($_.Exception.Message -like '*service-topology review*')
     }
     if (-not $blocked -or [IO.File]::ReadAllText($envPath) -cne $loggerDisabled) {
         throw 'Unexpected custom logger configuration was not rejected'
