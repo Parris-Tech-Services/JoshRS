@@ -6,7 +6,7 @@
 
 ## Result and reproducible evidence
 
-**VERIFIED COMPLETE for task 38's GitHub/Linux fixtures and static checks only.** No Fedora workstation or JParris Desktop/Windows VM runtime check has been performed.
+**VERIFIED COMPLETE for task 38's GitHub/Linux fixtures and static checks only.** A [real Fedora preflight transcript](FEDORA_HOST_OBSERVED_PREFLIGHT_2026-11-02.md) was subsequently supplied and reviewed, but **no Fedora game runtime, JParris Desktop or Windows VM live session has been verified**.
 
 - Source workflow: [`.github/workflows/rs377-task38-cross-platform.yml`](../../.github/workflows/rs377-task38-cross-platform.yml)
 - Final passing check: [GitHub Actions run 41359096517](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41359096517), source commit [`09dabd4e074251e600a7d978cc4228318eec8a42`](https://github.com/Parris-Tech-Services/JoshRS/commit/09dabd4e074251e600a7d978cc4228318eec8a42).
@@ -38,7 +38,8 @@
 |---|---|---|
 | GitHub Linux suite and Bash/Node/Python static checks | **VERIFIED** | None for source-only task 38 |
 | GitHub-hosted Windows PowerShell parsing and manifest checks | **VERIFIED** | These are **not** validation on the actual Windows server or Sylvie VM |
-| Fedora AVANCE-WS7 local bootstrap, active ports, SDK/engine deployment | **UNVERIFIED** | Host-owned command outputs and hashes |
+| Fedora AVANCE-WS7 host preflight | **OBSERVED from user-supplied host output** | [Host transcript review](FEDORA_HOST_OBSERVED_PREFLIGHT_2026-11-02.md); no active local engine/listeners seen, source paths and hashes obtained |
+| Fedora isolated game startup and SDK/engine deployment | **UNVERIFIED** | No real game or native adapter startup, bot login or game state output |
 | Actual JParris Desktop authoritative 377 world identity and live bot login | **UNVERIFIED** | Real server identity, disposable-account authentication and native observer evidence |
 | Two real clients, Elrothiro visibility/Friends, dialogue, XP, inventory, persistence | **UNVERIFIED** | Independent client captures, real tick/state deltas and save recovery checks |
 | Long-running safety and actual Windows VM input/crash stability | **UNVERIFIED** | Live host/VM observations |
