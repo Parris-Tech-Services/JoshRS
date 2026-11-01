@@ -32,6 +32,11 @@ jobs:
           grep -q 'Usage:' /tmp/output
           grep -q 'node "$guard" --verify "$manifest"' tools/rs377-disposable/start-isolated-joshrs377.sh
           grep -q 'git clone --no-hardlinks' tools/rs377-disposable/start-isolated-joshrs377.sh
+          grep -q 'build_parent="\$HOME/dev/JoshRS-disposable-worlds"' tools/rs377-disposable/start-isolated-joshrs377.sh
+          if grep -q 'git clone --no-hardlinks .*"\$root/engine"' tools/rs377-disposable/start-isolated-joshrs377.sh; then
+            echo "Refusing to build large engine source under RAM-backed /tmp"
+            exit 1
+          fi
           grep -q 'NODE_XPRATE=1' tools/rs377-disposable/start-isolated-joshrs377.sh
           grep -q 'NODE_PRODUCTION=false' tools/rs377-disposable/start-isolated-joshrs377.sh
           grep -q '127.0.0.1' tools/rs377-disposable/start-isolated-joshrs377.sh
