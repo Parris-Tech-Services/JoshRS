@@ -46,7 +46,7 @@ EOF
 chmod +x "$TMP/mockbin/git"
 # Use an expected upstream URL, but no pinned commit exists in this empty repository.
 git -C "$TMP/source/research-checkouts/rs-sdk" remote set-url origin https://github.com/MaxBittker/rs-sdk.git
- git -C "$TMP/source/research-checkouts/rs-sdk" config user.name Fixture
+git -C "$TMP/source/research-checkouts/rs-sdk" config user.name Fixture
  git -C "$TMP/source/research-checkouts/rs-sdk" config user.email fixture@example.invalid
  git -C "$TMP/source/research-checkouts/rs-sdk" commit -qm wrong-pin --allow-empty
 (cd "$TMP/source"; fail env PATH="$TMP/mockbin:$PATH" bash "$TMP/source/tools/rs377-agent-harness/fedora/setup.sh" --prepare --fetch-sdk)
