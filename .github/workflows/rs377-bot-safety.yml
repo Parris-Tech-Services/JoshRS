@@ -1,0 +1,26 @@
+name: RS377 bot safety checks
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/rs377-bot-doctor.mjs'
+      - 'tools/rs377-bot-config.example.json'
+      - 'tools/rs377-bot-safety.test.mjs'
+      - '.github/workflows/rs377-bot-safety.yml'
+  pull_request:
+    paths:
+      - 'tools/rs377-bot-doctor.mjs'
+      - 'tools/rs377-bot-config.example.json'
+      - 'tools/rs377-bot-safety.test.mjs'
+      - '.github/workflows/rs377-bot-safety.yml'
+  workflow_dispatch:
+jobs:
+  offline-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tools/rs377-bot-safety.test.mjs
+      - run: node tools/rs377-bot-doctor.mjs --json
