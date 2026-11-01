@@ -63,7 +63,7 @@ test('reads only active.json and .env; never changes them', async () => {
     const env=path.join(engine,'.env');
     const state=path.join(runtime,'active.json');
     await fs.writeFile(env,'FRIEND_SERVER=false\nDB_PASS=not-visible\nNODE_PORT=65500\nWEB_PORT=65501\nFRIEND_PORT=65502\n');
-    await fs.writeFile(state,JSON.stringify({engine}));
+    await fs.writeFile(state,'\uFEFF' + JSON.stringify({engine}));
     const before=await fs.readFile(env,'utf8');
     const report=await run(root);
     const after=await fs.readFile(env,'utf8');

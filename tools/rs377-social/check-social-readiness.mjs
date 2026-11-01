@@ -8,7 +8,7 @@ import { pathToFileURL } from 'node:url';
 export function parseWhitelistedEnv(text) {
   const allowed = new Set(['FRIEND_SERVER', 'EASY_STARTUP', 'FRIEND_PORT', 'NODE_PORT', 'WEB_PORT']);
   const result = {};
-  for (const line of text.split(/\r?\n/)) {
+  for (const line of String(text).replace(/^\uFEFF/, '').split(/\r?\n/)) {
     const match = line.match(/^\s*([A-Z_]+)\s*=\s*(.*?)\s*$/);
     if (!match || !allowed.has(match[1])) continue;
     const value = match[2].replace(/\s+#.*$/, '').trim().replace(/^(?:"([^"]*)"|'([^']*)')$/, (_, a, b) => a ?? b);
@@ -73,9 +73,9 @@ export async function testPort(port, timeoutMs = 600) {
 
 export async function run(root) {
   const statePath = path.join(root, 'runtime', 'jparris-377', 'active.json');
-  const state = JSON.parse(await fs.readFile(statePath, 'utf8'));
+  const state = JSON.parse((await fs.readFile(statePath, 'utf8')).replace(/^\uFEFF/, ''));
   if (typeof state.engine !== 'string' || !path.isAbsolute(state.engine)) throw new Error('active.json has no absolute engine path');
-  const text = await fs.readFile(path.join(state.engine, '.env'), 'utf8');
+  const text = (await fs.readFile(path.join(state.engine, '.env'), 'utf8')).replace(/^\uFEFF/, '');
   const flags = parseWhitelistedEnv(text);
   const friendPort = numericPort(flags.FRIEND_PORT, 45099);
   const gamePort = numericPort(flags.NODE_PORT, 52402);
