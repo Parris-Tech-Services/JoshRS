@@ -20,7 +20,8 @@
 
 ## 2. Existing GitHub issues — outstanding acceptance and work items
 
-Every issue below is OPEN as of the review. Checklist lines come from the issue bodies. Some overlap higher-level P0 items, the AI-agent checklist and the original Woodlands checklist; duplicates are **cross-references**, not additional unique promises. Any status reported as 'merged' refers to source, not necessarily playable implementation.
+Every issue below is OPEN as of the review. Only **unchecked** source issue checkboxes are counted as outstanding. Some manual acceptance rows supplement prose issues (which do not use Markdown checkboxes). Duplicates shared with AI/Worldlands are cross-references, not extra unique promises.
+
 ### 2.3 — [#3: Release gate: independent world hosting, asset rights and real character-play acceptance](https://github.com/Parris-Tech-Services/JoshRS/issues/3)
 
 1. [ ] Resolve rights to Jagex-owned game assets. Their Fan Content Policy §6.1.3 excludes private servers; a software MIT licence does not license those assets. Do not publish an independent replica or copy assets to a public host without appropriate rights.
@@ -31,7 +32,7 @@ Every issue below is OPEN as of the review. Checklist lines come from the issue 
 6. [ ] Restore an actual advanced character into a **new** isolated volume and demonstrate complete gameplay/state recovery. The existing checksum/boot test is not enough.
 7. [ ] Encrypt and schedule off-host backups; test restoration monthly; monitor storage/RAM/CPU/uptime.
 8. [ ] Only after permissions and full device/browser acceptance, switch the primary JoshRS Play target.
-9. [ ] Do not publicly deploy historical Jagex assets until written rights permission or original assets are in place
+9. [ ] Block public redistribution of historical Jagex assets pending actual rights clearance
 
 ### 2.5 — [#5: Build legally independent persistent multiplayer JoshRS world on zero-subscription infrastructure](https://github.com/Parris-Tech-Services/JoshRS/issues/5)
 
@@ -46,39 +47,29 @@ Every issue below is OPEN as of the review. Checklist lines come from the issue 
 
 ### 2.28 — [#28: P0: Establish reproducible quest-by-quest gameplay completeness across open-source RuneScape projects](https://github.com/Parris-Tech-Services/JoshRS/issues/28)
 
-1. [ ] Historical quest totals documented for Classic 50, rev377 104, rev530 148 and rev634 169; verify each project's actual snapshot before using a denominator.
-2. [ ] OpenRSC: 17 free + 33 member **source quest entries** located (not complete gameplay).
-3. [ ] OpenRSC: source ending paths traced for Shield of Arrav in `authentic/npcs/varrock/King.java` and Holy Grail in `authentic/quests/members/MerlinsCrystal.java` (King Arthur checks/removes grail and calls `sendQuestComplete`). These are **code traces, not gameplay tests**.
-4. [ ] Lost City pinned 377: 66 quest-labelled roots; 60 with .rs2 files, six config-only. This ratio is **not** quest completion.
-5. [ ] 2006Scape: 15 quest journal classes; reward/NPC logic is elsewhere. **Not 15 proven playable quests**.
-6. [ ] Void: 34 high-level quest-code groups; quest definition directories vastly exceed gameplay implementations. 2011Scape derives from Void.
-7. [ ] OpenRune progress tracker explicitly counts source-symbol/module presence, not encounter completion.
-8. [ ] Produce *per-project* historical content catalogues with unique quest IDs, release dates, and sources (Classic, 377, 435, 530/562, 634/2011, modern OSRS).
-9. [ ] Map Lost City's six config-only 377 quest roots `quest_100`, `quest_fever`, `quest_mm`, `quest_mortton`, `quest_mourning2`, `quest_rd` to historical quests; search OTHER source paths for start, progress, ending and reward triggers. Confirm whether absent, partial, elsewhere, or working before assigning a gap.
-10. [ ] Trace each of the 50 OpenRSC quest start and completion paths, dependencies, quest points, inventory effects and persistence; current 50/50 is **source-entry coverage only**.
-11. [ ] Trace 2006Scape quest *stage changes*, completion handlers and persistent state outside journal classes; count unique quests with actual runnable state machines.
-12. [ ] Map Void's Kotlin quest entrypoints to its quest data; distinguish partial dialogue and multi-quest support helpers from completable quests.
-13. [ ] Retrieve and pin 2009Scape's current canonical GitLab commit and complete code-level quest inventory; inspect Darkan and 2011Scape's actual independent deltas.
-14. [ ] Audit Luna 377 quests, skills, Barrows and Castle Wars mechanics (join, encounter state, rewards and reset); distinguish code existence from test evidence.
-15. [ ] Re-check OpenRune boss/minigame tracker using actual encounter state machines, not simple symbol references; track 0/4 raids separately.
-16. [ ] Deduplicate forks and mirrors; expand discovery across GitHub/GitLab and earlier RS2 variants; report coverage limits instead of claiming completeness.
-17. [ ] Produce comparable quest/source and quest/playable percentages **only if the full denominator is independently enumerated and accepted**. Unknown otherwise.
+1. [ ] Produce *per-project* historical content catalogues with unique quest IDs, release dates, and sources (Classic, 377, 435, 530/562, 634/2011, modern OSRS).
+2. [ ] Map Lost City's six config-only 377 quest roots `quest_100`, `quest_fever`, `quest_mm`, `quest_mortton`, `quest_mourning2`, `quest_rd` to historical quests; search OTHER source paths for start, progress, ending and reward triggers. Confirm whether absent, partial, elsewhere, or working before assigning a gap.
+3. [ ] Trace each of the 50 OpenRSC quest start and completion paths, dependencies, quest points, inventory effects and persistence; current 50/50 is **source-entry coverage only**.
+4. [ ] Trace 2006Scape quest *stage changes*, completion handlers and persistent state outside journal classes; count unique quests with actual runnable state machines.
+5. [ ] Map Void's Kotlin quest entrypoints to its quest data; distinguish partial dialogue and multi-quest support helpers from completable quests.
+6. [ ] Retrieve and pin 2009Scape's current canonical GitLab commit and complete code-level quest inventory; inspect Darkan and 2011Scape's actual independent deltas.
+7. [ ] Audit Luna 377 quests, skills, Barrows and Castle Wars mechanics (join, encounter state, rewards and reset); distinguish code existence from test evidence.
+8. [ ] Re-check OpenRune boss/minigame tracker using actual encounter state machines, not simple symbol references; track 0/4 raids separately.
+9. [ ] Deduplicate forks and mirrors; expand discovery across GitHub/GitLab and earlier RS2 variants; report coverage limits instead of claiming completeness.
+10. [ ] Produce comparable quest/source and quest/playable percentages **only if the full denominator is independently enumerated and accepted**. Unknown otherwise.
 
 ### 2.29 — [#29: P0: Audit and repair actual broken JoshRS 377 world interactions before importing new content](https://github.com/Parris-Tech-Services/JoshRS/issues/29)
 
-1. [ ] Pinned source already defines law/nature runes, amulet mould, chisel and jewellery handlers; speculative duplicate merchants retired.
-2. [ ] Compiler/clean-server smoke gates exist, **not** a real player-login or interaction test.
-3. [ ] Reported candidates classified as triage targets, not proven defects: Haunted Manor secret-door/bookcase, Troll Romance second sled ride, quest-specific doors/ladders.
-4. [ ] Inspect the current JParris Desktop `runtime/jparris-377/active.json` pinned engine/content/client plus local overrides; compare with GitHub source baseline, without writing changes.
-5. [ ] Take consistent protected backup of SQLite (including WAL), player saves, active packs, client and any IDs before attempting a fix.
-6. [ ] Export observed broken actions (entity type/id, location, quest stage, option, handler, actual/expected result) from the *real* world.
-7. [ ] Quest doors and ladders: isolate incorrect destination, state or collision; write focused regression before modifying shared code.
-8. [ ] Shops: test stock/price/quantity, full inventory, buy-back and persistence. Prevent duplicates rather than adding a second NPC.
-9. [ ] Banks: test all quantity modes, full inventory, withdrawals, reconnect and persistence.
-10. [ ] Resource skills / furnace / jewellery: verify IDs, level gates, inventory conservation and existing gameplay; fix only a demonstrable defect.
-11. [ ] Haunted Manor bookcase/secret door: reproduce and inspect trigger, region, destination and quest stage.
-12. [ ] Troll Romance sled and boss: reproduce, trace the actual branch, test after a minimally scoped fix.
-13. [ ] For every repaired interaction: compile, disposable-world tests, non-admin local client play, logout/relogin persistence, restore drill and regression log.
+1. [ ] Inspect the current JParris Desktop `runtime/jparris-377/active.json` pinned engine/content/client plus local overrides; compare with GitHub source baseline, without writing changes.
+2. [ ] Take consistent protected backup of SQLite (including WAL), player saves, active packs, client and any IDs before attempting a fix.
+3. [ ] Export observed broken actions (entity type/id, location, quest stage, option, handler, actual/expected result) from the *real* world.
+4. [ ] Quest doors and ladders: isolate incorrect destination, state or collision; write focused regression before modifying shared code.
+5. [ ] Shops: test stock/price/quantity, full inventory, buy-back and persistence. Prevent duplicates rather than adding a second NPC.
+6. [ ] Banks: test all quantity modes, full inventory, withdrawals, reconnect and persistence.
+7. [ ] Resource skills / furnace / jewellery: verify IDs, level gates, inventory conservation and existing gameplay; fix only a demonstrable defect.
+8. [ ] Haunted Manor bookcase/secret door: reproduce and inspect trigger, region, destination and quest stage.
+9. [ ] Troll Romance sled and boss: reproduce, trace the actual branch, test after a minimally scoped fix.
+10. [ ] For every repaired interaction: compile, disposable-world tests, non-admin local client play, logout/relogin persistence, restore drill and regression log.
 
 ### 2.30 — [#30: P1: Real client gameplay, multi-player and Elrothiro restore evidence for JoshRS 377](https://github.com/Parris-Tech-Services/JoshRS/issues/30)
 
@@ -109,25 +100,25 @@ Every issue below is OPEN as of the review. Checklist lines come from the issue 
 
 ### 2.35 — [#35: Agent 4 — Read-only cross-agent progress reports (sanitised; 10-minute intervals)](https://github.com/Parris-Tech-Services/JoshRS/issues/35)
 
-1. [ ] Prove 10-minute read-only Agent 4 reports use actual observed sessions, avoid fabricating or leaking private data, and enforce nonoverlapping agent ownership
+1. [ ] Prove 10-minute Agent 4 audit reports reflect observed active sessions; no fabricated progress or private data exposure
 
 ### 2.36 — [#36: Content handoff queue — distinctive NPC dialogue, map context and quest-ready packs](https://github.com/Parris-Tech-Services/JoshRS/issues/36)
 
-1. [ ] Investigate generic 'Hello adventurer' NPC response in the real loaded script pack, identify exact handler/dispatch fault; verify distinct dialogues on quest/shop/background NPCs
-2. [ ] Deliver per-region distinct NPC dialogue/map/quest source packs with provenance and reproducible isolated validation; test in client
+1. [ ] Investigate generic 'Hello adventurer' NPC response in the real loaded script pack; verify distinct quest/shop/background NPC dialogues
+2. [ ] Deliver source-verified unique NPC dialogue, map/quest packs and isolated tests, then actual client verification
 
 ### 2.49 — [#49: Rev377 live friends presence and companion PMs (no active-session interruption)](https://github.com/Parris-Tech-Services/JoshRS/issues/49)
 
-1. [ ] Review issue scope and confirm closure criteria in game; the issue contains prose work items rather than literal checkboxes.
+1. [ ] Review open issue's prose acceptance conditions and obtain actual gameplay verification before closure
 
 ### 2.50 — [#50: JoshRS 377: safe 28+28 portable inventory expansion without item loss](https://github.com/Parris-Tech-Services/JoshRS/issues/50)
 
-1. [ ] Review issue scope and confirm closure criteria in game; the issue contains prose work items rather than literal checkboxes.
+1. [ ] Review open issue's prose acceptance conditions and obtain actual gameplay verification before closure
 
 ### 2.52 — [#52: P0: Party Drop Chest unexpectedly clears deposited items — preserve and recover](https://github.com/Parris-Tech-Services/JoshRS/issues/52)
 
-1. [ ] Reproduce and remove destructive Party Chest Accept/drag/threshold semantics in a disposable clone; verify accepted contents persist and are delivered normally
-2. [ ] Inventory each reported lost item from snapshots and restore only with explicit player approval and evidence
+1. [ ] Remove destructive Party Chest Accept/drag/threshold reset hooks and verify deposited shared items persist without grants
+2. [ ] Account for missing items using read-only historical evidence and player-approved recovery
 
 ### 2.55 — [#55: Fred & George: fresh no-cheat A/B bots, cooperative play, friend/location and hourly evidence](https://github.com/Parris-Tech-Services/JoshRS/issues/55)
 
@@ -141,8 +132,8 @@ Every issue below is OPEN as of the review. Checklist lines come from the issue 
 8. [ ] GitHub automatic hourly JSON/Markdown plus four SVG charts from actual data, preserving incomplete/missed reports
 9. [ ] ChatGPT hourly task reads validated data and writes/publishes appropriately sanitised findings, without inventing observations
 10. [ ] All offline tests and real client gameplay, persistence, recovery and family multiplayer regression checks pass before any opted-in deployment
-11. [ ] Complete no-seed full quests using native actions and prove shared-family-world autonomy rather than four-coordinate fake TCP patrols
-12. [ ] Repair zero-data telemetry and cross-window XP rollback detection; verify cooperative activity
+11. [ ] Prove full no-grant questing in the family world; remove fixed four-point patrolling
+12. [ ] Repair telemetry missing snapshots and XP rollback verification
 
 ## 3. Additional tasks recovered from previous JoshRS discussions and source history
 
@@ -413,6 +404,6 @@ Every issue below is OPEN as of the review. Checklist lines come from the issue 
 ## Review coverage and count caveats
 
 - Reviewed: all **12 currently open issues**, open PR #59, AI-agent GitHub source list, original 114-task Woodlands checklist, previous unfinished-work register, README and linked source audits, plus relevant retrievable ChatGPT history.
-- Extracted: **85** issue body checkbox/prose follow-ups, **16** cross-source tasks, **111** prior numbered AI tasks, and **114** original-MMO checkbox lines, with overlap. They are **not a count of distinct unfinished obligations**.
+- Extracted: **77** unchecked issue body tasks and manual prose follow-ups, **16** cross-source tasks, **111** prior numbered AI tasks, and **114** original-MMO checkbox lines, with overlap. They are **not a count of distinct unfinished obligations**.
 - Not fully examined: every historical/closed issue and PR, every unpushed desktop edit, every past ChatGPT transcript, every nested document/file in the repository, or every runtime test. This is a significantly broader **cross-referenced inventory**, not a false exhaustive claim.
 - Live status: cannot be declared fixed solely from GitHub. The user's last on-host diagnostics showed gameplay-listener and authentication trouble; treat this as **unverified current state** until a fresh desktop check.
