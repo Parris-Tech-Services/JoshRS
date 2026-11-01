@@ -1,0 +1,135 @@
+name: RS377 task 38 - cross-platform source and fixture gates
+
+# These gates run ONLY in disposable GitHub-hosted CI. They do not connect to
+# Josh's Fedora workstation, Windows desktop, live world, private accounts or saves.
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/rs377-task38-cross-platform.yml'
+      - 'tools/rs377-**'
+      - 'tools/luna377/**'
+      - 'tools/web377-bridge/**'
+      - 'tools/test-rs377-task15-entrypoint.sh'
+      - 'tools/rs377-task15-entrypoint.sh'
+      - 'content-factory/tests/**'
+      - 'tools/rs377-bot-bench/tests/**'
+      - 'deploy/jparris-windows/**'
+  pull_request:
+    paths:
+      - '.github/workflows/rs377-task38-cross-platform.yml'
+      - 'tools/**'
+      - 'content-factory/tests/**'
+      - 'deploy/jparris-windows/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-fixtures:
+    name: Linux - source, safety and negative fixtures
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Static Node and shell syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash -n tools/rs377-task15-entrypoint.sh tools/test-rs377-task15-entrypoint.sh
+          node --check tools/rs377-bot-doctor.mjs
+          node --check tools/rs377-bot-preflight/fedora-preflight.mjs
+          node --check tools/rs377-net-doctor/doctor.mjs
+          node --check tools/rs377-companion-contract/src/gameplay-acceptance.mjs
+      - name: Top-level website and project regression fixtures
+        run: npm test
+      - name: Revision-377 protocol and genuine RS-SDK bridge source regression
+        run: npm run check --prefix tools/rs377-chatgpt-bridge
+      - name: Revision-377 controller safety, identity and replay regression
+        run: npm run check --prefix tools/rs377-controller-boundary
+      - name: Companion two-client and gameplay acceptance, anti-synthetic fixtures
+        run: npm run check --prefix tools/rs377-companion-contract
+      - name: Other offline bot, Fedora-readonly and network fixture suites
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test tools/rs377-bot-safety.test.mjs
+          node --test tools/rs377-bot-preflight/fedora-preflight.test.mjs
+          node --test tools/rs377-net-doctor/test/*.test.mjs
+          node --test tools/rs377-social/check-social-readiness.test.mjs
+          node --test tools/luna377/test/*.test.mjs
+          node --test tools/rs377-map-bridge/test/*.test.mjs
+          node --test tools/rs377-saves/test/*.test.mjs
+          bash tools/test-rs377-task15-entrypoint.sh
+      - name: Web377 bridge fixture (no external game server)
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix tools/web377-bridge --ignore-scripts --no-audit --no-fund
+          npm test --prefix tools/web377-bridge
+      - name: Python source and no-cheat reporter fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q content-factory tools/rs377-bot-bench
+          python -m unittest discover -s content-factory/tests -v
+          python -m unittest discover -s tools/rs377-bot-bench/tests -v
+      - name: Confirm tests never loaded a production game or player save
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e runtime
+          echo 'PASS: all preceding test commands ran in disposable GitHub Linux CI; no private live host checked.'
+      - name: Scope label (not a real Fedora or Windows session)
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '## Task 38 evidence boundary'
+            echo '- Linux Node/Python/Bash tests: GitHub-hosted fixtures only.'
+            echo '- No Fedora AVANCE-WS7 or Windows/JParrisDesktop execution has occurred.'
+            echo '- No live world identity, account login, inventory/XP, friends, or actual client input was proved.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  windows-static:
+    name: Windows CI - PowerShell parsing and manifest only
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse every Windows launcher script in PowerShell 5.1
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $files = @(Get-ChildItem 'deploy/jparris-windows' -Filter '*.ps1' -File)
+          if ($files.Count -lt 10) { throw 'Expected Windows launcher files are missing' }
+          foreach ($file in $files) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile($file.FullName,[ref]$tokens,[ref]$errors)
+            if ($errors.Count) { throw "$($file.Name): $($errors | Out-String)" }
+          }
+          Write-Host "PASS: $($files.Count) Windows PowerShell 5.1 scripts parse."
+      - name: Assert immutable upstream pins and port relationships
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $m = Get-Content 'deploy/jparris-windows/upstreams.json' -Raw | ConvertFrom-Json
+          foreach ($x in @($m.engine,$m.content,$m.client)) {
+            if ($x.commit -notmatch '^[0-9a-f]{40}$') { throw 'Unpinned upstream revision' }
+          }
+          if (($m.gamePort - 43594) -ne $m.clientPortOffset) { throw 'Game port offset mismatch' }
+          if (($m.webPort - 80) -ne $m.clientPortOffset) { throw 'Web port offset mismatch' }
+          Write-Host 'PASS: Windows host launch manifest passes static checks.'
+      - name: Explicitly distinguish CI from a real Windows VM or game
+        if: always()
+        shell: powershell
+        run: |
+          'This GitHub-hosted Windows runner is NOT JParrisDesktop or Sylvie VM.' | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
