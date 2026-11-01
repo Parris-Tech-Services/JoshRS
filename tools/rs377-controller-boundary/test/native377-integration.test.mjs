@@ -46,10 +46,10 @@ async function simulatedTcp(t){
   t.after(()=>new Promise(resolve=>tcp.close(resolve)));
   const port=tcp.address().port;
   // Diagnose native codec errors independently before the network protocol.
-  const encoded=buildLogin({username:BOT,password:'fixture-only-password',publicKeyPem:key,crcs:Buffer.alloc(36,7),seed:[1,2,3,4]});
+  const encoded=buildLogin({username:BOT,password:'test-password',publicKeyPem:key,crcs:Buffer.alloc(36,7),seed:[1,2,3,4]});
   assert.equal(encoded.packet.readUInt16BE(3),377);
   const session=new Session377({target:{host:'127.0.0.1',port},username:BOT,
-    password:'fixture-only-password',publicKeyPem:key,crcs:Buffer.alloc(36,7),
+    password:'test-password',publicKeyPem:key,crcs:Buffer.alloc(36,7),
     timeoutMs:2000,seedFactory:()=>[1,2,3,4]});
   return {packets,session};
 }
