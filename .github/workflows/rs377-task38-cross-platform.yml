@@ -8,6 +8,7 @@ on:
     paths:
       - '.github/workflows/rs377-task38-cross-platform.yml'
       - 'tools/rs377-*/**'
+      - 'tools/rs377-host-evidence/**'
       - 'tools/rs377-*.mjs'
       - 'tools/rs377-*.json'
       - 'tests/**'
@@ -130,6 +131,22 @@ jobs:
             if ($errors.Count) { throw "$($file.Name): $($errors | Out-String)" }
           }
           Write-Host "PASS: $($files.Count) Windows PowerShell 5.1 scripts parse."
+      - name: Verify Windows host diagnostic parses and fails closed without active state
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $path = 'tools/rs377-host-evidence/windows-readonly.ps1'
+          $tokens = $null
+          $errors = $null
+          [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path).Path,[ref]$tokens,[ref]$errors)
+          if ($errors.Count) { throw ($errors | Out-String) }
+          $output = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $path -ActiveStatePath (Join-Path $env:RUNNER_TEMP 'nonexistent-active.json')
+          if ($LASTEXITCODE -ne 0) { throw 'Host preflight failed on Windows CI' }
+          $report = $output | ConvertFrom-Json
+          if ($report.configuredRuntime.activeConfigFound) { throw 'Missing active config was incorrectly reported present' }
+          if ($report.realBotLogin -ne 'NOT TESTED' -or $report.sameWorldBotVisibility -ne 'NOT TESTED') { throw 'Script invented live bot proof' }
+          if (@($report.listeners).Count -ne 5) { throw 'Unexpected listener checklist' }
+          Write-Host 'PASS: script parses in PowerShell 5.1; a missing runtime is reported honestly; no login or game started.'
       - name: Assert immutable upstream pins and port relationships
         shell: powershell
         run: |
