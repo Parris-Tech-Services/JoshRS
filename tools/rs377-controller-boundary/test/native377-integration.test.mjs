@@ -9,6 +9,7 @@ import {buildLogin} from '../../rs377-chatgpt-bridge/src/protocol.mjs';
 import {SKILLS377} from '../../rs377-chatgpt-bridge/src/observation.mjs';
 import {Native377BoundaryTransport,startAuthenticated377Gateway,createLoopbackEngine377Source} from '../lib/native377-transport.mjs';
 import {BoundaryController} from '../lib/controller.mjs';
+import {observedEffect} from '../lib/outcomes.mjs';
 import {ReplayLedger} from '../lib/recovery.mjs';
 import {createLoopbackGateway} from '../lib/gateway.mjs';
 import {mkdtemp,rm} from 'node:fs/promises';
@@ -189,4 +190,26 @@ test('task24 Engine-TS HTTP endpoint interoperates with gateway without inventin
   assert.equal(observation.player.inventory[0].id,1351);
   assert.ok(requests>=2); // advancing actual 600ms timer, not repeated fake sequencer
   b.close();
+});
+
+test('task26 authenticated session adoption never creates an extra TCP login',async t=>{
+  const tcp=await simulatedTcp(t);
+  const native=adapter(tcp.session);
+  await assert.rejects(()=>native.connect({adoptAuthenticated:true}),/native_login_not_authenticated/);
+  const active=await simulatedTcp(t);
+  await active.session.connect();
+  assert.equal(active.packets.length,2);
+  const boundary=adapter(active.session);
+  await boundary.connect({adoptAuthenticated:true});
+  assert.equal(active.packets.length,2);
+  assert.equal(boundary.status().authenticated,true);
+  boundary.close();
+});
+test('task26 no-op walk at same tile cannot be marked as observed movement',()=>{
+  const state={tick:10,world:{instanceId:'isolated-test'},
+    player:{x:3200,z:3200,plane:0,inventory:[],xp:null,dialogue:null}};
+  const next={...structuredClone(state),tick:11};
+  assert.equal(observedEffect({type:'walk',x:3200,z:3200},state,next),null);
+  next.player.x=3201;
+  assert.equal(observedEffect({type:'walk',x:3201,z:3200},state,next),'destination_reached');
 });
