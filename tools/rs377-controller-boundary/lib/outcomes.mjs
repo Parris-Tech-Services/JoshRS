@@ -13,7 +13,8 @@ export function observedEffect(act,before,after){
   if(after.tick<=before.tick) return null;
   const b=before.player,a=after.player;
   switch(act.type){
-    case 'walk': return a.x===act.x && a.z===act.z && a.plane===b.plane?'destination_reached':null;
+    case 'walk': return (a.x!==b.x || a.z!==b.z) &&
+      a.x===act.x && a.z===act.z && a.plane===b.plane?'destination_reached':null;
     case 'npc_option':case 'dialog_option': return changed(b.dialogue??null,a.dialogue??null)?'dialogue_changed':null;
     case 'ground_take': return quantity(after,act.itemId)>quantity(before,act.itemId)?'item_received':null;
     case 'loc_option':case 'item_on_loc':

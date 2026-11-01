@@ -130,13 +130,21 @@ export class Native377BoundaryTransport {
     })();
     try{return await this.sampling;}finally{this.sampling=null;}
   }
-  async connect(){
+  async connect({adoptAuthenticated=false}={}){
     if(this.connected||this.connecting)fail('duplicate_native_session');
+    if(typeof adoptAuthenticated!=='boolean')fail('invalid_authentication_mode');
     this.connecting=true;
     try{
-      const login=await this.session.connect();
-      if(login.authenticated!==true||!this.session.status().authenticated)
-        fail('native_login_not_authenticated');
+      // The real engine smoke already authenticates this exact Session377
+      // before it can test both SDK and controller gateways. Adoption is only
+      // allowed for a genuinely authenticated SAME Session377 instance.
+      if(adoptAuthenticated){
+        if(!this.session.status().authenticated)fail('native_login_not_authenticated');
+      } else {
+        const login=await this.session.connect();
+        if(login.authenticated!==true||!this.session.status().authenticated)
+          fail('native_login_not_authenticated');
+      }
       const first=await this.sample();
       const end=Date.now()+this.proofTimeoutMs;
       let progressed=false;
