@@ -27,8 +27,9 @@ rm "$TMP/harness/marker"
 rmdir "$TMP/harness"
 # Missing Node/npm in prepare must fail without modifying source.
 mkdir "$TMP/empty-bin"
-ln -s "$(command -v bash)" "$TMP/empty-bin/bash"
+for tool in bash dirname pwd git uname; do ln -s "$(command -v "$tool")" "$TMP/empty-bin/$tool"; done
 (cd "$TMP/source"; fail env PATH="$TMP/empty-bin" bash "$TMP/source/tools/rs377-agent-harness/fedora/setup.sh" --prepare)
+grep -q "Node 20+ and npm needed" "$TMP/output"
 # SDK checkout with unexpected origin must be refused, not modified.
 mkdir -p "$TMP/source/research-checkouts/rs-sdk"
 git -C "$TMP/source/research-checkouts/rs-sdk" init -q
