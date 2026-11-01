@@ -24,8 +24,12 @@ export function snapshot(raw, botName, worldId) {
   if(!p || p.username!==botName || !p.isBot || !integer(raw.tick) || !integer(p.x,16383) || !integer(p.z,16383) || !integer(p.plane,3)) throw new Error('untrusted_bot');
   if(!Number.isSafeInteger(raw.observedAtMs) || raw.observedAtMs>Date.now()+1000 || Date.now()-raw.observedAtMs>3000) throw new Error('stale_observation');
   if(!Array.isArray(p.inventory) || p.inventory.length>28 || !p.inventory.every(i=>i && integer(i.id) && integer(i.slot,27) && integer(i.quantity))) throw new Error('invalid_inventory');
-  if(!p.xp || typeof p.xp!=='object' || Object.keys(p.xp).length>25 || Object.values(p.xp).some(x=>!integer(x))) throw new Error('invalid_xp');
-  if(!p.questStages || typeof p.questStages!=='object' || Object.keys(p.questStages).length>256) throw new Error('invalid_quest_state');
+  // An engine observer may not yet know these fields. Keep null explicit:
+  // never fabricate zero XP or an empty quest journal as proof of real state.
+  if(!Object.hasOwn(p,'xp') || (p.xp!==null &&
+     (typeof p.xp!=='object'||Array.isArray(p.xp)||Object.keys(p.xp).length>25||Object.values(p.xp).some(x=>!integer(x))))) throw new Error('invalid_xp');
+  if(!Object.hasOwn(p,'questStages') || (p.questStages!==null &&
+     (typeof p.questStages!=='object'||Array.isArray(p.questStages)||Object.keys(p.questStages).length>256))) throw new Error('invalid_quest_state');
   // ALLOWLIST OUTPUT: do not leak anything a future observer accidentally attaches
   // (other players, account DB, environment variables, chat history, credentials).
   const safe={observedAtMs:raw.observedAtMs,tick:raw.tick,world:{mode:w.mode,revision:w.revision,tickMs:w.tickMs,xpMultiplier:w.xpMultiplier,instanceId:w.instanceId},
