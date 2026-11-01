@@ -7,6 +7,9 @@
 import {Session377} from '../../rs377-chatgpt-bridge/src/session.mjs';
 import {createNative377Observer} from '../../rs377-chatgpt-bridge/src/native-observer.mjs';
 import {action} from './guard.mjs';
+import {ReplayLedger} from './recovery.mjs';
+import {BoundaryController} from './controller.mjs';
+import {createLoopbackGateway} from './gateway.mjs';
 
 const fail = why => { throw new Error(why); };
 const number = x => Number.isSafeInteger(x) && x>=0;
@@ -138,4 +141,24 @@ export class Native377BoundaryTransport {
       phase:'dispatch_only',status:result.status};
   }
   close(){this.connected=false;this.last=null;this.session.close();}
+}
+
+/**
+ * Fail-closed recommended entrypoint. Unlike generic createLoopbackGateway,
+ * this cannot start against a fixture-only controller or a loginless adapter.
+ * The caller must separately install a trusted, authenticated real 377 observer.
+ */
+export async function startAuthenticated377Gateway({transport,ledger,authToken}={}){
+  if(!(transport instanceof Native377BoundaryTransport))fail('native_transport_required');
+  if(!(ledger instanceof ReplayLedger))fail('durable_replay_ledger_required');
+  if(!transport.status().authenticated||!transport.status().hasFreshWorldState)
+    fail('native_auth_and_fresh_ticks_required');
+  await transport.observe(); // fails closed on expired auth, state, world or bot
+  const controller=new BoundaryController({
+    transport,ledger,botName:transport.botName,worldId:transport.worldId
+  });
+  const gateway=createLoopbackGateway(controller,{authToken});
+  const address=await gateway.start();
+  return {address,controller,gateway,
+    async close(){await gateway.close();transport.close();}};
 }
