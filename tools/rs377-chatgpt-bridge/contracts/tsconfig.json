@@ -8,8 +8,15 @@
     "allowJs": true,
     "checkJs": false,
     "skipLibCheck": true,
-    "types": [],
-    "lib": ["ES2022"]
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "ES2022"
+    ]
   },
-  "include": ["sdk-contract-check.ts", "../src/sdk-runtime.d.mts"]
+  "include": [
+    "sdk-contract-check.ts",
+    "../src/sdk-runtime.d.mts"
+  ]
 }
