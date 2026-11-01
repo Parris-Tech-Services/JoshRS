@@ -39,6 +39,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Assert checkout contains no private runtime before fixture generation
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e runtime
+          echo 'Clean checkout has no runtime or private game/account saves.'
       - name: Static Node and shell syntax
         shell: bash
         run: |
@@ -81,12 +87,15 @@ jobs:
           python -m compileall -q content-factory tools/rs377-bot-bench
           python -m unittest discover -s content-factory/tests -v
           python -m unittest discover -s tools/rs377-bot-bench/tests -v
-      - name: Confirm tests never loaded a production game or player save
+      - name: Distinguish disposable fixture runtime output from real-host evidence
         shell: bash
         run: |
           set -euo pipefail
-          test ! -e runtime
-          echo 'PASS: all preceding test commands ran in disposable GitHub Linux CI; no private live host checked.'
+          if test -d runtime; then
+            echo 'Some offline test generated a runtime directory on this disposable runner:'
+            find runtime -maxdepth 3 -type f -printf '%P\\n' | head -40
+          fi
+          echo 'All preceding checks ran in isolated GitHub-hosted CI with no real Fedora or Windows session.'
       - name: Scope label (not a real Fedora or Windows session)
         if: always()
         shell: bash
