@@ -129,6 +129,7 @@ if ((Get-FileHash -LiteralPath $envPath -Algorithm SHA256).Hash -ne
     throw 'Private .env backup could not be verified; no changes made.'
 }
 $temp=Join-Path $engine ('.env.friends-staged-' + [guid]::NewGuid().ToString('N'))
+$swapBackup=Join-Path $engine ('.env.friends-swapback-' + [guid]::NewGuid().ToString('N') + '.bak')
 try {
     # Preserve UTF-8 BOM if it was present. Never echo secrets.
     $bytes=[IO.File]::ReadAllBytes($envPath)
@@ -140,13 +141,21 @@ try {
     }
     [IO.File]::WriteAllText($temp,$new,$utf8)
     # Same-directory atomic replacement; preserve original in separate private backup.
-    [IO.File]::Replace($temp,$envPath,$null)
+    # Windows PowerShell 5.1 / .NET Framework requires a valid backup pathname.
+    # The independently verified original backup is retained separately.
+    [IO.File]::Replace($temp,$envPath,$swapBackup)
     if ([IO.File]::ReadAllText($envPath) -cne $new) {
         throw 'Modified configuration readback failed.'
+    }
+    if (Test-Path -LiteralPath $swapBackup -PathType Leaf) {
+        Remove-Item -LiteralPath $swapBackup -Force
     }
 } catch {
     if (Test-Path -LiteralPath $temp -PathType Leaf) {
         Remove-Item -LiteralPath $temp -Force -ErrorAction SilentlyContinue
+    }
+    if (Test-Path -LiteralPath $swapBackup -PathType Leaf) {
+        Remove-Item -LiteralPath $swapBackup -Force -ErrorAction SilentlyContinue
     }
     [IO.File]::Copy($backup,$envPath,$true)
     throw ('Friends configuration installation failed; original restored. ' + $_.Exception.Message)
