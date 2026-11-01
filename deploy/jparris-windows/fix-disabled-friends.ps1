@@ -77,8 +77,8 @@ foreach ($key in $defaultPorts.Keys) {
     $ports+= $value
 }
 $ports=@($ports | Sort-Object -Unique)
-$listening=@([Net.NetworkInformation.IPGlobalProperties]::GetIPGlobalProperties().
-    GetActiveTcpListeners() | Where-Object { $_.Port -in $ports })
+$listening=@([Net.NetworkInformation.IPGlobalProperties]::GetIPGlobalProperties().GetActiveTcpListeners() |
+    Where-Object { $_.Port -in $ports })
 $isRunning=$listening.Count -gt 0
 $needsChange=($config['FRIEND_SERVER'] -eq 'false' -or $config['EASY_STARTUP'] -eq 'false')
 Write-Host 'Active JoshRS private engine verified.'
