@@ -12,6 +12,8 @@ import {createPublicKey,randomBytes} from 'node:crypto';
 import {Session377} from './src/session.mjs';
 import {createEngine377Observer} from './src/engine-observer.mjs';
 import {SKILLS377} from './src/observation.mjs';
+import {createSdk377Runtime} from './src/sdk-runtime.mjs';
+import {createSdk377Gateway} from './src/sdk-gateway.mjs';
 
 const required=(name)=>{
   const value=process.env[name];
@@ -97,8 +99,114 @@ try {
    catch(error){if(error.message.includes('replayed_native_observation'))continue;throw error}
  }
  if(!later||later.tick<=first.tick)reject('actual server ticks did not advance');
- // This test proves fields are sampled from the actual isolated compiled
- // server, not that any specific NPC is spawned nearby or a quest was done.
+ // Execute a GENUINE SDK BotAction via the authenticated local gateway. The
+ // gateway uses actual engine observations, the rev377 packet encoder and
+ // ISAAC-protected TCP. Action success requires an observed position delta.
+ let moved=null, dispatchAttemptCount=0;
+ const gatewayToken=randomBytes(32).toString('hex');
+ const runtimeObserver=createEngine377Observer({port:managementPort,token,
+   botName:username,expectedWorld});
+ const runtime=createSdk377Runtime({
+   session,observer:runtimeObserver,botName:username,expectedWorld
+ });
+ const gateway=createSdk377Gateway({runtime,token:gatewayToken});
+ const gatewayPort=18882;
+ const auth={authorization:'Bearer '+gatewayToken};
+ try {
+   await gateway.listen(gatewayPort);
+   // A complete SDK BotWorldState is not supported yet. Verify we get a
+   // real fail-closed 409 rather than a fabricated state.
+   const stateResponse=await fetch('http://127.0.0.1:'+gatewayPort+'/sdk_state',
+     {headers:auth,signal:AbortSignal.timeout(3000)});
+   if(stateResponse.status!==409)reject('incomplete SDK state was incorrectly advertised');
+   const candidates=[
+     [first.position.x+1,first.position.z],
+     [first.position.x,first.position.z+1],
+     [first.position.x-1,first.position.z],
+     [first.position.x,first.position.z-1]
+   ];
+   for(const [x,z] of candidates) {
+     await delay(750); // engine sequence advances at 600ms
+     const actionResponse=await fetch('http://127.0.0.1:'+gatewayPort+'/sdk_action',{
+       method:'POST',headers:{...auth,'content-type':'application/json'},
+       body:JSON.stringify({action:{type:'walkTo',x,z,running:false,reason:'isolated movement acceptance'}}),
+       signal:AbortSignal.timeout(4000)
+     });
+     if(!actionResponse.ok)reject('actual SDK action was refused by authenticated gateway');
+     const result=await actionResponse.json();
+     if(!['queued_unverified','dispatched_unverified'].includes(result.status)||
+         result.verifiedEffect!==false)reject('gateway incorrectly asserted an observed action');
+     dispatchAttemptCount++;
+     for(let i=0;i<5;i++){
+       await delay(700);
+       try {
+         const actual=await reader.observe();
+         if(actual.position.x!==first.position.x||actual.position.z!==first.position.z){
+           moved=actual;break;
+         }
+       }catch(error){if(error.message.includes('replayed_native_observation'))continue;throw error}
+     }
+     if(moved)break;
+   }
+ } finally {
+   await gateway.close();
+ }
+ if(!moved)reject('SDK walk action had no observed position change on isolated real engine');
+ const savedPosition={...moved.position};
+ // Client close is NOT a verified logout/save. Let the actual 377 idle
+ // logout/save flow finish; look for the server-generated CRC save on disk.
+ session.close();
+ const savePath='data/players/joshrs_ci_377/harnessprobe.sav';
+ let verifiedSave=false;
+ for(let attempt=0;attempt<105;attempt++){
+   await delay(750);
+   try {
+     const {stat}=await import('node:fs/promises');
+     const info=await stat(savePath);
+     if(info.size>8){verifiedSave=true;break}
+   }catch(error){if(error.code!=='ENOENT')throw error}
+ }
+ if(!verifiedSave)reject('no real player save generated after normal disconnect');
+ // Also require the actual account to become reloggable: a second ordinary
+ // network authentication, never a fake save parser or direct engine mutation.
+ let relogged=null,reloggedObserver=null;
+ for(let attempt=0;attempt<12;attempt++){
+   const candidate=new Session377({
+     target:{host:'127.0.0.1',port:gamePort,mode:'isolated'},
+     username,password,publicKeyPem,crcs,timeoutMs:4500
+   });
+   try {
+     const result=await candidate.connect();
+     if(result.authenticated) {
+       relogged=candidate;
+       reloggedObserver=createEngine377Observer({
+         port:managementPort,token,botName:username,expectedWorld
+       });
+       break;
+     }
+   }catch{
+     candidate.close();
+     await delay(650);
+   }
+ }
+ if(!relogged)reject('disposable saved player could not relog by normal 377 TCP');
+ let reloggedPosition=null;
+ try {
+   for(let attempt=0;attempt<12;attempt++){
+     await delay(670);
+     try {const snap=await reloggedObserver.observe();
+       reloggedPosition=snap.position;break;
+     }catch(error){
+       if(error.message.includes('native_observer_http_409')||
+          error.message.includes('replayed_native_observation'))continue;
+       throw error;
+     }
+   }
+   if(!reloggedPosition || reloggedPosition.x!==savedPosition.x||
+      reloggedPosition.z!==savedPosition.z||
+      reloggedPosition.plane!==savedPosition.plane)
+     reject('normal relog did not restore observed walking position');
+ }finally{relogged.close()}
  console.log(JSON.stringify({
    verified:'isolated_real_377_engine_observation',
    world:expectedWorld,revision:later.world.revision,
@@ -107,7 +215,9 @@ try {
    positionObserved:true,skillCount:later.skills.length,
    inventoryObserved:true,equipmentObserved:true,
    visibleNpcCount:later.nearbyNpcs.length,dialogueFlagsObserved:true,
-   sdkStateComplete:false,saveRelogVerified:false,
+   sdkStateComplete:false,
+   genuineSdkGatewayAction:true,walkObserved:true,
+   dispatchAttemptCount,saveRelogVerified:true,
    familyWorldTouched:false
  }));
 } finally {
