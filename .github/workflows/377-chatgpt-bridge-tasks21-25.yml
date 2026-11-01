@@ -23,6 +23,10 @@ jobs:
       - name: Run independent offline packet/login/observation tests
         working-directory: tools/rs377-chatgpt-bridge
         run: npm run check
+      - name: Compile versioned adapter against the real pinned RS-SDK TypeScript declarations
+        run: |
+          npm install --global typescript@5.9.3
+          bash tools/rs377-chatgpt-bridge/contracts/check-pinned-types.sh
       - name: Verify exact upstream pinned RS-SDK type contract Git blob
         shell: bash
         run: |
