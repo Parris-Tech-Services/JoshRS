@@ -26,4 +26,18 @@ printf '\n# personal uncommitted work must survive rerun\n' >> "$TMP/harness/too
 )
 grep -q 'personal uncommitted work must survive rerun' "$TMP/harness/tools/rs377-agent-harness/README.md"
 [[ "$(git -C "$TMP/source" symbolic-ref --short HEAD)" == main ]]
-echo 'PASS: Fedora bootstrap created separate worktree, preserved source branch and local edits, passed offline tests twice.'
+# --doctor must never perform a network fetch or checkout.
+if bash "$TMP/harness/tools/rs377-agent-harness/fedora/setup.sh" --doctor --fetch-sdk >"$TMP/doctor.out" 2>&1; then
+  echo 'FAIL: doctor unexpectedly accepted fetch-sdk' >&2; exit 1
+fi
+grep -q 'read-only' "$TMP/doctor.out"
+[[ ! -e "$TMP/harness/research-checkouts/rs-sdk" ]]
+# Reject SDK symlink even when it points at a valid repository.
+mkdir -p "$TMP/harness/research-checkouts"
+ln -s "$TMP/source" "$TMP/harness/research-checkouts/rs-sdk"
+if bash "$TMP/harness/tools/rs377-agent-harness/fedora/setup.sh" --doctor --fetch-sdk >"$TMP/symlink.out" 2>&1; then
+  echo 'FAIL: doctor accepted fetch-sdk with SDK symlink' >&2; exit 1
+fi
+[[ -L "$TMP/harness/research-checkouts/rs-sdk" ]]
+grep -q 'personal uncommitted work must survive rerun' "$TMP/harness/tools/rs377-agent-harness/README.md"
+echo 'PASS: Fedora bootstrap preserved worktrees and edits; doctor cannot fetch SDK.'
