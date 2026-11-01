@@ -2,7 +2,7 @@
 
 **When more than one agent is working on the same JoshRS machine, follow [the parallel-agent ownership and runtime handoff rules](docs/rs377/PARALLEL_AGENT_HANDOFF_2026-10-31.md).** Only one agent may control the live world/restarts, and conflicting source files must be merged before touching production saves.
 
-The playable revision-377 world is a separate local installation. Do not confuse it with Woodlands or the public 2004Scape launcher.
+**Current working handoff:** [Agy / Claude Code / Codex tested checkpoint](docs/rs377/CURRENT_AGENT_CHECKPOINT_HANDOFF.md). **Read this before taking another #377 bot task.** Every merge, significant PR or verification checkpoint: refresh main commit, open branches/PRs, exact changed files, passing CI and commands, known defects, source-only versus live status, and the smallest safe local action. Run `node tools/rs377-handoff/verify.mjs` and `node --test tools/rs377-handoff/verify.test.mjs` before committing that handoff. Do not pass GitHub code, research, CI or merge work to Agy; Agy owns only necessary authorised machine-specific checks. Do not claim same-world or live gameplay from fixture tests.\n\nThe playable revision-377 world is a separate local installation. Do not confuse it with Woodlands or the public 2004Scape launcher.
 
 ## AI-bot task ownership (do not transfer ChatGPT's work to Agy)
 
