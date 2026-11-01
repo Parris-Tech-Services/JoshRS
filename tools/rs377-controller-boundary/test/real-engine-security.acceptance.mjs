@@ -5,6 +5,7 @@
  * synthetic observations, extra account, privileged action or save mutation.
  */
 import assert from 'node:assert/strict';
+import {request as httpRequest} from 'node:http';
 import {randomBytes} from 'node:crypto';
 import {mkdtemp,rm} from 'node:fs/promises';
 import os from 'node:os';
@@ -74,7 +75,23 @@ export async function verifyRealEngineGateway({session,managementPort,token,botN
     };
     assert.equal((await api('/claim',{}, {authorization:'Bearer wrong'})).code,401);
     assert.equal((await api('/claim',{}, {origin:'https://untrusted.invalid'})).code,403);
-    assert.equal((await api('/claim',{}, {host:'attacker.invalid'})).code,403);
+    // Undici/fetch may normalise or replace the Host header. Exercise the
+    // real HTTP host guard using a raw Node HTTP client that sends a forged Host.
+    const forgedHostCode=await new Promise((resolve,reject)=>{
+      const request=httpRequest({
+        hostname:'127.0.0.1',port:gateway.address.port,path:'/claim',method:'POST',
+        timeout:3000,
+        headers:{host:'attacker.invalid',authorization:'Bearer '+bearer,
+          'content-type':'application/json','content-length':'2'}
+      },response=>{
+        response.resume();
+        response.on('end',()=>resolve(response.statusCode));
+      });
+      request.on('timeout',()=>request.destroy(new Error('forged_host_timeout')));
+      request.on('error',reject);
+      request.end('{}');
+    });
+    assert.equal(forgedHostCode,403);
     assert.equal((await api('/claim',{malicious:'a'.repeat(8192)})).code,413);
     mark('gateway_loopback_auth_origin_host_and_bounded_json');
 
