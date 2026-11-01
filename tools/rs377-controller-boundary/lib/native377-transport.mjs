@@ -96,19 +96,39 @@ export class Native377BoundaryTransport {
     });
     this.proofTimeoutMs=proofTimeoutMs;
     this.connected=false;this.connecting=false;
-    this.last=null;this.lastAdvanceAt=0;
+    this.last=null;this.lastAdvanceAt=0;this.lastSampleAt=0;this.sampling=null;
   }
   status(){return Object.freeze({authenticated:this.connected && this.session.status().authenticated,
     botName:this.botName,worldId:this.worldId,hasFreshWorldState:
     !!this.last && Date.now()-this.lastAdvanceAt<=3000});}
   async sample(){
-    const s=await this.observer.observe();
-    matchWorld(s,this.botName,this.worldId);
-    if(this.last && s.tick<this.last.tick)fail('tick_regression');
-    if(!this.last || s.tick>this.last.tick)this.lastAdvanceAt=Date.now();
-    this.last=s;
-    if(Date.now()-this.lastAdvanceAt>3000)fail('stale_game_tick');
-    return s;
+    // Engine's observation sequence is its 600ms tick, not a per-GET counter.
+    // Prevent duplicate requests within a tick and collapse concurrent reads.
+    if(this.last && Date.now()-this.lastSampleAt<600){
+      if(Date.now()-this.lastAdvanceAt>3000)fail('stale_game_tick');
+      return this.last;
+    }
+    if(this.sampling)return this.sampling;
+    this.sampling=(async()=>{
+      let s;
+      try{s=await this.observer.observe();}
+      catch(e){
+        // Reading the same authenticated tick twice is not a new observation.
+        if(e.message==='replayed_native_observation' && this.last &&
+           Date.now()-this.lastAdvanceAt<=3000){
+          this.lastSampleAt=Date.now();
+          return this.last;
+        }
+        throw e;
+      }
+      matchWorld(s,this.botName,this.worldId);
+      if(this.last && s.tick<this.last.tick)fail('tick_regression');
+      if(!this.last || s.tick>this.last.tick)this.lastAdvanceAt=Date.now();
+      this.last=s;this.lastSampleAt=Date.now();
+      if(Date.now()-this.lastAdvanceAt>3000)fail('stale_game_tick');
+      return s;
+    })();
+    try{return await this.sampling;}finally{this.sampling=null;}
   }
   async connect(){
     if(this.connected||this.connecting)fail('duplicate_native_session');
@@ -159,7 +179,7 @@ export class Native377BoundaryTransport {
     return {accepted:result.status==='dispatched_unverified'||result.status==='queued_unverified',
       phase:'dispatch_only',status:result.status};
   }
-  close(){this.connected=false;this.last=null;this.session.close();}
+  close(){this.connected=false;this.last=null;this.lastSampleAt=0;this.session.close();}
 }
 
 /**
