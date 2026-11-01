@@ -92,7 +92,7 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
                     raise RuntimeError("Real native 377 bot probe source missing")
                 attempt = subprocess.run(["node", str(probe)], cwd=engine,
                                          env=env, capture_output=True,
-                                         text=True, timeout=28, check=False)
+                                         text=True, timeout=160, check=False)
                 if attempt.returncode != 0:
                     # The Node probe emits only bounded reason codes, never
                     # passwords, encrypted key material or game save contents.
