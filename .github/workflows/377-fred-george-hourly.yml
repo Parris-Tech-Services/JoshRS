@@ -41,11 +41,11 @@ jobs:
         id: detect
         shell: bash
         run: |
-          if test -d reports/fred-george/snapshots && find reports/fred-george/snapshots -type f -name '*-Fred.json' -print -quit | grep -q .; then
+          if test -d reports/fred-george/snapshots && find reports/fred-george/snapshots -type f \( -name '*-Fred.json' -o -name '*-George.json' \) -print -quit | grep -q .; then
             echo "has_data=true" >> "$GITHUB_OUTPUT"
           else
             echo "has_data=false" >> "$GITHUB_OUTPUT"
-            echo "No real Fred observations uploaded. Not generating fictional charts."
+            echo "No real Fred/George observations uploaded. Not generating fictional charts."
           fi
       - name: Generate the previous completed hour's observed reports
         if: steps.detect.outputs.has_data == 'true'
