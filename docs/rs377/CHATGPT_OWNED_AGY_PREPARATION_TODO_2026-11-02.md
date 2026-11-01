@@ -23,7 +23,7 @@ This is a **ChatGPT execution backlog**, not another list of instructions for Ag
 
 ## P0 — ChatGPT: understand and organise the actual work
 
-1. [x] **Correct the ownership mistake.** Separate *ChatGPT's* own doable tasks from Agy's 71 tasks in this document. **Evidence:** this file, published on `main`; not a claim that the bot is built.
+1. [x] **Correct the ownership mistake.** Separate *ChatGPT's* own doable tasks from Agy's 71 tasks, and make that division enforceable through the root agent entrypoint. **Verified evidence:** this [42-task ChatGPT-owned document](CHATGPT_OWNED_AGY_PREPARATION_TODO_2026-11-02.md), the [README index](../../README.md) and [root AGENTS.md ownership rule](../../AGENTS.md), committed to `main` ([enforcement commit db96007](https://github.com/Parris-Tech-Services/JoshRS/commit/db96007d537f76b7971f61eba3498941401ca66c)). No claim of working live bot.
 2. [x] **Verify current GitHub state and distinguish environments.** Read the JoshRS `main` backlog/agent contract and PR #62. Record that the harness is draft/isolated and that Fedora AVANCE-WS7 and Windows JParrisDesktop can be different authoritative worlds. **Evidence:** linked source docs and PR above; no live-host claim.
 3. [ ] **Produce a source-specific dependency map.** Index existing client-login, packet, bot, NPC, Friends List, engine, service and test files with paths, owner, current branch and known readiness; identify exact code ChatGPT can safely improve without Agy.
 4. [ ] **Deduplicate the bot work.** Compare the master backlog, 111-task AI list, Agy's 71 tasks, PRs #59/#62 and issues #29/#30/#52/#55; document overlaps, blockers, owner and dependency order instead of counting duplicates as new defects.
