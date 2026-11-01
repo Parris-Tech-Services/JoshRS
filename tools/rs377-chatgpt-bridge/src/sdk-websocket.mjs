@@ -133,14 +133,16 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
   });
   return Object.freeze({
     async listen(port){
-      if(!Number.isInteger(port)||port<1024||port>65535||
+      // Port 0 is permitted for short-lived loopback-only tests; production
+      // deployments must supply an explicit non-conflicting private port.
+      if(!Number.isInteger(port)||(port!==0&&port<1024)||port>65535||
           [52402,8888,45099,43500,15402,18880,18881].includes(port))
         throw new Error('isolated_gateway_port_required');
       await new Promise((resolve,reject)=>{
         server.once('error',reject);
         server.listen(port,host,()=>{server.removeListener('error',reject);resolve()});
       });
-      return {port,host,path:'/gateway'};
+      return {port:server.address().port,host,path:'/gateway'};
     },
     async close(){
       for(const client of wsServer.clients)client.terminate();
