@@ -173,6 +173,9 @@ jobs:
           test -s data/pack/server/script.dat
           test -s data/pack/server/script.idx
           echo "Native 377 RuneScript compiler/packer produced nonempty script files."
+      - name: Install pinned isolated RS-SDK gateway transport for live test
+        shell: bash
+        run: npm --prefix tools/rs377-chatgpt-bridge install --omit=dev --ignore-scripts --no-audit --no-fund
       - name: Prepare disposable game database and boot compiled world
         shell: bash
         env:
