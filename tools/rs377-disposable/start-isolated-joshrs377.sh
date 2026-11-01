@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Disposable Fedora 377 launcher. No changes to installed game or Agy worktree.
 set -Eeuo pipefail
-if (( $# != 2 )); then echo "Usage: $0 prepare|start|status MANIFEST.json" >&2; exit 2; fi
+if (( $# != 2 )); then echo "Usage: $0 prepare|resume|start|status MANIFEST.json" >&2; exit 2; fi
 cmd="$1"; manifest="$2"
-case "$cmd" in prepare|start|status) ;; *) exit 2;; esac
+case "$cmd" in prepare|resume|start|status) ;; *) exit 2;; esac
 source_root="$HOME/dev/JoshRS-source"
 installed="$HOME/dev/JoshRS/lostcity377"
 guard="$source_root/tools/rs377-companion-contract/src/run-integration.mjs"
@@ -43,11 +43,37 @@ if [[ "$cmd" == status ]]; then
   [[ -f "$root/ready-for-first-start" ]] && echo "Prepared" || echo "Not prepared"
   exit 0
 fi
-if [[ "$cmd" == prepare ]]; then
+if [[ "$cmd" == prepare || "$cmd" == resume ]]; then
   check_ports
-  if [[ -e "$build" || -L "$build" || -e "$build/engine" || -L "$build/engine" || -e "$build/content" || -L "$build/content" ]]; then
-    echo "BLOCKED: disposable source already exists; create a new manifest" >&2
-    exit 1
+  if [[ "$cmd" == prepare ]]; then
+    if [[ -e "$build" || -L "$build" ]]; then
+      echo "BLOCKED: disposable source exists. Use 'resume' ONLY for partial listener-patch stage." >&2
+      exit 1
+    fi
+  else
+    [[ -d "$build" && ! -L "$build" && -d "$build/engine/.git" &&
+       -d "$build/content/.git" && ! -L "$build/engine" && ! -L "$build/content" ]] || {
+      echo "BLOCKED: cannot resume without original disposable Git clones" >&2; exit 1;
+    }
+    [[ ! -e "$build/engine/.env" && ! -e "$build/engine/db.sqlite" &&
+       ! -e "$root/ready-for-first-start" ]] || {
+      echo "BLOCKED: resume only supported before config/build/db; never overwrite existing state" >&2; exit 1;
+    }
+    [[ "$(git -C "$build/engine" rev-parse HEAD)" == "$(git -C "$installed/engine" rev-parse HEAD)" &&
+       "$(git -C "$build/content" rev-parse HEAD)" == "$(git -C "$installed/content" rev-parse HEAD)" ]] || {
+      echo "BLOCKED: disposable commits differ from installed source" >&2; exit 1;
+    }
+    [[ -z "$(git -C "$build/content" status --porcelain --untracked-files=all)" &&
+       -z "$(git -C "$build/engine" ls-files --others --exclude-standard)" &&
+       -z "$(git -C "$build/engine" diff --cached --name-only)" ]] || {
+      echo "BLOCKED: unexpected source changes in partial disposable copy" >&2; exit 1;
+    }
+    while IFS= read -r changed; do
+      case "$changed" in
+        src/server/tcp/TcpServer.ts|src/server/login/LoginServer.ts|src/server/friend/FriendServer.ts|src/server/logger/LoggerServer.ts|src/web.ts) ;;
+        *) echo "BLOCKED: unexpected modified file $changed" >&2; exit 1 ;;
+      esac
+    done < <(git -C "$build/engine" diff --name-only)
   fi
   if [[ -n "$(git -C "$installed/engine" status --porcelain --untracked-files=no)" || -n "$(git -C "$installed/content" status --porcelain --untracked-files=no)" ]]; then
     echo "BLOCKED: installed source has tracked changes" >&2
@@ -55,21 +81,27 @@ if [[ "$cmd" == prepare ]]; then
   fi
   [[ ! -L "$build_parent" ]] || { echo "BLOCKED: disposable build parent must not be a symlink" >&2; exit 1; }
   mkdir -p "$build_parent"
-  mkdir -m 700 "$build"
-  git clone --no-hardlinks "$installed/engine" "$build/engine"
-  git clone --no-hardlinks "$installed/content" "$build/content"
+  if [[ "$cmd" == prepare ]]; then
+    mkdir -m 700 "$build"
+    git clone --no-hardlinks "$installed/engine" "$build/engine"
+    git clone --no-hardlinks "$installed/content" "$build/content"
+  else
+    echo "RESUMING verified partial isolated clones; original installed game remains untouched."
+  fi
   python3 - "$build/engine" <<'PY'
 from pathlib import Path
 import sys
 root=Path(sys.argv[1])
 files=['src/server/tcp/TcpServer.ts','src/server/login/LoginServer.ts',
-       'src/server/friend/FriendServer.ts','src/server/logger/LoggerServer.ts','src/web.ts']
+       'src/server/friend/FriendServer.ts','src/server/logger/LoggerServer.ts',
+       'src/web.ts','src/app.ts']
 for name in files:
  p=root/name
  if not p.is_file(): raise SystemExit('Missing expected listener: '+name)
  old=p.read_text()
- new=old.replace("'0.0.0.0'","'127.0.0.1'").replace('"0.0.0.0"','"127.0.0.1"')
- if new==old and "127.0.0.1" not in old: raise SystemExit('Unknown listener: '+name)
+ new=old.replace('0.0.0.0','127.0.0.1')
+ if new==old and "127.0.0.1" not in old and name!='src/app.ts':
+  raise SystemExit('Unknown listener: '+name)
  p.write_text(new)
  print('Loopback-only:', name)
 remaining=[str(p.relative_to(root)) for p in (root/'src').rglob('*.ts') if '0.0.0.0' in p.read_text(errors='replace')]
