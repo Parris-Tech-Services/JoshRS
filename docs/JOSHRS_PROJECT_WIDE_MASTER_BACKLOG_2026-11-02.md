@@ -1,5 +1,7 @@
 # JoshRS — Project-wide outstanding work register (cross-referenced, evidence-first)
 
+> **2 November expanded audit:** [Full GitHub + historical conversation reconciliation](JOSHRS_REPOSITORY_AND_HISTORY_AUDIT_2026-11-02.md) examined all **49 PRs** (48 merged, one open draft), all **12 open issues**, **52 branches**, dated checklists and several batches of retrievable previous JoshRS conversations. This register is the cross-track index; the linked audit has evidence, corrections, owner/runtime blockers and 41 prioritised workstream items. **Not falsely claimed complete:** all past chat transcripts, private full-source-tree TODO scan, 51 branch diffs or live Windows runtime verification.
+
 **Reviewed:** 2 November 2026 (AEDT). **Scope:** current available GitHub source, 12 open issues, 1 open pull request, existing 31 October register, AI-agents checklist, 114-task original-MMO checklist, related source audits and retrievable ChatGPT project context.
 
 **Important limit:** This is the widest consolidated *known* backlog available in this review, **not a guarantee that every past ChatGPT conversation or unpushed change on JParris Desktop was examined**. Older conversations can be retrieved selectively, not exhaustively enumerated here. GitHub cannot prove Windows-game behaviour without desktop observations. Treat any unresolved/no-proof item as open even if code or a CI job exists.
@@ -390,7 +392,36 @@ Every issue below is OPEN as of the review. Only **unchecked** source issue chec
 - [ ] **TEST-08** Automated production smoke tests run after each deploy and verify account/login, movement, inventory, persistence and a genuinely working game loop.
 - [ ] **TEST-09** No serious security, data loss, inaccessible interface, or licensing issues open at launch.
 
-## 6. Current cross-cutting release and verification gates
+## 6. Newly recovered specific JoshRS requests (from 29 Oct–2 Nov project history)
+
+These are explicit user-requested outcomes that were missing, vague or insufficiently separated in the first project-wide register. They are already cross-referenced in the [full audit](JOSHRS_REPOSITORY_AND_HISTORY_AUDIT_2026-11-02.md). They are NOT extra distinct-count claims where a parent issue/checklist already covers them.
+
+1. [ ] **HISTORY-01 — Pious Pete:** Verify the actual candle minigame fix using the customised Java client, including quest item/dialogue/progression and relog.
+2. [ ] **HISTORY-02 — World-map:** Verify existing 39-destination teleport network, interactive world-map click/zoom, overlays/layering and safe tile travel; don't treat a PNG loaded as proof interactions work.
+3. [ ] **HISTORY-03 — Legacy login music:** Verify the local `login.rs2` region music modification is installed and audibly plays after real client relaunch.
+4. [ ] **HISTORY-04 — Tideglass Isle:** Take original terrain/JM2 source, props, NPCs and specimen quest through validated collision, models, proper 377 pack, server scripts, test and real client; never call the source pack a playable island.
+5. [ ] **HISTORY-05 — Post-2006 map expansion:** Catalogue genuinely missing terrain vs later-era additions, distinguish OSRS/RS3 branches, implement only approved/rights-cleared original-compatible regions after base-game repair.
+6. [ ] **HISTORY-06 — Optional level 200:** Assess the user-requested extended skill cap (same original 1–99 curve), without altering historical normal-game policy or Elrothiro's earned progress unless explicitly enabled.
+7. [ ] **HISTORY-07 — Optional gear and admin UX:** Reconcile Ultimate Gear Manager, equipment presets, portable bank and protected admin features with actual owned code, user's constraints and 28+28 pouch.
+8. [ ] **HISTORY-08 — Party Room balloons:** Implement/test Luna popping real dropped balloons according to legitimate engine rules, preserving the deposited items.
+9. [ ] **HISTORY-09 — Party Room reconciliation:** User later observed items in balloons after a chest appeared empty; check whether the issue is normal handoff, unintended clear hooks or remaining missing items. Do not claim permanent loss, nor make item grants absent evidence.
+10. [ ] **HISTORY-10 — Sylvie outfit:** Verify dark-pink four-piece Gnome clothing (including top/boots) in the correct inventory/bank and Yrsa/cape shop; do not reset/recreate the character.
+11. [ ] **HISTORY-11 — VM client parity:** Verify Sylvie's Windows guest client matches Elrothiro's zoom, scaling, fullscreen, world-map, interaction and launch controls, with independent saves.
+12. [ ] **HISTORY-12 — Mac RDP:** Resolve Royal TSX/Mac older-client compatibility, VirtualBox crash/click and forwarding 13389→3389, with actual click-through game acceptance.
+13. [ ] **HISTORY-13 — ProBook:** Fix custom Java client resize/UI freeze and confirm full gameplay via Tailscale, including correct web/game listener forwarding and Java/Gradle startup.
+14. [ ] **HISTORY-14 — Android streaming:** Verify secure true-character streaming via `JoshRS-Play-Android.cmd` rather than a simulated offline game; preserve original accounts.
+15. [ ] **HISTORY-15 — Native Android:** Extend Kotlin original-isometric visual prototype to an actual compatible 377 client or trusted remote viewer, with gameplay proof on Galaxy A55.
+16. [ ] **HISTORY-16 — Restore-source comparison:** Independently compare Fedora USB and Google Drive recovery sources to active custom Windows runtime, with no reset/substitution of a clean save.
+17. [ ] **HISTORY-17 — Luna contextual help:** Prove automatic matching of player's real skilling/fishing/woodcutting/questing/combat activity using Luna's own inventory, level and permitted actions.
+18. [ ] **HISTORY-18 — 377 GUI:** Verify 21 skills' guide buttons and available quest journal entries against actual in-client interactions; no fake implemented count.
+19. [ ] **HISTORY-19 — Original map/client parity:** Verify dual-account game world map and Pious Pete changes persist after relaunch without breaking Java client alignment.
+20. [ ] **HISTORY-20 — Legacy visual and optional features:** Cross-check the 25-quest / 15-system research backlog, custom 2026 expansions and historical snapshot version instead of blindly implementing modern features.
+21. [ ] **AUDIT-01 — Closed PR acceptance:** Reconcile all 48 merged PRs against actual shipped source, tests and live gameplay; preserve source-only vs installed distinctions.
+22. [ ] **AUDIT-02 — Branch divergence:** Compare all 51 non-main GitHub branches and inspect unmerged novel changes; never delete branches solely because their PR merged.
+23. [ ] **AUDIT-03 — Repository static scan:** Obtain an authorised full-source checkout and run a bounded TODO/FIXME/test/README/code-marker audit; connected code search failed even on confirmed files.
+24. [ ] **AUDIT-04 — Historical conversation coverage:** Continue identifying missing JoshRS user requests; historical retrieval cannot prove every chat read or supply all original transcripts.
+
+## 7. Current cross-cutting release and verification gates
 
 1. [ ] Publish a traceable source map linking every work item to an issue/PR/test/live evidence; do not infer resolution from an old closed PR.
 2. [ ] Run an accurate independent review of all open/closed issues and PRs relevant to unfinished work, including closed 'fixed in code, not in game' cases.
@@ -403,7 +434,7 @@ Every issue below is OPEN as of the review. Only **unchecked** source issue chec
 
 ## Review coverage and count caveats
 
-- Reviewed: all **12 currently open issues**, open PR #59, AI-agent GitHub source list, original 114-task Woodlands checklist, previous unfinished-work register, README and linked source audits, plus relevant retrievable ChatGPT history.
+- Reviewed: all **12 currently open issues**, **49 PRs (48 merged; #59 draft)**, **52 branch names**, AI checklist (111 items), original MMO list (114 checklist entries), historical unfinished-work register, relevant source docs and targeted retrievable ChatGPT project history. See linked full audit for exceptions.
 - Extracted: **77** unchecked issue body tasks and manual prose follow-ups, **16** cross-source tasks, **111** prior numbered AI tasks, and **114** original-MMO checkbox lines, with overlap. They are **not a count of distinct unfinished obligations**.
-- Not fully examined: every historical/closed issue and PR, every unpushed desktop edit, every past ChatGPT transcript, every nested document/file in the repository, or every runtime test. This is a significantly broader **cross-referenced inventory**, not a false exhaustive claim.
+- Not fully examined: all historical transcripts, every unpushed desktop edit, 51 per-branch diffs, every nested source file (private GitHub code search returned zero results), or live runtime tests. This is a significantly broader **cross-referenced inventory**, not a false exhaustive claim.
 - Live status: cannot be declared fixed solely from GitHub. The user's last on-host diagnostics showed gameplay-listener and authentication trouble; treat this as **unverified current state** until a fresh desktop check.
