@@ -99,66 +99,34 @@ try {
     if (-not $blocked -or [IO.File]::ReadAllText($envPath) -cne $loggerDisabled) {
         throw 'Unexpected custom logger configuration was not rejected'
     }
-    # Imported Fedora .env may omit optional Friends/embedded startup
-    # entirely; the previous installer incorrectly rejected that situation.
-    $missing=$envText -split '\r?\n' | Where-Object {
+    # Imported Fedora .env can omit optional service flags. Missing flags
+    # must be added in offline mode, not classified as malformed.
+    $missing=($envText -split '\r?\n' | Where-Object {
         $_ -notmatch '^(FRIEND_SERVER|EASY_STARTUP)='
-    }
-    $missing=$missing -join [Environment]::NewLine
+    }) -join [Environment]::NewLine
     [IO.File]::WriteAllText($envPath,$missing)
     & $fix
     & $fix -Apply
     $missingFixed=[IO.File]::ReadAllText($envPath)
-    if ($missingFixed -notmatch '(?m)^FRIEND_SERVER=true\r?, read-only preflight, running-world protection, byte-exact private backup, restricted flag change, repeat idempotence, duplicate/custom refusal. No game, database, or saves were opened.'
-} finally {
-    if ($listener) { $listener.Stop() }
-    if (Test-Path -LiteralPath $fixture -PathType Container) {
-        Remove-Item -LiteralPath $fixture -Recurse -Force -ErrorAction SilentlyContinue
-    }
-}
- -or
-        $missingFixed -notmatch '(?m)^EASY_STARTUP=true\r?, read-only preflight, running-world protection, byte-exact private backup, restricted flag change, repeat idempotence, duplicate/custom refusal. No game, database, or saves were opened.'
-} finally {
-    if ($listener) { $listener.Stop() }
-    if (Test-Path -LiteralPath $fixture -PathType Container) {
-        Remove-Item -LiteralPath $fixture -Recurse -Force -ErrorAction SilentlyContinue
-    }
-}
- -or
-        $missingFixed -notmatch '(?m)^LOGIN_SERVER=true\r?, read-only preflight, running-world protection, byte-exact private backup, restricted flag change, repeat idempotence, duplicate/custom refusal. No game, database, or saves were opened.'
-} finally {
-    if ($listener) { $listener.Stop() }
-    if (Test-Path -LiteralPath $fixture -PathType Container) {
-        Remove-Item -LiteralPath $fixture -Recurse -Force -ErrorAction SilentlyContinue
-    }
-}
- -or
-        $missingFixed -notmatch '(?m)^LOGGER_SERVER=true\r?, read-only preflight, running-world protection, byte-exact private backup, restricted flag change, repeat idempotence, duplicate/custom refusal. No game, database, or saves were opened.'
-} finally {
-    if ($listener) { $listener.Stop() }
-    if (Test-Path -LiteralPath $fixture -PathType Container) {
-        Remove-Item -LiteralPath $fixture -Recurse -Force -ErrorAction SilentlyContinue
-    }
-}
-) {
-        throw 'Missing Friends flags were not appended correctly'
+    foreach ($key in @('FRIEND_SERVER','EASY_STARTUP','LOGIN_SERVER','LOGGER_SERVER')) {
+        if (-not $missingFixed.Contains(($key+'=true'))) {
+            throw "Missing starter flag was not enabled: $key"
+        }
     }
     if (-not $missingFixed.Contains('DB_PASS=nonpublic-windows-only')) {
-        throw 'Missing-flag repair altered private unrelated settings'
+        throw 'Missing-flag repair altered unrelated secret setting'
     }
-    # Native Boolean only accepts lowercase true/false; quoted/uppercase/1
-    # must be normalized without losing inline comments.
+    # Quoted false, alternate false and inline comments remain supported.
     $quoted=$envText.Replace('FRIEND_SERVER=false', 'FRIEND_SERVER="false"  # old config')
-    $quoted=$quoted.Replace('EASY_STARTUP=false','EASY_STARTUP=0  # disabled previously')
+    $quoted=$quoted.Replace('EASY_STARTUP=false','EASY_STARTUP=0  # old setting')
     [IO.File]::WriteAllText($envPath,$quoted)
     & $fix -Apply
     $quotedFixed=[IO.File]::ReadAllText($envPath)
     if (-not $quotedFixed.Contains('FRIEND_SERVER=true  # old config') -or
-        -not $quotedFixed.Contains('EASY_STARTUP=true  # disabled previously')) {
-        throw 'Quoted/zero flag normalization failed or destroyed comments'
+        -not $quotedFixed.Contains('EASY_STARTUP=true  # old setting')) {
+        throw 'Quoted and numeric flags were not normalized'
     }
-    # Missing login/logger defaults are also false in pinned Engine-TS.
-    # When no listener is active, establish safe self-contained startup.
+    # Native login/logger flags also default false when absent.
     $missingWorkers=($envText -split '\r?\n' | Where-Object {
         $_ -notmatch '^(LOGIN_SERVER|LOGGER_SERVER|FRIEND_SERVER|EASY_STARTUP)='
     }) -join [Environment]::NewLine
@@ -166,11 +134,11 @@ try {
     & $fix -Apply
     $workersFixed=[IO.File]::ReadAllText($envPath)
     foreach ($key in @('FRIEND_SERVER','EASY_STARTUP','LOGIN_SERVER','LOGGER_SERVER')) {
-        if ($workersFixed -notmatch "(?m)^$key=true\r?$") {
-            throw "Missing embedded worker flag was not added: $key"
+        if (-not $workersFixed.Contains(($key+'=true'))) {
+            throw "Embedded worker flag not added: $key"
         }
     }
-    # A valid explicit external-manager configuration must still be refused.
+    # Explicitly disabled login manager is a service topology blocker.
     $externalManager=$envText.Replace('LOGIN_SERVER=true','LOGIN_SERVER=false')
     [IO.File]::WriteAllText($envPath,$externalManager)
     $blocked=$false
@@ -178,7 +146,7 @@ try {
         $blocked=($_.Exception.Message -like '*service-topology review*')
     }
     if (-not $blocked -or [IO.File]::ReadAllText($envPath) -cne $externalManager) {
-        throw 'Explicitly disabled external login configuration was not preserved'
+        throw 'External login service override should be rejected'
     }
     Write-Host 'PASS: supported 377 startup verified, read-only preflight, running-world protection, byte-exact private backup, restricted flag change, repeat idempotence, duplicate/custom refusal. No game, database, or saves were opened.'
 } finally {
