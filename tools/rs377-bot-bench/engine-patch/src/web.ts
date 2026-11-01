@@ -254,7 +254,10 @@ management.get('/dev/rs377-observe', async (req, reply) => {
     // This must be an authentic connected normal-network player. A
     // server-created BotPlayer/NPC with the same display name does not qualify.
     const bot = World.getPlayerByUsername(botName!);
-    if (!bot || !bot.isActive || !isClientConnected(bot) || bot.client.player !== bot ||
+    // Engine-TS canonicalises usernames to lowercase base37; compare that
+    // real identity before preserving the configured Harness display casing.
+    if (!bot || bot.username.toLowerCase() !== botName!.toLowerCase() ||
+        !bot.isActive || !isClientConnected(bot) || bot.client.player !== bot ||
         World.tickRate !== 600) {
         return reply.code(409).send({ error: 'disposable_network_bot_not_online' });
     }
@@ -321,7 +324,7 @@ management.get('/dev/rs377-observe', async (req, reply) => {
     const observation = {
         world: { mode: 'isolated', revision: 377, tickMs: 600,
             xpMultiplier: 1, instanceId: instanceId!, sourceSha: sourceSha! },
-        player: { username: bot.username, isBot: true },
+        player: { username: botName!, isBot: true },
         tick: World.currentTick,
         position: { x: bot.x, z: bot.z, plane: bot.level },
         skills,
