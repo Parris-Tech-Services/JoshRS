@@ -9,6 +9,7 @@ This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009
 ## Current project-wide backlog and audit (2 Nov 2026)
 
 - **[Project-wide JoshRS master backlog](docs/JOSHRS_PROJECT_WIDE_MASTER_BACKLOG_2026-11-02.md)** — 377 gameplay, original Woodlands, autonomous bots, Android, Quest/World content, social, hosting and user-requested work.
+- **[Machine-readable audit workstreams](docs/JOSHRS_AUDIT_WORKSTREAMS_2026-11-02.json)** — 41 evidence-linked outcomes with priority, execution scope and unverified status; these overlap the two detailed sub-checklists.
 - **[Full GitHub and historical-work audit](docs/JOSHRS_REPOSITORY_AND_HISTORY_AUDIT_2026-11-02.md)** — reconciles all 12 open issues, 49 PRs (48 merged; #59 draft), 52 branch names and recoverable earlier JoshRS conversations. Explicitly records still-unverified source-tree/desktop/chat coverage; **a merged PR is not proof a feature works in the live client**.
 - **[111-task AI-agent sub-checklist](docs/rs377/AI_AGENTS_MASTER_TODO_2026-11-02.md)** and **[114-entry original MMO checklist](docs/FULL_CLASSIC_MMO_CHECKLIST.md)** remain separate detailed workstreams. Their overlapping entries must not be added as a count of unique unfinished defects.
 
