@@ -1,0 +1,35 @@
+name: Verify 377 no-cheat bot benchmark
+on:
+  pull_request:
+    paths:
+      - "tools/rs377-bot-bench/**"
+      - "docs/rs377/NO_CHEAT_AUTONOMOUS_BOT_BENCHMARK_2026-11-01.md"
+      - ".github/workflows/377-no-cheat-benchmark.yml"
+  push:
+    branches: [main]
+    paths:
+      - "tools/rs377-bot-bench/**"
+      - ".github/workflows/377-no-cheat-benchmark.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-offline-reporter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile reporter source
+        run: python -m py_compile tools/rs377-bot-bench/report.py
+      - name: Regression tests — no XP/quests invented, no cheat inputs
+        run: python -m unittest discover -s tools/rs377-bot-bench/tests -v
+      - name: Validate no external runner or account data required
+        run: |
+          test ! -e runtime
+          test -f tools/rs377-bot-bench/report.py
+          echo "Offline scorer only; no login, world restart, or accounts accessed."

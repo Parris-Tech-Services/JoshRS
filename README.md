@@ -22,6 +22,10 @@ Important: **2004Scape (November 2004)** and **official Old School RuneScape (20
 
 See also [multiplayer work tracker #5](https://github.com/Parris-Tech-Services/JoshRS/issues/5) and [self-hosting gate #3](https://github.com/Parris-Tech-Services/JoshRS/issues/3).
 
+## No-cheat 377 autonomous bot research and benchmarks (1 Nov 2026)
+
+[Research: which bot architecture is actually best for this specific revision-377 server?](docs/rs377/NO_CHEAT_AUTONOMOUS_BOT_BENCHMARK_2026-11-01.md) evaluates 2004SP Progressive, Luna-RS, RS-SDK, RuneBench and Microbot, without duplicating the prior Luna comparison. It specifies normal-gameplay tests for **all 21 historical skills and the historical 104-quest target**, and includes an **offline JSONL-to-Markdown/JSON scoreboard and suspected-bug reporter** with CI tests at [tools/rs377-bot-bench/](tools/rs377-bot-bench/). The scorer **does not control a live bot, grant XP/items or start game sessions**. No all-skill XP/hour or quest completion claim is made until actually observed in an isolated 377 world.
+
 ## Luna bot: fixing duels and improving AI
 
 **[Luna duel / smartest open-source bot comparison](docs/rs377/LUNA_DUEL_AND_SMART_BOTS_2026-10-31.md)** · [Live fix issue #34](https://github.com/Parris-Tech-Services/JoshRS/issues/34).
