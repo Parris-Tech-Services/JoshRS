@@ -35,7 +35,7 @@ cat >"$TMP/bin/git" <<'WRAP'
 #!/usr/bin/env bash
 if [[ "${1:-}" == fetch ]]; then
   shift
-  exec /usr/bin/git fetch "$JOSHRS_FIXTURE_REMOTE" "${@:2}"
+  exec /usr/bin/git fetch --no-tags "$JOSHRS_FIXTURE_REMOTE" "${@:3}"
 fi
 exec /usr/bin/git "$@"
 WRAP
