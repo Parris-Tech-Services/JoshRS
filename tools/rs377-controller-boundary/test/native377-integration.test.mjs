@@ -131,7 +131,7 @@ test('HTTP gateway plus native auth requires lease and does not fake moved state
     args:{x:3201,z:3201},timeoutMs:25});
   assert.equal(response.status,200);
   const result=(await response.json()).data;
-  assert.equal(result.status,'unverified'); // no actual game state moved in fixture
+  assert.equal(result.status,'timeout'); // 25ms cannot prove a 600ms game tick or movement
   assert.equal(result.dispatched,true);
   const replay=await call('/act',{lease,actionId:'packet_walk_01',tool:'walk',
     args:{x:3201,z:3201}});
