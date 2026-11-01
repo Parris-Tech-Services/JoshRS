@@ -14,6 +14,7 @@ import {createEngine377Observer} from './src/engine-observer.mjs';
 import {SKILLS377} from './src/observation.mjs';
 import {createSdk377Runtime} from './src/sdk-runtime.mjs';
 import {createSdk377Gateway} from './src/sdk-gateway.mjs';
+import {verifyRealEngineGateway} from '../rs377-controller-boundary/test/real-engine-security.acceptance.mjs';
 
 const required=(name)=>{
   const value=process.env[name];
@@ -99,6 +100,18 @@ try {
    catch(error){if(error.message.includes('replayed_native_observation'))continue;throw error}
  }
  if(!later||later.tick<=first.tick)reject('actual server ticks did not advance');
+ // Task 26: use the very same already-authenticated REAL #377 TCP client.
+ // The boundary verifies security through the real engine observer and real
+ // ISAAC-wrapped normal walk; it does not replace or restart the game.
+ const task26=await verifyRealEngineGateway({
+   session,managementPort,token,botName:username,worldId:expectedWorld
+ });
+ if(task26.checks.length!==9||!task26.packetDispatched)
+   reject('real engine boundary gateway security checks incomplete');
+ // Task 26 may have moved this ordinary player. Refresh the SDK baseline so
+ // subsequent SDK success can only count movement occurring AFTER its own action.
+ const sdkAnchor=await reader.observe();
+
  // Execute a GENUINE SDK BotAction via the authenticated local gateway. The
  // gateway uses actual engine observations, the rev377 packet encoder and
  // ISAAC-protected TCP. Action success requires an observed position delta.
@@ -120,10 +133,10 @@ try {
      {headers:auth,signal:AbortSignal.timeout(3000)});
    if(stateResponse.status!==409)reject('incomplete SDK state was incorrectly advertised');
    const candidates=[
-     [first.position.x+1,first.position.z],
-     [first.position.x,first.position.z+1],
-     [first.position.x-1,first.position.z],
-     [first.position.x,first.position.z-1]
+     [sdkAnchor.position.x+1,sdkAnchor.position.z],
+     [sdkAnchor.position.x,sdkAnchor.position.z+1],
+     [sdkAnchor.position.x-1,sdkAnchor.position.z],
+     [sdkAnchor.position.x,sdkAnchor.position.z-1]
    ];
    for(const [x,z] of candidates) {
      await delay(750); // engine sequence advances at 600ms
@@ -141,7 +154,7 @@ try {
        await delay(700);
        try {
          const actual=await reader.observe();
-         if(actual.position.x!==first.position.x||actual.position.z!==first.position.z){
+         if(actual.position.x!==sdkAnchor.position.x||actual.position.z!==sdkAnchor.position.z){
            moved=actual;break;
          }
        }catch(error){if(error.message.includes('replayed_native_observation'))continue;throw error}
@@ -156,6 +169,15 @@ try {
  // Client close is NOT a verified logout/save. Let the actual 377 idle
  // logout/save flow finish; look for the server-generated CRC save on disk.
  session.close();
+ if(task26.transport.status().authenticated)reject('closed TCP was still admitted');
+ try{
+   await task26.transport.dispatch({type:'walk',x:sdkAnchor.position.x,z:sdkAnchor.position.z});
+   reject('transport sent a packet after authenticated TCP logout');
+ }catch(e){if(!/native_not_authenticated/.test(e.message))throw e;}
+ try{
+   session.send({type:'walk',x:sdkAnchor.position.x,z:sdkAnchor.position.z});
+   reject('session sent a packet after TCP closure');
+ }catch(e){if(!/No authenticated/.test(e.message))throw e;}
  const savePath='data/players/joshrs_ci_377/harnessprobe.sav';
  let verifiedSave=false;
  for(let attempt=0;attempt<105;attempt++){
@@ -218,7 +240,10 @@ try {
    sdkStateComplete:false,
    genuineSdkGatewayAction:true,walkObserved:true,
    dispatchAttemptCount,saveRelogVerified:true,
-   familyWorldTouched:false
+   familyWorldTouched:false,
+   task26RealBoundaryVerified:true,task26SecurityChecks:task26.checks,
+   task26PacketDispatched:task26.packetDispatched,
+   task26NoPacketAfterLogout:true
  }));
 } finally {
  session.close();
