@@ -6,6 +6,8 @@
 
 The playable revision-377 world is a separate local installation. Do not confuse it with Woodlands or the public 2004Scape launcher.
 
+**Current Agy priority:** [71 numbered Fedora-to-Elrothiro companion tasks](docs/rs377/AGY_FEDORA_VISIBLE_COMPANION_TODO_2026-11-02.md) — prove the same live server and a visible normal player before the full LLM harness. Keep this checklist open while implementing.
+
 ## First read
 - deploy/jparris-windows/upstreams.json: pinned engine/content/client commits and ports.
 - docs/377_CONTENT_FACTORY.md: discovery, permissions, conversion and acceptance rules.
