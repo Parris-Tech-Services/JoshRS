@@ -148,8 +148,8 @@ try {
     }
     # Native Boolean only accepts lowercase true/false; quoted/uppercase/1
     # must be normalized without losing inline comments.
-    $quoted=$envText.Replace('FRIEND_SERVER=false', 'FRIEND_SERVER="false"  # old config').
-        Replace('EASY_STARTUP=false','EASY_STARTUP=0  # disabled previously')
+    $quoted=$envText.Replace('FRIEND_SERVER=false', 'FRIEND_SERVER="false"  # old config')
+    $quoted=$quoted.Replace('EASY_STARTUP=false','EASY_STARTUP=0  # disabled previously')
     [IO.File]::WriteAllText($envPath,$quoted)
     & $fix -Apply
     $quotedFixed=[IO.File]::ReadAllText($envPath)
