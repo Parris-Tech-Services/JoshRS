@@ -32,5 +32,5 @@ test('absence of five-state verdicts is rejected', () => {
   fails(good.replace('**Separate five-state acceptance verdicts:**', '**Status:**'), 'Missing five-way acceptance verdict');
 });
 test('deleting all CI run links is rejected', () => {
-  fails(good.replaceAll(/github\\.com\\/Parris-Tech-Services\\/JoshRS\\/actions\\/runs\\/\\d+/g, 'example.invalid'), 'CI run evidence');
+  fails(good.replaceAll('https://github.com/Parris-Tech-Services/JoshRS/actions/runs/', 'https://example.invalid/actions/runs/'), 'CI run evidence');
 });
