@@ -32,6 +32,12 @@ test('read-only snapshots are detached and frozen, no mutable server reference l
   assert.equal(s.inventory[0].count,1);await o.observe();assert.equal(read,2);
   backing.tick=99;await assert.rejects(()=>o.observe(),/decreased/);
 });
+test('observer denies accidental cross-player or private data fields',()=>{
+  const other=raw();other.nearbyPlayers=[{username:'Sylvie',bank:[]}];
+  assert.throws(()=>validateObservation(other,opts),/unexpected top-level/);
+  const world=raw();world.world.privateKey='secret';assert.throws(()=>validateObservation(world,opts),/unexpected world/);
+  const player=raw();player.player.email='secret';assert.throws(()=>validateObservation(player,opts),/private fields/);
+});
 test('unknown game telemetry must be explicit null and never invented SDK state',()=>{
   const b=raw();b.inventory=null;
   const o=validateObservation(b,opts);
