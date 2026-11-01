@@ -2,10 +2,18 @@
 
 This is a separate Android Studio project for a native Android client. It is an **original, offline-only game window prototype**; it is NOT connected to the JoshRS revision-377 server, does not use a RuneScape cache, and never reads, modifies or migrates Elrothiro/Sylvie saves.
 
+## Stage 1b — visual revision (1 November 2026)
+
+The first APK looked nothing like the classic reference because it was an abstract green-grid input harness. This revision replaces the grid with a new original isometric terrain scene, low-poly houses/trees/rocks, an NPC and a player figure. It adds a circular minimap, stone-and-parchment chat frame, functional inventory/skills/quests/map **preview tabs**, and an on-screen D-pad. World taps use the inverse isometric projection for movement.
+
+**This is still NOT the real 377 game.** It is an original visual test scene, not Gielinor. The 377 game cache, 3D models, packet protocol, character data, quests, chat, inventory, authentication and server connection are not implemented. Never mistake mock panels for real game state. The next real technical milestone is adapting the compatible Java 377 client software renderer and cache on Android, then proving a disposable account connects safely to the correct server.
+
+GitHub Actions generates a new development signing certificate for each build. If Android says the updated APK cannot install over the old preview, uninstall the previous **offline-only** JoshRS preview first and then install this APK. The preview has no persisted live data or account to lose.
+
 ## Built in this stage
 
 - Native Kotlin Android Activity and a SurfaceView with a dedicated ~30 fps renderer.
-- Original tiled preview, visible player, and tap-to-walk destination indicator.
+- Original isometric visual scene, visible low-poly player, and tap-to-walk destination indicator.
 - On-screen directional pad with held-button input and hardware WASD/arrow keys.
 - Smooth movement, world bounds, frame-delta limits, touch pointer handling, rotation position restore and lifecycle-safe render thread.
 - Deterministic pure Kotlin movement unit tests; no game credentials, networking or server ports.
