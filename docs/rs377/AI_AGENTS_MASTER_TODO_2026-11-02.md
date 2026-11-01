@@ -1,5 +1,7 @@
 # JoshRS — AI agents master task list
 
+> **Scope note (2 Nov 2026): This is the AI-agents domain checklist, NOT the entire JoshRS backlog.** The [project-wide consolidated backlog](../JOSHRS_PROJECT_WIDE_MASTER_BACKLOG_2026-11-02.md) integrates open issues, 377 gameplay, native/Android clients, original Woodlands and the original classic MMO checklist. Keep this domain checklist linked, not mistaken for the whole project.
+
 **Date:** 2026-11-02 (Australia/Sydney)  
 **Repository:** [Parris-Tech-Services/JoshRS](https://github.com/Parris-Tech-Services/JoshRS)  
 **Tracking:** [issue #55](https://github.com/Parris-Tech-Services/JoshRS/issues/55), [no-cheat test PR #59](https://github.com/Parris-Tech-Services/JoshRS/pull/59)  
