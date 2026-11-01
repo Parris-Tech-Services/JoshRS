@@ -1,0 +1,156 @@
+/**
+ * Pinned MaxBittker/rs-sdk@db0cc51e (sdk/types.ts BotAction/BotWorldState).
+ * Explicitly maps *observed* rev377 state and semantic normal-player actions.
+ * Does not run RS-SDK, a gateway, a TCP game decoder or a privileged observer.
+ */
+import {buildAction} from './protocol.mjs';
+import {validateObservation} from './observation.mjs';
+
+const requiredExtra=['player','nearbyPlayers','gameMessages','recentDialogs','interface',
+  'shop','bank','modalOpen','modalInterface','combatEvents','prayers'];
+const missing=(name)=>{throw new Error('SDK state incomplete: '+name+' is not verified by the native observer')};
+const isNum=v=>Number.isSafeInteger(v)&&v>=0;
+const validOption=(v)=>isNum(v)&&v>=1&&v<=5;
+const reject=(why)=>{throw new Error('SDK action refused: '+why)};
+const pickSlot=(items,slot)=>Array.isArray(items)&&items.find(i=>i.slot===slot);
+function verifiedNpc(snapshot,index) {
+  if(!Array.isArray(snapshot.nearbyNpcs))reject('NPC visibility unknown');
+  if(!snapshot.nearbyNpcs.some(n=>n.index===index))reject('NPC is not visible to this bot');
+}
+function verifiedLoc(snapshot,a) {
+  if(!Array.isArray(snapshot.nearbyLocs))reject('location visibility unknown');
+  if(!snapshot.nearbyLocs.some(n=>n.id===a.locId&&n.x===a.x&&n.z===a.z))
+    reject('location is not visible on this tile');
+}
+function verifiedGround(snapshot,a) {
+  if(!Array.isArray(snapshot.groundItems))reject('ground items unknown');
+  if(!snapshot.groundItems.some(n=>n.id===a.itemId&&n.x===a.x&&n.z===a.z))
+    reject('ground item is not visible');
+}
+const dataOnly=arg=>arg&&typeof arg==='object'&&!Array.isArray(arg);
+function exact(action,fields) {
+  if(!dataOnly(action)||typeof action.type!=='string')reject('typed action required');
+  const other=Object.keys(action).filter(k=>!['type','reason',...fields].includes(k));
+  if(other.length)reject('unexpected fields');
+  if(typeof action.reason!=='string'||action.reason.length>180)reject('bounded reason required');
+}
+const packet=(a)=>Object.freeze({kind:'packet',packet:buildAction(a),result:'dispatched_unverified'});
+/**
+ * Intentionally no arbitrary SDK action pass-through. An action can only
+ * target already-observed entities, a known inventory slot, or a guarded dialog.
+ */
+export function mapSdkAction(action,snapshot) {
+  if(!snapshot||snapshot.world?.revision!==377||snapshot.world?.mode!=='isolated')
+    reject('validated isolated-377 bot snapshot required');
+  const a=action;
+  switch(a?.type) {
+    case 'none':exact(a,[]);return Object.freeze({kind:'no_action'});
+    case 'wait':exact(a,['ticks']);if(a.ticks!==undefined&&(!isNum(a.ticks)||a.ticks>20))reject('wait tick bound');return Object.freeze({kind:'wait',ticks:a.ticks??1});
+    case 'walkTo': {
+      exact(a,['x','z','running']);
+      if(snapshot.position===null)reject('cannot walk without observed position');
+      if(Math.max(Math.abs(a.x-snapshot.position.x),Math.abs(a.z-snapshot.position.z))>104)
+        reject('destination is too distant for normal 377 click');
+      return packet({type:'walk',x:a.x,z:a.z,running:a.running??false});
+    }
+    case 'talkToNpc': {
+      exact(a,['npcIndex']);verifiedNpc(snapshot,a.npcIndex);
+      return packet({type:'npc',npcSlot:a.npcIndex,option:1});
+    }
+    case 'interactNpc': {
+      exact(a,['npcIndex','optionIndex']);verifiedNpc(snapshot,a.npcIndex);
+      if(!validOption(a.optionIndex))reject('NPC option must be 1..5');
+      return packet({type:'npc',npcSlot:a.npcIndex,option:a.optionIndex});
+    }
+    case 'interactLoc': {
+      exact(a,['x','z','locId','optionIndex']);verifiedLoc(snapshot,a);
+      if(!validOption(a.optionIndex))reject('location option must be 1..5');
+      return packet({type:'loc',x:a.x,z:a.z,locId:a.locId,option:a.optionIndex});
+    }
+    case 'pickupItem': {
+      exact(a,['x','z','itemId']);verifiedGround(snapshot,a);
+      return packet({type:'ground',x:a.x,z:a.z,itemId:a.itemId,option:1});
+    }
+    case 'interactGroundItem': {
+      exact(a,['x','z','itemId','optionIndex']);verifiedGround(snapshot,a);
+      if(!validOption(a.optionIndex))reject('ground option must be 1..5');
+      return packet({type:'ground',x:a.x,z:a.z,itemId:a.itemId,option:a.optionIndex});
+    }
+    case 'useInventoryItem': {
+      exact(a,['slot','optionIndex','interfaceId']);
+      const item=pickSlot(snapshot.inventory,a.slot);
+      if(!item)reject('inventory slot not observed');
+      if(!validOption(a.optionIndex))reject('inventory option must be 1..5');
+      if(a.interfaceId===undefined)reject('item interface/component must be known, not guessed');
+      if(a.interfaceId===3214) {
+        return packet({type:'held',slot:a.slot,itemId:item.id,
+          componentId:a.interfaceId,option:a.optionIndex});
+      }
+      // Interface inventory interactions dispatch INV_BUTTON rather than OPHELD.
+      return packet({type:'inventory',slot:a.slot,itemId:item.id,
+        componentId:a.interfaceId,option:a.optionIndex});
+    }
+    case 'useItemOnLoc': {
+      exact(a,['itemSlot','x','z','locId']);verifiedLoc(snapshot,a);
+      const item=pickSlot(snapshot.inventory,a.itemSlot);
+      if(!item)reject('inventory item slot not observed');
+      return packet({type:'item_on_loc',slot:a.itemSlot,itemId:item.id,
+        componentId:3214,x:a.x,z:a.z,locId:a.locId});
+    }
+    case 'clickDialogOption': {
+      exact(a,['optionIndex','guard']);
+      const d=snapshot.dialogue;
+      if(!d||!d.isOpen||!d.pageId)reject('no verified active dialogue page');
+      if(!a.guard||a.guard.pageId!==d.pageId)reject('stale or unguarded dialogue');
+      const opt=d.options.find(o=>o.index===a.optionIndex&&o.componentId===a.guard.componentId);
+      if(!opt)reject('dialogue option no longer available');
+      // The 377 RESUME_PAUSEBUTTON decoder is a different mechanic from an
+      // SDK option selection; mapping generic 377 component bytes is unsafe.
+      reject('dialogue page action needs verified 377 IF_BUTTON/component routing');
+    }
+    default:reject('unsupported, dangerous or unverified RS-SDK action '+String(a?.type).slice(0,40));
+  }
+}
+const requiredItem=(v)=>dataOnly(v)&&typeof v.name==='string'&&Array.isArray(v.optionsWithIndex);
+const requiredNpc=(v)=>dataOnly(v)&&typeof v.name==='string'&&Array.isArray(v.optionsWithIndex)&&
+  typeof v.kind==='string';
+const requiredLoc=(v)=>dataOnly(v)&&typeof v.name==='string'&&Array.isArray(v.optionsWithIndex)&&
+  isNum(v.level);
+const requiredGround=(v)=>dataOnly(v)&&typeof v.name==='string'&&isNum(v.distance);
+const metadata={contract:'MaxBittker/rs-sdk@db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb',
+  semantics:'source-only typed conversion; no actual SDK gateway/real observer wired'};
+export function toBotWorldState(raw,{botName,expectedWorld}={}) {
+  const s=validateObservation(raw,{botName,expectedWorld});
+  if(s.unsupported.length)missing(s.unsupported.join(', '));
+  const e=s.sdkDetails;
+  for(const k of requiredExtra)if(e[k]===null||e[k]===undefined)missing('sdkDetails.'+k);
+  if(!e.player||e.player.name!==s.player.username||e.player.worldX!==s.position.x||
+     e.player.worldZ!==s.position.z||e.player.level!==s.position.plane||
+     !e.player.combat||!isNum(e.player.hp)||!isNum(e.player.maxHp))
+    missing('consistent full PlayerState');
+  if(!Array.isArray(s.inventory)||!s.inventory.every(requiredItem)||
+     !Array.isArray(s.equipment)||!s.equipment.every(requiredItem))missing('inventory names/options');
+  if(!s.nearbyNpcs.every(requiredNpc)||!s.nearbyLocs.every(requiredLoc)||
+     !s.groundItems.every(requiredGround))missing('nearby entity SDK properties');
+  if(!Array.isArray(e.nearbyPlayers)||!Array.isArray(e.gameMessages)||!Array.isArray(e.recentDialogs)||
+     !Array.isArray(e.combatEvents)||!dataOnly(e.prayers)||!dataOnly(e.interface)||
+     !dataOnly(e.shop)||!dataOnly(e.bank))missing('SDK collection/interface properties');
+  if(typeof e.modalOpen!=='boolean'||!isNum(e.modalInterface))missing('modal information');
+  if(!dataOnly(s.dialogue)||typeof s.dialogue.isWaiting!=='boolean')missing('dialogue wait status');
+  // SDK experience uses ordinary fractional XP. Native 377 stores XP in tenths.
+  const skills=s.skills.map(v=>({name:v.name,level:v.level,baseLevel:v.baseLevel,
+    experience:v.xpTenths/10}));
+  const state={
+    tick:s.tick,inGame:true,player:structuredClone(e.player),skills,
+    inventory:structuredClone(s.inventory),equipment:structuredClone(s.equipment),
+    nearbyNpcs:structuredClone(s.nearbyNpcs),nearbyPlayers:structuredClone(e.nearbyPlayers),
+    nearbyLocs:structuredClone(s.nearbyLocs),groundItems:structuredClone(s.groundItems),
+    gameMessages:structuredClone(e.gameMessages),recentDialogs:structuredClone(e.recentDialogs),
+    dialog:structuredClone(s.dialogue),interface:structuredClone(e.interface),
+    shop:structuredClone(e.shop),bank:structuredClone(e.bank),
+    modalOpen:e.modalOpen,modalInterface:e.modalInterface,
+    combatEvents:structuredClone(e.combatEvents),prayers:structuredClone(e.prayers)
+  };
+  return Object.freeze({state:structuredClone(state),source:{...metadata,instanceId:s.world.instanceId,sourceSha:s.world.sourceSha,
+    tick:s.tick,evidence:'adapter mapping only; not proof of authoritative observation'}});
+}
