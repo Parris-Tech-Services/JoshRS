@@ -12,6 +12,7 @@ for kind in engine content; do
   git -C "$installed/$kind" config user.email test@example.invalid
   git -C "$installed/$kind" config user.name CI
 done
+printf '.env\ndb.sqlite\ndata/\n' > "$installed/engine/.gitignore"
 cat > "$installed/engine/package.json" <<'EOF'
 {
   "name":"disposable-fixture","version":"0.0.1","scripts":{
