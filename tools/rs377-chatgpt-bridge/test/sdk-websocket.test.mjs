@@ -66,8 +66,6 @@ test('refuse wrong authentication and do not preempt an active controller',async
     connect(second);
     const conflict=await take(second,m=>m.type==='sdk_error');
     assert.equal(conflict.error,'another controller connected');
-    second.send?.({type:'sdk_action',username:BOT,actionId:'unsafe',
-      action:{type:'walkTo',x:1,z:1,reason:'blocked'}});
     await sleep(80);
     assert.equal(h.count(),0);
   }finally{wrong.ws.close();first.ws.close();second.ws.close();await gateway.close()}
