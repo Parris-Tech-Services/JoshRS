@@ -18,3 +18,10 @@ This fetches Agy's pinned feature branch and prepares a separate worktree, runs 
 
 ## 20 — CI evidence and remaining work
 PR #63's harness run [41351224532](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41351224532) and JoshRS checks [41351224514](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41351224514) succeeded for the bootstrap hardening branch. PR #62 is still open and has separate CI status; inspect its most recent run and job logs before declaring the whole PR green. Vercel build-rate-limit is unrelated to harness correctness. PR #62 latest CI is green: harness run 41351329202 and JoshRS checks run 41351329181. Logs for all three jobs reviewed; only GitHub Actions Node 20 deprecation warnings observed.
+
+## Verification follow-up (2 November 2026)
+- Task 16: `.gitignore` now excludes `.env`, `.env.*`, `private.pem` and `tools/rs377-bot-config.local.json`; the example contains no actual secrets. A Node fixture verifies fail-closed flags.
+- Task 17: PR #68 merged negative tests for private/malformed RSA public keys and invalid CRC length plus valid packet framing into Agy's branch. A wrong-but-well-formed public key and CRC *content* mismatch require a real isolated server verifier and remain unproven; never claim otherwise.
+- Task 18: PR #67 merged a bot doctor with source commit and structured JSON; two local Node safety tests passed. GitHub workflow `rs377-bot-safety.yml` added to run those tests.
+- Task 19: The Fedora entrypoint remains source-only; actual Fedora execution is not verified. Avoid claims of live bot readiness.
+- Task 20: Latest harness CI for PR #68 passed (run 41352648774). Separate JoshRS checks and new bot-safety workflow were still running when this note was written.
