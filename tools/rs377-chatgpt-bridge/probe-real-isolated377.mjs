@@ -106,7 +106,7 @@ try {
  const task26=await verifyRealEngineGateway({
    session,managementPort,token,botName:username,worldId:expectedWorld
  });
- if(task26.checks.length!==9||!task26.packetDispatched)
+ if(task26.checks.length!==10||!task26.packetDispatched)
    reject('real engine boundary gateway security checks incomplete');
  // Task 26 may have moved this ordinary player. Refresh the SDK baseline so
  // subsequent SDK success can only count movement occurring AFTER its own action.
