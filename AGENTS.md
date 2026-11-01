@@ -1,5 +1,7 @@
 # JoshRS agent integration contract (Codex, Agy and other agents)
 
+> **CURRENT PRIORITY (Fedora 44 / AVANCE-WS7 / Agy):** Before changing the live game, follow [the single-command Fedora RS-SDK harness setup](docs/rs377/FEDORA44_AGY_RSSDK_SETUP_2026-11-02.md) and [Agy integration handoff](docs/rs377/AGY_RS_SDK_LLM_HARNESS_2026-11-02.md). Use a separate /home/josh/dev/JoshRS-rssdk-harness worktree; no server restart, account changes, unlicensed assets, unrestricted production MCP, or Windows-only setup commands. Initial safe tests and isolated bootstrap are covered by CI, not yet verified on Fedora.
+
 **When more than one agent is working on the same JoshRS machine, follow [the parallel-agent ownership and runtime handoff rules](docs/rs377/PARALLEL_AGENT_HANDOFF_2026-10-31.md).** Only one agent may control the live world/restarts, and conflicting source files must be merged before touching production saves.
 
 The playable revision-377 world is a separate local installation. Do not confuse it with Woodlands or the public 2004Scape launcher.
