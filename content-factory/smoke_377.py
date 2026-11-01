@@ -40,6 +40,24 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
         "BUILD_SRC_DIR": "../content",
         "NODE_DEBUG_SOCKET": "false",
     })
+    # Strong, throwaway observer credentials are shared only with this
+    # disposable compiled-world subprocess and its opt-in genuine TCP probe.
+    # Never persist them in git, workflow logs or a family-game process.
+    real_bot_probe = os.environ.get("RS377_LIVE_BOT_PROBE") == "true"
+    if real_bot_probe:
+        import secrets
+        if (ports != (15402, 18880)):
+            raise ValueError("Native observer probe refuses any non-CI port")
+        env.update({
+            "RS377_OBSERVER_ENABLED": "true",
+            "RS377_OBSERVER_ISOLATED": "true",
+            "RS377_OBSERVER_BOT": "HarnessProbe",
+            "RS377_OBSERVER_TOKEN": secrets.token_hex(32),
+            "RS377_OBSERVER_WORLD": "isolated-joshrs-ci-377",
+            "RS377_OBSERVER_SOURCE_SHA": "b5ac859b47915afb545e60e4c1208f25d43cb3fb",
+            "RS377_LIVE_BOT_PROBE": "true",
+            "NODE_XPRATE": "1",
+        })
     outfile = engine / "joshrs-ci-boot.log"
     started = time.monotonic()
     with outfile.open("w", encoding="utf-8") as log:
@@ -67,8 +85,23 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
                     if error.code != 404:
                         raise RuntimeError(f'Observer guard returned unexpected HTTP {error.code}') from error
                 print('Isolated engine observer endpoint denied unauthenticated request (404)')
+            if real_bot_probe:
+                probe = (Path(__file__).resolve().parents[1] /
+                         "tools/rs377-chatgpt-bridge/probe-real-isolated377.mjs")
+                if not probe.is_file():
+                    raise RuntimeError("Real native 377 bot probe source missing")
+                attempt = subprocess.run(["node", str(probe)], cwd=engine,
+                                         env=env, capture_output=True,
+                                         text=True, timeout=28, check=False)
+                if attempt.returncode != 0:
+                    # The Node probe emits only bounded reason codes, never
+                    # passwords, encrypted key material or game save contents.
+                    raise RuntimeError("Disposable 377 bot observer FAILED: " +
+                                       attempt.stderr[-1400:])
+                print("Disposable real engine bot observation:", attempt.stdout.strip())
             return {"compiled_world_started": True, "game_tcp_port_reachable": True,
-                    "web_http_port_reachable": True, "real_player_logged_in": False,
+                    "web_http_port_reachable": True, "real_player_logged_in": real_bot_probe,
+                    "genuine_game_state_observed": real_bot_probe,
                     "npc_interaction_executed": False, "elrothiro_save_verified": False}
         finally:
             # Kill the entire spawned process group; npm starts tsx children.

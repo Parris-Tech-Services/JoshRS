@@ -12,6 +12,11 @@ import { CrcBuffer, CrcTable } from '#/cache/CrcTable.js';
 import OnDemand from '#/engine/OnDemand.js';
 import World from '#/engine/World.js';
 import InvType from '#/cache/config/InvType.js';
+import NpcType from '#/cache/config/NpcType.js';
+import { PlayerStatNameMap } from '#/engine/entity/PlayerStat.js';
+import { isClientConnected } from '#/engine/entity/NetworkPlayer.js';
+import ScriptState from '#/engine/script/ScriptState.js';
+import * as rsbuf from '#/network/rsbuf/index.js';
 import { timingSafeEqual } from 'node:crypto';
 
 import NullClientSocket from '#/server/NullClientSocket.js';
@@ -246,25 +251,90 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         !timingSafeEqual(Buffer.from(supplied), Buffer.from(expected))) {
         return reply.code(404).send();
     }
+    // This must be an authentic connected normal-network player. A
+    // server-created BotPlayer/NPC with the same display name does not qualify.
     const bot = World.getPlayerByUsername(botName!);
-    if (!bot || !bot.isActive || !bot.client) {
+    // Engine-TS canonicalises usernames to lowercase base37; compare that
+    // real identity before preserving the configured Harness display casing.
+    if (!bot || bot.username.toLowerCase() !== botName!.toLowerCase() ||
+        !bot.isActive || !isClientConnected(bot) || bot.client.player !== bot ||
+        World.tickRate !== 600) {
         return reply.code(409).send({ error: 'disposable_network_bot_not_online' });
     }
-    const inventory = bot.getInventory(InvType.INV);
-    const items = inventory ? inventory.items.flatMap((item, slot) =>
-        item ? [{ slot, id: item.id, count: item.count }] : []) : null;
+
+    // Read the actual in-memory 377 player stat arrays. PlayerStatNameMap
+    // supplies the PINNED stat order, not a hand-written OSRS skill order.
+    const skills = Array.from({ length: 21 }, (_, stat) => ({
+        name: (PlayerStatNameMap.get(stat) ?? '').toLowerCase()
+            .replace(/(^|_)([a-z])/g, (_match, _prefix, letter: string) => letter.toUpperCase()),
+        level: bot.levels[stat],
+        baseLevel: bot.baseLevels[stat],
+        xpTenths: bot.stats[stat]
+    }));
+    if (skills.some(skill => !skill.name || skill.level === undefined ||
+        skill.baseLevel === undefined || skill.xpTenths === undefined)) {
+        return reply.code(409).send({ error: 'bot_skills_not_loaded' });
+    }
+
+    // IMPORTANT: bot.getInventory() can allocate an empty container, which
+    // would mutate game state during a read. Access ONLY existing bot.invs.
+    const inventory = bot.invs.get(InvType.INV);
+    const worn = bot.invs.get(InvType.WORN);
+    // No allocated container means there are no items in this player's
+    // private inventory map; return the actual empty logical inventory.
+    // This never allocates a container or touches any other player's map.
+    const projectItems = (inv: typeof inventory) => inv ?
+        inv.items.flatMap((item, slot) =>
+            item ? [{ slot, id: item.id, count: item.count }] : []) : [];
+
+    // Same visibility predicate as OpNpcHandler. Never list distant or
+    // invisible NPCs or any other human player's state.
+    const nearbyNpcs = [];
+    for (const npc of World.npcs) {
+        if (nearbyNpcs.length >= 64) break;
+        if (!npc.isActive || npc.level !== bot.level ||
+            Math.max(Math.abs(npc.x - bot.x), Math.abs(npc.z - bot.z)) > 16 ||
+            !rsbuf.hasNpc(bot.slot, npc.nid)) continue;
+        const type = NpcType.get(npc.type);
+        const optionsWithIndex = (type?.op ?? [])
+            .flatMap((label, index) =>
+                label && label !== 'hidden' ? [{ text: label, opIndex: index + 1 }] : []);
+        nearbyNpcs.push({
+            index: npc.nid, id: npc.type, x: npc.x, z: npc.z,
+            name: type?.name ?? null, optionsWithIndex
+        });
+    }
+
+    // Dialogue is genuinely observable at the SERVER script layer, but
+    // display text and option labels are client-side UI data. Do NOT invent
+    // those labels; expose only actual pending component IDs and wait state.
+    const waitingForButton = bot.activeScript?.execution === ScriptState.PAUSEBUTTON;
+    const waitingForCount = bot.activeScript?.execution === ScriptState.COUNTDIALOG;
+    const dialogue = {
+        isOpen: bot.modalChat !== -1 || waitingForButton || waitingForCount,
+        isWaiting: waitingForButton || waitingForCount,
+        options: [],
+        pendingComponentIds: waitingForButton ? [...bot.resumeButtons] : [],
+        optionTextAvailable: false
+    };
+
+    // Strictly expose only the selected bot's live fields. Quest stages,
+    // nearby objects, ground items and full RS-SDK UI state are NOT currently
+    // known at this source boundary: use null, never zero/default guesses.
     const observation = {
         world: { mode: 'isolated', revision: 377, tickMs: 600,
             xpMultiplier: 1, instanceId: instanceId!, sourceSha: sourceSha! },
-        player: { username: bot.username, isBot: true },
+        player: { username: botName!, isBot: true },
         tick: World.currentTick,
         position: { x: bot.x, z: bot.z, plane: bot.level },
-        skills: null,
-        inventory: items,
-        equipment: null,
-        nearbyNpcs: null, nearbyLocs: null, groundItems: null,
-        dialogue: null, questStages: null, sdkDetails: null
+        skills,
+        inventory: projectItems(inventory),
+        equipment: projectItems(worn),
+        nearbyNpcs,
+        nearbyLocs: null, groundItems: null,
+        dialogue, questStages: null, sdkDetails: null
     };
+    reply.header('Cache-Control', 'no-store');
     return { token, sequence: World.currentTick, observation };
 });
 
