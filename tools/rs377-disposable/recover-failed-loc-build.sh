@@ -88,11 +88,19 @@ if 'JOSHRS_CUSTOM_LOCS' not in s:
     if s.count(needle)!=1: raise SystemExit('BLOCKED: cannot uniquely locate original CRC check')
     p.write_text(s.replace(needle,loc_guard+needle))
     print('Applied scoped .loc CRC exception ONLY in disposable engine.')
-else:
+elif loc_guard in s:
     print('Existing custom .loc CRC guard present in disposable engine.')
+else:
+    raise SystemExit('BLOCKED: unrecognised existing custom loc guard')
 print('Other checksum verification stays enabled (BUILD_VERIFY=true).')
 PY
-for port in 53402 8988 8989 53500 55099 53501; do
+mapfile -t reserved_ports < <(python3 - "$manifest" <<'PY'
+import json,sys
+m=json.load(open(sys.argv[1]))
+print(*m['ports'].values(),8989,sep='\n')
+PY
+)
+for port in "${reserved_ports[@]}"; do
   if ss -H -ltn "sport = :$port" | grep -q .; then
     echo "BLOCKED: test service port $port is already occupied" >&2
     exit 1
