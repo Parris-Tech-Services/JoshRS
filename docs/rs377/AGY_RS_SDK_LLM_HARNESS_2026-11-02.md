@@ -29,6 +29,10 @@ RS-SDK components inspected:
 - `docs/rs377/PARALLEL_AGENT_HANDOFF_2026-10-31.md`: Agent 1 owns shared interactions; Agent 2 Luna/bots; Agent 3 production QA/backups. Agy must coordinate these responsibilities.
 - `tools/rs377-agent-harness/` (this branch): offline `Observation377` contract, no-cheat `Action377` allowlist, `createHarness`, fixture transport and tests. **Foundation only; no live game adapter implemented.**
 
+## Fedora 44 priority update — Agy on AVANCE-WS7 NOW
+
+For work-Fedora setup, FIRST read [the Fedora 44 single-command bootstrap](FEDORA44_AGY_RSSDK_SETUP_2026-11-02.md). Previous history verified `/home/josh/dev/JoshRS/lostcity377` with Node 26, Java 25, Gradle wrapper 9.2, helpers `start-joshrs.sh`, `start-server.sh`, `start-client.sh`, `status-joshrs.sh` and ports 52402/8888/8898. These paths and versions are **historical** and current status must be checked read-only. Never apply Windows `C:\\JoshRS-Launcher` instructions as though they were Fedora paths. Create and work in `/home/josh/dev/JoshRS-rssdk-harness` with the bootstrap. Do not connect the harness to the already used production port.
+
 ## Phase A — start immediately, without disrupting the family game
 
 1. [ ] On JParrisDesktop, inspect `C:\JoshRS-Launcher\JoshRS-repo` and `C:\JoshRS-Launcher\JoshRS-main\runtime\jparris-377\active.json` read-only. If a repository was moved, resolve actual root instead of assuming paths.
