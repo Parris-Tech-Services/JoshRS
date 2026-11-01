@@ -35,3 +35,18 @@ The Windows deployment manifest at deploy/jparris-windows/upstreams.json pins en
 The game/test startup scripts have not been inspected for side effects. Inspect them and isolate engine/content/database/cache/ports before deciding to start a disposable world. Never run production launcher or restart family accounts merely for evidence collection.
 
 [GitHub-only task 38 CI report](CHATGPT_TASK_38_CROSS_PLATFORM_TEST_GATES_2026-11-02.md)
+
+## Follow-up host evidence — attached terminal output
+
+The user subsequently provided further commands from actual AVANCE-WS7. This extends the initial preflight and does not replace the snapshot:
+
+- The installed **nested** Engine-TS checkout has full Git SHA `8901ddaa7e83f366383002f4b7a7e8ef2af0a0f2`, is on `377-wip`, and reports **32 local commits ahead** of `origin/377-wip`; `--untracked-files=no` showed no tracked working-tree modifications.
+- The nested installed Content checkout has Git SHA `9d636cf42280fb324c53f54e9fd79c3763a07b35`, is on `377-wip`, and reports **2 local commits ahead**; no tracked modifications were shown.
+- Existing local `status-joshrs.sh` printed game 52402, web 8888 and management 8898 **not listening**, and no JoshRS server/client PID files. The script was run as a status probe, not a start request.
+- A second disposable manifest at `/tmp/joshrs-377-disposable-1TOMTT/manifest.json` passed `--verify`, status `isolated_manifest_verified_no_game_started`, account HarnessTest, world `isolated-23c1a2cc1e0f`, with game 53402, web 8988, login 53500, Friends 55099, logger 53501. **No server started.** Two verified manifests are not two functioning worlds.
+- The exact adapter path `tools/rs377-companion-contract/adapters/real377.mjs` was **absent** in the three tested worktrees (`JoshRS-tools`, `JoshRS-rssdk-harness` and the temporary `joshrs-test-L5aVBQ/JoshRS`). It was also reported absent in the separately checked `JoshRS-source` checkout. Thus the native bridge run remains BLOCKED in those locations; do not equate the existing SDK research checkout with a working adapter.
+- `bash -n` passed for `start-server.sh` and `status-joshrs.sh`. **Syntax alone is not a safety or isolation audit.**
+- Engine environment source exposes `NODE_PROFILE` as a separate save-folder profile, and defaults `DB_BACKEND` to sqlite, `NODE_PORT` to 43594, `WEB_PORT` to 8888 and `WEB_MANAGEMENT_PORT` to 8898. The installed singleworld Prisma schema contains a **fixed relative sqlite file** `file:../../db.sqlite` (relative to its Prisma schema location). **Ports plus profile do not independently isolate that database**; use physically separate engine/database copies before any test startup.
+- The installed source includes `src/app.ts` binding and cache-packing logic and setup scripts. Startup side effects have not been reviewed from their complete bodies; no approval to start the existing instance or modify its saved profiles is implied.
+
+**Updated verdict:** actual Fedora preflight and read-only source/storage reconnaissance are evidenced. Runtime startup, authenticated disposable bot, action-to-observed-effects, shared Elrothiro world and JParris Desktop Windows remain UNVERIFIED.
