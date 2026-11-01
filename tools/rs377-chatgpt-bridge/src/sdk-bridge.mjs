@@ -42,6 +42,8 @@ const packet=(a)=>Object.freeze({kind:'packet',packet:buildAction(a),result:'dis
 export function mapSdkAction(action,snapshot) {
   if(!snapshot||snapshot.world?.revision!==377||snapshot.world?.mode!=='isolated')
     reject('validated isolated-377 bot snapshot required');
+  try{validateObservation(snapshot,{botName:snapshot.player?.username,
+    expectedWorld:snapshot.world.instanceId})}catch{reject('unverified bot/world observation')}
   const a=action;
   switch(a?.type) {
     case 'none':exact(a,[]);return Object.freeze({kind:'no_action'});
