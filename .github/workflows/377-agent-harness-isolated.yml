@@ -24,5 +24,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Check Fedora bootstrap and doctor mode (NO game or credentials)
+        run: |
+          bash -n tools/rs377-agent-harness/fedora/bootstrap.sh
+          bash -n tools/rs377-agent-harness/fedora/setup.sh
+          bash tools/rs377-agent-harness/fedora/setup.sh --doctor
       - name: Check isolated harness syntax and tests (NO game or credentials)
         run: npm run check --prefix tools/rs377-agent-harness
