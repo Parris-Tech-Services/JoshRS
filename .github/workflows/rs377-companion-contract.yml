@@ -1,0 +1,33 @@
+name: JoshRS 377 companion policy and two-client acceptance (tasks 31-35)
+on:
+  push:
+    branches:
+      - chatgpt/tasks-31-35-companion-and-acceptance-20261102
+    paths:
+      - 'tools/rs377-companion-contract/**'
+      - '.github/workflows/rs377-companion-contract.yml'
+  pull_request:
+    paths:
+      - 'tools/rs377-companion-contract/**'
+      - '.github/workflows/rs377-companion-contract.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-companion:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check standalone #377 policy and integration code; no game is started
+        run: npm run check --prefix tools/rs377-companion-contract
+      - name: Verify no privileged game actions or live account automation in companion package
+        run: |
+          if grep -R -nE '(^|[^A-Za-z])(child_process|execSync|spawnSync|p_teleport\\(|\\.setVar\\(|\\.invAdd\\(|\\.addXp\\()' tools/rs377-companion-contract/src; then
+            echo "Disallowed privileged code in safe companion source"
+            exit 1
+          fi
+          echo "No privileged gameplay/process calls found"
