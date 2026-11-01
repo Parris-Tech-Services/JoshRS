@@ -3,11 +3,15 @@ on:
   push:
     paths:
       - 'docs/rs377/CURRENT_AGENT_CHECKPOINT_HANDOFF.md'
+      - 'docs/rs377/CHATGPT_OWNED_AGY_PREPARATION_TODO_2026-11-02.md'
+      - 'AGENTS.md'
       - 'tools/rs377-handoff/**'
       - '.github/workflows/rs377-agent-handoff.yml'
   pull_request:
     paths:
       - 'docs/rs377/CURRENT_AGENT_CHECKPOINT_HANDOFF.md'
+      - 'docs/rs377/CHATGPT_OWNED_AGY_PREPARATION_TODO_2026-11-02.md'
+      - 'AGENTS.md'
       - 'tools/rs377-handoff/**'
       - '.github/workflows/rs377-agent-handoff.yml'
   workflow_dispatch:
