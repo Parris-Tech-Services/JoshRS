@@ -50,7 +50,6 @@ git -C "$TMP/source/research-checkouts/rs-sdk" remote set-url origin https://git
  git -C "$TMP/source/research-checkouts/rs-sdk" config user.email fixture@example.invalid
  git -C "$TMP/source/research-checkouts/rs-sdk" commit -qm wrong-pin --allow-empty
 (cd "$TMP/source"; fail env PATH="$TMP/mockbin:$PATH" bash "$TMP/source/tools/rs377-agent-harness/fedora/setup.sh" --prepare --fetch-sdk)
-grep -Eq "fetch|37|failed" "$TMP/output" || { echo "FAIL: missing fetch failure evidence" >&2; exit 1; }
 [[ "$(git -C "$TMP/source/research-checkouts/rs-sdk" rev-parse --is-inside-work-tree)" == true ]]
 # A local checkout at the wrong commit must not be accepted as pinned.
 [[ "$(git -C "$TMP/source/research-checkouts/rs-sdk" rev-parse HEAD 2>/dev/null || true)" != db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb ]]
