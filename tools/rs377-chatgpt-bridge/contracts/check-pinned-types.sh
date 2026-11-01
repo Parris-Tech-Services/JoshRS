@@ -14,8 +14,9 @@ test "$(git hash-object "$TMP/contracts/vendor/sdk/types.ts")" = "$TYPES_BLOB"
 # The real pinned types imports GEState, so pin the entire dependency instead
 # of substituting a fake local declaration.
 curl --fail --location --silent --show-error --retry 2 --max-time 35 \
-  "https://raw.githubusercontent.com/MaxBittker/rs-sdk/$SDK_SHA/sdk/ge-types.ts" \
-  -o "$TMP/contracts/vendor/sdk/ge-types.ts"
+  "https://raw.githubusercontent.com/MaxBittker/rs-sdk/$SDK_SHA/sdk/ge-types.d.ts" \
+  -o "$TMP/contracts/vendor/sdk/ge-types.d.ts"
+$TYPES_BLOB" = "ec59cef4f878c908481f68bd42cf698b68cdf579" || exit 2
 cp "$ROOT/contracts/sdk-contract-check.ts" "$TMP/contracts/"
 cp "$ROOT/contracts/tsconfig.json" "$TMP/contracts/"
 mkdir -p "$TMP/src"
