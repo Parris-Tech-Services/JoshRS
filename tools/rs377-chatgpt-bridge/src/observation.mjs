@@ -33,6 +33,13 @@ const checkNearby=(a,name,idField)=>{
 };
 export function validateObservation(raw,{botName,expectedWorld}={}) {
   if(!raw||typeof raw!=='object'||Array.isArray(raw))fail('missing raw input');
+  const own=['world','player','tick','position','skills','inventory','equipment',
+    'nearbyNpcs','nearbyLocs','groundItems','dialogue','questStages','sdkDetails'];
+  if(Object.keys(raw).some(k=>!own.includes(k)))fail('unexpected top-level observation fields');
+  if(!raw.world||Object.keys(raw.world).some(k=>!['mode','revision','tickMs','xpMultiplier','instanceId','sourceSha'].includes(k)))
+    fail('unexpected world fields');
+  if(!raw.player||Object.keys(raw.player).some(k=>!['username','isBot'].includes(k)))
+    fail('unexpected player private fields');
   const v=copy(raw);const w=v.world||{}, p=v.player||{};
   if(!botName||!/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName))fail('approved bot name required');
   if(p.username!==botName||p.isBot!==true)fail('wrong identity');
