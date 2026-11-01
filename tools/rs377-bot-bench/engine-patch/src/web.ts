@@ -238,7 +238,7 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         process.env.RS377_OBSERVER_ISOLATED !== 'true' ||
         process.env.NODE_XPRATE !== '1' ||
         !token || Buffer.byteLength(token) < 32 ||
-        !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName ?? '') ||
+        !/^harness[a-z0-9_-]{1,5}$/i.test(botName ?? '') ||
         !/^isolated-[a-z0-9_-]{4,64}$/i.test(instanceId ?? '') ||
         !/^[a-f0-9]{40}$/i.test(sourceSha ?? '') ||
         !['127.0.0.1', '::1'].includes(req.ip) ||
