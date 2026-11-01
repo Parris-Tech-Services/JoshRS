@@ -19,11 +19,27 @@ export const p2alt1 = n => {word(n,'word');return Buffer.from([n&255,n>>>8])};
 export const p2alt2 = n => {word(n,'word');return Buffer.from([n>>>8,(n+128)&255])};
 export const p2alt3 = n => {word(n,'word');return Buffer.from([(n+128)&255,n>>>8])};
 const two = (v, kind) => (kind === 'normal' ? p2(v) : kind === 'a1' ? p2alt1(v) : kind === 'a2' ? p2alt2(v) : p2alt3(v));
+// Native packet descriptors are capability objects: a game socket must only
+// dispatch bytes made by the allowlisted, pinned 377 builder. A WeakMap holds a
+// private copy so a caller cannot forge or mutate opcode/body after validation.
+const builtPacketBytes = new WeakMap();
 const payload = (opcode, body, variable=false) => {
   if (!Buffer.isBuffer(body)) throw new TypeError('Packet body must be a Buffer');
   if (variable && body.length > 255) throw new RangeError('Variable packet too long');
-  return Object.freeze({opcode, body:Buffer.from(body), variable});
+  const packet = Object.freeze({opcode, body:Buffer.from(body), variable});
+  builtPacketBytes.set(packet,{opcode,body:Buffer.from(body),variable});
+  return packet;
 };
+export function verifiedBuiltPacket(value) {
+  if (!value || typeof value!=='object') throw new TypeError('Untrusted 377 packet descriptor');
+  const saved = builtPacketBytes.get(value);
+  if (!saved || saved.opcode!==value.opcode ||
+      saved.variable!==value.variable ||
+      !Buffer.isBuffer(value.body) || !saved.body.equals(value.body))
+    throw new Error('Unverified or modified 377 packet descriptor');
+  return Object.freeze({opcode:saved.opcode,body:Buffer.from(saved.body),variable:saved.variable});
+}
+
 
 export const OPCODES = Object.freeze({
   NO_TIMEOUT:40, MOVE_GAMECLICK:28, MOVE_OPCLICK:247,

@@ -4,7 +4,7 @@
  * No automatic registration, reconnect, account selection or permanent secrets.
  */
 import net from 'node:net';
-import {buildAction, buildLogin, framePacket, freshSeed} from './protocol.mjs';
+import {buildAction, buildLogin, framePacket, freshSeed, verifiedBuiltPacket} from './protocol.mjs';
 
 export function checkTarget({host,port,mode='isolated',approvedFamily=false}={}) {
   if(typeof host!=='string')throw new Error('Explicit host required');
@@ -108,7 +108,8 @@ export class Session377 {
       throw new Error('No authenticated disposable bot session');
     if(!packet||!Number.isInteger(packet.opcode)||!Buffer.isBuffer(packet.body))
       throw new Error('Validated native 377 packet required');
-    if(!this.socket.write(framePacket(packet,this.isaac))) {
+    const safe=verifiedBuiltPacket(packet);
+    if(!this.socket.write(framePacket(safe,this.isaac))) {
       // Backpressure means queued; it does not prove an effect.
       return {status:'queued_unverified',hasWorldState:false};
     }
