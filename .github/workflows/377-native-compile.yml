@@ -19,6 +19,8 @@ on:
       - "JoshRS-Fix-Yrsa.cmd"
       - ".github/workflows/377-native-compile.yml"
       - "tools/rs377-bot-bench/engine-patch/src/web.ts"
+      - "tools/rs377-chatgpt-bridge/probe-real-isolated377.mjs"
+      - "content-factory/smoke_377.py"
   push:
     branches: [main]
     paths:
@@ -31,6 +33,8 @@ on:
       - "content-factory/tests/**"
       - ".github/workflows/377-native-compile.yml"
       - "tools/rs377-bot-bench/engine-patch/src/web.ts"
+      - "tools/rs377-chatgpt-bridge/probe-real-isolated377.mjs"
+      - "content-factory/smoke_377.py"
   workflow_dispatch:
 
 permissions:
@@ -178,6 +182,7 @@ jobs:
           FRIEND_SERVER: "true"
           LOGGER_SERVER: "true"
           RS377_OBSERVER_PROBE: "true"
+          RS377_LIVE_BOT_PROBE: "true"
           NODE_PROFILE: joshrs_ci_377
           NODE_PORT: "15402"
           WEB_PORT: "18880"
