@@ -2,8 +2,8 @@
 
 ## Verified source and limits
 - JoshRS root LICENSE is MIT, copyright 2026 Parris Tech Services. This covers JoshRS-authored code, **not** third-party game assets or independently licensed source.
-- Pinned RS-SDK is MaxBittker/rs-sdk at db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb. Check its upstream LICENSE and preserve original notices for any copied substantial code; a Git reference or independently authored interface is not evidence that upstream code was copied.
-- LostCityRS Engine-TS, Content and Client-Java are separate upstream projects pinned in deploy/jparris-windows/upstreams.json. Review each upstream licence and individual asset provenance before redistribution; do not assume the JoshRS MIT licence grants rights to RuneScape/Jagex cache, maps, sounds, sprites or other assets.
+- Pinned RS-SDK is MaxBittker/rs-sdk at db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb. Its pinned LICENSE is MIT, copyright 2025 Lost City; preserve original notices for any copied substantial code; a Git reference or independently authored interface is not evidence that upstream code was copied.
+- LostCityRS Engine-TS, Content and Client-Java are separate upstream projects pinned in deploy/jparris-windows/upstreams.json. Pinned Engine-TS and Content LICENSE files are MIT (copyright 2023–2026 Lost City); a root LICENSE at pinned Client-Java returned 404, so that project's licence remains unresolved. Review its actual licence and individual asset provenance before redistribution; do not assume the JoshRS MIT licence grants rights to RuneScape/Jagex cache, maps, sounds, sprites or other assets.
 - This is a **provenance boundary**, not a legal opinion or an assertion that all dependencies are redistributable.
 
 ## Verified threat surfaces
