@@ -6,6 +6,8 @@
 
 On AVANCE-WS7 Fedora 44, first use the [single-command safe Agy bootstrap](docs/rs377/FEDORA44_AGY_RSSDK_SETUP_2026-11-02.md), which preserves the existing `/home/josh/dev/JoshRS/lostcity377` engine and starts a separate `/home/josh/dev/JoshRS-rssdk-harness` worktree. Agy owns the work now; do not wait for Claude Code/Codex, do not reinstall the game, and do not use Windows-only Java instructions. The Fedora guide also documents the previously working Node 26, Java 25/Gradle 9.2 versions and ports.
 
+**Canonical Agy execution order:** [71 numbered Fedora tasks to a real companion alongside Elrothiro](docs/rs377/AGY_FEDORA_VISIBLE_COMPANION_TODO_2026-11-02.md). Prioritise same-world login, real movement and player visibility first, then real RS-SDK, chat, XP and autonomous planning. Agy owns now; later agents inherit verified progress.
+
 ## First read — do not skip
 
 1. [Agy RS-SDK harness handoff](docs/rs377/AGY_RS_SDK_LLM_HARNESS_2026-11-02.md).
