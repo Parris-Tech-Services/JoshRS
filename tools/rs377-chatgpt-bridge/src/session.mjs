@@ -29,7 +29,7 @@ export class Session377 {
     const {target,username,password,publicKeyPem,crcs,uid=0,seedFactory=freshSeed,
       dial=(port,host)=>net.connect(port,host),timeoutMs=7000} = options;
     this.target=checkTarget(target);
-    if(typeof username!=='string'||!/^Harness[A-Za-z0-9_-]{1,10}$/.test(username))
+    if(typeof username!=='string'||!/^harness[a-z0-9_-]{1,5}$/i.test(username))
       throw new Error('Use explicitly named disposable Harness bot identity');
     if(typeof password!=='string'||!password)throw new Error('Disposable password required');
     if(!Buffer.isBuffer(crcs)||crcs.length!==36)throw new Error('Exact 36-byte CRC required');
