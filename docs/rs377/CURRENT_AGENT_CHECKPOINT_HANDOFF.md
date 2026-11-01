@@ -105,6 +105,18 @@ echo "=== Startup script (review only, redact any secrets before sharing) ==="
 sed -n '1,180p' "$BASE/start-server.sh"
 ```
 
+## Verified real isolated #377 SDK movement and save/relogin — CI checkpoint
+
+**Direct evidence (GitHub Actions output, not a fixture):**
+- [Native CI run 41360490093 — SUCCESS](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41360490093), commit `0be21cb186f0ee7acdbb5bee20ba554592bd1c44`. The log reports: `verified=isolated_real_377_engine_observation`, real `HarnessProbe` TCP login, advancing engine ticks, 21 skills, inventory/equipment, five genuinely visible NPCs, `genuineSdkGatewayAction=true`, `genuineSdkWebSocketAction=true`, `walkObserved=true`, `saveRelogVerified=true`, `familyWorldTouched=false`, `sdkStateComplete=false`.
+- [Native CI run 41360678635 — SUCCESS](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41360678635), commit `84945d23f80e878752c47a7eacb0a653852d871a`. Same positive real isolated-engine action/save/relogin results, 4 observed visible NPCs. These facts are verified from the completed native workflow job logs, **not** just code or documentation.
+- [Task-26 branch CI 41360523443 — FAILURE](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41360523443) at commit `1e288ddcfa06671c0ae2bc9f52429bbf076b760c`: real security fixture asserted 403 for forged Host but Node `fetch` supplied a normalised Host and got 200. Parent [PR #98](https://github.com/Parris-Tech-Services/JoshRS/pull/98) subsequently changed this probe to raw `http.request`, which can send a genuinely forged Host header; CI success on that **specific updated commit** must be confirmed independently before calling the additional task-26 negatives passed.
+- A duplicate fix PR [#99](https://github.com/Parris-Tech-Services/JoshRS/pull/99) was **closed without merging** when the equivalent correction was found already on PR #98, to avoid conflicting overlapping code.
+
+**What this actually proves:** The GitHub disposable *pinned engine* can authenticate a normal bot, transmit a genuine SDK/WebSocket-linked movement action over TCP, observe a changed coordinate, save and relog with the position retained. This is a significant integration milestone. It **does not** verify the Fedora-customised engine `8901ddaa`, complete upstream `BotWorldState`, normal NPC actions or multi-client follow/chat, or any family-world login or production deployment.
+
+**Current five gates:** GitHub source **PARTIALLY COMPLETE**; Fedora tools/115 offline tests **VERIFIED from operator output**; disposable #377 bot **VERIFIED in isolated GitHub CI only for login/walk/save/relog**; same-world Elrothiro **NOT VERIFIED**; full autonomous companion **NOT VERIFIED**.
+
 ## Known defects and unverified gates
 
 - **#25 — PARTIALLY COMPLETE:** normal `BotAction` mapping and native dispatch scaffolding exist; pinned RS-SDK TypeScript compile + *real* `BotWorldState` ingestion and observed action effect remain unproven. Review open PRs #83/#84 and existing source first; do not duplicate them.
@@ -141,4 +153,4 @@ No `start-server.sh`, `git reset`, `git clean`, credentials, saves, or productio
 
 At **every merge, significant PR, CI failure/fix or local test result**, the active GitHub-capable agent must (1) check real `main` SHA and open PRs, (2) edit this single handoff with exact **full commits, changed file paths, passing test commands + run links, failing tests/known defects, implementation boundary and single next local action**, (3) update the 42-task checkbox **only for independently verified acceptance**, (4) run `node tools/rs377-handoff/verify.mjs` and `node --test tools/rs377-handoff/verify.test.mjs`, (5) commit and verify the file on GitHub. Never claim a CI run for a different SHA tests the new commit; label fixture tests **offline**. Do not expand this into repeated general prompts to Agy.
 
-**Separate five-state acceptance verdicts:** GitHub source **PARTIALLY COMPLETE**; Fedora preflight on actual host **VERIFIED READ-ONLY (operator output)**; disposable normal #377 bot session **UNVERIFIED**; same-world Elrothiro bot **UNVERIFIED**; fully autonomous playable bot **UNVERIFIED**.
+**Separate five-state acceptance verdicts:** GitHub source **PARTIALLY COMPLETE**; Fedora preflight and 115 offline tests **VERIFIED from operator output**; isolated normal #377 bot login, SDK/WebSocket walk and save/relogin **VERIFIED ON GITHUB CI ONLY (not Fedora)**; same-world Elrothiro bot **UNVERIFIED**; fully autonomous playable bot **UNVERIFIED**.
