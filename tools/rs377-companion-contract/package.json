@@ -1,0 +1,14 @@
+{
+  "name": "joshrs-rs377-companion-contract",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check src/companion.mjs && node --check src/scenarios.mjs && node --check src/isolation.mjs && node --check src/run-integration.mjs && node --check src/two-client.mjs && npm test",
+    "prepare": "node src/run-integration.mjs --prepare"
+  }
+}
