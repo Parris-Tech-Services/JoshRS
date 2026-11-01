@@ -169,6 +169,8 @@ export function buildLogin({username,password,publicKeyPem,crcs,seed,uid=0,recon
   if(!Buffer.isBuffer(crcs)||crcs.length!==36)throw new Error('Nine authentic 377 cache CRCs required');
   if(!Array.isArray(seed)||seed.length!==4||!seed.every(v=>Number.isSafeInteger(v)&&v>=0&&v<=0xffffffff))throw new Error('Four uint32 seed values required');
   uint(uid,0xffffffff,'uid');
+  if(typeof publicKeyPem!=='string'||!/-----BEGIN (?:PUBLIC KEY|RSA PUBLIC KEY)-----/.test(publicKeyPem)||
+     /PRIVATE KEY/.test(publicKeyPem))throw new Error('Only PUBLIC RSA PEM accepted; no server private key');
   let key;
   try{key=createPublicKey(publicKeyPem).export({format:'jwk'})}catch{throw new Error('Invalid PUBLIC RSA key')}
   if(key.kty!=='RSA'||!key.n||!key.e)throw new Error('Expected an RSA public key');
