@@ -78,6 +78,33 @@ bash "$BASE/status-joshrs.sh"
 
 **Do not** print `.env`, passwords, private keys, raw SQLite/player saves or service secrets; avoid starting `start-server.sh` until the source and data isolation are proven. GitHub-only agent work to implement/check real adapter, compile and CI remains ChatGPT/Claude/Codex responsibility; do not delegate that to Agy.
 
+## Installed 377 engine/content source checkpoint — 2 Nov 2026
+
+**Evidence: operator's actual AVANCE-WS7 Fedora terminal output, no game launched.** Current installation root `/home/josh/dev/JoshRS/lostcity377` is a non-Git wrapper directory; `/home/josh/lostcity377` is a symlink to it. `/home/josh/dev/JoshRS` is also a non-Git source container, **not** where `tools/rs377-*` can be run. The dedicated tools clone at `/home/josh/dev/JoshRS-tools` was verified clean on `main` commit `b665681e5917727eb0d903777cb5a063c37b95` (historical snapshot).
+
+| Actual local source | Exact HEAD | Tracked status from operator | Safety |
+| --- | --- | --- | --- |
+| `lostcity377/engine` | `8901ddaa7e83f366383002f4b7a7e8ef2af0a0f2` | `377-wip...origin/377-wip [ahead 32]`, no tracked modifications shown | **Preserve 32 local commits**; do not reset to upstream pin or modify original |
+| `lostcity377/content` | `9d636cf42280fb324c53f54e9fd79c3763a07b35` | `377-wip...origin/377-wip [ahead 2]`, no tracked modifications shown | **Preserve 2 local commits**, including scripts/customisations |
+| Separate older `/home/josh/dev/JoshRS/engine` | `1d25566cb53e7af1b1cb18ade8af996316c19614` | Branch/dirty status unknown | Do not substitute |
+| Separate older `/home/josh/dev/JoshRS/content` | `65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe` | Branch/dirty status unknown | Do not substitute |
+
+**Actual read-only status output:** `status-joshrs.sh` reported game TCP `52402` absent, web `8888` absent, update web `8898` absent, no server/client PID files and HTTP response unavailable. This proves only that this **Fedora installation was not running at that moment**. It is **not** a reason to launch the potentially save-bearing existing world; JParris Desktop remains inaccessible.
+
+**Strong isolated CI evidence that already exists:** [native build + real connected disposable bot/engine observer, passing run 41358968679](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41358968679) is documented in [genuine observation subtask report](TASK25_GENUINE_ISOLATED_377_OBSERVATION_PROOF_2026-11-02.md): real 377 engine, TCP login, 21 skills/XP, inventory/equipment, nearby NPCs, dialogue flags and advancing ticks. **This was performed on GitHub's disposable CI runner, NOT Fedora or the family world**. Newer probe source `tools/rs377-chatgpt-bridge/probe-real-isolated377.mjs` additionally attempts normal SDK `walkTo` action, real position delta, server save and TCP relog. **Do not call these newer goals passed until the matching updated native workflow run has completed successfully.** Full RS-SDK state remains intentionally incomplete; live Java two-client proof is still absent.
+
+**Smallest safe next local action:** a read-only review of `lostcity377/start-server.sh`, `lostcity377/status-joshrs.sh`, the two local commit ranges and location of executable build scripts *without printing secrets*; only then prepare fully independent disposable source copies (no shared saves/DB, no production ports) and test boot. Never run `start-server.sh` from the existing installation to meet a test. No extra repo clone or repeat of 115 already-passing Node tests is needed.
+
+```bash
+BASE="$HOME/dev/JoshRS/lostcity377"
+for component in engine content; do
+  echo "=== $component local commits only ==="
+  git -C "$BASE/$component" log --format='%h %s' --no-merges "origin/377-wip..HEAD" | head -45
+done
+echo "=== Startup script (review only, redact any secrets before sharing) ==="
+sed -n '1,180p' "$BASE/start-server.sh"
+```
+
 ## Known defects and unverified gates
 
 - **#25 — PARTIALLY COMPLETE:** normal `BotAction` mapping and native dispatch scaffolding exist; pinned RS-SDK TypeScript compile + *real* `BotWorldState` ingestion and observed action effect remain unproven. Review open PRs #83/#84 and existing source first; do not duplicate them.
@@ -99,15 +126,16 @@ bash "$BASE/status-joshrs.sh"
 
 ## Next local action
 
-**The existing Fedora manifest is now verified. Do not repeat cloning, source tests or `--verify`.** The next step is the read-only installed-engine identity + server-status inspection shown in the [Fedora installation identity checkpoint](#fedora-installation-identity-checkpoint--operator-output-2-nov-2026). Do not run the historical server launcher or touch existing saves. The full 377 source must be reviewed before a *separate* disposable engine build and login.
+**Read-only local commit and startup inspection**, not another clone or preflight. Agy should not repeat ChatGPT-owned source/CI work. The installed engine is 32 commits ahead and content 2 commits ahead; learn how the startup script handles saves, database, ports and process ownership before *any* disposable build.
 
 ```bash
 BASE="$HOME/dev/JoshRS/lostcity377"
-echo "Canonical: $(readlink -f "$BASE")"
-git -C "$BASE/engine" rev-parse HEAD
-git -C "$BASE/engine" status --short --untracked-files=no
-bash "$BASE/status-joshrs.sh"
+git -C "$BASE/engine" log -n 35 --oneline "origin/377-wip..HEAD"
+git -C "$BASE/content" log -n 5 --oneline "origin/377-wip..HEAD"
+sed -n '1,180p' "$BASE/start-server.sh"
 ```
+
+No `start-server.sh`, `git reset`, `git clean`, credentials, saves, or production services should be executed/touched during this inspection. The already-verified Fedora offline tests and disposable **manifest** are not yet actual server runtime proof. GitHub-only SDK + CI integration remains ChatGPT/other GitHub coding-agent responsibility.
 
 ## Checkpoint update protocol
 
