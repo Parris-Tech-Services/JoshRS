@@ -13,8 +13,12 @@ if (-not (Test-Path -LiteralPath $activePath -PathType Leaf)) {
 $active=Get-Content -LiteralPath $activePath -Raw | ConvertFrom-Json
 if (-not $active.engine) { throw 'Missing active 377 engine path. No changes made.' }
 $engine=(Resolve-Path -LiteralPath ([string]$active.engine) -ErrorAction Stop).Path
-$runtimePrefix=[IO.Path]::GetFullPath($runtime).TrimEnd('\','/') + [IO.Path]::DirectorySeparatorChar
-if (-not $engine.StartsWith($runtimePrefix,[StringComparison]::OrdinalIgnoreCase) -or
+# Accept only the explicitly configured engine under runtime/<snapshot>/engine.
+# Compare the actual ancestor directory instead of mixing "/" and "\" separators.
+$canonicalRuntime=(Resolve-Path -LiteralPath $runtime -ErrorAction Stop).Path
+$actualRuntime=Split-Path -Parent (Split-Path -Parent $engine)
+if (-not [string]::Equals($canonicalRuntime.TrimEnd('\','/'),
+        $actualRuntime.TrimEnd('\','/'),[StringComparison]::OrdinalIgnoreCase) -or
     (Split-Path -Leaf $engine) -cne 'engine') {
     throw 'Active engine is not a private JoshRS 377 runtime copy. No changes made.'
 }
