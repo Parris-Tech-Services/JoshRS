@@ -81,6 +81,7 @@ if [[ "$MODE" == "prepare" ]]; then
   if (( major < 20 )); then echo 'BLOCKED: Node 20+ required.' >&2; exit 2; fi
   echo 'Running isolated OFFLINE fixture tests (no engine, client or player sessions)...'
   npm run check --prefix "$ROOT/tools/rs377-agent-harness"
+  npm run doctor --prefix "$ROOT/tools/rs377-agent-harness"
 fi
 if (( FETCH_SDK )); then
   if ! command -v git >/dev/null 2>&1; then echo 'BLOCKED: Git required.' >&2; exit 2; fi
