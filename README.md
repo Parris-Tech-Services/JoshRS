@@ -8,6 +8,7 @@ This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009
 
 ## Current project-wide backlog and audit (2 Nov 2026)
 
+- **[Production rollback & non-disruption guard — Task 39](docs/rs377/CHATGPT_TASK_39_ROLLBACK_NONDISRUPTION_2026-11-02.md)** — read-only fail-closed host gate, offline regression tests and supervised rollback. No unattended restarts or live-world certification.
 - **[42 ChatGPT-owned tasks to unblock Agy on Fedora](docs/rs377/CHATGPT_OWNED_AGY_PREPARATION_TODO_2026-11-02.md)** — ChatGPT's own source, research, adapter, test and CI deliverables; **not** another checklist assigned to Agy. Separate from the [71 Agy tasks on draft PR #62](https://github.com/Parris-Tech-Services/JoshRS/pull/62).
 - **[Source-only bot controller safety and goal engine — Tasks 26–30](tools/rs377-controller-boundary/README.md)** — tested authenticated loopback API, effect verification, persistent replay protection, deterministic goals and model-neutral tools; not a live RuneScape or RS-SDK connection.
 - **[Project-wide JoshRS master backlog](docs/JOSHRS_PROJECT_WIDE_MASTER_BACKLOG_2026-11-02.md)** — 377 gameplay, original Woodlands, autonomous bots, Android, Quest/World content, social, hosting and user-requested work.
