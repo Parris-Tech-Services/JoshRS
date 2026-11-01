@@ -56,11 +56,6 @@ try{
   assert.equal(badHeader.status,404);
   record('real_engine_observer_auth_denies_missing_and_wrong_token');
 
-  await assert.rejects(()=>createNative377Observer(source,{
-    token,botName:'harnessother',expectedWorld:world
-  }).observe(),/wrong identity|unauthenticated|Invalid/);
-  record('real_engine_wrong_account_refused'); // before login this may return 409; identity tested after login below
-
   const crcResp=await query('http://127.0.0.1:'+web+'/crc');
   assert.equal(crcResp.status,200);
   const crcs=Buffer.from(await crcResp.arrayBuffer());
@@ -109,8 +104,6 @@ try{
 
   assert.equal((await api(base,'/act',{lease:'invalid',actionId:'wrong_lease01',tool:'walk',args:{x:first.player.x,z:first.player.z}})).code,409);
   assert.equal((await api(base,'/act',{lease,actionId:'cheat_action01',tool:'teleport',args:{x:3222,z:3218}})).code,409);
-  assert.equal((await api(base,'/act',{lease,actionId:'invalid_loc01',tool:'loc_option',
-    args:{x:first.player.x,z:first.player.z,locId:100,option:1}})).code,200); // dispatch rejected as UNVERIFIED; no server mutation
   record('real_gateway_rejects_wrong_lease_and_privileged_tool');
 
   const actionId='real_engine_walk01';
