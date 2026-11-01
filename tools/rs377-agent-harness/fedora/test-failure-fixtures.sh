@@ -33,7 +33,7 @@ ln -s "$(command -v bash)" "$TMP/empty-bin/bash"
 mkdir -p "$TMP/source/research-checkouts/rs-sdk"
 git -C "$TMP/source/research-checkouts/rs-sdk" init -q
 git -C "$TMP/source/research-checkouts/rs-sdk" remote add origin https://example.invalid/other.git
-(cd "$TMP/source"; fail bash "$TMP/source/tools/rs377-agent-harness/fedora/setup.sh" --doctor --fetch-sdk)
+(cd "$TMP/source"; fail bash "$TMP/source/tools/rs377-agent-harness/fedora/setup.sh" --prepare --fetch-sdk)
 # Failed fetch: force an invalid SDK commit in a local fixture with no network.
 # A mock git executable fails fetch while delegating other commands.
 mkdir -p "$TMP/mockbin"
