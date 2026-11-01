@@ -265,6 +265,52 @@ management.register(FastifyView, {
     root: 'view'
 });
 
+
+/**
+ * Task 24: read-only, opt-in, loopback-only isolated 377 bot telemetry.
+ * This endpoint is dormant unless every explicit isolated-world guard is set.
+ * It never exports another player, credentials, saves or private key.
+ */
+management.get('/dev/rs377-observe', async (req, reply) => {
+    const token = process.env.RS377_OBSERVER_TOKEN;
+    const botName = process.env.RS377_OBSERVER_BOT;
+    const instanceId = process.env.RS377_OBSERVER_WORLD;
+    const sourceSha = process.env.RS377_OBSERVER_SOURCE_SHA;
+    const supplied = req.headers.authorization ?? '';
+    const expected = `Bearer ${token ?? ''}`;
+    if (process.env.RS377_OBSERVER_ENABLED !== 'true' ||
+        process.env.RS377_OBSERVER_ISOLATED !== 'true' ||
+        !token || Buffer.byteLength(token) < 32 ||
+        !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName ?? '') ||
+        !/^isolated-[a-z0-9_-]{4,64}$/i.test(instanceId ?? '') ||
+        !/^[a-f0-9]{40}$/i.test(sourceSha ?? '') ||
+        !['127.0.0.1', '::1'].includes(req.ip) ||
+        Buffer.byteLength(supplied) !== Buffer.byteLength(expected) ||
+        !timingSafeEqual(Buffer.from(supplied), Buffer.from(expected))) {
+        return reply.code(404).send();
+    }
+    const bot = World.getPlayerByUsername(botName!);
+    if (!bot || !bot.isActive || !bot.client || isBotPlayer(bot)) {
+        return reply.code(409).send({ error: 'disposable_network_bot_not_online' });
+    }
+    const inventory = bot.getInventory(InvType.INV);
+    const items = inventory ? inventory.items.flatMap((item, slot) =>
+        item ? [{ slot, id: item.id, count: item.count }] : []) : null;
+    const observation = {
+        world: { mode: 'isolated', revision: 377, tickMs: 600,
+            xpMultiplier: 1, instanceId: instanceId!, sourceSha: sourceSha! },
+        player: { username: bot.username, isBot: true },
+        tick: World.currentTick,
+        position: { x: bot.x, z: bot.z, plane: bot.level },
+        skills: null,
+        inventory: items,
+        equipment: null,
+        nearbyNpcs: null, nearbyLocs: null, groundItems: null,
+        dialogue: null, questStages: null, sdkDetails: null
+    };
+    return { token, sequence: World.currentTick, observation };
+});
+
 management.get('/prometheus', async (_req, reply) => {
     reply.header('Content-Type', register.contentType);
     return register.metrics();
