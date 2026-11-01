@@ -44,6 +44,7 @@ printf 'preserve local edits\n' >"$TMP/source/untracked-local.txt"
 (cd "$TMP/source" && PATH="$TMP/bin:$PATH" JOSHRS_FIXTURE_REMOTE="$TMP/remote.git" JOSHRS_HARNESS_WORKTREE="$TMP/worktree" bash tools/rs377-task15-entrypoint.sh) >"$TMP/success.log" 2>&1
 grep -q 'OFFLINE CHECKS PASSED' "$TMP/success.log"
 grep -q 'NEXT REAL TASK' "$TMP/success.log"
+grep -Fq "WORKTREE: $TMP/worktree" "$TMP/success.log"
 [[ -f "$TMP/worktree/tools/rs377-agent-harness/fedora/bootstrap.sh" ]]
 [[ "$(git -C "$TMP/source" branch --show-current)" == main ]]
 grep -q 'preserve local edits' "$TMP/source/untracked-local.txt"
