@@ -7,6 +7,8 @@ production worlds or preserved player saves. CI only, disposable runner checkout
 from __future__ import annotations
 import argparse
 import os
+import json
+import secrets
 from pathlib import Path
 import socket
 import subprocess
@@ -31,6 +33,9 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
     if any(listening(p) for p in ports):
         raise ValueError("CI probe port already occupied; refusing ambiguous results")
     env = dict(os.environ)
+    live = os.environ.get("RS377_TASK26_LIVE_TEST") == "true"
+    if live and (ports != (15402, 18880) or os.environ.get("GITHUB_ACTIONS") != "true"):
+        raise ValueError("Task26 real login probe is restricted to pinned disposable CI ports")
     env.update({
         "EASY_STARTUP": "true", "NODE_PROFILE": "joshrs_ci_377",
         "DB_BACKEND": "sqlite", "NODE_PORT": str(ports[0]),
@@ -39,7 +44,26 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
         "WEBSITE_REGISTRATION": "false",
         "BUILD_SRC_DIR": "../content",
         "NODE_DEBUG_SOCKET": "false",
+        "NODE_XPRATE": "1",
+        "WEBSITE_REGISTRATION": "false",
     })
+    if live:
+        manifest = json.loads((Path(os.environ["GITHUB_WORKSPACE"]) / "deploy/jparris-windows/upstreams.json").read_text())
+        sha = manifest["engine"]["commit"]
+        if len(sha) != 40:
+            raise ValueError("Invalid pinned engine SHA")
+        env.update({
+            "RS377_OBSERVER_ENABLED": "true",
+            "RS377_OBSERVER_ISOLATED": "true",
+            "RS377_OBSERVER_TOKEN": secrets.token_urlsafe(48),
+            "RS377_OBSERVER_BOT": "harnessbot",
+            "RS377_OBSERVER_WORLD": "isolated-ci-task26-gateway",
+            "RS377_OBSERVER_SOURCE_SHA": sha,
+            "TASK26_ENGINE_DIR": str(engine),
+            "TASK26_GAME_PORT": str(ports[0]),
+            "TASK26_WEB_PORT": str(ports[1]),
+            "TASK26_MANAGEMENT_PORT": str(ports[1] + 1),
+        })
     outfile = engine / "joshrs-ci-boot.log"
     started = time.monotonic()
     with outfile.open("w", encoding="utf-8") as log:
@@ -60,16 +84,36 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
                 from urllib.request import urlopen
                 from urllib.error import HTTPError
                 endpoint = f'http://127.0.0.1:{ports[1]+1}/dev/rs377-observe'
+                # Game and web listeners may become available before management.
+                for _ in range(40):
+                    if listening(ports[1] + 1):
+                        break
+                    time.sleep(.25)
+                else:
+                    raise TimeoutError("Disposable management listener not reachable")
                 try:
                     with urlopen(endpoint, timeout=3):
-                        raise RuntimeError('Disabled observer unexpectedly exposed')
+                        raise RuntimeError('Observer unexpectedly exposed without bearer')
                 except HTTPError as error:
                     if error.code != 404:
                         raise RuntimeError(f'Observer guard returned unexpected HTTP {error.code}') from error
                 print('Isolated engine observer endpoint denied unauthenticated request (404)')
+            if live:
+                check = subprocess.run([
+                    "node", str(Path(os.environ["GITHUB_WORKSPACE"]) /
+                        "tools/rs377-controller-boundary/test/real-engine-gateway.acceptance.mjs"),
+                ], cwd=os.environ["GITHUB_WORKSPACE"], env=env,
+                   check=False, timeout=100, capture_output=True, text=True)
+                if check.returncode != 0:
+                    # Redact bearer values from failure output, even if a dependency
+                    # unexpectedly echoed them while processing invalid requests.
+                    safe = (check.stdout + check.stderr).replace(env["RS377_OBSERVER_TOKEN"], "[REDACTED]")
+                    raise RuntimeError("Task26 real-engine acceptance failed:\\n" + safe[-6000:])
+                print(check.stdout.replace(env["RS377_OBSERVER_TOKEN"], "[REDACTED]"))
             return {"compiled_world_started": True, "game_tcp_port_reachable": True,
-                    "web_http_port_reachable": True, "real_player_logged_in": False,
-                    "npc_interaction_executed": False, "elrothiro_save_verified": False}
+                    "web_http_port_reachable": True, "real_player_logged_in": live,
+                    "gateway_verified_against_real_disposable_engine": live,
+                    "elrothiro_save_verified": False}
         finally:
             # Kill the entire spawned process group; npm starts tsx children.
             import signal
