@@ -1,0 +1,30 @@
+name: JoshRS 377 read-only non-disruption guard (task 39)
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-nondisruption/**'
+      - 'docs/rs377/CHATGPT_TASK_39_ROLLBACK_NONDISRUPTION_2026-11-02.md'
+      - '.github/workflows/rs377-nondisruption.yml'
+  push:
+    paths:
+      - 'tools/rs377-nondisruption/**'
+      - 'docs/rs377/CHATGPT_TASK_39_ROLLBACK_NONDISRUPTION_2026-11-02.md'
+      - '.github/workflows/rs377-nondisruption.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  read-only-offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Syntax checks (no game/worker processes started)
+        run: |
+          node --check tools/rs377-nondisruption/check.mjs
+          node --check tools/rs377-nondisruption/check.test.mjs
+      - name: Seven fail-closed isolated fixtures (no real accounts or game service)
+        run: node --test tools/rs377-nondisruption/check.test.mjs
