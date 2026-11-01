@@ -39,3 +39,20 @@ jobs:
           grep -q "type: 'useItemOnLoc'" "$tmp"
           grep -q 'export interface ActionResult' "$tmp"
           echo "Pinned RS-SDK type blob and required action/state declarations matched"
+      - name: Typecheck actual pinned RS-SDK declarations against the adapter
+        working-directory: tools/rs377-chatgpt-bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .pinned/sdk
+          curl --fail --location --silent --show-error --retry 2 --max-time 30 \
+            https://raw.githubusercontent.com/MaxBittker/rs-sdk/db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb/sdk/types.ts \
+            -o .pinned/sdk/types.ts
+          curl --fail --location --silent --show-error --retry 2 --max-time 30 \
+            https://raw.githubusercontent.com/MaxBittker/rs-sdk/db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb/sdk/ge-types.d.ts \
+            -o .pinned/sdk/ge-types.d.ts
+          test "$(git hash-object .pinned/sdk/types.ts)" = "ec59cef4f878c908481f68bd42cf698b68cdf579"
+          test "$(git hash-object .pinned/sdk/ge-types.d.ts)" = "9c34ef56f77f743a7af17f19a860d9c993a11c07"
+          npm install --no-save --ignore-scripts --no-audit --no-fund typescript@5.9.3 @types/node@24
+          ./node_modules/.bin/tsc --project tsconfig.contract.json
+
