@@ -70,3 +70,30 @@ For read-only preflight, use `powershell -NoProfile -ExecutionPolicy Bypass -Fil
 
 From the updated GitHub main ZIP, copy **only** `JoshRS-Fix-Friends.cmd`, `deploy/jparris-windows/fix-disabled-friends.ps1` into `C:\JoshRS-Launcher\JoshRS-main` with existing subfolders preserved. Do not replace the runtime, client files or personalised `play.ps1`. Run after finishing playing, then verify before using normal friends again.
 
+
+## Missing or non-literal Friends flags — follow-up repair (1 Nov 2026)
+
+The first offline installer safely refused a real JParris Desktop configuration with
+`Missing or unsupported FRIEND_SERVER value`. Its original parser required
+an explicit literal `true` or `false`, but imported Fedora `.env` copies can
+omit the optional key entirely; the native pinned Engine-TS defaults omitted
+`FRIEND_SERVER` and `EASY_STARTUP` to false. It also did not handle quoted
+Boolean values and comments. This is an **installer compatibility bug**, not
+evidence of corrupted player accounts.
+
+The updated `fix-disabled-friends.ps1` recognises safe missing, quoted and
+alternative disabled Friends values, then writes native lowercase `true`.
+It also handles *absent* LOGIN_SERVER and LOGGER_SERVER as true when using the
+self-contained EASY_STARTUP server; **explicitly false login/logger still
+blocks automatically**, because the user may have an external service manager.
+It still requires a private runtime, expected source, no active game/service
+listeners, secure backup, and no changes to saves or database. Copy the
+**newest version** of the script from main before retrying the shortcut
+installer. Do not bypass a refused active-server or external-topology guard.
+
+PowerShell 5.1 tests now cover real-world missing, quoted and commented flags,
+failure on duplicate values, external managers, untouched saves, and guarded
+offline startup. Even when the installer prints success, verify the next
+real-world game startup via the original read-only social checker and in-game
+Sylvie friend/PM tests. Luna and Fred/George online statuses still require
+separate companion/agent integration.
