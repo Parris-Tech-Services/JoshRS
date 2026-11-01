@@ -56,6 +56,17 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
                 time.sleep(1)
             if not success:
                 raise TimeoutError("Compiled 377 game/web ports not both reachable")
+            if os.environ.get('RS377_OBSERVER_PROBE') == 'true':
+                from urllib.request import urlopen
+                from urllib.error import HTTPError
+                endpoint = f'http://127.0.0.1:{ports[1]+1}/dev/rs377-observe'
+                try:
+                    with urlopen(endpoint, timeout=3):
+                        raise RuntimeError('Disabled observer unexpectedly exposed')
+                except HTTPError as error:
+                    if error.code != 404:
+                        raise RuntimeError(f'Observer guard returned unexpected HTTP {error.code}') from error
+                print('Isolated engine observer endpoint denied unauthenticated request (404)')
             return {"compiled_world_started": True, "game_tcp_port_reachable": True,
                     "web_http_port_reachable": True, "real_player_logged_in": False,
                     "npc_interaction_executed": False, "elrothiro_save_verified": False}
