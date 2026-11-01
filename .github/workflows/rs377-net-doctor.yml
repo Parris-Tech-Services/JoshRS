@@ -1,0 +1,30 @@
+name: JoshRS 377 private cross-host doctor (offline)
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/rs377-net-doctor/**'
+      - '.github/workflows/rs377-net-doctor.yml'
+  pull_request:
+    paths:
+      - 'tools/rs377-net-doctor/**'
+      - '.github/workflows/rs377-net-doctor.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  private-offline-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax-check and run localhost-only fixture tests
+        run: |
+          node --check tools/rs377-net-doctor/doctor.mjs
+          node --check tools/rs377-net-doctor/test/doctor.test.mjs
+          node --test tools/rs377-net-doctor/test/*.test.mjs
+      - name: Verify dry help is non-network
+        run: node tools/rs377-net-doctor/doctor.mjs --help
