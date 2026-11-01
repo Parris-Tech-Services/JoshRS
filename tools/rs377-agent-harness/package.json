@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "check": "node --check src/guard.mjs && node --check src/harness.mjs && node --check src/fixture-transport.mjs && npm test"
+    "check": "node --check src/guard.mjs && node --check src/harness.mjs && node --check src/fixture-transport.mjs && node --check src/rssdk-actions.mjs && npm test"
   },
   "engines": {
     "node": ">=20"
