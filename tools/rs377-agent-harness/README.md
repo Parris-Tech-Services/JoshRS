@@ -40,6 +40,7 @@ const result=await h.perform({type:'walk',x:3224,z:3218}); // dry_run
 - No direct stat, item, quest, location, save or database edits; no arbitrary code execution from the LLM; no automatic production changes; no port exposure outside loopback.
 - `observed_effect` is a state delta, not a completed quest or verified XP provenance. Real-world tick/state/event polling with timeouts and source provenance must be added.
 - Engine-side controls, script-packing and precise state schema must be audited before wiring any connected controller. The actions in this package are a deliberately limited first step.
+- The [RS-SDK action translator](src/rssdk-actions.mjs) maps eight safe JoshRS actions to the **actual** pinned RS-SDK `BotAction` union, and rejects unsupported/privileged SDK actions. The real game transport is still missing.
 - Agy owns current development. Claude Code/Codex are future consumers **after** the adapter passes live isolated tests.
 
 **Do not enable upstream RS-SDK's unrestricted MCP `execute_code` on the production Windows desktop without a separately proven sandbox boundary.**
