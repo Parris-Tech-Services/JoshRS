@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "kind": "gameplay",
+  "evidenceOrigin": "fixture",
+  "host": {
+    "category": "ci-runner",
+    "identityHmacSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "sourceCommit": "0000000000000000000000000000000000000000",
+    "sourceSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "world": {
+    "mode": "isolated",
+    "identityHmacSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "revision": 377,
+    "tickMs": 600,
+    "xpMultiplier": 1
+  },
+  "identities": {
+    "bot": "disposable",
+    "player": "disposable"
+  },
+  "startedAt": "2026-11-02T00:00:00Z",
+  "endedAt": "2026-11-02T00:00:01Z",
+  "observedActions": [
+    {
+      "at": "2026-11-02T00:00:00Z",
+      "actor": "bot",
+      "action": "client_login",
+      "tick": null,
+      "result": "unverified"
+    }
+  ],
+  "rawTestOutcome": {
+    "runner": "manual",
+    "result": "blocked",
+    "exitCode": null,
+    "stdoutSha256": null,
+    "stderrSha256": null
+  },
+  "assertions": [
+    {
+      "name": "normal_action",
+      "outcome": "blocked",
+      "failureCode": "no_real_session"
+    },
+    {
+      "name": "observed_effect",
+      "outcome": "blocked",
+      "failureCode": "no_native_observer"
+    },
+    {
+      "name": "persistent_relogin",
+      "outcome": "blocked",
+      "failureCode": "not_exercised"
+    }
+  ]
+}
