@@ -226,12 +226,19 @@ class ClassicPreviewRenderer {
         val xmax=min(46,floor(player.x).toInt()+radius)
         val ymin=max(0,floor(player.y).toInt()-radius)
         val ymax=min(46,floor(player.y).toInt()+radius)
-        // Front-to-back diagonals; actors and objects share the terrain depth order.
+        // Paint all ground before upright objects, otherwise ground tiles
+        // drawn later can incorrectly cover trees, roofs and characters.
+        for(sum in (xmin+ymin)..(xmax+ymax)) {
+            for(x in xmin..xmax) {
+                val y=sum-x
+                if(y in ymin..ymax) drawGroundTile(canvas,x,y,player,c)
+            }
+        }
+        // Then paint upright scene objects in diagonal depth order.
         for(sum in (xmin+ymin)..(xmax+ymax)) {
             for(x in xmin..xmax) {
                 val y=sum-x
                 if(y !in ymin..ymax) continue
-                drawGroundTile(canvas,x,y,player,c)
                 when(x to y) {
                     10 to 7, 4 to 14 -> house(canvas,x.toFloat(),y.toFloat(),player,c)
                     3 to 7, 5 to 5, 12 to 10, 15 to 6, 6 to 16, 17 to 13, 2 to 15 ->
