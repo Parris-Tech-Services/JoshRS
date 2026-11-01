@@ -3,35 +3,26 @@
   "experiment_id": "fred-george-v1",
   "hour_start_utc": "2026-11-01T07:00:00Z",
   "hour_end_utc": "2026-11-01T08:00:00Z",
-  "status": "PARTIAL_OR_NOT_COMPARABLE",
-  "comparable": false,
-  "received": 10,
+  "status": "COMPLETE",
+  "comparable": true,
+  "received": 12,
   "expected": 12,
-  "missing": [
-    {
-      "bot": "Fred",
-      "window_end_utc": "2026-11-01T08:00:00Z"
-    },
-    {
-      "bot": "George",
-      "window_end_utc": "2026-11-01T08:00:00Z"
-    }
-  ],
+  "missing": [],
   "invalid": [],
   "bots": {
     "Fred": {
       "policy": "gather_first",
-      "intervals_received": 5,
-      "minutes_observed": 50,
+      "intervals_received": 6,
+      "minutes_observed": 60,
       "phase_intervals": {
-        "solo": 5,
+        "solo": 6,
         "coop": 0,
         "mixed": 0
       },
-      "solo_xp": 280.9,
+      "solo_xp": 705.4,
       "coop_or_mixed_xp": 0.0,
-      "total_xp_gained": 280.9,
-      "xp_per_hour_of_observed_time": 337.1,
+      "total_xp_gained": 705.4,
+      "xp_per_hour_of_observed_time": 705.4,
       "skill_xp_gained": {
         "Attack": 12.0,
         "Defence": 0.0,
@@ -39,29 +30,29 @@
         "Hitpoints": 3.9,
         "Ranged": 0.0,
         "Prayer": 0.0,
-        "Magic": 0.0,
+        "Magic": 27.5,
         "Cooking": 0.0,
-        "Woodcutting": 225.0,
+        "Woodcutting": 350.0,
         "Fletching": 0.0,
         "Fishing": 0.0,
-        "Firemaking": 40.0,
+        "Firemaking": 120.0,
         "Crafting": 0.0,
         "Smithing": 0.0,
         "Mining": 0.0,
         "Herblore": 0.0,
         "Agility": 0.0,
-        "Thieving": 0.0,
+        "Thieving": 192.0,
         "Slayer": 0.0,
         "Farming": 0.0,
         "Runecrafting": 0.0
       },
       "new_quests_verified": [],
-      "successful_actions": 314,
+      "successful_actions": 435,
       "failed_actions": 4,
       "deaths": 1,
       "latest_location": {
-        "x": 3238,
-        "z": 3194,
+        "x": 3236,
+        "z": 3204,
         "plane": 0,
         "region": "Lumbridge"
       },
@@ -722,6 +713,246 @@
         [
           3239,
           3195
+        ],
+        [
+          3219,
+          3229
+        ],
+        [
+          3217,
+          3230
+        ],
+        [
+          3215,
+          3231
+        ],
+        [
+          3216,
+          3229
+        ],
+        [
+          3218,
+          3227
+        ],
+        [
+          3220,
+          3225
+        ],
+        [
+          3222,
+          3224
+        ],
+        [
+          3224,
+          3222
+        ],
+        [
+          3226,
+          3220
+        ],
+        [
+          3229,
+          3219
+        ],
+        [
+          3232,
+          3219
+        ],
+        [
+          3232,
+          3222
+        ],
+        [
+          3232,
+          3225
+        ],
+        [
+          3232,
+          3228
+        ],
+        [
+          3231,
+          3231
+        ],
+        [
+          3229,
+          3232
+        ],
+        [
+          3227,
+          3234
+        ],
+        [
+          3225,
+          3235
+        ],
+        [
+          3223,
+          3237
+        ],
+        [
+          3220,
+          3237
+        ],
+        [
+          3219,
+          3239
+        ],
+        [
+          3221,
+          3241
+        ],
+        [
+          3223,
+          3242
+        ],
+        [
+          3225,
+          3244
+        ],
+        [
+          3226,
+          3242
+        ],
+        [
+          3229,
+          3242
+        ],
+        [
+          3228,
+          3240
+        ],
+        [
+          3228,
+          3237
+        ],
+        [
+          3227,
+          3235
+        ],
+        [
+          3229,
+          3233
+        ],
+        [
+          3230,
+          3231
+        ],
+        [
+          3230,
+          3228
+        ],
+        [
+          3231,
+          3226
+        ],
+        [
+          3231,
+          3223
+        ],
+        [
+          3232,
+          3221
+        ],
+        [
+          3231,
+          3219
+        ],
+        [
+          3229,
+          3220
+        ],
+        [
+          3231,
+          3219
+        ],
+        [
+          3232,
+          3217
+        ],
+        [
+          3232,
+          3214
+        ],
+        [
+          3232,
+          3211
+        ],
+        [
+          3234,
+          3209
+        ],
+        [
+          3233,
+          3207
+        ],
+        [
+          3234,
+          3205
+        ],
+        [
+          3236,
+          3203
+        ],
+        [
+          3238,
+          3201
+        ],
+        [
+          3239,
+          3198
+        ],
+        [
+          3239,
+          3195
+        ],
+        [
+          3239,
+          3198
+        ],
+        [
+          3238,
+          3201
+        ],
+        [
+          3236,
+          3202
+        ],
+        [
+          3234,
+          3203
+        ],
+        [
+          3232,
+          3204
+        ],
+        [
+          3234,
+          3203
+        ],
+        [
+          3234,
+          3206
+        ],
+        [
+          3232,
+          3207
+        ],
+        [
+          3234,
+          3206
+        ],
+        [
+          3235,
+          3204
+        ],
+        [
+          3237,
+          3202
+        ],
+        [
+          3236,
+          3204
         ]
       ],
       "progress": [
@@ -859,32 +1090,59 @@
             "Farming": 0.0,
             "Runecrafting": 0.0
           }
+        },
+        {
+          "end": "2026-11-01T08:00:00Z",
+          "xp_gained": 705.4,
+          "skill_xp_gained": {
+            "Attack": 12.0,
+            "Defence": 0.0,
+            "Strength": 0.0,
+            "Hitpoints": 3.9,
+            "Ranged": 0.0,
+            "Prayer": 0.0,
+            "Magic": 27.5,
+            "Cooking": 0.0,
+            "Woodcutting": 350.0,
+            "Fletching": 0.0,
+            "Fishing": 0.0,
+            "Firemaking": 120.0,
+            "Crafting": 0.0,
+            "Smithing": 0.0,
+            "Mining": 0.0,
+            "Herblore": 0.0,
+            "Agility": 0.0,
+            "Thieving": 192.0,
+            "Slayer": 0.0,
+            "Farming": 0.0,
+            "Runecrafting": 0.0
+          }
         }
       ]
     },
     "George": {
       "policy": "quest_first",
-      "intervals_received": 5,
-      "minutes_observed": 50,
+      "intervals_received": 6,
+      "minutes_observed": 60,
       "phase_intervals": {
-        "solo": 5,
+        "solo": 6,
         "coop": 0,
         "mixed": 0
       },
-      "solo_xp": 300.0,
+      "solo_xp": 498.1,
       "coop_or_mixed_xp": 0.0,
-      "total_xp_gained": 300.0,
-      "xp_per_hour_of_observed_time": 360.0,
+      "total_xp_gained": 498.1,
+      "xp_per_hour_of_observed_time": 498.1,
       "skill_xp_gained": {
         "Attack": 0.0,
         "Defence": 0.0,
         "Strength": 0.0,
-        "Hitpoints": 0.0,
+        "Hitpoints": 2.6,
         "Ranged": 0.0,
         "Prayer": 0.0,
-        "Magic": 0.0,
+        "Magic": 31.5,
         "Cooking": 300.0,
-        "Woodcutting": 0.0,
+        "Woodcutting": 100.0,
         "Fletching": 0.0,
         "Fishing": 0.0,
         "Firemaking": 0.0,
@@ -893,7 +1151,7 @@
         "Mining": 0.0,
         "Herblore": 0.0,
         "Agility": 0.0,
-        "Thieving": 0.0,
+        "Thieving": 64.0,
         "Slayer": 0.0,
         "Farming": 0.0,
         "Runecrafting": 0.0
@@ -901,14 +1159,14 @@
       "new_quests_verified": [
         "Cook's Assistant"
       ],
-      "successful_actions": 564,
+      "successful_actions": 657,
       "failed_actions": 10,
       "deaths": 0,
       "latest_location": {
-        "x": 3189,
-        "z": 3274,
+        "x": 3236,
+        "z": 3204,
         "plane": 0,
-        "region": "Lumbridge Farms"
+        "region": "Lumbridge"
       },
       "last_reported_online": true,
       "route_points": [
@@ -1183,6 +1441,246 @@
         [
           3189,
           3276
+        ],
+        [
+          3220,
+          3226
+        ],
+        [
+          3219,
+          3229
+        ],
+        [
+          3217,
+          3230
+        ],
+        [
+          3215,
+          3231
+        ],
+        [
+          3216,
+          3229
+        ],
+        [
+          3218,
+          3227
+        ],
+        [
+          3220,
+          3225
+        ],
+        [
+          3222,
+          3224
+        ],
+        [
+          3224,
+          3222
+        ],
+        [
+          3226,
+          3220
+        ],
+        [
+          3229,
+          3219
+        ],
+        [
+          3232,
+          3219
+        ],
+        [
+          3232,
+          3222
+        ],
+        [
+          3232,
+          3225
+        ],
+        [
+          3232,
+          3228
+        ],
+        [
+          3231,
+          3231
+        ],
+        [
+          3229,
+          3232
+        ],
+        [
+          3227,
+          3234
+        ],
+        [
+          3225,
+          3235
+        ],
+        [
+          3223,
+          3237
+        ],
+        [
+          3220,
+          3237
+        ],
+        [
+          3217,
+          3237
+        ],
+        [
+          3215,
+          3238
+        ],
+        [
+          3217,
+          3240
+        ],
+        [
+          3220,
+          3240
+        ],
+        [
+          3223,
+          3241
+        ],
+        [
+          3224,
+          3243
+        ],
+        [
+          3226,
+          3242
+        ],
+        [
+          3229,
+          3242
+        ],
+        [
+          3228,
+          3240
+        ],
+        [
+          3228,
+          3237
+        ],
+        [
+          3228,
+          3234
+        ],
+        [
+          3230,
+          3232
+        ],
+        [
+          3231,
+          3230
+        ],
+        [
+          3231,
+          3227
+        ],
+        [
+          3231,
+          3224
+        ],
+        [
+          3232,
+          3221
+        ],
+        [
+          3232,
+          3218
+        ],
+        [
+          3233,
+          3216
+        ],
+        [
+          3233,
+          3213
+        ],
+        [
+          3233,
+          3210
+        ],
+        [
+          3234,
+          3208
+        ],
+        [
+          3234,
+          3205
+        ],
+        [
+          3235,
+          3202
+        ],
+        [
+          3238,
+          3201
+        ],
+        [
+          3239,
+          3198
+        ],
+        [
+          3240,
+          3196
+        ],
+        [
+          3241,
+          3194
+        ],
+        [
+          3241,
+          3191
+        ],
+        [
+          3241,
+          3194
+        ],
+        [
+          3240,
+          3197
+        ],
+        [
+          3239,
+          3200
+        ],
+        [
+          3237,
+          3202
+        ],
+        [
+          3236,
+          3204
+        ],
+        [
+          3236,
+          3207
+        ],
+        [
+          3233,
+          3207
+        ],
+        [
+          3234,
+          3205
+        ],
+        [
+          3236,
+          3203
+        ],
+        [
+          3238,
+          3201
+        ],
+        [
+          3236,
+          3203
         ]
       ],
       "progress": [
@@ -1316,6 +1814,33 @@
             "Herblore": 0.0,
             "Agility": 0.0,
             "Thieving": 0.0,
+            "Slayer": 0.0,
+            "Farming": 0.0,
+            "Runecrafting": 0.0
+          }
+        },
+        {
+          "end": "2026-11-01T08:00:00Z",
+          "xp_gained": 498.1,
+          "skill_xp_gained": {
+            "Attack": 0.0,
+            "Defence": 0.0,
+            "Strength": 0.0,
+            "Hitpoints": 2.6,
+            "Ranged": 0.0,
+            "Prayer": 0.0,
+            "Magic": 31.5,
+            "Cooking": 300.0,
+            "Woodcutting": 100.0,
+            "Fletching": 0.0,
+            "Fishing": 0.0,
+            "Firemaking": 0.0,
+            "Crafting": 0.0,
+            "Smithing": 0.0,
+            "Mining": 0.0,
+            "Herblore": 0.0,
+            "Agility": 0.0,
+            "Thieving": 64.0,
             "Slayer": 0.0,
             "Farming": 0.0,
             "Runecrafting": 0.0
