@@ -44,7 +44,7 @@ export function validateObservation(raw,{botName,expectedWorld}={}) {
   if(!raw.player||Object.keys(raw.player).some(k=>!['username','isBot'].includes(k)))
     fail('unexpected player private fields');
   const v=copy(raw);const w=v.world||{}, p=v.player||{};
-  if(!botName||!/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName))fail('approved bot name required');
+  if(!botName||!/^harness[a-z0-9_-]{1,5}$/i.test(botName))fail('approved bot name required');
   if(p.username!==botName||p.isBot!==true)fail('wrong identity');
   if(w.mode!=='isolated'||w.revision!==377||w.tickMs!==600||w.xpMultiplier!==1)
     fail('only isolated normal speed/XP world is allowed');
