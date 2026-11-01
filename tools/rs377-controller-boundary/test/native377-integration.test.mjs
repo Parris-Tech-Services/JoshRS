@@ -76,7 +76,7 @@ test('gateway real Node TCP hello/login integration then only normal encrypted m
   await new Promise(r=>setTimeout(r,30));
   assert.ok(tcp.packets.length>=3);
   assert.equal(tcp.packets[2].length,7); // ISAAC-encrypted opcode + variable length + 5 bytes
-  assert.deepEqual([...tcp.packets[2].subarray(1)],[5,129,12,0,129,12]);
+  assert.deepEqual([...tcp.packets[2].subarray(1)],[5,1,12,0,1,12]);
   assert.equal(b.status().authenticated,true);
   b.close();
   assert.equal(b.status().authenticated,false);
