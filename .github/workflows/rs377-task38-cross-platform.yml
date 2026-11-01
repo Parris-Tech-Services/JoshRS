@@ -7,12 +7,16 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/rs377-task38-cross-platform.yml'
-      - 'tools/rs377-**'
+      - 'tools/rs377-*/**'
+      - 'tools/rs377-*.mjs'
+      - 'tools/rs377-*.json'
+      - 'tests/**'
+      - 'package.json'
       - 'tools/luna377/**'
       - 'tools/web377-bridge/**'
       - 'tools/test-rs377-task15-entrypoint.sh'
       - 'tools/rs377-task15-entrypoint.sh'
-      - 'content-factory/tests/**'
+      - 'content-factory/**'
       - 'tools/rs377-bot-bench/tests/**'
       - 'deploy/jparris-windows/**'
   pull_request:
