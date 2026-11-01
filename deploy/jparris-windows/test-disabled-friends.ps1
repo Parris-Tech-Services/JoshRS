@@ -94,10 +94,59 @@ try {
     [IO.File]::WriteAllText($envPath,$loggerDisabled)
     $blocked=$false
     try { & $fix -Apply } catch {
-        $blocked=($_.Exception.Message -like '*requires a controlled Agy review*')
+        $blocked=($_.Exception.Message -like '*service-topology review*')
     }
     if (-not $blocked -or [IO.File]::ReadAllText($envPath) -cne $loggerDisabled) {
         throw 'Unexpected custom logger configuration was not rejected'
+    }
+    # Imported Fedora .env can omit optional service flags. Missing flags
+    # must be added in offline mode, not classified as malformed.
+    $missing=($envText -split '\r?\n' | Where-Object {
+        $_ -notmatch '^(FRIEND_SERVER|EASY_STARTUP)='
+    }) -join [Environment]::NewLine
+    [IO.File]::WriteAllText($envPath,$missing)
+    & $fix
+    & $fix -Apply
+    $missingFixed=[IO.File]::ReadAllText($envPath)
+    foreach ($key in @('FRIEND_SERVER','EASY_STARTUP','LOGIN_SERVER','LOGGER_SERVER')) {
+        if (-not $missingFixed.Contains(($key+'=true'))) {
+            throw "Missing starter flag was not enabled: $key"
+        }
+    }
+    if (-not $missingFixed.Contains('DB_PASS=nonpublic-windows-only')) {
+        throw 'Missing-flag repair altered unrelated secret setting'
+    }
+    # Quoted false, alternate false and inline comments remain supported.
+    $quoted=$envText.Replace('FRIEND_SERVER=false', 'FRIEND_SERVER="false"  # old config')
+    $quoted=$quoted.Replace('EASY_STARTUP=false','EASY_STARTUP=0  # old setting')
+    [IO.File]::WriteAllText($envPath,$quoted)
+    & $fix -Apply
+    $quotedFixed=[IO.File]::ReadAllText($envPath)
+    if (-not $quotedFixed.Contains('FRIEND_SERVER=true  # old config') -or
+        -not $quotedFixed.Contains('EASY_STARTUP=true  # old setting')) {
+        throw 'Quoted and numeric flags were not normalized'
+    }
+    # Native login/logger flags also default false when absent.
+    $missingWorkers=($envText -split '\r?\n' | Where-Object {
+        $_ -notmatch '^(LOGIN_SERVER|LOGGER_SERVER|FRIEND_SERVER|EASY_STARTUP)='
+    }) -join [Environment]::NewLine
+    [IO.File]::WriteAllText($envPath,$missingWorkers)
+    & $fix -Apply
+    $workersFixed=[IO.File]::ReadAllText($envPath)
+    foreach ($key in @('FRIEND_SERVER','EASY_STARTUP','LOGIN_SERVER','LOGGER_SERVER')) {
+        if (-not $workersFixed.Contains(($key+'=true'))) {
+            throw "Embedded worker flag not added: $key"
+        }
+    }
+    # Explicitly disabled login manager is a service topology blocker.
+    $externalManager=$envText.Replace('LOGIN_SERVER=true','LOGIN_SERVER=false')
+    [IO.File]::WriteAllText($envPath,$externalManager)
+    $blocked=$false
+    try { & $fix -Apply } catch {
+        $blocked=($_.Exception.Message -like '*service-topology review*')
+    }
+    if (-not $blocked -or [IO.File]::ReadAllText($envPath) -cne $externalManager) {
+        throw 'External login service override should be rejected'
     }
     Write-Host 'PASS: supported 377 startup verified, read-only preflight, running-world protection, byte-exact private backup, restricted flag change, repeat idempotence, duplicate/custom refusal. No game, database, or saves were opened.'
 } finally {
