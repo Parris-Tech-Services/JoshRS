@@ -84,7 +84,12 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
         busy=true;
         try {
           const action=msg.action;
-          const start=await runtime.observe(); // genuine engine callback; may reject replay
+          // The native observer rejects duplicate samples in the same
+          // 600ms tick. Do not re-read it immediately after taking the
+          // before-state; wait for the actual next tick before dispatch.
+          const start=await runtime.observe();
+          await sleep(675);
+          if(closed||controller!==ws)return;
           const dispatch=await runtime.action(action); // maps BotAction to true ISAAC TCP
           if(!['dispatched_unverified','queued_unverified'].includes(dispatch.status)){
             send(ws,{type:'sdk_action_result',actionId,result:{
