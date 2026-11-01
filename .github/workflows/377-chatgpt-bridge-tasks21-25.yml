@@ -20,6 +20,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Install exact 377 bridge WebSocket dependency
+        working-directory: tools/rs377-chatgpt-bridge
+        run: npm install --ignore-scripts --no-audit --no-fund
       - name: Run independent offline packet/login/observation tests
         working-directory: tools/rs377-chatgpt-bridge
         run: npm run check
