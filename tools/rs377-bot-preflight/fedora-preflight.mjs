@@ -4,7 +4,7 @@
  * No network requests, shell evaluation, installation, service changes or
  * game login. Never reads .env, private keys, account DBs, saves or work files.
  */
-import {execFileSync} from 'node:child_process';
+import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {existsSync, lstatSync, readFileSync, realpathSync} from 'node:fs';
 import os from 'node:os';
@@ -27,13 +27,12 @@ const GAME_SOURCE_ALLOWLIST=Object.freeze([
 ]);
 
 function runReadOnly(command,args){
-  try {
-    const out=execFileSync(command,args,{encoding:'utf8',timeout:2500,maxBuffer:65536,stdio:['ignore','pipe','pipe']});
-    return {ok:true,stdout:out,stderr:''};
-  } catch(e){
-    return {ok:false,stdout:typeof e.stdout==='string'?e.stdout:'',
-      stderr:typeof e.stderr==='string'?e.stderr:'',code:e.code??null};
-  }
+  // No shell, stdin or network probe. Capture Java's version (printed to stderr).
+  const result=spawnSync(command,args,{encoding:'utf8',timeout:2500,maxBuffer:65536,stdio:['ignore','pipe','pipe']});
+  return {ok:result.status===0&&!result.error,
+    stdout:typeof result.stdout==='string'?result.stdout:'',
+    stderr:typeof result.stderr==='string'?result.stderr:'',
+    code:result.error?.code??result.status??null};
 }
 function textResult(res){
   return res?.ok?String(res.stdout??'').trim():'';
@@ -128,9 +127,13 @@ export function collectPreflight({
   const paths=detectedPaths(repo,base);
   const gameCandidates=[path.join(base,'dev/JoshRS/lostcity377'),path.join(base,'lostcity377')];
   const game=gameCandidates.find(c=>existsSync(path.join(c,'engine'))&&existsSync(path.join(c,'client-java')))||null;
-  const osRelease=isRegularFile('/etc/os-release')?readFileSync('/etc/os-release','utf8'):'';
+  let osRelease='';
+  try{osRelease=readFileSync('/etc/os-release','utf8').slice(0,16384);}catch{ /* non-Linux fixture */ }
   const name=osRelease.match(/^PRETTY_NAME=(?:"([^"]+)"|([^\n]+))$/m);
-  const versionOf=(cmd,args)=>versionFrom(textResult(run(cmd,args))||run(cmd,args)?.stderr||'');
+  const versionOf=(cmd,args)=>{
+    const r=run(cmd,args);
+    return versionFrom((r?.ok?(r.stdout||'')+'\n'+(r.stderr||''):''));
+  };
   const gitRoots=[repo,path.join(base,'dev/JoshRS-rssdk-harness')];
   const git=gitRoots.map(location=>({location,...gitInfo(location,run)}));
   const listen=run('ss',['-H','-ltnp']);
