@@ -1,0 +1,41 @@
+name: JoshRS 377 ChatGPT protocol and SDK bridge (source-only)
+on:
+  push:
+    paths:
+      - 'tools/rs377-chatgpt-bridge/**'
+      - '.github/workflows/377-chatgpt-bridge-tasks21-25.yml'
+  pull_request:
+    paths:
+      - 'tools/rs377-chatgpt-bridge/**'
+      - '.github/workflows/377-chatgpt-bridge-tasks21-25.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run independent offline packet/login/observation tests
+        working-directory: tools/rs377-chatgpt-bridge
+        run: npm run check
+      - name: Verify exact upstream pinned RS-SDK type contract Git blob
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp)"
+          trap 'rm -f "$tmp"' EXIT
+          curl --fail --location --silent --show-error --retry 2 --max-time 30             https://raw.githubusercontent.com/MaxBittker/rs-sdk/db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb/sdk/types.ts -o "$tmp"
+          actual="$(git hash-object "$tmp")"
+          expected="ec59cef4f878c908481f68bd42cf698b68cdf579"
+          test "$actual" = "$expected"
+          grep -q 'export interface BotWorldState' "$tmp"
+          grep -q 'export type BotAction' "$tmp"
+          grep -q "type: 'walkTo'" "$tmp"
+          grep -q "type: 'useItemOnLoc'" "$tmp"
+          grep -q 'export interface ActionResult' "$tmp"
+          echo "Pinned RS-SDK type blob and required action/state declarations matched"
