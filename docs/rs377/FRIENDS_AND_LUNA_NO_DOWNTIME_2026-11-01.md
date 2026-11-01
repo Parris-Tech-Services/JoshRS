@@ -42,3 +42,31 @@ These source facts establish *likely failure branches*, not which one is active 
 **Agent 3 — runtime and persistence:** Only after players voluntarily finish, back up saves and matching SQLite, verify active engine .env and Friends service startup model, perform safe staged server integration with a rollback, and test both real Java clients. A code merge does not prove runtime success. No unauthorised server restart.
 
 No 377 client, map, save or game server has been modified by this contribution. Tests: node --test tools/rs377-social/check-social-readiness.test.mjs; the checker itself has no runtime write operation.
+
+## Confirmed JParris Desktop diagnosis — 1 November 2026
+
+Elrothiro supplied real diagnostic JSON:
+
+- `friend_server_configured=false`, `easy_startup_configured=false`
+- `game_listener=true`, `web_listener=true`, `friend_listener=false`
+- Expected friend port 45099
+- RuneScape private chat was visibly On, but the entire friends list was blank.
+
+**This confirms saved startup configuration is disabling the Friends service and its listener is not running.** It does not yet prove which process environment the live Node server inherited, or that former friendships persist in the database. With disabled FriendThread, add/remove friend events may not have been persisted. The source-level Friends implementation uses the account database `friendlist` table scoped to `NODE_PROFILE`. Restarting alone cannot restore relationships which were never saved.
+
+A no-disconnect, fail-closed **offline repair installer** is now supplied:
+
+- `JoshRS-Fix-Friends.cmd` + `deploy/jparris-windows/fix-disabled-friends.ps1`
+- Do **not run -Apply while any game, login, logger or friend listener is active**. The installer refuses to write and never disconnects anyone.
+- It verifies the selected personalised USB engine, expected embedded `friend.ts` startup, `LOGIN_SERVER=true`, `LOGGER_SERVER=true`, SQLite if specified, unique startup flags and correctly formatted ports.
+- It creates a byte-exact private copy of the original `.env` inside `runtime/jparris-377/friends-config-backups/`, then changes **only** `FRIEND_SERVER=false` and `EASY_STARTUP=false` to `true`. It never prints passwords, overwrites `active.json`, SQLite, player saves, Java client or gameplay scripts; it never stops or starts the server.
+- Existing separately managed login/logger/custom startup arrangements are a **blocker for manual Agy review**, not a reason to force multiple services to bind the same ports.
+- After both players voluntarily finish, stop the server gracefully and apply. Start JoshRS normally; run the same read-only checker again. Expect saved flags `true` and the friend listener present. That still doesn't prove social updates: check Sylvie's friend entry, add her again normally if needed, logout/login, and test both-way PM. Never reset or recreate characters.
+- Luna needs virtual companion friend presence and PM routing. Fred and George are not verified active accounts and are covered by #55. Do not confuse these with normal persisted real-player friendships.
+
+For read-only preflight, use `powershell -NoProfile -ExecutionPolicy Bypass -File .\deploy\jparris-windows\fix-disabled-friends.ps1` (omit `-Apply`). Windows CI regression exercises safe offline replacement, backup, duplicate prevention and active-listener refusal; no CI workflow can prove a fix is live on the JParris Desktop.
+
+### Installation into the existing launcher
+
+From the updated GitHub main ZIP, copy **only** `JoshRS-Fix-Friends.cmd`, `deploy/jparris-windows/fix-disabled-friends.ps1` into `C:\JoshRS-Launcher\JoshRS-main` with existing subfolders preserved. Do not replace the runtime, client files or personalised `play.ps1`. Run after finishing playing, then verify before using normal friends again.
+
