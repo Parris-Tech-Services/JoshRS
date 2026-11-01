@@ -10,6 +10,8 @@ export function createSdk377Runtime({session,observer,botName,expectedWorld}={})
  if(!observer||typeof observer.observe!=='function')throw new Error('authoritative_observer_required');
  if(typeof botName!=='string'||!expectedWorld)throw new Error('explicit_bot_and_world_required');
  let last=null;
+ let lastActionTick=-1;
+ let actionInFlight=false;
  const observe=async()=>{
   const snapshot=await observer.observe();
   if(snapshot.player.username!==botName||snapshot.world.instanceId!==expectedWorld)
@@ -24,17 +26,23 @@ export function createSdk377Runtime({session,observer,botName,expectedWorld}={})
    return toBotWorldState(snapshot,{botName,expectedWorld});
   },
   async action(action){
-   if(session.status().authenticated!==true)throw new Error('native_session_not_authenticated');
-   const snapshot=await observe();
-   const mapped=mapSdkAction(action,snapshot);
-   if(mapped.kind==='no_action')return Object.freeze({status:'no_action',tick:snapshot.tick});
-   if(mapped.kind==='wait')return Object.freeze({status:'wait_requested',ticks:mapped.ticks,tick:snapshot.tick});
-   if(mapped.kind!=='packet')throw new Error('unsupported_mapped_action');
-   const sent=session.sendPacket(mapped.packet);
-   if(!['queued_unverified','dispatched_unverified'].includes(sent.status))
-    throw new Error('unknown_native_dispatch_result');
-   return Object.freeze({status:sent.status,opcode:mapped.packet.opcode,tick:snapshot.tick,
-    world:expectedWorld,verifiedEffect:false});
+   if(actionInFlight)throw new Error('concurrent_sdk_action_refused');
+   actionInFlight=true;
+   try {
+    if(session.status().authenticated!==true)throw new Error('native_session_not_authenticated');
+    const snapshot=await observe();
+    const mapped=mapSdkAction(action,snapshot);
+    if(mapped.kind==='no_action')return Object.freeze({status:'no_action',tick:snapshot.tick});
+    if(mapped.kind==='wait')return Object.freeze({status:'wait_requested',ticks:mapped.ticks,tick:snapshot.tick});
+    if(mapped.kind!=='packet')throw new Error('unsupported_mapped_action');
+    if(snapshot.tick<=lastActionTick)throw new Error('sdk_action_replay_or_stale_tick');
+    const sent=session.sendPacket(mapped.packet);
+    if(!['queued_unverified','dispatched_unverified'].includes(sent.status))
+     throw new Error('unknown_native_dispatch_result');
+    lastActionTick=snapshot.tick;
+    return Object.freeze({status:sent.status,opcode:mapped.packet.opcode,tick:snapshot.tick,
+     world:expectedWorld,verifiedEffect:false});
+   } finally { actionInFlight=false; }
   },
   lastObservedTick(){return last?.tick??null}
  });
