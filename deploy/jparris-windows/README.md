@@ -129,6 +129,48 @@ This fix does **not** set `BUILD_VERIFY=false`. It adds `JOSHRS_CUSTOM_LOCS=true
 
 ## Troubleshooting
 
+### Broken desktop Java client: Could not find or load main class .java2d.d3d=false
+
+The Java process is misreading a JVM property as its main class. This
+concerns the client only; do not reset or replace accounts or the server.
+
+The local directly launched Java client may be different from GitHub's
+original Gradle-based play.ps1. The surgical repair protects those differences:
+
+1. Download the latest JoshRS main ZIP. Copy three files into the EXISTING
+   C:\JoshRS-Launcher\JoshRS-main preserving their paths:
+   * JoshRS-Fix-Java-Client.cmd
+   * deploy/jparris-windows/fix-java-client-launch.ps1
+   * deploy/jparris-windows/launch-java-client-safe.ps1
+2. Double-click JoshRS-Fix-Java-Client.cmd. It validates the configured
+   client, makes a full original backup of play.ps1 in
+   runtime/jparris-377/launcher-backups and replaces ONLY the recognised
+   Client launch block. It does not touch the server block, original Java
+   client project, save files, account database, VM or any runtime data.
+   The repair fails closed on unexpected customised source.
+3. Reuse your existing Play JoshRS desktop shortcut. The repaired client
+   launches via Gradle --no-daemon run, which selects the supported actual
+   main class and runtime dependencies. A process-local JAVA_TOOL_OPTIONS
+   carries the proper Java2D property: -Dsun.java2d.d3d=false, avoiding the
+   broken PowerShell 5.1 native -D flag marshalling. The environment variable
+   is restored when the client exits; no global JDK setting changes.
+
+No need to disconnect existing clients or restart a running server when
+INSTALLING this launcher-only change. The existing desktop shortcut is
+reused, not deleted or recreated. The next client start picks up the fix.
+
+READ-ONLY compatibility check: run the fix-java-client-launch.ps1 script
+without the -Apply argument.
+
+Rollback: copy the private original play-before-java-args-*.ps1 backup over
+deploy/jparris-windows/play.ps1. Never delete or overwrite runtime/.
+
+CI runs a synthetic Windows PowerShell 5.1 fixture with the malformed
+direct-Java command, validates the targeted backup/rewrite and idempotence.
+Only a successful real desktop Java client login can establish a live fix.
+
+
+
 - **Windows SmartScreen / execution policy:** run the extracted scripts directly from a folder you control; do not use random mirrored downloads.
 - **Missing Node/Java/Git:** use the setup installer prompts and reopen the terminal if the new PATH is not visible. Microsoft recommends JDK 21 with WinGet.
 - **Wrong USB copy:** if the original `engine/package.json`, `src/app.ts`, `src/engine/World.ts`, and `content/scripts/` are not present, choose the correct USB location. If the only copy available is an incomplete Google Drive directory tree, the customised world cannot be restored yet.
