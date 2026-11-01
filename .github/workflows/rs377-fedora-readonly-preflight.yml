@@ -1,0 +1,32 @@
+name: JoshRS Fedora preflight safety (task 13)
+on:
+  push:
+    branches:
+      - chatgpt/task-13-fedora-readonly-preflight-20261102
+    paths:
+      - 'tools/rs377-bot-preflight/**'
+      - '.github/workflows/rs377-fedora-readonly-preflight.yml'
+  pull_request:
+    paths:
+      - 'tools/rs377-bot-preflight/**'
+      - '.github/workflows/rs377-fedora-readonly-preflight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  read-only-fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Syntax check
+        run: node --check tools/rs377-bot-preflight/fedora-preflight.mjs
+      - name: Read-only fixture tests
+        run: node --test tools/rs377-bot-preflight/fedora-preflight.test.mjs
+      - name: Execute safe doctor on GitHub runner (not a Fedora/live-world proof)
+        run: node tools/rs377-bot-preflight/fedora-preflight.mjs --root "$GITHUB_WORKSPACE" --home "$RUNNER_TEMP"
