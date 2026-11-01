@@ -19,6 +19,9 @@ on:
       - "JoshRS-Fix-Yrsa.cmd"
       - ".github/workflows/377-native-compile.yml"
       - "tools/rs377-bot-bench/engine-patch/src/web.ts"
+      - "tools/rs377-controller-boundary/**"
+      - "tools/rs377-chatgpt-bridge/src/session.mjs"
+      - "tools/rs377-chatgpt-bridge/src/observation.mjs"
   push:
     branches: [main]
     paths:
@@ -31,6 +34,9 @@ on:
       - "content-factory/tests/**"
       - ".github/workflows/377-native-compile.yml"
       - "tools/rs377-bot-bench/engine-patch/src/web.ts"
+      - "tools/rs377-controller-boundary/**"
+      - "tools/rs377-chatgpt-bridge/src/session.mjs"
+      - "tools/rs377-chatgpt-bridge/src/observation.mjs"
   workflow_dispatch:
 
 permissions:
@@ -169,6 +175,8 @@ jobs:
           test -s data/pack/server/script.dat
           test -s data/pack/server/script.idx
           echo "Native 377 RuneScript compiler/packer produced nonempty script files."
+      - name: Syntax-check actual gateway acceptance script
+        run: node --check tools/rs377-controller-boundary/test/real-engine-gateway.acceptance.mjs
       - name: Prepare disposable game database and boot compiled world
         shell: bash
         env:
@@ -178,6 +186,7 @@ jobs:
           FRIEND_SERVER: "true"
           LOGGER_SERVER: "true"
           RS377_OBSERVER_PROBE: "true"
+          RS377_TASK26_LIVE_TEST: "true"
           NODE_PROFILE: joshrs_ci_377
           NODE_PORT: "15402"
           WEB_PORT: "18880"
