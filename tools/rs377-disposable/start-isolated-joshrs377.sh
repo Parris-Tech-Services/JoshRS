@@ -23,6 +23,10 @@ print('world='+shlex.quote(m['worldId']))
 PY
 )"
 management=8989
+# Keep large source clones, npm dependencies and generated pack/cache on the
+# disk-backed home filesystem, not Fedora's usually RAM-backed /tmp.
+build_parent="$HOME/dev/JoshRS-disposable-worlds"
+build="$build_parent/$world"
 check_ports() {
   for port in "$port_game" "$port_web" "$port_login" "$port_friends" "$port_logger" "$management"; do
     if ss -H -ltn "sport = :$port" | grep -q .; then
@@ -32,7 +36,7 @@ check_ports() {
   done
 }
 if [[ "$cmd" == status ]]; then
-  echo "World: $world; root: $root"
+  echo "World: $world; manifest: $root; disk-backed build: $build"
   for port in "$port_game" "$port_web" "$port_login" "$port_friends" "$port_logger" "$management"; do
     ss -H -ltnp "sport = :$port" || true
   done
@@ -41,7 +45,7 @@ if [[ "$cmd" == status ]]; then
 fi
 if [[ "$cmd" == prepare ]]; then
   check_ports
-  if [[ -e "$root/engine" || -L "$root/engine" || -e "$root/content" || -L "$root/content" ]]; then
+  if [[ -e "$build" || -L "$build" || -e "$build/engine" || -L "$build/engine" || -e "$build/content" || -L "$build/content" ]]; then
     echo "BLOCKED: disposable source already exists; create a new manifest" >&2
     exit 1
   fi
@@ -49,9 +53,12 @@ if [[ "$cmd" == prepare ]]; then
     echo "BLOCKED: installed source has tracked changes" >&2
     exit 1
   fi
-  git clone --no-hardlinks "$installed/engine" "$root/engine"
-  git clone --no-hardlinks "$installed/content" "$root/content"
-  python3 - "$root/engine" <<'PY'
+  [[ ! -L "$build_parent" ]] || { echo "BLOCKED: disposable build parent must not be a symlink" >&2; exit 1; }
+  mkdir -p "$build_parent"
+  mkdir -m 700 "$build"
+  git clone --no-hardlinks "$installed/engine" "$build/engine"
+  git clone --no-hardlinks "$installed/content" "$build/content"
+  python3 - "$build/engine" <<'PY'
 from pathlib import Path
 import sys
 root=Path(sys.argv[1])
@@ -68,8 +75,8 @@ for name in files:
 remaining=[str(p.relative_to(root)) for p in (root/'src').rglob('*.ts') if '0.0.0.0' in p.read_text(errors='replace')]
 if remaining: raise SystemExit('Unreviewed public listener: '+', '.join(remaining))
 PY
-  [[ ! -e "$root/engine/.env" && ! -e "$root/engine/db.sqlite" ]] || { echo "BLOCKED: unexpected cloned private data" >&2; exit 1; }
-  cat > "$root/engine/.env" <<EOF
+  [[ ! -e "$build/engine/.env" && ! -e "$build/engine/db.sqlite" ]] || { echo "BLOCKED: unexpected cloned private data" >&2; exit 1; }
+  cat > "$build/engine/.env" <<EOF
 EASY_STARTUP=true
 NODE_PROFILE=$world
 NODE_ID=71
@@ -92,28 +99,29 @@ WEBSITE_REGISTRATION=true
 BUILD_SRC_DIR=../content
 RS377_OBSERVER_ENABLED=false
 EOF
-  chmod 600 "$root/engine/.env"
-  cd "$root/engine"
+  chmod 600 "$build/engine/.env"
+  cd "$build/engine"
   npm ci --no-audit --no-fund
   npm run build
   npm run sqlite:migrate
-  [[ -f "$root/engine/db.sqlite" && ! -L "$root/engine/db.sqlite" && ! -e "$root/db/db.sqlite" ]] || { echo "BLOCKED: isolated DB not created" >&2; exit 1; }
-  mv "$root/engine/db.sqlite" "$root/db/db.sqlite"
-  ln -s "$root/db/db.sqlite" "$root/engine/db.sqlite"
-  mkdir -p "$root/engine/data"
-  [[ ! -e "$root/engine/data/players" && ! -L "$root/engine/data/players" ]] || { echo "BLOCKED: save directory already exists" >&2; exit 1; }
-  ln -s "$root/saves" "$root/engine/data/players"
+  [[ -f "$build/engine/db.sqlite" && ! -L "$build/engine/db.sqlite" && ! -e "$root/db/db.sqlite" ]] || { echo "BLOCKED: isolated DB not created" >&2; exit 1; }
+  mv "$build/engine/db.sqlite" "$root/db/db.sqlite"
+  ln -s "$root/db/db.sqlite" "$build/engine/db.sqlite"
+  mkdir -p "$build/engine/data"
+  [[ ! -e "$build/engine/data/players" && ! -L "$build/engine/data/players" ]] || { echo "BLOCKED: save directory already exists" >&2; exit 1; }
+  ln -s "$root/saves" "$build/engine/data/players"
   printf 'world=%s\nengine=%s\ncontent=%s\n' "$world" \
-    "$(git -C "$root/engine" rev-parse HEAD)" "$(git -C "$root/content" rev-parse HEAD)" > "$root/reports/source-fingerprint.txt"
+    "$(git -C "$build/engine" rev-parse HEAD)" "$(git -C "$build/content" rev-parse HEAD)" > "$root/reports/source-fingerprint.txt"
   touch "$root/ready-for-first-start"
+  echo "Build on disk: $build"
   echo "PREPARED: disposable build, DB and saves ready; no server started."
   exit 0
 fi
 [[ -f "$root/ready-for-first-start" ]] || { echo "BLOCKED: run prepare first" >&2; exit 1; }
-[[ -L "$root/engine/db.sqlite" && "$(readlink -f "$root/engine/db.sqlite")" == "$root/db/db.sqlite" ]] || { echo "DB isolation mismatch" >&2; exit 1; }
-[[ -L "$root/engine/data/players" && "$(readlink -f "$root/engine/data/players")" == "$root/saves" ]] || { echo "Save isolation mismatch" >&2; exit 1; }
+[[ -L "$build/engine/db.sqlite" && "$(readlink -f "$build/engine/db.sqlite")" == "$root/db/db.sqlite" ]] || { echo "DB isolation mismatch" >&2; exit 1; }
+[[ -L "$build/engine/data/players" && "$(readlink -f "$build/engine/data/players")" == "$root/saves" ]] || { echo "Save isolation mismatch" >&2; exit 1; }
 check_ports
-echo "Starting isolated world $world on game port $port_game and web port $port_web"
+echo "Starting isolated world $world from disk-backed $build on game port $port_game and web port $port_web"
 echo "Press Ctrl+C to stop. This is not the family world."
-cd "$root/engine"
+cd "$build/engine"
 exec npm run quickstart
