@@ -63,13 +63,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          DISPOSABLE_ROOT="/tmp/joshrs-377-disposable-ci"
-          rm -rf "$DISPOSABLE_ROOT"
-          mkdir -p "$DISPOSABLE_ROOT"
-          git clone https://github.com/2004Scape/Server.git "$DISPOSABLE_ROOT/engine"
+          DISPOSABLE_ROOT="$(mktemp -d /tmp/joshrs-377-disposable-ci.XXXXXXXX)"
+          echo "RS377_E2E_ROOT=$DISPOSABLE_ROOT" >> "$GITHUB_ENV"
+          git clone https://github.com/LostCityRS/Engine-TS.git "$DISPOSABLE_ROOT/engine"
           git -C "$DISPOSABLE_ROOT/engine" checkout b5ac859b47915afb545e60e4c1208f25d43cb3fb
-          git clone https://github.com/2004Scape/Content.git "$DISPOSABLE_ROOT/content"
+          test "$(git -C "$DISPOSABLE_ROOT/engine" rev-parse HEAD)" = "b5ac859b47915afb545e60e4c1208f25d43cb3fb"
+          git clone https://github.com/LostCityRS/Content.git "$DISPOSABLE_ROOT/content"
           git -C "$DISPOSABLE_ROOT/content" checkout 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50
+          test "$(git -C "$DISPOSABLE_ROOT/content" rev-parse HEAD)" = "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50"
           python3 content-factory/patch_377_haunted.py --content "$DISPOSABLE_ROOT/content" --apply
           cp tools/rs377-bot-bench/engine-patch/src/web.ts "$DISPOSABLE_ROOT/engine/src/web.ts"
           printf '{"disposable":true,"purpose":"joshrs-377-disposable-e2e"}\n' > "$DISPOSABLE_ROOT/.joshrs-disposable-sentinel.json"
@@ -79,4 +80,4 @@ jobs:
           BUILD_SRC_DIR=../content BUILD_VERIFY=true BUILD_VERIFY_PACK=true npm run build
           npm run sqlite:migrate
       - name: Run disposable revision-377 end-to-end gameplay acceptance & security suite
-        run: node tools/rs377-chatgpt-bridge/src/disposable-e2e.mjs --engine /tmp/joshrs-377-disposable-ci/engine
+        run: node tools/rs377-chatgpt-bridge/src/disposable-e2e.mjs --engine "$RS377_E2E_ROOT/engine"
