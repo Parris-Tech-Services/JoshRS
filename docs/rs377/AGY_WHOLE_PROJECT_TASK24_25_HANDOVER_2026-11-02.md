@@ -47,3 +47,13 @@ No production restart, save overwrite, private credential exposure, force push, 
 
 ## Required output
 Provide a 42-item status reconciliation linked to evidence, separate Agy/ChatGPT ownership, actual source commit/PR/CI IDs, test command outputs, disposable login and state/action evidence, known blockers, and **five separate verdicts**: GitHub source, Fedora readiness, disposable 377 bot, same-world Elrothiro bot, genuinely playable autonomous bot. Label VERIFIED COMPLETE / PARTIALLY COMPLETE / BLOCKED accurately. Do not claim end-to-end completion from mocks, CI compile alone or a document.
+
+
+## Fedora isolated-world actual runtime checkpoint — 2 Nov 2026
+
+**Evidence:** user-supplied real Fedora AVANCE-WS7 terminal transcript on 2 Nov 2026 at ~11:47–11:48 AEDT. Evidence is operator-provided machine output, not direct remote access from ChatGPT.
+
+- **VERIFIED isolated build/boot:** manifest `/tmp/joshrs-377-disposable-sY6DqC/manifest.json`, world `isolated-a9987d03205f`; isolated clones in `/home/josh/dev/JoshRS-disposable-worlds/isolated-a9987d03205f/`. Native content pack built in 16.593s and SQLite migration `20251229170623_clean` applied; guarded independent DB and player-save symlinks created. `PREPARED` marker checked.
+- **VERIFIED online at observation:** `tsx src/app.ts` emitted `World ready`, `Login server listening on port 53500`; `ss -ltnp` showed all six localhost-only listeners: `127.0.0.1:53402` game, `:8988` web, `:8989` management, `:53500` login, `:55099` friends, `:53501` logger (PID 917281). Web root returned HTTP 302. Latest startup log grep for `ReferenceError|Uncaught|ERROR` produced no matches.
+- **Fixes restricted to disposable source:** loopback patch included `src/app.ts`, `.loc` CRC custom-content exemption left `BUILD_VERIFY=true` and other CRC checks, and a guarded lazy-load repair broke `World.ts -> BotPlayer.ts -> Player.ts -> World.ts` cycle in disposable `World.ts`. CI [41365284170](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/41365284170) passed offline TypeScript/fixture tests; user subsequently reported real clean boot.
+- **NOT yet verified:** normal disposable bot TCP login, genuine 21-skill/inventory/position reads, mapped action + observed movement, save/relogin, or dual Java clients sharing the authoritative Elrothiro world. Do not conflate separately running Fedora disposable server with family game or label Task 25 complete.
