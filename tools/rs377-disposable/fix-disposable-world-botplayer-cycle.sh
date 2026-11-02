@@ -17,7 +17,7 @@ print(m['worldId'])
 for k in ('game','web','login','friends','logger'):print(m['ports'][k])
 PY
 )
-world="\${settings[0]}"
+world="${settings[0]}"
 parent="$HOME/dev/JoshRS-disposable-worlds"
 engine="$parent/$world/engine"
 [[ -d "$engine/.git" && ! -L "$parent" && ! -L "$parent/$world" && ! -L "$engine" ]] || { echo "BLOCKED: unsafe disposable engine" >&2; exit 1; }
@@ -25,7 +25,7 @@ engine="$parent/$world/engine"
 [[ -f "$root/ready-for-first-start" &&
  -L "$engine/db.sqlite" && "$(readlink -f "$engine/db.sqlite")" == "$root/db/db.sqlite" &&
  -L "$engine/data/players" && "$(readlink -f "$engine/data/players")" == "$root/saves" ]] || { echo "BLOCKED: isolated SQLite/saves not verified" >&2; exit 1; }
-for port in "\${settings[@]:1}" 8989; do
+for port in "${settings[@]:1}" 8989; do
  if ss -H -ltn "sport = :$port" | grep -q .; then
   echo "BLOCKED: test port $port still listening; stop ONLY disposable server first" >&2; exit 1
  fi
