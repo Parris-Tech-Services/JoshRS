@@ -12,6 +12,7 @@ import os from 'node:os';
 import {createHash,createPublicKey,randomBytes} from 'node:crypto';
 import {crc32} from 'node:zlib';
 import {pathToFileURL} from 'node:url';
+import {execFileSync} from 'node:child_process';
 
 const SKILLS=Object.freeze([
  'Attack','Defence','Strength','Hitpoints','Ranged','Prayer','Magic',
@@ -110,6 +111,19 @@ async function main(){
     await fs.realpath(path.join(engine,'data/players'))!==manifest.paths.saves)
   fail('disposable SQLite or player saves are not isolated');
  await fs.access(path.join(manifest.root,'ready-for-first-start'));
+ // Refuse a different service bound to the expected disposable port. A
+ // manifest or open TCP socket alone cannot establish world/process identity.
+ const gamePortLines=execFileSync('ss',['-H','-ltnp','sport = :'+ports.game],{encoding:'utf8'});
+ if(!gamePortLines.includes('127.0.0.1:'+ports.game))
+  fail('expected isolated game listener is not bound to loopback');
+ const pids=[...gamePortLines.matchAll(/pid=(\d+)/g)].map(m=>Number(m[1]));
+ if(pids.length!==1||!Number.isSafeInteger(pids[0]))
+  fail('could not unambiguously identify isolated game listener PID');
+ const serverCwd=await fs.realpath('/proc/'+pids[0]+'/cwd');
+ if(serverCwd!==engine)fail('TCP listener does not belong to the expected disposable engine directory');
+ const serverEnvironment=await fs.readFile('/proc/'+pids[0]+'/environ');
+ if(!serverEnvironment.includes(Buffer.from('WEBSITE_REGISTRATION=false\0')))
+  fail('restart ONLY the isolated server with WEBSITE_REGISTRATION=false before HarnessTest auto-registration');
  const sessionModule=await import(pathToFileURL(path.join(source,'tools/rs377-chatgpt-bridge/src/session.mjs')).href);
  const {Session377}=sessionModule;
  const pemPath=path.join(engine,'data/config/private.pem');
