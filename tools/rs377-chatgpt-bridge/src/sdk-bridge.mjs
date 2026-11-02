@@ -24,8 +24,9 @@ function verifiedLoc(snapshot,a) {
 }
 function verifiedGround(snapshot,a) {
   if(!Array.isArray(snapshot.groundItems))reject('ground items unknown');
-  if(!snapshot.groundItems.some(n=>n.id===a.itemId&&n.x===a.x&&n.z===a.z))
-    reject('ground item is not visible');
+  const ground=snapshot.groundItems.find(n=>n.id===a.itemId&&n.x===a.x&&n.z===a.z);
+  if(!ground)reject('ground item is not visible');
+  return ground;
 }
 const dataOnly=arg=>arg&&typeof arg==='object'&&!Array.isArray(arg);
 function exact(action,fields) {
@@ -70,8 +71,13 @@ export function mapSdkAction(action,snapshot) {
       return packet({type:'loc',x:a.x,z:a.z,locId:a.locId,option:a.optionIndex});
     }
     case 'pickupItem': {
-      exact(a,['x','z','itemId']);verifiedGround(snapshot,a);
-      return packet({type:'ground',x:a.x,z:a.z,itemId:a.itemId,option:1});
+      exact(a,['x','z','itemId']);
+      const ground=verifiedGround(snapshot,a);
+      const takeOp=Array.isArray(ground?.optionsWithIndex)
+        ? ground.optionsWithIndex.find(o=>o&&typeof o.text==='string'&&/^take$/i.test(o.text))
+        : null;
+      const opt=takeOp&&validOption(takeOp.opIndex)?takeOp.opIndex:1;
+      return packet({type:'ground',x:a.x,z:a.z,itemId:a.itemId,option:opt});
     }
     case 'interactGroundItem': {
       exact(a,['x','z','itemId','optionIndex']);verifiedGround(snapshot,a);
@@ -92,6 +98,13 @@ export function mapSdkAction(action,snapshot) {
       return packet({type:'inventory',slot:a.slot,itemId:item.id,
         componentId:a.interfaceId,option:a.optionIndex});
     }
+    case 'dropItem': {
+      exact(a,['slot']);
+      const item=pickSlot(snapshot.inventory,a.slot);
+      if(!item)reject('inventory slot not observed');
+      return packet({type:'held',slot:a.slot,itemId:item.id,
+        componentId:3214,option:5});
+    }
     case 'useItemOnLoc': {
       exact(a,['itemSlot','x','z','locId']);verifiedLoc(snapshot,a);
       const item=pickSlot(snapshot.inventory,a.itemSlot);
@@ -102,13 +115,17 @@ export function mapSdkAction(action,snapshot) {
     case 'clickDialogOption': {
       exact(a,['optionIndex','guard']);
       const d=snapshot.dialogue;
-      if(!d||!d.isOpen||!d.pageId)reject('no verified active dialogue page');
-      if(!a.guard||a.guard.pageId!==d.pageId)reject('stale or unguarded dialogue');
-      const opt=d.options.find(o=>o.index===a.optionIndex&&o.componentId===a.guard.componentId);
+      if(!d||!d.isOpen||!d.isWaiting||!d.pageId||d.optionTextAvailable!==true)
+        reject('no verified active dialogue page');
+      if(!a.guard||a.guard.pageId!==d.pageId||!isNum(a.guard.componentId))
+        reject('stale or unguarded dialogue');
+      if(Array.isArray(d.pendingComponentIds)&&!d.pendingComponentIds.includes(a.guard.componentId))
+        reject('dialogue component is not pending');
+      const opt=d.options.find(o=>o.index===a.optionIndex&&o.componentId===a.guard.componentId&&typeof o.text==='string'&&o.text.length>0);
       if(!opt)reject('dialogue option no longer available');
-      // The 377 RESUME_PAUSEBUTTON decoder is a different mechanic from an
-      // SDK option selection; mapping generic 377 component bytes is unsafe.
-      reject('dialogue page action needs verified 377 IF_BUTTON/component routing');
+      if(a.optionIndex===0)return packet({type:'dialog_resume',componentId:opt.componentId});
+      if(validOption(a.optionIndex))return packet({type:'if_button',componentId:opt.componentId});
+      reject('dialogue option index must be 0..5');
     }
     default:reject('unsupported, dangerous or unverified RS-SDK action '+String(a?.type).slice(0,40));
   }
@@ -191,13 +208,27 @@ export function toBotWorldState(raw,{botName,expectedWorld}={}) {
   // SDK experience uses ordinary fractional XP. Native 377 stores XP in tenths.
   const skills=s.skills.map(v=>({name:v.name,level:v.level,baseLevel:v.baseLevel,
     experience:v.xpTenths/10}));
+  const groundItems=s.groundItems.map(g=>({
+    id:g.id,name:g.name,count:g.count,x:g.x,z:g.z,distance:g.distance
+  }));
+  const dialog={
+    isOpen:s.dialogue.isOpen,
+    options:s.dialogue.options.map(o=>({
+      index:o.index,
+      text:o.text,
+      ...(isNum(o.componentId)?{componentId:o.componentId}:{})
+    })),
+    isWaiting:s.dialogue.isWaiting,
+    ...(typeof s.dialogue.pageId==='string'?{pageId:s.dialogue.pageId}:{}),
+    ...(typeof s.dialogue.text==='string'?{text:s.dialogue.text}:{})
+  };
   const state={
     tick:s.tick,inGame:true,player:structuredClone(e.player),skills,
     inventory:structuredClone(s.inventory),equipment:structuredClone(s.equipment),
     nearbyNpcs:structuredClone(s.nearbyNpcs),nearbyPlayers:structuredClone(e.nearbyPlayers),
-    nearbyLocs:structuredClone(s.nearbyLocs),groundItems:structuredClone(s.groundItems),
+    nearbyLocs:structuredClone(s.nearbyLocs),groundItems,
     gameMessages:structuredClone(e.gameMessages),recentDialogs:structuredClone(e.recentDialogs),
-    dialog:structuredClone(s.dialogue),interface:structuredClone(e.interface),
+    dialog,interface:structuredClone(e.interface),
     shop:structuredClone(e.shop),bank:structuredClone(e.bank),
     modalOpen:e.modalOpen,modalInterface:e.modalInterface,
     combatEvents:structuredClone(e.combatEvents),prayers:structuredClone(e.prayers)

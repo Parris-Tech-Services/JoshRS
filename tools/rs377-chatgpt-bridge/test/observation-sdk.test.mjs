@@ -89,3 +89,57 @@ test('can translate a complete *supplied* SDK-compatible observation but not syn
   const broken=raw();broken.sdkDetails=x.sdkDetails;delete broken.sdkDetails.bank;
   assert.throws(()=>toBotWorldState(broken,opts),/bank/);
 });
+test('Issue 8: clickDialogOption requires verified optionTextAvailable, pageId, and pendingComponentIds, routing index 0 to DIALOG_RESUME (226) and index 1..5 to IF_BUTTON (79)',()=>{
+  const pauseSnap=raw();
+  pauseSnap.dialogue={
+    isOpen:true,
+    isWaiting:true,
+    pageId:'dlg-4882-1-10-100',
+    options:[{index:0,text:'Click here to continue',componentId:4886}],
+    pendingComponentIds:[4886],
+    optionTextAvailable:true
+  };
+  const vPause=validateObservation(pauseSnap,opts);
+  const mappedPause=mapSdkAction({
+    type:'clickDialogOption',
+    optionIndex:0,
+    guard:{pageId:'dlg-4882-1-10-100',componentId:4886},
+    reason:'Continue pause dialog'
+  },vPause);
+  assert.equal(mappedPause.packet.opcode,226);
+
+  const multiSnap=raw();
+  multiSnap.dialogue={
+    isOpen:true,
+    isWaiting:true,
+    pageId:'dlg-2459-1-20-200',
+    options:[
+      {index:1,text:'Yes please.',componentId:2461},
+      {index:2,text:'No thanks.',componentId:2462}
+    ],
+    pendingComponentIds:[2461,2462],
+    optionTextAvailable:true
+  };
+  const vMulti=validateObservation(multiSnap,opts);
+  const mappedChoice=mapSdkAction({
+    type:'clickDialogOption',
+    optionIndex:1,
+    guard:{pageId:'dlg-2459-1-20-200',componentId:2461},
+    reason:'Select option 1'
+  },vMulti);
+  assert.equal(mappedChoice.packet.opcode,79);
+
+  // Refuse when optionTextAvailable is false (even if options array was populated)
+  const unverifiedTextSnap=raw();
+  unverifiedTextSnap.dialogue={
+    ...multiSnap.dialogue,
+    optionTextAvailable:false
+  };
+  const vUnverified=validateObservation(unverifiedTextSnap,opts);
+  assert.throws(()=>mapSdkAction({
+    type:'clickDialogOption',
+    optionIndex:1,
+    guard:{pageId:'dlg-2459-1-20-200',componentId:2461},
+    reason:'Unverified option text'
+  },vUnverified),/refused/);
+});

@@ -3,10 +3,12 @@ on:
   push:
     paths:
       - 'tools/rs377-chatgpt-bridge/**'
+      - 'tools/rs377-bot-bench/engine-patch/src/web.ts'
       - '.github/workflows/377-chatgpt-bridge-tasks21-25.yml'
   pull_request:
     paths:
       - 'tools/rs377-chatgpt-bridge/**'
+      - 'tools/rs377-bot-bench/engine-patch/src/web.ts'
       - '.github/workflows/377-chatgpt-bridge-tasks21-25.yml'
   workflow_dispatch:
 permissions:
@@ -42,3 +44,40 @@ jobs:
           grep -q "type: 'useItemOnLoc'" "$tmp"
           grep -q 'export interface ActionResult' "$tmp"
           echo "Pinned RS-SDK type blob and required action/state declarations matched"
+
+  disposable-e2e-gameplay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install exact 377 bridge dependencies
+        working-directory: tools/rs377-chatgpt-bridge
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Prepare disposable revision-377 workspace with sentinel
+        shell: bash
+        run: |
+          set -euo pipefail
+          DISPOSABLE_ROOT="$(mktemp -d /tmp/joshrs-377-disposable-ci.XXXXXXXX)"
+          echo "RS377_E2E_ROOT=$DISPOSABLE_ROOT" >> "$GITHUB_ENV"
+          git clone https://github.com/LostCityRS/Engine-TS.git "$DISPOSABLE_ROOT/engine"
+          git -C "$DISPOSABLE_ROOT/engine" checkout b5ac859b47915afb545e60e4c1208f25d43cb3fb
+          test "$(git -C "$DISPOSABLE_ROOT/engine" rev-parse HEAD)" = "b5ac859b47915afb545e60e4c1208f25d43cb3fb"
+          git clone https://github.com/LostCityRS/Content.git "$DISPOSABLE_ROOT/content"
+          git -C "$DISPOSABLE_ROOT/content" checkout 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50
+          test "$(git -C "$DISPOSABLE_ROOT/content" rev-parse HEAD)" = "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50"
+          python3 content-factory/patch_377_haunted.py --content "$DISPOSABLE_ROOT/content" --apply
+          cp tools/rs377-bot-bench/engine-patch/src/web.ts "$DISPOSABLE_ROOT/engine/src/web.ts"
+          printf '{"disposable":true,"purpose":"joshrs-377-disposable-e2e"}\n' > "$DISPOSABLE_ROOT/.joshrs-disposable-sentinel.json"
+          printf '{"disposable":true,"purpose":"joshrs-377-disposable-e2e"}\n' > "$DISPOSABLE_ROOT/engine/.joshrs-disposable-sentinel.json"
+          cd "$DISPOSABLE_ROOT/engine"
+          npm ci
+          BUILD_SRC_DIR=../content BUILD_VERIFY=true BUILD_VERIFY_PACK=true npm run build
+          npm run sqlite:migrate
+      - name: Run disposable revision-377 end-to-end gameplay acceptance & security suite
+        run: node tools/rs377-chatgpt-bridge/src/disposable-e2e.mjs --engine "$RS377_E2E_ROOT/engine"
