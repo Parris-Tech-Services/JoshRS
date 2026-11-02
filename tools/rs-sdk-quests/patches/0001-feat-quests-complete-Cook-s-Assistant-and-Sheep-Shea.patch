@@ -1,0 +1,527 @@
+From ad9c7b685031d1f208094e1c3dfea8a7ddf495a3 Mon Sep 17 00:00:00 2001
+From: Josh <josh@example.com>
+Date: Mon, 2 Nov 2026 14:03:08 +1100
+Subject: [PATCH 01/11] feat(quests): complete Cook's Assistant and Sheep
+ Shearer one-shot
+
+---
+ .gitignore                         |   3 +-
+ AGENT_QUESTS.md                    |  16 +++
+ PROGRESS.md                        |   3 +
+ QUEST_STATUS.md                    |  23 ++++
+ bots/bob_template.ts               |   4 +
+ bots/lib/quest-kit.ts              | 187 +++++++++++++++++++++++++++++
+ bots/lib/quests/cooks-assistant.ts |  75 ++++++++++++
+ bots/lib/quests/index.ts           |   3 +
+ bots/lib/quests/sheep-shearer.ts   | 101 ++++++++++++++++
+ scripts/run-fresh.sh               |  14 +++
+ 10 files changed, 428 insertions(+), 1 deletion(-)
+ create mode 100644 AGENT_QUESTS.md
+ create mode 100644 PROGRESS.md
+ create mode 100644 QUEST_STATUS.md
+ create mode 100644 bots/bob_template.ts
+ create mode 100644 bots/lib/quest-kit.ts
+ create mode 100644 bots/lib/quests/cooks-assistant.ts
+ create mode 100644 bots/lib/quests/index.ts
+ create mode 100644 bots/lib/quests/sheep-shearer.ts
+ create mode 100755 scripts/run-fresh.sh
+
+diff --git a/.gitignore b/.gitignore
+index 44ec5f620..470de6320 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -12,9 +12,10 @@ server.json
+ backups/
+ .obsidian/
+ 
+-# Bot folders (except template)
++# Bot folders (except template and shared quest/train lib)
+ bots/*/
+ !bots/_template/
++!bots/lib/
+ 
+ # Daemon type checker temp file
+ sdk/__exec_check.ts
+diff --git a/AGENT_QUESTS.md b/AGENT_QUESTS.md
+new file mode 100644
+index 000000000..744371488
+--- /dev/null
++++ b/AGENT_QUESTS.md
+@@ -0,0 +1,16 @@
++# Quest automation rules
++Goal: each quest in bots/lib/quests/<quest>.ts completes on a FRESH bot, unattended.
++
++Loop: scripts/run-fresh.sh -> read bots/<bot>/failures/*.json -> fix -> rerun on a NEW bot.
++
++Rules
++1. Never guess NPC names, loc names, options or dialog lines. Read them from
++   server/content/scripts/quests/quest_<x>/*.rs2, the loc/npc configs, and wiki/quests/<x>.md.
++2. Each step goes through step(); it must skip itself if its result is already in the inventory.
++3. Check results (item arrived, XP gained), not just `success: true`. interactLoc success only means it started.
++4. Try several targets (wheat tiles, doors) before declaring failure.
++5. Floors: ladders and stairs change level; objects only appear on their own level. Check the .rs2 coordinates (level_x_z).
++6. Pathing: avoid Draynor Manor's front door (3108,3353). See learnings/draynor-manor.md.
++7. One controller per bot. Do not run two scripts against the same bot.
++8. Don't commit bots/*/bot.env.
++9. A quest is done when the completion scroll/"Quest complete" appears. Add a verify step per quest.
+diff --git a/PROGRESS.md b/PROGRESS.md
+new file mode 100644
+index 000000000..3131facbd
+--- /dev/null
++++ b/PROGRESS.md
+@@ -0,0 +1,3 @@
++# Bot Progress (qb123333)
++
++- 2026-11-02T13:54:00+11:00 | Completed Cook's Assistant (Cooking 30) & Sheep Shearer (Crafting 25) on qb123333; running fresh-bot verification for Sheep Shearer.
+diff --git a/QUEST_STATUS.md b/QUEST_STATUS.md
+new file mode 100644
+index 000000000..71a67afea
+--- /dev/null
++++ b/QUEST_STATUS.md
+@@ -0,0 +1,23 @@
++# Quest Status
++
++| Quest | Key | Status | Notes |
++|---|---|---|---|
++| Cook's Assistant | `cooks` | done | Proven on qb123333 (+7,500 Cooking XP) |
++| Sheep Shearer | `sheep` | done | Proven on qb123333 & one-shot on fresh bot qb135429 (+5,000 Crafting XP, 60 coins) |
++| X Marks the Spot | - | blocked | Modern OSRS quest (2019); does not exist in revision 225 server (`quest_hunt` / Pirate's Treasure is the 225 buried treasure quest) |
++| Rune Mysteries | `runemysteries` | in progress | Next up |
++| Romeo & Juliet | `romeojuliet` | pending | |
++| The Restless Ghost | `priest` | pending | |
++| Prince Ali Rescue | `prince` | pending | |
++| Vampyre Slayer | `vampire` | pending | |
++| Dragon Slayer I | `dragon` | pending | |
++| Doric's Quest | `doric` | pending | F2P |
++| Imp Catcher | `imp` | pending | F2P |
++| Witch's Potion | `hetty` | pending | F2P |
++| Goblin Diplomacy | `gobdip` | pending | F2P |
++| Ernest the Chicken | `haunted` | pending | F2P |
++| Pirate's Treasure | `hunt` | pending | F2P |
++| The Knight's Sword | `squire` | pending | F2P |
++| Demon Slayer | `demon` | pending | F2P |
++| Black Knights' Fortress | `blackknight` | pending | F2P |
++| Shield of Arrav | `blackarmgang` | pending | F2P |
+diff --git a/bots/bob_template.ts b/bots/bob_template.ts
+new file mode 100644
+index 000000000..604ff98d5
+--- /dev/null
++++ b/bots/bob_template.ts
+@@ -0,0 +1,4 @@
++import { runQuests } from './lib/quest-kit';
++import { ALL } from './lib/quests';
++const pick = (process.env.QUESTS ?? 'cooks,sheep').split(',').map(s => (ALL as any)[s.trim()]).filter(Boolean);
++await runQuests(import.meta.dir, pick);
+diff --git a/bots/lib/quest-kit.ts b/bots/lib/quest-kit.ts
+new file mode 100644
+index 000000000..24b976e54
+--- /dev/null
++++ b/bots/lib/quest-kit.ts
+@@ -0,0 +1,187 @@
++import { runScript } from '../../sdk/runner';
++import { appendFileSync, mkdirSync, writeFileSync } from 'fs';
++
++export type Ctx = { bot: any; sdk: any; dir: string };
++export type Quest = { name: string; run: (c: Ctx) => Promise<boolean> };
++
++export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
++export const has = (sdk: any, re: RegExp) => !!sdk.findInventoryItem(re);
++export const count = (sdk: any, re: RegExp) =>
++  (sdk.getState()?.inventory ?? []).filter((i: any) => re.test(i.name)).reduce((a: number, i: any) => a + (i.count ?? 1), 0);
++export const xp = (sdk: any, skill: string) => sdk.getSkillXp(skill) ?? 0;
++export const lvl = (sdk: any) => sdk.getState()?.player?.level ?? 0;
++export const log = (c: Ctx, m: string) => { console.log(m); appendFileSync(`${c.dir}/lab_log.md`, `- ${new Date().toISOString()} ${m}\n`); };
++
++export async function waitInv(sdk: any, re: RegExp, ms: number) {
++  const end = Date.now() + ms;
++  while (Date.now() < end) { if (has(sdk, re)) return true; await sleep(300); }
++  return false;
++}
++
++export async function waitCond(pred: () => boolean, ms: number, interval = 300) {
++  const end = Date.now() + ms;
++  while (Date.now() < end) { if (pred()) return true; await sleep(interval); }
++  return pred();
++}
++
++// Click through a dialog, choosing the first option matching `want`, else "continue".
++export async function chat({ sdk }: Ctx, want: RegExp[] = [], max = 40) {
++  let closed = 0;
++  for (let i = 0; i < max; i++) {
++    const d = sdk.getState()?.dialog;
++    if (!d?.isOpen) {
++      if (++closed >= 5) return;
++      await sleep(250);
++      continue;
++    }
++    closed = 0;
++    const opt = d.options.find((o: any) => want.some(w => w.test(o.text)));
++    await sdk.sendClickDialog(opt ? opt.index : 0);
++    await sleep(350);
++  }
++}
++
++export async function openNearbyDoors(c: Ctx, nearX?: number, nearZ?: number, limit = 3) {
++  const me = c.sdk.getState()?.player ?? { worldX: 0, worldZ: 0 };
++  const tx = nearX ?? me.worldX, tz = nearZ ?? me.worldZ;
++  const doors = (c.sdk.getState()?.nearbyLocs ?? [])
++    .filter((l: any) => /door|gate/i.test(l.name) && (l.options ?? []).some((o: string) => /^open$/i.test(o)) && !(l.x === 3108 && l.z === 3353))
++    .sort((a: any, b: any) => Math.hypot(a.x - tx, a.z - tz) - Math.hypot(b.x - tx, b.z - tz));
++  for (const d of doors.slice(0, limit)) {
++    await c.bot.interactLoc(d, /^open$/i);
++    await sleep(1000);
++  }
++}
++
++export async function talk(c: Ctx, npc: RegExp, want: RegExp[] = []) {
++  if (c.sdk.getState()?.dialog?.isOpen) await chat(c, want);
++  let r = await c.bot.talkTo(npc);
++  if (!r.success) {
++    const target = c.sdk.findNearbyNpc(npc);
++    await openNearbyDoors(c, target?.x, target?.z, 3);
++    r = await c.bot.talkTo(npc);
++  }
++  if (!r.success) { log(c, `talkTo ${npc} failed: ${r.message ?? r.reason}`); return false; }
++  await chat(c, want);
++  return true;
++}
++
++// Climb Lumbridge Castle south spiral staircase at (3204,3207), landing tile (3205,3209).
++export async function lumbridgeStairs(c: Ctx, targetLevel: 0 | 1 | 2): Promise<boolean> {
++  const { bot, sdk } = c;
++  for (let attempt = 0; attempt < 6 && lvl(sdk) !== targetLevel; attempt++) {
++    const cur = lvl(sdk);
++    const dir = cur < targetLevel ? /climb-?up/i : /climb-?down/i;
++    const tiles: [number, number][] = [[3205, 3209], [3206, 3208], [3205, 3210]];
++    for (const [x, z] of tiles) {
++      if (lvl(sdk) !== cur) break;
++      const w = await bot.walkTo(x, z, 1);
++      if (!w?.success) {
++        await openNearbyDoors(c, x, z, 2);
++        await bot.walkTo(x, z, 1);
++      }
++      const stairs = (sdk.getState()?.nearbyLocs ?? [])
++        .filter((l: any) => /stair/i.test(l.name) && Math.hypot(l.x - 3204, l.z - 3207) <= 3)[0] ?? /^staircase$/i;
++      const r = await bot.interactLoc(stairs, dir);
++      log(c, `lumbridgeStairs L${cur}->L${targetLevel} from (${x},${z}) -> ${JSON.stringify(r)}`);
++      if (await waitCond(() => lvl(sdk) !== cur, 8000, 400)) break;
++    }
++  }
++  return lvl(sdk) === targetLevel;
++}
++
++export async function pickupWithWait(c: Ctx, x: number, z: number, item: RegExp, waitSec = 25): Promise<boolean> {
++  const { bot, sdk } = c;
++  if (has(sdk, item)) return true;
++  await bot.walkTo(x, z, 2);
++  for (let i = 0; i < waitSec; i++) {
++    const g = (sdk.getState()?.groundItems ?? []).find((it: any) => item.test(it.name));
++    if (g) {
++      const r = await bot.pickupItem(g);
++      if (!r?.success) await openNearbyDoors(c, g.x, g.z, 2);
++      if (await waitInv(sdk, item, 5000)) return true;
++    }
++    await sleep(1000);
++  }
++  return has(sdk, item);
++}
++
++// Everything we used to ask Josh to paste, written to one file.
++export function snapshot(c: Ctx, quest: string, stepName: string, err?: any) {
++  const { sdk } = c;
++  const s = sdk.getState() ?? {};
++  const slim = (l: any) => ({ n: l.name, x: l.x, z: l.z, id: l.id, o: l.options });
++  const snap: any = {
++    quest, step: stepName, time: new Date().toISOString(), error: err ? String(err?.stack ?? err) : undefined,
++    player: s.player,
++    skills: s.skills,
++    inventory: (s.inventory ?? []).map((i: any) => `${i.name}${i.count > 1 ? ` x${i.count}` : ''}`),
++    locs: (s.nearbyLocs ?? []).filter((l: any) => !/wheat/i.test(l.name)).slice(0, 60).map(slim),
++    npcs: (s.nearbyNpcs ?? []).slice(0, 30).map((n: any) => ({ n: n.name, id: n.id, idx: n.index, x: n.x, z: n.z, o: n.options })),
++    ground: s.groundItems,
++    dialog: s.dialog,
++    interface: s.interface,
++    modalOpen: s.modalOpen,
++    modalInterface: s.modalInterface,
++    messages: (s.gameMessages ?? []).slice(-15),
++    opFeedback: s.opFeedback,
++  };
++  try { snap.chat = sdk.getChat({ limit: 15 }); } catch (e) { snap.chat = String(e); }
++  mkdirSync(`${c.dir}/failures`, { recursive: true });
++  const f = `${c.dir}/failures/${quest.replace(/\W+/g, '-')}-${stepName.replace(/\W+/g, '-')}-${Date.now()}.json`;
++  writeFileSync(f, JSON.stringify(snap, null, 1));
++  console.log(`SNAPSHOT: ${f}`);
++}
++
++// Run one named step; on failure, snapshot and return false.
++export async function step(c: Ctx, quest: string, name: string, fn: () => Promise<boolean>) {
++  log(c, `STEP ${name}`);
++  let ok = false, err: any;
++  try { ok = await fn(); } catch (e) { err = e; }
++  if (!ok) { log(c, `STEP FAILED ${name}`); snapshot(c, quest, name, err); }
++  return ok;
++}
++
++export async function runQuests(dir: string, quests: Quest[]) {
++  await runScript(async ({ bot, sdk }: any) => {
++    const c: Ctx = { bot, sdk, dir };
++    await bot.skipTutorial();
++    if (sdk.getState()?.modalOpen || sdk.getState()?.interface?.isOpen) await bot.closeInterface();
++    for (const q of quests) {
++      for (let attempt = 1; attempt <= 2; attempt++) {
++        log(c, `START ${q.name} (attempt ${attempt})`);
++        let ok = false;
++        try { ok = await q.run(c); } catch (e: any) { log(c, `ERROR ${q.name}: ${e?.message ?? e}`); snapshot(c, q.name, 'exception', e); }
++        if (sdk.getState()?.modalOpen || sdk.getState()?.interface?.isOpen) await bot.closeInterface();
++        if (ok) { log(c, `DONE ${q.name}`); break; }
++        await bot.dismissBlockingUI();
++      }
++    }
++  }, { timeout: 20 * 60_000 });
++}
++
++// Empty the inventory into the Draynor bank, keeping only items matching `keep`. Equipment stays on.
++export async function bankJunk(c: Ctx, keep: RegExp = /^(coins|shears|wool|ball of wool)$/i) {
++  const { bot, sdk } = c;
++  const junk = () => (sdk.getState()?.inventory ?? []).filter((i: any) => !keep.test(i.name));
++  if (junk().length === 0) return true;
++  if (lvl(sdk) > 0) await lumbridgeStairs(c, 0);
++  await bot.walkTo(3092, 3243);
++  for (let round = 0; round < 6 && junk().length > 0; round++) {
++    if (!sdk.isBankOpen()) {
++      const r = await bot.openBank();
++      log(c, `openBank -> ${JSON.stringify(r)}`);
++      if (!r?.success) { await sleep(1000); continue; }
++      await sleep(600);
++    }
++    for (const it of junk()) {
++      if (!sdk.isBankOpen()) break;
++      await sdk.sendBankDeposit(it.slot, it.count ?? 1);
++      await sleep(450);
++    }
++  }
++  if (sdk.isBankOpen()) await bot.closeBank();
++  const left = junk().map((i: any) => i.name);
++  if (left.length) log(c, `bank: still holding ${left.join(', ')}`);
++  return left.length === 0;
++}
+diff --git a/bots/lib/quests/cooks-assistant.ts b/bots/lib/quests/cooks-assistant.ts
+new file mode 100644
+index 000000000..d180e83df
+--- /dev/null
++++ b/bots/lib/quests/cooks-assistant.ts
+@@ -0,0 +1,75 @@
++import { Ctx, Quest, has, log, sleep, talk, waitInv, waitCond, step, xp, lvl, lumbridgeStairs } from '../quest-kit';
++const N = "Cook's Assistant";
++const COOK = [3209, 3214] as const;
++
++export const cooks: Quest = {
++  name: N,
++  async run(c: Ctx) {
++    const { bot, sdk } = c;
++    if (xp(sdk, 'Cooking') >= 300) { log(c, 'already completed'); return true; }
++    if (lvl(sdk) > 0) await lumbridgeStairs(c, 0);
++    if (!has(sdk, /^pot$/i) && !has(sdk, /pot of flour/i)) { log(c, 'missing pot'); return false; }
++    if (!has(sdk, /^bucket$/i) && !has(sdk, /bucket of milk/i)) { log(c, 'missing bucket'); return false; }
++
++    const start = () => step(c, N, 'start', async () => {
++      if (has(sdk, /pot of flour/i) || has(sdk, /bucket of milk/i) || has(sdk, /^egg$/i)) return true;
++      await bot.walkTo(...COOK);
++      return talk(c, /^cook$/i, [/what's wrong/i, /i'll help|yes/i]);
++    });
++
++    const egg = () => step(c, N, 'egg', async () => {
++      if (has(sdk, /^egg$/i)) return true;
++      await bot.walkTo(3231, 3295);
++      for (let i = 0; i < 15; i++) {
++        const e = sdk.getState()?.groundItems?.find((g: any) => /^egg$/i.test(g.name));
++        if (e) { await bot.pickupItem(e); if (await waitInv(sdk, /^egg$/i, 5000)) return true; }
++        await sleep(1000);
++      }
++      return false;
++    });
++
++    const milk = () => step(c, N, 'milk', async () => {
++      if (has(sdk, /bucket of milk/i)) return true;
++      await bot.walkTo(3253, 3270); await sleep(1500);
++      const cow = sdk.getState()?.nearbyNpcs?.find((n: any) => /^cow$/i.test(n.name));
++      if (!cow) return false;
++      await bot.useItemOnNpc(/^bucket$/i, cow);
++      return waitInv(sdk, /bucket of milk/i, 6000);
++    });
++
++    const grain = () => step(c, N, 'grain', async () => {
++      if (has(sdk, /^grain$/i) || has(sdk, /pot of flour/i)) return true;
++      await bot.walkTo(3165, 3298, 1); await sleep(1000);
++      const field = (sdk.getState()?.nearbyLocs ?? []).filter((l: any) => /^wheat$/i.test(l.name));
++      field.sort((a: any, b: any) => Math.hypot(a.x - 3162, a.z - 3299) - Math.hypot(b.x - 3162, b.z - 3299));
++      for (const w of field.slice(0, 10)) {
++        await bot.interactLoc(w, 'Pick');
++        if (await waitInv(sdk, /^grain$/i, 4000)) return true;
++      }
++      return false;
++    });
++
++    const mill = () => step(c, N, 'mill', async () => {
++      if (has(sdk, /pot of flour/i)) return true;
++      await bot.walkTo(3165, 3306, 1);
++      await bot.interactLoc(/^ladder$/i, 'Climb-up'); await sleep(2500);
++      await bot.interactLoc(/^ladder$/i, 'Climb-up'); await sleep(2500);
++      await bot.useItemOnLoc(/^grain$/i, /^hopper$/i); await sleep(2500);
++      await bot.interactLoc(/hopper controls/i, 'Operate'); await sleep(3500);
++      await bot.interactLoc(/^ladder$/i, /climb-?down/i); await sleep(2500);
++      await bot.interactLoc(/^ladder$/i, /climb-?down/i); await sleep(2500);
++      await bot.interactLoc(/flour bin/i, 'Empty');
++      return waitInv(sdk, /pot of flour/i, 5000);
++    });
++
++    const handIn = () => step(c, N, 'hand-in', async () => {
++      await bot.walkTo(...COOK);
++      if (!(await talk(c, /^cook$/i))) return false;
++      const done = await waitCond(() => xp(sdk, 'Cooking') >= 300, 6000);
++      await bot.closeInterface();
++      return done;
++    });
++
++    return (await start()) && (await egg()) && (await milk()) && (await grain()) && (await mill()) && (await handIn());
++  },
++};
+diff --git a/bots/lib/quests/index.ts b/bots/lib/quests/index.ts
+new file mode 100644
+index 000000000..257dc87a1
+--- /dev/null
++++ b/bots/lib/quests/index.ts
+@@ -0,0 +1,3 @@
++import { cooks } from './cooks-assistant';
++import { sheep } from './sheep-shearer';
++export const ALL = { cooks, sheep };
+diff --git a/bots/lib/quests/sheep-shearer.ts b/bots/lib/quests/sheep-shearer.ts
+new file mode 100644
+index 000000000..754733617
+--- /dev/null
++++ b/bots/lib/quests/sheep-shearer.ts
+@@ -0,0 +1,101 @@
++import { Ctx, Quest, has, count, xp, lvl, log, sleep, talk, chat, waitCond, step, bankJunk, lumbridgeStairs, pickupWithWait } from '../quest-kit';
++const N = 'Sheep Shearer';
++const FRED = [3189, 3273] as const;
++const SHEARS = [3152, 3306] as const;
++const PEN = [3201, 3268] as const;
++const WHEEL = [3209, 3213] as const;
++
++async function shearOne(c: Ctx) {
++  const { bot, sdk } = c;
++  const before = count(sdk, /^wool$/i);
++  const me = sdk.getState()?.player ?? {};
++  // NPC id 43 = sheepunsheered, 42 = sheepsheered (from server/content/pack/npc.pack)
++  const sheep = (sdk.getState()?.nearbyNpcs ?? [])
++    .filter((n: any) => /^sheep$/i.test(n.name) && (n.id === undefined || n.id === 43) && n.reachable !== false)
++    .sort((a: any, b: any) => Math.hypot(a.x - me.worldX, a.z - me.worldZ) - Math.hypot(b.x - me.worldX, b.z - me.worldZ));
++  if (!sheep.length) { await sleep(1000); return false; }
++  for (const s of sheep.slice(0, 3)) {
++    await bot.useItemOnNpc(/^shears$/i, s);
++    if (await waitCond(() => count(sdk, /^wool$/i) > before, 3500, 250)) {
++      if (sdk.getState()?.dialog?.isOpen) await sdk.sendClickDialog(0);
++      return true;
++    }
++  }
++  return false;
++}
++
++export const sheep: Quest = {
++  name: N,
++  async run(c: Ctx) {
++    const { bot, sdk } = c;
++    if (xp(sdk, 'Crafting') >= 1500) { log(c, 'already completed'); return true; }
++    // True if we already spun 20 balls of wool (>=1250 Crafting XP at 25x or >=50 at 1x) and have remaining ball(s) to hand in
++    const alreadySpun = () => xp(sdk, 'Crafting') >= 50 && count(sdk, /ball of wool/i) >= 1 && count(sdk, /^wool$/i) === 0;
++
++    const bank = () => step(c, N, 'bank', async () => {
++      if (alreadySpun() || count(sdk, /^(wool|ball of wool)$/i) >= 20) return true;
++      return bankJunk(c);
++    });
++
++    const start = () => step(c, N, 'start', async () => {
++      if (alreadySpun() || count(sdk, /^(wool|ball of wool)$/i) > 0) return true;
++      if (lvl(sdk) > 0 && !(await lumbridgeStairs(c, 0))) return false;
++      await bot.walkTo(...FRED);
++      return talk(c, /^fred the farmer$/i, [/looking for a quest|any quests/i, /yes|okay|i can do that/i]);
++    });
++
++    const shears = () => step(c, N, 'shears', async () => {
++      if (alreadySpun() || count(sdk, /^(wool|ball of wool)$/i) >= 20 || has(sdk, /^shears$/i)) return true;
++      if (lvl(sdk) > 0 && !(await lumbridgeStairs(c, 0))) return false;
++      return pickupWithWait(c, SHEARS[0], SHEARS[1], /^shears$/i, 25);
++    });
++
++    const wool = () => step(c, N, 'wool', async () => {
++      if (alreadySpun() || count(sdk, /^(wool|ball of wool)$/i) >= 20) return true;
++      if (lvl(sdk) > 0 && !(await lumbridgeStairs(c, 0))) return false;
++      await bot.walkTo(...PEN); await sleep(1000);
++      let misses = 0;
++      while (count(sdk, /^wool$/i) + count(sdk, /ball of wool/i) < 20 && misses < 40) {
++        if (!(await shearOne(c))) misses++;
++      }
++      return count(sdk, /^wool$/i) + count(sdk, /ball of wool/i) >= 20;
++    });
++
++    const spin = () => step(c, N, 'spin', async () => {
++      if (alreadySpun() || count(sdk, /ball of wool/i) >= 20) return true;
++      if (!(await lumbridgeStairs(c, 1))) return false;
++      await bot.walkTo(...WHEEL, 1);
++      for (let i = 0; i < 40 && count(sdk, /^wool$/i) > 0; i++) {
++        const before = count(sdk, /ball of wool/i);
++        await bot.useItemOnLoc(/^wool$/i, /spinning wheel/i);
++        await waitCond(() => count(sdk, /ball of wool/i) > before, 3500, 250);
++      }
++      return count(sdk, /ball of wool/i) >= 20;
++    });
++
++    const handIn = () => step(c, N, 'hand-in', async () => {
++      if (xp(sdk, 'Crafting') >= 1500) return true;
++      if (lvl(sdk) > 0 && !(await lumbridgeStairs(c, 0))) return false;
++      await bot.walkTo(...FRED);
++      for (let round = 0; round < 3 && xp(sdk, 'Crafting') < 1500; round++) {
++        if (sdk.getState()?.dialog?.isOpen) {
++          await chat(c);
++        } else {
++          if (!(await talk(c, /^fred the farmer$/i))) return false;
++        }
++        // Wait while Fred takes balls of wool 1 per tick (p_delay(1)) with dialog closed, then re-opens dialog on the 20th ball
++        const end = Date.now() + 18_000;
++        while (Date.now() < end && xp(sdk, 'Crafting') < 1500) {
++          if (sdk.getState()?.dialog?.isOpen) {
++            await chat(c);
++          }
++          await sleep(400);
++        }
++      }
++      await bot.closeInterface();
++      return xp(sdk, 'Crafting') >= 1500 && count(sdk, /ball of wool/i) === 0;
++    });
++
++    return (await bank()) && (await start()) && (await shears()) && (await wool()) && (await spin()) && (await handIn());
++  },
++};
+diff --git a/scripts/run-fresh.sh b/scripts/run-fresh.sh
+new file mode 100755
+index 000000000..25f6248f3
+--- /dev/null
++++ b/scripts/run-fresh.sh
+@@ -0,0 +1,14 @@
++#!/usr/bin/env bash
++# usage: scripts/run-fresh.sh   (needs engine, webclient and gateway already running)
++set -e
++cd "$(dirname "$0")/.."
++NAME="qb$(date +%H%M%S)"
++bun bots/create-bot.ts "$NAME" >/dev/null
++sed -i 's/^SERVER=.*/SERVER=/' "bots/$NAME/bot.env"
++PW=$(grep '^PASSWORD=' "bots/$NAME/bot.env" | cut -d= -f2)
++sed "s#'./lib#'../lib#" bots/bob_template.ts > "bots/$NAME/quests.ts"
++xdg-open "http://localhost:8888/bot?bot=$NAME&password=$PW" >/dev/null 2>&1 &
++echo "bot=$NAME  waiting 20s for the client to attach..."; sleep 20
++bun "bots/$NAME/quests.ts" || true
++echo "log:       bots/$NAME/lab_log.md"
++echo "snapshots: bots/$NAME/failures/"
+-- 
+2.56.0
+

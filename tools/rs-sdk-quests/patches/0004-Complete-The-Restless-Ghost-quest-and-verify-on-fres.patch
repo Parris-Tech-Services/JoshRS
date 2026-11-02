@@ -1,0 +1,131 @@
+From 052d0f18509e46192cd1e4575e1d271092cd3403 Mon Sep 17 00:00:00 2001
+From: Josh <josh@example.com>
+Date: Mon, 2 Nov 2026 14:48:57 +1100
+Subject: [PATCH 04/11] Complete The Restless Ghost quest and verify on fresh
+ bot
+
+---
+ PROGRESS.md                       |  1 +
+ QUEST_STATUS.md                   |  6 +--
+ bots/lib/quests/restless-ghost.ts | 83 +++++++++++++++++++++++++++++++
+ 3 files changed, 87 insertions(+), 3 deletions(-)
+ create mode 100644 bots/lib/quests/restless-ghost.ts
+
+diff --git a/PROGRESS.md b/PROGRESS.md
+index 2e1013569..e811f642f 100644
+--- a/PROGRESS.md
++++ b/PROGRESS.md
+@@ -3,3 +3,4 @@
+ - 2026-11-02T13:54:00+11:00 | Completed Cook's Assistant (Cooking 30) & Sheep Shearer (Crafting 25) on qb123333; running fresh-bot verification for Sheep Shearer.
+ - 2026-11-02T14:35:00+11:00 | Completed Rune Mysteries (verified on qb123333 & fresh bot qb142749) and Romeo & Juliet on qb123333; verifying Romeo & Juliet on fresh bot and running The Restless Ghost on qb123333.
+ - 2026-11-02T14:40:30+11:00 | Verified Romeo & Juliet one-shot on fresh bot qb143519; running The Restless Ghost on qb123333.
++- 2026-11-02T14:48:30+11:00 | Completed & verified The Restless Ghost on qb123333 and fresh bot qb144315 (Prayer 37); running Vampyre Slayer on qb123333.
+diff --git a/QUEST_STATUS.md b/QUEST_STATUS.md
+index b5556202e..3fe1c8ff0 100644
+--- a/QUEST_STATUS.md
++++ b/QUEST_STATUS.md
+@@ -7,9 +7,9 @@
+ | X Marks the Spot | - | blocked | Modern OSRS quest (2019); does not exist in revision 225 server (`quest_hunt` / Pirate's Treasure is the 225 buried treasure quest) |
+ | Rune Mysteries | `runemysteries` | done | Proven on qb123333 & one-shot on fresh bot qb142749 (Air talisman, Runecrafting unlocked) |
+ | Romeo & Juliet | `romeojuliet` | done | Proven on qb123333 & one-shot on fresh bot qb143519 (5 Quest Points) |
+-| The Restless Ghost | `priest` | in progress | Running on qb123333 |
+-| Prince Ali Rescue | `prince` | pending | |
+-| Vampyre Slayer | `vampire` | pending | |
++| The Restless Ghost | `priest` | done | Proven on qb123333 & one-shot on fresh bot qb144315 (+28,125 Prayer XP -> Level 37) |
++| Prince Ali Rescue | `prince` | in progress | Written, ready to run after Vampyre Slayer |
++| Vampyre Slayer | `vampire` | in progress | Running on qb123333 |
+ | Dragon Slayer I | `dragon` | pending | |
+ | Doric's Quest | `doric` | pending | F2P |
+ | Imp Catcher | `imp` | pending | F2P |
+diff --git a/bots/lib/quests/restless-ghost.ts b/bots/lib/quests/restless-ghost.ts
+new file mode 100644
+index 000000000..fd86cbd5e
+--- /dev/null
++++ b/bots/lib/quests/restless-ghost.ts
+@@ -0,0 +1,83 @@
++import { Ctx, Quest, has, xp, lvl, log, sleep, talk, chat, waitInv, waitCond, step, lumbridgeStairs, wizardsTowerBasement, openNearbyDoors, pickupWithWait } from '../quest-kit';
++const N = 'The Restless Ghost';
++
++export const priest: Quest = {
++  name: N,
++  async run(c: Ctx) {
++    const { bot, sdk } = c;
++    if (xp(sdk, 'Prayer') >= 1125) { log(c, 'already completed'); return true; }
++    const hasAmulet = () => has(sdk, /^ghostspeak amulet$/i) || !!sdk.findEquipmentItem(/^ghostspeak amulet$/i);
++
++    const start = () => step(c, N, 'start', async () => {
++      if (hasAmulet() || has(sdk, /^skull$/i)) return true;
++      if ((sdk.getState()?.player?.worldZ ?? 0) > 9000 && !(await wizardsTowerBasement(c, false))) return false;
++      if (lvl(sdk) > 0 && !(await lumbridgeStairs(c, 0))) return false;
++      const w = await bot.walkTo(3244, 3206, 2);
++      if (!w?.success) { await openNearbyDoors(c, 3244, 3206, 2); await bot.walkTo(3244, 3206, 2); }
++      return talk(c, /^father aereck$/i, [/looking for a quest/i]);
++    });
++
++    const urhney = () => step(c, N, 'urhney', async () => {
++      if (hasAmulet() || has(sdk, /^skull$/i)) return true;
++      await bot.walkTo(3200, 3195, 3);
++      await bot.walkTo(3200, 3165, 3);
++      const w = await bot.walkTo(3236, 3153, 2);
++      if (!w?.success) { await openNearbyDoors(c, 3238, 3153, 2); await bot.walkTo(3236, 3153, 2); }
++      if (!(await talk(c, /^father urhney$/i, [/father aereck sent me/i, /ghost haunting his graveyard/i, /lost the amulet/i]))) return false;
++      return waitCond(() => hasAmulet(), 4000);
++    });
++
++    const ghost = () => step(c, N, 'ghost', async () => {
++      if (has(sdk, /^skull$/i)) return true;
++      if (has(sdk, /^ghostspeak amulet$/i)) {
++        await bot.equipItem(/^ghostspeak amulet$/i);
++        await sleep(600);
++      }
++      await bot.walkTo(3200, 3165, 3);
++      await bot.walkTo(3200, 3195, 3);
++      const w = await bot.walkTo(3249, 3194, 2);
++      if (!w?.success) { await openNearbyDoors(c, 3248, 3194, 2); await bot.walkTo(3249, 3194, 2); }
++      if (!sdk.findNearbyNpc(/^restless ghost$/i)) {
++        const coffin = sdk.findNearbyLoc(/^coffin$/i);
++        const opt = (coffin?.options ?? []).some((o: string) => /^open$/i.test(o)) ? 'Open' : 'Search';
++        await bot.interactLoc(/^coffin$/i, opt);
++        await waitCond(() => !!sdk.findNearbyNpc(/^restless ghost$/i), 5000);
++        if (sdk.getState()?.dialog?.isOpen) await chat(c);
++      }
++      return talk(c, /^restless ghost$/i, [/tell me what the problem is/i]);
++    });
++
++    const skull = () => step(c, N, 'skull', async () => {
++      if (has(sdk, /^skull$/i)) return true;
++      if (!(await wizardsTowerBasement(c, true))) return false;
++      const w = await bot.walkTo(3119, 9567, 2);
++      if (!w?.success) { await openNearbyDoors(c, 3115, 9567, 2); await bot.walkTo(3119, 9567, 2); }
++      const got = await pickupWithWait(c, 3120, 9567, /^skull$/i, 15);
++      await wizardsTowerBasement(c, false);
++      return got;
++    });
++
++    const handIn = () => step(c, N, 'hand-in', async () => {
++      if (xp(sdk, 'Prayer') >= 1125) return true;
++      if ((sdk.getState()?.player?.worldZ ?? 0) > 9000 && !(await wizardsTowerBasement(c, false))) return false;
++      const w = await bot.walkTo(3249, 3194, 2);
++      if (!w?.success) { await openNearbyDoors(c, 3248, 3194, 2); await bot.walkTo(3249, 3194, 2); }
++      const coffin = sdk.findNearbyLoc(/^coffin$/i);
++      if ((coffin?.options ?? []).some((o: string) => /^open$/i.test(o))) {
++        await bot.interactLoc(/^coffin$/i, 'Open');
++        await waitCond(() => (sdk.findNearbyLoc(/^coffin$/i)?.options ?? []).some((o: string) => /^close$/i.test(o)), 5000, 300);
++        await sleep(600);
++      }
++      for (let i = 0; i < 3 && has(sdk, /^skull$/i); i++) {
++        await bot.useItemOnLoc(/^skull$/i, /^coffin$/i);
++        await sleep(900);
++        if (sdk.getState()?.dialog?.isOpen) await chat(c);
++      }
++      const done = await waitCond(() => xp(sdk, 'Prayer') >= 1125, 6000);
++      await bot.closeInterface();
++      return done;
++    });
++
++    return (await start()) && (await urhney()) && (await ghost()) && (await skull()) && (await handIn());
++  },
++};
+-- 
+2.56.0
+
