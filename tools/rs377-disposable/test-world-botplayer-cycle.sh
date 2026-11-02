@@ -87,7 +87,7 @@ fi
 grep -q 'BLOCKED:' "$work/repeat.log"
 if command -v tsc >/dev/null 2>&1; then
  cat > "$target/tsconfig.json" <<'EOF'
-{"compilerOptions":{"target":"ES2022","module":"NodeNext","moduleResolution":"NodeNext","baseUrl":".","paths":{"#/*":["src/*"]},"strict":true,"noEmit":true},"include":["src/**/*.ts"]}
+{"compilerOptions":{"target":"ES2022","module":"NodeNext","moduleResolution":"NodeNext","paths":{"#/*":["./src/*"]},"strict":true,"noEmit":true},"include":["src/**/*.ts"]}
 EOF
  (cd "$target" && tsc -p tsconfig.json)
  echo 'PASS: TypeScript compiled the lazy class import'
