@@ -12,6 +12,8 @@ export function createSdk377Gateway({runtime,token,host='127.0.0.1',maxBodyBytes
  if(typeof token!=='string'||Buffer.byteLength(token)<32)throw new Error('gateway_token_required');
  if(!Number.isSafeInteger(maxBodyBytes)||maxBodyBytes<512||maxBodyBytes>65536)throw new Error('invalid_gateway_body_limit');
  const expected=Buffer.from('Bearer '+token);
+ const seenActionIds=new Set();
+ let busy=false;
  const server=createServer(async(req,res)=>{
   const reply=(status,body)=>{res.writeHead(status,{'content-type':'application/json','cache-control':'no-store'});res.end(JSON.stringify(body))};
   const auth=Buffer.from(req.headers.authorization??'');
@@ -22,6 +24,7 @@ export function createSdk377Gateway({runtime,token,host='127.0.0.1',maxBodyBytes
    return;
   }
   if(req.method==='POST'&&req.url==='/sdk_action'){
+   if(busy){reply(409,{error:'concurrent_sdk_action_refused'});return}
    let data='',size=0;
    try{
     for await(const chunk of req){
@@ -31,9 +34,20 @@ export function createSdk377Gateway({runtime,token,host='127.0.0.1',maxBodyBytes
     }
     const body=JSON.parse(data);
     if(!body||typeof body!=='object'||Array.isArray(body)||
-       Object.keys(body).some(k=>k!=='action')||!body.action)throw new Error('invalid');
-    const result=await runtime.action(body.action);
-    reply(200,result);
+       Object.keys(body).some(k=>k!=='action'&&k!=='actionId')||!body.action)throw new Error('invalid');
+    if(body.actionId!==undefined){
+     if(typeof body.actionId!=='string'||body.actionId.length<1||body.actionId.length>128)throw new Error('invalid_action_id');
+     if(seenActionIds.has(body.actionId)){reply(409,{error:'replayed_sdk_action_id'});return}
+     seenActionIds.add(body.actionId);
+     if(seenActionIds.size>1024)seenActionIds.delete(seenActionIds.values().next().value);
+    }
+    busy=true;
+    try{
+     const result=body.actionId!==undefined
+      ? await runtime.action(body.action,{actionId:body.actionId})
+      : await runtime.action(body.action);
+     reply(200,result);
+    }finally{busy=false}
    }catch{reply(400,{error:'invalid_or_refused_sdk_action'})}
    return;
   }

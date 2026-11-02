@@ -30,24 +30,27 @@ export const OPCODES = Object.freeze({
   NPC:[112,67,13,42,8], LOC:[181,241,50,136,55],
   GROUND:[77,100,71,54,230], INV:[3,177,91,231,158],
   HELD:[203,24,161,228,4],
-  ITEM_ON_LOC:152, DIALOG_RESUME:226, PUBLIC_CHAT:49
+  ITEM_ON_LOC:152, DIALOG_RESUME:226, IF_BUTTON:79, PUBLIC_CHAT:49
 });
 function option(n) {return uint(n,5,'option') || (()=>{throw new RangeError('Option must be 1..5')})()}
 const tile=(v,name)=>uint(v,16383,name);
 export function buildAction(action) {
   if (!action || typeof action!=='object' || Array.isArray(action))throw new TypeError('Action object required');
   const fields = {
-    walk:['x','z','running'], npc:['npcSlot','option'], loc:['x','z','locId','option'],
+    walk:['x','z','running'], op_walk:['x','z','running'], npc:['npcSlot','option'], loc:['x','z','locId','option'],
     ground:['x','z','itemId','option'], inventory:['componentId','itemId','slot','option'],
     held:['componentId','itemId','slot','option'],
     item_on_loc:['x','z','locId','componentId','itemId','slot'],
-    dialog_resume:['componentId'], chat:['wordpack','color','effect'], keepalive:[], logout:[]
+    dialog_resume:['componentId'], if_button:['componentId'], chat:['wordpack','color','effect'], keepalive:[], logout:[]
   }[action.type];
   if (!fields)throw new Error('Unsupported or privileged action');
   const extras=Object.keys(action).filter(k=>k!=='type'&&!fields.includes(k));
   if (extras.length)throw new Error('Unexpected action fields: '+extras.join(','));
   switch(action.type) {
     case 'walk': return payload(OPCODES.MOVE_GAMECLICK,Buffer.concat([
+      p2alt3(tile(action.x,'x')),Buffer.from([action.running===true?1:0]),
+      p2alt3(tile(action.z,'z'))]),true);
+    case 'op_walk': return payload(OPCODES.MOVE_OPCLICK,Buffer.concat([
       p2alt3(tile(action.x,'x')),Buffer.from([action.running===true?1:0]),
       p2alt3(tile(action.z,'z'))]),true);
     case 'npc': {
@@ -97,6 +100,7 @@ export function buildAction(action) {
       ]));
     }
     case 'dialog_resume':return payload(OPCODES.DIALOG_RESUME,p2(word(action.componentId,'componentId')));
+    case 'if_button':return payload(OPCODES.IF_BUTTON,p2(word(action.componentId,'componentId')));
     case 'chat': {
       if (!Buffer.isBuffer(action.wordpack)||action.wordpack.length===0||action.wordpack.length>78)
         throw new Error('Public chat requires a pre-encoded, verified 377 WordPack Buffer (1..78 bytes); no plaintext fallback');
