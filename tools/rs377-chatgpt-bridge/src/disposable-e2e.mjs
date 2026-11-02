@@ -680,8 +680,8 @@ export async function runDisposableE2E({
       npcIndex: guideNpc.index,
       reason: 'Talk to RuneScape Guide'
     });
-    assert.equal(talkOutcome.result.success, true);
-    assert.equal(talkOutcome.result.data.verifiedEffect, true);
+    assert.equal(talkOutcome.result.success, true, `Real NPC interaction did not complete: ${JSON.stringify(talkOutcome.result)}`);
+    assert.equal(talkOutcome.result.data?.verifiedEffect, true, `NPC effect not observed: ${JSON.stringify(talkOutcome.result)}`);
 
     const dlgSnap1 = await observeNextTick();
     assert.equal(dlgSnap1.dialogue.isOpen, true, 'Dialogue must be open after talking to RuneScape Guide');
