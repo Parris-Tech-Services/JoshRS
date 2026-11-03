@@ -1,16 +1,16 @@
 {
-  "candidate_pool": 4920,
+  "candidate_pool": 4897,
   "deduplicated_reference_versions": 1783,
-  "next_rotation_offset": 1900,
+  "next_rotation_offset": 2000,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
-  "raw_reference_versions": 6703,
-  "rotation_offset": 1800,
+  "raw_reference_versions": 6680,
+  "rotation_offset": 1900,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
     {
       "automatically_installed": false,
-      "candidate_id": "87087d043ab09ec35174",
+      "candidate_id": "11e2fa3c7b8b01630df8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -18,17 +18,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/Architecture.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/MapMembersOnlyCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/Architecture.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/MapMembersOnlyCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-87087d043ab09ec35174"
+      "work_id": "377-11e2fa3c7b8b01630df8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e99d8ec2775568939696",
+      "candidate_id": "dd5817d040adc1c7c7cf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -36,17 +36,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/OperatingSystem.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/NeedMembersAccountCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/OperatingSystem.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/NeedMembersAccountCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-e99d8ec2775568939696"
+      "work_id": "377-dd5817d040adc1c7c7cf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "614f6ca5c2a2239f17d2",
+      "candidate_id": "933e704e8ac39729e9db",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -54,17 +54,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/PatchCommand.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/NoReplyFromLoginServerCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/PatchCommand.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/NoReplyFromLoginServerCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-614f6ca5c2a2239f17d2"
+      "work_id": "377-933e704e8ac39729e9db"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "17c12b1cc6baa62d4355",
+      "candidate_id": "b5a7d9e502c99da8056a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -72,17 +72,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/Patcher.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/OkCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/Patcher.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/OkCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-17c12b1cc6baa62d4355"
+      "work_id": "377-b5a7d9e502c99da8056a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "141258785ba14fb148cc",
+      "candidate_id": "924e344f2033ecaaf9cf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -90,17 +90,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/PatcherModule.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ReconnectOkCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/PatcherModule.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ReconnectOkCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-141258785ba14fb148cc"
+      "work_id": "377-924e344f2033ecaaf9cf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "413eb0a3092e2503480f",
+      "candidate_id": "8c3f281e060cc2106dca",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -108,17 +108,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/PatcherQualifier.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ServerFullCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/PatcherQualifier.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ServerFullCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-413eb0a3092e2503480f"
+      "work_id": "377-8c3f281e060cc2106dca"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "aa35a77bf67e20fe5d26",
+      "candidate_id": "65b111f55a7d4a1376c9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -126,17 +126,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/Resource.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ServiceUnavailableCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/Resource.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ServiceUnavailableCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-aa35a77bf67e20fe5d26"
+      "work_id": "377-65b111f55a7d4a1376c9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "78e8ab12670034dee113",
+      "candidate_id": "75247644eac10970eb72",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -144,17 +144,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/BufferSizeTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ShowVideoAdCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/BufferSizeTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ShowVideoAdCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-78e8ab12670034dee113"
+      "work_id": "377-75247644eac10970eb72"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e1b59d8882a07faf1376",
+      "candidate_id": "bf177a387c93f118c93f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -162,17 +162,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/CachePathTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/SwitchWorldCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/CachePathTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/SwitchWorldCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-e1b59d8882a07faf1376"
+      "work_id": "377-bf177a387c93f118c93f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dcbbd4ba812c4b8adf64",
+      "candidate_id": "a12ca806d3eafdac758c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -180,17 +180,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/DomainTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/TooManyAttemptsCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/DomainTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/TooManyAttemptsCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-dcbbd4ba812c4b8adf64"
+      "work_id": "377-a12ca806d3eafdac758c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ae8c91085b7d0832ec77",
+      "candidate_id": "2513186e891c6256f85b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -198,17 +198,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/HighDpiTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/UnknownReplyFromLoginServerCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/HighDpiTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/UnknownReplyFromLoginServerCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-ae8c91085b7d0832ec77"
+      "work_id": "377-2513186e891c6256f85b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "18d8ef0fd0769f047214",
+      "candidate_id": "78e60ea13874f3d7a51e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -216,17 +216,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/HostCheckTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/UpdateInProgressCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/HostCheckTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/UpdateInProgressCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-18d8ef0fd0769f047214"
+      "work_id": "377-78e60ea13874f3d7a51e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "949043bca48e839d2799",
+      "candidate_id": "cdc12870d1d2cd2eaa79",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -234,17 +234,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/InvalidKeyTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/CheckWorldSuitabilityCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/InvalidKeyTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/CheckWorldSuitabilityCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-949043bca48e839d2799"
+      "work_id": "377-cdc12870d1d2cd2eaa79"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6234aa3634efaf12846e",
+      "candidate_id": "3801be81b6fa47d6667a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -252,17 +252,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/LoadLibraryTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/CreateAccountCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/LoadLibraryTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/CreateAccountCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-6234aa3634efaf12846e"
+      "work_id": "377-3801be81b6fa47d6667a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "88457754ede8b1508110",
+      "candidate_id": "ad60ce860a7603f356bd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -270,17 +270,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/MacResizeTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/CreateCheckDateOfBirthCountryCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/MacResizeTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/CreateCheckDateOfBirthCountryCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-88457754ede8b1508110"
+      "work_id": "377-ad60ce860a7603f356bd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "90789a0fef86c5aaad51",
+      "candidate_id": "e4d71ac36dcbdc555fd4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -288,17 +288,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/MemoryAllocationTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/CreateCheckNameCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/MemoryAllocationTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/CreateCheckNameCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-90789a0fef86c5aaad51"
+      "work_id": "377-e4d71ac36dcbdc555fd4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "21bcdff938b647be22a5",
+      "candidate_id": "a0742ee31ae42e608310",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -306,17 +306,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/NameTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/GameLoginCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/NameTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/GameLoginCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-21bcdff938b647be22a5"
+      "work_id": "377-a0742ee31ae42e608310"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "191a2c78bebcabbad346",
+      "candidate_id": "17738d1e746d3eb1ff7a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -324,17 +324,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/PlatformDetectionTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/GameLoginPayload.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/PlatformDetectionTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/GameLoginPayload.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-191a2c78bebcabbad346"
+      "work_id": "377-17738d1e746d3eb1ff7a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bd5011125f1c5a5a7bac",
+      "candidate_id": "1112562942d840d1e383",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -342,17 +342,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/PublicKeyTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/GameReconnectCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/PublicKeyTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/GameReconnectCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-bd5011125f1c5a5a7bac"
+      "work_id": "377-1112562942d840d1e383"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "eb46df3a566d19a33d3c",
+      "candidate_id": "4b4c83801ba66c666265",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -360,17 +360,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/ResourceTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/InitCrossDomainConnectionCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/ResourceTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/InitCrossDomainConnectionCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-eb46df3a566d19a33d3c"
+      "work_id": "377-4b4c83801ba66c666265"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b4368f1adf98840e2b47",
+      "candidate_id": "1e5456db561f41bae892",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -378,17 +378,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/RightClickTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/InitGameConnectionCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/RightClickTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/InitGameConnectionCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-b4368f1adf98840e2b47"
+      "work_id": "377-1e5456db561f41bae892"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a3619f1ab32db3391a7d",
+      "candidate_id": "427e5ae9d8e140e06adf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -396,17 +396,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "patcher/src/main/kotlin/org/openrs2/patcher/transform/TypoTransformer.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/InitJaggrabConnectionCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/patcher/src/main/kotlin/org/openrs2/patcher/transform/TypoTransformer.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/InitJaggrabConnectionCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-a3619f1ab32db3391a7d"
+      "work_id": "377-427e5ae9d8e140e06adf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "664527c3071a6cc10cff",
+      "candidate_id": "2e61b272383519a60133",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -414,17 +414,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/EmptyPacketCodec.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/InitJs5RemoteConnectionCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/EmptyPacketCodec.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/InitJs5RemoteConnectionCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-664527c3071a6cc10cff"
+      "work_id": "377-2e61b272383519a60133"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "874596987d1080ec0997",
+      "candidate_id": "0442022bcba433264ee4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -432,17 +432,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/FixedPacketCodec.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/LoginRequest.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/FixedPacketCodec.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/LoginRequest.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-874596987d1080ec0997"
+      "work_id": "377-0442022bcba433264ee4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ebd89e35e728e64da8f7",
+      "candidate_id": "de3a69d4bfa55bb6f88e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -450,17 +450,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/Packet.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/LoginUpstream.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/Packet.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/LoginUpstream.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-ebd89e35e728e64da8f7"
+      "work_id": "377-de3a69d4bfa55bb6f88e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "13b77acbde67ccc37ec5",
+      "candidate_id": "08df306c1248aedb398e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -468,17 +468,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/PacketCodec.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/RequestWorldListCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/PacketCodec.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/login/upstream/RequestWorldListCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-13b77acbde67ccc37ec5"
+      "work_id": "377-08df306c1248aedb398e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b5335092b0d0743c50cc",
+      "candidate_id": "b25e0377bf58d2fd56d6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -486,17 +486,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/Protocol.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/world/downstream/WorldListDownstream.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/Protocol.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/world/downstream/WorldListDownstream.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-b5335092b0d0743c50cc"
+      "work_id": "377-b25e0377bf58d2fd56d6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "754978b345fac4e3e969",
+      "candidate_id": "f2a8a035fa3d734f0e53",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -504,17 +504,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/ProtocolModule.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/world/downstream/WorldListResponse.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/ProtocolModule.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/world/downstream/WorldListResponse.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-754978b345fac4e3e969"
+      "work_id": "377-f2a8a035fa3d734f0e53"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "052fca343b7650463b86",
+      "candidate_id": "e70043aec569648cb8a3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -522,17 +522,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/Rs2Decoder.kt",
+      "path": "protocol/src/main/kotlin/org/openrs2/protocol/world/downstream/WorldListResponseCodec.kt",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/Rs2Decoder.kt",
+      "reference_url": "https://github.com/openrs2/openrs2/blob/50175bc519947775938405f6288be15fe70b7363/protocol/src/main/kotlin/org/openrs2/protocol/world/downstream/WorldListResponseCodec.kt",
       "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
+      "source_commit_sha": "50175bc519947775938405f6288be15fe70b7363",
       "status": "awaiting_agent_review",
-      "work_id": "377-052fca343b7650463b86"
+      "work_id": "377-e70043aec569648cb8a3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1cf716c77151faa75a57",
+      "candidate_id": "4a6933db1635be793ef0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -540,17 +540,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/Rs2Encoder.kt",
+      "path": "pack/anim.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/Rs2Encoder.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-1cf716c77151faa75a57"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/anim.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-4a6933db1635be793ef0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "05794e74cceed539af32",
+      "candidate_id": "348f9ee31cb59fbb0ca3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -558,17 +558,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/VariableBytePacketCodec.kt",
+      "path": "pack/animset.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/VariableBytePacketCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-05794e74cceed539af32"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/animset.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-348f9ee31cb59fbb0ca3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bdf4654397c41ab65f47",
+      "candidate_id": "9ec651b102ac9b84df4f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -576,17 +576,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/VariableShortPacketCodec.kt",
+      "path": "pack/base.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/VariableShortPacketCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-bdf4654397c41ab65f47"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/base.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-9ec651b102ac9b84df4f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ea5a4e28954f1ecc89f0",
+      "candidate_id": "f87d1eef5b86f8f10764",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -594,17 +594,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/common/AntiAliasingMode.kt",
+      "path": "pack/flo.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/common/AntiAliasingMode.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-ea5a4e28954f1ecc89f0"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/flo.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-f87d1eef5b86f8f10764"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "62871ac68021f715dade",
+      "candidate_id": "5df65512ce24b405a600",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -612,17 +612,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/common/DisplayMode.kt",
+      "path": "pack/idk.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/common/DisplayMode.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-62871ac68021f715dade"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/idk.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-5df65512ce24b405a600"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "cc95be012b2e1046a280",
+      "candidate_id": "8ec5ed17e330a95456b6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -630,17 +630,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/common/Uid.kt",
+      "path": "pack/interface.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/common/Uid.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-cc95be012b2e1046a280"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/interface.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-8ec5ed17e330a95456b6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "17a97068e44bf5f837fe",
+      "candidate_id": "4f09a50ce3923d791348",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -648,17 +648,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CannotCreateAtThisTimeCodec.kt",
+      "path": "pack/inv.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CannotCreateAtThisTimeCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-17a97068e44bf5f837fe"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/inv.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-4f09a50ce3923d791348"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e4065169008905a8b4f0",
+      "candidate_id": "484b5b8ed7e928f86703",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -666,17 +666,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CountryInvalidCodec.kt",
+      "path": "pack/loc.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CountryInvalidCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-e4065169008905a8b4f0"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/loc.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-484b5b8ed7e928f86703"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "954a6f2ecb573b0c8e95",
+      "candidate_id": "ba8dbf955bb6cbb5fff4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -684,17 +684,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateClientOutOfDateCodec.kt",
+      "path": "pack/map.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateClientOutOfDateCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-954a6f2ecb573b0c8e95"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/map.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-ba8dbf955bb6cbb5fff4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6448dbc406d7c469e2ae",
+      "candidate_id": "a95717c4a96056d2ec89",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -702,17 +702,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateDownstream.kt",
+      "path": "pack/midi.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateDownstream.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-6448dbc406d7c469e2ae"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/midi.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-a95717c4a96056d2ec89"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "67ff68bd443e228f14f6",
+      "candidate_id": "8bf90d83c778560d3971",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -720,17 +720,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateIpLimitCodec.kt",
+      "path": "pack/model.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateIpLimitCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-67ff68bd443e228f14f6"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/model.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-8bf90d83c778560d3971"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "00a3e77415b62a306edc",
+      "candidate_id": "47dd55af4ed8a65c734a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -738,17 +738,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateOkCodec.kt",
+      "path": "pack/npc.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateOkCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-00a3e77415b62a306edc"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/npc.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-47dd55af4ed8a65c734a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b72b0746d7796a37bc59",
+      "candidate_id": "040d1f7917ea83c2550e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -756,17 +756,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateResponse.kt",
+      "path": "pack/obj.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateResponse.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-b72b0746d7796a37bc59"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/obj.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-040d1f7917ea83c2550e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bf88d0ed963d6cad961b",
+      "candidate_id": "e4815edb354f4f3e1641",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -774,17 +774,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateServerFullCodec.kt",
+      "path": "pack/seq.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateServerFullCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-bf88d0ed963d6cad961b"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/seq.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-e4815edb354f4f3e1641"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d60c853496b14fe813c7",
+      "candidate_id": "ef467e39806bd5c9dfb6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -792,17 +792,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateServerOfflineCodec.kt",
+      "path": "pack/spotanim.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/CreateServerOfflineCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-d60c853496b14fe813c7"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/spotanim.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-ef467e39806bd5c9dfb6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5c67b6383839c7276ff7",
+      "candidate_id": "1a99586d21e5a63c491f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -810,17 +810,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/DateOfBirthFutureCodec.kt",
+      "path": "pack/synth.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/DateOfBirthFutureCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-5c67b6383839c7276ff7"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/synth.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-1a99586d21e5a63c491f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f5ccdf6177f9d994817d",
+      "candidate_id": "90d306483e82b55eaefa",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -828,17 +828,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/DateOfBirthInvalidCodec.kt",
+      "path": "pack/texture.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/DateOfBirthInvalidCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-f5ccdf6177f9d994817d"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/texture.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-90d306483e82b55eaefa"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4aac472104b05912f6b6",
+      "candidate_id": "fc550a740d867bedd06b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -846,17 +846,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/DateOfBirthLastYearCodec.kt",
+      "path": "pack/varbit.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/DateOfBirthLastYearCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-4aac472104b05912f6b6"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/varbit.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-fc550a740d867bedd06b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1671453a5f12918ccfa1",
+      "candidate_id": "271d67d12c3536c261fb",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -864,17 +864,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/DateOfBirthThisYearCodec.kt",
+      "path": "pack/varp.pack",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/DateOfBirthThisYearCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-1671453a5f12918ccfa1"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/pack/varp.pack",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-271d67d12c3536c261fb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "54b6c7fa469941d33d67",
+      "candidate_id": "fff6455447c1ffcb03c5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -882,17 +882,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/EmailInvalid1Codec.kt",
+      "path": "scripts/areas/area_alkharid/configs/alkharid.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/EmailInvalid1Codec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-54b6c7fa469941d33d67"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_alkharid/configs/alkharid.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-fff6455447c1ffcb03c5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6aade7480254025e27a4",
+      "candidate_id": "f8222074c31bc5914298",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -900,17 +900,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/EmailInvalid2Codec.kt",
+      "path": "scripts/areas/area_alkharid/configs/border_gate.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/EmailInvalid2Codec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-6aade7480254025e27a4"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_alkharid/configs/border_gate.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-f8222074c31bc5914298"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0542519a8976938dd396",
+      "candidate_id": "fdea4770bdbcf8dac584",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -918,17 +918,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/EmailInvalidCodec.kt",
+      "path": "scripts/areas/area_alkharid/configs/border_guard.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/EmailInvalidCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-0542519a8976938dd396"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_alkharid/configs/border_guard.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-fdea4770bdbcf8dac584"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "eb28c7ab94e2b962b5e1",
+      "candidate_id": "d2a5af9022fe0684558b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -936,17 +936,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/NameInvalidCodec.kt",
+      "path": "scripts/areas/area_alkharid/configs/shantay_pass.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/NameInvalidCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-eb28c7ab94e2b962b5e1"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_alkharid/configs/shantay_pass.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-d2a5af9022fe0684558b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "704ec74ac55050d6f3ca",
+      "candidate_id": "6f69b345d6ecf14eda12",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -954,17 +954,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/NameSuggestionsCodec.kt",
+      "path": "scripts/areas/area_ardougne_east/configs/ardougne_east.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/NameSuggestionsCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-704ec74ac55050d6f3ca"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_east/configs/ardougne_east.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-6f69b345d6ecf14eda12"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0edb44484979b114e68d",
+      "candidate_id": "27eabf8a367f267e4734",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -972,17 +972,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/NameUnavailableCodec.kt",
+      "path": "scripts/areas/area_ardougne_east/configs/doors.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/NameUnavailableCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-0edb44484979b114e68d"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_east/configs/doors.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-27eabf8a367f267e4734"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b148a9211bb132322652",
+      "candidate_id": "2a9893456c4f74635ac8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -990,17 +990,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordGuessable1Codec.kt",
+      "path": "scripts/areas/area_ardougne_east/configs/legends_guild/legends_guild.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordGuessable1Codec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-b148a9211bb132322652"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_east/configs/legends_guild/legends_guild.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-2a9893456c4f74635ac8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "034577c088b6f77a0f56",
+      "candidate_id": "5ec4b6b3e5fb06c83a29",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1008,17 +1008,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordGuessableCodec.kt",
+      "path": "scripts/areas/area_ardougne_east/configs/port_khazard/port_khazard.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordGuessableCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-034577c088b6f77a0f56"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_east/configs/port_khazard/port_khazard.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-5ec4b6b3e5fb06c83a29"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "97c18a8e8f6a95533d6f",
+      "candidate_id": "4c730c71c446c460b280",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1026,17 +1026,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordInvalidCharsCodec.kt",
+      "path": "scripts/areas/area_ardougne_east/configs/wilderness_lever.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordInvalidCharsCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-97c18a8e8f6a95533d6f"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_east/configs/wilderness_lever.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-4c730c71c446c460b280"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "aa5c437f71ab2a709993",
+      "candidate_id": "443ef8813905a0333fd4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1044,17 +1044,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordInvalidLengthCodec.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/carla.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordInvalidLengthCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-aa5c437f71ab2a709993"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/carla.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-443ef8813905a0333fd4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "01519a0d72053543546f",
+      "candidate_id": "f6656669aac6a4062fa6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1062,17 +1062,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordSimilarToName1Codec.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/chadwell.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordSimilarToName1Codec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-01519a0d72053543546f"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/chadwell.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-f6656669aac6a4062fa6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "363c06b5f12c7b364abd",
+      "candidate_id": "9e830b6832dbf05caac4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1080,17 +1080,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordSimilarToName2Codec.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/child.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordSimilarToName2Codec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-363c06b5f12c7b364abd"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/child.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-9e830b6832dbf05caac4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "82d09cf0431471f8dbf6",
+      "candidate_id": "295f6bf8d5091270b9e9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1098,17 +1098,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordSimilarToNameCodec.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/civilian.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/create/downstream/PasswordSimilarToNameCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-82d09cf0431471f8dbf6"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/civilian.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-295f6bf8d5091270b9e9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dbcc542a74f8b8e70318",
+      "candidate_id": "1a78a41b1ec3c5741fde",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1116,17 +1116,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/jaggrab/upstream/JaggrabRequest.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/clerk.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/jaggrab/upstream/JaggrabRequest.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-dbcc542a74f8b8e70318"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/clerk.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-1a78a41b1ec3c5741fde"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9323d66ae41cd18928a6",
+      "candidate_id": "d68530a2fdacb61a0649",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1134,17 +1134,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/jaggrab/upstream/JaggrabRequestDecoder.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/darkmage.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/jaggrab/upstream/JaggrabRequestDecoder.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-9323d66ae41cd18928a6"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/darkmage.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-d68530a2fdacb61a0649"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ac611ea02dc1b36a7233",
+      "candidate_id": "2e4a390e4b553799997d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1152,17 +1152,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/jaggrab/upstream/JaggrabRequestEncoder.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/doors.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/jaggrab/upstream/JaggrabRequestEncoder.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-ac611ea02dc1b36a7233"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/doors.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-2e4a390e4b553799997d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fcc3a0dcb15ebe6233c1",
+      "candidate_id": "5a09e37549f034446bee",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1170,17 +1170,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5ClientOutOfDateCodec.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/doubledoors.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5ClientOutOfDateCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-fcc3a0dcb15ebe6233c1"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/doubledoors.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-5a09e37549f034446bee"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fce43bad5bffd336cc49",
+      "candidate_id": "28defc0867a3356a4057",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1188,17 +1188,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5IpLimitCodec.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/fence.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5IpLimitCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-fce43bad5bffd336cc49"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/fence.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-28defc0867a3356a4057"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "193b22dabbeedda2155b",
+      "candidate_id": "91354df470e798a263ad",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1206,17 +1206,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5LoginResponse.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/jethick.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5LoginResponse.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-193b22dabbeedda2155b"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/jethick.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-91354df470e798a263ad"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a581f54f870b2664fec0",
+      "candidate_id": "a18dedd9c22cc739c028",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1224,17 +1224,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5OkCodec.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/kilron.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5OkCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-a581f54f870b2664fec0"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/kilron.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-a18dedd9c22cc739c028"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "34c5ed5b3544f916dcc3",
+      "candidate_id": "c3e0908dd3fa899fc5e4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1242,17 +1242,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5RemoteDownstream.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/man.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5RemoteDownstream.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-34c5ed5b3544f916dcc3"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/man.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-c3e0908dd3fa899fc5e4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3b3bae9aa2a00576c3df",
+      "candidate_id": "5046819b3219eb6f776e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1260,17 +1260,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5Response.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/manhole.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5Response.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-3b3bae9aa2a00576c3df"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/manhole.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-5046819b3219eb6f776e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a9d2a9eb3c55a3371425",
+      "candidate_id": "4a5a344e4148432820b8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1278,17 +1278,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5ResponseDecoder.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/mourner.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5ResponseDecoder.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-a9d2a9eb3c55a3371425"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/mourner.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-4a5a344e4148432820b8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ed5f7d8f050fe26377fe",
+      "candidate_id": "ac004b0602fe7a05e603",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1296,17 +1296,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5ResponseEncoder.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/nurse_sarah.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5ResponseEncoder.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-ed5f7d8f050fe26377fe"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/nurse_sarah.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-ac004b0602fe7a05e603"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "407343ce315a660e5f02",
+      "candidate_id": "1af6b8dd9def4f7f111e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1314,17 +1314,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5ServerFullCodec.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/omart.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/Js5ServerFullCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-407343ce315a660e5f02"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/omart.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-1af6b8dd9def4f7f111e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "710504f35ed04d341d16",
+      "candidate_id": "0810d50d8f4775fc86ff",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1332,17 +1332,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/XorDecoder.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/priest.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/XorDecoder.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-710504f35ed04d341d16"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/priest.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-0810d50d8f4775fc86ff"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fca15aa088930b528573",
+      "candidate_id": "8023200b671ad6e0d57f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1350,17 +1350,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/XorEncoder.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/recruiter.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/XorEncoder.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-fca15aa088930b528573"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/recruiter.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-8023200b671ad6e0d57f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e793837bfc49de1fc107",
+      "candidate_id": "c4536439dc10c6ed1f3f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1368,17 +1368,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/XorExtensions.kt",
+      "path": "scripts/areas/area_ardougne_west/configs/woman.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/downstream/XorExtensions.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-e793837bfc49de1fc107"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_ardougne_west/configs/woman.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-c4536439dc10c6ed1f3f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9cfb1500bd17ee6b3b5e",
+      "candidate_id": "c49b743789ca39dfcec4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1386,17 +1386,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/upstream/Js5Request.kt",
+      "path": "scripts/areas/area_barbarian_outpost/configs/barbarian_outpost.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/upstream/Js5Request.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-9cfb1500bd17ee6b3b5e"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_barbarian_outpost/configs/barbarian_outpost.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-c49b743789ca39dfcec4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7f369ba4b46c6c8337e2",
+      "candidate_id": "a5b4563fd992eec74c2e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1404,17 +1404,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/upstream/Js5RequestDecoder.kt",
+      "path": "scripts/areas/area_barbarian_outpost/configs/barbarian_outpost.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/upstream/Js5RequestDecoder.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-7f369ba4b46c6c8337e2"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_barbarian_outpost/configs/barbarian_outpost.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-a5b4563fd992eec74c2e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c1ab282c9a912b63cf3e",
+      "candidate_id": "2b05839526e50e28fd2a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1422,17 +1422,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/js5/upstream/Js5RequestEncoder.kt",
+      "path": "scripts/areas/area_barbarian_village/configs/barbarian_village.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/js5/upstream/Js5RequestEncoder.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-c1ab282c9a912b63cf3e"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_barbarian_village/configs/barbarian_village.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-2b05839526e50e28fd2a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fb6460925870f9dd7994",
+      "candidate_id": "71c517ac08010d4bbee3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1440,17 +1440,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/BadSessionIdCodec.kt",
+      "path": "scripts/areas/area_brimhaven/configs/brimhaven.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/BadSessionIdCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-fb6460925870f9dd7994"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_brimhaven/configs/brimhaven.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-71c517ac08010d4bbee3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f1aa4a338cc61d73dade",
+      "candidate_id": "7005b8c480a49f6545db",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1458,17 +1458,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/BannedCodec.kt",
+      "path": "scripts/areas/area_brimhaven/configs/brimhaven.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/BannedCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-f1aa4a338cc61d73dade"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_brimhaven/configs/brimhaven.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-7005b8c480a49f6545db"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f9096c89a540ed0782ea",
+      "candidate_id": "e6d80138c7798f75a29d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1476,17 +1476,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ClientMembersOnlyCodec.kt",
+      "path": "scripts/areas/area_camelot/configs/camelot.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ClientMembersOnlyCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-f9096c89a540ed0782ea"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_camelot/configs/camelot.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-e6d80138c7798f75a29d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b7f2b39f192ddf002cfa",
+      "candidate_id": "aa3007da80bd33e1f00f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1494,17 +1494,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ClientOutOfDateCodec.kt",
+      "path": "scripts/areas/area_canifis/configs/canifis.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ClientOutOfDateCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-b7f2b39f192ddf002cfa"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_canifis/configs/canifis.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-aa3007da80bd33e1f00f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "64f8ef2130a11e18fd2a",
+      "candidate_id": "919f6b22703e6abf5226",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1512,17 +1512,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/DisallowedByScriptCodec.kt",
+      "path": "scripts/areas/area_canifis/configs/canifis.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/DisallowedByScriptCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-64f8ef2130a11e18fd2a"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_canifis/configs/canifis.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-919f6b22703e6abf5226"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a2b2a41598fbc22e7e3e",
+      "candidate_id": "41f0abf4d2c7632624fe",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1530,17 +1530,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/DuplicateCodec.kt",
+      "path": "scripts/areas/area_catherby/configs/catherby.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/DuplicateCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-a2b2a41598fbc22e7e3e"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_catherby/configs/catherby.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-41f0abf4d2c7632624fe"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "aec8cc5dfa5b5bce36e4",
+      "candidate_id": "af62bf01425c76eacd60",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1548,17 +1548,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ExchangeSessionKeyCodec.kt",
+      "path": "scripts/areas/area_combat_training/configs/combat_training_camp.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ExchangeSessionKeyCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-aec8cc5dfa5b5bce36e4"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_combat_training/configs/combat_training_camp.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-af62bf01425c76eacd60"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d3bcf2863406c5971b45",
+      "candidate_id": "239b0d7f44bade8236a7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1566,17 +1566,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ForcePasswordChangeCodec.kt",
+      "path": "scripts/areas/area_combat_training/configs/combat_training_camp.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/ForcePasswordChangeCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-d3bcf2863406c5971b45"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_combat_training/configs/combat_training_camp.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-239b0d7f44bade8236a7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "da94c4b1e786381e41a6",
+      "candidate_id": "3714215bd30c143e33bf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1584,17 +1584,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/FullscreenMembersOnlyCodec.kt",
+      "path": "scripts/areas/area_desert/configs/bedabincamp.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/FullscreenMembersOnlyCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-da94c4b1e786381e41a6"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_desert/configs/bedabincamp.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-3714215bd30c143e33bf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dfe81827adf5be40d1d8",
+      "candidate_id": "8764c325a19483ddfe53",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1602,17 +1602,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/HopBlockedCodec.kt",
+      "path": "scripts/areas/area_desert/configs/desert.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/HopBlockedCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-dfe81827adf5be40d1d8"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_desert/configs/desert.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-8764c325a19483ddfe53"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "493d68edb67f52a70c05",
+      "candidate_id": "f5e25dc48176605ab843",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1620,17 +1620,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/InvalidLoginPacketCodec.kt",
+      "path": "scripts/areas/area_desert/configs/desert.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/InvalidLoginPacketCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-493d68edb67f52a70c05"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_desert/configs/desert.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-f5e25dc48176605ab843"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fee12109c8e331d927b8",
+      "candidate_id": "f649a013a4510e7ef8f8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1638,17 +1638,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/InvalidLoginServerCodec.kt",
+      "path": "scripts/areas/area_desert/configs/shantaypass.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/InvalidLoginServerCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-fee12109c8e331d927b8"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_desert/configs/shantaypass.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-f649a013a4510e7ef8f8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b9c9b0ca6becf7f05117",
+      "candidate_id": "f9fcd42dd14cea54c933",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1656,17 +1656,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/InvalidSaveCodec.kt",
+      "path": "scripts/areas/area_draynor/configs/draynor.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/InvalidSaveCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-b9c9b0ca6becf7f05117"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_draynor/configs/draynor.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-f9fcd42dd14cea54c933"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ad34f3b6b96ddb24da6e",
+      "candidate_id": "8a262111492ca6ca4641",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1674,17 +1674,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/InvalidUsernameOrPasswordCodec.kt",
+      "path": "scripts/areas/area_edgeville/configs/edgeville.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/InvalidUsernameOrPasswordCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-ad34f3b6b96ddb24da6e"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_edgeville/configs/edgeville.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-8a262111492ca6ca4641"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "43ee66efd3b20cc63d6a",
+      "candidate_id": "eb9f262dc87b081b8516",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1692,17 +1692,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/IpBlockedCodec.kt",
+      "path": "scripts/areas/area_entrana/configs/entrana.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/IpBlockedCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-43ee66efd3b20cc63d6a"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_entrana/configs/entrana.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-eb9f262dc87b081b8516"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "085d7825a450c0eb763c",
+      "candidate_id": "36f645a674f5b178c3dc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1710,17 +1710,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/IpLimitCodec.kt",
+      "path": "scripts/areas/area_falador/configs/dwarven_mine.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/IpLimitCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-085d7825a450c0eb763c"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_falador/configs/dwarven_mine.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-36f645a674f5b178c3dc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0a5b5c068b800144463d",
+      "candidate_id": "b6ea1dfeebb4049e1ba6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1728,17 +1728,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/LockedCodec.kt",
+      "path": "scripts/areas/area_falador/configs/falador.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/LockedCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-0a5b5c068b800144463d"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_falador/configs/falador.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-b6ea1dfeebb4049e1ba6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "41213e59b7c5624dfa03",
+      "candidate_id": "3360865bd479660fec73",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1746,17 +1746,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/LoginDownstream.kt",
+      "path": "scripts/areas/area_falador/configs/goblin_village/goblin_village.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/LoginDownstream.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-41213e59b7c5624dfa03"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_falador/configs/goblin_village/goblin_village.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-3360865bd479660fec73"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ec6ef0b87a9a3790197d",
+      "candidate_id": "98dc7b4950165d71187d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1764,17 +1764,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/LoginResponse.kt",
+      "path": "scripts/areas/area_fishing_platform/configs/fishing_platform.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/LoginResponse.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-ec6ef0b87a9a3790197d"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_fishing_platform/configs/fishing_platform.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-98dc7b4950165d71187d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c98d0c963de65ae4ff41",
+      "candidate_id": "e67c7d358aea8c1dcb7e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1782,17 +1782,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/LoginServerLoadErrorCodec.kt",
+      "path": "scripts/areas/area_gnome/configs/brimstail_cave.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/LoginServerLoadErrorCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-c98d0c963de65ae4ff41"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_gnome/configs/brimstail_cave.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-e67c7d358aea8c1dcb7e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b278fa33b793dc840ede",
+      "candidate_id": "0c7ce7f60db5ee3461fc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1800,13 +1800,13 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/LoginServerOfflineCodec.kt",
+      "path": "scripts/areas/area_gnome/configs/child.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/openrs2/openrs2/blob/3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3/protocol/src/main/kotlin/org/openrs2/protocol/login/downstream/LoginServerOfflineCodec.kt",
-      "source": "openrs2/openrs2",
-      "source_commit_sha": "3b18f4b2ffe44ae8eb09dae0bb14cbdbd97974b3",
-      "status": "awaiting_agent_review",
-      "work_id": "377-b278fa33b793dc840ede"
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/areas/area_gnome/configs/child.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
+      "status": "blocked_rights_review",
+      "work_id": "377-0c7ce7f60db5ee3461fc"
     }
   ]
 }
