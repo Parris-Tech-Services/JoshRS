@@ -1,0 +1,157 @@
+{
+  "schema": "joshrs-fred-george-hourly-v1",
+  "experiment_id": "fred-george-v1",
+  "hour_start_utc": "2026-11-07T07:00:00Z",
+  "hour_end_utc": "2026-11-07T08:00:00Z",
+  "status": "PARTIAL_OR_NOT_COMPARABLE",
+  "comparable": false,
+  "received": 0,
+  "expected": 12,
+  "missing": [
+    {
+      "bot": "Fred",
+      "window_end_utc": "2026-11-07T07:10:00Z"
+    },
+    {
+      "bot": "George",
+      "window_end_utc": "2026-11-07T07:10:00Z"
+    },
+    {
+      "bot": "Fred",
+      "window_end_utc": "2026-11-07T07:20:00Z"
+    },
+    {
+      "bot": "George",
+      "window_end_utc": "2026-11-07T07:20:00Z"
+    },
+    {
+      "bot": "Fred",
+      "window_end_utc": "2026-11-07T07:30:00Z"
+    },
+    {
+      "bot": "George",
+      "window_end_utc": "2026-11-07T07:30:00Z"
+    },
+    {
+      "bot": "Fred",
+      "window_end_utc": "2026-11-07T07:40:00Z"
+    },
+    {
+      "bot": "George",
+      "window_end_utc": "2026-11-07T07:40:00Z"
+    },
+    {
+      "bot": "Fred",
+      "window_end_utc": "2026-11-07T07:50:00Z"
+    },
+    {
+      "bot": "George",
+      "window_end_utc": "2026-11-07T07:50:00Z"
+    },
+    {
+      "bot": "Fred",
+      "window_end_utc": "2026-11-07T08:00:00Z"
+    },
+    {
+      "bot": "George",
+      "window_end_utc": "2026-11-07T08:00:00Z"
+    }
+  ],
+  "invalid": [],
+  "bots": {
+    "Fred": {
+      "policy": "gather_first",
+      "intervals_received": 0,
+      "minutes_observed": 0,
+      "phase_intervals": {
+        "solo": 0,
+        "coop": 0,
+        "mixed": 0
+      },
+      "solo_xp": 0.0,
+      "coop_or_mixed_xp": 0.0,
+      "total_xp_gained": 0.0,
+      "xp_per_hour_of_observed_time": null,
+      "skill_xp_gained": {
+        "Attack": 0.0,
+        "Defence": 0.0,
+        "Strength": 0.0,
+        "Hitpoints": 0.0,
+        "Ranged": 0.0,
+        "Prayer": 0.0,
+        "Magic": 0.0,
+        "Cooking": 0.0,
+        "Woodcutting": 0.0,
+        "Fletching": 0.0,
+        "Fishing": 0.0,
+        "Firemaking": 0.0,
+        "Crafting": 0.0,
+        "Smithing": 0.0,
+        "Mining": 0.0,
+        "Herblore": 0.0,
+        "Agility": 0.0,
+        "Thieving": 0.0,
+        "Slayer": 0.0,
+        "Farming": 0.0,
+        "Runecrafting": 0.0
+      },
+      "new_quests_verified": [],
+      "successful_actions": 0,
+      "failed_actions": 0,
+      "deaths": 0,
+      "latest_location": null,
+      "last_reported_online": null,
+      "route_points": [],
+      "progress": []
+    },
+    "George": {
+      "policy": "quest_first",
+      "intervals_received": 0,
+      "minutes_observed": 0,
+      "phase_intervals": {
+        "solo": 0,
+        "coop": 0,
+        "mixed": 0
+      },
+      "solo_xp": 0.0,
+      "coop_or_mixed_xp": 0.0,
+      "total_xp_gained": 0.0,
+      "xp_per_hour_of_observed_time": null,
+      "skill_xp_gained": {
+        "Attack": 0.0,
+        "Defence": 0.0,
+        "Strength": 0.0,
+        "Hitpoints": 0.0,
+        "Ranged": 0.0,
+        "Prayer": 0.0,
+        "Magic": 0.0,
+        "Cooking": 0.0,
+        "Woodcutting": 0.0,
+        "Fletching": 0.0,
+        "Fishing": 0.0,
+        "Firemaking": 0.0,
+        "Crafting": 0.0,
+        "Smithing": 0.0,
+        "Mining": 0.0,
+        "Herblore": 0.0,
+        "Agility": 0.0,
+        "Thieving": 0.0,
+        "Slayer": 0.0,
+        "Farming": 0.0,
+        "Runecrafting": 0.0
+      },
+      "new_quests_verified": [],
+      "successful_actions": 0,
+      "failed_actions": 0,
+      "deaths": 0,
+      "latest_location": null,
+      "last_reported_online": null,
+      "route_points": [],
+      "progress": []
+    }
+  },
+  "bug_candidates": [],
+  "cooperation_events": [],
+  "interpretation": "Two distinct bot policies (n=1 per arm): descriptive AB data, NOT a statistically powered causal result.",
+  "measurement": "1x wall-clock ten-minute windows; incomplete windows remain explicitly missing."
+}
