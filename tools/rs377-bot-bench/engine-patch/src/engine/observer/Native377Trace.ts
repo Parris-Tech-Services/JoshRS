@@ -28,12 +28,19 @@ type Trace = {
     dialogPages: Array<{tick:number;interfaceId:number;text:string[];complete:boolean}>;
 };
 const traceByPlayer = new WeakMap<Player, Trace>();
-const allowed = (player: Player): boolean =>
-    process.env.RS377_OBSERVER_ENABLED === 'true' &&
-    process.env.RS377_OBSERVER_ISOLATED === 'true' &&
-    process.env.NODE_PROFILE === 'joshrs_ci_377' &&
-    /^Harness[A-Za-z0-9_-]{1,10}$/.test(process.env.RS377_OBSERVER_BOT ?? '') &&
-    player.username.toLowerCase() === process.env.RS377_OBSERVER_BOT!.toLowerCase();
+// Every accepted network client has a DIFFERENT WeakMap trace. Never mix
+// dialogue, messages, combat or UI text between independent bot accounts.
+const allowed = (player: Player): boolean => {
+    if (process.env.RS377_OBSERVER_ENABLED !== 'true' ||
+        process.env.RS377_OBSERVER_ISOLATED !== 'true' ||
+        process.env.NODE_PROFILE !== 'joshrs_ci_377') return false;
+    const allowlist = (process.env.RS377_OBSERVER_BOTS ??
+        process.env.RS377_OBSERVER_BOT ?? '').split(',').map(s => s.trim()).filter(Boolean);
+    if (allowlist.length === 0 || allowlist.length > 4 ||
+        allowlist.some(n => !/^Harness[A-Za-z0-9_-]{1,10}$/.test(n)) ||
+        new Set(allowlist.map(n => n.toLowerCase())).size !== allowlist.length) return false;
+    return allowlist.some(n => n.toLowerCase() === player.username.toLowerCase());
+};
 
 function forBot(player: Player): Trace | null {
     if (!allowed(player) || !player.isActive) return null;
