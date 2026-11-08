@@ -34,6 +34,13 @@ export function createSdk377Runtime({session,observer,botName,expectedWorld}={})
     const mapped=mapSdkAction(action,snapshot);
     if(mapped.kind==='no_action')return Object.freeze({status:'no_action',tick:snapshot.tick});
     if(mapped.kind==='wait')return Object.freeze({status:'wait_requested',ticks:mapped.ticks,tick:snapshot.tick});
+    if(mapped.kind==='read'){
+     // The native observer already authenticated this bot/isolated world.
+     // Scans are read-only and do not send any game packet.
+     return Object.freeze({status:'observed_read_only',tick:snapshot.tick,
+       world:expectedWorld,readType:mapped.readType,data:structuredClone(mapped.data),
+       verifiedEffect:false});
+    }
     if(mapped.kind!=='packet')throw new Error('unsupported_mapped_action');
     if(snapshot.tick<=lastActionTick)throw new Error('sdk_action_replay_or_stale_tick');
     const sent=session.sendPacket(mapped.packet);
