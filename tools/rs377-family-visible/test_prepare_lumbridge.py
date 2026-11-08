@@ -49,6 +49,47 @@ class BotLumbridgeFixtureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "started tutorial"):
             patched_save(fixture([(281, 10)]))
 
+    def test_explicit_progressed_tutorial_preserves_other_data_and_crc(self):
+        original = fixture([(18, 2), (281, 25), (406, 12)])
+        updated = patched_save(original, allow_progressed_tutorial=True)
+        record = inspect_save(updated)
+        self.assertEqual(
+            (record["x"], record["z"], record["level"], record["tutorial"]),
+            (3233, 3218, 0, 1000),
+        )
+        self.assertEqual(record["varp_count"], 3)
+        self.assertIn(struct.pack(">H", 18) + encode_varint(2), updated)
+        self.assertIn(struct.pack(">H", 406) + encode_varint(12), updated)
+        self.assertEqual(inspect_save(original)["tutorial"], 25)
+        self.assertEqual(updated, patched_save(updated))
+
+    def test_progressed_tutorial_requires_explicit_opt_in(self):
+        original = fixture([(281, 1)])
+        with self.assertRaisesRegex(ValueError, "explicit --allow-progressed-tutorial"):
+            patched_save(original)
+        self.assertEqual(original, bytes(original))
+
+    def test_refuse_completed_flag_on_tutorial_island_even_with_opt_in(self):
+        for stage in (1000, 1001):
+            with self.subTest(stage=stage):
+                with self.assertRaisesRegex(ValueError, "unexpected completed"):
+                    patched_save(
+                        fixture([(281, stage)]), allow_progressed_tutorial=True
+                    )
+
+    def test_progressed_fixture_still_blocks_wrong_location(self):
+        with self.assertRaisesRegex(ValueError, "not at original"):
+            patched_save(
+                fixture([(281, 25)], pos=(3222, 3218, 0)),
+                allow_progressed_tutorial=True,
+            )
+
+    def test_explicit_opt_in_does_not_override_corrupted_checksum(self):
+        original = bytearray(fixture([(281, 25)]))
+        original[-8] ^= 1
+        with self.assertRaisesRegex(ValueError, "CRC32"):
+            patched_save(bytes(original), allow_progressed_tutorial=True)
+
     def test_reject_invalid_checksum(self):
         data = bytearray(fixture())
         data[30] = 99
