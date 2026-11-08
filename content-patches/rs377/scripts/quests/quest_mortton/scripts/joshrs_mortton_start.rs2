@@ -77,12 +77,13 @@ if (inv_total(inv, tarrominvial) < 1 | inv_total(inv, ashes) < 1) {
 }
 inv_del(inv, tarrominvial, 1);
 inv_del(inv, ashes, 1);
-inv_add(inv, mort_serum4, 1);
+inv_add(inv, mort_serum3, 1);
+stat_advance(herblore, 500);
 if (%morttonquest = ^mortton_read_diary) {
     %morttonquest = ^mortton_made_serum;
     ~send_quest_progress(questlist:mortton, %morttonquest, 100);
 }
-mes("You mix the ashes into the solution and prepare a four-dose serum.");
+mes("You mix the ashes into the solution and prepare a three-dose serum.");
 
 [opnpc1,razmire_keelgan_afflicted]
 ~chatnpc("<p,confused>The afflicted shopkeeper tries to speak, but his words make little sense.");
@@ -93,16 +94,16 @@ if (%morttonquest < ^mortton_made_serum) {
 }
 
 [opnpcu,razmire_keelgan_afflicted]
-if (last_useitem ! mort_serum4) {
+if (last_useitem ! mort_serum3) {
     ~displaymessage(^dm_default);
     return;
 }
-if (%morttonquest < ^mortton_made_serum | inv_total(inv, mort_serum4) < 1) {
+if (%morttonquest < ^mortton_made_serum | inv_total(inv, mort_serum3) < 1) {
     mes("You have not prepared the treatment yet.");
     return;
 }
-inv_del(inv, mort_serum4, 1);
-inv_add(inv, mort_serum3, 1);
+inv_del(inv, mort_serum3, 1);
+inv_add(inv, mort_serum2, 1);
 %morttonmulti = setbit(%morttonmulti, ^razmire_visible);
 if (%morttonquest = ^mortton_made_serum) {
     %morttonquest = ^mortton_kill_shades;
