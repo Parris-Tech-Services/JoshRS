@@ -19,7 +19,7 @@ The existing `android-client/` Kotlin project now has:
 - An optional original visual preview, now clearly separated from the actual 377 engine diagnostics.
 - An isolated script to **attempt** an actual pinned revision-377 server build on Android in Termux Debian. It does not change the JParris Desktop installation.
 
-The phone-local 377 engine is the *actual Engine-TS* and the 32-patch overlay with 24 bundles. Once built it contains the real server-side combat/inventory/quests from those source trees. This is not proof every quest is complete or that an Android client can render/play any of it.
+The phone-local 377 engine is the *actual Engine-TS* and the 33+-patch overlay with 24 bundles. Once built it contains the real server-side combat/inventory/quests from those source trees. This is not proof every quest is complete or that an Android client can render/play any of it.
 
 ## Phone setup: experimental isolated engine install
 
@@ -34,7 +34,7 @@ Needs a current 64-bit Android device, sufficient available storage, Termux from
    cd ~/JoshRS-phone-source
    ```
 5. Select the merged version of the Android integration branch when available. Until merged, use `git fetch origin feat/android377-phone-local-20261108 && git switch feat/android377-phone-local-20261108`.
-6. Run `bash tools/android377-phone/install-phone-server.sh` **once**. It refuses to overwrite an existing installation. This fetches pinned Engine-TS and Content into a fresh private directory, applies 32 patches and 24 quest bundles, runs source checks, builds the RuneScript pack, and prepares a fresh SQLite database.
+6. Run `bash tools/android377-phone/install-phone-server.sh` **once**. It refuses to overwrite an existing installation. This fetches pinned Engine-TS and Content into a fresh private directory, applies 33+ patches and 24 quest bundles, runs source checks, builds the RuneScript pack, and prepares a fresh SQLite database.
 7. If it prints `INSTALLED_ENGINE_ONLY`, run `bash ~/joshrs377-phone/start-local.sh`. Stop with Ctrl+C after logging out. Do not copy or replace family saves or an existing server database.
 8. The Kotlin app's `Check actual phone-local server` and `Test real 377 login negotiation` buttons check `127.0.0.1:52402`, with a separate `8888` port probe. A green negotiation check **does not** prove account authentication or render the world.
 
@@ -70,4 +70,4 @@ The workflow `.github/workflows/android-foundation.yml` runs the same tests and 
 **Source pins used for the new phone-local install:**
 - [LostCityRS/Engine-TS revision-377](https://github.com/LostCityRS/Engine-TS/tree/b5ac859b47915afb545e60e4c1208f25d43cb3fb)
 - [LostCityRS/Content revision-377](https://github.com/LostCityRS/Content/tree/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50)
-- [Current JoshRS patch chain](../../content-patches/rs377/) (32 patches; check main for subsequent changes)
+- [Current JoshRS patch chain](../../content-patches/rs377/) (33+ patches; check main for subsequent changes)
