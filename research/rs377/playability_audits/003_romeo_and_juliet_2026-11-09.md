@@ -25,11 +25,11 @@ Source audit here means actual pinned quest scripts, NPC/item IDs, raw map place
 
 `0 → 10` Romeo accepts (or `0 → 20` Juliet independently begins by giving letter) → `20` Juliet delivers letter → `30` Romeo receives letter → `40` Father Lawrence advises potion → `50` Apothecary requests berries → `60` Juliet receives potion → `100` Romeo closes quest.
 
-This corrects the older [Varrock October stage ledger](../../harvest/VARROCK_QUEST_STAGE_QA_2026-10-31.json): the `30→40` and `40→50` branches are explicitly implemented in `father_lawrence.rs2` and `apothecary.rs2`. The October report's two `unverified` transitions were **source-inspection gaps**, not missing scripts.
+This corrects the older [Varrock October stage ledger](../harvest/VARROCK_QUEST_STAGE_QA_2026-10-31.json): the `30→40` and `40→50` branches are explicitly implemented in `father_lawrence.rs2` and `apothecary.rs2`. The October report's two `unverified` transitions were **source-inspection gaps**, not missing scripts.
 
 ### Actual source issues and patch
 
-Proposed [patch 0033](../../../../content-patches/rs377/patches/0033-romeo-juliet-quest-item-and-reward-guards.patch) changes only three existing RuneScript files.
+Proposed [patch 0033](../../../content-patches/rs377/patches/0033-romeo-juliet-quest-item-and-reward-guards.patch) changes only three existing RuneScript files.
 
 1. **Romeo missing-letter skip:** A player with quest stage 20 could talk to Romeo with no `julietmessage` in their carried inventory and reach stage 30, even if they had lost or banked the letter. The handler now distinguishes banked and missing items and refuses to advance until the letter is carried.
 2. **Juliet full-inventory loss:** Initial letter hand-in set stage 20 even if no inventory slot was available; the reissue branch could also claim to give an item while full. Both paths now require a free slot first.
@@ -43,7 +43,7 @@ Contemporaneous 2004 guides, including [Sal's Realm (17 August 2004)](https://ru
 
 ### Native checks and live acceptance gate
 
-- [Pinned-source acceptance checker](../../../../content-patches/rs377/tools/check_romeo_juliet.py) verifies six stage transitions, four core NPC scripts/placements, three item IDs, three ground-spawn locations, item loss/reissue safeguards, one-berry conversion, 5 QP reward and persistence configuration.
+- [Pinned-source acceptance checker](../../../content-patches/rs377/tools/check_romeo_juliet.py) verifies six stage transitions, four core NPC scripts/placements, three item IDs, three ground-spawn locations, item loss/reissue safeguards, one-berry conversion, 5 QP reward and persistence configuration.
 - [Disposable 377 batch compilation](https://github.com/Parris-Tech-Services/JoshRS/actions/workflows/batch-quests-disposable-377.yml) must pass with 0033 before merging.
 - The guarded Windows files `JoshRS-Fix-RomeoJuliet.cmd` and `deploy/jparris-windows/Install-RomeoJuliet377.ps1` are read-only by default, protect family saves, require a stopped game server, and provide verified source+pack backups with rollback if native compile fails.
 - Never interpret source/compile/boot as evidence of UI dialogue, actual NPC click, berry pickup, potion, cutscene, reward or relog success.
