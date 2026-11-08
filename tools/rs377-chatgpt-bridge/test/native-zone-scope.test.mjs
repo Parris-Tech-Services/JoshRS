@@ -23,5 +23,8 @@ test('strict scope prevents out-of-plane, far and foreign-player drops',()=>{
 test('missing pinned ZoneMap internals stay explicitly unknown; no invented SDK state',()=>{
  assert.match(body,/let nearbyLocs: Array<Record<string, unknown>> \| null = null/);
  assert.match(body,/let groundItems: Array<Record<string, unknown>> \| null = null/);
- assert.match(file,/nearbyLocs, groundItems,\s+dialogue, questStages: null, sdkDetails: null/);
+ assert.match(file,/nearbyLocs, groundItems,\s+dialogue, questStages: null, sdkDetails/);
+ assert.match(file,/combatEvents, prayers/);
+ assert.match(file,/const shop = !shopOpen/);
+ assert.match(file,/const bank = !bankOpen/);
 });
