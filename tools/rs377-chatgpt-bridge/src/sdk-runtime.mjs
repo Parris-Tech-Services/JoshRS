@@ -23,7 +23,25 @@ export function createSdk377Runtime({session,observer,botName,expectedWorld}={})
   observe,
   async getSdkState(){
    const snapshot=await observe();
-   return toBotWorldState(snapshot,{botName,expectedWorld});
+   const mapped=toBotWorldState(snapshot,{botName,expectedWorld});
+   // Authenticated own-character quest state; not part of upstream TS
+   // schema. The unmodified BotSDK preserves additional sdk_state keys.
+   const native=snapshot.questStages;
+   if(native===null)return mapped;
+   if(!native||typeof native!=='object'||Array.isArray(native)||
+      Object.keys(native).length>111)throw new Error('invalid_native_quest_telemetry');
+   const safe={};
+   for(const [key,value] of Object.entries(native)){
+     if(!/^[a-z0-9_]{1,48}$/.test(key))throw new Error('invalid_quest_varp_key');
+     if(Number.isSafeInteger(value)&&value>=0){safe[key]=value}
+     else if(value&&typeof value==='object'&&!Array.isArray(value)&&
+       Object.keys(value).length<=8&&Object.entries(value).every(([k,v])=>
+        /^[a-z0-9_]{1,48}$/.test(k)&&Number.isSafeInteger(v)&&v>=0)){
+        safe[key]=structuredClone(value);
+     }else throw new Error('invalid_quest_varp_value');
+   }
+   return Object.freeze({...mapped,
+     state:Object.freeze({...mapped.state,joshrsQuestStages:Object.freeze(safe)})});
   },
   async action(action){
    if(actionInFlight)throw new Error('concurrent_sdk_action_refused');

@@ -96,12 +96,41 @@ try{
   if(walked)break;
  }
  if(!walked)throw new Error('real upstream BotSDK never observed an ordinary walk on any verified nearby tile');
+ // Run the entire 104-quest + 7-miniquest queue against this *real* SDK
+ // session. Only the reviewed Cook start-NPC probe may act. All others
+ // remain explicitly BLOCKED, never magically marked complete.
+ const {readCatalogue,questPlan}=await import('../rs377-fedora-quests/catalog.mjs');
+ const {executeCampaign}=await import('../rs377-fedora-quests/campaign.mjs');
+ const {run:probeCook}=await import('../rs377-fedora-quests/playbooks/cook.ts');
+ const sourceQueue=readCatalogue();
+ const plan=questPlan(sourceQueue,{includeMiniquests:true,newestFirst:true});
+ const liveState=sdk.getState() as unknown as {joshrsQuestStages?:Record<string,unknown>};
+ const nativeQuestVarpCount=Object.keys(liveState?.joshrsQuestStages??{}).length;
+ assert.ok(Number.isInteger(nativeQuestVarpCount)&&nativeQuestVarpCount>=1,
+   'no independently observed quest varps through the unmodified RS-SDK');
+ const campaign=await executeCampaign({
+   catalogue:sourceQueue,plan,sdk,bot,username:botName,worldId,
+   playbooks:{cook:probeCook},maxActionsPerQuest:2
+ });
+ assert.equal(campaign.records.length,111,'every historical quest must be classified');
+ assert.equal(campaign.actualFullQuestPlaythroughsVerified,0,
+   'source and partial NPC probes must not pass a full quest');
+ const campaignStatuses=Object.fromEntries([...new Set(campaign.records.map(x=>x.status))].map(
+   status=>[status,campaign.records.filter(x=>x.status===status).length]));
+ console.error('RS_SDK_REAL_QUEST_CAMPAIGN:'+JSON.stringify({
+   questCount:104,miniquestCount:7,sourceSha:PIN,authenticEngine:true,
+   nativeQuestVarpCount,campaignStatuses,fullPlaythroughsVerified:0,
+   familyWorldTouched:false
+ }));
  console.log('RS_SDK_REAL_NATIVE_PROOF:'+JSON.stringify({
   source:'MaxBittker/rs-sdk',sourceSha:PIN,bot:'HarnessProbe',
   realNative377World:true,authenticated,continuousNativeState:true,
   actualUpstreamBotSDK:true,actualUpstreamBotActions:true,
   ordinaryPacketEffectVerified:true,realNativeScanVerified:true,
   realNativeWaitVerified:true,finalPosition,saveRelogVerifiedByParent:false,
+  questCatalogCount:campaign.records.length,questCount:104,miniquestCount:7,
+  observedQuestVarpCount:nativeQuestVarpCount,questCampaignStatuses:campaignStatuses,
+  fullQuestPlaythroughsVerified:0,
   tenPubPlaythroughVerified:false,familyWorldTouched:false
  }));
 }finally{
