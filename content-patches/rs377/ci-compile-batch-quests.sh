@@ -17,7 +17,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 24 ]] || { echo "BLOCKED: expected 24 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 25 ]] || { echo "BLOCKED: expected 25 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -94,6 +94,20 @@ assert '%rag_bonesack = 1' in src
 assert '%rag_wine = 1' in shop
 inv = (scripts / '_unpack/727/all.inv').read_text()
 assert '[wine_vinegar_merchant]' in inv and 'stock2=rag_vinegar,500,10' in inv
+
+# Barcrawl hardening: the pre-quest gate must not teleport on failed checks,
+# lost card recovery must keep the ten permanent visit bits, and Thormac must
+# enforce the downstream prerequisite. The Rusty Anchor charges eight coins.
+guard = (scripts / 'areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2').read_text()
+gate = (scripts / 'areas/area_barbarian_outpost/scripts/outpost_gate.rs2').read_text()
+thormac = (scripts / 'areas/area_seers/scripts/thormac.rs2').read_text()
+rusty = (scripts / 'areas/area_port_sarim/scripts/bartender.rs2').read_text()
+assert guard.count('inv_freespace(inv) < 1') >= 2, 'guard must check space for first and replacement cards'
+assert '%barcrawl = 1;' not in guard, 'lost card must not reset permanent visit flags'
+assert 'if(%barcrawl ! ^barcrawl_complete) {\n        mes("Finish Alfred Grimhand' in gate, 'gate must deny entry'
+assert 'Complete Alfred Grimhand' in thormac and 'if(%barcrawl ! ^barcrawl_complete)' in thormac, 'Scorpion prerequisite'
+assert 'if(inv_total(inv, coins) < 8)' in rusty and 'inv_del(inv, coins, 8);' in rusty, 'Rusty Anchor charge'
+print('Barcrawl source contracts verified: gate, card recovery, prerequisite, drink price')
 
 print('Disposable overlay verified: unique permanent varps, renamed placeholders, quest-list registrations')
 PY
