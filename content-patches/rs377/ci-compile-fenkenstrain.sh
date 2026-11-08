@@ -37,4 +37,5 @@ assert src.count('send_quest_progress_colour(questlist:creatureoffenkenstrain')=
 print('Disposable overlay verified: unique permanent varps, single quest-list registration')
 PY
 FENK_CONTENT="$content" FENK_QUEST_DIR="$dest" python3 -I "$quest/tools/check_fenk_symbols.py"
+python3 -I "$quest/tools/check_fenk_map.py" --content "$content"
 echo "DISPOSABLE_FENKENSTRAIN_OVERLAY_READY"
