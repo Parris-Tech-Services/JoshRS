@@ -22,6 +22,7 @@ import {
     formatBotWhereabouts,
     fredGeorgeLogoutAccountKey,
     handleBotPrivateMessage,
+    getFredGeorgeBotStates,
     spawnFredAndGeorgeBots,
     tickFredAndGeorgeBots
 } from '#/engine/bot/FredGeorgeBot.js';
@@ -81,6 +82,15 @@ test('2. Fresh Fred & George accounts reach mainland with identical starting_sig
     const george = World.getPlayerByUsername('George');
     assert.ok(fred, 'Fred should be active in World');
     assert.ok(george, 'George should be active in World');
+    // The first .sav existence check is not enough: admission must actually finish.
+    const states = getFredGeorgeBotStates();
+    for (const [name, player] of [['Fred', fred], ['George', george]] as const) {
+        assert.equal(states[name].relogVerified, true, name + ' must prove game-world admission');
+        assert.equal(states[name].relogTick, -1, name + ' must finish pending admission');
+        assert.equal(states[name].player, player, name + ' state must reference real world player');
+        assert.equal(player.isActive, true, name + ' must be active');
+        assert.ok(player.slot >= 0, name + ' must be assigned a world slot');
+    }
 
     const fredSig = computeStartingSignature(fred);
     const georgeSig = computeStartingSignature(george);
