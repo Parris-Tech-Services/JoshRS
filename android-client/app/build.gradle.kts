@@ -12,7 +12,8 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 2
-        versionName = "0.3-377-connectivity"\n        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        versionName = "0.3-377-connectivity"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -32,5 +33,8 @@ android {
 }
 
 dependencies {
-    testImplementation("junit:junit:4.13.2")\n    androidTestImplementation("androidx.test:core:1.6.1")\n    androidTestImplementation("androidx.test.ext:junit:1.2.1")\n    androidTestImplementation("androidx.test:runner:1.6.2")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test:core:1.6.1")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
 }
