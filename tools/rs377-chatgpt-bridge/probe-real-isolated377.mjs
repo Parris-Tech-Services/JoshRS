@@ -13,6 +13,7 @@ import {Session377} from './src/session.mjs';
 import {createEngine377Observer} from './src/engine-observer.mjs';
 import {SKILLS377} from './src/observation.mjs';
 import {createSdk377Runtime} from './src/sdk-runtime.mjs';
+import {toBotWorldState} from './src/sdk-bridge.mjs';
 import {createSdk377Gateway} from './src/sdk-gateway.mjs';
 import {verifyRealEngineGateway} from '../rs377-controller-boundary/test/real-engine-security.acceptance.mjs';
 import {createSdk377WebSocket} from './src/sdk-websocket.mjs';
@@ -145,6 +146,15 @@ try {
    catch(error){if(error.message.includes('replayed_native_observation'))continue;throw error}
  }
  if(!later||later.tick<=first.tick)reject('actual server ticks did not advance');
+ // Explain only the first missing authoritative type, never log raw state,
+ // other players' details, private data, passwords, account DB or tokens.
+ try {
+   toBotWorldState(later,{botName:username,expectedWorld});
+   console.log('Isolated pinned RS-SDK state: contract verified from native game');
+ } catch(error) {
+   const kind=String(error?.message??'').match(/^SDK state incomplete: ([a-zA-Z0-9_., -]{1,100}) is not verified/);
+   console.log('Isolated pinned RS-SDK state unavailable: '+(kind?.[1]??'contract_blocked'));
+ }
  // Task 26: use the very same already-authenticated REAL #377 TCP client.
  // The boundary verifies security through the real engine observer and real
  // ISAAC-wrapped normal walk; it does not replace or restart the game.
