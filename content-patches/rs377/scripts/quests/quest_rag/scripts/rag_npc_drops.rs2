@@ -1,0 +1,65 @@
+// Native 377 Rag and Bone Man kill-drop mapping: 35 raw bones from genuine named
+// NPC species in pinned 377 content. No teleport cheats, debug grants or duplicate
+// ai_queue3 handlers. Called exactly once inside existing core npc_death proc.
+// Players qualify only after starting the quest; required 8 before completion,
+// additional 27 after completion. Already-delivered bones never drop again.
+[proc,rag_npc_bone_index]()(int)
+if (npc_type = goblin | npc_type = goblin_armed) { return(0); }
+if (npc_type = brownbear | npc_type = darkbear) { return(1); }
+if (npc_type = ramunsheered | npc_type = ramsheered) { return(2); }
+if (npc_type = unicorn) { return(3); }
+if (npc_type = giantrat | npc_type = giantrat_grey) { return(4); }
+if (npc_type = bat) { return(5); }
+if (npc_type = wolf | npc_type = pack_wolf) { return(6); }
+if (npc_type = small_bat) { return(7); }
+if (npc_type = rat | npc_type = rat_indoors) { return(8); }
+if (npc_type = babybluedragon) { return(9); }
+if (npc_type = ogre | npc_type = ogre2) { return(10); }
+if (npc_type = jogre) { return(11); }
+if (npc_type = zogre_1 | npc_type = zogre_2) { return(12); }
+if (npc_type = mudskipper_ogre) { return(13); }
+if (npc_type = monkey) { return(14); }
+if (npc_type = horror_dagganoth_jr) { return(15); }
+if (npc_type = snake) { return(16); }
+if (npc_type = zombie_unarmed | npc_type = zombie_armed) { return(17); }
+if (npc_type = canafis_werewolf_man1 | npc_type = canafis_werewolf_woman1) { return(18); }
+if (npc_type = mossgiant | npc_type = mossgiant2) { return(19); }
+if (npc_type = firegiant | npc_type = firegiant2) { return(20); }
+if (npc_type = icegiant | npc_type = icegiant_low_wanderrange) { return(21); }
+if (npc_type = terrorbird) { return(22); }
+if (npc_type = ghoul) { return(23); }
+if (npc_type = troll) { return(24); }
+if (npc_type = sarim_seagull_pier | npc_type = sarim_seagull_pier_big) { return(25); }
+if (npc_type = ahoy_undead_cow) { return(26); }
+if (npc_type = fenk_experiment_1 | npc_type = fenk_experiment_2) { return(27); }
+if (npc_type = regicide_rabbit) { return(28); }
+if (npc_type = slayer_basilisk_baby) { return(29); }
+if (npc_type = slayer_lizard_large1_green) { return(30); }
+if (npc_type = cave_goblin_guard1 | npc_type = cave_goblin_guard2) { return(31); }
+if (npc_type = medium_frog) { return(32); }
+if (npc_type = rag_vulture) { return(33); }
+if (npc_type = ics_little_jackal) { return(34); }
+return(-1);
+
+[proc,rag_drop_quest_bone]
+if (%rag_quest ! ^rag_started & %rag_quest ! ^rag_complete) {
+    return;
+}
+def_int $index = ~rag_npc_bone_index;
+if ($index < 0 | $index >= ^rag_bone_catalog_total) {
+    return;
+}
+if (~rag_bone_delivered($index) = true) {
+    return;
+}
+if (%rag_quest = ^rag_started & ~rag_is_required_bone($index) = false) {
+    return;
+}
+if (%rag_quest = ^rag_complete & ~rag_is_required_bone($index) = true) {
+    return;
+}
+def_obj $bone = ~rag_raw_bone($index);
+if ($bone = null) {
+    return;
+}
+obj_add(npc_coord, $bone, 1, ^lootdrop_duration);
