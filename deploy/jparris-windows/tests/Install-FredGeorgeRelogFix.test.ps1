@@ -17,7 +17,7 @@ try {
     $target=Join-Path $game 'src\engine\bot\FredGeorgeBot.ts'
     [IO.File]::WriteAllText($target,'private customised bot implementation',[Text.UTF8Encoding]::new($false))
     $before=(Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash
-    $output=(& $script -RepoRoot $folder 2>&1 | Out-String)
+    $output=(& $script -RepoRoot $folder 6>&1 2>&1 | Out-String)
     if($output -notmatch 'UNKNOWN_LOCAL_CUSTOMISATIONS'){throw "Preflight did not report unknown source: $output"}
     $failed=$false
     try{& $script -RepoRoot $folder -Apply|Out-Null}catch{$failed=$true}
