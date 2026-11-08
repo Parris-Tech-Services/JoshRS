@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "check": "node --check src/protocol.mjs && node --check src/session.mjs && node --check src/observation.mjs && node --check src/sdk-bridge.mjs && node --check src/native-observer.mjs && node --check src/engine-observer.mjs && node --check src/sdk-runtime.mjs && node --check src/sdk-gateway.mjs && node --check src/sdk-websocket.mjs && npm test"
+    "check": "node --check src/protocol.mjs && node --check src/session.mjs && node --check src/observation.mjs && node --check src/sdk-bridge.mjs && node --check src/sdk-action-extensions.mjs && node --check src/sdk-action-coverage.mjs && node --check src/wordpack377.mjs && node --check src/native-observer.mjs && node --check src/engine-observer.mjs && node --check src/sdk-runtime.mjs && node --check src/sdk-gateway.mjs && node --check src/sdk-websocket.mjs && npm test"
   },
   "engines": {
     "node": ">=22"
