@@ -1,9 +1,9 @@
 diff --git a/scripts/general/scripts/quests.rs2 b/scripts/general/scripts/quests.rs2
 --- a/scripts/general/scripts/quests.rs2
 +++ b/scripts/general/scripts/quests.rs2
-@@ -288,6 +288,18 @@
- if (%rag_bonesack = 1) {
-     $questpoints = add($questpoints, ^rag_wishlist_questpoints);
+@@ -303,6 +303,18 @@
+ if (%giantdwarf_main = ^gd_complete) {
+     $questpoints = add($questpoints, ^gd_questpoints);
  }
 +if (%fever_quest = ^fever_complete) {
 +    $questpoints = add($questpoints, ^fever_questpoints);
@@ -20,10 +20,10 @@ diff --git a/scripts/general/scripts/quests.rs2 b/scripts/general/scripts/quests
  return ($questpoints);
  
  [proc,update_questlist]
-@@ -373,6 +385,15 @@
- ~send_quest_progress_colour(questlist:handsand, %handsand, ^hs_complete);
- ~send_quest_progress_colour(questlist:feud, %main_feud_var, ^feud_complete);
- ~send_quest_progress_colour(questlist:elid, ~elid_progress, 2);
+@@ -393,6 +405,15 @@
+ ~send_quest_progress_colour(questlist:tog, %tog_minigame, ^tog_complete);
+ ~send_quest_progress_colour(questlist:zogre, %zombie_ogre, ^zg_complete);
+ ~send_quest_progress_colour(questlist:giantdwarf, %giantdwarf_main, ^gd_complete);
 +// Swan Song is registered by the batch-quests bundle (JOSHRS_BATCH_QUESTS_NOTES.md); this
 +// bundle covers RFD intro, Cabin Fever, Recruitment Drive, Mourning's End II, Monkey Madness.
 +// RFD intro scaffold: colour only turns green at ^rfd_full_complete (unreachable while the

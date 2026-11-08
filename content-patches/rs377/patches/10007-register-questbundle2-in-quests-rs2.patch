@@ -1,7 +1,7 @@
 diff --git a/scripts/general/scripts/quests.rs2 b/scripts/general/scripts/quests.rs2
 --- a/scripts/general/scripts/quests.rs2
 +++ b/scripts/general/scripts/quests.rs2
-@@ -300,6 +300,21 @@
+@@ -315,6 +315,18 @@
  if (%mm_main = ^mm_complete) {
      $questpoints = add($questpoints, ^mm_questpoints);
  }
@@ -14,25 +14,22 @@ diff --git a/scripts/general/scripts/quests.rs2 b/scripts/general/scripts/quests
 +if (%myreque_2_main_var = ^myreque2_complete) {
 +    $questpoints = add($questpoints, ^myreque2_questpoints);
 +}
-+if (%onesmallfavour = ^osf_complete) {
-+    $questpoints = add($questpoints, ^osf_questpoints);
-+}
 +if (%deal_quest = ^deal_complete) {
 +    $questpoints = add($questpoints, ^deal_questpoints);
 +}
  return ($questpoints);
  
  [proc,update_questlist]
-@@ -394,6 +409,13 @@
+@@ -414,6 +426,13 @@
  ~send_quest_progress_colour(questlist:rd, %rd_main, ^rd_complete);
  ~send_quest_progress_colour(questlist:mourning2, %mourning_quest_part2, ^mourning2_complete);
  ~send_quest_progress_colour(questlist:mm, %mm_main, ^mm_complete);
-+// questbundle2: Mourning's End I, Wanted!, In Aid of the Myreque, One Small Favour, Rum Deal.
++// questbundle2: Mourning's End I, Wanted!, In Aid of the Myreque, Rum Deal.
++// One Small Favour is owned by the batch-quests bundle (batch3, patch 0021/0022).
 +// In Aid of the Myreque starts through the batch bundle's Veliaf handler (quest_route.rs2).
 +~send_quest_progress_colour(questlist:mourning, %mourning_quest, ^mourning1_complete);
 +~send_quest_progress_colour(questlist:wanted, %quest_wanted, ^wanted_complete);
 +~send_quest_progress_colour(questlist:myreque_2, %myreque_2_main_var, ^myreque2_complete);
-+~send_quest_progress_colour(questlist:onesmallfavour, %onesmallfavour, ^osf_complete);
 +~send_quest_progress_colour(questlist:deal, %deal_quest, ^deal_complete);
  ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
  if_settab(questlist, ^tab_quest_journal);

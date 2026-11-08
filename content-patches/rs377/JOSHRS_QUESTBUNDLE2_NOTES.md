@@ -3,7 +3,7 @@ Updated 8 November 2026
 
 **State: COMPILED NATIVELY (local disposable build against both pins).** This bundle ports
 the quest scaffolding for five more un-implemented quests in the JoshRS 377 world —
-**Mourning's End Part I, Wanted!, In Aid of the Myreque, One Small Favour, and Rum Deal** —
+**Mourning's End Part I, Wanted!, In Aid of the Myreque, and Rum Deal** —
 following the five-quest bundle pipeline (PR #148). **Not yet verified by an ordinary
 end-to-end player quest playthrough. Not installed in the live JoshRS family world.**
 
@@ -23,9 +23,6 @@ with full cache support, and each closes or extends a series already in the proj
   newest remaining in-queue quest (30 March 2006). The start is a self-contained branch in
   the batch bundle's Veliaf handler (`quest_myreque/scripts/quest_route.rs2`), gated on
   `routequest` complete.
-- **One Small Favour** (`questlist:onesmallfavour`, varps 416/417): start NPC Yanni Salika
-  (`shiloantiques` id 515) already had an upstream script — extended via patch 10009,
-  same pattern as the cook/Sir Amik/Narnode extensions in bundle 1.
 - **Rum Deal** (`questlist:deal`, varp `deal_quest` id 600): the cache carries all 37
   `deal_*` NPCs Jagex prepared for the quest (Pirate Pete is `deal_pete` id 2825).
 
@@ -41,13 +38,12 @@ reconstructions, not Jagex values. All wording is original (no Jagex or wiki tex
 ## Patch chain (applies in numeric order after the batch-quests and bundle-1 series)
 
 - `10001` (regenerated this PR): five-quest registration, now stacked on the batch series.
-- `10007`: register the five new quests in `quests.rs2` (QP: ME1 2, Wanted! 1, Myreque 2,
-  OSF 2, Rum Deal 2; five colour lines).
-- `10008`: add `scope=perm` in place to the five quest varps in `all.varp`
-  (`mourning_quest`, `quest_wanted`, `myreque_2_main_var`, `onesmallfavour`, `deal_quest`)
-  — the batch-0006 in-place pattern rather than bundle 1's move-out pattern, so the batch
-  bundle's Veliaf handler can reference `%myreque_2_main_var` in its own CI build.
-- `10009`: extend Yanni Salika's antique-shop dialogue with the OSF start branch.
+- `10007`: register the four new quests in `quests.rs2` (QP: ME1 2, Wanted! 1, Myreque 2,
+  Rum Deal 2; four colour lines).
+- `10008`: add `scope=perm` in place to the four quest varps in `all.varp`
+  (`mourning_quest`, `quest_wanted`, `myreque_2_main_var`, `deal_quest`) — the batch-0006
+  in-place pattern rather than bundle 1's move-out pattern, so the batch bundle's Veliaf
+  handler can reference `%myreque_2_main_var` in its own CI build.
 
 ## Cross-bundle integration fix (also pushed to PR #148)
 

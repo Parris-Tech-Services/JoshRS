@@ -11,7 +11,8 @@ implemented into JoshRS against the pinned 377 cache?
 
 **No.** Every quest in the document is blocked by missing client-cache infrastructure, and
 the block is structural, not a matter of effort. The implementable quest backlog for the
-pinned 377 world is the remaining in-queue quests (10 after questbundle2).
+pinned 377 world is the remaining in-queue quests (8 after questbundle2 and the batch3
+bundle on main).
 
 ## What a 377 quest requires, and what the cache provides
 
@@ -58,10 +59,12 @@ no analogue in a 377 client and cache.
 
 ## Recommended path forward
 
-1. **Finish the in-queue backlog (current policy).** 10 quests remain unimplemented after
-   questbundle2: Zogre Flesh Eaters, The Giant Dwarf, Forgettable Tale..., Garden of
-   Tranquillity, A Tail of Two Cats, Shadow of the Storm, Rat Catchers, Devious Minds,
-   Enakhra's Lament, A Fairy Tale Pt. 1. Each has a quest-list component and cache varps.
+1. **Finish the in-queue backlog (current policy).** 8 quests remain unimplemented after
+   questbundle2 (Mourning's End I, Wanted!, In Aid of the Myreque, Rum Deal) and the
+   batch3 bundle on main (One Small Favour, Zogre Flesh Eaters, The Giant Dwarf, Between
+   a Rock..., Tears of Guthix): Forgettable Tale..., Garden of Tranquillity, A Tail of Two
+   Cats, Shadow of the Storm, Rat Catchers, Devious Minds, Enakhra's Lament, and
+   A Fairy Tale Pt. 1. Each has a quest-list component and cache varps.
 2. **Post-377 quests stay excluded** unless the project adopts a cache-extension program
    (authoring new `.jm2` map regions and interface components and auditing the 725-varp
    budget). That is a separate, major initiative — licensing-clean (all original data) but
