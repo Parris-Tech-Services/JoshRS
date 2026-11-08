@@ -151,7 +151,7 @@ jobs:
       - name: Fetch pinned revision 377, migrate SQLite and compile Java client
         shell: powershell
         run: |
-          & '.\deploy\jparris-windows\setup.ps1' -SkipStart
+          & '.\deploy\jparris-windows\setup.ps1' -SkipStart -ClientGradleTimeoutMs 120000
       - name: Confirm expected local files
         shell: powershell
         run: |
