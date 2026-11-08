@@ -123,3 +123,5 @@ OpenRSC) were **not** used — clean-room only per the porting roadmap
 - CI verdict on every commit will be recorded in this bundle's PR.
 - **A successful compile is not gameplay.** Player-verified playthroughs in
   the live 377 world are required before any of the six is called playable.
+
+<!-- ci retrigger: pull_request event did not dispatch on PR open -->
