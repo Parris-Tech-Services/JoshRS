@@ -39,6 +39,31 @@ export function validatePilot({mode,approval,name=BOT,password}={}) {
   return true;
 }
 
+export function classifyBotPosition({x,z,level}) {
+  if (![x,z,level].every(Number.isSafeInteger))
+    throw new Error('Invalid native 377 coordinates');
+  // Both Tutorial Island surface and its underground Mining/Combat cave.
+  if (x>=3050 && x<=3156 &&
+      ((z>=3050 && z<=3140)||(z>=9400 && z<=9600)))
+    return 'TUTORIAL_ISLAND';
+  // A small safe mainland region containing the intended Lumbridge waypoints.
+  if (level===0 && x>=3215 && x<=3245 && z>=3205 && z<=3230)
+    return 'LUMBRIDGE_PATROL_AREA';
+  return 'OTHER_LOCATION';
+}
+
+export function readBotPosition(savePath) {
+  const file=fs.lstatSync(savePath,{throwIfNoEntry:false});
+  if (!file) return null;
+  if(!file.isFile()||file.isSymbolicLink()||file.size<9)
+    throw new Error('Existing HarnessScout save is not a readable regular file');
+  const bytes=fs.readFileSync(savePath);
+  if(bytes.subarray(0,2).toString('hex')!=='2004')
+    throw new Error('Unrecognised native HarnessScout save version; refusing patrol');
+  const position={x:bytes.readUInt16BE(4),z:bytes.readUInt16BE(6),level:bytes.readUInt8(8)};
+  return Object.freeze({...position,region:classifyBotPosition(position)});
+}
+
 export function checkFiles(install) {
   const root=path.resolve(install);
   const engine=path.join(root,'engine');
@@ -49,11 +74,9 @@ export function checkFiles(install) {
     throw new Error('Elrothiro save missing: refusing to run against an unidentified world');
   if(!fs.statSync(key,{throwIfNoEntry:false})?.isFile())
     throw new Error('Engine RSA key missing: refusing bot login');
-  // Never silently take over a pre-existing account with the pilot name.
-  const existingBot=path.join(engine,'data','players','main','harnessscout.sav');
-  if(fs.existsSync(existingBot))
-    throw new Error('HarnessScout save already exists: refusing to take over an existing bot');
-  return {engine,key};
+  const botSave=path.join(engine,'data','players','main','harnessscout.sav');
+  const botPosition=readBotPosition(botSave);
+  return {engine,key,botPosition};
 }
 
 export async function getCrc(fetcher=fetch) {
@@ -71,7 +94,13 @@ export async function getCrc(fetcher=fetch) {
 
 export async function runPilot({install,password,fetcher=fetch,Session=Session377}={}) {
   validatePilot({mode:'--run',approval:process.env.JOSHRS_FAMILY_PILOT_APPROVED,password});
-  const {key}=checkFiles(install);
+  const {key,botPosition}=checkFiles(install);
+  if(!botPosition)
+    throw new Error('No saved HarnessScout position yet. Create and complete the bot tutorial through a normal game client first; no blind patrol sent.');
+  if(botPosition.region==='TUTORIAL_ISLAND')
+    throw new Error('HarnessScout is still on Tutorial Island at '+botPosition.x+','+botPosition.z+'; finish its real tutorial first. No Lumbridge walk packets sent.');
+  if(botPosition.region!=='LUMBRIDGE_PATROL_AREA')
+    throw new Error('HarnessScout saved outside the safe Lumbridge patrol area at '+botPosition.x+','+botPosition.z+'; no long-distance blind walk.');
   const crcs=await getCrc(fetcher);
   // Derive the public half locally. The RSA private key never leaves this PC.
   const publicKeyPem=createPublicKey(fs.readFileSync(key,'utf8'))
@@ -119,10 +148,17 @@ async function main(){
   try {
     validatePilot({mode,approval:process.env.JOSHRS_FAMILY_PILOT_APPROVED,
       password:process.env.JOSHRS_BOT_PASSWORD});
-    checkFiles(install);
+    const {botPosition}=checkFiles(install);
     if(mode==='--check'){
       console.log('PREFLIGHT_OK: Elrothiro save and engine key present; no network or game changes.');
-      console.log('Next: run --run with explicit approval and a bot-only password.');
+      if(!botPosition)console.log('BOT_NOT_SAVED: bot location unknown; no blind Lumbridge patrol allowed.');
+      else console.log('BOT_POSITION: '+botPosition.x+','+botPosition.z+
+        ' level '+botPosition.level+' — '+botPosition.region);
+      if(botPosition?.region==='TUTORIAL_ISLAND')
+        console.log('NEXT: Complete Tutorial Island legitimately as HarnessScout in a game client. Do not send mainland walking packets.');
+      else if(botPosition?.region==='LUMBRIDGE_PATROL_AREA')
+        console.log('NEXT: --run can try nearby Lumbridge walking, with a bot-only password.');
+      else console.log('NEXT: Bot must be confirmed near Lumbridge before --run is allowed.');
       return;
     }
     const password=process.env.JOSHRS_BOT_PASSWORD;
