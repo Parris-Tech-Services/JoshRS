@@ -144,11 +144,19 @@ if (%morttonquest < ^mortton_shades_to_razmire) {
 
 // Only count genuine deaths attributed to a player. Ordinary combat still
 // decides hits, loot and respawns; no quest stage is granted for clicking.
-[ai_queue3,shade_level1]
+[ai_queue3,shade_level1] @joshrs_mortton_shade_death;
+[ai_queue3,shadeshadow_level1] @joshrs_mortton_shade_death;
+
+[label,joshrs_mortton_shade_death]
 ~npc_default_death;
 if (npc_findhero = ^false) {
     return;
 }
+// NPC death scripts have no active-player pointer; queue the normal
+// per-player quest update against the verified combat hero instead.
+queue(mortton_quest_shade_kill, 0, 0);
+
+[queue,mortton_quest_shade_kill]
 if (%morttonquest = ^mortton_kill_shades) {
     %morttonquest = ^mortton_killed_1_shade;
 } else if (%morttonquest = ^mortton_killed_1_shade) {
