@@ -26,3 +26,24 @@ jobs:
           node-version: '24'
       - name: Validate bounded and safe relog source contracts
         run: node --test tools/rs377-bot-bench/tests/relog-source-contract.test.mjs
+      - name: Parse TypeScript bot overlay and regression test syntax (source only)
+        shell: bash
+        run: |
+          npm install --prefix "$RUNNER_TEMP/ts-parser" --ignore-scripts --no-audit --no-fund typescript@5.9.3
+          NODE_PATH="$RUNNER_TEMP/ts-parser/node_modules" node - <<'NODE'
+          const ts = require('typescript');
+          const fs = require('fs');
+          const paths = [
+            'tools/rs377-bot-bench/engine-patch/src/engine/bot/FredGeorgeBot.ts',
+            'tools/rs377-bot-bench/engine-patch/src/engine/bot/FredGeorgeBot.test.ts'
+          ];
+          for(const file of paths) {
+            const out = ts.transpileModule(fs.readFileSync(file,'utf8'),{
+              fileName:file, reportDiagnostics:true,
+              compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext}
+            });
+            const errors=(out.diagnostics||[]).filter(d=>d.category===ts.DiagnosticCategory.Error);
+            if(errors.length){for(const e of errors) console.error(ts.flattenDiagnosticMessageText(e.messageText,'\\n'));process.exitCode=1;}
+            else console.log('TS syntax parsed: '+file);
+          }
+          NODE
