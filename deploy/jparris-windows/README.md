@@ -183,6 +183,49 @@ private account database. Do not claim login restored until the actual Java
 client logs in, displays the expected character and survives a clean
 logout/relogin.
 
+## Offline Elrothiro password recovery (Windows only)
+
+If the read-only local diagnostic returns `PASSWORD_DOES_NOT_MATCH_ACTIVE_DATABASE`,
+this means the **entered password** does not match the hash in the **selected**
+Windows account DB. It does NOT prove who changed a password or whether an
+older account DB was imported.
+
+**Never use a password reset to fix absent server listeners.** These are
+separate issues. If the game process exists but game TCP 52402/HTTP 8888
+are absent, collect the server console output first. PowerShell
+`Start-Transcript` does not reliably capture all native npm/Node process
+output; the server startup transcript may therefore be incomplete.
+
+The optional reset tool has a deliberately narrow scope:
+- Require the *real server engine process* to be stopped (not merely absent
+  game ports). Log out characters and use Ctrl+C in the actual server window.
+  If that cannot stop gracefully, leave the live files untouched.
+- Confirm Elrothiro's existing native save CRC and exact login account.
+- Back up the entire players directory, SQLite DB and any WAL/SHM files into
+  private gitignored `runtime/jparris-377/save-backups`, with hashes.
+- Replace only the existing Elrothiro password hash **after** the operator
+  types the explicit confirmation; never change account ID, other accounts
+  or character saves. Check the new hash and save bytes afterwards.
+
+In the **existing** `C:\\JoshRS-Launcher\\JoshRS-main` folder, once the server
+is OFFLINE, download the single public-source helper:
+
+```powershell
+Invoke-WebRequest 'https://raw.githubusercontent.com/Parris-Tech-Services/JoshRS/main/tools/rs377-saves/reset-local-elrothiro-password.mjs' -OutFile '.\\tools\\rs377-saves\\reset-local-elrothiro-password.mjs'
+node '.\\tools\\rs377-saves\\reset-local-elrothiro-password.mjs'
+```
+
+The user-requested password `a` is **unsafe** for any LAN, multiplayer or
+public server, so this procedure displays a prominent warning and requires
+the exact interactive confirmation `CHANGE ELROTHIRO TO A`. Use this only
+as a temporary recovery choice for a controlled private installation, then
+replace it with a strong password or implement a Windows-protected login
+mechanism before enabling outside access.
+
+No online account recovery, automatic login, server restart or live game
+playthrough is claimed by this offline procedure. Keep DB backups and
+player saves private, and verify the real client login after a safe restart.
+
 ## Troubleshooting
 
 ### Broken desktop Java client: Could not find or load main class .java2d.d3d=false
