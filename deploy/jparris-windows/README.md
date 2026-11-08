@@ -226,6 +226,44 @@ No online account recovery, automatic login, server restart or live game
 playthrough is claimed by this offline procedure. Keep DB backups and
 player saves private, and verify the real client login after a safe restart.
 
+## Sylvie account recovery without losing progress (Windows)
+
+The Elrothiro reset **does not** change Sylvie. If her original password no
+longer works, this separate optional tool can change only the existing
+`sylvie` account hash to the temporary password `a`.
+
+Before running it, **close the Java client and gracefully stop the actual
+JoshRS server** with Ctrl+C in its PowerShell window. A lingering Node
+`src/app.ts` process is treated as running even when no network ports
+are listening, and the tool refuses to modify the database. Do **not**
+force-kill a stuck server to get past this gate.
+
+The script verifies the existing native `sylvie.sav` CRC and the exact
+account record, independently SHA-256 backs up the entire players directory,
+SQLite DB and WAL/SHM, then updates only Sylvie's existing password using
+a compare-and-update SQL transaction. It verifies her save bytes, account
+ID and account count are unchanged. Other users, including Elrothiro, are
+not modified.
+
+From the original installed Windows launcher folder:
+
+```powershell
+cd 'C:\\JoshRS-Launcher\\JoshRS-main'
+Invoke-WebRequest 'https://raw.githubusercontent.com/Parris-Tech-Services/JoshRS/main/tools/rs377-saves/reset-local-sylvie-password.mjs' -OutFile '.\\tools\\rs377-saves\\reset-local-sylvie-password.mjs'
+node '.\\tools\\rs377-saves\\reset-local-sylvie-password.mjs'
+```
+
+Enter the exact local confirmation `CHANGE SYLVIE TO A` if you want to make
+the offline change. **Never** upload the SQLite database or character saves
+to GitHub or chat. A `PASSWORD_RESET_TO_A` result proves the local DB
+update and save verification succeeded; a real client login still has to
+be checked separately.
+
+`a` is deliberately **not** suitable for a networked or multiplayer
+server. Before allowing other players or external access, move to a
+strong private credential and Windows-protected auto-login instead.
+This recovery also cannot fix the separate no-listeners server issue.
+
 ## Troubleshooting
 
 ### Broken desktop Java client: Could not find or load main class .java2d.d3d=false

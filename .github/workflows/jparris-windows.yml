@@ -13,6 +13,8 @@ on:
       - 'tools/rs377-saves/verify-local-login.test.mjs'
       - 'tools/rs377-saves/reset-local-elrothiro-password.mjs'
       - 'tools/rs377-saves/reset-local-elrothiro-password.test.mjs'
+      - 'tools/rs377-saves/reset-local-sylvie-password.mjs'
+      - 'tools/rs377-saves/reset-local-sylvie-password.test.mjs'
       - '.github/workflows/jparris-windows.yml'
   pull_request:
     paths:
@@ -24,6 +26,8 @@ on:
       - 'tools/rs377-saves/verify-local-login.test.mjs'
       - 'tools/rs377-saves/reset-local-elrothiro-password.mjs'
       - 'tools/rs377-saves/reset-local-elrothiro-password.test.mjs'
+      - 'tools/rs377-saves/reset-local-sylvie-password.mjs'
+      - 'tools/rs377-saves/reset-local-sylvie-password.test.mjs'
       - '.github/workflows/jparris-windows.yml'
   workflow_dispatch:
 
@@ -69,6 +73,9 @@ jobs:
       - name: Verify offline existing-account password recovery never resets saves
         shell: pwsh
         run: node --test tools/rs377-saves/reset-local-elrothiro-password.test.mjs
+      - name: Verify Sylvie recovery preserves existing Elrothiro account and progress
+        shell: pwsh
+        run: node --test tools/rs377-saves/reset-local-sylvie-password.test.mjs
       - name: Exercise USB import and save preservation with synthetic files
         shell: powershell
         run: '& .\deploy\jparris-windows\test-bootstrap.ps1'
