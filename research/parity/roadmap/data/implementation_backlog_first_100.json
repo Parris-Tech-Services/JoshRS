@@ -1,0 +1,3143 @@
+{
+  "schema": "joshrs-parity-roadmap-tasks-v1",
+  "generated_at": "2026-11-08",
+  "verification_status": "BACKLOG_DESIGN_ONLY",
+  "license_and_privacy": "No private saves, credentials, cache/model/music binaries or copyrighted dialogue",
+  "task_count": 100,
+  "source_refs": [
+    "docs/REFERENCE_VERSION_LOCK.json",
+    "deploy/jparris-windows/upstreams.json",
+    "research/rs377/QUEST_QUEUE_2026-11-08.json",
+    "research/rs377/npc_dialogue_audit_2026-11-08.json",
+    "research/parity/data/modern_feature_research_seed_2026-11-08.csv"
+  ],
+  "tasks": [
+    {
+      "id": "JR-001",
+      "phase": "P0",
+      "phase_title": "Evidence and production preservation",
+      "title": "Capture exact default-branch and open PR baseline",
+      "description": "Snapshot HEAD, tags, 377 content overlays and PR #141/#145/#148 without merging",
+      "acceptance": "Manifest lists SHA, conflict areas and uncertain in-flight work",
+      "likely_paths": [
+        "tools/rs377-nondisruption/",
+        "deploy/jparris-windows/",
+        "research/rs377/"
+      ],
+      "dependency_ids": [],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-002",
+      "phase": "P0",
+      "phase_title": "Evidence and production preservation",
+      "title": "Read-only inventory of actual Windows 377 installation",
+      "description": "Identify active client, source, pack, DB, listeners and save directories without starting or modifying them",
+      "acceptance": "Operator or host capture proves active paths/hashes and no write operations",
+      "likely_paths": [
+        "tools/rs377-nondisruption/",
+        "deploy/jparris-windows/",
+        "research/rs377/"
+      ],
+      "dependency_ids": [
+        "JR-001"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-003",
+      "phase": "P0",
+      "phase_title": "Evidence and production preservation",
+      "title": "Verify all installed 377 engine/content/client pins",
+      "description": "Compare actual checkout heads to three upstreams.json commits and local modifications",
+      "acceptance": "Diff manifest explicitly separates modified, untracked and pinned content",
+      "likely_paths": [
+        "tools/rs377-nondisruption/",
+        "deploy/jparris-windows/",
+        "research/rs377/"
+      ],
+      "dependency_ids": [
+        "JR-002"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-004",
+      "phase": "P0",
+      "phase_title": "Evidence and production preservation",
+      "title": "Locate every production character/save and database file",
+      "description": "Identify per-character saves, SQLite WAL and checkpoints, local accounts and shared-world state",
+      "acceptance": "Sanitised inventory covers all save stores without publishing names/passwords",
+      "likely_paths": [
+        "tools/rs377-nondisruption/",
+        "deploy/jparris-windows/",
+        "research/rs377/"
+      ],
+      "dependency_ids": [
+        "JR-002"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-005",
+      "phase": "P0",
+      "phase_title": "Evidence and production preservation",
+      "title": "Implement verified immutable snapshot process",
+      "description": "Capture database-consistent pre-change backup, manifests, hashes and offline copy",
+      "acceptance": "Two independently readable backups with SHA256 manifest exist; no live save overwritten",
+      "likely_paths": [
+        "tools/rs377-nondisruption/",
+        "deploy/jparris-windows/",
+        "research/rs377/"
+      ],
+      "dependency_ids": [
+        "JR-004"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-006",
+      "phase": "P0",
+      "phase_title": "Evidence and production preservation",
+      "title": "Restore backups into a disposable isolated location",
+      "description": "Boot a *copy* and test inventory/quest/bank signatures against backup snapshots",
+      "acceptance": "Restore drill passes isolated consistency checks; original data untouched",
+      "likely_paths": [
+        "tools/rs377-nondisruption/",
+        "deploy/jparris-windows/",
+        "research/rs377/"
+      ],
+      "dependency_ids": [
+        "JR-005"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-007",
+      "phase": "P0",
+      "phase_title": "Evidence and production preservation",
+      "title": "Reconcile PRs #145/#148 with historical 104-quest audit",
+      "description": "Compare branch quest IDs, script symbols and state transitions against main without merging",
+      "acceptance": "Crosswalk reports merged, open, scaffold, duplicate and test-pending separately",
+      "likely_paths": [
+        "tools/rs377-nondisruption/",
+        "deploy/jparris-windows/",
+        "research/rs377/"
+      ],
+      "dependency_ids": [
+        "JR-001",
+        "JR-003"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-008",
+      "phase": "P0",
+      "phase_title": "Evidence and production preservation",
+      "title": "Investigate Party Drop Chest item disappearance issue #52",
+      "description": "Instrument chest transaction/remove paths in disposable 377 server; identify missing state writes",
+      "acceptance": "Reproduce or clearly mark unreproduced; unit regression prevents silent item loss",
+      "likely_paths": [
+        "tools/rs377-nondisruption/",
+        "deploy/jparris-windows/",
+        "research/rs377/"
+      ],
+      "dependency_ids": [
+        "JR-006"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-009",
+      "phase": "P0",
+      "phase_title": "Evidence and production preservation",
+      "title": "Prove real 377 offline solo session",
+      "description": "With WAN disconnected, log normal account, walk, interact, save/logout/relog",
+      "acceptance": "Real client record and verified persistent inventory/quest changes",
+      "likely_paths": [
+        "tools/rs377-nondisruption/",
+        "deploy/jparris-windows/",
+        "research/rs377/"
+      ],
+      "dependency_ids": [
+        "JR-003",
+        "JR-006"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-010",
+      "phase": "P0",
+      "phase_title": "Evidence and production preservation",
+      "title": "Add no-disruption production deployment gate",
+      "description": "Refuse all live write/restart/migration without backup/restore, staged proof and opt-in",
+      "acceptance": "Automated tests reject missing manifest, active sessions and mismatched source hash",
+      "likely_paths": [
+        "tools/rs377-nondisruption/",
+        "deploy/jparris-windows/",
+        "research/rs377/"
+      ],
+      "dependency_ids": [
+        "JR-003",
+        "JR-006",
+        "JR-009"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-011",
+      "phase": "P1",
+      "phase_title": "Private family connectivity and state integrity",
+      "title": "Define local household and child profile identity",
+      "description": "Design opaque household IDs and profile-specific player IDs; avoid publishing player metadata",
+      "acceptance": "Schema rejects impersonation and ambiguous cross-profile IDs",
+      "likely_paths": [
+        "deploy/jparris-windows/",
+        "tools/rs377-controller-boundary/",
+        "tools/rs377-saves/"
+      ],
+      "dependency_ids": [
+        "JR-004"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-012",
+      "phase": "P1",
+      "phase_title": "Private family connectivity and state integrity",
+      "title": "Implement parent-controlled local profile enrolment",
+      "description": "Store strong local auth secrets and parent approval without online registration",
+      "acceptance": "Two separate disposable profiles authenticate; invalid credentials rejected",
+      "likely_paths": [
+        "deploy/jparris-windows/",
+        "tools/rs377-controller-boundary/",
+        "tools/rs377-saves/"
+      ],
+      "dependency_ids": [
+        "JR-011"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-013",
+      "phase": "P1",
+      "phase_title": "Private family connectivity and state integrity",
+      "title": "Enforce loopback-only default game listeners",
+      "description": "Explicit host binding with server-side refusal of unsafe network configuration",
+      "acceptance": "Socket test verifies no external listener in default mode",
+      "likely_paths": [
+        "deploy/jparris-windows/",
+        "tools/rs377-controller-boundary/",
+        "tools/rs377-saves/"
+      ],
+      "dependency_ids": [
+        "JR-009"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-014",
+      "phase": "P1",
+      "phase_title": "Private family connectivity and state integrity",
+      "title": "Build optional LAN household pairing",
+      "description": "Create local network device enrolment and expiring approval tokens",
+      "acceptance": "Only enrolled second device can join with WAN disconnected",
+      "likely_paths": [
+        "deploy/jparris-windows/",
+        "tools/rs377-controller-boundary/",
+        "tools/rs377-saves/"
+      ],
+      "dependency_ids": [
+        "JR-012",
+        "JR-013"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-015",
+      "phase": "P1",
+      "phase_title": "Private family connectivity and state integrity",
+      "title": "Restrict LAN with host firewall and no router exposure",
+      "description": "Add Windows firewall profile allowlist, disable UPnP/relay/discovery",
+      "acceptance": "Unknown LAN and remote WAN attempts fail; no public endpoints",
+      "likely_paths": [
+        "deploy/jparris-windows/",
+        "tools/rs377-controller-boundary/",
+        "tools/rs377-saves/"
+      ],
+      "dependency_ids": [
+        "JR-014"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-016",
+      "phase": "P1",
+      "phase_title": "Private family connectivity and state integrity",
+      "title": "Verify two authentic simultaneously logged-in clients",
+      "description": "Use two independent normal credentials, separate clients and authoritative nearby-player state",
+      "acceptance": "Both see each other's movement and logout in same local world",
+      "likely_paths": [
+        "deploy/jparris-windows/",
+        "tools/rs377-controller-boundary/",
+        "tools/rs377-saves/"
+      ],
+      "dependency_ids": [
+        "JR-012",
+        "JR-014",
+        "JR-015"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-017",
+      "phase": "P1",
+      "phase_title": "Private family connectivity and state integrity",
+      "title": "Make inventory/bank/XP state server-authoritative",
+      "description": "Reject impossible inventory, stat and position mutations from untrusted clients",
+      "acceptance": "Forged packets rejected; normal XP/inventory changes still work",
+      "likely_paths": [
+        "deploy/jparris-windows/",
+        "tools/rs377-controller-boundary/",
+        "tools/rs377-saves/"
+      ],
+      "dependency_ids": [
+        "JR-016"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-018",
+      "phase": "P1",
+      "phase_title": "Private family connectivity and state integrity",
+      "title": "Make trade, chest and bank writes atomic",
+      "description": "Use one transaction or equivalent durable journal for both sides of every exchange",
+      "acceptance": "Interrupted trade/chest transaction yields no loss or duplication",
+      "likely_paths": [
+        "deploy/jparris-windows/",
+        "tools/rs377-controller-boundary/",
+        "tools/rs377-saves/"
+      ],
+      "dependency_ids": [
+        "JR-008",
+        "JR-017"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-019",
+      "phase": "P1",
+      "phase_title": "Private family connectivity and state integrity",
+      "title": "Recover sessions safely after disconnect and server restart",
+      "description": "Design token expiry, tick reconnection and idempotent gameplay intents",
+      "acceptance": "Disconnected client rejoins without double rewards or lost items",
+      "likely_paths": [
+        "deploy/jparris-windows/",
+        "tools/rs377-controller-boundary/",
+        "tools/rs377-saves/"
+      ],
+      "dependency_ids": [
+        "JR-016",
+        "JR-018"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-020",
+      "phase": "P1",
+      "phase_title": "Private family connectivity and state integrity",
+      "title": "Perform WAN-disconnected cold-boot and full family safety audit",
+      "description": "Check every remote dependency, public chat endpoint, registration and telemetry",
+      "acceptance": "Offline install/play passes; network capture shows zero unauthorized WAN requests",
+      "likely_paths": [
+        "deploy/jparris-windows/",
+        "tools/rs377-controller-boundary/",
+        "tools/rs377-saves/"
+      ],
+      "dependency_ids": [
+        "JR-013",
+        "JR-015",
+        "JR-016",
+        "JR-019"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P0",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-021",
+      "phase": "P2",
+      "phase_title": "Cross-version platform contracts",
+      "title": "Specify immutable per-game profile identity",
+      "description": "Model historic-377, modern-osrs-like and modern-rs3-like identifiers plus save-schema versions",
+      "acceptance": "All event writes require explicit profile, world and character identity",
+      "likely_paths": [
+        "tools/rs377-chatgpt-bridge/",
+        "tools/rs377-companion-contract/",
+        "research/parity/"
+      ],
+      "dependency_ids": [
+        "JR-003"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-022",
+      "phase": "P2",
+      "phase_title": "Cross-version platform contracts",
+      "title": "Define modern client/server capability-negotiation schema",
+      "description": "Create versioned handshake for UI, abilities, boats, map layers and supported actions",
+      "acceptance": "Old 377 client cannot accidentally negotiate unsupported modern actions",
+      "likely_paths": [
+        "tools/rs377-chatgpt-bridge/",
+        "tools/rs377-companion-contract/",
+        "research/parity/"
+      ],
+      "dependency_ids": [
+        "JR-021"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-023",
+      "phase": "P2",
+      "phase_title": "Cross-version platform contracts",
+      "title": "Create version-scoped item and object ID registry",
+      "description": "Namespace item, NPC, location and animation IDs per mode with verified semantic crosswalks",
+      "acceptance": "Duplicate numeric IDs across games do not alias incorrectly",
+      "likely_paths": [
+        "tools/rs377-chatgpt-bridge/",
+        "tools/rs377-companion-contract/",
+        "research/parity/"
+      ],
+      "dependency_ids": [
+        "JR-021"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-024",
+      "phase": "P2",
+      "phase_title": "Cross-version platform contracts",
+      "title": "Create version-scoped quest and skill variable registry",
+      "description": "Store quest flags, varbits, XP curves, prerequisites and mode-specific caps separately",
+      "acceptance": "A quest/skill update in one profile cannot mutate another",
+      "likely_paths": [
+        "tools/rs377-chatgpt-bridge/",
+        "tools/rs377-companion-contract/",
+        "research/parity/"
+      ],
+      "dependency_ids": [
+        "JR-021",
+        "JR-023"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-025",
+      "phase": "P2",
+      "phase_title": "Cross-version platform contracts",
+      "title": "Specify forward-only compatible save migrations and rollback",
+      "description": "Require explicit schema versions, dry-run validation and backups before migrations",
+      "acceptance": "A rejected migration leaves old state byte-for-byte untouched",
+      "likely_paths": [
+        "tools/rs377-chatgpt-bridge/",
+        "tools/rs377-companion-contract/",
+        "research/parity/"
+      ],
+      "dependency_ids": [
+        "JR-005",
+        "JR-021"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-026",
+      "phase": "P2",
+      "phase_title": "Cross-version platform contracts",
+      "title": "Create separate per-profile save, cache and world stores",
+      "description": "Ensure staging, family and disposable directories never alias same DB",
+      "acceptance": "Runtime guard detects symbolic links/collisions and refuses unsafe start",
+      "likely_paths": [
+        "tools/rs377-chatgpt-bridge/",
+        "tools/rs377-companion-contract/",
+        "research/parity/"
+      ],
+      "dependency_ids": [
+        "JR-006",
+        "JR-025"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-027",
+      "phase": "P2",
+      "phase_title": "Cross-version platform contracts",
+      "title": "Define authoritative deterministic tick and action ordering",
+      "description": "Specify tick timing, reproducible seed, priority and contention rules",
+      "acceptance": "Replay fixture reproduces order and cannot award two actors same item",
+      "likely_paths": [
+        "tools/rs377-chatgpt-bridge/",
+        "tools/rs377-companion-contract/",
+        "research/parity/"
+      ],
+      "dependency_ids": [
+        "JR-009",
+        "JR-021"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-028",
+      "phase": "P2",
+      "phase_title": "Cross-version platform contracts",
+      "title": "Implement world graph, collision and reachability contract",
+      "description": "Define region cells, tiles, obstacles, doors, ladders, sea links and instance exits",
+      "acceptance": "Path tests reject inaccessible targets and validate door transitions",
+      "likely_paths": [
+        "tools/rs377-chatgpt-bridge/",
+        "tools/rs377-companion-contract/",
+        "research/parity/"
+      ],
+      "dependency_ids": [
+        "JR-027"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-029",
+      "phase": "P2",
+      "phase_title": "Cross-version platform contracts",
+      "title": "Define idempotent action and gameplay event bus",
+      "description": "Implement unique event IDs, retries and transaction boundaries for XP/items/quests",
+      "acceptance": "Duplicate/reordered event causes no double spend, reward or skill XP",
+      "likely_paths": [
+        "tools/rs377-chatgpt-bridge/",
+        "tools/rs377-companion-contract/",
+        "research/parity/"
+      ],
+      "dependency_ids": [
+        "JR-017",
+        "JR-025",
+        "JR-027"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-030",
+      "phase": "P2",
+      "phase_title": "Cross-version platform contracts",
+      "title": "Build real-game evidence capture with privacy redaction",
+      "description": "Record source SHA, client, server, world, action input, authoritative before/after, hashes",
+      "acceptance": "Verifier rejects synthetic, stale, wrong-account or unsupported evidence",
+      "likely_paths": [
+        "tools/rs377-chatgpt-bridge/",
+        "tools/rs377-companion-contract/",
+        "research/parity/"
+      ],
+      "dependency_ids": [
+        "JR-010",
+        "JR-029"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-031",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Reconcile historical quest list against latest main and PRs",
+      "description": "Rebuild source statuses of all 104 quests after pending branches and pinned overlays",
+      "acceptance": "CSV contains every quest exactly once with committed/PR/live-proof statuses",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-007"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-032",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Validate every historical quest's required prerequisites",
+      "description": "Check each 377 quest start NPC, quest/skill prerequisites and relevant cache IDs",
+      "acceptance": "Quest cannot start illegitimately, and legal fresh account can reach starter",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-031"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-033",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Complete a real historical quest end-to-end in fresh world",
+      "description": "Drive an easy representative quest via normal client from start through reward and relog",
+      "acceptance": "Authoritative QP/XP/item postconditions and relog recorded",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-009",
+        "JR-029",
+        "JR-032"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-034",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Audit stage transitions across all 104 historical quests",
+      "description": "Extract every stage, journal flag, script branch, reward-once condition",
+      "acceptance": "Stage audit reports unsupported transitions, not only missing quest folders",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-031",
+        "JR-033"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-035",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Rebuild four known quest source stubs without damaging originals",
+      "description": "Resolve Recruitment Drive, Mourning's End II, Cabin Fever and Recipe for Disaster with PR collision map",
+      "acceptance": "Each works in disposable world or is marked stage-blocked with exact missing step",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-034"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-036",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Sequence remaining 23 quest source-gap candidates newest-first",
+      "description": "Create gated work orders ordered release-newest but first satisfy quests/skills/regions dependencies",
+      "acceptance": "Every candidate has dependency set, current branch and first failing real step",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-007",
+        "JR-032",
+        "JR-034"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-037",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Classify 673 NPC Talk-to handler candidates",
+      "description": "Resolve morphs, spawned state, inherited category, alternate handler and no-op actions",
+      "acceptance": "Every candidate has a justified classification rather than automatically flagged broken",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-031"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-038",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Verify 487 statically spawned NPC dialogue candidates",
+      "description": "For reachable NPCs, test op1 access and observed dialogue/service result with normal client",
+      "acceptance": "Evidence logs each working, unhandled, unreachable or gated case",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-037",
+        "JR-033"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-039",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Audit authentic 377 banking and merchant UI",
+      "description": "Test deposit/withdraw, item notations, shop buy/sell, stock and full inventory",
+      "acceptance": "Inventory/coin deltas and post-relog bank/stock persistence validated",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-009",
+        "JR-018"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-040",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Test 377 ground item and object interactions",
+      "description": "Run item-on-object, pick-up, doors/ladders and concurrent-take tests",
+      "acceptance": "Server handles claim conflict and no item dupe across restart",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-017",
+        "JR-028",
+        "JR-029"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-041",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Verify all 21 377 skill loops and XP semantics",
+      "description": "For every skill prove at least one legitimate input→XP/output, level-up and relog",
+      "acceptance": "21 individually cited evidence records; unsupported skills remain incomplete",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-017",
+        "JR-033"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-042",
+      "phase": "P3",
+      "phase_title": "Historical 377 functional completeness",
+      "title": "Verify 377 combat/death/loot cycle",
+      "description": "Exercise melee/ranged/magic, prayers, drops, death and retrieval in disposable environment",
+      "acceptance": "Authoritative HP/XP/loot and death state persist with no unintended loss",
+      "likely_paths": [
+        "research/rs377/",
+        "content-patches/rs377/",
+        "tools/rs377-npc-dialogue-audit/"
+      ],
+      "dependency_ids": [
+        "JR-017",
+        "JR-029"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P1",
+      "size": "M",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-043",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Prototype modern independent client and local game loop",
+      "description": "Create original-art demo with local login, camera, 30 FPS minimum on target hardware",
+      "acceptance": "Original player crosses area and saves; no 377 packets misinterpreted",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-021",
+        "JR-026"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-044",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Design scalable region streaming and spatial indices",
+      "description": "Load/unload terrain, NPCs and interactables by proximity without stalling ticks",
+      "acceptance": "Stress benchmark bounded heap, map completion and no missing collision",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-028",
+        "JR-043"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-045",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Implement interior/exterior visibility and precise collisions",
+      "description": "Doors, roofs, furnishings, windows and indoor/exterior transitions remain valid",
+      "acceptance": "Automated interior suite finds no black-window logic gaps or impassable doors",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-028",
+        "JR-044"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-046",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Build skeletal animation and interactable entity states",
+      "description": "Support walk/idle/work/fight/cast/ship animations with distinct state transitions",
+      "acceptance": "Animations follow authoritative actions without NPC freezing",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-043",
+        "JR-044"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-047",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Add independent effect/audio pipeline with licence manifests",
+      "description": "Implement FX, sound events and music/ambience from cleared/original assets",
+      "acceptance": "Asset manifest passes provenance scan; effects align with server ticks",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-043"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-048",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Implement accessible desktop/mobile camera and input",
+      "description": "Mouse/keyboard/touch path requests, camera zoom, accessible text scaling",
+      "acceptance": "Actions all usable on target desktop and touch device; no click-through loss",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-043"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-049",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Build scalable minimap, world map and path previews",
+      "description": "Client displays location, region, accessible route and instance boundaries",
+      "acceptance": "Path changes when blocked; no inaccessible shortcut advertised",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-028",
+        "JR-043"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-050",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Develop versioned UI component/interface description layer",
+      "description": "Reusable declarative forms for dialogue, inventory, bank, quest, ship and abilities",
+      "acceptance": "Server validates interaction IDs and rejects spoofed form choices",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-022",
+        "JR-043"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-051",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Implement action bars, cooldown and hotkey presentation",
+      "description": "Provide modern RS3-style multi-slot bar and independent OSRS-style UI profiles",
+      "acceptance": "UI accurately reflects server-authoritative cooldown and locked abilities",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-027",
+        "JR-050"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-052",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Implement branch-aware quest journal and dialogue presentation",
+      "description": "Render real options, quest markers, progression, prerequisites and readable hints",
+      "acceptance": "Selecting dialogue advances correct quest state or reports a safe failure",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-024",
+        "JR-050"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-053",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Build skills UI for 30-concept reference taxonomy",
+      "description": "Per-mode caps and level-up unlock rendering without implying all systems exist",
+      "acceptance": "Unimplemented concepts show disabled capability, not fabricated XP",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-023",
+        "JR-050"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-054",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Build transactional modern inventory/equipment/bank interface",
+      "description": "Client reconciles optimistic view to server commits, stacked/charged/bound item rules",
+      "acceptance": "Disconnect mid move/craft leaves consistent inventory and bank",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-018",
+        "JR-023",
+        "JR-050"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-055",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Prototype rendered moving boat connected to sea navigation",
+      "description": "Move boat and boarded avatars with camera, docking and collision",
+      "acceptance": "Two logged-in viewers see same boat location and intact boarded player",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-044",
+        "JR-046",
+        "JR-048"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-056",
+      "phase": "P4",
+      "phase_title": "Modern client, world and UI foundations",
+      "title": "Implement instance and player-owned home framework",
+      "description": "Create party/private instance IDs, portals and home permissions",
+      "acceptance": "Unauthorized entry/build attempts fail; furniture/world state persists",
+      "likely_paths": [
+        "research/parity/roadmap/",
+        "src/",
+        "tests/"
+      ],
+      "dependency_ids": [
+        "JR-026",
+        "JR-028",
+        "JR-050"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-057",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement independent OSRS-style historical tick combat rules",
+      "description": "Version-specific accuracy, weapon speeds, prayer and special attack model",
+      "acceptance": "Deterministic fixtures validate combat states and damage bounds",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-021",
+        "JR-027",
+        "JR-042"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-058",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Create OSRS-style resource, recipe and equipment registries",
+      "description": "Original definitions with tool tiers, item sources/sinks, crafting chains and levels",
+      "acceptance": "Every recipe has obtainable inputs and output, no free grants",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-023",
+        "JR-029"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-059",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement Hunter and creature tracking loops",
+      "description": "Tracking, traps, wildlife spawns, level checks and peaceful collection",
+      "acceptance": "Resource cycles, inventory, XP and catch cooldown persist",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-028",
+        "JR-058"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-060",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement Construction and household building",
+      "description": "Room planning, furnishings, costs, permission flags and persistence",
+      "acceptance": "Child can decorate permitted room but cannot grief shared storage",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-023",
+        "JR-056",
+        "JR-058"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-061",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement Sailing water navigation and hazard graph",
+      "description": "Sea mesh, currents, collisions, shoreline/port boundaries and path invalidation",
+      "acceptance": "Boat cannot sail onto land and reroutes after map change",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-028",
+        "JR-044"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-062",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement boat construction, hull and facility components",
+      "description": "Original raft/skiff/ship prototypes with parts, storage and upgrades",
+      "acceptance": "Upgrade consumes resources once and persists stats/appearance",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-055",
+        "JR-058",
+        "JR-061"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-063",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement ship crew and companion operator roles",
+      "description": "Owned NPC companions with assignment, stamina/task limits and no remote AI services",
+      "acceptance": "Crew continues server-authoritative task and stops on disable",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-062"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-064",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement ports, embark/disembark and docking transitions",
+      "description": "Attach passengers to boat; safely leave/enter port and instance",
+      "acceptance": "Reconnection cannot strand a player in void/sea",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-061",
+        "JR-062"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-065",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement sea charting, navigation discoveries and logs",
+      "description": "Discovery marks, shipboard journals, charting rewards and duplicate protection",
+      "acceptance": "Each chart discovery pays only once and is visible after relog",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-061",
+        "JR-064"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-066",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement salvage, shipwreck and maritime resources",
+      "description": "Fishing net, salvage hook, debris spawns and item cargo lifecycle",
+      "acceptance": "Full cargo, concurrent salvage and disconnect are dupe-safe",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-062",
+        "JR-065"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-067",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement Sailing XP and port contract progression",
+      "description": "Level-gated courier/salvage tasks with repeatable orders and progression",
+      "acceptance": "Port contract completion and XP survive restart; task cannot repeat rewards",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-057",
+        "JR-065",
+        "JR-066"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-068",
+      "phase": "P5",
+      "phase_title": "OSRS-style mechanics and Sailing",
+      "title": "Implement OSRS-style spellbooks, runes and prayer gating",
+      "description": "Separate spell unlocks, rune consumption, spell targets and prayer points",
+      "acceptance": "Actual combat/teleport/use-on with correct resource accounting",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-057",
+        "JR-058",
+        "JR-050"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-069",
+      "phase": "P6",
+      "phase_title": "Modern OSRS-style content and activities",
+      "title": "Build full OSRS quest prerequisite semantic graph",
+      "description": "Enumerate every live quest and miniquest with version/lineage and prereq edges",
+      "acceptance": "Graph includes November 2026 changes; no prereq cycle or unlinked starter",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-024",
+        "JR-031"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-070",
+      "phase": "P6",
+      "phase_title": "Modern OSRS-style content and activities",
+      "title": "Create original quest content pipeline with stage replay proof",
+      "description": "Reusable quest scripts, interaction specs, validation and reward-once semantics",
+      "acceptance": "One original multi-branch quest passes fresh-account/relog/negative tests",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-029",
+        "JR-052",
+        "JR-069"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-071",
+      "phase": "P6",
+      "phase_title": "Modern OSRS-style content and activities",
+      "title": "Plan and implement modern OSRS-style regions incrementally",
+      "description": "Separate world-graph region packs with metadata, object reachability and portals",
+      "acceptance": "Each new region passes nav, collision, return-home and save tests",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-044",
+        "JR-049",
+        "JR-061"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-072",
+      "phase": "P6",
+      "phase_title": "Modern OSRS-style content and activities",
+      "title": "Audit and implement modern NPC services and monster behaviours",
+      "description": "Original NPC AI with trade/bank/talk/follow/attack and boss phase hooks",
+      "acceptance": "NPCs act purposefully and do not jam doors; interactions pass observed tests",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-046",
+        "JR-071"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-073",
+      "phase": "P6",
+      "phase_title": "Modern OSRS-style content and activities",
+      "title": "Implement modular boss and encounter state machines",
+      "description": "Phase-graph triggers, telegraphing, aggro, loot tables, respawn and reset",
+      "acceptance": "Boss defeat grants loot once; failure/restart recovers safely",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-042",
+        "JR-057",
+        "JR-072"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-074",
+      "phase": "P6",
+      "phase_title": "Modern OSRS-style content and activities",
+      "title": "Implement family-scaled co-op raid instances",
+      "description": "Solo/2-player selectable difficulty, puzzle resets, NPC helper substitutions",
+      "acceptance": "Both players can complete with no external third/fourth participant",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-056",
+        "JR-073"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-075",
+      "phase": "P6",
+      "phase_title": "Modern OSRS-style content and activities",
+      "title": "Implement modern OSRS-style skilling/minigame rotation",
+      "description": "Reusable timed/repeatable minigames, scheduling and reward currencies",
+      "acceptance": "Minigame entry/exit and reward scores survive disconnection",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-053",
+        "JR-058",
+        "JR-057"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-076",
+      "phase": "P6",
+      "phase_title": "Modern OSRS-style content and activities",
+      "title": "Implement achievement diaries, clue and collection logs",
+      "description": "Typed trigger/event book covering skilling, quests, loot, bosses and diaries",
+      "acceptance": "Complete a log slot through real action; no manual status spoofing",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-029",
+        "JR-069",
+        "JR-075"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-077",
+      "phase": "P6",
+      "phase_title": "Modern OSRS-style content and activities",
+      "title": "Implement offline merchant economy and safe market substitutes",
+      "description": "NPC supply/demand and asynchronous local offers, no public trading dependency",
+      "acceptance": "Buy/sell/stock/tax accounting remains balanced and reboot-safe",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-018",
+        "JR-058"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-078",
+      "phase": "P6",
+      "phase_title": "Modern OSRS-style content and activities",
+      "title": "Automate modern quest/region/boss playthrough evidence",
+      "description": "Playtest many quest stages, transitions and co-op events with disposable profiles",
+      "acceptance": "Dashboard shows verified, blocked, untested and rights-gated separately",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-030",
+        "JR-069",
+        "JR-070",
+        "JR-074",
+        "JR-076"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-079",
+      "phase": "P7",
+      "phase_title": "Modern RS3-style core systems",
+      "title": "Create isolated RS3-style combat and progression profile",
+      "description": "Independent XP caps, quests, item stats and player abilities from OSRS/377",
+      "acceptance": "Cross-mode state tests detect accidental XP, item or quest writes",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-021",
+        "JR-024",
+        "JR-027"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-080",
+      "phase": "P7",
+      "phase_title": "Modern RS3-style core systems",
+      "title": "Implement action ability engine with server tick validation",
+      "description": "Basic/threshold/ultimate abilities, targets, costs and range in separate ruleset",
+      "acceptance": "Invalid cooldown/range/adrenaline requests rejected",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-051",
+        "JR-079"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-081",
+      "phase": "P7",
+      "phase_title": "Modern RS3-style core systems",
+      "title": "Implement adrenaline, cooldowns and defensive statuses",
+      "description": "Adrenaline gain/spend, shields, status stacking, damage-over-time and interruption",
+      "acceptance": "Replay matches cooldown and mitigation reference fixtures",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-080"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-082",
+      "phase": "P7",
+      "phase_title": "Modern RS3-style core systems",
+      "title": "Implement RS3-style combat styles and switching",
+      "description": "Melee, Ranged, Magic and Necromancy style-specific stats and equipment",
+      "acceptance": "Style switch recomputes stats and invalidates illegal equipped items",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-079",
+        "JR-080"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-083",
+      "phase": "P7",
+      "phase_title": "Modern RS3-style core systems",
+      "title": "Implement original Necromancy ritual and progression loop",
+      "description": "Ritual sites, consumables, souls/resource pool, level unlocks and instancing",
+      "acceptance": "Ritual consumes valid inputs and awards XP once with persistent soul tally",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-029",
+        "JR-053",
+        "JR-079"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-084",
+      "phase": "P7",
+      "phase_title": "Modern RS3-style core systems",
+      "title": "Implement Necromancy conjures and incantation combat",
+      "description": "Server-owned summoned entity lifetimes, ability targets and resource costs",
+      "acceptance": "Conjures cannot spawn indefinitely; logout/death clean-up verified",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-080",
+        "JR-081",
+        "JR-083"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-085",
+      "phase": "P7",
+      "phase_title": "Modern RS3-style core systems",
+      "title": "Implement Summoning familiars and pouch progression",
+      "description": "Pouch crafting, charm resources, summon duration, follower tasks and inventory",
+      "acceptance": "Familiar uses resources, follows owner and despawns safely on restart",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-028",
+        "JR-079",
+        "JR-082"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-086",
+      "phase": "P7",
+      "phase_title": "Modern RS3-style core systems",
+      "title": "Implement procedural Dungeoneering floors and group scaling",
+      "description": "Generated floor seeds, puzzle locks, equipment rules, safe exits and co-op difficulty",
+      "acceptance": "Solo/dual players can enter, solve, complete, and keep legitimate rewards",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-056",
+        "JR-079",
+        "JR-081"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-087",
+      "phase": "P7",
+      "phase_title": "Modern RS3-style core systems",
+      "title": "Implement Divination gathering and energy conversion",
+      "description": "Wisp nodes, conversion activities, caches and level prerequisites",
+      "acceptance": "Energy changes accounted for; no infinite XP loop",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-058",
+        "JR-079"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-088",
+      "phase": "P7",
+      "phase_title": "Modern RS3-style core systems",
+      "title": "Implement Invention disassembly, augmentations and perks",
+      "description": "Materials, item ownership, gizmos, perk combination rules and charges",
+      "acceptance": "Item augments persist; material balances and charge depletion correct",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-023",
+        "JR-029",
+        "JR-079"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-089",
+      "phase": "P8",
+      "phase_title": "Modern RS3-style world and progression",
+      "title": "Implement Archaeology dig sites, excavation and restoration",
+      "description": "Original dig layers, damaged artefacts, restoration materials, research and collections",
+      "acceptance": "Excavate/restoration consumes resources and unlocks milestones",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-044",
+        "JR-058",
+        "JR-079"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-090",
+      "phase": "P8",
+      "phase_title": "Modern RS3-style world and progression",
+      "title": "Implement archaeology mystery and relic-effect framework",
+      "description": "Persistent investigation flags, world changes and configurable passive effects",
+      "acceptance": "Mystery state and relic restrictions survive logout/restart",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-024",
+        "JR-089"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-091",
+      "phase": "P8",
+      "phase_title": "Modern RS3-style world and progression",
+      "title": "Implement RS3-style modern region content packs",
+      "description": "Versioned sea/land/city/underground original map regions and transitions",
+      "acceptance": "Every region loads, NPCs spawn, interactions work and return route exists",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-044",
+        "JR-049",
+        "JR-079"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-092",
+      "phase": "P8",
+      "phase_title": "Modern RS3-style world and progression",
+      "title": "Implement RS3-style branching story and quest systems",
+      "description": "Complex cutscenes, quest choices, lore sequencing and post-quest world changes",
+      "acceptance": "Original multi-quest chain retains choices and unlocks after relog",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-052",
+        "JR-090",
+        "JR-091"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-093",
+      "phase": "P8",
+      "phase_title": "Modern RS3-style world and progression",
+      "title": "Implement RS3-style boss hub, encounters and elite dungeons",
+      "description": "Boss portals, selectable difficulty, phases, rewards, storage and group scaling",
+      "acceptance": "Each hub entry/boss/floor fully playable with restart-safe rewards",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-056",
+        "JR-081",
+        "JR-091"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-094",
+      "phase": "P8",
+      "phase_title": "Modern RS3-style world and progression",
+      "title": "Implement modern skill cap upgrades and advanced progression",
+      "description": "Support 99/110/120 virtual and special mastery caps as profile-specific data",
+      "acceptance": "XP function, level-up/UI and post-cap unlocks correctly follow chosen mode",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-053",
+        "JR-079"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-095",
+      "phase": "P8",
+      "phase_title": "Modern RS3-style world and progression",
+      "title": "Implement personal ports, farms and long-running activities",
+      "description": "Background-time tasks driven from local clock with deterministic offline catch-up",
+      "acceptance": "Tasks neither require internet nor produce unbounded offline rewards",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-026",
+        "JR-079",
+        "JR-091"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-096",
+      "phase": "P8",
+      "phase_title": "Modern RS3-style world and progression",
+      "title": "Implement RS3 achievements, boss logs and completion trackers",
+      "description": "Progress events, titles, collections, mastery counters and replay safety",
+      "acceptance": "Every award maps to a confirmed gameplay event and persists",
+      "likely_paths": [
+        "research/parity/data/",
+        "research/parity/roadmap/",
+        "tools/parity-inventory/"
+      ],
+      "dependency_ids": [
+        "JR-029",
+        "JR-079",
+        "JR-094"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "L",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-097",
+      "phase": "P9",
+      "phase_title": "Release proof and family-facing final gates",
+      "title": "Add parent safety controls and child-accessibility acceptance",
+      "description": "World-specific comfort settings, combat/death toggle, readable UI and permissions",
+      "acceptance": "Parent lock enforced by server; real child-profile solo/play tests pass",
+      "likely_paths": [
+        "research/parity/",
+        "tools/parity-inventory/",
+        ".github/workflows/"
+      ],
+      "dependency_ids": [
+        "JR-012",
+        "JR-015",
+        "JR-020",
+        "JR-050",
+        "JR-054"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-098",
+      "phase": "P9",
+      "phase_title": "Release proof and family-facing final gates",
+      "title": "Finish exhaustive modern reference enumerator and gap reconciliation",
+      "description": "Paginated all quest/NPC/item/region/ability lists with source/provenance, IDs, dates, aliases and nulls",
+      "acceptance": "No false exhaustive flag; full page cursors, unique counts, source dates and disputes recorded",
+      "likely_paths": [
+        "research/parity/",
+        "tools/parity-inventory/",
+        ".github/workflows/"
+      ],
+      "dependency_ids": [
+        "JR-030",
+        "JR-031",
+        "JR-037",
+        "JR-058",
+        "JR-069",
+        "JR-079"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-099",
+      "phase": "P9",
+      "phase_title": "Release proof and family-facing final gates",
+      "title": "Enforce file-level licences and public repo privacy gates",
+      "description": "Provenance manifest, forbidden proprietary assets, cache/binary/credential scan and manual review",
+      "acceptance": "CI blocks unauthorised media/private data and incompatible code licence mixing",
+      "likely_paths": [
+        "research/parity/",
+        "tools/parity-inventory/",
+        ".github/workflows/"
+      ],
+      "dependency_ids": [
+        "JR-001",
+        "JR-023",
+        "JR-043",
+        "JR-070",
+        "JR-098"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    },
+    {
+      "id": "JR-100",
+      "phase": "P9",
+      "phase_title": "Release proof and family-facing final gates",
+      "title": "Run whole-program regression, performance and recoverability acceptance",
+      "description": "Separate profile test matrices, offline cold boot, 2-device LAN, 100 quest/skill/boss probes and backup drill",
+      "acceptance": "Release only when required live tests pass; no synthetic VERIFIED_PLAYABLE",
+      "likely_paths": [
+        "research/parity/",
+        "tools/parity-inventory/",
+        ".github/workflows/"
+      ],
+      "dependency_ids": [
+        "JR-006",
+        "JR-016",
+        "JR-020",
+        "JR-030",
+        "JR-078",
+        "JR-096",
+        "JR-097",
+        "JR-098",
+        "JR-099"
+      ],
+      "implementation_status": "NOT_STARTED_OR_NOT_RECONCILED",
+      "evidence_level": "BACKLOG_ONLY",
+      "required_proof": [
+        "source_or_spec",
+        "automated_test",
+        "isolated_gameplay_if_applicable",
+        "save_relog_if_stateful"
+      ],
+      "rights_gate": "IF_REFERENCING_JAGEX_MATERIAL_REVIEW_BEFORE_COPYING",
+      "priority": "P2",
+      "size": "XL",
+      "size_confidence": "LOW_BEFORE_PROTOTYPE",
+      "owner": "UNASSIGNED",
+      "reference": "research/parity/roadmap/EXECUTIVE_ASSESSMENT.md"
+    }
+  ]
+}
