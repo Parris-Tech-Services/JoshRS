@@ -19,10 +19,10 @@ label{display:inline-block;margin:.35rem}
 <section><h2>Create agent profile</h2>
 <p>Creates a local profile only. A real game account is recognised only after normal server authentication.</p>
 <form id="create"><label>Name <input name="name" placeholder="HarnessA" pattern="Harness[A-Za-z0-9_-]{1,10}" required></label>
-<label>Goal <select name="goal"><option value="idle">Idle (observe)</option><option value="explore">Explore nearby (verified normal movement)</option></select></label>
+<label>Goal <select name="goal"><option value="idle">Idle (observe)</option><option value="explore">Explore nearby (verified normal movement)</option><option value="woodcut">Woodcut (verified XP; axe required)</option><option value="talk">Talk to nearby NPC (verify dialogue)</option></select></label>
 <button type="submit">Create profile</button></form></section>
 <section><h2>Agents</h2><div id="list" role="region" aria-live="polite">Loading...</div></section>
 <p id="message" role="status" class="status" aria-live="polite"></p>
-<p class="muted">Questing, banking, combat and full upstream RS-SDK state are not yet available in this revision-377 observer. No actions execute on your family world.</p>
+<p class="muted">Questing, banking and full upstream RS-SDK state are not yet available in this revision-377 observer. No actions execute on your family world.</p>
 <script src="/app.js" defer></script>
 </body></html>
