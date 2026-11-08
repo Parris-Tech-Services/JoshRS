@@ -209,7 +209,11 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
         const timeout=setTimeout(()=>reject(new Error('sdk_http_server_close_timeout')),3000);
         server.close(err=>{
           clearTimeout(timeout);
-          if(err)reject(err);else resolve();
+          // Under Bun, wsServer.close() may already close the attached
+          // HTTP server while server.listening is briefly still true.
+          // Closing an already stopped server is successful idempotent cleanup.
+          if(err&&err.code!=='ERR_SERVER_NOT_RUNNING')reject(err);
+          else resolve();
         });
       });
     }
