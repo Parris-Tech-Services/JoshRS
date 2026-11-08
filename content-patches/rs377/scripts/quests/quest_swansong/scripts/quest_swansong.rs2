@@ -1,0 +1,124 @@
+// Swan Song - JoshRS original dialogue and stages on top of the 377 cache definitions (swan_* NPCs, varbit swansong).
+// Dialogue, rewards and stage values are original JoshRS content. Rule of thumb for fresh fish: harpoon the
+// fishing spot, cook the raw fish, bring cooked fish to Arnold. UNIMPLEMENTED: the harpoon/cooking hooks (see README).
+
+[opnpc1,swan_herman]
+switch_int (%swansong) {
+    case ^swansong_not_started :
+        ~chatnpc("<p,sad>Our colony is hungry and the sea trolls grow bolder.|I need someone brave to help us.");
+        def_int $o = ~p_choice2("What can I do?", 1, "Sorry, I'm busy.", 2);
+        if ($o = 1) {
+            ~chatplayer("<p,neutral>What can I do?");
+            ~chatnpc("<p,neutral>Speak to my brother Franklin and to Arnold.|They will tell you what we need.");
+            %swansong = ^swansong_started;
+            ~send_quest_progress(questlist:swansong, %swansong, ^swansong_complete);
+        } else {
+            ~chatplayer("<p,neutral>Sorry, I'm busy.");
+        }
+    case ^swansong_started, ^swansong_met_franklin, ^swansong_met_arnold, ^swansong_fish, ^swansong_trolls, ^swansong_queen :
+        ~chatnpc("<p,neutral>Please hurry. Franklin and Arnold know the plan.");
+    case ^swansong_return :
+        ~chatnpc("<p,happy>The Sea Troll Queen is gone and the colony can fish again!");
+        queue(swansong_quest_complete, 0, 0);
+    case ^swansong_complete :
+        ~chatnpc("<p,happy>The colony will not forget what you did.");
+}
+
+[opnpc1,swan_franklin]
+switch_int (%swansong) {
+    case ^swansong_not_started : ~chatnpc("<p,neutral>Herman handles our visitors.");
+    case ^swansong_started :
+        ~chatnpc("<p,neutral>Herman sent you? Good.|The trolls attack whenever we fish. Talk to Arnold about food.");
+        %swansong = ^swansong_met_franklin;
+    case ^swansong_met_franklin, ^swansong_met_arnold, ^swansong_fish, ^swansong_trolls, ^swansong_queen, ^swansong_return :
+        ~chatnpc("<p,neutral>Stay sharp out there.");
+    case default : ~chatnpc("<p,happy>Good to see you, friend.");
+}
+
+[opnpc1,swan_arnold]
+switch_int (%swansong) {
+    case ^swansong_not_started, ^swansong_started : ~chatnpc("<p,neutral>Franklin or Herman can tell you more.");
+    case ^swansong_met_franklin :
+        ~chatnpc("<p,neutral>We need five cooked monkfish for the journey.|Harpoon some from the fishing spots and cook them.");
+        %swansong = ^swansong_fish;
+    case ^swansong_met_arnold :
+        %swansong = ^swansong_fish;
+        ~chatnpc("<p,neutral>Bring me five cooked monkfish.");
+    case ^swansong_fish :
+        if (inv_total(inv, swan_monkfish) >= ^swansong_fish_needed) {
+            ~chatnpc("<p,happy>That's enough fish. Thank you.|Now the trolls must be dealt with.");
+            inv_del(inv, swan_monkfish, ^swansong_fish_needed);
+            %swansong = ^swansong_trolls;
+        } else {
+            ~chatnpc("<p,neutral>I still need five cooked monkfish.");
+        }
+    case ^swansong_trolls, ^swansong_queen, ^swansong_return :
+        ~chatnpc("<p,neutral>The sea trolls will keep coming until their queen falls.");
+    case default : ~chatnpc("<p,happy>The fish are plentiful again.");
+}
+
+[opnpc1,swan_wom_ambush]
+~chatnpc("<p,neutral>Beware the trolls, young one. Their queen waits at the bottom.");
+
+[opnpc1,swan_drunkendwarf]
+~chatnpc("<p,happy>Hic! Don't mind me, friend.");
+
+[opnpc1,swan_boatwoman_1]
+~chatnpc("<p,neutral>I only ferry colonists.");
+
+[opnpc1,swan_boatwoman_2]
+~chatnpc("<p,neutral>I only ferry colonists.");
+
+[opnpc1,swan_colonist_1]
+~chatnpc("<p,neutral>The colony is counting on you.");
+
+[opnpc1,swan_colonist_2]
+~chatnpc("<p,neutral>Have you seen the queen's sea trolls yet?");
+
+[opnpc1,swan_colonist_3]
+~chatnpc("<p,neutral>We keep our heads down. The trolls are ruthless.");
+
+[ai_queue3,swan_troll_ambush]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    if (%swansong = ^swansong_trolls) {
+        queue(swan_troll_kill, 0, 0);
+    }
+}
+
+[queue,swan_troll_kill]
+%swansong = ^swansong_queen;
+mes("The ambushing troll falls. Its queen must be near.");
+
+[ai_queue3,swan_seatroll_queen]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    if (%swansong = ^swansong_queen) {
+        queue(swan_queen_kill, 0, 0);
+    }
+}
+
+[queue,swan_queen_kill]
+%swansong = ^swansong_return;
+mes("The Sea Troll Queen falls. Herman will want to hear of it.");
+
+[queue,swansong_quest_complete]
+%swansong = ^swansong_complete;
+stat_advance(fishing, 100000);
+stat_advance(cooking, 50000);
+session_log(^log_adventure, "Quest complete: Swan Song");
+~send_quest_complete(questlist:swansong, swan_monkfish, 200, ^swansong_questpoints, "You have completed Swan Song!", "10,000 Fishing XP|5,000 Cooking XP");
+
+[if_button,questlist:swansong]
+def_string $text;
+switch_int (%swansong) {
+    case ^swansong_not_started : $text = "@dbl@I can start this quest by talking to @dre@Herman Caranos@dbl@.";
+    case ^swansong_started : $text = "@str@I spoke to Herman.||@dbl@I should speak to @dre@Franklin Caranos@dbl@.";
+    case ^swansong_met_franklin : $text = "@str@I spoke to Franklin.||@dbl@I should speak to @dre@Arnold Lydspor@dbl@.";
+    case ^swansong_met_arnold, ^swansong_fish : $text = "@str@I spoke to Arnold.||@dbl@I must bring Arnold five cooked @dre@monkfish@dbl@.";
+    case ^swansong_trolls : $text = "@str@I delivered the monkfish.||@dbl@I must defeat the @dre@ambushing sea troll@dbl@.";
+    case ^swansong_queen : $text = "@str@I defeated the ambusher.||@dbl@I must defeat the @dre@Sea Troll Queen@dbl@.";
+    case ^swansong_return : $text = "@str@I defeated the Sea Troll Queen.||@dbl@I should tell @dre@Herman@dbl@.";
+    case default : $text = "@str@I helped the colony defeat the sea trolls.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Swan Song", $text);

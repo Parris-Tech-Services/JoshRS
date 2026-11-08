@@ -1,0 +1,196 @@
+// A Soul's Bane - JoshRS original dialogue and stage logic on top of the 377 cache definitions.
+// Dialogue, rewards and stage values are original JoshRS content (not copied from the 2006 game).
+
+[opnpc1,soulbane_launa]
+@soulbane_talk_launa;
+
+[opnpc1,soulbane_launa_young]
+@soulbane_talk_launa;
+
+[opnpc1,soulbane_tolna_multi]
+@soulbane_talk_tolna;
+
+[opnpc1,soulbane_tolna_top]
+@soulbane_talk_tolna;
+
+[opnpc1,soulbane_brana]
+~chatnpc("<p,neutral>Old houses hold old tempers.|Mind your step in there.");
+
+[label,soulbane_talk_launa]
+switch_int (%soulbane_prog) {
+    case ^soulbane_not_started :
+        ~chatnpc("<p,sad>My brother Tolna and I have not spoken kindly in years.|Something in this house feeds on our quarrel.");
+        def_int $o = ~p_choice2("I'll try to help.", 1, "That's not my problem.", 2);
+        if ($o = 1) {
+            ~chatplayer("<p,neutral>I'll try to help.");
+            ~chatnpc("<p,neutral>Four trials wait below: anger, fear, confusion and hope.|Defeat what haunts each one, then come back to us.");
+            %soulbane_prog = ^soulbane_started;
+            ~send_quest_progress(questlist:soulbane, %soulbane_prog, ^soulbane_complete);
+        } else {
+            ~chatplayer("<p,neutral>That's not my problem.");
+            ~chatnpc("<p,sad>Then I will wait a while longer.");
+        }
+    case ^soulbane_started, ^soulbane_anger, ^soulbane_fear, ^soulbane_confusion, ^soulbane_hope, ^soulbane_final :
+        ~chatnpc("<p,neutral>The trials are not finished.|Anger, then fear, then confusion, then hope.");
+    case ^soulbane_return :
+        ~chatnpc("<p,happy>It is quiet at last. Thank you.|Please speak to my brother too.");
+    case ^soulbane_complete :
+        ~chatnpc("<p,happy>Tolna and I are friends again, thanks to you.");
+}
+
+[label,soulbane_talk_tolna]
+switch_int (%soulbane_prog) {
+    case ^soulbane_not_started :
+        ~chatnpc("<p,angry>Go and bother my sister, not me.");
+    case ^soulbane_started, ^soulbane_anger, ^soulbane_fear, ^soulbane_confusion, ^soulbane_hope, ^soulbane_final :
+        ~chatnpc("<p,neutral>If you really mean to go down there, be careful.|It feeds on every harsh word.");
+    case ^soulbane_return :
+        ~chatnpc("<p,happy>You faced all four and came back. I owe you.");
+        queue(soulbane_quest_complete, 0, 0);
+    case ^soulbane_complete :
+        ~chatnpc("<p,happy>Launa and I talk every day now.");
+}
+
+[queue,soulbane_quest_complete]
+%soulbane_prog = ^soulbane_complete;
+stat_advance(prayer, 40000);
+stat_advance(defence, 20000);
+session_log(^log_adventure, "Quest complete: A Soul's Bane");
+~send_quest_complete(questlist:soulbane, soulbane_zaros_spear, 200, ^soulbane_questpoints, "You have completed A Soul's Bane!", "4,000 Prayer XP|2,000 Defence XP");
+
+// Trial 1 kills run through a queue so they execute in player context.
+[queue,soulbane_anger_kill](int $bit)
+if (%soulbane_prog = ^soulbane_anger) {
+    %soulbane_mask = setbit(%soulbane_mask, $bit);
+    if (testbit(%soulbane_mask, 0) = ^true & testbit(%soulbane_mask, 1) = ^true & testbit(%soulbane_mask, 2) = ^true & testbit(%soulbane_mask, 3) = ^true) {
+        %soulbane_prog = ^soulbane_fear;
+        mes("The anger in the air fades. A chill takes its place.");
+    }
+}
+
+[ai_queue3,soulbane_anger_bear]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(soulbane_anger_kill, 0, 0);
+}
+
+[ai_queue3,soulbane_anger_unicorn]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(soulbane_anger_kill, 0, 1);
+}
+
+[ai_queue3,soulbane_anger_rat]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(soulbane_anger_kill, 0, 2);
+}
+
+[ai_queue3,soulbane_anger_goblin]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(soulbane_anger_kill, 0, 3);
+}
+
+// Trial 2: fear. Defeat three fear reapers.
+[ai_queue3,soulbane_fear_reaper]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    if (%soulbane_prog = ^soulbane_fear) {
+        queue(soulbane_fear_kill, 0, 0);
+    }
+}
+
+[queue,soulbane_fear_kill]
+%soulbane_fear_killedtally = calc(%soulbane_fear_killedtally + 1);
+if (%soulbane_fear_killedtally >= ^soulbane_fear_needed) {
+    %soulbane_prog = ^soulbane_confusion;
+    mes("The fear lifts, but your thoughts feel muddled.");
+}
+
+// Trial 3: confusion. Only the real creature counts; the fakes just vanish.
+[ai_queue3,soulbane_confu_creeper]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    if (%soulbane_prog = ^soulbane_confusion) {
+        queue(soulbane_confu_kill, 0, 0);
+    }
+}
+
+[queue,soulbane_confu_kill]
+%soulbane_prog = ^soulbane_hope;
+mes("The real creature falls. The fog in your head clears.");
+
+// Trial 4: hope. Defeat three hope monsters.
+[queue,soulbane_hope_kill]
+if (%soulbane_prog = ^soulbane_hope) {
+    %soulbane_hope_killedtally = calc(%soulbane_hope_killedtally + 1);
+    if (%soulbane_hope_killedtally >= ^soulbane_hope_needed) {
+        %soulbane_prog = ^soulbane_final;
+        mes("A strange warmth fills the room. One more thing remains.");
+    }
+}
+
+[ai_queue3,soulbane_hope_monst1]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(soulbane_hope_kill, 0, 0);
+}
+
+[ai_queue3,soulbane_hope_monst2]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(soulbane_hope_kill, 0, 0);
+}
+
+[ai_queue3,soulbane_hope_monst3]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(soulbane_hope_kill, 0, 0);
+}
+
+// Final: the three shades of Tolna. Death flags are written in a
+// player-context queue; the last kill completes the trial.
+[queue,soulbane_tolna_dead](int $which)
+if ($which = 1) { %soulbane_final_tol1dead = 1; }
+if ($which = 2) { %soulbane_final_tol2dead = 1; }
+if ($which = 3) { %soulbane_final_tol3dead = 1; }
+if (%soulbane_prog = ^soulbane_final) {
+    if (%soulbane_final_tol1dead = 1 & %soulbane_final_tol2dead = 1 & %soulbane_final_tol3dead = 1) {
+        %soulbane_prog = ^soulbane_return;
+        mes("The last shade fades. It is finally quiet.");
+    }
+}
+
+[ai_queue3,soulbane_final_tolna1]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(soulbane_tolna_dead, 0, 1);
+}
+
+[ai_queue3,soulbane_final_tolna2]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(soulbane_tolna_dead, 0, 2);
+}
+
+[ai_queue3,soulbane_final_tolna3]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(soulbane_tolna_dead, 0, 3);
+}
+
+[if_button,questlist:soulbane]
+def_string $text;
+switch_int (%soulbane_prog) {
+    case ^soulbane_not_started : $text = "@dbl@I can start this quest by talking to @dre@Launa@dbl@ in the house in@dre@Varrock@dbl@.";
+    case ^soulbane_started : $text = "@str@I spoke to Launa.||@dbl@I must face four trials below the house. First, @dre@anger@dbl@.";
+    case ^soulbane_anger : $text = "@str@I spoke to Launa.||@dbl@I must defeat the four @dre@anger@dbl@ monsters.";
+    case ^soulbane_fear : $text = "@str@I defeated the anger monsters.||@dbl@Next I must defeat three @dre@fear reapers@dbl@.";
+    case ^soulbane_confusion : $text = "@str@I defeated the fear reapers.||@dbl@Now I must find the real @dre@confusion beast@dbl@.";
+    case ^soulbane_hope : $text = "@str@I defeated the confusion beast.||@dbl@I must defeat three @dre@hope@dbl@ monsters.";
+    case ^soulbane_final : $text = "@str@I defeated the hope monsters.||@dbl@Only the three @dre@shades of Tolna@dbl@ remain.";
+    case ^soulbane_return : $text = "@str@I defeated every shade.||@dbl@I should tell @dre@Tolna@dbl@ that it is done.";
+    case default : $text = "@str@I faced all four trials and the shades of Tolna.||@red@QUEST COMPLETE!";
+}
+~quest_journal("A Soul's Bane", $text);

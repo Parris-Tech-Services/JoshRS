@@ -1,0 +1,56 @@
+// Haunted Mine - JoshRS original flow on 377 cache items/NPCs (Treus Dayth, zealot's key, innocent-looking key, crystal-mine key).
+// Original JoshRS content. Add scope=perm to cache varp hauntedmine. NOT IMPLEMENTED: the start NPC (no cache NPC; use any
+// existing Canifis/Mort'ton NPC), the mine carts/levers, the lift and the secondary entrances.
+
+// Placeholder start: using the zealot's key begins the quest.
+[opheld1,hauntedmine_lift_key]
+if (%hauntedmine = ^hm_not_started) {
+    %hauntedmine = ^hm_started;
+    ~send_quest_progress(questlist:hauntedmine, %hauntedmine, ^hm_complete);
+    mes("The key hums faintly. Something in the mine is calling.");
+} else {
+    mes("A zealot's key.");
+}
+
+[opnpc1,hauntedmine_boss_ghost]
+switch_int (%hauntedmine) {
+    case ^hm_started :
+        ~chatnpc("<p,sad>The key that bound me here lies deeper in the mine...|Find it, and free me from this place.");
+        %hauntedmine = ^hm_key;
+    case ^hm_key :
+        ~chatnpc("<p,sad>You carry the key that bound me here...|Free me from this place.");
+        %hauntedmine = ^hm_boss;
+    case ^hm_boss :
+        ~chatnpc("<p,neutral>Finish what you began.");
+    case default :
+        ~chatnpc("<p,sad>...");
+}
+
+[opnpc1,hauntedmine_cheeky_ghost]
+~chatnpc("<p,laugh>Boo! Did I scare you?");
+
+[ai_queue3,hauntedmine_boss_ghost]
+gosub(npc_death);
+if (npc_findhero = ^false) { return; }
+if (%hauntedmine = ^hm_boss) {
+    inv_add(inv, hauntedmine_reward_key, 1);
+    queue(hm_quest_complete, 0, 0);
+}
+
+[queue,hm_quest_complete]
+%hauntedmine = ^hm_complete;
+stat_advance(mining, 40000);
+stat_advance(crafting, 20000);
+session_log(^log_adventure, "Quest complete: Haunted Mine");
+~send_quest_complete(questlist:hauntedmine, hauntedmine_reward_key, 200, ^hm_questpoints, "You have completed Haunted Mine!", "4,000 Mining XP|2,000 Crafting XP|Crystal-mine key");
+
+[if_button,questlist:hauntedmine]
+def_string $text;
+switch_int (%hauntedmine) {
+    case ^hm_not_started : $text = "@dbl@I can start this quest by finding a @dre@zealot's key@dbl@.";
+    case ^hm_started : $text = "@str@The zealot's key called me to the mine.||@dbl@I need to find an @dre@innocent looking key@dbl@.";
+    case ^hm_key : $text = "@str@I found the key.||@dbl@I should speak to @dre@Treus Dayth@dbl@.";
+    case ^hm_boss : $text = "@str@I spoke to Treus Dayth.||@dbl@I must put his @dre@spirit@dbl@ to rest.";
+    case default : $text = "@str@I freed Treus Dayth and took the crystal-mine key.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Haunted Mine", $text);
