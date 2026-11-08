@@ -64,7 +64,16 @@ export async function runCookQuestStart377({session,reader}={}){
      if(cook)break;
    }
  }
- if(!cook)refuse('cook_id_278_not_visible_at_lumbridge_kitchen');
+ if(!cook){
+   const final=await snapshot();
+   // Only public, already-visible NPC IDs for this isolated bot; never
+   // serialize account details, player identities or raw engine data.
+   refuse('cook_id_278_not_visible_at_lumbridge_kitchen_'+JSON.stringify({
+     x:final.position.x,z:final.position.z,
+     visibleNpcIds:(final.nearbyNpcs??[]).slice(0,16).map(n=>n.id),
+     cookVisibleWithoutTalk:(final.nearbyNpcs??[]).some(n=>n.id===278)
+   }));
+ }
  let before=await fresh(reader);
  if(before.questStages?.cook!==0)refuse('cook_stage_mutated_before_talk');
  // The server routes the click with ordinary NPC interaction and collision.
