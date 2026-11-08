@@ -55,21 +55,14 @@ if (%morttonquest = ^mortton_not_started) {
 
 // The existing unfinished tarromin potion is provided by normal Herblore.
 // Ashes may be used onto the unfinished potion, or the potion onto ashes.
-[opheldu,tarrominvial]
-if (last_useitem = ashes) {
-    @mortton_prepare_serum;
-} else {
-    ~displaymessage(^dm_default);
-}
-
 [opheldu,ashes]
 if (last_useitem = tarrominvial) {
-    @mortton_prepare_serum;
+    ~mortton_prepare_serum;
 } else {
     ~displaymessage(^dm_default);
 }
 
-[label,mortton_prepare_serum]
+[proc,mortton_prepare_serum]
 if (%morttonquest < ^mortton_read_diary) {
     mes("You should study the Mort'ton research diary first.");
     return;
