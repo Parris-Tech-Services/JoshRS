@@ -92,7 +92,7 @@ for name in ('mourning_quest','quest_wanted','myreque_2_main_var','onesmallfavou
 # the batch bundle's Veliaf handler carries the self-contained In Aid of the Myreque
 # start branch (raw stages; no questbundle2 symbols), and Yanni carries the OSF start.
 vr=(scripts/'quests/quest_myreque/scripts/quest_route.rs2').read_text(errors='replace')
-assert vr.count('%myreque_2_main_var')==3 and 'questlist:myreque_2' in vr
+assert vr.count('%myreque_2_main_var')==4 and 'questlist:myreque_2' in vr
 ya=(scripts/'areas/area_shilo/scripts/yanni_salika.rs2').read_text(errors='replace')
 assert ya.count('questlist:onesmallfavour')==1
 for q,need in (('quest_mourning','mourning1_journal.rs2'),('quest_wanted','wanted_npcs.rs2'),
