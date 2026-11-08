@@ -1,0 +1,28 @@
+name: Luna native save playtime preservation
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-bot-bench/engine-patch/src/engine/entity/BotPlayer.ts'
+      - 'tools/rs377-bot-bench/engine-patch/src/engine/bot/FredGeorgeBot.test.ts'
+      - 'tools/rs377-bot-bench/tests/luna-playtime.test.mjs'
+      - '.github/workflows/rs377-luna-save-playtime.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/rs377-bot-bench/engine-patch/src/engine/entity/BotPlayer.ts'
+      - 'tools/rs377-bot-bench/engine-patch/src/engine/bot/FredGeorgeBot.test.ts'
+      - 'tools/rs377-bot-bench/tests/luna-playtime.test.mjs'
+      - '.github/workflows/rs377-luna-save-playtime.yml'
+permissions:
+  contents: read
+jobs:
+  source-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate Luna native save lifetime tick preservation without touching accounts
+        run: node --test tools/rs377-bot-bench/tests/luna-playtime.test.mjs

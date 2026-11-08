@@ -65,6 +65,15 @@ test('1. BotPlayer/Player circular import regression: Player and BotPlayer initi
     const bot = new BotPlayer('testbot', toBase37('testbot'), 12345n);
     assert.equal(isBotPlayer(bot), true);
     assert.equal(bot instanceof Player, true);
+
+    // Luna's native save must retain its lifetime tick count after respawn,
+    // otherwise LoginServer's anti-rollback guard rejects all her autosaves.
+    const savedLuna = PlayerLoading.load('Luna', new Packet(new Uint8Array(0)), null);
+    savedLuna.playtime = 3719;
+    const resumedLuna = new BotPlayer('Luna', toBase37('Luna'), 12346n, savedLuna);
+    assert.equal(resumedLuna.playtime, 3719);
+    assert.equal(resumedLuna.save().length > 32, true);
+
 });
 
 test('2. Fresh Fred & George accounts reach mainland with identical starting_signature and persist across .sav reload', async () => {
