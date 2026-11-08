@@ -106,24 +106,28 @@ try {
  // These are *not* full client SDK state. The native observer must preserve
  // null for unavailable client message/history/death/combat event telemetry.
  const details=first.sdkDetails;
- if(!details || !Array.isArray(details.nearbyPlayers) ||
-    !details.nearbyPlayers.every(p=>p.kind==='player'&&
-      Number.isInteger(p.index)&&p.name!==username&&p.distance<=16) ||
-    !details.playerBase||details.playerBase.name!==username ||
+ const gaps=[];
+ if(!details)gaps.push('sdkDetails');
+ if(!Array.isArray(details?.nearbyPlayers))gaps.push('nearbyPlayers');
+ if(details?.nearbyPlayers?.some(p=>p.kind!=='player'||
+   !Number.isInteger(p.index)||p.name===username||p.distance>16))
+   gaps.push('nearbyPlayers_visibility');
+ if(!details?.playerBase || details.playerBase.name!==username ||
     details.playerBase.x!==first.position.x ||
     details.playerBase.z!==first.position.z ||
-    !Number.isInteger(details.playerBase.hp) ||
-    !details.prayers||details.prayers.activePrayers.length!==15||
+    !Number.isInteger(details.playerBase.hp))gaps.push('playerBase');
+ if(!details?.prayers||details.prayers.activePrayers?.length!==15 ||
     !details.prayers.activePrayers.every(p=>typeof p==='boolean')||
-    !Number.isInteger(details.prayers.prayerLevel)||
-    details.bank?.isOpen!==false ||
-    details.shop?.isOpen!==false ||
-    details.interface?.isOpen!==false ||
-    (details.player!==null && details.player.name!==username) ||
-    (details.gameMessages!==null&&!Array.isArray(details.gameMessages)) ||
-    (details.recentDialogs!==null&&!Array.isArray(details.recentDialogs)) ||
-    (details.combatEvents!==null&&!Array.isArray(details.combatEvents)))
-   reject('real native SDK prayer/player/public visibility/UI foundations incomplete or fabricated');
+    !Number.isInteger(details.prayers.prayerLevel))gaps.push('prayers');
+ if(details?.bank?.isOpen!==false)gaps.push('closed_bank');
+ if(details?.shop?.isOpen!==false)gaps.push('closed_shop');
+ if(details?.interface!==null && details?.interface?.isOpen!==false)
+   gaps.push('interface_unrecognised');
+ if(details?.player!==null && details?.player?.name!==username)gaps.push('player_identity');
+ if(details?.gameMessages!==null&&!Array.isArray(details?.gameMessages))gaps.push('messages');
+ if(details?.recentDialogs!==null&&!Array.isArray(details?.recentDialogs))gaps.push('dialogs');
+ if(details?.combatEvents!==null&&!Array.isArray(details?.combatEvents))gaps.push('combat');
+ if(gaps.length)reject('authentic isolated SDK foundations invalid: '+gaps.join(','));
  if(!first.dialogue||typeof first.dialogue.isOpen!=='boolean'||
    typeof first.dialogue.isWaiting!=='boolean'||
    !Array.isArray(first.dialogue.pendingComponentIds)||
