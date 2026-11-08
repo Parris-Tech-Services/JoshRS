@@ -1,0 +1,13 @@
+// Quest-specific fresh monkfish. Pinned generic cooking already dispatches by uncooked item.
+// 377 uses XP in tenths. This does not add a second global cooking script or duplicate table.
+[cooking_generic_swan_fresh_monkfish]
+table=cooking_generic
+data=uncooked,swan_raw_monkfish
+data=cooked,swan_monkfish
+data=burnt,burntfish4
+data=levelrequired,62
+data=experience,10
+data=successchance,30,260
+data=successchance_range,35,280
+data=successmessage,You cook the fresh monkfish.
+data=burnmessage,You accidentally burn the fresh monkfish.

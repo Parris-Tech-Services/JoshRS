@@ -1,6 +1,7 @@
 // Swan Song - JoshRS original dialogue and stages on top of the 377 cache definitions (swan_* NPCs, varbit swansong).
-// Dialogue, rewards and stage values are original JoshRS content. Rule of thumb for fresh fish: harpoon the
-// fishing spot, cook the raw fish, bring cooked fish to Arnold. UNIMPLEMENTED: the harpoon/cooking hooks (see README).
+// Dialogue, rewards and stage values are original JoshRS content. Catch fresh fish with a small net,
+// cook at a fire/range and bring five cooked fish to Arnold. The colony repair and Wise Old Man
+// scenes remain incomplete; see README and the Swan Song fishing/cooking scripts.
 
 [opnpc1,swan_herman]
 switch_int (%swansong) {
@@ -38,12 +39,18 @@ switch_int (%swansong) {
 [opnpc1,swan_arnold]
 switch_int (%swansong) {
     case ^swansong_not_started, ^swansong_started : ~chatnpc("<p,neutral>Franklin or Herman can tell you more.");
-    case ^swansong_met_franklin :
-        ~chatnpc("<p,neutral>We need five cooked monkfish for the journey.|Harpoon some from the fishing spots and cook them.");
+    case ^swansong_met_franklin, ^swansong_met_arnold :
+        ~chatnpc("<p,neutral>We need five cooked fresh monkfish.|Use a small fishing net at our fishing spots, then cook the fish on a range or fire.");
+        if (inv_total(inv, net) < 1) {
+            if (inv_freespace(inv) < 1) {
+                %swansong = ^swansong_met_arnold;
+                ~chatnpc("<p,neutral>Make some room in your pack and return for a small fishing net.");
+                return;
+            }
+            inv_add(inv, net, 1);
+            ~chatnpc("<p,happy>Here is a net to get you started.");
+        }
         %swansong = ^swansong_fish;
-    case ^swansong_met_arnold :
-        %swansong = ^swansong_fish;
-        ~chatnpc("<p,neutral>Bring me five cooked monkfish.");
     case ^swansong_fish :
         if (inv_total(inv, swan_monkfish) >= ^swansong_fish_needed) {
             ~chatnpc("<p,happy>That's enough fish. Thank you.|Now the trolls must be dealt with.");
@@ -87,6 +94,9 @@ if (npc_findhero = ^true) {
 }
 
 [queue,swan_troll_kill]
+if (%swansong ! ^swansong_trolls) {
+    return;
+}
 %swansong = ^swansong_queen;
 mes("The ambushing troll falls. Its queen must be near.");
 
@@ -99,10 +109,16 @@ if (npc_findhero = ^true) {
 }
 
 [queue,swan_queen_kill]
+if (%swansong ! ^swansong_queen) {
+    return;
+}
 %swansong = ^swansong_return;
 mes("The Sea Troll Queen falls. Herman will want to hear of it.");
 
 [queue,swansong_quest_complete]
+if (%swansong ! ^swansong_return) {
+    return;
+}
 %swansong = ^swansong_complete;
 stat_advance(fishing, 100000);
 stat_advance(cooking, 50000);
