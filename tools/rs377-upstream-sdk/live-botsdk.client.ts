@@ -62,6 +62,22 @@ try{
  actionsClass=typeof bot.walkTo==='function'&&typeof bot.talkTo==='function'&&
    typeof bot.openBank==='function';
  assert.ok(actionsClass,'entire upstream BotActions class must be available');
+ // Exercise the actual full upstream SDK's on-demand action methods
+ // through the native 377 loopback gateway. No mock state, no game packets.
+ const locScan=await sdk.scanNearbyLocs(8);
+ assert.ok(Array.isArray(locScan),'upstream SDK native loc scan must return an array');
+ assert.ok(locScan.length>0,'native ZoneMap must show actual nearby locs');
+ assert.ok(locScan.every(loc=>second.nearbyLocs.some(real=>
+   loc.id===real.id&&loc.x===real.x&&loc.z===real.z)),
+   'native scan must only return locs also visible in authoritative SDK state');
+ const groundScan=await sdk.scanGroundItems(8);
+ assert.ok(Array.isArray(groundScan),'upstream SDK native ground scan must return an array');
+ assert.ok(groundScan.every(obj=>second.groundItems.some(real=>
+   obj.id===real.id&&obj.x===real.x&&obj.z===real.z)),
+   'native ground scan must not invent world objects');
+ const nativeWait=await sdk.sendWait(1);
+ assert.ok(nativeWait.success===true&&nativeWait.phase==='completion',
+   'upstream SDK wait must observe an actual native game tick');
  const origin={x:second.player.worldX,z:second.player.worldZ};
  for(const [x,z] of candidates){
   if(Math.max(Math.abs(origin.x-x),Math.abs(origin.z-z))>2)continue;
@@ -84,7 +100,8 @@ try{
   source:'MaxBittker/rs-sdk',sourceSha:PIN,bot:'HarnessProbe',
   realNative377World:true,authenticated,continuousNativeState:true,
   actualUpstreamBotSDK:true,actualUpstreamBotActions:true,
-  ordinaryPacketEffectVerified:true,finalPosition,saveRelogVerifiedByParent:false,
+  ordinaryPacketEffectVerified:true,realNativeScanVerified:true,
+  realNativeWaitVerified:true,finalPosition,saveRelogVerifiedByParent:false,
   tenPubPlaythroughVerified:false,familyWorldTouched:false
  }));
 }finally{

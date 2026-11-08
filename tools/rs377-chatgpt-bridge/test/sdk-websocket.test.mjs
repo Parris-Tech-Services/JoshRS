@@ -184,3 +184,101 @@ test('native tick replay is retried read-only; a game packet is sent exactly onc
   assert.equal(readAttempts>=3,true);
  }finally{q.ws.close();await gw.close()}
 });
+
+test('upstream SDK scan actions expose only observed read-only game data, never a packet',async()=>{
+ const h=harness(),target=[{id:10,x:3216,z:3215,level:0,name:'Door'}];
+ let sent=0;
+ const runtime={
+  ...h.runtime,
+  async action(a){
+   if(a.type!=='scanNearbyLocs')throw new Error('test only expected scan');
+   return {status:'observed_read_only',readType:'nearbyLocs',
+     data:target,tick:10,verifiedEffect:false};
+  }
+ };
+ const gw=createSdk377WebSocket({runtime,token:TOKEN,botName:BOT});
+ const {port}=await gw.listen(0),q=await socket(port);
+ try{
+  connect(q);await take(q,m=>m.type==='sdk_connected');
+  q.send({type:'sdk_action',username:BOT,actionId:'read-only-scan',
+   action:{type:'scanNearbyLocs',radius:10,reason:'read-only'}});
+  const reply=await take(q,m=>m.type==='sdk_action_result'&&m.actionId==='read-only-scan');
+  assert.equal(reply.result.success,true);
+  assert.equal(reply.result.phase,'completion');
+  assert.deepEqual(reply.result.data,target);
+  assert.equal(h.count(),0,'scan MUST NOT send any normal game packet');
+ }finally{q.ws.close();await gw.close()}
+});
+test('upstream SDK waits for genuine new native ticks instead of granting instant success',async()=>{
+ let tick=40,observed=0;
+ const h=harness();
+ const runtime={
+  ...h.runtime,
+  async observe(){observed++;return {tick:tick++,position:{x:3215,z:3215},
+   world:{instanceId:'isolated-native-wait'},player:{username:BOT}};},
+  async action(a){if(a.type!=='wait')throw new Error('expected wait only');
+   return {status:'wait_requested',ticks:2,tick:tick++};}
+ };
+ const gw=createSdk377WebSocket({runtime,token:TOKEN,botName:BOT});
+ const {port}=await gw.listen(0),q=await socket(port);
+ try{
+  connect(q);await take(q,m=>m.type==='sdk_connected');
+  q.send({type:'sdk_action',username:BOT,actionId:'wait-for-ticks',
+   action:{type:'wait',ticks:2,reason:'observed duration'}});
+  const reply=await take(q,m=>m.type==='sdk_action_result'&&m.actionId==='wait-for-ticks',6500);
+  assert.equal(reply.result.success,true);
+  assert.equal(reply.result.phase,'completion');
+  assert.equal(h.count(),0,'wait MUST NOT dispatch any packet');
+  assert.ok(observed>=3,'wait must actually observe later ticks');
+ }finally{q.ws.close();await gw.close()}
+});
+
+test('upstream SDK reports native drop completion only after real inventory count changes',async()=>{
+ let tick=80,count=3,packets=0;
+ const runtime={
+  async getSdkState(){throw new Error('fixture has no complete native UI')},
+  async observe(){return {
+   tick:tick++,world:{instanceId:'isolated-effect-proof',sourceSha:'a'.repeat(40)},
+   player:{username:BOT},position:{x:3215,z:3215},
+   inventory:[{slot:0,id:1925,count}]
+  }},
+  async action(a){if(a.type!=='dropItem')throw new Error('unexpected action');
+   packets++;count--;return {status:'dispatched_unverified',opcode:4,tick:tick++}}
+ };
+ const gw=createSdk377WebSocket({runtime,token:TOKEN,botName:BOT,actionTimeoutMs:1500});
+ const {port}=await gw.listen(0),q=await socket(port);
+ try{
+  connect(q);await take(q,m=>m.type==='sdk_connected');
+  q.send({type:'sdk_action',username:BOT,actionId:'native-drop',
+   action:{type:'dropItem',slot:0,reason:'normal player drop'}});
+  const res=await take(q,m=>m.type==='sdk_action_result'&&m.actionId==='native-drop',5500);
+  assert.equal(res.result.success,true);
+  assert.equal(res.result.phase,'completion');
+  assert.equal(res.result.data.verifiedEffect,true);
+  assert.equal(res.result.data.evidence,'item_removed_from_backpack');
+  assert.equal(packets,1);
+ }finally{q.ws.close();await gw.close()}
+});
+test('upstream SDK rejects a dispatched drop without observed inventory effect',async()=>{
+ let tick=80,packets=0;
+ const runtime={
+  async getSdkState(){throw new Error('fixture has no complete native UI')},
+  async observe(){return {
+   tick:tick++,world:{instanceId:'isolated-effect-proof',sourceSha:'a'.repeat(40)},
+   player:{username:BOT},position:{x:3215,z:3215},
+   inventory:[{slot:0,id:1925,count:3}]
+  }},
+  async action(a){packets++;return {status:'dispatched_unverified',opcode:4,tick:tick++}}
+ };
+ const gw=createSdk377WebSocket({runtime,token:TOKEN,botName:BOT,actionTimeoutMs:1100});
+ const {port}=await gw.listen(0),q=await socket(port);
+ try{
+  connect(q);await take(q,m=>m.type==='sdk_connected');
+  q.send({type:'sdk_action',username:BOT,actionId:'unobserved-drop',
+   action:{type:'dropItem',slot:0,reason:'check no fake result'}});
+  const res=await take(q,m=>m.type==='sdk_action_result'&&m.actionId==='unobserved-drop',5500);
+  assert.equal(res.result.success,false);
+  assert.equal(res.result.reason,'observation_timeout');
+  assert.equal(packets,1);
+ }finally{q.ws.close();await gw.close()}
+});

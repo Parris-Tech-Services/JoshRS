@@ -6,6 +6,7 @@
  * No live host, credentials, privileged packets, or automatic side effects.
  */
 import {createPublicKey, randomBytes} from 'node:crypto';
+import {packWord377,nameToBase37} from './wordpack377.mjs';
 
 const uint = (v, max, field) => {
   if (!Number.isSafeInteger(v) || v < 0 || v > max) throw new RangeError('Invalid '+field);
@@ -34,8 +35,97 @@ export const OPCODES = Object.freeze({
 });
 function option(n) {return uint(n,5,'option') || (()=>{throw new RangeError('Option must be 1..5')})()}
 const tile=(v,name)=>uint(v,16383,name);
+/**
+ * Exact native 377 decoder-compatible packets, pinned to Engine-TS
+ * ClientGameProt.ts plus codec/OpPlayer,OpNpcU/T,OpHeldU/T,OpObjT,
+ * IfButton,ResumePCountDialog,MessagePrivate decoders.
+ * Sending a packet only reports dispatch, not effect or persistence.
+ */
+export const EXTRA_PACKET_TYPES=Object.freeze([
+  'player','if_button','close_modal','item_on_item','item_on_npc',
+  'spell_on_npc','spell_on_player','spell_on_item','spell_on_ground',
+  'resume_count','chat_plain','private_chat'
+]);
+const EXTRA=new Set(EXTRA_PACKET_TYPES);
+function buildExtendedPacket(a){
+ const names={
+  player:['playerSlot','option'],
+  if_button:['componentId'],close_modal:[],
+  item_on_item:['sourceItemId','sourceSlot','targetItemId','targetSlot','componentId'],
+  item_on_npc:['npcSlot','itemId','slot','componentId'],
+  spell_on_npc:['npcSlot','spellComponent'],
+  spell_on_player:['playerSlot','spellComponent'],
+  spell_on_item:['itemId','slot','componentId','spellComponent'],
+  spell_on_ground:['x','z','itemId','spellComponent'],
+  resume_count:['value'],chat_plain:['message'],private_chat:['targetName','message']
+ }[a.type];
+ if(!names||Object.keys(a).some(k=>k!=='type'&&!names.includes(k)))
+  throw new Error('Unexpected or unverified extended 377 action fields');
+ switch(a.type){
+  case 'player':{
+   const n=option(a.option),slot=word(a.playerSlot,'playerSlot');
+   const alts=[null,p2alt3,p2alt2,p2alt1,p2alt1,p2alt2];
+   return payload([245,233,194,116,45][n-1],alts[n](slot));
+  }
+  case 'if_button':return payload(79,p2(word(a.componentId,'componentId')));
+  case 'close_modal':return payload(110,Buffer.alloc(0));
+  case 'item_on_item':return payload(1,Buffer.concat([
+   p2(word(a.targetItemId,'targetItemId')),
+   p2alt1(word(a.sourceSlot,'sourceSlot')),
+   p2alt1(word(a.sourceItemId,'sourceItemId')),
+   p2alt3(word(a.componentId,'componentId')),
+   p2alt2(word(a.targetSlot,'targetSlot')),
+   p2alt2(word(a.componentId,'componentId'))
+  ]));
+  case 'item_on_npc':return payload(57,Buffer.concat([
+   p2(word(a.npcSlot,'npcSlot')),
+   p2alt1(word(a.itemId,'itemId')),
+   p2alt3(word(a.componentId,'componentId')),
+   p2(word(a.slot,'slot'))
+  ]));
+  case 'spell_on_npc':return payload(104,Buffer.concat([
+   p2alt2(word(a.spellComponent,'spellComponent')),
+   p2alt1(word(a.npcSlot,'npcSlot'))
+  ]));
+  case 'spell_on_player':return payload(31,Buffer.concat([
+   p2(word(a.playerSlot,'playerSlot')),
+   p2alt1(word(a.spellComponent,'spellComponent'))
+  ]));
+  case 'spell_on_item':return payload(36,Buffer.concat([
+   p2(word(a.spellComponent,'spellComponent')),
+   p2alt2(word(a.componentId,'componentId')),
+   p2alt2(word(a.slot,'slot')),
+   p2alt2(word(a.itemId,'itemId'))
+  ]));
+  case 'spell_on_ground':return payload(83,Buffer.concat([
+   p2alt1(word(a.itemId,'itemId')),p2(tile(a.z,'z')),
+   p2alt1(word(a.spellComponent,'spellComponent')),
+   p2alt3(tile(a.x,'x'))
+  ]));
+  case 'resume_count':{
+   if(!Number.isSafeInteger(a.value)||a.value<1||a.value>2147483647)
+    throw new RangeError('377 count dialog requires a positive signed 32-bit value');
+   const buf=Buffer.alloc(4);buf.writeInt32BE(a.value);
+   return payload(75,buf);
+  }
+  case 'chat_plain':{
+   const packed=packWord377(a.message);
+   return payload(49,Buffer.concat([Buffer.from([0,0]),packed]),true);
+  }
+  case 'private_chat':{
+   const name=nameToBase37(a.targetName);
+   const packed=packWord377(a.message);
+   const out=Buffer.alloc(8+packed.length);
+   out.writeBigUInt64BE(name,0);packed.copy(out,8);
+   return payload(227,out,true);
+  }
+ }
+ throw new Error('Unsupported native extended packet');
+}
+
 export function buildAction(action) {
   if (!action || typeof action!=='object' || Array.isArray(action))throw new TypeError('Action object required');
+  if(EXTRA.has(action.type))return buildExtendedPacket(action);
   const fields = {
     walk:['x','z','running'], npc:['npcSlot','option'], loc:['x','z','locId','option'],
     ground:['x','z','itemId','option'], inventory:['componentId','itemId','slot','option'],

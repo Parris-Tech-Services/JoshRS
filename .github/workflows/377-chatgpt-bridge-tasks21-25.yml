@@ -45,6 +45,11 @@ jobs:
           set -euo pipefail
           test "$(git -C rs-sdk-pinned rev-parse HEAD)" = "db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb"
           timeout --signal=TERM --kill-after=5s 55s bun tools/rs377-chatgpt-bridge/test/upstream-botsdk.acceptance.ts "$GITHUB_WORKSPACE/rs-sdk-pinned"
+      - name: Verify exact 39 upstream BotAction discriminants and non-fabricated coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/rs377-chatgpt-bridge/test/verify-upstream39.mjs rs-sdk-pinned/sdk/types.ts
       - name: Verify exact upstream pinned RS-SDK type contract Git blob
         shell: bash
         run: |
