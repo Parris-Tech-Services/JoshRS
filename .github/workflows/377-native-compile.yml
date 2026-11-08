@@ -68,6 +68,11 @@ jobs:
           $errors = $null
           [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'deploy/jparris-windows/install-yrsa377.ps1').Path, [ref]$tokens, [ref]$errors) | Out-Null
           if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Host "Line $($_.Extent.StartLineNumber): $($_.Message)" }; exit 1 }
+      - name: Verify both real rev377 network-agent acceptance scripts parse
+        shell: bash
+        run: |
+          node --check tools/rs377-chatgpt-bridge/probe-real-isolated377.mjs
+          node --check tools/rs377-chatgpt-bridge/probe-two-agents-isolated377.mjs
       - name: Generate and verify immutable original content overlay
         shell: bash
         run: |

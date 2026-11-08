@@ -91,7 +91,8 @@ try {
    reject('real rsbuf-visible NPC list unavailable');
  // Task 27: require genuine server ZoneMap visibility, not fixture-filled
  // object state or an empty array substituted for an unsupported field.
- if(!Array.isArray(first.nearbyLocs) || !Array.isArray(first.groundItems))
+ if(!Array.isArray(first.nearbyLocs) || !Array.isArray(first.groundItems) ||
+    !Array.isArray(first.nearbyPlayers))
    reject('real native nearby locs and ground items are still unsupported');
  if(!first.nearbyLocs.every(loc=>Number.isInteger(loc.id) &&
     Number.isInteger(loc.x)&&Number.isInteger(loc.z)&&

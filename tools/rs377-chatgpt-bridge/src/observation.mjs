@@ -34,7 +34,7 @@ const checkNearby=(a,name,idField)=>{
 export function validateObservation(raw,{botName,expectedWorld}={}) {
   if(!raw||typeof raw!=='object'||Array.isArray(raw))fail('missing raw input');
   const own=['world','player','tick','position','skills','inventory','equipment',
-    'nearbyNpcs','nearbyLocs','groundItems','dialogue','questStages','sdkDetails','unsupported'];
+    'nearbyNpcs','nearbyLocs','groundItems','nearbyPlayers','dialogue','questStages','sdkDetails','unsupported'];
   if(Object.keys(raw).some(k=>!own.includes(k)))fail('unexpected top-level observation fields');
   // Revalidating an already sanitized snapshot is safe; unsupported is a
   // derived field and is always recalculated, never trusted from the caller.
@@ -69,6 +69,13 @@ export function validateObservation(raw,{botName,expectedWorld}={}) {
   checkNearby(v.nearbyNpcs,'nearbyNpcs','index');
   checkNearby(v.nearbyLocs,'nearbyLocs','id');
   checkNearby(v.groundItems,'groundItems','id');
+  if(Object.hasOwn(v,'nearbyPlayers')){
+    checkNearby(v.nearbyPlayers,'nearbyPlayers','index');
+    if(v.nearbyPlayers!==null&&!v.nearbyPlayers.every(p=>
+      Object.keys(p).every(k=>['index','name','combatLevel','x','z'].includes(k))&&
+      typeof p.name==='string'&&p.name.length>0&&p.name.length<=32&&
+      isInt(p.combatLevel,255)))fail('nearbyPlayers identity, visibility or private fields');
+  }
   if(v.dialogue!==null&&(!v.dialogue||typeof v.dialogue!=='object'||typeof v.dialogue.isOpen!=='boolean'||!Array.isArray(v.dialogue.options)))
     fail('dialogue');
   if(v.questStages!==null&&(!v.questStages||typeof v.questStages!=='object'||Array.isArray(v.questStages)))
