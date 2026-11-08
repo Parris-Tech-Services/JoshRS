@@ -93,7 +93,7 @@ npm --prefix "$ROOT/tools/rs377-chatgpt-bridge" install --omit=dev --ignore-scri
  LOGGER_SERVER=true NODE_PROFILE=joshrs_ci_377 NODE_PORT=15402 WEB_PORT=18880 \
  WEB_MANAGEMENT_PORT=18881 BUILD_SRC_DIR="$WORK/content" \
  python3 content-factory/smoke_377.py --engine "$WORK/engine" \
-  --game-port 15402 --web-port 18880 --timeout 120
+  --content "$WORK/content" --game-port 15402 --web-port 18880 --timeout 120
 )
 echo 'DISPOSABLE_NATIVE_377_CAMPAIGN_SMOKE_FINISHED; see logs for genuine SDK proof.'
 echo 'No family account/save or port 52402 was used.'
