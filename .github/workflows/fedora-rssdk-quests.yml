@@ -4,6 +4,8 @@ on:
     branches: [main, "feat/fedora-rssdk-quest-runner-20261109"]
     paths:
       - "tools/rs377-fedora-quests/**"
+      - "content-factory/patch_377_sdk_trace.py"
+      - "tests/test_377_fedora_trace_scope.py"
       - "tools/rs377-chatgpt-bridge/src/sdk-runtime.mjs"
       - "tools/rs377-bot-bench/engine-patch/src/web.ts"
       - ".github/workflows/fedora-rssdk-quests.yml"
@@ -11,6 +13,8 @@ on:
   pull_request:
     paths:
       - "tools/rs377-fedora-quests/**"
+      - "content-factory/patch_377_sdk_trace.py"
+      - "tests/test_377_fedora_trace_scope.py"
       - "tools/rs377-chatgpt-bridge/src/sdk-runtime.mjs"
       - "tools/rs377-bot-bench/engine-patch/src/web.ts"
       - ".github/workflows/fedora-rssdk-quests.yml"
@@ -40,6 +44,8 @@ jobs:
           node --check tools/rs377-fedora-quests/campaign.mjs
           node --check tools/rs377-fedora-quests/campaign.test.mjs
           node --check tools/rs377-chatgpt-bridge/src/sdk-runtime.mjs
+      - name: Guard pinned trace injection against real family worlds
+        run: python3 -m unittest discover -s tests -p 'test_377_fedora_trace_scope.py' -v
       - name: Run exact 104 plus seven metadata/false-success tests
         run: node --test tools/rs377-fedora-quests/campaign.test.mjs
       - name: Compile and execute actual Bun campaign planner without a game login
