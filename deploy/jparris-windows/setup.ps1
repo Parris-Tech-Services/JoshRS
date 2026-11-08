@@ -279,6 +279,9 @@ if ($offset -lt 0 -or $webPort -ne ($offset + 80)) {
 if ((EnvironmentValue $envFile 'DB_BACKEND' 'sqlite') -ne 'sqlite') {
     throw 'The copied server uses a non-SQLite database. No automatic migration will be attempted. Review its database setup first.'
 }
+# Check every imported world, including those with their own .env: migrations
+# must never quietly create an empty database beside preserved player saves.
+$null = Get-JoshRSLocalRegistrationMode -Engine $engine
 # Back up all character saves and the SQLite account database before migrations.
 $playerFolder = Join-Path $engine 'data\players'
 $dbFile = Join-Path $engine 'db.sqlite'
