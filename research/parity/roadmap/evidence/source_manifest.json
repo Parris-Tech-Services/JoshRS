@@ -1,0 +1,189 @@
+{
+  "schema": "joshrs-roadmap-source-manifest-v1",
+  "research_cutoff": "2026-11-08",
+  "repository": "Parris-Tech-Services/JoshRS",
+  "source_count": 20,
+  "privacy": "No personal account records or saves retrieved",
+  "sources": [
+    {
+      "id": "SRC-001",
+      "type": "repo",
+      "name": "JoshRS pinned 274 reference",
+      "path_or_url": "docs/REFERENCE_VERSION_LOCK.json",
+      "checked_date": "2026-11-08",
+      "method": "repo_fetch",
+      "caveat": "actual reference and pin, not active world"
+    },
+    {
+      "id": "SRC-002",
+      "type": "repo",
+      "name": "JoshRS pinned 377 Windows upstreams",
+      "path_or_url": "deploy/jparris-windows/upstreams.json",
+      "checked_date": "2026-11-08",
+      "method": "repo_fetch",
+      "caveat": "actual installed runtime not checked"
+    },
+    {
+      "id": "SRC-003",
+      "type": "repo",
+      "name": "JoshRS current scope",
+      "path_or_url": "README.md",
+      "checked_date": "2026-11-08",
+      "method": "repo_fetch",
+      "caveat": "public launcher and separate local 377 world"
+    },
+    {
+      "id": "SRC-004",
+      "type": "repo",
+      "name": "JoshRS 377 bot bridge",
+      "path_or_url": "tools/rs377-chatgpt-bridge/README.md",
+      "checked_date": "2026-11-08",
+      "method": "repo_fetch",
+      "caveat": "source claims isolated game proof; not family production"
+    },
+    {
+      "id": "SRC-005",
+      "type": "repo",
+      "name": "JoshRS 377 controller",
+      "path_or_url": "tools/rs377-controller-boundary/README.md",
+      "checked_date": "2026-11-08",
+      "method": "repo_fetch",
+      "caveat": "some isolated CI real server proof"
+    },
+    {
+      "id": "SRC-006",
+      "type": "repo",
+      "name": "JoshRS historical quest source audit",
+      "path_or_url": "research/rs377/QUEST_QUEUE_2026-11-08.json",
+      "checked_date": "2026-11-08",
+      "method": "repo_fetch",
+      "caveat": "104 source quest rows 77/4/23, may conflict with PRs"
+    },
+    {
+      "id": "SRC-007",
+      "type": "repo",
+      "name": "JoshRS NPC talk candidate audit",
+      "path_or_url": "research/rs377/npc_dialogue_audit_2026-11-08.json",
+      "checked_date": "2026-11-08",
+      "method": "repo_fetch",
+      "caveat": "673 trigger candidates, not confirmed failures"
+    },
+    {
+      "id": "SRC-008",
+      "type": "repo",
+      "name": "JoshRS open content PR #145",
+      "path_or_url": "https://github.com/Parris-Tech-Services/JoshRS/pull/145",
+      "checked_date": "2026-11-08",
+      "method": "repo_search_prs",
+      "caveat": "in flight 6 quest reconstructions; source and CI not sufficient for play"
+    },
+    {
+      "id": "SRC-009",
+      "type": "repo",
+      "name": "JoshRS open content PR #148",
+      "path_or_url": "https://github.com/Parris-Tech-Services/JoshRS/pull/148",
+      "checked_date": "2026-11-08",
+      "method": "repo_search_prs",
+      "caveat": "in flight 5 quest scaffolds; conflict gate"
+    },
+    {
+      "id": "SRC-010",
+      "type": "repo",
+      "name": "JoshRS open content PR #141",
+      "path_or_url": "https://github.com/Parris-Tech-Services/JoshRS/pull/141",
+      "checked_date": "2026-11-08",
+      "method": "repo_search_prs",
+      "caveat": "separate historical 377 content-porting architecture proposed"
+    },
+    {
+      "id": "SRC-011",
+      "type": "repo",
+      "name": "JoshRS incident #52",
+      "path_or_url": "https://github.com/Parris-Tech-Services/JoshRS/issues/52",
+      "checked_date": "2026-11-08",
+      "method": "repo_search_issues",
+      "caveat": "actual observed item-loss bug reported, not independently reproduced"
+    },
+    {
+      "id": "SRC-012",
+      "type": "web",
+      "name": "OSRS official updates",
+      "path_or_url": "https://oldschool.runescape.com/",
+      "checked_date": "2026-11-08",
+      "method": "web_search",
+      "caveat": "3 Nov Quest Month 2 quests, 4 Nov Hardcore Worlds, 5 Nov name release"
+    },
+    {
+      "id": "SRC-013",
+      "type": "web",
+      "name": "OSRS Sailing technical overview",
+      "path_or_url": "https://oldschool.runescape.wiki/w/Sailing",
+      "checked_date": "2026-11-08",
+      "method": "web_search",
+      "caveat": "released 19 Nov 2025, boats/crew/ports/facilities"
+    },
+    {
+      "id": "SRC-014",
+      "type": "web",
+      "name": "RS3 quest list",
+      "path_or_url": "https://runescape.wiki/w/Quests",
+      "checked_date": "2026-11-08",
+      "method": "web_search",
+      "caveat": "277 dated 28 Sep 2026, not latest guaranteed"
+    },
+    {
+      "id": "SRC-015",
+      "type": "web",
+      "name": "RS3 news",
+      "path_or_url": "https://www.runescape.com/community",
+      "checked_date": "2026-11-08",
+      "method": "web_search",
+      "caveat": "Nov updates; not exhaustive quest enumeration"
+    },
+    {
+      "id": "SRC-016",
+      "type": "web",
+      "name": "Jagex Fan Content Policy",
+      "path_or_url": "https://legal.jagex.com/docs/policies/fan-content-policy",
+      "checked_date": "2026-11-08",
+      "method": "web_search",
+      "caveat": "restricts private servers, different from code licences"
+    },
+    {
+      "id": "SRC-017",
+      "type": "web",
+      "name": "RSMod archived source",
+      "path_or_url": "https://github.com/Tomm0017/rsmod",
+      "checked_date": "2026-11-08",
+      "method": "web_search",
+      "caveat": "old Apache-2.0 archived, successor separate"
+    },
+    {
+      "id": "SRC-018",
+      "type": "web",
+      "name": "AlterRSPS source",
+      "path_or_url": "https://github.com/AlterRSPS/Alter",
+      "checked_date": "2026-11-08",
+      "method": "web_search",
+      "caveat": "BSD-2-Clause repository, client/cache dependencies"
+    },
+    {
+      "id": "SRC-019",
+      "type": "web",
+      "name": "2011Scape organisation",
+      "path_or_url": "https://github.com/2011Scape",
+      "checked_date": "2026-11-08",
+      "method": "web_search",
+      "caveat": "game server BSD-3-Clause, other archives separately licensed"
+    },
+    {
+      "id": "SRC-020",
+      "type": "web",
+      "name": "OpenRSC single player",
+      "path_or_url": "https://github.com/Rune-Status/Open-RSC-Single-Player",
+      "checked_date": "2026-11-08",
+      "method": "web_search",
+      "caveat": "GPL-3.0 packaging and local-play precedent"
+    }
+  ]
+}
