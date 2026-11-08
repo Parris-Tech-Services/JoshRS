@@ -60,7 +60,7 @@ function Assert-Offline {
 Assert-Offline
 $backupCommand = Join-Path $RepoRoot 'deploy\jparris-windows\Protect-Elrothiro.ps1'
 if (-not (Test-Path -LiteralPath $backupCommand -PathType Leaf)) { throw 'Full player-save backup tool absent; no changes.' }
-$backupEvidence = @(& $backupCommand -CreateBackup 2>&1 | Out-String) -join ''
+$backupEvidence = (& $backupCommand -CreateBackup 6>&1 | Out-String)
 if ($backupEvidence -notmatch 'VERIFIED OFFLINE BACKUP CREATED') {
     throw 'Verified full-world backup was not confirmed; no source was changed.'
 }
