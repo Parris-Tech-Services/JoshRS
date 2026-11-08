@@ -11,7 +11,7 @@ This is the **actual unmodified upstream RS-SDK**, not a rewritten "RS-SDK-like"
 
 ## Installation
 
-From a current full JoshRS checkout, double-click `JoshRS-Install-RSSDK.cmd`. It first runs read-only checks, asks permission, and keeps the result visible. Git for Windows and Bun must be present. If either is missing, it reports exactly that and changes nothing. **Do not delete the JoshRS runtime to install the SDK.**
+Download **only** [`JoshRS-Install-RSSDK.cmd`](../../JoshRS-Install-RSSDK.cmd) to Windows Downloads or Desktop and double-click it. The launcher locates your existing `C:\\JoshRS-Launcher\\JoshRS-main` installation and downloads the missing PowerShell helper from a **fixed, reviewed Git commit** after checking its exact Git blob hash. It will not overwrite an existing helper. It first runs read-only checks, asks permission, and keeps the result visible. Git for Windows and Bun must be present. If either is missing, it reports exactly that and changes nothing. **Do not delete the JoshRS runtime to install the SDK.**
 
 Read-only source check after installation from the JoshRS source directory:
 
