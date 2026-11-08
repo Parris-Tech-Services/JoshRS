@@ -1,0 +1,17 @@
+// Source-native May 2006 Swan Song NPC interactions; original JoshRS dialogue.
+// Frumscone sends players to Malignius Mortifer instead of generating the army
+// himself. These are pre-existing pinned 377 NPC IDs, no new cache assets.
+[opnpc1,elemental_wizard_boss]
+if (%swansong = ^swansong_queen) {
+    ~chatnpc("<p,neutral>An army of skeletons? That will take both bone seeds and careful preparation.");
+    ~swan_malignius_army;
+    return;
+}
+~chatnpc("<p,neutral>Necromancy is a demanding art. Choose your experiments wisely.");
+
+[opnpc1,master_crafter_2]
+if (%swansong = ^swansong_queen) {
+    ~chatnpc("<p,neutral>An airtight container? Use a fired pot and a lid.|It will keep bone seeds from escaping before you reach the colony.");
+    return;
+}
+~chatnpc("<p,neutral>Making useful pottery takes patience and a steady hand.");

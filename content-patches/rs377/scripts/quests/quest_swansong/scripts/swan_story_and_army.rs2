@@ -31,7 +31,7 @@ if (%swansong = ^swansong_fish & %swansong_arnold = 1 & ~swan_wall_count = 5 & %
     mes("The food stores and five wall sections are ready. Defeat the sea troll ambusher.");
 }
 
-[proc,swan_frumscone_army]
+[proc,swan_malignius_army]
 if (%swansong ! ^swansong_queen) {
     return;
 }
@@ -44,7 +44,7 @@ if (stat(magic) < 66) {
     return;
 }
 if (inv_total(inv, bones) < 7 | inv_total(inv, pot_empty) < 1 | inv_total(inv, potlid) < 1) {
-    ~chatnpc("<p,neutral>Bring seven ordinary bones, an empty pot and a pot lid.");
+    ~chatnpc("<p,neutral>Bring seven ordinary bones and an airtight pot, made from an empty pot and a pot lid.");
     return;
 }
 inv_del(inv, bones, 7);
