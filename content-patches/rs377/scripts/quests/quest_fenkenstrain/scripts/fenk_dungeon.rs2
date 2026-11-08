@@ -55,25 +55,11 @@ mes("You push aside the memorial and climb down into the experiment cave.");
 p_arrivedelay;
 p_teleport(0_55_155_57_8);
 
-// There ARE two actual, map-placed ladders (loc_1757). Dispatch is
-// strictly coordinate-guarded so unrelated ladders elsewhere in RuneScape
-// never teleport to this quest. Never fabricate a ladder on a chest.
-[oploc1,loc_1757]
-if (loc_coord = 0_55_155_58_7) {
-    mes("You climb back out of the experiment cave.");
-    p_arrivedelay;
-    p_teleport(0_55_55_57_8);
-} else if (loc_coord = 0_54_155_48_50) {
-    if (%fenk_unlocked_cavern = 0) {
-        mes("The way to the mausoleum is closed.");
-        return;
-    }
-    mes("You climb up the ladder to the mausoleum.");
-    p_arrivedelay;
-    p_teleport(0_54_55_49_52);
-} else {
-    mes("You cannot find a safe route up this ladder.");
-}
+// Both native ladders are ALREADY routed by pinned
+// scripts/ladders+stairs/scripts/ladders.rs2 [oploc1,loc_1757] via
+// ~climb_ladder(movecoord(coord(), 0, 0, -6400), true).
+// This correctly maps underground region 155 to surface region 55.
+// Never shadow that global trigger: the duplicate would break other quests.
 
 // Exact combat death queue, from pinned Content scripts/drop_tables:
 // [ai_queue3,fire_bird], [ai_queue3,_citizen], gosub(npc_death),
