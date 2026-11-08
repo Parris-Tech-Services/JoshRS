@@ -5,6 +5,7 @@
  */
 import {buildAction} from './protocol.mjs';
 import {validateObservation} from './observation.mjs';
+import {mapExtendedSdkAction} from './sdk-action-extensions.mjs';
 
 const requiredExtra=['player','nearbyPlayers','gameMessages','recentDialogs','interface',
   'shop','bank','modalOpen','modalInterface','combatEvents','prayers'];
@@ -114,7 +115,7 @@ export function mapSdkAction(action,snapshot) {
          reject('component not pending in actual native dialogue script');
       return packet({type:'dialog_resume',componentId:opt.componentId});
     }
-    default:reject('unsupported, dangerous or unverified RS-SDK action '+String(a?.type).slice(0,40));
+    default:return mapExtendedSdkAction(a,snapshot);
   }
 }
 // The following validators mirror all REQUIRED properties at the pinned
