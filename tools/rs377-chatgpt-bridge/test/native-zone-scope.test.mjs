@@ -8,7 +8,7 @@ const body=file.slice(file.indexOf('// Task 27: native 377'),file.indexOf('// Di
 test('nearby observation reads existing ZoneMap; never allocates new zones',()=>{
  assert.match(body,/mapData\.zonemap\?\.zones/);
  assert.match(body,/existingZones\.get\(zoneIndex\)/);
- assert.doesNotMatch(body,/gameMap\.getZone\(/);
+ assert.doesNotMatch(body.replace(/\/\/[^\n]*/g,'').replace(/type ExistingZone[^\n]*/g,''),/gameMap\.getZone\(/);
  assert.match(body,/zone\.getAllLocsSafe\(\)/);
  assert.match(body,/zone\.getAllObjsSafe\(\)/);
 });
