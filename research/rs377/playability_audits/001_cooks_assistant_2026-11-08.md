@@ -2,7 +2,7 @@
 
 Audited: 8 November 2026  
 Target: Windows JoshRS, revision 377. Pinned reference: LostCityRS/Content@44eab09081ef0f6c5f3eaabd1897a588ad7d9e50.  
-Status: **PARTIALLY IMPLEMENTED — NOT FULLY PLAYABLE/VERIFIED**.
+Status: **PINNED BASELINE PARTIAL; JOSHRS OVERLAY SOURCE FIX PASSED NATIVE 377 COMPILE; WINDOWS PLAYER TEST STILL REQUIRED**.
 
 This is a **direct pinned-source and map-object audit**, not a completed 377 player playthrough, an installation check, or proof that actual player saves persist. A separate RS-SDK revision-225 bot completion must not be counted here.
 
@@ -71,3 +71,16 @@ This is a **direct pinned-source and map-object audit**, not a completed 377 pla
 - [Pack IDs](https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/pack/obj.pack), [locations](https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/pack/loc.pack), [NPCs](https://github.com/LostCityRS/Content/blob/44eab09081ef0f6c5f3eaabd1897a588ad7d9e50/pack/npc.pack)
 
 Last checked by read-only source inspection. No game files were changed and no gameplay success was fabricated.
+
+## Repair follow-up — same day
+
+The audit table above describes the **unmodified pinned 377 baseline** and retains its 14/15 result. JoshRS PR [#167](https://github.com/Parris-Tech-Services/JoshRS/pull/167) adds:
+
+1. `0026-cooks-special-range-item-use.patch` restores `@attempt_cook_item(last_useitem);` in the post-quest branch of `[oplocu,cooksquestrange]`. The pre-quest access gate remains intact.
+2. Two isolated, short **JoshRS-original functional guidance handlers** for Millie and Gillie, without any claim to reproduce Jagex's historical dialogue. Pinned map and NPC IDs are verified, and the compile checker rejects duplicate Talk-to entrypoints.
+3. `tools/check_cooks_range.py` checks the cooking call, original cooking label, 377 map spawns and uniqueness of the two NPC handlers.
+4. `JoshRS-Fix-CooksRange.cmd` and `deploy/jparris-windows/Install-CooksRange377.ps1` are a read-only-by-default Windows installer. It preserves existing dialogue, refuses an active server, requires a verified save backup, backs up source/pack, builds native code and rolls back on failure.
+
+**Test evidence:** [disposable 377 CI run](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/42468032864) verified both NPC handlers, the exact cooking call, RuneScript compilation and pack verification, and game/web listener boot. No authenticated test character logged in. The separate Windows Java-client bootstrap cannot currently be counted because its Gradle distribution download returned HTTP 504; that is a network/bootstrap error, not a quest failure.
+
+**Updated claim:** Source-level repair passed pinned revision-377 build checks. Installed Windows gameplay, cooked items on the special range, NPC text in the client, quest completion and logout/relogin **remain unverified**.
