@@ -23,13 +23,16 @@ test('strict scope prevents out-of-plane, far and foreign-player drops',()=>{
 test('missing pinned ZoneMap internals stay explicitly unknown; no invented SDK state',()=>{
  assert.match(body,/let nearbyLocs: Array<Record<string, unknown>> \| null = null/);
  assert.match(body,/let groundItems: Array<Record<string, unknown>> \| null = null/);
- // The authenticated disposable bot now exposes only its own native
- // Barcrawl varp. Other unsupported SDK fields must still remain unknown.
- assert.match(file,/questStages: \(\(\) => \{/);
- assert.match(file,/VarPlayerType\.getId\('barcrawl'\)/);
- assert.match(file,/if \(barcrawlId < 0\) return null/);
- assert.match(file,/bot\.getVar\(barcrawlId\)/);
- assert.match(file,/Number\.isSafeInteger\(raw\) && raw >= 0 \? \{ barcrawl: raw \} : null/);
+ // Quest varps must be read from the authenticated disposable bot only;
+ // include Barcrawl's own persistent variable without guessing other varps.
+ assert.match(file,/const QUEST_VARP_KEYS:/);
+ assert.match(file,/"barcrawl",\s*\[/);
+ assert.match(file,/VarPlayerType\.getId\(name\)/);
+ assert.match(file,/if \(varpId < 0\) continue/);
+ assert.match(file,/bot\.getVar\(varpId\)/);
+ assert.match(file,/Number\.isSafeInteger\(value\) && value >= 0/);
+ assert.match(file,/return Object\.keys\(observations\)\.length \? observations : null/);
+ assert.doesNotMatch(file,/bot\.setVar\(/);
  assert.match(file,/combatEvents, prayers/);
  assert.match(file,/const shop = !shopOpen/);
  assert.match(file,/const bank = !bankOpen/);
