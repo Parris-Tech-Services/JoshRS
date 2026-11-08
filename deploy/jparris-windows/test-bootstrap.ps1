@@ -26,6 +26,19 @@ try {
         if ((Get-FileHash (Join-Path $source $file)).Hash -ne (Get-FileHash (Join-Path $destination $file)).Hash) { throw "Copy changed $file" }
     }
     if (Test-Path (Join-Path $destination 'engine\node_modules')) { throw 'Linux dependencies copied' }
+    # Regression: fresh worlds can register their first account; imported
+    # characters never get bound to an automatically created replacement login.
+    $mode = Get-JoshRSLocalRegistrationMode -Engine (Join-Path $destination 'engine')
+    if ($mode -ne 'true') { throw 'Imported player save must keep automatic registration disabled' }
+    $emptyEngine = Join-Path $fixture 'empty engine'
+    New-Item -ItemType Directory -Path $emptyEngine -Force | Out-Null
+    $mode = Get-JoshRSLocalRegistrationMode -Engine $emptyEngine
+    if ($mode -ne 'false') { throw 'Fresh local world must allow first account registration' }
+    Remove-Item -LiteralPath (Join-Path $destination 'engine\db.sqlite') -Force
+    $rejectedMissingDb = $false
+    try { Get-JoshRSLocalRegistrationMode -Engine (Join-Path $destination 'engine') | Out-Null } catch { $rejectedMissingDb = $true }
+    if (-not $rejectedMissingDb) { throw 'Existing save without account database was accepted' }
+
     Remove-Item -LiteralPath (Join-Path $destination 'engine\src\app.ts')
     $rejected = $false
     try { Validate-Game (Join-Path $destination 'engine') (Join-Path $destination 'content') } catch { $rejected = $true }
