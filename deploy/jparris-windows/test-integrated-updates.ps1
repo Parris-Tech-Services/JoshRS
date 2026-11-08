@@ -24,7 +24,7 @@ try {
 
     # Missing quest source and unsupported environment must not invent or edit
     # gameplay, saves, SQLite or private .env on a new/unknown fixture.
-    $readOnly=@(& $tool 2>&1) -join [Environment]::NewLine
+    $readOnly=@(& $tool *>&1) -join [Environment]::NewLine
     if($readOnly -notmatch 'WINDOWS_GAME_UPDATES_PREFLIGHT_COMPLETE' -or
        $readOnly -notmatch 'BARCRAWL: NOT_INCLUDED' -or
        $readOnly -notmatch 'LUNA_PLAYTIME: NOT_INCLUDED'){
@@ -36,7 +36,7 @@ try {
     $originalContent=@(Get-ChildItem -LiteralPath $contentDir -Recurse -File).Count
     if($originalContent -ne 0){throw 'Read-only check created content files.'}
 
-    $apply=@(& $tool -Apply 2>&1) -join [Environment]::NewLine
+    $apply=@(& $tool -Apply *>&1) -join [Environment]::NewLine
     if($apply -notmatch 'WINDOWS_GAME_UPDATES_COMPLETE' -or
        $apply -notmatch 'BARCRAWL: NOT_INCLUDED') {
         throw "Synthetic apply was not fail-closed: $apply"
