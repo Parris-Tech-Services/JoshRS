@@ -1,0 +1,79 @@
+diff --git a/scripts/areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2 b/scripts/areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2
+--- a/scripts/areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2
++++ b/scripts/areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2
+@@ -21,6 +21,10 @@
+         ~chatplayer("<p,shifty>Looks can be deceiving, I am in fact a barbarian.");
+         ~chatnpc("<p,shifty>If you're a barbarian you need to be able to drink like one. We barbarians like a good drink.");
+         ~chatnpc("<p,happy>I have the perfect challenge for you...|The Alfred Grimhand Barcrawl!|First completed by Alfred Grimhand.");
++        if(inv_freespace(inv) < 1) {
++            ~chatnpc("<p,neutral>Make room in your pack before I give you a card.");
++            return;
++        }
+         %barcrawl = ^barcrawl_started;
+         inv_add(inv, barcrawl_card, 1);
+         ~mesbox("The guard hands you a Barcrawl card");
+@@ -36,8 +40,11 @@
+ ~chatnpc("<p,quiz>So, how's the Barcrawl coming along?");
+ if(inv_total(inv, barcrawl_card) = 0 & inv_total(bank, barcrawl_card) = 0) {
+     ~chatplayer("<p,sad>I've lost my barcrawl card...");
+-    ~chatnpc("<p,angry>What are you like?|You're gonna have to start all over now.");
+-    %barcrawl = 1;
++    ~chatnpc("<p,neutral>I'll replace your card. Your earlier stops still count.");
++    if(inv_freespace(inv) < 1) {
++        ~chatnpc("<p,neutral>Make room in your pack and ask me again.");
++        return;
++    }
+     inv_add(inv, barcrawl_card, 1);
+     ~mesbox("The guard hands you a Barcrawl card");
+ } else if(inv_total(bank, barcrawl_card) > 0 & inv_total(inv, barcrawl_card) = 0 ) {
+diff --git a/scripts/areas/area_barbarian_outpost/scripts/outpost_gate.rs2 b/scripts/areas/area_barbarian_outpost/scripts/outpost_gate.rs2
+--- a/scripts/areas/area_barbarian_outpost/scripts/outpost_gate.rs2
++++ b/scripts/areas/area_barbarian_outpost/scripts/outpost_gate.rs2
+@@ -3,6 +3,11 @@
+     if(npc_find(coord, barbguard1, 5, 0) = true) {
+         @outpost_guard_talk;
+     }
++    // An absent guard, declined challenge or unfinished card must not open the gate.
++    if(%barcrawl ! ^barcrawl_complete) {
++        mes("Finish Alfred Grimhand's Barcrawl before entering the outpost.");
++        return;
++    }
+ }
+ sound_synth(iron_door_open, 1, 0);
+ if(coordx(coord) > coordx(loc_coord)) { 
+diff --git a/scripts/areas/area_seers/scripts/thormac.rs2 b/scripts/areas/area_seers/scripts/thormac.rs2
+--- a/scripts/areas/area_seers/scripts/thormac.rs2
++++ b/scripts/areas/area_seers/scripts/thormac.rs2
+@@ -6,15 +6,11 @@
+ }
+ 
+ [label,thormac_assistance]
+-// COMMENTED OUT FOR NOW: Not sure if this is an OSRS update, you can only start the quest if the barcrawl has been previously completed
+-// (this doesn't include if you use a dupe card to redo the barcrawl, which is why i'm checking it like this)
+-//if(testbit(%barcrawl_progress, 1) = ^false) {
+-//    ~chatnpc("<p,neutral>Hello I am Thormac the sorcerer.");
+-//    ~chatplayer("<p,quiz>Do you need anything?");
+-//    ~chatnpc("<p,neutral>Not right now, but thank you for offering.");
+-//    ~mesbox("You do not meet all of the requirements to start|the Scorpion Catcher quest.");
+-//    return;
+-//}
++if(%barcrawl ! ^barcrawl_complete) {
++    ~chatnpc("<p,neutral>Only those who have finished the Barbarian Outpost drinking challenge can help me.");
++    ~mesbox("Complete Alfred Grimhand's Barcrawl before starting Scorpion Catcher.");
++    return;
++}
+ ~chatnpc("<p,neutral>Hello I am Thormac the sorcerer.|I don't suppose you could be of assistance to me?");
+ switch_int(~p_choice2("What do you need assistance with?", 1, "I'm a little busy.", 2)) {
+     case 1 :
+diff --git a/scripts/areas/area_port_sarim/scripts/bartender.rs2 b/scripts/areas/area_port_sarim/scripts/bartender.rs2
+--- a/scripts/areas/area_port_sarim/scripts/bartender.rs2
++++ b/scripts/areas/area_port_sarim/scripts/bartender.rs2
+@@ -45,7 +45,7 @@
+ ~chatnpc("<p,confused>Are you sure?  You look a bit skinny for that.");
+ ~chatplayer("<p,neutral>Just give me whatever I need to drink here.");
+ ~chatnpc("<p,happy>Ok one Black Skull Ale coming up, 8 coins please.");
+-if(inv_total(inv, coins) < 7) {
++if(inv_total(inv, coins) < 8) {
+     ~chatplayer("<p,sad>I don't have 8 coins with me.");
+     return;
+ }
