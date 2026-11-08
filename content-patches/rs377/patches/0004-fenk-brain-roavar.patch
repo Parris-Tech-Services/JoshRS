@@ -1,0 +1,29 @@
+--- a/scripts/areas/area_canafis/scripts/werewolfinnkeeper.rs2
++++ b/scripts/areas/area_canafis/scripts/werewolfinnkeeper.rs2
+@@ -1,6 +1,24 @@
+ [opnpc1,werewolfinnkeeper]
+ ~chatplayer("<p,happy>Hello there!");
+ ~chatnpc("<p,happy>Greetings traveller. Welcome to 'The Hair Of The Dog' Tavern. What can I do you for?");
++// An explicit, opted-in quest item offer. Existing tavern choices still work.
++if (%fenk_quest >= ^fenk_hired & %fenk_quest < ^fenk_complete &
++    inv_total(inv, fenk_brain) = 0 & inv_total(bank, fenk_brain) = 0) {
++    def_int $ask = ~p_choice2("Do you sell pickled brains?", 1, "I'd like something else.", 2);
++    if ($ask = 1) {
++        ~chatnpc("<p,neutral>A rather strange request, but I have one. Fifty coins.");
++        if (inv_total(inv, coins) < 50) {
++            ~chatplayer("<p,sad>I don't have fifty coins.");
++            return;
++        }
++        if (inv_freespace(inv) < 1) {
++            ~chatnpc("<p,neutral>Make some room in your pack first.");
++            return;
++        }
++        inv_del(inv, coins, 50);
++        inv_add(inv, fenk_brain, 1);
++        ~chatnpc("<p,neutral>There you are. No refunds.");
++        return;
++    }
++}
+ @multi4("Can I buy a beer?", roavar_beer, "Can I hear some gossip?", roavar_gossip, "Can I hear a story?", roavar_story, "Nothing thanks.", roavar_nothing);
+ 
+ [label,roavar_beer]
