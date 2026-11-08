@@ -10,7 +10,8 @@ $stock='if (Environment.BUILD_VERIFY && validate && !validate(client.dat, server
 $loc="if (Environment.BUILD_VERIFY && validate && !(extension === '.loc' && process.env.JOSHRS_CUSTOM_LOCS === 'true') && !validate(client.dat, server.dat)) {"
 $env0="BUILD_VERIFY=true`r`nBUILD_VERIFY_PACK=true`r`nJOSHRS_CUSTOM_LOCS=true`r`n"
 try {
-    New-Item -ItemType Directory -Path (Split-Path -Parent $packer),$backup -Force | Out-Null
+    New-Item -ItemType Directory -Path (Split-Path -Parent $packer) -Force | Out-Null
+    New-Item -ItemType Directory -Path $backup -Force | Out-Null
     foreach($mode in @('stock','existing-loc')) {
         $base=if($mode -eq 'stock'){$stock}else{$loc}
         $originalSource="function readConfigs(extension) {`n    $base`n        throw new Error('checksum mismatch');`n    }`n}"
