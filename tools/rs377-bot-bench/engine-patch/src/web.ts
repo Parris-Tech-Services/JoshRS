@@ -19,6 +19,7 @@ import NpcType from '#/cache/config/NpcType.js';
 import ObjType from '#/cache/config/ObjType.js';
 import Obj from '#/engine/entity/Obj.js';
 import { PlayerStat, PlayerStatNameMap } from '#/engine/entity/PlayerStat.js';
+import { readSdkTrace } from '#/engine/observer/Native377Trace.js';
 import { isClientConnected } from '#/engine/entity/NetworkPlayer.js';
 import ScriptState from '#/engine/script/ScriptState.js';
 import * as rsbuf from '#/network/rsbuf/index.js';
@@ -320,9 +321,21 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         const optionsWithIndex = (type?.op ?? [])
             .flatMap((label, index) =>
                 label && label !== 'hidden' ? [{ text: label, opIndex: index + 1 }] : []);
+        const distance = Math.max(Math.abs(npc.x - bot.x), Math.abs(npc.z - bot.z));
+        // Rev377 NPC faceEntity is an actual public network update. The server
+        // does not reveal HP until a damage mask: null is the honest SDK state
+        // rather than cheating with private NPC health arrays.
+        const face = npc.faceEntity;
+        const targetIndex = face >= 32768 && face < 34816 ?
+            face - 32768 : face >= 0 && face < 16383 ? face : -1;
+        const inCombat = npc.target === null ? false : null;
         nearbyNpcs.push({
-            index: npc.nid, id: npc.type, x: npc.x, z: npc.z,
-            name: type?.name ?? null, optionsWithIndex
+            kind: 'npc', index: npc.nid, id: npc.type, x: npc.x, z: npc.z,
+            name: type?.name ?? null, combatLevel: type?.vislevel === -1 ? 0 :
+                type?.vislevel ?? null, distance, hp: null, maxHp: null,
+            healthPercent: null, targetIndex, inCombat,
+            lastCombatTick: null, animId: npc.animId, spotanimId: npc.spotanimId,
+            optionsWithIndex, options: optionsWithIndex.map(o => o.text)
         });
     }
 
@@ -459,16 +472,49 @@ management.get('/dev/rs377-observe', async (req, reply) => {
     // Strictly expose only the selected bot's live fields. Quest stages
     // and full client-side RS-SDK UI remain unknown (null), never guessed.
     // Nearby objects/drops are grounded in the exact pinned native ZoneMap.
+    // Task 29: recover real tick-by-tick, bot-scoped life and game-message
+    // evidence from the passive native Player/World observer hooks.
+    // Incomplete combat provenance, unknown attack mode or unseen dialogue
+    // history remain NULL, never invented.
+    const trace = readSdkTrace(bot, World.currentTick);
+    const lastCombatId = VarPlayerType.getId('lastcombat');
+    const lastCombatValue = lastCombatId >= 0 ? bot.vars[lastCombatId] : null;
+    const inCombat = lastCombatValue === null ? null :
+        lastCombatValue > 0 && lastCombatValue + 8 >= World.currentTick;
+    const targetIsNpc = bot.target !== null &&
+        typeof (bot.target as { nid?: unknown }).nid === 'number';
+    const targetIsPlayer = bot.target !== null &&
+        typeof (bot.target as { slot?: unknown }).slot === 'number';
+    const combat = inCombat === null ? null : {
+        inCombat,
+        targetType: !inCombat ? 'none' : targetIsNpc ? 'npc' :
+            targetIsPlayer ? 'player' : 'none',
+        targetIndex: !inCombat ? -1 : targetIsNpc ?
+            (bot.target as { nid: number }).nid : targetIsPlayer ?
+            (bot.target as { slot: number }).slot : -1,
+        lastDamageTick: trace?.lastDamageTick ?? -1
+    };
+    const playerState = trace && combat ? {
+        ...playerBase, combat,
+        lifeId: trace.lifeId, respawnCount: trace.respawnCount,
+        lastDeathTick: trace.lastDeathTick
+    } : null;
+    const recentDialogs = trace && !trace.sawDialogPage &&
+        bot.modalChat === -1 ? [] : null;
+    const gameMessages = trace && nearbyPlayers.length === 0 ?
+        trace.gameMessages : null;
+    const combatEvents = trace?.combatEvents ?? null;
+
     const sdkDetails = {
         // Native values are always projected only from the authenticated bot.
         // An incomplete required client-side signal is explicitly null.
-        player: null, playerBase, nearbyPlayers,
-        gameMessages: null, recentDialogs: null,
+        player: playerState, playerBase, nearbyPlayers,
+        gameMessages, recentDialogs,
         interface: interfaceState, shop, bank,
         modalOpen: bot.modalMain !== -1 || bot.modalChat !== -1 || bot.modalSide !== -1,
         modalInterface: mainModal !== -1 ? mainModal :
             bot.modalChat !== -1 ? bot.modalChat : bot.modalSide,
-        combatEvents: null, prayers
+        combatEvents, prayers
     };
 
     const observation = {
