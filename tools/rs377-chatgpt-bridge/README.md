@@ -2,6 +2,34 @@
 
 This package lives in **a separate source path from Agy's draft PR #62** and uses Node 22+ built-ins only. It is intentionally dormant by default. It does not load any JoshRS game engine, private key, account DB, personal save, custom content pack, live session or public socket.
 
+## 8 November 2026 — all 39 upstream actions now explicitly mapped
+
+The revision-377 bridge has an exhaustive action contract against the **exact
+upstream** `MaxBittker/rs-sdk@db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb`.
+See [39_ACTION_PARITY.md](../rs377-upstream-sdk/39_ACTION_PARITY.md)
+for a source-by-source table.
+
+- The original 11 action variants remain. Additional standard 377 packets
+  now cover players, items, shop/bank, prayer, spells and original native chat
+  WordPack with guarded observed target/UI requirements.
+- Native read-only nearby-location and ground-item scans return real visible
+  entity arrays rather than dispatching a guessed packet.
+- The gateway checks **actual native state changes** for actions with
+  observable effects; packet dispatch alone returns no success. Actual source
+  fingerprints, actor identity and separate isolated game world are mandatory.
+- Four actions are not executable over the isolated 377 server-only boundary:
+  `acceptCharacterDesign`, `randomizeCharacterDesign`, `setTab` (need
+  genuine client-side controls) and `searchGE` (not in pinned 377).
+- Exact shop and bank quantities use the original 377 button handlers.
+  Unsupported custom-X count dialogues, unavailable spell widgets, and
+  absent equipment-combat UI telemetry are rejected until implemented from
+  an authoritative client/engine source.
+
+The **39-way source contract and packet correctness do not constitute
+39 verified live gameplay effects**, a successful Barcrawl, or family-server
+deployment. CI uses disposable revision-377 content and accounts only.
+Existing family accounts, private saves and live world remain unchanged.
+
 ## What's implemented
 
 - **#21:** reusable, injectable rev377 packet/ISAAC/RSA encoders extracted from the old Fred/George proof and cross-checked against `LostCityRS/Engine-TS@b5ac859b47915afb545e60e4c1208f25d43cb3fb`, `Client-Java@327880f6de74b40c420705bc42e4b34284885087`. No hardcoded host, file paths or plaintext password. Original proof client **left untouched**.
