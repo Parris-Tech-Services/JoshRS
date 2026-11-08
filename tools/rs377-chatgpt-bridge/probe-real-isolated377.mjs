@@ -121,7 +121,12 @@ try {
     !Number.isInteger(details.prayers.prayerLevel))gaps.push('prayers');
  if(details?.bank?.isOpen!==false)gaps.push('closed_bank');
  if(details?.shop?.isOpen!==false)gaps.push('closed_shop');
- if(details?.interface!==null && details?.interface?.isOpen!==false)
+ if(details?.interface!==null && (
+    typeof details?.interface?.isOpen!=='boolean' ||
+    !Number.isSafeInteger(details.interface.interfaceId) ||
+    !Array.isArray(details.interface.options) ||
+    (details.interface.isOpen && details.interface.interfaceId<0) ||
+    (details.interface.isOpen && !details.modalOpen)))
    gaps.push('interface_unrecognised');
  if(details?.player!==null && details?.player?.name!==username)gaps.push('player_identity');
  if(details?.gameMessages!==null&&!Array.isArray(details?.gameMessages))gaps.push('messages');
