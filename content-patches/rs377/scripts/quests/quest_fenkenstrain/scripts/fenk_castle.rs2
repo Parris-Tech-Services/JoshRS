@@ -25,7 +25,7 @@ if (%fenk_quest = ^fenk_not_started) {
     mes("The books are thick with dust.");
     return;
 }
-def_obj $reward = null;
+def_namedobj $reward = null;
 if (loc_coord = 1_55_55_22_38) {
     $reward = fenk_marble_amulet;
 } else if (loc_coord = 1_55_55_35_38) {
@@ -133,7 +133,7 @@ if (last_useitem = fenk_cane) {
     ~displaymessage(^dm_default);
 }
 
-[label,fenk_extend_brush](obj $old, obj $new)
+[label,fenk_extend_brush](namedobj $old, namedobj $new)
 if (inv_total(inv, $old) < 1 | inv_total(inv, fenk_cane) < 1) {
     mes("You need the brush and one more cane.");
     return;
