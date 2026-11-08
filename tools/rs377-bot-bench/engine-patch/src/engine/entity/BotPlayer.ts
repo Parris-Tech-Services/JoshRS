@@ -100,6 +100,11 @@ export default class BotPlayer extends Player {
         this.levels.fill(1);
         this.baseLevels.fill(1);
         if (saved) {
+            // Keep the real saved tick count: LoginServer rejects autosaves with
+            // lower playtime to prevent character rollback. Dropping this value
+            // on a Luna respawn used to print "Luna Invalid save file" even
+            // when the saved CRC itself was sound.
+            this.playtime = saved.playtime;
             this.stats.set(saved.stats);
             this.levels.set(saved.levels);
             this.baseLevels.set(saved.baseLevels);
