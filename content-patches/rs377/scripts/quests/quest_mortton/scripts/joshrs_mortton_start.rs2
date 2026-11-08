@@ -105,6 +105,7 @@ if (%morttonquest < ^mortton_made_serum | inv_total(inv, mort_serum3) < 1) {
 inv_del(inv, mort_serum3, 1);
 inv_add(inv, mort_serum2, 1);
 %morttonmulti = setbit(%morttonmulti, ^razmire_visible);
+npc_changetype(razmire_keelgan, 200);
 if (%morttonquest = ^mortton_made_serum) {
     %morttonquest = ^mortton_kill_shades;
     ~send_quest_progress(questlist:mortton, %morttonquest, 100);
@@ -135,11 +136,31 @@ if (%morttonquest < ^mortton_killed_5_shades) {
 ~chatnpc("<p,confused>The local priest stares into the distance, unable to make himself understood.");
 mes("The research diary may contain a way to help him.");
 
+[opnpcu,ulsquire_shauncy_afflicted]
+if (last_useitem ! mort_serum3) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%morttonquest < ^mortton_made_serum | inv_total(inv, mort_serum3) < 1) {
+    mes("You need a dose of the serum from Herbi Flax's notes.");
+    return;
+}
+inv_del(inv, mort_serum3, 1);
+inv_add(inv, mort_serum2, 1);
+%morttonmulti = setbit(%morttonmulti, ^ulsquire_visible);
+npc_changetype(ulsquire_shauncy, 200);
+mes("Ulsquire seems lucid for a short time. Speak to him before the serum wears off.");
+
 [opnpc1,ulsquire_shauncy]
 if (%morttonquest < ^mortton_shades_to_razmire) {
     ~chatnpc("<p,neutral>The temple cannot be restored while the shades control the streets.");
 } else {
     ~chatnpc("<p,neutral>The old sanctuary and its funeral pyres are the key to helping the town.");
+    if (%morttonquest = ^mortton_shades_to_razmire | %morttonquest = ^mortton_shades_to_ulsquire) {
+        %morttonquest = ^mortton_ulsquire_temple;
+        ~send_quest_progress(questlist:mortton, %morttonquest, 100);
+        ~chatplayer("<p,neutral>I will investigate what is needed to repair the temple.");
+    }
     mes("Temple repairs and sacred oil are not yet implemented in this JoshRS content batch.");
 }
 
