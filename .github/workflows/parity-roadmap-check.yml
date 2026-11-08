@@ -1,0 +1,32 @@
+name: Validate parity research and roadmap
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/parity/roadmap/**'
+      - 'tools/parity-inventory/validate-roadmap*.mjs'
+      - '.github/workflows/parity-roadmap-check.yml'
+  pull_request:
+    paths:
+      - 'research/parity/roadmap/**'
+      - 'tools/parity-inventory/validate-roadmap*.mjs'
+      - '.github/workflows/parity-roadmap-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-audit:
+    name: Offline roadmap integrity and provenance status
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Confirm Node version
+        run: node --version
+      - name: Validate backlog, DAG, CSV widths and honest status
+        run: node tools/parity-inventory/validate-roadmap.mjs
+      - name: Negative tests and current corpus regression
+        run: node --test tools/parity-inventory/validate-roadmap.test.mjs

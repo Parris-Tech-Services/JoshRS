@@ -1,9 +1,6 @@
-# The Feud (4 April 2005)
+# The Feud — original JoshRS revision-377 quest implementation
+Pinned 377 NPC and object symbols used: Ali Morrisane, Drunken Ali, the barman, camel seller, Menaphite and bandit guards, organiser, three distinct Pickpocket-enabled villagers, mayor's desk, both gang champions, mayor, and NPC ambient talks. Stage progress uses permanent %main_feud_var and %feud_var_multi. No copied source dialogue or private data.
 
-JoshRS-original reconstruction. Start: Ali M in Al Kharid. Chain: Ali M -> bandit boss ->
-camel receipt (discount camel seller) -> disguise (kebab seller) -> keys from the cowardly
-guard (for a kebab, 3 coins from the kebab seller's second option) -> mayor's jewels ->
-bandit boss -> Ali M. Rewards: 1 QP, 1,500 Thieving XP.
+**No-cheat path:** 30 Thieving to start, 3 beer for a clue, 500 coins for two camel receipts, deliver each to an opposing gang, buy/assemble/equip the actual desert disguise, 3 distinct successful Pickpocket actions, obtain and surrender real jewellery at the mayor's desk, defeat BOTH actual spawned combat NPCs via native death/hero event, speak to mayor and finally Ali Morrisane. Quest points and XP only on the last hand-in.
 
-Known gaps: the Pollnivneach murder-mystery framing, Ali the Mayor, and the camel Ali are not
-implemented. Stage values are JoshRS-original.
+**Historical fidelity still outstanding:** bespoke pickpocket animations and subtasks, camel dung/poison, knock-outs and Menaphite infiltration options, full disguise shop/stock, real player combat and return relog, unique quest cutscenes, NPC world ownership of spawned boss, recovery and replay item edge cases. Full gameplay not certified by CI compiler/boot. No installation into the family's desktop or account edits.

@@ -22,7 +22,7 @@ def listening(port: int) -> bool:
         return False
 
 
-def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
+def smoke(engine: Path, ports: tuple[int, int], timeout: int, content: Path) -> dict:
     engine = engine.resolve(strict=True)
     if (engine / "data/pack/server/script.dat").stat().st_size < 3:
         raise ValueError("Compiled native script.dat missing")
@@ -37,7 +37,7 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
         "WEB_PORT": str(ports[1]), "WEB_MANAGEMENT_PORT": str(ports[1] + 1),
         "LOGIN_SERVER": "true", "FRIEND_SERVER": "true", "LOGGER_SERVER": "true",
         "WEBSITE_REGISTRATION": "false",
-        "BUILD_SRC_DIR": "../content",
+        "BUILD_SRC_DIR": str(content),
         "NODE_DEBUG_SOCKET": "false",
     })
     # Strong, throwaway observer credentials are shared only with this
@@ -122,12 +122,13 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
 if __name__ == "__main__":
     p=argparse.ArgumentParser()
     p.add_argument("--engine",type=Path,required=True)
+    p.add_argument("--content",type=Path,default=Path("../content"))
     p.add_argument("--game-port",type=int,default=15402)
     p.add_argument("--web-port",type=int,default=18880)
     p.add_argument("--timeout",type=int,default=80)
     a=p.parse_args()
     try:
-        print(smoke(a.engine,(a.game_port,a.web_port),a.timeout))
+        print(smoke(a.engine,(a.game_port,a.web_port),a.timeout,a.content))
     except (OSError,ValueError,RuntimeError,TimeoutError) as e:
         print("Disposable 377 boot smoke FAILED: " + str(e),file=sys.stderr)
         sys.exit(1)

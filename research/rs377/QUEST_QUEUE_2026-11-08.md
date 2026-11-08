@@ -8,12 +8,12 @@
 ## Summary Metrics
 - **Total 377 Quests on `questlist.if`:** `104`
 - **Total 377 Miniquests / Adjacent Flows:** `7`
-- **COMPLETE-VERIFIED:** `72`
+- **COMPLETE-VERIFIED:** `77`
 - **COMPLETE-UNVERIFIED:** `0`
 - **PARTIAL:** `0`
 - **STUB (config only):** `4`
-- **NOT STARTED:** `28`
-- **Unhandled `Talk-to` NPCs Cross-Referenced:** `756` (`315` quest-linked, `441` ambient)
+- **NOT STARTED:** `23`
+- **Unhandled `Talk-to` NPCs Cross-Referenced:** `673` (`257` quest-linked, `416` ambient)
 
 ## Chronological Quest Queue (Oldest to Newest, F2P First on Ties)
 
@@ -92,12 +92,12 @@
 | 71 | `2005-02-15` | **Ghosts Ahoy** | `questlist:ahoy` | Members | Batch D | 2 | `ahoy_varbits_1` | `velorina` (Port Phasmatys) | `COMPLETE-VERIFIED` | 458 | 0 |
 | 72 | `2005-02-21` | **One Small Favour** | `questlist:onesmallfavour` | Members | Batch D | 2 | `onesmallfavour` | `yanni_salika` (Shilo Village) | `NOT STARTED` | 0 | 0 |
 | 73 | `2005-02-28` | **Mountain Daughter** | `questlist:mdaughter` | Members | Batch D | 2 | `mdaughter_var` | `hamal_the_chieftain` (Mountain Camp east of Rellekka) | `COMPLETE-VERIFIED` | 280 | 0 |
-| 74 | `2005-03-14` | **Between a Rock...** | `questlist:dwarfrock` | Members | Batch D | 2 | `dwarfrock_main` | `dondakan_the_dwarf` (Keldagrim south-east mine) | `NOT STARTED` | 0 | 10 |
-| 75 | `2005-04-04` | **The Feud** | `questlist:feud` | Members | Batch D | 1 | `main_feud_var` | `feud_ali_m` (Al Kharid north of the palace) | `NOT STARTED` | 0 | 30 |
+| 74 | `2005-03-14` | **Between a Rock...** | `questlist:dwarfrock` | Members | Batch D | 2 | `dwarfrock_main` | `dondakan_the_dwarf` (Keldagrim south-east mine) | `COMPLETE-VERIFIED` | 244 | 0 |
+| 75 | `2005-04-04` | **The Feud** | `questlist:feud` | Members | Batch D | 1 | `main_feud_var` | `feud_ali_m` (Al Kharid north of the palace) | `COMPLETE-VERIFIED` | 222 | 0 |
 | 76 | `2005-04-11` | **The Golem** | `questlist:golem` | Members | Batch D | 1 | `golem_a` | `golem_golem` (Ruins of Uzer) | `COMPLETE-VERIFIED` | 627 | 0 |
-| 77 | `2005-04-18` | **Desert Treasure** | `questlist:deserttreasure` | Members | Batch D | 3 | `deserttreasuremain` | `dt_archaeologist` (Bedabin Camp) | `NOT STARTED` | 0 | 2 |
-| 78 | `2005-04-25` | **Icthlarin's Little Helper** | `questlist:ics_little` | Members | Batch D | 2 | `main_ics_var` | `ics_wanderer` (Outside Sophanem gates) | `NOT STARTED` | 0 | 16 |
-| 79 | `2005-05-09` | **Tears of Guthix** | `questlist:tog` | Members | Batch D | 1 | `tog_minigame` | `juna` (Lumbridge Swamp Caves) | `NOT STARTED` | 0 | 0 |
+| 77 | `2005-04-18` | **Desert Treasure** | `questlist:deserttreasure` | Members | Batch D | 3 | `deserttreasuremain` | `dt_archaeologist` (Bedabin Camp) | `COMPLETE-VERIFIED` | 351 | 0 |
+| 78 | `2005-04-25` | **Icthlarin's Little Helper** | `questlist:ics_little` | Members | Batch D | 2 | `main_ics_var` | `ics_wanderer` (Outside Sophanem gates) | `COMPLETE-VERIFIED` | 205 | 0 |
+| 79 | `2005-05-09` | **Tears of Guthix** | `questlist:tog` | Members | Batch D | 1 | `tog_minigame` | `juna` (Lumbridge Swamp Caves) | `COMPLETE-VERIFIED` | 128 | 0 |
 | 80 | `2005-05-16` | **Zogre Flesh Eaters** | `questlist:zogre` | Members | Batch D | 1 | `zombie_ogre` | `grish` (South of Castle Wars (Jiggig)) | `NOT STARTED` | 0 | 9 |
 | 81 | `2005-05-23` | **The Lost Tribe** | `questlist:lost_tribe` | Members | Batch D | 1 | `lost_tribe` | `mistag` (Lumbridge Castle cellar) | `NOT STARTED` | 0 | 5 |
 | 82 | `2005-05-31` | **The Giant Dwarf** | `questlist:giantdwarf` | Members | Batch D | 2 | `giantdwarf_main` | `dwarf_boatman_rfd` (Keldagrim entrance) | `NOT STARTED` | 0 | 0 |

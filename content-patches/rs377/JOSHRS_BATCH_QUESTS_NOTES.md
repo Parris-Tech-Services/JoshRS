@@ -99,15 +99,25 @@ batch, all JoshRS-original reconstructions in the established pattern:
 | quest_zogre | Zogre Flesh Eaters | 2005-05-16 | zombie_ogre | ogre guard (zogre_ogre_guard; Grish has no cache NPC) |
 | quest_giantdwarf | The Giant Dwarf | 2005-05-31 | giantdwarf_main | boatman (dwarf_city_boatman_mines_prequest) |
 
-New patches:
-- `0009-batch2-quest-varps-permanent.patch` - scope=perm on the six quest varps in all.varp.
-- `0010-osf-yanni-quest-start.patch` - extends the existing shiloantiques handler in
+New patches (renumbered 0020-0022 after the merge with main; see below):
+- `0020-batch3-quest-varps-permanent.patch` - scope=perm on the six quest varps in all.varp.
+- `0021-osf-yanni-quest-start.patch` - extends the existing shiloantiques handler in
   scripts/areas/area_shilo/scripts/yanni_salika.rs2 (Yanni already had antique-buyer
   dialogue): offers the quest start, shows quest progress, and otherwise falls through
   to the original dialogue. First patch to touch area_shilo - checked for handler
   collisions first (only shiloantiques had an existing opnpc1 among all new NPCs).
-- `0011-register-batch2-quests.patch` - 6 QP blocks + 6 quest-list colour lines in
-  quests.rs2, anchored on the post-0007 state.
+- `0022-register-batch3-quests.patch` - 6 QP blocks + 6 quest-list colour lines in
+  quests.rs2, anchored on the post-0019 state.
+
+Merge with main (2026-11-08): main had landed the parallel session's Feud / Making
+History / Hand in the Sand / Elid / Swan Song rebuild / Rag extras as patches
+0009-0019, colliding with this branch's 0009-0011. Resolution: keep main's quest_feud
+folder and patches 0009-0019 verbatim, drop this branch's quest_feud folder and old
+0009-0011, and regenerate this branch's three patches as 0020-0022 against the
+post-0019 state. Full chain 0001-0022 verified on a pristine pin clone with all 19
+quest folders + the Morytania addendum files: BUILD_VERIFY compile exit 0 and
+smoke_377.py green. CI script updated to 22 patches / 18 folders / 18 quest-list
+keys / 17 permanent varp blocks.
 
 New engine facts: NPC trigger names resolve via npc.pack names (`[opnpc1,<name>]`); cache
 quest NPCs exist with quest prefixes (favour_*, dwarfrock_*, feud_*, zogre_*, dwarf_city_*,

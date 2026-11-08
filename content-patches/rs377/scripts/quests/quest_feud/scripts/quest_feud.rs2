@@ -1,135 +1,321 @@
-// The Feud - JoshRS original chain on 377 cache items/NPCs (camel receipt, mayor's house keys,
-// mayor's jewels, desert disguise; NPCs Ali M, the bandit boss, Ali the barman's kebab seller,
-// Ali the discount camel seller, the cowardly guard).
-// Original JoshRS content. Persistence: add scope=perm to cache varp main_feud_var (patch 0009).
-// NOT IMPLEMENTED: the Pollnivneach murder-mystery framing, Ali the Mayor's scenes, and the
-// camel Ali; the chain here is a condensed reconstruction. Rewards: 1,500 Thieving XP.
-
-// Ali M - start NPC, Al Kharid north of the palace.
+// Original JoshRS quest reconstruction. No Jagex dialogue or binary assets.
+// Chronological progression requires inventory, three genuine Pickpocket actions,
+// actual quest scenery, two authenticated combat kills and return hand-in.
 [opnpc1,feud_ali_m]
 switch_int (%main_feud_var) {
-    case ^feud_not_started :
-        ~chatnpc("<p,sad>My poor wife! Dead, and the bandits of the desert camp|did it, I know it. The guards do nothing. Will you go to|the bandit camp and find the truth of it?");
-        def_int $option = ~p_choice2("I'll find your wife's killers.", 1, "Sounds dangerous. No.", 2);
-        if ($option = 1) {
-            ~chatplayer("<p,neutral>I'll find out what the bandits know.");
-            %main_feud_var = ^feud_started;
-            ~send_quest_progress(questlist:feud, %main_feud_var, ^feud_complete);
+    case ^feud_none :
+        ~chatnpc("<p,neutral>Business is booming, but my assistant has disappeared. Could you look for him in Pollnivneach?");
+        if (stat_base(thieving) < 30) {
+            mes("You need 30 Thieving to begin The Feud.");
+            return;
         }
-    case ^feud_started :
-    case ^feud_disguise :
-    case ^feud_jewels :
-        ~chatnpc("<p,sad>The bandit camp, south-west past the Shantay Pass.|Be careful - they are not forgiving folk.");
-    case ^feud_report :
-        ~chatnpc("<p,neutral>So the bandits deny it... and point at my own household.|The desert keeps its secrets, but at least I know the camp|did not do it. Take this, and my thanks.");
+        def_int $c = ~p_choice2("I can investigate.", 1, "Not at the moment.", 2);
+        if ($c ! 1) {
+            return;
+        }
+        %main_feud_var = ^feud_find_nephew;
+        ~chatnpc("<p,neutral>Ask for my nephew in the town south of Shantay Pass.");
+        ~send_quest_progress(questlist:feud, %main_feud_var, ^feud_complete);
+    case ^feud_find_nephew :
+        ~chatnpc("<p,neutral>Before you leave, you might want something suitable to wear in Pollnivneach.");
+        if (~p_choice2("Buy a desert disguise for 30 coins.", 1, "Not now.", 2) = 1) {
+            ~feud_buy_disguise;
+        }
+    case ^feud_mayor_spoken :
+        %main_feud_var = ^feud_complete;
         queue(feud_quest_complete, 0, 0);
+        ~chatnpc("<p,happy>I knew you would bring peace, or at least more customers. You have earned your reward.");
+    case ^feud_complete :
+        ~chatnpc("<p,happy>The town is busy again. Thank you.");
     case default :
-        ~chatnpc("<p,neutral>Peace be on you. My wife rests, and the bandits keep|their distance from my house now.");
+        ~chatnpc("<p,neutral>My nephew was last seen in Pollnivneach. Be careful around the rival gangs.");
 }
 
-// Bandit boss - wants proof of loyalty before talking: the mayor's jewels.
-[opnpc1,feud_bandit_boss]
-switch_int (%main_feud_var) {
-    case ^feud_started :
-        ~chatnpc("<p,neutral>An outsider asking about a murder? Ha! Words are wind.|You want in with us, you bring me the mayor's jewels from|his house in Pollnivneach. A beard and a turban help a|stranger not be a stranger - the kebab seller trades in|such things.");
-        %main_feud_var = ^feud_disguise;
-    case ^feud_disguise :
-        ~chatnpc("<p,neutral>Jewels. The mayor's. Until then, we never spoke.");
-    case ^feud_jewels :
-        if (inv_total(inv, feud_mayors_jewels) > 0) {
-            ~chatnpc("<p,laugh>Well now! You ARE useful. The mayor's own jewels!|About your murder, little word: none of mine did it.|Ali M's own household had hands in it, if you ask me.|Now clear off before the camp wakes.");
-            inv_del(inv, feud_mayors_jewels, 1);
-            %main_feud_var = ^feud_report;
-        } else {
-            ~chatnpc("<p,neutral>Empty hands get empty answers.");
-        }
-    case ^feud_report :
-        ~chatnpc("<p,neutral>You have your answer. Go tell the widower.");
-    case default :
-        ~chatnpc("<p,neutral>The camp is closed to strangers. Mostly.");
+// Optional fee for an era-correct disguise: players may also buy the pieces
+// through native trade. Quest progression never grants the outfit for free.
+[proc,feud_buy_disguise]
+if (inv_total(inv, feud_karidian_turban) > 0 | inv_total(inv, feud_karidian_fakebeard) > 0 |
+    inv_total(inv, feud_desert_disguise) > 0 | inv_total(worn, feud_desert_disguise) > 0) {
+    ~chatnpc("<p,neutral>You already have part or all of a local disguise.");
+    return;
 }
+if (inv_total(inv, coins) < 30 | inv_freespace(inv) < 2) {
+    ~chatnpc("<p,neutral>Bring 30 coins and space for two pieces of desert clothing.");
+    return;
+}
+inv_del(inv, coins, 30);
+inv_add(inv, feud_karidian_turban, 1);
+inv_add(inv, feud_karidian_fakebeard, 1);
+mes("You buy a headpiece and a fake beard.");
 
-// Ali the kebab seller - trades the desert disguise for a camel receipt, sells kebabs for 3 coins.
-[opnpc1,feud_bjseller]
-if (%main_feud_var = ^feud_disguise & inv_total(inv, feud_karidian_fakebeard_and_hat) = 0 & inv_total(inv, feud_desert_disguise) = 0) {
-    if (inv_total(inv, feud_camel_receipt) > 0) {
-        ~chatnpc("<p,neutral>A camel receipt? For that I can part with a fine|Karidian false beard and hat. Blend right in, you will.|Kebab with it? On the house.");
-        inv_del(inv, feud_camel_receipt, 1);
-        inv_add(inv, feud_karidian_fakebeard_and_hat, 1);
-    } else {
-        ~chatnpc("<p,neutral>Disguises cost a camel receipt - the discount camel|seller writes them. Kebabs are three coins, if you're|hungry now.");
+[opheldu,feud_karidian_turban]
+if (last_useitem = feud_karidian_fakebeard) {
+    @feud_make_disguise;
+} else {
+    ~displaymessage(^dm_default);
+}
+[opheldu,feud_karidian_fakebeard]
+if (last_useitem = feud_karidian_turban) {
+    @feud_make_disguise;
+} else {
+    ~displaymessage(^dm_default);
+}
+[label,feud_make_disguise]
+if (inv_total(inv, feud_karidian_fakebeard) < 1 | inv_total(inv, feud_karidian_turban) < 1) {
+    return;
+}
+inv_del(inv, feud_karidian_fakebeard, 1);
+inv_del(inv, feud_karidian_turban, 1);
+inv_add(inv, feud_desert_disguise, 1);
+mes("You combine the two garments into a desert disguise.");
+
+[opnpc1,feud_drunken_ali]
+if (%main_feud_var = ^feud_find_nephew) {
+    if (inv_total(inv, beer) < 3) {
+        ~chatnpc("<p,neutral>Three beers might help me remember where your friend went.");
+        return;
     }
-} else if (%main_feud_var = ^feud_disguise) {
-    ~chatnpc("<p,neutral>Looking properly Karidian now! Kebab? Three coins.");
+    inv_del(inv, beer, 3);
+    %main_feud_var = ^feud_drunk_clue;
+    ~chatnpc("<p,neutral>The nephew angered both gangs. Ask them about the missing camels.");
 } else {
-    ~chatnpc("<p,neutral>Kebabs! Finest in the desert! Three coins!");
+    ~chatnpc("<p,neutral>I remember little after closing time.");
 }
 
-// Buy a kebab from the kebab seller (3 coins).
-[queue,feud_buy_kebab]
-if (inv_total(inv, coins) >= 3) {
-    inv_del(inv, coins, 3);
-    inv_add(inv, kebab, 1);
-    mes("You buy a kebab. It smells... authentic.");
-} else {
-    mes("You need 3 coins for a kebab.");
+// 3 beers, paid using ordinary 377 coins, for the investigation.
+[opnpc1,feud_ali_the_barman]
+if (%main_feud_var = ^feud_find_nephew) {
+    if (inv_total(inv, beer) >= 3) {
+        ~chatnpc("<p,neutral>You already have enough beer for your friend.");
+        return;
+    }
+    if (inv_total(inv, coins) < 6 | inv_freespace(inv) < 3) {
+        ~chatnpc("<p,neutral>Three beers cost six coins, and you need three empty slots.");
+        return;
+    }
+    inv_del(inv, coins, 6);
+    inv_add(inv, beer, 3);
+    ~chatnpc("<p,neutral>Here are your drinks.");
+    return;
 }
+~chatnpc("<p,neutral>Welcome to the local tavern.");
 
-[opnpc2,feud_bjseller]
-queue(feud_buy_kebab, 0, 0);
-
-// Ali the discount camel seller - writes a camel receipt for free.
 [opnpc1,feud_ali_the_discount_camel_seller]
-if (%main_feud_var = ^feud_disguise) {
-    ~chatnpc("<p,neutral>A receipt for a camel you have not bought? It is a|desert tradition. Here - signed and worthless, exactly|as intended.");
-    inv_add(inv, feud_camel_receipt, 1);
-} else {
-    ~chatnpc("<p,neutral>Camels! Discount! Slightly!");
+if (%main_feud_var ! ^feud_drunk_clue) {
+    ~chatnpc("<p,neutral>I've got camels, if you've got money.");
+    return;
+}
+if (inv_total(inv, coins) < 500 | inv_freespace(inv) < 2) {
+    ~chatnpc("<p,neutral>I'll sell two camel receipts for 500 coins. Make some room.");
+    return;
+}
+inv_del(inv, coins, 500);
+inv_add(inv, feud_camel_receipt, 2);
+%main_feud_var = ^feud_camel_receipts;
+~chatnpc("<p,neutral>Take one receipt to each gang. I won't be getting in the middle of it.");
+
+[opnpc1,feud_egyptian_doorman_1]
+@feud_menaphite_guard;
+[opnpc1,feud_egyptian_doorman_2]
+@feud_menaphite_guard;
+[label,feud_menaphite_guard]
+if (%main_feud_var = ^feud_camel_receipts) {
+    if (inv_total(inv, feud_camel_receipt) < 1) {
+        ~chatnpc("<p,neutral>You've brought nothing to repay the camels.");
+        return;
+    }
+    inv_del(inv, feud_camel_receipt, 1);
+    %main_feud_var = ^feud_menap_receipt;
+    ~chatnpc("<p,angry>Our enemies started this trouble. Talk to the bandits.");
+    return;
+}
+~chatnpc("<p,neutral>Speak with our organiser if you have business here.");
+
+[opnpc1,feud_arabian_guard1_1]
+@feud_bandit_guard;
+[opnpc1,feud_arabian_guard1_2]
+@feud_bandit_guard;
+[label,feud_bandit_guard]
+if (%main_feud_var = ^feud_menap_receipt) {
+    if (inv_total(inv, feud_camel_receipt) < 1) {
+        ~chatnpc("<p,neutral>I've heard you have a receipt for our missing camel.");
+        return;
+    }
+    inv_del(inv, feud_camel_receipt, 1);
+    %main_feud_var = ^feud_bandit_receipt;
+    ~chatnpc("<p,angry>They think that will settle the feud? Talk to the Menaphite organiser.");
+    return;
+}
+~chatnpc("<p,neutral>Keep your hands where I can see them.");
+
+[opnpc1,feud_egyptian_minder]
+if (%main_feud_var = ^feud_bandit_receipt) {
+    if (inv_total(worn, feud_desert_disguise) < 1) {
+        ~chatnpc("<p,neutral>If you want to fit in, come back wearing a local desert disguise.");
+        return;
+    }
+    %main_feud_var = ^feud_joined_gang;
+    ~chatnpc("<p,neutral>Prove your skill by successfully picking the pockets of three different villagers.");
+    return;
+}
+if (%main_feud_var = ^feud_joined_gang) {
+    if (testbit(%feud_var_multi, ^feud_pick_one) = ^false |
+        testbit(%feud_var_multi, ^feud_pick_two) = ^false |
+        testbit(%feud_var_multi, ^feud_pick_three) = ^false) {
+        ~chatnpc("<p,neutral>You haven't proven yourself to all three villagers yet.");
+        return;
+    }
+    %main_feud_var = ^feud_pickpockets_done;
+    ~chatnpc("<p,neutral>Now fetch the mayor's jewels from his desk to demonstrate loyalty.");
+    return;
+}
+if (%main_feud_var = ^feud_pickpockets_done) {
+    if (inv_total(inv, feud_mayors_jewels) < 1) {
+        ~chatnpc("<p,neutral>The mayor keeps his jewels in a desk in the town square.");
+        return;
+    }
+    inv_del(inv, feud_mayors_jewels, 1);
+    %main_feud_var = ^feud_jewels_delivered;
+    ~chatnpc("<p,neutral>Go speak with the Menaphite leader. He wants to put you to a final test.");
+    return;
+}
+~chatnpc("<p,neutral>Our organisation keeps this town in check.");
+
+[opnpc3,feud_villager_1_1]
+~feud_pick_villager(^feud_pick_one);
+[opnpc3,feud_villager_2_1]
+~feud_pick_villager(^feud_pick_two);
+[opnpc3,feud_villager_3_1]
+~feud_pick_villager(^feud_pick_three);
+[proc,feud_pick_villager](int $bit)
+if (%main_feud_var ! ^feud_joined_gang) {
+    mes("You are not on the Menaphites' pickpocket trial.");
+    return;
+}
+if (testbit(%feud_var_multi, $bit) = ^true) {
+    mes("You have already proved yourself with this villager.");
+    return;
+}
+if (stat_base(thieving) < 30) {
+    mes("You need 30 Thieving.");
+    return;
+}
+if (stat_random(thieving, 80, 150) = ^false) {
+    ~fail_pick_pocket(2, 4, "Villager");
+    return;
+}
+anim(human_pickpocket, 0);
+%feud_var_multi = setbit(%feud_var_multi, $bit);
+mes("You successfully take a small purse without being seen.");
+
+[oploc1,feud_mayors_desk]
+if (%main_feud_var ! ^feud_pickpockets_done) {
+    mes("This desk holds the mayor's personal records.");
+    return;
+}
+if (inv_total(worn, feud_desert_disguise) < 1) {
+    mes("You would look conspicuous here without the desert disguise.");
+    return;
+}
+if (inv_total(inv, feud_mayors_jewels) > 0 | inv_total(bank, feud_mayors_jewels) > 0) {
+    mes("You already recovered the jewels.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need room to take the evidence.");
+    return;
+}
+inv_add(inv, feud_mayors_jewels, 1);
+mes("You open a drawer and find the mayor's jewels.");
+
+[opnpc1,feud_menap_boss_vis]
+if (%main_feud_var ! ^feud_jewels_delivered) {
+    ~chatnpc("<p,neutral>The gangs have little time for outsiders.");
+    return;
+}
+if (npc_find(npc_coord, feud_menap_toughguy, 6, 0) = true) {
+    ~chatnpc("<p,angry>My champion is already waiting for you.");
+    return;
+}
+~chatnpc("<p,angry>If you want our support, survive a fight against my champion!");
+npc_add(movecoord(npc_coord, 1, 0, 0), feud_menap_toughguy, 1000);
+npc_setmode(opplayer2);
+
+[ai_queue3,feud_menap_toughguy]
+~npc_default_death;
+if (npc_findhero = ^false) {
+    return;
+}
+if (%main_feud_var = ^feud_jewels_delivered) {
+    queue(feud_menap_defeated, 0, 0);
+}
+[queue,feud_menap_defeated]
+if (%main_feud_var = ^feud_jewels_delivered) {
+    %main_feud_var = ^feud_menap_win;
+    mes("The Menaphite champion falls. The bandit leader still threatens the town.");
 }
 
-// Cowardly guard at the mayor's house - trades the house keys for a kebab.
-[opnpc1,feud_arabian_guard_coward]
-if (%main_feud_var = ^feud_disguise) {
-    if (inv_total(inv, kebab) > 0) {
-        ~chatnpc("<p,scared>You didn't see me, I didn't see you - is that a kebab?|The mayor's out, the keys are under the mat, and my|stomach is empty. Trade you, keys for kebab.");
-        inv_del(inv, kebab, 1);
-        inv_add(inv, feud_mayors_house_keys, 1);
-    } else {
-        ~chatnpc("<p,scared>I saw nothing! Nothing at all! ...unless you happen|to have a kebab about you. Then we can talk.");
-    }
-} else {
-    ~chatnpc("<p,scared>Move along! This is the mayor's house! Officially guarded!");
+[opnpc1,feud_bandit_boss_vis]
+if (%main_feud_var ! ^feud_menap_win) {
+    ~chatnpc("<p,angry>There can be no peace while our enemies have a champion.");
+    return;
+}
+if (npc_find(npc_coord, feud_bandit_toughguy, 6, 0) = true) {
+    ~chatnpc("<p,angry>My champion is already preparing to fight.");
+    return;
+}
+~chatnpc("<p,angry>Then beat our strongest fighter and I'll hear your case.");
+npc_add(movecoord(npc_coord, 1, 0, 0), feud_bandit_toughguy, 1000);
+npc_setmode(opplayer2);
+
+[ai_queue3,feud_bandit_toughguy]
+~npc_default_death;
+if (npc_findhero = ^false) {
+    return;
+}
+if (%main_feud_var = ^feud_menap_win) {
+    queue(feud_bandit_defeated, 0, 0);
+}
+[queue,feud_bandit_defeated]
+if (%main_feud_var = ^feud_menap_win) {
+    %main_feud_var = ^feud_bandit_win;
+    mes("Both champions have been defeated. Speak to the mayor about the missing nephew.");
 }
 
-// Mayor's house keys - open the jewel case.
-[opheld1,feud_mayors_house_keys]
-if (%main_feud_var = ^feud_disguise) {
-    if (inv_total(inv, feud_karidian_fakebeard_and_hat) > 0 | inv_total(inv, feud_desert_disguise) > 0) {
-        mes("You slip inside the mayor's house and open the jewel case.");
-        inv_del(inv, feud_mayors_house_keys, 1);
-        inv_add(inv, feud_mayors_jewels, 1);
-        %main_feud_var = ^feud_jewels;
-    } else {
-        mes("I should wear a disguise before sneaking in.");
-    }
-} else {
-    mes("A ring of keys stamped 'Mayor'.");
+[opnpc1,feud_mayor_geom]
+if (%main_feud_var = ^feud_bandit_win) {
+    %main_feud_var = ^feud_mayor_spoken;
+    ~chatnpc("<p,neutral>Your friend is safe. I helped him leave before the gangs could hurt him.");
+    ~chatnpc("<p,neutral>Return to Ali Morrisane and tell him the town is calmer.");
+    return;
 }
+~chatnpc("<p,neutral>I do my best to keep the village running despite the gangs.");
+
+[opnpc1,feud_hag]
+~chatnpc("<p,neutral>Visitors ought to learn our customs before joining local arguments.");
+[opnpc1,feud_snakecharmer]
+~chatnpc("<p,neutral>The snakes do not care which gang is in charge.");
+[opnpc1,feud_street_urchin]
+~chatnpc("<p,neutral>Best watch your purse around here.");
+[opnpc1,feud_dye_lady]
+~chatnpc("<p,neutral>I can turn plain cloth into a very noticeable outfit.");
+[opnpc1,feud_kebabman]
+~chatnpc("<p,neutral>Hungry travellers should buy something to eat.");
+[opnpc1,feud_marketseller]
+~chatnpc("<p,neutral>Welcome to the Pollnivneach market.");
+[opnpc1,feud_bjseller]
+~chatnpc("<p,neutral>Blackjacks have become popular in these narrow streets.");
 
 [queue,feud_quest_complete]
-%main_feud_var = ^feud_complete;
-stat_advance(thieving, 15000);
-session_log(^log_adventure, "Quest complete: The Feud");
-~send_quest_complete(questlist:feud, feud_mayors_jewels, 200, ^feud_questpoints, "You have completed The Feud!", "1,500 Thieving XP");
-
-[if_button,questlist:feud]
-def_string $text;
-switch_int (%main_feud_var) {
-    case ^feud_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Ali M@dbl@ in Al Kharid, north of the palace.";
-    case ^feud_started : $text = "@str@Ali M blames the bandits for his wife's death.||@dbl@I should speak to the @dre@bandit boss@dbl@ in the desert bandit camp.";
-    case ^feud_disguise : $text = "@str@The bandit boss wants the mayor's jewels as proof of loyalty.||@dbl@I need a @dre@disguise@dbl@ from the kebab seller (he wants a camel receipt from the discount camel seller) and the @dre@house keys@dbl@ from the cowardly guard (for a kebab).";
-    case ^feud_jewels : $text = "@str@I have the mayor's jewels.||@dbl@I should bring them to the @dre@bandit boss@dbl@.";
-    case ^feud_report : $text = "@str@The bandits deny the murder - and point at Ali M's own household.||@dbl@I should bring the truth back to @dre@Ali M@dbl@.";
-    case default : $text = "@str@The feud is settled, after a fashion.||@red@QUEST COMPLETE!";
+if (%main_feud_var ! ^feud_complete) {
+    return;
 }
-~quest_journal("The Feud", $text);
+session_log(^log_adventure, "Quest complete: The Feud");
+~send_quest_complete(questlist:feud, blackjack_oak, 250, ^feud_questpoints,
+    "You have completed the\\nFeud Quest!",
+    "1 Quest Point|15,000 Thieving XP|500 coins|Oak blackjack");
+stat_advance(thieving, ^feud_thieving_xp);
+inv_add(inv, coins, 500);
+if (inv_freespace(inv) >= 1) {
+    inv_add(inv, blackjack_oak, 1);
+}

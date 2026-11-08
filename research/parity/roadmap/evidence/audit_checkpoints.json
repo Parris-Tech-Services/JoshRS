@@ -1,0 +1,39 @@
+{
+  "schema": "joshrs-roadmap-research-checkpoint-v1",
+  "date": "2026-11-08",
+  "state": "PARTIALLY_COMPLETE",
+  "tasks_count": 100,
+  "dependency_edges_count": 228,
+  "gap_rows_count": 1281,
+  "gap_counts": {
+    "historical_377_quests": 104,
+    "npc_handler_candidates": 673,
+    "skill_concepts": 30,
+    "modern_research_seeds": 474
+  },
+  "status_counts": {
+    "SOURCE_IMPLEMENTED_NOT_LIVE_VERIFIED": 77,
+    "PARTIALLY_IMPLEMENTED": 4,
+    "RESEARCH_NOT_COMPLETE": 1200
+  },
+  "work_completed": [
+    "Inspect repo version pins and project scope",
+    "Compare current public OSRS/RS3 versions and specific 3 Nov quest changes",
+    "Reconcile open quests, safety incident and agent work",
+    "Decide hybrid architecture and reuse boundaries",
+    "Create full staged roadmap, 100 detailed engineering tasks, 228 dependency edges",
+    "Generate source-backed gap dataset, licensing and family test plans",
+    "Add CI integrity validator and negative unit tests"
+  ],
+  "not_done": [
+    "Exhaustive current modern wiki/API pagination of every item, NPC, quest, map and ability",
+    "Authenticated inspection of live family Windows desktop and installed pack",
+    "Verified two client family-world LAN gameplay",
+    "Per-item, per-quest live full playthrough proof",
+    "Rights clearance for exact protected game content",
+    "Modern OSRS/RS3 mode engine/client implementation",
+    "Confirmed GitHub Actions run of new validator"
+  ],
+  "next_action": "Verify new offline schema validator in Actions, reconcile active PRs, backup+restore the private world before touching it",
+  "blocked_by": "No direct authorised host runtime access; public reference APIs not fully enumerated"
+}

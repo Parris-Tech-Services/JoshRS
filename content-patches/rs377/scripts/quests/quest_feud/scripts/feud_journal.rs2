@@ -1,0 +1,18 @@
+[if_button,questlist:feud]
+def_string $text;
+if (%main_feud_var = ^feud_none) {
+    $text = "@dbl@Ali Morrisane in Al Kharid needs help locating his nephew.||@dbl@I need at least 30 Thieving.";
+} else if (%main_feud_var = ^feud_complete) {
+    $text = "@str@I sought Ali's nephew, dealt with both rival gangs and|@str@returned safely to Ali Morrisane.||@red@QUEST COMPLETE!";
+} else if (%main_feud_var < ^feud_camel_receipts) {
+    $text = "@dbl@Find the drunk at the Pollnivneach tavern with three beers.|@dbl@Then speak with the camel dealer about the missing animals.";
+} else if (%main_feud_var < ^feud_joined_gang) {
+    $text = "@dbl@Deliver a camel receipt to each gang, then wear|@dbl@a desert disguise when meeting the Menaphite organiser.";
+} else if (%main_feud_var < ^feud_jewels_delivered) {
+    $text = "@dbl@Use the real Pickpocket action on three villagers,|@dbl@then retrieve the mayor's jewels from his desk.";
+} else if (%main_feud_var < ^feud_bandit_win) {
+    $text = "@dbl@Defeat the Menaphite and bandit champions in normal combat.";
+} else {
+    $text = "@dbl@Ask the mayor about Ali's nephew, then report back to Ali Morrisane.";
+}
+~quest_journal("The Feud", $text);

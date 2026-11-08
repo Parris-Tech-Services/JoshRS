@@ -1,0 +1,76 @@
+// The Lost Tribe - JoshRS original dialogue/stages on 377 cache items (lost_tribe_brooch/book/treaty, NPCs Sigmund, Mistag, Kazgar).
+// Original JoshRS content. Persistence: add scope=perm to cache varp lost_tribe. NOT IMPLEMENTED: the cellar dig, cutscenes, goblin guide.
+
+[opnpc1,lost_tribe_sigmund_there]
+@lt_sigmund;
+[opnpc1,lost_tribe_sigmund_ham_there]
+@lt_sigmund;
+
+[label,lt_sigmund]
+switch_int (%lost_tribe_quest) {
+    case ^lt_not_started :
+        ~chatnpc("<p,neutral>A brooch went missing from the Duke's house.|Someone must find out why.");
+        %lost_tribe_quest = ^lt_started;
+        ~send_quest_progress(questlist:lost_tribe, %lost_tribe_quest, ^lt_complete);
+    case ^lt_complete : ~chatnpc("<p,happy>Peace at last. Thank you.");
+    case default : ~chatnpc("<p,neutral>Any news on the brooch?");
+}
+
+[opnpc1,lost_tribe_mistag]
+switch_int (%lost_tribe_quest) {
+    case ^lt_brooch :
+        if (inv_total(inv, lost_tribe_book) > 0) {
+            ~chatnpc("<p,happy>You carry the symbol book of my people. You are a friend.");
+            %lost_tribe_quest = ^lt_mistag;
+        } else {
+            ~chatnpc("<p,neutral>Bring proof you mean no harm.");
+        }
+    case ^lt_mistag :
+        ~chatnpc("<p,neutral>Take this treaty to the Duke.");
+        inv_add(inv, lost_tribe_treaty, 1);
+        %lost_tribe_quest = ^lt_treaty;
+    case ^lt_complete : ~chatnpc("<p,happy>Our peoples are friends.");
+    case default : ~chatnpc("<p,neutral>Hmm.");
+}
+
+[opnpc1,lost_tribe_guide_1op]
+~chatnpc("<p,neutral>Follow me carefully through the tunnels.");
+
+[opnpc1,lost_tribe_cutscene_duke]
+if (%lost_tribe_quest = ^lt_treaty & inv_total(inv, lost_tribe_treaty) > 0) {
+    ~chatnpc("<p,happy>A treaty! Well done.");
+    inv_del(inv, lost_tribe_treaty, 1);
+    queue(lt_quest_complete, 0, 0);
+} else {
+    ~chatnpc("<p,neutral>Welcome to my castle.");
+}
+
+[opheld1,lost_tribe_brooch]
+if (%lost_tribe_quest = ^lt_started) {
+    %lost_tribe_quest = ^lt_brooch;
+    mes("You examine the brooch. It is goblin-made.");
+} else {
+    mes("A goblin-made brooch.");
+}
+
+[opheld1,lost_tribe_book]
+mes("A book of goblin symbols.");
+
+[queue,lt_quest_complete]
+%lost_tribe_quest = ^lt_complete;
+stat_advance(mining, 30000);
+session_log(^log_adventure, "Quest complete: The Lost Tribe");
+~send_quest_complete(questlist:lost_tribe, lost_tribe_treaty, 200, ^lt_questpoints, "You have completed The Lost Tribe!", "3,000 Mining XP");
+
+[if_button,questlist:lost_tribe]
+def_string $text;
+switch_int (%lost_tribe_quest) {
+    case ^lt_not_started : $text = "@dbl@I can start this quest by talking to @dre@Sigmund@dbl@.";
+    case ^lt_started : $text = "@str@I spoke to Sigmund.||@dbl@I should examine the @dre@brooch@dbl@.";
+    case ^lt_brooch : $text = "@dbl@I need a @dre@goblin symbol book@dbl@ to speak to @dre@Mistag@dbl@.";
+    case ^lt_book : $text = "@dbl@I should speak to @dre@Mistag@dbl@.";
+    case ^lt_mistag : $text = "@dbl@Mistag will give me a @dre@peace treaty@dbl@.";
+    case ^lt_treaty : $text = "@dbl@I must give the treaty to @dre@Duke Horacio@dbl@.";
+    case default : $text = "@str@I brokered peace with the goblins.||@red@QUEST COMPLETE!";
+}
+~quest_journal("The Lost Tribe", $text);

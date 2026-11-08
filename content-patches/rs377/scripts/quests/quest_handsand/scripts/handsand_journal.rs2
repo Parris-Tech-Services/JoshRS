@@ -1,0 +1,18 @@
+[if_button,questlist:handsand]
+def_string $text;
+if (%handsand = ^hs_not_started) {
+    $text = "@dbl@Speak to @dre@Bert@dbl@ in Yanille about the hand in his sandpit.||@dbl@I need 17 Thieving and 49 Crafting.";
+} else if (%handsand = ^hs_complete) {
+    $text = "@str@I found the missing wizard's remains, proved Sandy's deception|@str@and helped Bert secure a magical sand supply.||@red@QUEST COMPLETE!";
+} else if (%handsand < ^hs_wizard) {
+    $text = "@str@Bert gave me a strange hand found in his sandpit.||@dbl@Speak to the @dre@Yanille guard captain@dbl@, then Zavistic Rarve at the Wizards' Guild.";
+} else if (%handsand < ^hs_magic_scroll) {
+    $text = "@dbl@Compare Bert's rota with the old records from @dre@Sandy's desk@dbl@ in Brimhaven.";
+} else if (%handsand < ^hs_coffee) {
+    $text = "@dbl@Take the strange scroll to Zavistic, seek @dre@Betty@dbl@ in Port Sarim|@dbl@and gather the ingredients for truth serum.";
+} else if (%handsand < ^hs_wizard_spell) {
+    $text = "@dbl@Record Sandy's confession with the orb, then return to Zavistic|@dbl@with five earth runes and a bucket of sand.";
+} else {
+    $text = "@dbl@Speak to @dre@Mazion@dbl@ by Entrana's sandpit, and bring the|@dbl@missing wizard's remains to Zavistic Rarve.";
+}
+~quest_journal("The Hand in the Sand", $text);
