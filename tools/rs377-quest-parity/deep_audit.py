@@ -21,6 +21,8 @@ import re
 import sys
 from typing import Any
 
+# Python -I omits the script directory; load only our reviewed sibling module.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from audit import OVERLAYS, QUEUE
 
 PIN = "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50"
@@ -394,7 +396,7 @@ def render_md(data: dict) -> str:
         "> dialogue branch counts, skill checks and reward calls. Historical",
         "> dialogue wording and real-client progression remain **unverified**.",
         "",
-        f"Content pin: \`{data['content_sha_pin']}\`.",
+        f"Content pin: `{data['content_sha_pin']}`.",
         f"Quest slots examined: **{data['total_quests']}**.",
         f"Quest-owned source script files: **{data['num_quest_script_files']}**.",
         "",
