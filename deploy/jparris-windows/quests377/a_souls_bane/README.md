@@ -15,3 +15,6 @@ Delete those two triggers (this bundle defines them) or `audit_npc_trigger_colli
 - Dungeon traversal (ravine, fire wall, doors, rope), the anger-weapon rack and instancing are **not implemented**;
   the bundle assumes the cache's monsters are spawned and reachable. Verify map spawns in a disposable world.
 - Reset of tallies on abandon/relog is not handled.
+
+## Persistence fix
+Add `scope=perm` to the cache varp `soulbane` (and `soulbane2` if used) in your local config, or progress will not save.
