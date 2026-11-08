@@ -55,7 +55,7 @@ def verify(source:Path) -> None:
         raise ValueError("native underground exit ladder route missing")
     if "~fenk_buy_preserved_brain;" not in (source/"scripts/areas/area_canafis/scripts/werewolfinnkeeper.rs2").read_text():
         raise ValueError("Roavar's original NPC trigger was not extended")
-    if re.search(r"(?m)^\\[oploc1,loc_1757\\]", (
+    if re.search(r"(?m)^\[oploc1,loc_1757\]", (
         source/"scripts/quests/quest_fenkenstrain/scripts/fenk_dungeon.rs2"
     ).read_text()):
         raise ValueError("duplicate native ladder script was introduced")
