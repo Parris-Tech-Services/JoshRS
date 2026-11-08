@@ -627,7 +627,17 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         equipment: namesKnown(worn) ? projectNamedItems(worn) : null,
         nearbyNpcs,
         nearbyLocs, groundItems,
-        dialogue, questStages: null, sdkDetails
+        dialogue,
+        // Read the native player's own persistent Barcrawl varp, only on the
+        // authenticated disposable world/observer route. Do not read or
+        // modify any other player's quest data. Null means not observable.
+        questStages: (() => {
+            const barcrawlId = VarPlayerType.getId('barcrawl');
+            if (barcrawlId < 0) return null;
+            const raw = bot.getVar(barcrawlId);
+            return Number.isSafeInteger(raw) && raw >= 0 ? { barcrawl: raw } : null;
+        })(),
+        sdkDetails
     };
     reply.header('Cache-Control', 'no-store');
     return { token, sequence: World.currentTick, observation };
