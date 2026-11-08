@@ -1,7 +1,6 @@
-// JoshRS original #377 Shades of Mort'ton restoration — early playable stages.
-// Uses the pinned 377 map, cache item/NPC names, and stock RuneScript semantics.
-// No completion rewards are awarded: temple rebuild, pyres, and full quest
-// completion are not implemented by this increment.
+// JoshRS revision-377 Shades of Mort'ton quest progression.
+// Uses the immutable 377 map, genuine items/NPCs and normal combat.
+// Temple/pyre interactions are in joshrs_mortton_finish.rs2.
 [oploc1,shades_experimentshelf]
 if (inv_total(inv, serum_book) > 0 | inv_total(bank, serum_book) > 0) {
     mes("You already have the research diary from this shelf.");
@@ -46,8 +45,18 @@ if (%morttonquest = ^mortton_not_started) {
     $text = "@str@I read the diary and prepared some serum.||@dbl@I should use it on @dre@Razmire Keelgan@dbl@, the afflicted shopkeeper.";
 } else if (%morttonquest >= ^mortton_kill_shades & %morttonquest < ^mortton_shades_to_razmire) {
     $text = "@str@I treated Razmire and learned about the restless shades.||@dbl@I should defeat five of the shades and collect their remains.|@dbl@Speak to Razmire again once I have them.";
+} else if (%morttonquest >= ^mortton_quest_complete) {
+    $text = "@str@I found the diary, cured the villagers, rebuilt the temple,|@str@blessed the oil and released a shade from its funeral pyre.|@str@I completed Shades of Mort'ton.";
+} else if (%morttonquest >= ^mortton_lit_pyre) {
+    $text = "@str@I restored the temple and cremated a Loar Shade.||@dbl@I should tell @dre@Ulsquire Shauncy@dbl@ what happened.";
+} else if (%morttonquest >= ^mortton_created_pyre_logs) {
+    $text = "@str@I lit the altar and prepared sacred pyre logs.||@dbl@I need to put the logs and some @dre@Loar remains@dbl@ on a funeral pyre,|@dbl@then light it with a tinderbox.";
+} else if (%morttonquest >= ^mortton_can_light_altar) {
+    $text = "@str@I rebuilt the temple.||@dbl@I should light the sacred altar with a tinderbox,|@dbl@then bless olive oil in the flame.";
+} else if (%morttonquest >= ^mortton_ulsquire_temple) {
+    $text = "@str@I helped Razmire and Ulsquire investigate the shades.||@dbl@Repair the @dre@Mort'ton temple@dbl@ with a hammer,|@dbl@wood planks, limestone bricks and swamp paste.|@dbl@I need level 20 Crafting for the repairs.";
 } else if (%morttonquest >= ^mortton_shades_to_razmire) {
-    $text = "@str@I found the diary, made serum and confronted the shades.||@dbl@The temple and the funeral pyres still need to be restored.|@dbl@This quest is not yet complete.";
+    $text = "@str@I dealt with five shades and brought remains to Razmire.||@dbl@Take another set of remains to @dre@Ulsquire Shauncy@dbl@.";
 } else {
     $text = "@dbl@Return to Mort'ton to continue investigating the illness.";
 }
@@ -94,16 +103,24 @@ if (%morttonquest < ^mortton_made_serum) {
 }
 
 [opnpcu,razmire_keelgan_afflicted]
-if (last_useitem ! mort_serum3) {
+if (last_useitem ! mort_serum3 & last_useitem ! mort_serum2 & last_useitem ! mort_serum1) {
     ~displaymessage(^dm_default);
     return;
 }
-if (%morttonquest < ^mortton_made_serum | inv_total(inv, mort_serum3) < 1) {
+if (%morttonquest < ^mortton_made_serum | inv_total(inv, last_useitem) < 1) {
     mes("You have not prepared the treatment yet.");
     return;
 }
-inv_del(inv, mort_serum3, 1);
-inv_add(inv, mort_serum2, 1);
+if (last_useitem = mort_serum3) {
+    inv_del(inv, mort_serum3, 1);
+    inv_add(inv, mort_serum2, 1);
+} else if (last_useitem = mort_serum2) {
+    inv_del(inv, mort_serum2, 1);
+    inv_add(inv, mort_serum1, 1);
+} else {
+    inv_del(inv, mort_serum1, 1);
+    inv_add(inv, vial_empty, 1);
+}
 %morttonmulti = setbit(%morttonmulti, ^razmire_visible);
 npc_changetype(razmire_keelgan, 200);
 if (%morttonquest = ^mortton_made_serum) {
@@ -118,18 +135,26 @@ if (%morttonquest < ^mortton_kill_shades) {
     return;
 }
 if (%morttonquest < ^mortton_killed_5_shades) {
-    ~chatnpc("<p,neutral>Five shades must be laid to rest before this place can recover.");
+    ~chatnpc("<p,neutral>Five Loar Shades must be defeated before we can put their spirits to rest.");
     ~chatplayer("<p,neutral>I will deal with the shades and return.");
-} else if (%morttonquest = ^mortton_killed_5_shades) {
-    ~chatnpc("<p,neutral>You have faced the shades. Bring me their remains.");
-    if (inv_total(inv, shade_bones1) >= 5) {
-        inv_del(inv, shade_bones1, 2);
-        %morttonquest = ^mortton_shades_to_razmire;
-        ~send_quest_progress(questlist:mortton, %morttonquest, 100);
-        ~chatnpc("<p,neutral>I will study these remains. Ulsquire knows more about the old temple.");
+    return;
+}
+if (%morttonquest = ^mortton_killed_5_shades) {
+    ~chatnpc("<p,neutral>You have faced five shades. Let me examine two sets of their remains.");
+    if (inv_total(inv, shade_bones1) < 2) {
+        mes("Bring Razmire two sets of Loar remains; keep the others for Ulsquire and a pyre.");
+        return;
     }
-} else {
-    ~chatnpc("<p,neutral>The ruined temple north-east of the village remains our greatest concern.");
+    inv_del(inv, shade_bones1, 2);
+    %morttonquest = ^mortton_shades_to_razmire;
+    ~send_quest_progress(questlist:mortton, %morttonquest, ^mortton_quest_complete);
+    ~chatnpc("<p,neutral>Ulsquire needs to see a set as well. You'll need the temple to put them to rest.");
+    return;
+}
+~chatnpc("<p,neutral>The temple cannot be restored without proper building supplies.");
+def_int $choice = ~p_choice2("Show me your building supplies.", 1, "I'll carry on with the temple.", 2);
+if ($choice = 1) {
+    ~openshop(razmirebuildingstore, 950, 1050, 40, "Razmire Builders Merchants.");
 }
 
 [opnpc1,ulsquire_shauncy_afflicted]
@@ -137,32 +162,72 @@ if (%morttonquest < ^mortton_killed_5_shades) {
 mes("The research diary may contain a way to help him.");
 
 [opnpcu,ulsquire_shauncy_afflicted]
-if (last_useitem ! mort_serum3) {
+if (last_useitem ! mort_serum3 & last_useitem ! mort_serum2 & last_useitem ! mort_serum1) {
     ~displaymessage(^dm_default);
     return;
 }
-if (%morttonquest < ^mortton_made_serum | inv_total(inv, mort_serum3) < 1) {
+if (%morttonquest < ^mortton_made_serum | inv_total(inv, last_useitem) < 1) {
     mes("You need a dose of the serum from Herbi Flax's notes.");
     return;
 }
-inv_del(inv, mort_serum3, 1);
-inv_add(inv, mort_serum2, 1);
+if (last_useitem = mort_serum3) {
+    inv_del(inv, mort_serum3, 1);
+    inv_add(inv, mort_serum2, 1);
+} else if (last_useitem = mort_serum2) {
+    inv_del(inv, mort_serum2, 1);
+    inv_add(inv, mort_serum1, 1);
+} else {
+    inv_del(inv, mort_serum1, 1);
+    inv_add(inv, vial_empty, 1);
+}
 %morttonmulti = setbit(%morttonmulti, ^ulsquire_visible);
 npc_changetype(ulsquire_shauncy, 200);
 mes("Ulsquire seems lucid for a short time. Speak to him before the serum wears off.");
 
 [opnpc1,ulsquire_shauncy]
 if (%morttonquest < ^mortton_shades_to_razmire) {
-    ~chatnpc("<p,neutral>The temple cannot be restored while the shades control the streets.");
-} else {
-    ~chatnpc("<p,neutral>The old sanctuary and its funeral pyres are the key to helping the town.");
-    if (%morttonquest = ^mortton_shades_to_razmire | %morttonquest = ^mortton_shades_to_ulsquire) {
-        %morttonquest = ^mortton_ulsquire_temple;
-        ~send_quest_progress(questlist:mortton, %morttonquest, 100);
-        ~chatplayer("<p,neutral>I will investigate what is needed to repair the temple.");
-    }
-    mes("Temple repairs and sacred oil are not yet implemented in this JoshRS content batch.");
+    ~chatnpc("<p,neutral>Help Razmire investigate the shades, then come back to me.");
+    return;
 }
+if (%morttonquest = ^mortton_shades_to_razmire) {
+    if (inv_total(inv, shade_bones1) < 1) {
+        ~chatnpc("<p,neutral>Can you bring me one set of Loar remains to study?");
+        return;
+    }
+    inv_del(inv, shade_bones1, 1);
+    %morttonquest = ^mortton_shades_to_ulsquire;
+    ~send_quest_progress(questlist:mortton, %morttonquest, ^mortton_quest_complete);
+    ~chatnpc("<p,neutral>These remains suggest the spirits can be freed at a sanctified funeral pyre.");
+    return;
+}
+if (%morttonquest = ^mortton_shades_to_ulsquire) {
+    %morttonquest = ^mortton_ulsquire_temple;
+    ~send_quest_progress(questlist:mortton, %morttonquest, ^mortton_quest_complete);
+    ~chatnpc("<p,neutral>Repair the ruined temple. Ask Razmire for building supplies, and bring a hammer.");
+    return;
+}
+if (%morttonquest >= ^mortton_quest_complete) {
+    ~chatnpc("<p,happy>You freed a restless spirit. Mort'ton is grateful for your help!");
+    return;
+}
+if (%morttonquest >= ^mortton_lit_pyre) {
+    %morttonquest = ^mortton_quest_complete;
+    stat_advance(herblore, 20000);
+    stat_advance(crafting, 20000);
+    session_log(^log_adventure, "Quest complete: Shades of Mort'ton");
+    ~send_quest_complete(questlist:mortton, shadekey_silver_purple, 250, ^mortton_questpoints, "You have completed Shades of Mort'ton!", "2,000 Herblore XP|2,000 Crafting XP");
+    return;
+}
+if (%morttonquest >= ^mortton_created_pyre_logs) {
+    ~chatnpc("<p,neutral>Place pyre logs on one of the funeral pyres, add Loar remains, and light it.");
+    return;
+}
+if (%morttonquest >= ^mortton_can_light_altar) {
+    ~chatnpc("<p,neutral>Light the temple altar with a tinderbox, then bless olive oil in its flame.");
+    return;
+}
+~chatnpc("<p,neutral>Repair the temple with wood planks, limestone bricks, swamp paste and a hammer.");
+mes("Once its sanctity is restored, the altar can be lit.");
 
 // Only count genuine deaths attributed to a player. Ordinary combat still
 // decides hits, loot and respawns; no quest stage is granted for clicking.

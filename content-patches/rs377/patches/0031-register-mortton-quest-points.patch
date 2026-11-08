@@ -1,0 +1,22 @@
+diff --git a/scripts/general/scripts/quests.rs2 b/scripts/general/scripts/quests.rs2
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -336,6 +336,9 @@ if (%deserttreasure = ^deserttreasure_complete) {
+ if (%deserttreasure = ^deserttreasure_complete) {
+     $questpoints = add($questpoints, ^deserttreasure_questpoints);
+ }
++if (%morttonquest = ^mortton_quest_complete) {
++    $questpoints = add($questpoints, ^mortton_questpoints);
++}
+ return ($questpoints);
+ 
+ [proc,update_questlist]
+@@ -419,7 +422,8 @@ if (testbit(%ibanmulti, ^upass_started_bit) = ^true & %upass ! ^upass_complete)
+ ~send_quest_progress_colour(questlist:agrith, %agrith_quest_varp, ^as_complete);
++~send_quest_progress_colour(questlist:mortton, %morttonquest, ^mortton_quest_complete);
+ ~send_quest_progress_colour(questlist:regicide, %regicide_quest, ^regicide_complete);
+ ~send_quest_progress_colour(questlist:viking, %viking, ^viking_complete);
+ ~send_quest_progress_colour(questlist:mm, %mm_main, ^mm_complete);
+ ~send_quest_progress_colour(questlist:rd, %rd_main, ^recruitmentdrive_complete);
+ ~send_quest_progress_colour(questlist:deserttreasure, %deserttreasure, ^deserttreasure_complete);
+ ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
