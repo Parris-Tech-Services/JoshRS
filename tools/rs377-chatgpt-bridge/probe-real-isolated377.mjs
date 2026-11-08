@@ -386,6 +386,13 @@ try {
       nativeSdkProof.realNativeScanVerified!==true||
       nativeSdkProof.realNativeWaitVerified!==true||
       nativeSdkProof.familyWorldTouched!==false||
+      nativeSdkProof.questCatalogCount!==111||
+      nativeSdkProof.questCount!==104||
+      nativeSdkProof.miniquestCount!==7||
+      !(nativeSdkProof.observedQuestVarpCount>=1)||
+      nativeSdkProof.fullQuestPlaythroughsVerified!==0||
+      !nativeSdkProof.questCampaignStatuses||
+      Object.values(nativeSdkProof.questCampaignStatuses).reduce((a,b)=>a+b,0)!==111||
       !Number.isSafeInteger(nativeSdkProof.finalPosition?.x)||
       !Number.isSafeInteger(nativeSdkProof.finalPosition?.z))
      reject('real_upstream_BotSDK_proof_invalid');
@@ -498,6 +505,10 @@ try {
    genuineSdkGatewayAction:true,walkObserved:true,
    genuineSdkWebSocketAction:websocketVerified,
    genuineUnmodifiedUpstreamBotSDK:true,genuineUpstreamBotActionsLoaded:true,
+   questCatalogCount:nativeSdkProof.questCatalogCount,
+   nativeQuestVarpCount:nativeSdkProof.observedQuestVarpCount,
+   questCampaignStatuses:nativeSdkProof.questCampaignStatuses,
+   fullQuestPlaythroughsVerified:0,
    dispatchAttemptCount,saveRelogVerified:true,
    familyWorldTouched:false,
    task26RealBoundaryVerified:true,task26SecurityChecks:task26.checks,
