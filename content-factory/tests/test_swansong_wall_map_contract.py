@@ -4,7 +4,7 @@ import re
 import unittest
 root = pathlib.Path(__file__).resolve().parents[2] / "content-patches/rs377"
 repair = (root / "scripts/quests/quest_swansong/scripts/swan_colony_repairs.rs2").read_text()
-patch = (root / "patches/0020-swansong-piscatoris-five-walls.patch").read_text()
+patch = (root / "patches/0023-swansong-piscatoris-five-walls.patch").read_text()
 checker = (root / "tools/check_swansong_wall_map.py").read_text()
 class WallMapTests(unittest.TestCase):
     def test_map_has_five_explicit_modified_locations(self):

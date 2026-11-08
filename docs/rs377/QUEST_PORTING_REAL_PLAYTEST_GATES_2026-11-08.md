@@ -3,7 +3,7 @@
 Date: 8 November 2026. Target: May 2006 rev-377. Family local game and saves remain separate.
 
 ## Build evidence
-`content-patches/rs377/ci-compile-batch-quests.sh` checks clean pinned Content+Engine SHAs, applies reviewed patches `0001–0021`, copies scoped scripts, validates five actual Piscatoris map LOC tiles and 35 bone mappings to pinned real NPC definitions, compiles RuneScript/packs and boots a disposable world. GitHub checks when green prove source compatibility and socket listeners, **not a complete client quest, shared player world or durable save**.
+`content-patches/rs377/ci-compile-batch-quests.sh` checks clean pinned Content+Engine SHAs, applies reviewed patches `0001–0024`, copies scoped scripts, validates five actual Piscatoris map LOC tiles and 35 bone mappings to pinned real NPC definitions, compiles RuneScript/packs and boots a disposable world. GitHub checks when green prove source compatibility and socket listeners, **not a complete client quest, shared player world or durable save**.
 
 ## Required in-game verification before claiming full 2006 quest completion
 

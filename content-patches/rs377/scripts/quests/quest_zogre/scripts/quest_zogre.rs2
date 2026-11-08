@@ -1,0 +1,123 @@
+// Zogre Flesh Eaters - JoshRS original chain on 377 cache items/NPCs (coffin key, necromancy
+// book, transmogrification potion, cup of Sithik's tea, signed portrait; NPCs the Jiggig ogre
+// guard, Zavistic Rarve, Sithik Ints).
+// Original JoshRS content. Persistence: add scope=perm to cache varp zombie_ogre (patch 0009).
+// NOT IMPLEMENTED: Grish (no cache NPC - the ogre guard starts the quest instead), the crypt
+// exploration, the barbarian's backpack, and the zombie ogre coffin loot; the chain here is a
+// condensed reconstruction. Rewards: 2,000 Herblore XP.
+
+// Ogre guard at Jiggig - start NPC.
+[opnpc1,zogre_ogre_guard]
+switch_int (%zombie_ogre) {
+    case ^zg_not_started :
+        ~chatnpc("<p,neutral>Little human! Dead ogres walk in the ceremonial grounds.|Ancient bones stolen, zombies everywhere. Guard scared.|Take coffin key, look in burial crypt, find what makes|dead walk. Please?");
+        def_int $option = ~p_choice2("I'll look in the crypt.", 1, "Too dangerous for me.", 2);
+        if ($option = 1) {
+            ~chatplayer("<p,neutral>I'll find out what's raising your dead.");
+            inv_add(inv, zogre_coffinkey, 1);
+            %zombie_ogre = ^zg_started;
+            ~send_quest_progress(questlist:zogre, %zombie_ogre, ^zg_complete);
+        }
+    case ^zg_started :
+    case ^zg_book :
+    case ^zg_sithik :
+    case ^zg_poison :
+    case ^zg_proof :
+        ~chatnpc("<p,neutral>Dead still walk. Human still helping?");
+    case default :
+        ~chatnpc("<p,happy>Dead sleep again! Good little human!");
+}
+
+// Coffin key - opens the oldest coffin in the crypt.
+[opheld1,zogre_coffinkey]
+if (%zombie_ogre = ^zg_started) {
+    mes("You unlock the oldest coffin. Inside, among the disturbed bones, lies a book of necromancy.");
+    inv_del(inv, zogre_coffinkey, 1);
+    inv_add(inv, zogre_necrobook, 1);
+    %zombie_ogre = ^zg_book;
+} else {
+    mes("A heavy key shaped like a femur.");
+}
+
+// Zavistic Rarve - Wizards' Guild; identifies the necromancer.
+[opnpc1,zogre_human_zavistic_rarve]
+switch_int (%zombie_ogre) {
+    case ^zg_book :
+        if (inv_total(inv, zogre_necrobook) > 0) {
+            ~chatnpc("<p,neutral>Necromancy, and recent work - the ink is barely dry.|This hand I know: Sithik Ints, a failed student of ours.|Bitter, and obsessed with undeath. He lodges in Yanille,|upstairs of the inn. He will not confess while he can|still cast. Take this transmogrification potion and slip|it into his tea. Then bring me his signature on a portrait|as proof.");
+            inv_del(inv, zogre_necrobook, 1);
+            inv_add(inv, zogre_ogre_trans_potion, 1);
+            %zombie_ogre = ^zg_sithik;
+        } else {
+            ~chatnpc("<p,neutral>Show me what you found, or waste someone else's time.");
+        }
+    case ^zg_proof :
+        if (inv_total(inv, zogre_sithik_portrait_signed) > 0) {
+            ~chatnpc("<p,neutral>Sithik Ints, in his own ogre-ish hand: signed and confessed.|The Wizards' Guild will deal with him, and the Jiggic dead|will rest. My thanks - and a word or two of herb lore.");
+            inv_del(inv, zogre_sithik_portrait_signed, 1);
+            queue(zg_quest_complete, 0, 0);
+        } else {
+            ~chatnpc("<p,neutral>Proof, I said. His signature, on a portrait.");
+        }
+    case default :
+        ~chatnpc("<p,neutral>The Guild is busy. Be busy elsewhere.");
+}
+
+// Sithik Ints - the necromancer, upstairs in the Yanille inn.
+[opnpc1,zogre_sithik_man]
+switch_int (%zombie_ogre) {
+    case ^zg_sithik :
+        ~chatnpc("<p,neutral>Go away. I am ill. I am always ill.|...Is that my tea? Leave it. LEAVE IT.");
+    case ^zg_poison :
+        if (inv_total(inv, zogre_cup_of_tea_sithix) > 0) {
+            ~chatnpc("<p,neutral>My tea! At last. ... ... What is this taste-|GAAAAH!|...|What... what has happened to me? An OGRE?!|You poisoned me! You... you might as well have this.|I signed it, look - my name, before the change,|for your wizards to read. They'll not undo this either.");
+            inv_del(inv, zogre_cup_of_tea_sithix, 1);
+            inv_add(inv, zogre_sithik_portrait_signed, 1);
+            %zombie_ogre = ^zg_proof;
+        } else {
+            ~chatnpc("<p,neutral>Where is my tea?! The innkeeper is useless!");
+        }
+    case default :
+        ~chatnpc("<p,neutral>(He does not look well. He does not look entirely human, either.)");
+}
+
+// Sithik's tea - found in his room; the potion is slipped into it.
+[opheld1,zogre_cup_of_tea_sithix]
+if (%zombie_ogre = ^zg_sithik & inv_total(inv, zogre_ogre_trans_potion) > 0) {
+    mes("You slip the transmogrification potion into Sithik's tea. It fizzes, then settles.");
+    %zombie_ogre = ^zg_poison;
+} else {
+    mes("A cup of cold tea, labelled 'Sithix'.");
+}
+
+// The innkeeper's assistant brings the tea up from the bar.
+[queue,zg_give_tea]
+inv_add(inv, zogre_cup_of_tea_sithix, 1);
+mes("The innkeeper's assistant hands you Sithik's tea to take up.");
+
+[opnpc1,zogre_necromancers_assistant]
+if (%zombie_ogre = ^zg_sithik & inv_total(inv, zogre_cup_of_tea_sithix) = 0) {
+    ~chatnpc("<p,neutral>Sithik's tea? He bellows if it's late. Take it up|yourself, he likes you better than me.");
+    queue(zg_give_tea, 0, 0);
+} else {
+    ~chatnpc("<p,neutral>No tea, no peace. That's the inn's motto, nearly.");
+}
+
+[queue,zg_quest_complete]
+%zombie_ogre = ^zg_complete;
+stat_advance(herblore, 20000);
+session_log(^log_adventure, "Quest complete: Zogre Flesh Eaters");
+~send_quest_complete(questlist:zogre, zogre_sithik_portrait_signed, 200, ^zg_questpoints, "You have completed Zogre Flesh Eaters!", "2,000 Herblore XP");
+
+[if_button,questlist:zogre]
+def_string $text;
+switch_int (%zombie_ogre) {
+    case ^zg_not_started : $text = "@dbl@I can start this quest by speaking to the @dre@ogre guard@dbl@ at Jiggig, south of Castle Wars.";
+    case ^zg_started : $text = "@str@The ogre guard gave me a coffin key.||@dbl@I should use it on the oldest coffin in the burial crypt.";
+    case ^zg_book : $text = "@str@I found a necromancy book in the coffin.||@dbl@I should show it to @dre@Zavistic Rarve@dbl@ at the Wizards' Guild.";
+    case ^zg_sithik : $text = "@str@Zavistic named the necromancer: Sithik Ints, in the Yanille inn.||@dbl@I should get his @dre@tea@dbl@ from the inn's assistant and slip the transmogrification potion into it.";
+    case ^zg_poison : $text = "@str@The potion is in Sithik's tea.||@dbl@I should give him the @dre@tea@dbl@.";
+    case ^zg_proof : $text = "@str@Sithik signed a portrait in his transformed state.||@dbl@I should take it to @dre@Zavistic Rarve@dbl@ as proof.";
+    case default : $text = "@str@The necromancer is unmasked and the Jiggic dead rest again.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Zogre Flesh Eaters", $text);

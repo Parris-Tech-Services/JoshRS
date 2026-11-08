@@ -1,0 +1,123 @@
+// Icthlarin's Little Helper - JoshRS original dialogue/stages on 377 cache definitions (ics_little_* NPCs and items).
+// Dialogue, stage flow and rewards are original JoshRS content. NOT IMPLEMENTED: where jars/linen/symbols come from
+// (cache locs not wired), Neite and the catspeak scenes, the plague area and the sphinx riddle.
+
+[opnpc1,ics_little_sphinx]
+switch_int (%ics_little_stage) {
+    case ^ics_not_started :
+        ~chatnpc("<p,neutral>Mortals seldom speak to me. I am bound here,|and my tomb has been ransacked.");
+        def_int $o = ~p_choice2("Can I help?", 1, "I must go.", 2);
+        if ($o = 1) {
+            ~chatplayer("<p,neutral>Can I help?");
+            ~chatnpc("<p,neutral>Seek the embalmer. The canopic jars must be restored.");
+            %ics_little_stage = ^ics_started;
+            ~send_quest_progress(questlist:ics_little, %ics_little_stage, ^ics_complete);
+        } else {
+            ~chatplayer("<p,neutral>I must go.");
+        }
+    case ^ics_return :
+        ~chatnpc("<p,happy>The balance is restored. Thank you, mortal.");
+        queue(ics_quest_complete, 0, 0);
+    case ^ics_complete : ~chatnpc("<p,happy>Go well, friend of Icthlarin.");
+    case default : ~chatnpc("<p,neutral>Restore what was taken. Then return.");
+}
+
+[opnpc1,ics_little_embalmer]
+switch_int (%ics_little_stage) {
+    case ^ics_started :
+        if (inv_total(inv, ics_little_canopic_jar_liver) > 0 & inv_total(inv, ics_little_canopic_jar_intestines) > 0 & inv_total(inv, ics_little_canopic_jar_stomach) > 0 & inv_total(inv, ics_little_canopic_jar_lungs) > 0 & inv_total(inv, ics_little_linen) >= ^ics_linen_needed) {
+            ~chatnpc("<p,happy>All four jars and the linen. Wonderful!");
+            inv_del(inv, ics_little_canopic_jar_liver, 1);
+            inv_del(inv, ics_little_canopic_jar_intestines, 1);
+            inv_del(inv, ics_little_canopic_jar_stomach, 1);
+            inv_del(inv, ics_little_canopic_jar_lungs, 1);
+            inv_del(inv, ics_little_linen, ^ics_linen_needed);
+            %ics_little_stage = ^ics_embalmer_done;
+            ~chatnpc("<p,neutral>Now take word to the High Priest in town.");
+        } else {
+            ~chatnpc("<p,neutral>Bring me the four canopic jars and four sheets of linen.");
+        }
+    case ^ics_not_started : ~chatnpc("<p,neutral>The dead need care. Ask the sphinx for work.");
+    case default : ~chatnpc("<p,neutral>The preparations are in hand.");
+}
+
+[opnpc1,ics_little_hipriest_town]
+switch_int (%ics_little_stage) {
+    case ^ics_embalmer_done :
+        ~chatnpc("<p,neutral>The embalmer sent you? A priest has been possessed.|Defeat him and bring back his unholy symbol.");
+        %ics_little_stage = ^ics_priest;
+    case ^ics_priest :
+        ~chatnpc("<p,neutral>The possessed priest still walks. End it.");
+    case ^ics_possessed :
+        if (inv_total(inv, ics_little_unholy_symbol) > 0) {
+            inv_del(inv, ics_little_unholy_symbol, 1);
+            ~chatnpc("<p,happy>The symbol! You have freed him. Tell the sphinx.");
+            %ics_little_stage = ^ics_return;
+        } else {
+            ~chatnpc("<p,neutral>Bring me the unholy symbol he carried.");
+        }
+    case ^ics_return :
+        ~chatnpc("<p,happy>You have done well. Tell the sphinx.");
+    case default : ~chatnpc("<p,neutral>May Icthlarin guide you.");
+}
+
+[opnpc1,ics_little_possessedpriest]
+if (%ics_little_stage = ^ics_priest) {
+    ~chatnpc("<p,angry>Leave this place!");
+    npc_setmode(opplayer2);
+} else {
+    ~chatnpc("<p,angry>...");
+}
+
+[ai_queue3,ics_little_possessedpriest]
+gosub(npc_death);
+if (npc_findhero = ^false) { return; }
+if (%ics_little_stage = ^ics_priest) {
+    obj_add(npc_coord, ics_little_unholy_symbol, 1, ^lootdrop_duration);
+    %ics_little_stage = ^ics_possessed;
+    mes("The priest collapses, dropping an unholy symbol.");
+}
+
+[opnpc1,ics_little_priestdoorman]
+~chatnpc("<p,neutral>Only the faithful may pass.");
+
+[opnpc1,ics_little_het]
+~chatnpc("<p,neutral>The Gods Het, Apmeken, Scabaras and Crondis watch over this land.");
+
+[opnpc1,ics_little_apmeken]
+~chatnpc("<p,neutral>The monkeys are my charge.");
+
+[opnpc1,ics_little_scabaras]
+~chatnpc("<p,neutral>Insects stir where I walk.");
+
+[opnpc1,ics_little_crondis]
+~chatnpc("<p,neutral>The river gives life.");
+
+[opnpc1,ics_little_cat_visible]
+~chatnpc("<p,neutral>Meow.");
+
+[opnpc1,ics_little_carpenter]
+~chatnpc("<p,neutral>Good wood is hard to find in the desert.");
+
+[opnpc1,ics_little_redheadlady]
+~chatnpc("<p,neutral>I wander where the wind takes me.");
+
+[queue,ics_quest_complete]
+%ics_little_stage = ^ics_complete;
+stat_advance(thieving, 40000);
+stat_advance(prayer, 30000);
+session_log(^log_adventure, "Quest complete: Icthlarin's Little Helper");
+~send_quest_complete(questlist:ics_little, ics_little_holy_symbol, 200, ^ics_questpoints, "You have completed Icthlarin's Little Helper!", "4,000 Thieving XP|3,000 Prayer XP");
+
+[if_button,questlist:ics_little]
+def_string $text;
+switch_int (%ics_little_stage) {
+    case ^ics_not_started : $text = "@dbl@I can start this quest by talking to the @dre@Sphinx@dbl@ in the desert.";
+    case ^ics_started : $text = "@str@I spoke to the Sphinx.||@dbl@I need four @dre@canopic jars@dbl@ and four @dre@linen@dbl@ for the @dre@Embalmer@dbl@.";
+    case ^ics_embalmer_done : $text = "@str@I helped the Embalmer.||@dbl@I should speak to the @dre@High Priest@dbl@.";
+    case ^ics_priest : $text = "@str@I spoke to the High Priest.||@dbl@I must defeat the @dre@Possessed Priest@dbl@.";
+    case ^ics_possessed : $text = "@str@I defeated the Possessed Priest.||@dbl@I should return to the @dre@High Priest@dbl@.";
+    case ^ics_return : $text = "@str@The High Priest thanked me.||@dbl@I should tell the @dre@Sphinx@dbl@.";
+    case default : $text = "@str@I restored the Sphinx's tomb.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Icthlarin's Little Helper", $text);

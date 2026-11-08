@@ -2,7 +2,7 @@
 import pathlib,re,unittest
 root=pathlib.Path(__file__).resolve().parents[2]/"content-patches/rs377"
 drops=(root/"scripts/quests/quest_rag/scripts/rag_npc_drops.rs2").read_text()
-hook=(root/"patches/0021-rag-35-npc-quest-bone-drops.patch").read_text()
+hook=(root/"patches/0024-rag-35-npc-quest-bone-drops.patch").read_text()
 checks=(root/"tools/check_rag_npc_drops.py").read_text()
 class RagKillDropsTests(unittest.TestCase):
     def test_all_thirty_five_indices_not_generic_fake_grants(self):

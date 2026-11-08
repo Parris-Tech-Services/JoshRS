@@ -1,0 +1,15 @@
+--- a/scripts/areas/area_shilo/scripts/yanni_salika.rs2
++++ b/scripts/areas/area_shilo/scripts/yanni_salika.rs2
+@@ -1,4 +1,12 @@
+ [opnpc1,shiloantiques]
++if (%onesmallfavour = ^osf_not_started) {
++    ~osf_offer_start;
++    if (%onesmallfavour ! ^osf_not_started) { return; }
++}
++if (%onesmallfavour ! ^osf_not_started & %onesmallfavour ! ^osf_complete) {
++    ~osf_yanni_progress;
++    return;
++}
+ ~chatplayer("<p,neutral>Hello there!");
+ // https://web.archive.org/web/20050204071450im_/http://www.runehq.com//images/cityguides/shilo9.jpg
+ ~chatnpc("<p,neutral>Greetings Bwana!|My name is Yanni and I buy and sell antiques|and other interesting items.|If you have any interesting items that you might");

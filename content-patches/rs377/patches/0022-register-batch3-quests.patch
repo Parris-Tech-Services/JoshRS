@@ -1,0 +1,36 @@
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -288,6 +288,21 @@
+ if (%rag_bonesack = 1) {
+     $questpoints = add($questpoints, ^rag_wishlist_questpoints);
+ }
++if (%onesmallfavour = ^osf_complete) {
++    $questpoints = add($questpoints, ^osf_questpoints);
++}
++if (%dwarfrock_main = ^br_complete) {
++    $questpoints = add($questpoints, ^br_questpoints);
++}
++if (%tog_minigame = ^tog_complete) {
++    $questpoints = add($questpoints, ^tog_questpoints);
++}
++if (%zombie_ogre = ^zg_complete) {
++    $questpoints = add($questpoints, ^zg_questpoints);
++}
++if (%giantdwarf_main = ^gd_complete) {
++    $questpoints = add($questpoints, ^gd_questpoints);
++}
+ return ($questpoints);
+ 
+ [proc,update_questlist]
+@@ -373,6 +388,11 @@
+ ~send_quest_progress_colour(questlist:handsand, %handsand, ^hs_complete);
+ ~send_quest_progress_colour(questlist:feud, %main_feud_var, ^feud_complete);
+ ~send_quest_progress_colour(questlist:elid, ~elid_progress, 2);
++~send_quest_progress_colour(questlist:onesmallfavour, %onesmallfavour, ^osf_complete);
++~send_quest_progress_colour(questlist:dwarfrock, %dwarfrock_main, ^br_complete);
++~send_quest_progress_colour(questlist:tog, %tog_minigame, ^tog_complete);
++~send_quest_progress_colour(questlist:zogre, %zombie_ogre, ^zg_complete);
++~send_quest_progress_colour(questlist:giantdwarf, %giantdwarf_main, ^gd_complete);
+ ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
+ if_settab(questlist, ^tab_quest_journal);
+ 

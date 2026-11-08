@@ -1,0 +1,133 @@
+// One Small Favour - JoshRS original chain on 377 cache items/NPCs (jungle forester axe, chicken cage,
+// mahogany log, weather report, key ring; NPCs Seth Groats, Tassie Slipcast, Johanhus Ulsbrecht,
+// Phantuwti Far sight). The quest start is offered by Yanni Salika in Shilo Village; his existing
+// antique-buyer handler is extended by patch 0010, which calls the two procs below.
+// Original JoshRS content. Persistence: add scope=perm to cache varp onefavour (patch 0009).
+// NOT IMPLEMENTED: the full favour web (Brian Otrich, jungle forester, Captain Bleemadge,
+// Santiri, Hammerspike's gang, Petra's stone curse, the gnome glider directionals); the chain here
+// is a condensed reconstruction. Rewards: 10,000 coins and Yanni's spare key ring.
+
+// Called from the patched shiloantiques handler when the quest has not been started.
+// If the player accepts, the stage advances past osf_not_started.
+[proc,osf_offer_start]
+~chatplayer("<p,neutral>Hello there!");
+~chatnpc("<p,neutral>Greetings Bwana!|Say, could you do an old trader one small favour?");
+def_int $option = ~p_choice2("Of course.", 1, "Maybe some other time.", 2);
+if ($option = 1) {
+    ~chatplayer("<p,neutral>Of course. What do you need?");
+    ~chatnpc("<p,neutral>My jungle forester's axe has gone blunt as a troll's backside.|Seth Groats promised to sharpen it, but the man is helpless|without his chicken cage. Take the axe to him in the|Feldip Hills, and see what he wants in return.");
+    inv_add(inv, favour_jungleforesteraxe_blunt, 1);
+    %onesmallfavour = ^osf_axe;
+    ~send_quest_progress(questlist:onesmallfavour, %onesmallfavour, ^osf_complete);
+} else {
+    ~chatplayer("<p,neutral>Maybe some other time.");
+    ~chatnpc("<p,neutral>Another time then, Bwana.");
+}
+
+// Called from the patched shiloantiques handler while the quest is in progress.
+[proc,osf_yanni_progress]
+switch_int (%onesmallfavour) {
+    case ^osf_axe :
+    case ^osf_cage :
+    case ^osf_log :
+    case ^osf_mend :
+        ~chatnpc("<p,neutral>Any word on my axe, Bwana?|Seth Groats is camped in the Feldip Hills with his chickens.");
+    case ^osf_sharp :
+        if (inv_total(inv, favour_jungleforesteraxe_sharp) > 0) {
+            ~chatnpc("<p,happy>Sharp as an elf's wit! Wonderful!|One more thing - I need a weather report before I send|my next caravan north. Phantuwti Far sight in Seers' Village|owes me one. Fetch it for me?");
+            inv_del(inv, favour_jungleforesteraxe_sharp, 1);
+            %onesmallfavour = ^osf_weather;
+        } else {
+            ~chatnpc("<p,neutral>Seth has the axe still? Then the favour chain is not done, Bwana.");
+        }
+    case ^osf_weather :
+        if (inv_total(inv, favour_weather_report) > 0) {
+            ~chatnpc("<p,happy>Phantuwti's report! Clear skies over Karamja for a week.|You are a marvel. Here - my spare key ring, and a little coin.");
+            inv_del(inv, favour_weather_report, 1);
+            queue(osf_quest_complete, 0, 0);
+        } else {
+            ~chatnpc("<p,neutral>Phantuwti Far sight reads the skies from Seers' Village.|Tell him Yanni sends his regards.");
+        }
+}
+
+[queue,osf_quest_complete]
+%onesmallfavour = ^osf_complete;
+inv_add(inv, coins, 10000);
+inv_add(inv, favour_key_ring, 1);
+session_log(^log_adventure, "Quest complete: One Small Favour");
+~send_quest_complete(questlist:onesmallfavour, favour_key_ring, 200, ^osf_questpoints, "You have completed One Small Favour!", "10,000 coins|A key ring");
+
+// Seth Groats - Feldip Hills chicken farmer; sharpens the axe once his cage is mended.
+[opnpc1,favour_seth_groats]
+switch_int (%onesmallfavour) {
+    case ^osf_axe :
+        if (inv_total(inv, favour_jungleforesteraxe_blunt) > 0) {
+            ~chatnpc("<p,neutral>A sharpening? Happy to, but my chicken cage has a|split rail and the beasts won't settle. Tassie Slipcast|mends pottery fine, but she owes me a cage. Take it to her.");
+            inv_del(inv, favour_jungleforesteraxe_blunt, 1);
+            inv_add(inv, favour_chicken_cage, 1);
+            %onesmallfavour = ^osf_cage;
+        } else {
+            ~chatnpc("<p,neutral>Lose the axe and I sharpen nothing.");
+        }
+    case ^osf_mend :
+        if (inv_total(inv, favour_chicken_cage) > 0) {
+            ~chatnpc("<p,happy>Mended! The hens are calm as carp. Here's your axe,|ground proper and keen.");
+            inv_del(inv, favour_chicken_cage, 1);
+            inv_add(inv, favour_jungleforesteraxe_sharp, 1);
+            %onesmallfavour = ^osf_sharp;
+        } else {
+            ~chatnpc("<p,neutral>Where's my cage got to?");
+        }
+    case default :
+        ~chatnpc("<p,neutral>Keep away from the hens. They peck.");
+}
+
+// Tassie Slipcast - potter; mends the cage for a mahogany log.
+[opnpc1,favour_tassie_slipcast]
+switch_int (%onesmallfavour) {
+    case ^osf_cage :
+        ~chatnpc("<p,neutral>A chicken cage? I mend pots, not fences. But Seth is a|dear, so - bring me a mahogany log for my new kiln and|I'll re-seat every rail in that cage.");
+        %onesmallfavour = ^osf_log;
+    case ^osf_log :
+        if (inv_total(inv, favour_mahogany_log) > 0) {
+            ~chatnpc("<p,happy>A fine straight log! Give me a moment... there.|Good as new, and the glaze on those rails will outlast us both.");
+            inv_del(inv, favour_mahogany_log, 1);
+            %onesmallfavour = ^osf_mend;
+        } else {
+            ~chatnpc("<p,neutral>Mahogany, mind - none of your common oak.");
+        }
+    case default :
+        ~chatnpc("<p,neutral>Mind the wheel. It bites.");
+}
+
+// Johanhus Ulsbrecht - keeps a mahogany log among his things.
+[opnpc1,favour_johanhus_ulsbrecht]
+if (%onesmallfavour = ^osf_log & inv_total(inv, favour_mahogany_log) = 0) {
+    ~chatnpc("<p,neutral>You want my log? Fine, take it. Wood is wood and|Saradomin provides. It's for a chicken cage, you say?|Blessed be the chickens.");
+    inv_add(inv, favour_mahogany_log, 1);
+} else {
+    ~chatnpc("<p,neutral>We are a peaceful order. Mostly.");
+}
+
+// Phantuwti Far sight - Seers' Village fortune teller; writes the weather report.
+[opnpc1,favour_phantuwti_farsight]
+if (%onesmallfavour = ^osf_weather) {
+    ~chatnpc("<p,neutral>A weather report for Yanni? The omens are clear:|light winds from the east, no rain before Thursday.|There, written and sealed.");
+    inv_add(inv, favour_weather_report, 1);
+} else {
+    ~chatnpc("<p,neutral>The future is murky. Also expensive.");
+}
+
+[if_button,questlist:onesmallfavour]
+def_string $text;
+switch_int (%onesmallfavour) {
+    case ^osf_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Yanni Salika@dbl@ in Shilo Village.";
+    case ^osf_axe : $text = "@str@Yanni asked me to get his jungle forester's axe sharpened.||@dbl@I should take the blunt axe to @dre@Seth Groats@dbl@ in the Feldip Hills.";
+    case ^osf_cage : $text = "@str@Seth will sharpen the axe, but his chicken cage is broken.||@dbl@I need to take the cage to @dre@Tassie Slipcast@dbl@ to be mended.";
+    case ^osf_log : $text = "@str@Tassie will mend the cage for a mahogany log.||@dbl@I need to find a @dre@mahogany log@dbl@. Johanhus Ulsbrecht may have one.";
+    case ^osf_mend : $text = "@str@Tassie mended the chicken cage.||@dbl@I should return the cage to @dre@Seth Groats@dbl@ and collect the sharpened axe.";
+    case ^osf_sharp : $text = "@str@Seth sharpened the axe.||@dbl@I should return the axe to @dre@Yanni Salika@dbl@ in Shilo Village.";
+    case ^osf_weather : $text = "@str@Yanni wants a weather report.||@dbl@I should ask @dre@Phantuwti Far sight@dbl@ in Seers' Village for one.";
+    case default : $text = "@str@I did One Small Favour - and several more besides.||@red@QUEST COMPLETE!";
+}
+~quest_journal("One Small Favour", $text);
