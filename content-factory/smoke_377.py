@@ -100,6 +100,17 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
                     raise RuntimeError("Disposable 377 bot observer FAILED: " +
                                        attempt.stderr[-1400:])
                 print("Disposable real engine bot observation:", attempt.stdout.strip())
+                multi_probe = (Path(__file__).resolve().parents[1] /
+                               "tools/rs377-chatgpt-bridge/probe-two-agents-isolated377.mjs")
+                if not multi_probe.is_file():
+                    raise RuntimeError("Two-agent native 377 acceptance probe source missing")
+                two = subprocess.run(["node", str(multi_probe)], cwd=engine,
+                                     env=env, capture_output=True, text=True,
+                                     timeout=245, check=False)
+                if two.returncode != 0:
+                    raise RuntimeError("Disposable two-agent 377 SDK acceptance FAILED: " +
+                                       two.stderr[-2000:])
+                print("Disposable two independent real SDK agents:", two.stdout.strip())
             return {"compiled_world_started": True, "game_tcp_port_reachable": True,
                     "web_http_port_reachable": True, "real_player_logged_in": real_bot_probe,
                     "genuine_game_state_observed": real_bot_probe,
