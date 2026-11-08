@@ -75,7 +75,7 @@ export function questPlan(catalogue,{newestFirst=true,includeMiniquests=true,fil
  }
  const ready=nodes.filter(e=>selected.has(e.id)&&deps.get(e.id).length===0);
  const completed=new Set(),out=[];
- const priority=(a,b)=>newestFirst?b.releaseOrder-a.releaseOrder:a.releaseOrder-b.releaseOrder;
+ const priority=(a,b)=>{const dates=a.releaseDate.localeCompare(b.releaseDate);return newestFirst?(-dates||b.releaseOrder-a.releaseOrder):(dates||a.releaseOrder-b.releaseOrder)};
  while(ready.length){
   ready.sort(priority);
   const e=ready.shift();
