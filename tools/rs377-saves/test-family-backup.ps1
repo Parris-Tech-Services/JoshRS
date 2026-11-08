@@ -32,5 +32,9 @@ try {
     Get-ChildItem -LiteralPath (Join-Path $backup 'players/main') -File | Copy-Item -Destination (Join-Path $second 'players/main')
     Copy-Item -LiteralPath (Join-Path $backup 'db.sqlite') -Destination $second
     Assert-Throws { Write-JoshRSBackupIntegrity -BackupPath $second -Engine $engine } 'changed source during backup'
-    Write-Host 'PASS: both players, SHA-256, tamper, extra file, manifest non-overwrite, changed source'
+    . (Join-Path $PSScriptRoot '../../deploy/jparris-windows/support.ps1')
+    function Get-JoshRSStatus { [pscustomobject]@{Configured=$true;GamePortOpen=$true;WebPortOpen=$false;Engine=$engine;BackupRoot=(Join-Path $root 'blocked')} }
+    Assert-Throws { New-JoshRSLocalBackup -RepoRoot $root } 'running game refuses backup'
+    if (Test-Path -LiteralPath (Join-Path $root 'blocked')) { throw 'Server-active test created backup directory' }
+    Write-Host 'PASS: both players, SHA-256, tamper, extra file, manifest non-overwrite, changed source, server-active refusal'
 } finally { Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue }
