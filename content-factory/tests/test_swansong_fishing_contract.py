@@ -19,7 +19,8 @@ class SwanSongFishingContract(unittest.TestCase):
     def test_fishing_uses_quest_specific_npc_and_fish(self):
         self.assertIn("[opnpc1,swan_fishingspot]", FISHING)
         self.assertIn("inv_add(inv, swan_raw_monkfish, 1)", FISHING)
-        self.assertNotIn("inv_add(inv, raw_monkfish, 1)", FISHING)
+        self.assertRegex(FISHING, r"if \(%swansong = \^swansong_fish\) \{\s*inv_add\(inv, swan_raw_monkfish, 1\)")
+        self.assertRegex(FISHING, r"\} else \{\s*inv_add\(inv, raw_monkfish, 1\)")
         self.assertIn("%swansong ! ^swansong_fish & %swansong ! ^swansong_complete", FISHING)
         self.assertIn("stat(fishing) < 62", FISHING)
         self.assertIn("~check_fish_equipment(net)", FISHING)

@@ -10,7 +10,7 @@ class FishingCombatTests(unittest.TestCase):
         for i in (1,2,3):
             self.assertIn(f"$troll = swan_troll_fishing_{i}",story)
         self.assertIn("npc_add($spawn, $troll, 500)",story)
-        self.assertIn("if (%swansong_trolls < 3)",fish)
+        self.assertIn("if (%swansong = ^swansong_fish & %swansong_trolls < 3)",fish)
         self.assertIn("%swansong_trolls = calc(%swansong_trolls + 1)",story)
         self.assertIn("%swansong_trolls = 3)",story)
     def test_fishing_trolls_are_a_real_rebuild_gate(self):
