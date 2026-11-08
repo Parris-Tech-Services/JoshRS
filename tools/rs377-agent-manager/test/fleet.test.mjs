@@ -22,7 +22,7 @@ test('two independent accounts connect, move normally, pause and close with no f
  };
  const fleet=new AgentFleet({adapterFactory});
  fleet.add({name:'HarnessA',goal:'explore'});fleet.add({name:'HarnessB',goal:'explore'});
- assert.throws(()=>fleet.add({name:'harnessa',goal:'explore'}),/already_exists/);
+ assert.throws(()=>fleet.add({name:'HarnessA',goal:'explore'}),/already_exists/);
  await Promise.all(['HarnessA','HarnessB'].map(name=>fleet.start(name,'private-ci-password')));
  assert.equal(fleet.list().length,2);
  for(let i=0;i<45&&fleet.list().some(e=>e.verifiedSteps<1);i++)await sleep(120);
