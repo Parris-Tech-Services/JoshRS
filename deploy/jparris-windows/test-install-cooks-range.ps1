@@ -34,7 +34,7 @@ try {
     @{engine=$engine;content=$contentDir;gamePort=52402;webPort=8888} |
         ConvertTo-Json | Set-Content -LiteralPath $active -Encoding UTF8
     $before=(Get-FileHash -LiteralPath $quest -Algorithm SHA256).Hash
-    $result=(& $installer | Out-String)
+    $result=(& $installer 6>&1 | Out-String)
     if($result -notmatch 'RANGE_NEEDS_PATCH: True' -or
        $result -notmatch 'SUPPORT_NPCS_MISSING: 2' -or
        $result -notmatch 'PREFLIGHT_OK: READ ONLY') {
