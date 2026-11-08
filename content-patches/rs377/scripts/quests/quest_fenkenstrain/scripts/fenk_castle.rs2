@@ -263,6 +263,15 @@ mes("Thunder rumbles overhead. I should speak to the doctor again.");
 // The head source remains tied to the one actual distinct grave marker.
 // 0_56_54_24_35 is a map-verified fenk_grave_poor, but the tomb identity
 // still needs a real game-era confirmation before this is called canonical.
+// Inspect the native wooden grave inscription before attempting to dig.
+// Do not identify every other Haunted Woods grave as Ed Lestwit.
+[oploc1,fenk_grave_poor]
+if (loc_coord = 0_56_54_24_35) {
+    mes("The worn wooden marker reads: Ed Lestwit.");
+} else {
+    mes("This old grave has a different name, or the inscription has faded.");
+}
+
 [oploc2,fenk_grave_poor]
 if (loc_coord ! 0_56_54_24_35 | %fenk_quest < ^fenk_hired) {
     mes("You find nothing that belongs in the doctor's experiment.");
