@@ -89,6 +89,16 @@ try {
    !first.nearbyNpcs.every(n=>Number.isInteger(n.index)&&Number.isInteger(n.id)&&
      Number.isInteger(n.x)&&Number.isInteger(n.z)))
    reject('real rsbuf-visible NPC list unavailable');
+ if(!Array.isArray(first.nearbyLocs)||!Array.isArray(first.groundItems)||
+    !Array.isArray(first.nearbyPlayers))
+   reject('real 377 native zone/player visibility snapshot unavailable');
+ if(!first.nearbyLocs.every(loc=>Number.isSafeInteger(loc.id)&&
+    Number.isSafeInteger(loc.x)&&Number.isSafeInteger(loc.z))||
+    !first.groundItems.every(obj=>Number.isSafeInteger(obj.id)&&
+      Number.isSafeInteger(obj.count)&&obj.count>0)||
+    !first.nearbyPlayers.every(other=>Number.isSafeInteger(other.index)&&
+      typeof other.name==='string'))
+   reject('native nearby world fields malformed');
  if(!first.dialogue||typeof first.dialogue.isOpen!=='boolean'||
    typeof first.dialogue.isWaiting!=='boolean'||
    !Array.isArray(first.dialogue.pendingComponentIds)||
@@ -302,7 +312,11 @@ try {
    tickAdvanced:later.tick>first.tick,
    positionObserved:true,skillCount:later.skills.length,
    inventoryObserved:true,equipmentObserved:true,
-   visibleNpcCount:later.nearbyNpcs.length,dialogueFlagsObserved:true,
+   visibleNpcCount:later.nearbyNpcs.length,
+   nativeLocsObserved:later.nearbyLocs?.length ?? null,
+   nativeGroundItemsObserved:later.groundItems?.length ?? null,
+   nativeNearbyPlayersObserved:later.nearbyPlayers?.length ?? null,
+   dialogueFlagsObserved:true,
    sdkStateComplete:false,
    genuineSdkGatewayAction:true,walkObserved:true,
    genuineSdkWebSocketAction:websocketVerified,
