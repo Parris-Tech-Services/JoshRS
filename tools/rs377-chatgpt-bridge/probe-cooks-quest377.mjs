@@ -4,18 +4,26 @@
  */
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
 const refuse=msg=>{throw new Error('CookQuest377: '+msg)};
+const fresh=async reader=>{
+ for(let trial=0;trial<12;trial++){
+   await pause(670);
+   try{return await reader.observe()}
+   catch(e){if(!String(e.message).includes('replayed_native_observation'))throw e;}
+ }
+ refuse('native_tick_did_not_advance');
+};
 export async function runCookQuestStart377({session,reader}={}){
  if(process.env.RS377_LIVE_BOT_PROBE!=='true'||
     process.env.RS377_OBSERVER_ISOLATED!=='true'||
     process.env.NODE_PROFILE!=='joshrs_ci_377'||process.env.NODE_PORT!=='15402')
    refuse('disposable_isolated_CI_only');
  if(!session?.status()?.authenticated||!reader?.observe)refuse('authenticated_native_bot_required');
- let start=await reader.observe();
+ let start=await fresh(reader);
  if(start.world?.revision!==377||start.world?.mode!=='isolated'||
     start.player?.username!=='HarnessProbe')refuse('wrong_native_engine_or_bot');
  if(start.questStages?.cook!==0)refuse('cook_quest_did_not_start_at_stage_zero');
  const actions=[];
- const snapshot=async()=>{await pause(700);return reader.observe()};
+ const snapshot=async()=>fresh(reader);
  let visible=(s)=>s.nearbyNpcs?.find(n=>n.id===278&&
    Array.isArray(n.options)&&n.options.some(o=>o.opIndex===1));
  let cook=visible(start);
@@ -36,7 +44,7 @@ export async function runCookQuestStart377({session,reader}={}){
    }
  }
  if(!cook)refuse('cook_id_278_not_visible_at_lumbridge_kitchen');
- let before=await reader.observe();
+ let before=await fresh(reader);
  if(before.questStages?.cook!==0)refuse('cook_stage_mutated_before_talk');
  // The server routes the click with ordinary NPC interaction and collision.
  session.send({type:'npc',npcSlot:cook.index,option:1});
