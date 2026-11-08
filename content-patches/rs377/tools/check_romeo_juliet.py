@@ -113,6 +113,16 @@ def check(root: Path) -> None:
         area = data.split("==== NPC ====", 1)
         require(len(area) == 2 and placement in area[1].split("==== ", 1)[0],
                 f"NPC placed on pinned map: {name}")
+    # Juliet is upstairs: a 377 staircase and its scripted floor travel are required.
+    house_map = read("maps/m49_53.jm2")
+    house_locs = house_map.split("==== LOC ====", 1)
+    stairs = read("scripts/ladders+stairs/scripts/stairs.rs2")
+    require(len(house_locs) == 2 and
+            "0 20 43: 1722" in house_locs[1].split("==== ", 1)[0]
+            and "[oploc1,stairs]" in stairs
+            and "case 0_49_53_20_43 : p_telejump(1_49_53_19_43)" in stairs
+            and "case 1_49_53_20_43 : p_telejump(0_49_53_23_43)" in stairs,
+            "Juliet's first-floor house has a mapped, two-way scripted staircase")
     berries = read("maps/m51_52.jm2")
     berry_section = berries.split("==== OBJ ====", 1)
     require(len(berry_section) == 2 and
