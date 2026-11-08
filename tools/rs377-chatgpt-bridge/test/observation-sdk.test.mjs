@@ -89,3 +89,26 @@ test('can translate a complete *supplied* SDK-compatible observation but not syn
   const broken=raw();broken.sdkDetails=x.sdkDetails;delete broken.sdkDetails.bank;
   assert.throws(()=>toBotWorldState(broken,opts),/bank/);
 });
+
+test('normal 377 paused dialogue requires fresh native component and exact page guard',()=>{
+  const snapshot=raw();
+  snapshot.dialogue={isOpen:true,isWaiting:true,
+    pageId:'42:7:1234',options:[{index:1,text:'Yes',componentId:1234}],
+    pendingComponentIds:[1234],optionTextAvailable:true};
+  const o=validateObservation(snapshot,opts);
+  const result=mapSdkAction({type:'clickDialogOption',optionIndex:1,
+    guard:{pageId:'42:7:1234',componentId:1234},reason:'Choose verified option'},o);
+  assert.equal(result.packet.opcode,90,'RESUME_PAUSEBUTTON expected actual pinned rev377 opcode');
+  assert.deepEqual([...result.packet.body],[4,210]);
+  for(const guard of [
+    {pageId:'42:6:1234',componentId:1234},
+    {pageId:'42:7:1234',componentId:4567},
+    {pageId:'42:7:1234',componentId:-1}
+  ]) assert.throws(()=>mapSdkAction({type:'clickDialogOption',optionIndex:1,
+    guard,reason:'No stale click'},o),/refused/);
+  const invalid=raw();
+  invalid.dialogue={...snapshot.dialogue,pendingComponentIds:[]};
+  assert.throws(()=>mapSdkAction({type:'clickDialogOption',optionIndex:1,
+    guard:{pageId:'42:7:1234',componentId:1234},reason:'No unverified click'},
+    validateObservation(invalid,opts)),/refused/);
+});
