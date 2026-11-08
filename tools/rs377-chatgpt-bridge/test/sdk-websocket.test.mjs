@@ -150,3 +150,37 @@ test('invalid state polling intervals and wrong bot origin fail closed',async()=
   assert.equal(q.messages.some(m=>m.type==='sdk_state'),false,'never deliver another bot state');
  }finally{q.ws.close();await gw.close()}
 });
+
+test('native tick replay is retried read-only; a game packet is sent exactly once',async()=>{
+ let tick=300,readAttempts=0,dispatchAttempts=0,packetCount=0;
+ let position={x:3215,z:3215};
+ const runtime={
+  async getSdkState(){throw new Error('unsupported SDK UI in this fixture')},
+  async observe(){
+   readAttempts++;
+   if(readAttempts===1)throw new Error('replayed_native_observation');
+   return {tick:tick++,position:{...position},
+    world:{instanceId:'isolated-no-fake-progress'},player:{username:BOT}};
+  },
+  async action(action){
+   dispatchAttempts++;
+   if(dispatchAttempts===1)throw new Error('replayed_native_observation');
+   packetCount++;
+   position={x:action.x,z:action.z};
+   return {status:'dispatched_unverified',opcode:28,tick:tick++};
+  }
+ };
+ const gw=createSdk377WebSocket({runtime,token:TOKEN,botName:BOT});
+ const {port}=await gw.listen(0),q=await socket(port);
+ try{
+  connect(q);await take(q,m=>m.type==='sdk_connected');
+  q.send({type:'sdk_action',username:BOT,actionId:'after-replay',
+   action:{type:'walkTo',x:3216,z:3215,reason:'real tick replay contract'}});
+  const answer=await take(q,m=>m.type==='sdk_action_result'&&m.actionId==='after-replay',7500);
+  assert.equal(answer.result.success,true);
+  assert.equal(answer.result.phase,'completion');
+  assert.equal(packetCount,1,'never dispatch a second packet after an ambiguous attempt');
+  assert.equal(dispatchAttempts,2,'retry only before transmission');
+  assert.equal(readAttempts>=3,true);
+ }finally{q.ws.close();await gw.close()}
+});

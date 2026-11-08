@@ -134,10 +134,35 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
           // The native observer rejects duplicate samples in the same
           // 600ms tick. Do not re-read it immediately after taking the
           // before-state; wait for the actual next tick before dispatch.
-          const start=await runtime.observe();
+          // Stream polling can have sampled this very same native 600ms tick.
+          // Re-reading it is a legitimate replay refusal, NOT an action failure.
+          // Only retry read-only observation; never blindly resend packets.
+          let start;
+          for(let attempts=0;attempts<4;attempts++){
+            try{start=await runtime.observe();break}
+            catch(error){
+              if(!String(error?.message??'').includes('replayed_native_observation'))
+                throw error;
+              await sleep(650);
+            }
+          }
+          if(!start)throw new Error('native_before_tick_unavailable');
           await sleep(675);
           if(closed||controller!==ws)return;
-          const dispatch=await runtime.action(action); // maps BotAction to true ISAAC TCP
+          let dispatch;
+          for(let attempts=0;attempts<3;attempts++){
+            try{
+              dispatch=await runtime.action(action); // ordinary authenticated ISAAC packet
+              break;
+            }catch(error){
+              // These errors are thrown before any packet is transmitted.
+              // Do not retry a game action on ANY other error.
+              if(!/replayed_native_observation|sdk_action_replay_or_stale_tick/.test(String(error?.message??'')))
+                throw error;
+              await sleep(650);
+            }
+          }
+          if(!dispatch)throw new Error('native_action_tick_unavailable');
           if(!['dispatched_unverified','queued_unverified'].includes(dispatch.status)){
             send(ws,{type:'sdk_action_result',actionId,result:{
               success:false,message:'No normal game packet dispatched',reason:'unsupported',phase:'validation'}});
