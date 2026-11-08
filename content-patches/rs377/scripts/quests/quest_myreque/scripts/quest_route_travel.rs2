@@ -1,0 +1,195 @@
+// In Search of the Myreque: Cyreg, 2005 swamp boat, three plank repairs and hideout access.
+// All entrypoints bind actual revision-377 NPC/loc IDs. Never award quest progress from travel alone.
+
+// Cyreg knows how to reach the Hollows. He will not take anyone without real supplies.
+[opnpc1,route_cyreg_paddlehorn]
+switch_int (%routequest) {
+    case ^route_not_started :
+        ~chatnpc("<p,neutral>My boat is not for sightseeing.|Ask in the Canifis tavern if you are seeking the Myreque.");
+    case ^route_started :
+        ~chatnpc("<p,neutral>I will not ferry strangers into a swamp for a careless errand.");
+        def_int $yes = ~p_choice2("The Myreque need these steel weapons.", 1, "I will leave.", 2);
+        if ($yes ! 1) return;
+        if (~route_has_six_weapons = false) {
+            ~chatnpc("<p,neutral>Come back with the full set: dagger, mace, two swords,|longsword and warhammer. No substitutes.");
+            return;
+        }
+        if (inv_total(inv, woodplank) < 6) {
+            ~chatnpc("<p,neutral>Six ordinary wooden planks: three to fix my boat,|and three more for the old bridge.");
+            return;
+        }
+        if (inv_total(inv, nails) < 225 | inv_total(inv, hammer) < 1) {
+            ~chatnpc("<p,neutral>The old bridge needs 225 steel nails and a hammer.");
+            return;
+        }
+        if (inv_total(inv, druid_pouch) < ^route_druid_pouch_charges) {
+            ~chatnpc("<p,neutral>Only a charged druid pouch keeps the ghasts at bay.|You will need five charges.");
+            return;
+        }
+        if (inv_total(inv, silver_sickle_blessed) < 1) {
+            ~chatnpc("<p,neutral>Take a blessed silver sickle.|You may need to refill your pouch on the crossing.");
+            return;
+        }
+        if (inv_total(inv, coins) < ^route_boat_fare) {
+            ~chatnpc("<p,neutral>The crossing costs ten coins.");
+            return;
+        }
+        ~chatnpc("<p,neutral>Very well. Your cargo is ready and I will guide you.|My boat needs three planks and ten coins for the passage.");
+        $yes = ~p_choice2("Pay and prepare the boat.", 1, "Not yet.", 2);
+        if ($yes ! 1) return;
+        // Atomic from the player's perspective: all materials verified before deductions.
+        inv_del(inv, woodplank, ^route_woodplanks_to_boatman);
+        inv_del(inv, coins, ^route_boat_fare);
+        %routequest = ^route_boat_ready;
+        ~chatnpc("<p,neutral>Board the old rowboat. Do not waste your remaining planks.");
+    case ^route_boat_ready :
+        ~chatnpc("<p,neutral>The boat is ready. Board it beside the jetty.");
+    case ^route_hollows, ^route_bridge_fixed, ^route_guard_passed, ^route_hideout, ^route_members_met, ^route_hound_fight, ^route_hound_dead, ^route_secret_exit, ^route_tunnel_open, ^route_return :
+        ~chatnpc("<p,neutral>That crossing is open to you now. The swamp is still dangerous.");
+    case default :
+        ~chatnpc("<p,neutral>I am sorry for the part I played.|The boat remains available for your journeys.");
+}
+
+// Southern and northern cache boat objects (5051, 6969, 6970).
+[oploc1,route_rowboat_mortton]
+@route_board_to_hollows;
+[oploc1,route_rowboat]
+@route_board_to_hollows;
+[oploc1,route_rowboat_hollows]
+@route_board_to_mortton;
+
+[label,route_board_to_hollows]
+if (%routequest < ^route_boat_ready) {
+    mes("Cyreg will not let you take the boat until he has agreed to the journey.");
+    return;
+}
+if (inv_total(inv, druid_pouch) < ^route_druid_pouch_charges) {
+    mes("Bring a druid pouch with at least five charges before crossing the swamp.");
+    return;
+}
+mes("You climb into the rowboat and travel into the Hollows.");
+// The corresponding 377 map label locates the Hollows at (3500, 3384).
+// Find a walkable landing square; never teleport into an unchecked obstacle.
+def_coord $hollows = map_findsquare(0_54_52_44_56, 1, 4, ^map_findsquare_lineofwalk);
+if ($hollows = null) {
+    mes("There is no safe landing here. The crossing has not been charged again.");
+    return;
+}
+p_telejump($hollows);
+if (%routequest = ^route_boat_ready) %routequest = ^route_hollows;
+
+[label,route_board_to_mortton]
+if (%routequest < ^route_hollows) {
+    mes("You do not yet know how to handle this boat.");
+    return;
+}
+mes("You take the boat south, back towards Mort'ton.");
+// 377 map label: Mort'ton (3491, 3281).
+def_coord $mortton = map_findsquare(0_54_51_35_17, 1, 4, ^map_findsquare_lineofwalk);
+if ($mortton = null) {
+    mes("The boat cannot find a safe landing. You remain in the Hollows.");
+    return;
+}
+p_telejump($mortton);
+
+// The swamp bridge on the 377 map has three repairable spans.
+// Each costs 1 plank, 75 nails (225 steel nails in the original 2005 version).
+[oploc1,swamp_bridge1]
+@route_repair_swamp_bridge;
+[oploc2,swamp_bridge1]
+@route_repair_swamp_bridge;
+
+[label,route_repair_swamp_bridge]
+if (%routequest < ^route_hollows) {
+    mes("This bridge is unsafe. First arrange your passage with the boatman.");
+    return;
+}
+if (%route_bridge_repairs >= ^route_bridge_spans) {
+    mes("The three bridge spans are secure. You can cross safely.");
+    return;
+}
+if (inv_total(inv, hammer) < 1) {
+    mes("You need a hammer to attach the plank.");
+    return;
+}
+if (inv_total(inv, woodplank) < 1 | inv_total(inv, nails) < ^route_steel_nails_per_span) {
+    mes("You need one ordinary plank and 75 steel nails for this span.");
+    return;
+}
+inv_del(inv, woodplank, 1);
+inv_del(inv, nails, ^route_steel_nails_per_span);
+%route_bridge_repairs = calc(%route_bridge_repairs + 1);
+mes("You hammer the plank into place using 75 nails.");
+if (%route_bridge_repairs = ^route_bridge_spans) {
+    %routequest = ^route_bridge_fixed;
+    mes("All three spans of the bridge are repaired. Find the Myreque lookout beyond the tree.");
+} else {
+    mes("Bridge sections repaired: <tostring(%route_bridge_repairs)> of three.");
+}
+
+// The map contains these distinct tree and cave entrance locs. Gate their use.
+[oploc1,spooky_tree_base_forbridge]
+if (%routequest < ^route_hollows) {
+    mes("You should speak to Cyreg Paddlehorn before approaching the bridge.");
+    return;
+}
+mes("You climb into the old tree to inspect the raised bridge.");
+
+[oploc1,spooky_tree_mid_forbridge]
+if (%routequest < ^route_bridge_fixed) {
+    mes("The broken bridge needs to be repaired before you can descend beyond it.");
+    return;
+}
+mes("You descend the far side of the tree.");
+
+[oploc1,hollowtree_entrance]
+@route_enter_hideout;
+[oploc1,route_boardedupdoor]
+@route_enter_hideout;
+[oploc1,route_stalagmite_cave_entrace]
+@route_enter_hideout;
+
+[label,route_enter_hideout]
+if (%routequest < ^route_guard_passed) {
+    mes("A guarded passage. Curpile Fyod must let you through first.");
+    return;
+}
+if (stat_base(agility) < 25) {
+    mes("You need 25 Agility to squeeze through the cramped passage.");
+    return;
+}
+mes("You squeeze through the narrow rock passage into the Myreque's tunnels.");
+// The physical map geometry and landing coordinates still need real-client verification.
+
+// A hidden wall and the tavern basement ladder are separate exit requirements.
+[oploc1,route_cavewalltunnel]
+@route_open_secret_wall;
+[oploc1,thrttavernbasementfalsewall]
+@route_open_secret_wall;
+
+[label,route_open_secret_wall]
+if (%routequest < ^route_secret_exit) {
+    mes("You cannot find a way through this wall yet.");
+    return;
+}
+if (%routequest = ^route_secret_exit) {
+    %routequest = ^route_tunnel_open;
+    mes("You discover the concealed passage leading to the tavern cellar.");
+} else {
+    mes("The hidden passage remains open.");
+}
+
+[oploc1,thrttavernbasementladder]
+if (%routequest = ^route_tunnel_open) {
+    mes("You climb out of the cavern into Canifis.");
+    %routequest = ^route_return;
+} else if (%routequest < ^route_secret_exit) {
+    mes("You cannot use this ladder until the hidden passage has been opened.");
+}
+
+[oploc1,thrt_tavern_trap_door]
+if (%routequest < ^route_complete) {
+    mes("The trapdoor is locked. You must finish In Search of the Myreque first.");
+} else {
+    mes("You can now use the old Canifis cellar shortcut.");
+}
