@@ -105,5 +105,15 @@ try{
     native377GameUsed:false,familyWorldTouched:false,realQuestingVerified:false
   }));
 }finally{
-  try{await sdk.disconnect()}finally{await gateway.close()}
+  try{
+    await sdk.disconnect();
+    console.log('CLEANUP: pinned upstream SDK disconnected');
+  }finally{
+    await gateway.close();
+    console.log('CLEANUP: isolated fixture gateway closed');
+  }
 }
+// The upstream SDK installs background lifecycle timers intended for a
+// long-running agent. This single-shot CI acceptance has explicitly disconnected
+// the SDK and closed its only server; terminate the fixture runner cleanly.
+process.exit(0);
