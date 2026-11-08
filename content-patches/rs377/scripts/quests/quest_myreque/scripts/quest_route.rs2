@@ -43,7 +43,30 @@ switch_int (%routequest) {
     case ^route_return :
         ~chatnpc("<p,happy>You faced Vanstrom and lived. The Myreque owe you much.");
         queue(route_quest_complete, 0, 0);
-    case ^route_complete : ~chatnpc("<p,happy>Welcome back, friend.");
+    case ^route_complete :
+        // JoshRS questbundle2: In Aid of the Myreque start, gated on this quest being done.
+        // Kept self-contained with raw stages on the cache varp [myreque_2_main_var]
+        // (0=not started, 1=started, 2=complete) so this overlay compiles on its own;
+        // the named constants live in quest_myreque_2/configs.
+        if (%myreque_2_main_var = 0) {
+            ~chatnpc("<p,happy>Welcome back, friend.");
+            ~chatnpc("<p,neutral>There is more to do, if you will hear it. Our people struggle, and the sick worsen by the day.");
+            def_int $m2 = ~p_choice2("How can I help the Myreque?", 1, "Some other time.", 2);
+            if ($m2 = 1) {
+                ~chatplayer("<p,neutral>How can I help the Myreque?");
+                ~chatnpc("<p,neutral>Return with supplies and a strong arm. We need both, and soon.");
+                %myreque_2_main_var = 1;
+                ~send_quest_progress_colour(questlist:myreque_2, %myreque_2_main_var, 2);
+                ~mesbox("NOT YET IMPLEMENTED IN THIS WORLD: the camp repairs, the furnace and the weapons of the Myreque.");
+            } else {
+                ~chatplayer("<p,neutral>Some other time.");
+                ~chatnpc("<p,neutral>The swamp is patient. We are not.");
+            }
+        } else if (%myreque_2_main_var = 1) {
+            ~chatnpc("<p,neutral>The camp still needs you: steel, food and firewood, friend.");
+        } else {
+            ~chatnpc("<p,happy>The Myreque owe you everything. You are one of us now.");
+        }
     case default : ~chatnpc("<p,neutral>Be careful out here.");
 }
 

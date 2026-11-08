@@ -1,0 +1,14 @@
+// Rum Deal quest journal. STATUS: scaffold; compiled against pinned disposable 377; full
+// player playthrough unverified. Wording is original.
+[if_button,questlist:deal]
+def_string $text;
+
+if(%deal_quest = ^deal_not_started) {
+    $text = "@dbl@I can start this quest by speaking to @dre@Pirate Pete@dbl@ at the dock of @dre@Port Phasmatys@dbl@, by the old mausoleum.";
+} else if(%deal_quest = ^deal_started) {
+    $text = "@str@Pirate Pete rowed me toward trouble: his captain's crew is dead or worse, and holy rum is the only cure.||@dbl@I should reach @dre@Braindeath Island@dbl@ and help @dre@Captain Braindeath@dbl@ brew the rum.||@red@NOT YET IMPLEMENTED IN THIS WORLD: Braindeath Island, the brewery and the zombie protest.";
+} else {
+    $text = "@str@I brewed the holy rum, calmed the dead and settled Pete's debt. A pirate's word of thanks is rare coin indeed.||@red@QUEST COMPLETE!";
+}
+
+~quest_journal("Rum Deal", $text);

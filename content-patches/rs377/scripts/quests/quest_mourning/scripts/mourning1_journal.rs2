@@ -1,0 +1,16 @@
+// Mourning's End Part I quest journal. STATUS: scaffold; compiled against pinned disposable
+// 377; full player playthrough unverified. Wording is original.
+[if_button,questlist:mourning]
+def_string $text;
+
+if(%mourning_quest = ^mourning1_not_started) {
+    $text = "@dbl@I can start this quest by speaking to @dre@Eluned@dbl@, who wanders the forests of @dre@Isafdar@dbl@ with Islwyn.||@dbl@I must have helped Islwyn and the elves before, in @dre@Roving Elves@dbl@, to begin.";
+} else if(%mourning_quest = ^mourning1_started) {
+    $text = "@str@Eluned has told me of a missing elf, tracked to the mourners of @dre@West Ardougne@dbl@.||@dbl@I should get a mourner's uniform and infiltrate the @dre@Mourner HQ@dbl@ in @dre@West Ardougne@dbl@.||@red@NOT YET IMPLEMENTED IN THIS WORLD: the mourner HQ infiltration.";
+} else if(%mourning_quest = ^mourning1_disguise) {
+    $text = "@str@I found the mourner's dying words: the catapult must be destroyed.||@dbl@I need to repair the @dre@catapult@dbl@ south of the elven forest so it can be used against the mourners' plans.||@red@NOT YET IMPLEMENTED IN THIS WORLD: the catapult repair and the toad swampland.";
+} else {
+    $text = "@str@I helped the elves strike back against the mourners and their unseen masters.||@red@QUEST COMPLETE!";
+}
+
+~quest_journal("Mourning's End Part I", $text);

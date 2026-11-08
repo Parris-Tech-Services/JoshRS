@@ -1,0 +1,53 @@
+// Mourning's End Part I: NPC handlers. STATUS: scaffold; compiled against pinned disposable
+// 377; full player playthrough unverified. Dialogue is original wording. Implemented: Eluned
+// start. Not implemented: the mourner HQ infiltration, the toad cradle swamp trip, the
+// catapult repair, Arianwyn's briefing (see JOSHRS_QUESTBUNDLE2_NOTES.md).
+
+// ---------------------------------------------------------------------------
+// Eluned (Isafdar, main quest giver). Cache NPC roving_female_woodelf (id 1679).
+// ---------------------------------------------------------------------------
+[opnpc1,roving_female_woodelf]
+switch_int(%mourning_quest) {
+    case ^mourning1_not_started : @mourning1_eluned_not_started;
+    case ^mourning1_started : @mourning1_eluned_started;
+    case ^mourning1_disguise : @mourning1_eluned_later;
+    case default : @mourning1_eluned_complete;
+}
+
+[label,mourning1_eluned_not_started]
+~chatnpc("<p,quiz>You walk our woods like you belong here, human. Few earn that.");
+def_int $option = ~p_choice2("The forest feels like an old friend.", 1, "Just passing through.", 2);
+if($option = 2) {
+    ~chatplayer("<p,neutral>Just passing through.");
+    ~chatnpc("<p,neutral>Then pass carefully. Not everything in these woods is friendly.");
+    return;
+}
+~chatplayer("<p,neutral>The forest feels like an old friend.");
+if(%roving_elves_quest = 0) {
+    ~chatnpc("<p,quiz>We have not met, or your deeds are too small to remember. Speak with Islwyn first; he judges who may walk with us.");
+    ~mesbox("You must have progressed in Roving Elves before Eluned will discuss this.");
+    return;
+}
+~chatnpc("<p,neutral>Then hear me. One of ours went west, into the city of the mourners, and has not returned.");
+~chatnpc("<p,neutral>West Ardougne's plague wardens are not what they seem. I need someone they would not suspect to look for our friend.");
+def_int $accept = ~p_choice2("I'll search West Ardougne.", 1, "That city is trouble.", 2);
+if($accept = 2) {
+    ~chatplayer("<p,neutral>That city is trouble.");
+    ~chatnpc("<p,sad>It is. That is why I ask.");
+    return;
+}
+~chatplayer("<p,happy>I'll search West Ardougne.");
+~chatnpc("<p,neutral>The mourners guard their headquarters closely. A uniform would open their doors.");
+%mourning_quest = ^mourning1_started;
+~send_quest_progress(questlist:mourning, %mourning_quest, ^mourning1_complete);
+
+[label,mourning1_eluned_started]
+~chatnpc("<p,quiz>Any word of our friend?");
+~chatplayer("<p,neutral>Not yet.");
+~chatnpc("<p,neutral>The Mourner HQ stands in West Ardougne. Find a uniform, then find the truth.");
+
+[label,mourning1_eluned_later]
+~chatnpc("<p,neutral>The catapult by the forest edge is nearly ready. Finish it, and the mourners will remember this day.");
+
+[label,mourning1_eluned_complete]
+~chatnpc("<p,happy>The forest sings your name, friend of the elves. Arianwyn speaks of you in Lletya.");

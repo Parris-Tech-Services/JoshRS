@@ -1,0 +1,14 @@
+// In Aid of the Myreque quest journal. STATUS: scaffold; compiled against pinned disposable
+// 377; full player playthrough unverified. Wording is original.
+[if_button,questlist:myreque_2]
+def_string $text;
+
+if(%myreque_2_main_var = ^myreque2_not_started) {
+    $text = "@dbl@I can start this quest by speaking to @dre@Veliaf Hurtz@dbl@ in the @dre@Myreque hideout@dbl@ in the Hollows of @dre@Morytania@dbl@.||@dbl@I must have found the Myreque and earned their trust, in @dre@In Search of the Myreque@dbl@, to begin.";
+} else if(%myreque_2_main_var = ^myreque2_started) {
+    $text = "@str@Veliaf has sent word: the Myreque's refuge is failing and the sick need care.||@dbl@I should help the Myreque with their camp, their defences and their supplies.||@red@NOT YET IMPLEMENTED IN THIS WORLD: the Burgh de Rott camp, the furnace repair and the blisterwood weapons.";
+} else {
+    $text = "@str@I aided the Myreque in their hour of need and struck a blow against the vampyre lords of Morytania.||@red@QUEST COMPLETE!";
+}
+
+~quest_journal("In Aid of the Myreque", $text);

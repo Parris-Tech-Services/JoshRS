@@ -76,9 +76,32 @@ assert 'rfd_questpoints' not in src
 # Swan Song belongs to the batch-quests bundle (JOSHRS_BATCH_QUESTS_NOTES.md): exactly one
 # registration, from the batch patch series, never from the 1000N bundles.
 assert src.count('questlist:swansong')==1
+# questbundle2: five more quests (Mourning's End I, Wanted!, In Aid of the Myreque,
+# One Small Favour, Rum Deal) registered exactly once each.
+for comp in ('mourning','wanted','myreque_2','onesmallfavour','deal'):
+    assert src.count(f'send_quest_progress_colour(questlist:{comp},')==1, comp
+for v in ('%mourning_quest, ^mourning1_complete','%quest_wanted, ^wanted_complete',
+          '%myreque_2_main_var, ^myreque2_complete','%onesmallfavour, ^osf_complete',
+          '%deal_quest, ^deal_complete'):
+    assert src.count(v)==1, v
+# questbundle2 varps stay in all.varp (in-place scope=perm, batch-0006 pattern) so the
+# batch bundle's Veliaf handler can reference %myreque_2_main_var independently.
+av=(scripts/'_unpack/377/all.varp').read_text(errors='replace')
+for name in ('mourning_quest','quest_wanted','myreque_2_main_var','onesmallfavour','deal_quest'):
+    assert re.search(r'(?m)^\['+name+r'\]\nscope=perm\n',av), name
+# the batch bundle's Veliaf handler carries the self-contained In Aid of the Myreque
+# start branch (raw stages; no questbundle2 symbols), and Yanni carries the OSF start.
+vr=(scripts/'quests/quest_myreque/scripts/quest_route.rs2').read_text(errors='replace')
+assert vr.count('%myreque_2_main_var')==3 and 'questlist:myreque_2' in vr
+ya=(scripts/'areas/area_shilo/scripts/yanni_salika.rs2').read_text(errors='replace')
+assert ya.count('questlist:onesmallfavour')==1
+for q,need in (('quest_mourning','mourning1_journal.rs2'),('quest_wanted','wanted_npcs.rs2'),
+               ('quest_myreque_2','myreque2_journal.rs2'),('quest_onesmallfavour','onesmallfavour_journal.rs2'),
+               ('quest_deal','deal_npcs.rs2')):
+    assert (scripts/'quests'/q/'scripts'/need).is_file(), q
 print('Disposable overlay verified: unique permanent varps, quest-list registrations, merged stubs intact')
 PY
 SIXQUEST_CONTENT="$content" \
-SIXQUEST_EXTRA_SCRIPTS="$content/scripts/areas/area_lumbridge/scripts/cook.rs2:$content/scripts/areas/area_falador/scripts/sir_amik_varze.rs2:$content/scripts/quests/quest_grandtree/scripts/king_narnode.rs2" \
+SIXQUEST_EXTRA_SCRIPTS="$content/scripts/areas/area_lumbridge/scripts/cook.rs2:$content/scripts/areas/area_falador/scripts/sir_amik_varze.rs2:$content/scripts/quests/quest_grandtree/scripts/king_narnode.rs2:$content/scripts/areas/area_shilo/scripts/yanni_salika.rs2:$content/scripts/quests/quest_myreque/scripts/quest_route.rs2" \
   python3 -I "$quest/tools/check_fivequest_symbols.py"
 echo "DISPOSABLE_QUESTBUNDLE_OVERLAY_READY"
