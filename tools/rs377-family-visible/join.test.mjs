@@ -1,0 +1,52 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createPublicKey} from 'node:crypto';
+import {options,clientPublic377,fetchCrc37} from './join.mjs';
+
+function args(...xs){return options(['--connect','--allow-family','--host','127.0.0.1',...xs])}
+test('safe import does not start any socket; default and incomplete approvals refused',()=>{
+ assert.throws(()=>options([]),/Explicit/);
+ assert.throws(()=>options(['--connect','--host','127.0.0.1']),/Explicit/);
+ assert.throws(()=>options(['--allow-family','--host','127.0.0.1']),/Explicit/);
+});
+test('private loopback, LAN and Tailscale targets require explicit family approval',()=>{
+ for(const ip of ['127.0.0.1','192.168.69.68','10.3.5.1','100.100.100.101']){
+  let x=options(['--connect','--allow-family','--host',ip]);
+  assert.equal(x.host,ip);assert.equal(x.port,52402);
+ }
+ for(const ip of ['8.8.8.8','1.1.1.1','203.0.113.42','github.com','169.254.10.1']){
+  assert.throws(()=>options(['--connect','--allow-family','--host',ip]),/private|numeric|Only/);
+ }
+});
+test('safe bot identity and durations and ports cannot silently target family user',()=>{
+ assert.equal(args('--bot','HarnessA','--seconds','15').bot,'HarnessA');
+ assert.throws(()=>args('--bot','Elrothiro'),/separate bot/);
+ assert.throws(()=>args('--bot','Sylvie'),/separate bot/);
+ assert.throws(()=>args('--bot','HarnessVeryLongName'),/separate bot/);
+ assert.throws(()=>args('--seconds','3600'),/Duration/);
+ assert.throws(()=>args('--seconds','0'),/Duration/);
+ assert.throws(()=>args('--port','80'),/port/i);
+ assert.throws(()=>args('--web-port','52402'),/web port/);
+ assert.throws(()=>args('--unknown'),/Unknown/);
+});
+test('public key matches exact pinned revision-377 Client-Java constants',()=>{
+ const jwk=createPublicKey(clientPublic377()).export({format:'jwk'});
+ const dec=x=>BigInt('0x'+Buffer.from(x,'base64url').toString('hex')).toString();
+ assert.equal(dec(jwk.n),'7162900525229798032761816791230527296329313291232324290237849263501208207972894053929065636522363163621000728841182238772712427862772219676577293600221789');
+ assert.equal(dec(jwk.e),'58778699976184461502525193738213253649000149147835990136706041084440742975821');
+});
+test('only a bounded exact 40-byte cache CRC is accepted from the correct private host',async()=>{
+ let called='';
+ const fetchImpl=async(url,opts)=>{
+  called=url;assert.equal(opts.redirect,'error');
+  return {ok:true,headers:new Headers({'content-length':'40'}),
+    arrayBuffer:async()=>Uint8Array.from({length:40},(_,i)=>i).buffer};
+ };
+ const r=await fetchCrc37('127.0.0.1',8888,{fetchImpl});
+ assert.equal(r.length,36);assert.equal(r[0],0);assert.equal(r[35],35);
+ assert.equal(called,'http://127.0.0.1:8888/crc0');
+ await assert.rejects(()=>fetchCrc37('8.8.8.8',8888,{fetchImpl}),/Only/);
+ await assert.rejects(()=>fetchCrc37('127.0.0.1',80,{fetchImpl}),/Invalid/);
+ await assert.rejects(()=>fetchCrc37('127.0.0.1',8888,
+  {fetchImpl:async()=>({ok:true,headers:new Headers(),arrayBuffer:async()=>new ArrayBuffer(41)})}),/40-byte/);
+});
