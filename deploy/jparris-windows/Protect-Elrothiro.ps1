@@ -79,7 +79,7 @@ if ($CreateBackup) {
         throw 'Stop the game gracefully before backup. No copy made.'
     }
     $dest=New-JoshRSLocalBackup -RepoRoot $RepoRoot
-    $report=Write-JoshRSBackupIntegrity -BackupPath $dest -Engine $status.Engine
+    $report=Test-JoshRSBackupIntegrity -BackupPath $dest
     $sylvieSave=Join-Path $status.Engine 'data\players\main\sylvie.sav'
     if ((Test-Path -LiteralPath $sylvieSave -PathType Leaf) -and -not $report.ContainsSylvie) {
         throw 'Sylvie active save exists but is missing from verified backup. Do not install.'
