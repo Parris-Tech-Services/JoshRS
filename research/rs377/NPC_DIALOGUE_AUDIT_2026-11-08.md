@@ -10,23 +10,20 @@
 |---|---:|
 | Total NPC definitions (`all.npc` + local overrides) | 3850 |
 | Total `Talk-to` (`op1=Talk-to`) NPC definitions | 1799 |
-| `Talk-to` NPC definitions with `[opnpc1]` / `[apnpc1]` / `_category` trigger | 830 |
-| `Talk-to` NPC definitions missing `[opnpc1]` dialogue trigger | 969 |
-| — Spawned on map (`maps/*.jm2`, direct or via `multinpc` parent) | 764 |
-| — Dynamic / cutscene / unspawned definitions | 205 |
+| `Talk-to` NPC definitions with `[opnpc1]` / `[apnpc1]` / `_category` trigger | 982 |
+| `Talk-to` NPC definitions missing `[opnpc1]` dialogue trigger | 817 |
+| — Spawned on map (`maps/*.jm2`, direct or via `multinpc` parent) | 626 |
+| — Dynamic / cutscene / unspawned definitions | 191 |
 
 ## 2. Breakdown by Area / Quest / Feature Group
 
 | Area / Quest Group | Missing `Talk-to` Definitions |
 |---|---:|
-| Members Surface & Underground Regions (Other) | 266 |
-| Unspawned / Dynamic / Cutscene / Morph Variants | 112 |
+| Members Surface & Underground Regions (Other) | 254 |
 | Keldagrim & The Giant Dwarf | 111 |
+| Unspawned / Dynamic / Cutscene / Morph Variants | 111 |
 | Al Kharid & Kharidian Desert | 79 |
-| Fremennik Province & Miscellania | 73 |
 | Morytania, Canifis & Burgh de Rott | 50 |
-| Monkey Madness & Ape Atoll | 44 |
-| Tirannwn, Lletya & Mourning's End | 31 |
 | Random Events & Macro Guardians | 27 |
 | Port Sarim, Rimmington & Void Knights' Outpost | 21 |
 | Ratcatchers & Sewer/Tavern NPCs | 21 |
@@ -34,10 +31,10 @@
 | The Lost Tribe & Dorgeshuun Mines | 19 |
 | F2P Surface & Underground Regions (Other) | 18 |
 | Ghosts Ahoy & Port Phasmatys | 17 |
+| Tirannwn, Lletya & Mourning's End | 17 |
 | One Small Favour & H.A.M. Hideout | 15 |
 | Mage Training Arena | 12 |
 | Farming Gardeners, Shops & Leprechauns | 11 |
-| Karamja, Shilo Village & Tai Bwo Wannai | 8 |
 | Draynor Village & Market | 7 |
 | TzHaar City & Fight Caves | 7 |
 
@@ -267,7 +264,6 @@
 | 2071 | `cave_goblin_miner3` | Cave goblin miner | The Lost Tribe & Dorgeshuun Mines | `(0, 3315, 9620, m51_150)` | 2 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Cave_goblin_miner) |
 | 2072 | `cave_goblin_miner4` | Cave goblin miner | The Lost Tribe & Dorgeshuun Mines | `(0, 3314, 9630, m51_150)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Cave_goblin_miner) |
 | 2078 | `cave_goblin_miner4_mining` | Cave goblin miner | The Lost Tribe & Dorgeshuun Mines | `(0, 3321, 9646, m51_150)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Cave_goblin_miner) |
-| 1209 | `caveguide6` | Koftik | Members Surface & Underground Regions (Other) | `(1, 2012, 4713, m31_73)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Koftik) |
 | 2324 | `dantaera` | Dantaera | Members Surface & Underground Regions (Other) | `(0, 2808, 3464, m43_54)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Dantaera) |
 | 2828 | `deal_50luke` | 50% Luke | Members Surface & Underground Regions (Other) | `(0, 2120, 5096, m33_79)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/50%25_Luke) |
 | 2851 | `deal_brewer_1` | Brewer | Members Surface & Underground Regions (Other) | `(1, 2149, 5093, m33_79)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Brewer) |
@@ -403,8 +399,6 @@
 | 1843 | `dwarfrock_ferryman1` | Dwarven Ferryman | Keldagrim & The Giant Dwarf | `(0, 2839, 10128, m44_158)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Dwarven_Ferryman) |
 | 1844 | `dwarfrock_ferryman2` | Dwarven Ferryman | Keldagrim & The Giant Dwarf | `(0, 2855, 10144, m44_158)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Dwarven_Ferryman) |
 | 1846 | `dwarfrock_gold_boatman` | Dwarven Boatman | Keldagrim & The Giant Dwarf | `(0, 2873, 10166, m44_158)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Dwarven_Boatman) |
-| 1185 | `elf_city_guard` | Elven city guard | Members Surface & Underground Regions (Other) | `(0, 2242, 3272, m35_51)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Elven_city_guard) |
-| 1201 | `elf_overpass_guard` | Elf warrior | Members Surface & Underground Regions (Other) | `(0, 2382, 3334, m37_52)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Elf_warrior) |
 | 3046 | `elid_banker` | Nardah Banker | Al Kharid & Kharidian Desert | `(0, 3425, 2889, m53_45)` | 4 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Nardah_Banker) |
 | 3045 | `elid_choc_ice_seller` | Rokuh | Al Kharid & Kharidian Desert | `(0, 3430, 2914, m53_45)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Rokuh) |
 | 3039 | `elid_general_seller` | Kazemde | Al Kharid & Kharidian Desert | `(0, 3414, 2906, m53_45)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Kazemde) |
@@ -577,10 +571,6 @@
 | 3114 | `handsand_naziom` | Mazion | Members Surface & Underground Regions (Other) | `(0, 2818, 3342, m44_52)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Mazion) |
 | 3116 | `handsand_reeso` | Reeso | Members Surface & Underground Regions (Other) | `(0, 2666, 3705, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Reeso) |
 | 3112 | `handsand_sandy0` | Sandy | Members Surface & Underground Regions (Other) | `(0, 2788, 3176, m43_49)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Sandy) |
-| 1337 | `horror_girlfriend_postquest` | Larrissa | Members Surface & Underground Regions (Other) | `(0, 2445, 4599, m38_71)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Larrissa) |
-| 1336 | `horror_girlfriend_prequest` | Larrissa | Members Surface & Underground Regions (Other) | `(0, 2508, 3635, m39_56)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Larrissa) |
-| 1335 | `horror_lighthousekeeeper_injured` | Jossik | Members Surface & Underground Regions (Other) | `(0, 2518, 4633, m39_72)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Jossik) |
-| 1334 | `horror_lighthousekeeeper_well` | Jossik | Members Surface & Underground Regions (Other) | `(1, 2509, 3639, m39_56)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Jossik) |
 | 3385 | `hundred_aris_base` | Gypsy | Recipe for Disaster (100th Quest) | `(0, 1866, 5327, m29_83)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Gypsy) |
 | 3402 | `hundred_dwarf_dad` | An old Dwarf | Recipe for Disaster (100th Quest) | `(0, 2865, 9876, m44_154)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/An_old_Dwarf) |
 | 3405 | `hundred_dwarf_dad_drunk` | Rohak | Recipe for Disaster (100th Quest) | `(0, 2865, 9877, m44_154)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Rohak) |
@@ -605,11 +595,8 @@
 | 1978 | `ics_little_worker1` | Slave | Members Surface & Underground Regions (Other) | `(0, 3290, 2763, m51_43)` | 4 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Slave) |
 | 1979 | `ics_little_worker2` | Slave | Members Surface & Underground Regions (Other) | `(0, 3292, 2762, m51_43)` | 3 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Slave) |
 | 201 | `jailer` | Jailer | F2P Surface & Underground Regions (Other) | `(0, 2933, 9693, m45_151)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Jailer) |
-| 2879 | `jb_viking_dude` | Bardur | Members Surface & Underground Regions (Other) | `(1, 1850, 4392, m28_68)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Bardur) |
-| 697 | `kennith` | Kennith | Members Surface & Underground Regions (Other) | `(1, 2764, 3288, m43_51)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Kennith) |
 | 2325 | `kragen` | Kragen | Members Surface & Underground Regions (Other) | `(0, 2668, 3374, m41_52)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Kragen) |
 | 200 | `lord_daquarius` | Lord Daquarius | F2P Surface & Underground Regions (Other) | `(0, 2892, 9680, m45_151)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Lord_Daquarius) |
-| 1182 | `lord_iorwerth` | Lord Iorwerth | Members Surface & Underground Regions (Other) | `(0, 2205, 3252, m34_50)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Lord_Iorwerth) |
 | 2086 | `lost_tribe_guide_1op` | Kazgar | The Lost Tribe & Dorgeshuun Mines | `(0, 3231, 9610, m50_150)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Kazgar) |
 | 2084 | `lost_tribe_mistag` | Mistag | The Lost Tribe & Dorgeshuun Mines | `(0, 3319, 9615, m51_150)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Mistag) |
 | 2083 | `lost_tribe_sigmund_ham_there` | Sigmund | The Lost Tribe & Dorgeshuun Mines | `(0, 3169, 9627, m49_150)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Sigmund) |
@@ -665,79 +652,6 @@
 | 1805 | `mdaughter_rockslide_guard` | Guard | Members Surface & Underground Regions (Other) | `(0, 2760, 3660, m43_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Guard) |
 | 1809 | `mdaughter_svidi` | Svidi | Members Surface & Underground Regions (Other) | `(0, 2714, 3672, m42_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Svidi) |
 | 2322 | `metarialus` | Metarialus | Members Surface & Underground Regions (Other) | `(0, 3680, 9958, m57_155)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Metarialus) |
-| 1375 | `misc_advisor_ghrim` | Advisor Ghrim | Fremennik Province & Miscellania | `(1, 2499, 3857, m39_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Advisor_Ghrim) |
-| 1360 | `misc_banker` | Banker | Fremennik Province & Miscellania | `(0, 2620, 3895, m40_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Banker) |
-| 1361 | `misc_etc_man_1` | Arnor | Fremennik Province & Miscellania | `(0, 2615, 3899, m40_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Arnor) |
-| 1362 | `misc_etc_man_2` | Haming | Fremennik Province & Miscellania | `(0, 2604, 3881, m40_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Haming) |
-| 1364 | `misc_etc_woman_1` | Helga | Fremennik Province & Miscellania | `(0, 2614, 3883, m40_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Helga) |
-| 1365 | `misc_etc_woman_2` | Matilda | Fremennik Province & Miscellania | `(0, 2603, 3871, m40_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Matilda) |
-| 1366 | `misc_etc_woman_3` | Ashild | Fremennik Province & Miscellania | `(0, 2603, 3858, m40_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Ashild) |
-| 1393 | `misc_fish_monger` | Fishmonger | Fremennik Province & Miscellania | `(0, 2518, 3866, m39_60)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Fishmonger) |
-| 1397 | `misc_fisherman` | Fisherman Frodi | Fremennik Province & Miscellania | `(0, 2576, 3852, m40_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Fisherman_Frodi) |
-| 1378 | `misc_flowergirl` | Flower Girl | Fremennik Province & Miscellania | `(0, 2514, 3866, m39_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Flower_Girl) |
-| 1398 | `misc_gardener` | Gardener Gunnhild | Fremennik Province & Miscellania | `(0, 2525, 3850, m39_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Gardener_Gunnhild) |
-| 1373 | `misc_king_vargas` | King Vargas | Fremennik Province & Miscellania | `(1, 2501, 3859, m39_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/King_Vargas) |
-| 1395 | `misc_lumberjack` | Lumberjack Leif | Fremennik Province & Miscellania | `(0, 2550, 3869, m39_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Lumberjack_Leif) |
-| 1379 | `misc_man_1` | Ragnar | Fremennik Province & Miscellania | `(0, 2518, 3859, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Ragnar) |
-| 1380 | `misc_man_2` | Einar | Fremennik Province & Miscellania | `(0, 2501, 3868, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Einar) |
-| 1381 | `misc_man_3` | Alrik | Fremennik Province & Miscellania | `(0, 2514, 3855, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Alrik) |
-| 1389 | `misc_man_4` | Skraeling | Fremennik Province & Miscellania | `(0, 2513, 3866, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Skraeling) |
-| 1390 | `misc_man_5` | Broddi | Fremennik Province & Miscellania | `(0, 2512, 3871, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Broddi) |
-| 1391 | `misc_man_6` | Skraeling | Fremennik Province & Miscellania | `(0, 2515, 3863, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Skraeling) |
-| 1392 | `misc_man_7` | Ragnvald | Fremennik Province & Miscellania | `(0, 2518, 3867, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Ragnvald) |
-| 1396 | `misc_miner` | Miner Magnus | Fremennik Province & Miscellania | `(0, 2526, 3893, m39_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Miner_Magnus) |
-| 1371 | `misc_prince_brand` | Prince Brand | Fremennik Province & Miscellania | `(1, 2502, 3852, m39_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Prince_Brand) |
-| 1372 | `misc_princess_astrid` | Princess Astrid | Fremennik Province & Miscellania | `(1, 2502, 3868, m39_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Princess_Astrid) |
-| 1359 | `misc_queen_sigrid` | Queen Sigrid | Fremennik Province & Miscellania | `(1, 2612, 3877, m40_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Queen_Sigrid) |
-| 1385 | `misc_sailor` | Sailor | Fremennik Province & Miscellania | `(0, 2581, 3847, m40_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Sailor) |
-| 1376 | `misc_smithy` | Derrik | Fremennik Province & Miscellania | `(0, 2551, 3897, m39_60)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Derrik) |
-| 1374 | `misc_ulby_doorguard` | Guard | Fremennik Province & Miscellania | `(1, 2505, 3856, m39_60)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Guard) |
-| 1394 | `misc_veg_monger` | Greengrocer | Fremennik Province & Miscellania | `(0, 2516, 3864, m39_60)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Greengrocer) |
-| 1382 | `misc_woman_1` | Thorhild | Fremennik Province & Miscellania | `(0, 2502, 3852, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Thorhild) |
-| 1383 | `misc_woman_2` | Halla | Fremennik Province & Miscellania | `(0, 2541, 3896, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Halla) |
-| 1386 | `misc_woman_4` | Rannveig | Fremennik Province & Miscellania | `(0, 2513, 3865, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Rannveig) |
-| 1387 | `misc_woman_5` | Thora | Fremennik Province & Miscellania | `(0, 2511, 3871, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Thora) |
-| 1388 | `misc_woman_6` | Valgerd | Fremennik Province & Miscellania | `(0, 2511, 3854, m39_60)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Valgerd) |
-| 1432 | `mm_aberab` | Aberab | Monkey Madness & Ape Atoll | `(0, 2764, 2803, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Aberab) |
-| 1448 | `mm_awowogei_cutscene` | Awowogei | Monkey Madness & Ape Atoll | `(1, 2678, 4579, m41_71)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Awowogei) |
-| 1468 | `mm_bonzara` | Bonzara | Monkey Madness & Ape Atoll | `(0, 2415, 9910, m37_154)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Bonzara) |
-| 1415 | `mm_bunkdo` | Bunkdo | Monkey Madness & Ape Atoll | `(0, 2775, 2798, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Bunkdo) |
-| 1423 | `mm_bunkwicket` | Bunkwicket | Monkey Madness & Ape Atoll | `(0, 2803, 9148, m43_142)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Bunkwicket) |
-| 1417 | `mm_carado` | Carado | Monkey Madness & Ape Atoll | `(0, 2775, 2801, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Carado) |
-| 1427 | `mm_caranock` | G.L.O. Caranock | Monkey Madness & Ape Atoll | `(0, 2956, 3025, m46_47)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/G.L.O._Caranock) |
-| 1428 | `mm_caranock_cutscene` | G.L.O. Caranock | Monkey Madness & Ape Atoll | `(0, 2603, 4580, m40_71)` | 3 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/G.L.O._Caranock) |
-| 1407 | `mm_daero` | Daero | Monkey Madness & Ape Atoll | `(0, 2392, 9890, m37_154)` | 4 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Daero) |
-| 1434 | `mm_daga` | Daga | Monkey Madness & Ape Atoll | `(0, 2759, 2775, m43_43)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Daga) |
-| 1439 | `mm_denadu` | Denadu | Monkey Madness & Ape Atoll | `(1, 2805, 2788, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Denadu) |
-| 1429 | `mm_dugopul` | Dugopul | Monkey Madness & Ape Atoll | `(0, 2802, 2746, m43_42)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Dugopul) |
-| 1461 | `mm_elder_guard_1` | Elder Guard | Monkey Madness & Ape Atoll | `(0, 2798, 2760, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Elder_Guard) |
-| 1462 | `mm_elder_guard_2` | Elder Guard | Monkey Madness & Ape Atoll | `(0, 2801, 2757, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Elder_Guard) |
-| 1411 | `mm_garkor` | Garkor | Monkey Madness & Ape Atoll | `(0, 2805, 2762, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Garkor) |
-| 1438 | `mm_hafuba` | Hafuba | Monkey Madness & Ape Atoll | `(1, 2797, 2798, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Hafuba) |
-| 1437 | `mm_hamab` | Hamab | Monkey Madness & Ape Atoll | `(0, 2781, 2793, m43_43)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Hamab) |
-| 1436 | `mm_ifaba` | Ifaba | Monkey Madness & Ape Atoll | `(0, 2754, 2775, m43_43)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Ifaba) |
-| 1420 | `mm_karam` | Karam | Monkey Madness & Ape Atoll | `(0, 2758, 2789, m43_43)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Karam) |
-| 1422 | `mm_karam_talker` | Karam | Monkey Madness & Ape Atoll | `(0, 2781, 2799, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Karam) |
-| 1441 | `mm_kruk` | Kruk | Monkey Madness & Ape Atoll | `(0, 2726, 2765, m42_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Kruk) |
-| 1440 | `mm_lofu` | Lofu | Monkey Madness & Ape Atoll | `(1, 2805, 2782, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Lofu) |
-| 1419 | `mm_lumdo` | Lumdo | Monkey Madness & Ape Atoll | `(0, 2803, 2707, m43_42)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Lumdo) |
-| 1413 | `mm_lumo` | Lumo | Monkey Madness & Ape Atoll | `(0, 2775, 2796, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Lumo) |
-| 1452 | `mm_monkey_child` | Monkey Child | Monkey Madness & Ape Atoll | `(0, 2743, 2795, m42_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Monkey_Child) |
-| 1469 | `mm_monkey_minder` | Monkey Minder | Monkey Madness & Ape Atoll | `(0, 2595, 3277, m40_51)` | 3 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Monkey_Minder) |
-| 1454 | `mm_monkeys_aunt` | The Monkey's Aunt | Monkey Madness & Ape Atoll | `(0, 2738, 2794, m42_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/The_Monkey%27s_Aunt) |
-| 1453 | `mm_monkeys_uncle` | The Monkey's Uncle | Monkey Madness & Ape Atoll | `(1, 2737, 2793, m42_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/The_Monkey%27s_Uncle) |
-| 1450 | `mm_murowoi` | Muruwoi | Monkey Madness & Ape Atoll | `(0, 2804, 2764, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Muruwoi) |
-| 1447 | `mm_padulah` | Padulah | Monkey Madness & Ape Atoll | `(0, 2757, 2788, m43_43)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Padulah) |
-| 1451 | `mm_sleeping_monkey_guard` | Sleeping Monkey | Monkey Madness & Ape Atoll | `(0, 2760, 2771, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Sleeping_Monkey) |
-| 1433 | `mm_solihib` | Solihib | Monkey Madness & Ape Atoll | `(0, 2769, 2789, m43_43)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Solihib) |
-| 1431 | `mm_trefaji` | Trefaji | Monkey Madness & Ape Atoll | `(0, 2768, 2803, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Trefaji) |
-| 1435 | `mm_tutab` | Tutab | Monkey Madness & Ape Atoll | `(0, 2757, 2770, m43_43)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Tutab) |
-| 1449 | `mm_uwogo` | Uwogo | Monkey Madness & Ape Atoll | `(0, 2801, 2764, m43_43)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Uwogo) |
-| 1408 | `mm_waydar` | Waydar | Monkey Madness & Ape Atoll | `(0, 2392, 9895, m37_154)` | 4 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Waydar) |
-| 1409 | `mm_waydar_cutscene` | Waydar | Monkey Madness & Ape Atoll | `(0, 2670, 4559, m41_71)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Waydar) |
-| 1424 | `mm_waymottin` | Waymottin | Monkey Madness & Ape Atoll | `(0, 2805, 9147, m43_142)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Waymottin) |
-| 1463 | `mm_zoo_monkey` | Monkey | Monkey Madness & Ape Atoll | `(0, 2601, 3276, m40_51)` | 9 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Monkey) |
-| 1425 | `mm_zooknock` | Zooknock | Monkey Madness & Ape Atoll | `(0, 2804, 9145, m43_142)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Zooknock) |
 | 1257 | `mort_afflicted_man` | Afflicted | Morytania, Canifis & Burgh de Rott | `(0, 3466, 3306, m54_51)` | 7 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Afflicted) |
 | 1261 | `mort_afflicted_man2` | Afflicted | Morytania, Canifis & Burgh de Rott | `(0, 3469, 3308, m54_51)` | 5 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Afflicted) |
 | 1258 | `mort_afflicted_woman` | Afflicted | Morytania, Canifis & Burgh de Rott | `(0, 3466, 3309, m54_51)` | 9 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Afflicted) |
@@ -788,13 +702,6 @@
 | 2287 | `rd_observer_room_5` | Sir Ren Itchood | Members Surface & Underground Regions (Other) | `(0, 2443, 4956, m38_77)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Sir_Ren_Itchood) |
 | 2288 | `rd_observer_room_6` | Miss Cheevers | Members Surface & Underground Regions (Other) | `(0, 2469, 4941, m38_77)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Miss_Cheevers) |
 | 2289 | `rd_observer_room_7` | Ms. Hynn Terprett | Members Surface & Underground Regions (Other) | `(0, 2451, 4939, m38_77)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ms._Hynn_Terprett) |
-| 1207 | `regicide_general_hining` | General Hining | Tirannwn, Lletya & Mourning's End | `(0, 2187, 3149, m34_49)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/General_Hining) |
-| 1199 | `regicide_old_camp_tracker` | Elf Tracker | Tirannwn, Lletya & Mourning's End | `(0, 2257, 3149, m35_49)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Elf_Tracker) |
-| 1203 | `regicide_tyras_camp_guard` | Tyras guard | Tirannwn, Lletya & Mourning's End | `(0, 2188, 3171, m34_49)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Tyras_guard) |
-| 1206 | `regicide_tyras_camp_tent_guard` | Tyras guard | Tirannwn, Lletya & Mourning's End | `(0, 2185, 3144, m34_49)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Tyras_guard) |
-| 1204 | `regicide_tyras_guard` | Tyras guard | Tirannwn, Lletya & Mourning's End | `(0, 2182, 3147, m34_49)` | 4 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Tyras_guard) |
-| 1205 | `regicide_tyras_lazy_guard` | Tyras guard | Tirannwn, Lletya & Mourning's End | `(0, 2181, 3184, m34_49)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Tyras_guard) |
-| 1208 | `regicidegeneralshopkeeper` | Quartermaster | Members Surface & Underground Regions (Other) | `(0, 2194, 3140, m34_49)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Quartermaster) |
 | 2266 | `roguesden_mazemaster` | Brian O'Richard | Members Surface & Underground Regions (Other) | `(1, 3049, 4977, m47_77)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Brian_O%27Richard) |
 | 2270 | `roguesden_trader` | Martin Thwait | Members Surface & Underground Regions (Other) | `(1, 3048, 4975, m47_77)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Martin_Thwait) |
 | 1568 | `route_curpile_fyod` | Curpile Fyod | Members Surface & Underground Regions (Other) | `(0, 3508, 3440, m54_53)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Curpile_Fyod) |
@@ -806,12 +713,8 @@
 | 1570 | `route_sani_piliu` | Sani Piliu | Members Surface & Underground Regions (Other) | `(3, 3508, 9837, m54_153)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Sani_Piliu) |
 | 1577 | `route_vanstrom_klause_sitting` | Vanstrom Klause | Members Surface & Underground Regions (Other) | `(0, 3503, 3477, m54_54)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Vanstrom_Klause) |
 | 1569 | `route_veliaf_hurtz` | Veliaf Hurtz | Members Surface & Underground Regions (Other) | `(0, 3506, 9838, m54_153)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Veliaf_Hurtz) |
-| 1679 | `roving_female_woodelf` | Eluned | Tirannwn, Lletya & Mourning's End | `(0, 2289, 3145, m35_49)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Eluned) |
 | 2376 | `roving_female_woodelf_temp_1` | Eluned | Tirannwn, Lletya & Mourning's End | `(0, 2352, 3171, m36_49)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Eluned) |
-| 1682 | `roving_golrie` | Golrie | Tirannwn, Lletya & Mourning's End | `(0, 2579, 4451, m40_69)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Golrie) |
-| 1680 | `roving_islwyn` | Islwyn | Tirannwn, Lletya & Mourning's End | `(0, 2291, 3147, m35_49)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Islwyn) |
 | 1777 | `roving_update_female_woodelf` | Ilfeen | Tirannwn, Lletya & Mourning's End | `(0, 2260, 3213, m35_50)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ilfeen) |
-| 1528 | `saradominist_zealot` | Zealot | Members Surface & Underground Regions (Other) | `(0, 3444, 3258, m53_50)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Zealot) |
 | 2399 | `secret_ghost_explorer` | Mysterious ghost | Members Surface & Underground Regions (Other) | `(0, 2555, 3444, m39_53)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Mysterious_ghost) |
 | 2398 | `secret_ghost_mage` | Mysterious ghost | F2P Surface & Underground Regions (Other) | `(0, 3112, 3158, m48_49)` | 3 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Mysterious_ghost) |
 | 2400 | `secret_ghost_messenger` | Mysterious ghost | F2P Surface & Underground Regions (Other) | `(0, 2950, 3820, m46_59)` | 3 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Mysterious_ghost) |
@@ -851,13 +754,6 @@
 | 2518 | `tbwcu_safta_doc_nosticks` | Safta Doc | Members Surface & Underground Regions (Other) | `(0, 2790, 3100, m43_48)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Safta_Doc) |
 | 2505 | `tbwcu_sharimika` | Sharimika | Members Surface & Underground Regions (Other) | `(1, 2794, 3076, m43_48)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Sharimika) |
 | 2506 | `tbwcu_sharimika_nosticks` | Sharimika | Members Surface & Underground Regions (Other) | `(1, 2794, 3076, m43_48)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Sharimika) |
-| 1171 | `tbwt_lubufu` | Lubufu | Karamja, Shilo Village & Tai Bwo Wannai | `(0, 2770, 3169, m43_49)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Lubufu) |
-| 1167 | `tbwt_tamayu` | Tamayu | Karamja, Shilo Village & Tai Bwo Wannai | `(0, 2844, 3042, m44_47)` | 2 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Tamayu) |
-| 1163 | `tbwt_tiadeche` | Tiadeche | Karamja, Shilo Village & Tai Bwo Wannai | `(0, 2528, 4589, m39_71)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Tiadeche) |
-| 1164 | `tbwt_tiadeche_final` | Tiadeche | Karamja, Shilo Village & Tai Bwo Wannai | `(0, 2781, 3057, m43_47)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Tiadeche) |
-| 1162 | `tbwt_timfraku` | Timfraku | Karamja, Shilo Village & Tai Bwo Wannai | `(1, 2780, 3087, m43_48)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Timfraku) |
-| 1165 | `tbwt_tinsay` | Tinsay | Karamja, Shilo Village & Tai Bwo Wannai | `(0, 2765, 2976, m43_46)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Tinsay) |
-| 1166 | `tbwt_tinsay_final` | Tinsay | Karamja, Shilo Village & Tai Bwo Wannai | `(0, 2790, 3054, m43_47)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Tinsay) |
 | 3624 | `templetrek_child_hard` | Smiddi Ryak | Members Surface & Underground Regions (Other) | `(0, 3475, 3235, m54_50)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Smiddi_Ryak) |
 | 3630 | `templetrek_man_med` | Valantay Eppel | Members Surface & Underground Regions (Other) | `(0, 3480, 3237, m54_50)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Valantay_Eppel) |
 | 3626 | `templetrek_oldman_hard` | Rolayne Twickit | Members Surface & Underground Regions (Other) | `(0, 3476, 3235, m54_50)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Rolayne_Twickit) |
@@ -898,43 +794,6 @@
 | 2949 | `vc_jimmy_dazzler` | Jimmy Dazzler | Ratcatchers & Sewer/Tavern NPCs | `(0, 2562, 3320, m40_51)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Jimmy_Dazzler) |
 | 2952 | `vc_smokin_joe` | Smokin' Joe | Ratcatchers & Sewer/Tavern NPCs | `(0, 2930, 10213, m45_159)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Smokin%27_Joe) |
 | 2941 | `vc_the_beast` | The Beast | Ratcatchers & Sewer/Tavern NPCs | `(0, 2913, 10189, m45_159)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/The_Beast) |
-| 1295 | `viking_askelapen` | Askeladden | Fremennik Province & Miscellania | `(0, 2658, 3660, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Askeladden) |
-| 2439 | `viking_askelapen_dagganoth_mountain` | Askeladden | Fremennik Province & Miscellania | `(0, 2539, 3739, m39_58)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Askeladden) |
-| 1294 | `viking_brundt` | Brundt the Chieftain | Fremennik Province & Miscellania | `(0, 2659, 3669, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Brundt_the_Chieftain) |
-| 1301 | `viking_clothing_shopkeeper` | Yrsa | Fremennik Province & Miscellania | `(0, 2625, 3675, m41_57)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Yrsa) |
-| 2436 | `viking_dagganoth_cave_ferryman_1op` | Jarvald | Fremennik Province & Miscellania | `(0, 2621, 3683, m40_57)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Jarvald) |
-| 2437 | `viking_dagganoth_cave_ferryman_island` | Jarvald | Fremennik Province & Miscellania | `(0, 2621, 3683, m40_57)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Jarvald) |
-| 2438 | `viking_dagganoth_cave_waterbirth_island` | Jarvald | Fremennik Province & Miscellania | `(0, 2544, 3761, m39_58)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Jarvald) |
-| 1315 | `viking_fish_monger` | Fish monger | Fremennik Province & Miscellania | `(0, 2646, 3675, m41_57)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Fish_monger) |
-| 1302 | `viking_fisherman1` | Fisherman | Fremennik Province & Miscellania | `(0, 2641, 3699, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Fisherman) |
-| 1316 | `viking_fur_monger` | Fur trader | Fremennik Province & Miscellania | `(0, 2640, 3675, m41_57)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Fur_trader) |
-| 1283 | `viking_hallifred` | Swensen the Navigator | Fremennik Province & Miscellania | `(0, 2646, 3660, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Swensen_the_Navigator) |
-| 1274 | `viking_heckler` | Ospak | Fremennik Province & Miscellania | `(0, 2660, 3680, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ospak) |
-| 1275 | `viking_heckler_2` | Styrmir | Fremennik Province & Miscellania | `(0, 2657, 3680, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Styrmir) |
-| 1276 | `viking_heckler_3` | Torbrund | Fremennik Province & Miscellania | `(0, 2658, 3679, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Torbrund) |
-| 1277 | `viking_heckler_4` | Fridgeir | Fremennik Province & Miscellania | `(0, 2659, 3678, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Fridgeir) |
-| 1270 | `viking_lalli_troll` | Lalli | Fremennik Province & Miscellania | `(0, 2770, 3622, m43_56)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Lalli) |
-| 1278 | `viking_longhall_bouncer` | Longhall Bouncer | Fremennik Province & Miscellania | `(0, 2667, 3684, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Longhall_Bouncer) |
-| 1305 | `viking_man` | Agnar | Fremennik Province & Miscellania | `(0, 2642, 3677, m41_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Agnar) |
-| 1306 | `viking_man2` | Freidir | Fremennik Province & Miscellania | `(0, 2674, 3675, m41_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Freidir) |
-| 1307 | `viking_man3` | Borrokar | Fremennik Province & Miscellania | `(0, 2679, 3690, m41_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Borrokar) |
-| 1308 | `viking_man4` | Lanzig | Fremennik Province & Miscellania | `(0, 2676, 3665, m41_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Lanzig) |
-| 1309 | `viking_man5` | Pontak | Fremennik Province & Miscellania | `(0, 2666, 3652, m41_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Pontak) |
-| 1269 | `viking_olaf` | Olaf the Bard | Fremennik Province & Miscellania | `(0, 2673, 3683, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Olaf_the_Bard) |
-| 1288 | `viking_peer` | Peer the Seer | Fremennik Province & Miscellania | `(0, 2634, 3668, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Peer_the_Seer) |
-| 1284 | `viking_reveller` | Bjorn | Fremennik Province & Miscellania | `(0, 2655, 3673, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Bjorn) |
-| 1285 | `viking_reveller_2` | Eldgrim | Fremennik Province & Miscellania | `(0, 2658, 3674, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Eldgrim) |
-| 1286 | `viking_reveller_3` | Manni the Reveller | Fremennik Province & Miscellania | `(0, 2660, 3673, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Manni_the_Reveller) |
-| 1304 | `viking_sailor` | Sailor | Fremennik Province & Miscellania | `(0, 2629, 3693, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Sailor) |
-| 1281 | `viking_sigli` | Sigli the Huntsman | Fremennik Province & Miscellania | `(0, 2660, 3653, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Sigli_the_Huntsman) |
-| 1282 | `viking_sigmund` | Sigmund The Merchant | Fremennik Province & Miscellania | `(0, 2641, 3680, m41_57)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Sigmund_The_Merchant) |
-| 1289 | `viking_thorvald` | Thorvald the Warrior | Fremennik Province & Miscellania | `(0, 2666, 3693, m41_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Thorvald_the_Warrior) |
-| 1303 | `viking_weapons_salesman` | Skulgrimen | Fremennik Province & Miscellania | `(0, 2663, 3694, m41_57)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Skulgrimen) |
-| 1310 | `viking_woman` | Freygerd | Fremennik Province & Miscellania | `(0, 2667, 3702, m41_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Freygerd) |
-| 1311 | `viking_woman2` | Lensa | Fremennik Province & Miscellania | `(0, 2655, 3652, m41_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Lensa) |
-| 1312 | `viking_woman3` | Jennella | Fremennik Province & Miscellania | `(0, 2640, 3651, m41_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Jennella) |
-| 1313 | `viking_woman4` | Sassilik | Fremennik Province & Miscellania | `(0, 2627, 3654, m41_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Sassilik) |
-| 1314 | `viking_woman_indoors` | Inga | Fremennik Province & Miscellania | `(0, 2674, 3677, m41_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Inga) |
 | 1287 | `vt_council_workmen` | Council workman | Members Surface & Underground Regions (Other) | `(0, 2655, 3592, m41_56)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Council_workman) |
 | 1665 | `waa_werewolf_guard` | Werewolf | Members Surface & Underground Regions (Other) | `(0, 3544, 3462, m55_54)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Werewolf) |
 | 1660 | `werewolf_skullballboss` | Skullball Boss | Morytania, Canifis & Burgh de Rott | `(0, 3549, 9867, m55_154)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Skullball_Boss) |

@@ -9,15 +9,15 @@
     "total_377_quests": 104,
     "total_377_miniquests": 7,
     "status_counts": {
-      "COMPLETE-VERIFIED": 62,
+      "COMPLETE-VERIFIED": 69,
       "COMPLETE-UNVERIFIED": 0,
       "PARTIAL": 0,
-      "STUB": 6,
-      "NOT STARTED": 36
+      "STUB": 4,
+      "NOT STARTED": 31
     },
-    "unhandled_talk_to_npcs_total": 969,
-    "unhandled_quest_npcs": 511,
-    "unhandled_ambient_npcs": 458
+    "unhandled_talk_to_npcs_total": 817,
+    "unhandled_quest_npcs": 364,
+    "unhandled_ambient_npcs": 453
   },
   "quests": [
     {
@@ -338,9 +338,7 @@
         "quest_complete_script": "quests/quest_vampire/scripts/quest_vampire.rs2",
         "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "morgan_le_faye"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 9,
@@ -880,7 +878,7 @@
       "evidence": {
         "quest_dir": "quests/quest_arthur",
         "rs2_file_count": 4,
-        "rs2_lines": 515,
+        "rs2_lines": 517,
         "config_files": [
           "quests/quest_arthur/configs/quest_arthur.constant",
           "quests/quest_arthur/configs/quest_arthur.varp"
@@ -1653,9 +1651,7 @@
         "quest_complete_script": "quests/quest_seaslug/scripts/quest_seaslug.rs2",
         "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "kennith"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 37,
@@ -1697,7 +1693,7 @@
       "evidence": {
         "quest_dir": "quests/quest_waterfall",
         "rs2_file_count": 9,
-        "rs2_lines": 884,
+        "rs2_lines": 891,
         "config_files": [
           "quests/quest_waterfall/configs/quest_waterfall.constant"
         ],
@@ -1864,7 +1860,7 @@
       "evidence": {
         "quest_dir": "quests/quest_grandtree",
         "rs2_file_count": 12,
-        "rs2_lines": 1572,
+        "rs2_lines": 1569,
         "config_files": [
           "quests/quest_grandtree/configs/daconia_coords.enum",
           "quests/quest_grandtree/configs/quest_grandtree.constant",
@@ -3086,16 +3082,7 @@
         "quest_complete_script": "quests/quest_tbwt/scripts/quest_tbwt.rs2",
         "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "tbwt_lubufu",
-        "tbwt_tamayu",
-        "tbwt_tamayu_final",
-        "tbwt_tiadeche",
-        "tbwt_tiadeche_final",
-        "tbwt_timfraku",
-        "tbwt_tinsay",
-        "tbwt_tinsay_final"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 59,
@@ -3204,11 +3191,11 @@
         "Access to Tirannwn"
       ],
       "released_by_377_cutoff": true,
-      "status": "STUB",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
         "quest_dir": "quests/quest_regicide",
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
+        "rs2_file_count": 2,
+        "rs2_lines": 1112,
         "config_files": [
           "quests/quest_regicide/configs/quest_regicide.constant",
           "quests/quest_regicide/configs/quest_regicide.inv",
@@ -3217,25 +3204,11 @@
           "quests/quest_regicide/configs/quest_regicide.obj",
           "quests/quest_regicide/configs/quest_regicide.varp"
         ],
-        "journal_button_script": null,
-        "quest_complete_script": null,
+        "journal_button_script": "quests/quest_regicide/scripts/regicide_journal.rs2",
+        "quest_complete_script": "quests/quest_regicide/scripts/quest_regicide.rs2",
         "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "lord_iorwerth",
-        "regicide_evil_elf1",
-        "regicide_evil_elf2",
-        "regicide_general_hining",
-        "regicide_good_elf1",
-        "regicide_good_elf3",
-        "regicide_kings_messenger",
-        "regicide_old_camp_tracker",
-        "regicide_tyras_camp_guard",
-        "regicide_tyras_camp_tent_guard",
-        "regicide_tyras_guard",
-        "regicide_tyras_lazy_guard",
-        "regicidegeneralshopkeeper"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 61,
@@ -3337,63 +3310,52 @@
       "start_npc": "viking_brundt_child",
       "start_location": "Rellekka Longhall",
       "varp_or_varbit": "viking",
-      "stages": [],
+      "stages": [
+        "^viking_not_started = 0",
+        "^viking_started = 1",
+        "^viking_in_progress = 2",
+        "^viking_all_votes = 9",
+        "^viking_bit_manni_vote = 0",
+        "^viking_bit_olaf_vote = 1",
+        "^viking_bit_sigli_vote = 2",
+        "^viking_bit_sigmund_vote = 3",
+        "^viking_bit_swensen_vote = 4",
+        "^viking_bit_peer_vote = 5",
+        "^viking_bit_thorvald_vote = 6",
+        "^viking_bit_pipe_bombed = 7",
+        "^viking_bit_lalli_stew = 8",
+        "^viking_bit_olaf_performed = 9",
+        "^viking_bit_draugen_slain = 10",
+        "^viking_bit_koschei_done = 11",
+        "^viking_bit_peer_riddle_done = 12",
+        "^viking_bit_swensen_maze_done = 13",
+        "^viking_bit_manni_asked = 14",
+        "^viking_bit_olaf_asked = 15",
+        "^viking_bit_sigli_asked = 16",
+        "^viking_bit_sigmund_asked = 17",
+        "^viking_bit_swensen_asked = 18",
+        "^viking_bit_peer_asked = 19",
+        "^viking_bit_thorvald_asked = 20"
+      ],
       "rewards": [
         "3 Quest Points",
         "2,812.4 XP in 10 skills (Agility, Attack, Crafting, Defence, Fishing, Fletching, Hitpoints, Strength, Thieving, Woodcutting)",
         "Fremennik helms"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_viking",
+        "rs2_file_count": 2,
+        "rs2_lines": 790,
+        "config_files": [
+          "quests/quest_viking/configs/quest_viking.constant"
+        ],
+        "journal_button_script": "quests/quest_viking/scripts/viking_journal.rs2",
+        "quest_complete_script": "quests/quest_viking/scripts/quest_viking.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "viking_askelapen",
-        "viking_askelapen_dagganoth_mountain",
-        "viking_brundt",
-        "viking_clothing_shopkeeper",
-        "viking_dagganoth_cave_ferryman_1op",
-        "viking_dagganoth_cave_ferryman_island",
-        "viking_dagganoth_cave_waterbirth_island",
-        "viking_fish_monger",
-        "viking_fisherman1",
-        "viking_fur_monger",
-        "viking_hallifred",
-        "viking_heckler",
-        "viking_heckler_2",
-        "viking_heckler_3",
-        "viking_heckler_4",
-        "viking_lake_spirit",
-        "viking_lalli_troll",
-        "viking_longhall_bouncer",
-        "viking_man",
-        "viking_man2",
-        "viking_man3",
-        "viking_man4",
-        "viking_man5",
-        "viking_olaf",
-        "viking_peer",
-        "viking_reveller",
-        "viking_reveller_2",
-        "viking_reveller_3",
-        "viking_sailor",
-        "viking_sigli",
-        "viking_sigmund",
-        "viking_thorvald",
-        "viking_weapons_salesman",
-        "viking_woman",
-        "viking_woman2",
-        "viking_woman3",
-        "viking_woman4",
-        "viking_woman_indoors"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 63,
@@ -3412,7 +3374,17 @@
       "start_npc": "larrissa",
       "start_location": "Lighthouse north of Barbarian Outpost",
       "varp_or_varbit": "deephorror / horrorquest",
-      "stages": [],
+      "stages": [
+        "^horror_not_started = 0",
+        "^horror_started = 1",
+        "^horror_repaired_bridges = 2",
+        "^horror_opened_lighthouse = 3",
+        "^horror_repaired_lantern = 4",
+        "^horror_spoken_injured_jossik = 5",
+        "^horror_opened_strange_wall = 6",
+        "^horror_defeated_mother = 7",
+        "^horror_complete = 10"
+      ],
       "rewards": [
         "2 Quest Points",
         "4,662.5 Magic XP",
@@ -3421,22 +3393,19 @@
         "Damaged God book (Holy/Unholy/Book of Balance)"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_horror",
+        "rs2_file_count": 2,
+        "rs2_lines": 358,
+        "config_files": [
+          "quests/quest_horror/configs/quest_horror.constant"
+        ],
+        "journal_button_script": "quests/quest_horror/scripts/horror_journal.rs2",
+        "quest_complete_script": "quests/quest_horror/scripts/quest_horror.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "horror_girlfriend_postquest",
-        "horror_girlfriend_prequest",
-        "horror_lighthousekeeeper_injured",
-        "horror_lighthousekeeeper_well"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 64,
@@ -3457,59 +3426,30 @@
       "start_npc": "misc_king_vargas",
       "start_location": "Miscellania Castle",
       "varp_or_varbit": "misc_quest",
-      "stages": [],
+      "stages": [
+        "^misc_not_started = 0",
+        "^misc_started = 10",
+        "^misc_treaty_signed = 50",
+        "^misc_complete = 100"
+      ],
       "rewards": [
         "1 Quest Point",
         "Management of Miscellania Kingdom"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_misc",
+        "rs2_file_count": 2,
+        "rs2_lines": 467,
+        "config_files": [
+          "quests/quest_misc/configs/quest_misc.constant"
+        ],
+        "journal_button_script": "quests/quest_misc/scripts/misc_journal.rs2",
+        "quest_complete_script": "quests/quest_misc/scripts/quest_misc.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "misc_advisor_ghrim",
-        "misc_banker",
-        "misc_etc_man_1",
-        "misc_etc_man_2",
-        "misc_etc_man_3",
-        "misc_etc_woman_1",
-        "misc_etc_woman_2",
-        "misc_etc_woman_3",
-        "misc_fish_monger",
-        "misc_fisherman",
-        "misc_flowergirl",
-        "misc_gardener",
-        "misc_king_vargas",
-        "misc_lumberjack",
-        "misc_man_1",
-        "misc_man_2",
-        "misc_man_3",
-        "misc_man_4",
-        "misc_man_5",
-        "misc_man_6",
-        "misc_man_7",
-        "misc_miner",
-        "misc_prince_brand",
-        "misc_princess_astrid",
-        "misc_queen_sigrid",
-        "misc_sailor",
-        "misc_smithy",
-        "misc_ulby_doorguard",
-        "misc_veg_monger",
-        "misc_woman_1",
-        "misc_woman_2",
-        "misc_woman_3",
-        "misc_woman_4",
-        "misc_woman_5",
-        "misc_woman_6"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 65,
@@ -3527,7 +3467,17 @@
       "start_npc": "king_narnode_shareen",
       "start_location": "Grand Tree",
       "varp_or_varbit": "mm_main",
-      "stages": [],
+      "stages": [
+        "^mm_not_started = 0",
+        "^mm_started = 1",
+        "^mm_spoken_caranock = 2",
+        "^mm_hangar_solved = 3",
+        "^mm_spoken_garkor = 4",
+        "^mm_made_amulet = 5",
+        "^mm_made_greegree = 6",
+        "^mm_spoken_awowogei = 7",
+        "^mm_defeated_demon = 8"
+      ],
       "rewards": [
         "3 Quest Points",
         "35,000 XP in Attack/Defence or Strength/Hitpoints + 20,000 XP in the other two",
@@ -3536,64 +3486,20 @@
         "Ability to wield Dragon scimitar"
       ],
       "released_by_377_cutoff": true,
-      "status": "STUB",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
         "quest_dir": "quests/quest_mm",
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
+        "rs2_file_count": 2,
+        "rs2_lines": 715,
         "config_files": [
-          "quests/quest_mm/configs/mm.loc"
+          "quests/quest_mm/configs/mm.loc",
+          "quests/quest_mm/configs/quest_mm.constant"
         ],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "journal_button_script": "quests/quest_mm/scripts/mm_journal.rs2",
+        "quest_complete_script": "quests/quest_mm/scripts/quest_mm.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "mm_aberab",
-        "mm_awowogei_cutscene",
-        "mm_bonzara",
-        "mm_bunkdo",
-        "mm_bunkwicket",
-        "mm_carado",
-        "mm_caranock",
-        "mm_caranock_cutscene",
-        "mm_daero",
-        "mm_daga",
-        "mm_denadu",
-        "mm_dugopul",
-        "mm_elder_guard_1",
-        "mm_elder_guard_2",
-        "mm_freed_zoo_monkey",
-        "mm_garkor",
-        "mm_garkor_final_battle",
-        "mm_hafuba",
-        "mm_hamab",
-        "mm_ifaba",
-        "mm_karam",
-        "mm_karam_talker",
-        "mm_kruk",
-        "mm_lofu",
-        "mm_lumdo",
-        "mm_lumo",
-        "mm_monkey_child",
-        "mm_monkey_minder",
-        "mm_monkeys_aunt",
-        "mm_monkeys_uncle",
-        "mm_murowoi",
-        "mm_padulah",
-        "mm_salenab",
-        "mm_sleeping_monkey_guard",
-        "mm_solihib",
-        "mm_trefaji",
-        "mm_tutab",
-        "mm_uwogo",
-        "mm_waydar",
-        "mm_waydar_cutscene",
-        "mm_waymottin",
-        "mm_zoo_monkey",
-        "mm_zooknock",
-        "mm_zooknock_final_battle"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 66,
@@ -3613,22 +3519,36 @@
       "start_npc": "zealot",
       "start_location": "Outside the Abandoned Mine in southern Morytania",
       "varp_or_varbit": "hauntedmine",
-      "stages": [],
+      "stages": [
+        "^hauntedmine_not_started = 0",
+        "^hauntedmine_started = 1",
+        "^hauntedmine_got_zealot_key = 2",
+        "^hauntedmine_sent_fungus_cart = 3",
+        "^hauntedmine_activated_lift = 4",
+        "^hauntedmine_slain_treus = 5",
+        "^hauntedmine_complete = 6"
+      ],
       "rewards": [
         "2 Quest Points",
         "22,000 Strength XP",
         "Access to Salve shard crystal mine (Salve amulet)"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_hauntedmine",
+        "rs2_file_count": 2,
+        "rs2_lines": 545,
+        "config_files": [
+          "quests/quest_hauntedmine/configs/quest_hauntedmine.constant",
+          "quests/quest_hauntedmine/configs/quest_hauntedmine.loc",
+          "quests/quest_hauntedmine/configs/quest_hauntedmine.npc",
+          "quests/quest_hauntedmine/configs/quest_hauntedmine.obj",
+          "quests/quest_hauntedmine/configs/quest_hauntedmine.varp"
+        ],
+        "journal_button_script": "quests/quest_hauntedmine/scripts/hauntedmine_journal.rs2",
+        "quest_complete_script": "quests/quest_hauntedmine/scripts/quest_hauntedmine.rs2",
+        "in_update_questlist": true
       },
       "linked_unhandled_npcs": []
     },
@@ -3790,28 +3710,39 @@
       "start_npc": "islwyn",
       "start_location": "Isafdar",
       "varp_or_varbit": "roving_elves_quest",
-      "stages": [],
+      "stages": [
+        "^roving_not_started = 0",
+        "^roving_started = 1",
+        "^roving_spoken_golrie = 2",
+        "^roving_got_seed = 3",
+        "^roving_enchanted_seed = 4",
+        "^roving_planted_seed = 5",
+        "^roving_complete = 6"
+      ],
       "rewards": [
         "1 Quest Point",
         "10,000 Strength XP",
         "Crystal bow (full) or Crystal shield (full)"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_roving_elves",
+        "rs2_file_count": 2,
+        "rs2_lines": 248,
+        "config_files": [
+          "quests/quest_roving_elves/configs/quest_roving_elves.constant",
+          "quests/quest_roving_elves/configs/quest_roving_elves.loc",
+          "quests/quest_roving_elves/configs/quest_roving_elves.npc",
+          "quests/quest_roving_elves/configs/quest_roving_elves.obj",
+          "quests/quest_roving_elves/configs/quest_roving_elves.varp"
+        ],
+        "journal_button_script": "quests/quest_roving_elves/scripts/roving_elves_journal.rs2",
+        "quest_complete_script": "quests/quest_roving_elves/scripts/quest_roving_elves.rs2",
+        "in_update_questlist": true
       },
       "linked_unhandled_npcs": [
-        "roving_female_woodelf",
         "roving_female_woodelf_temp_1",
-        "roving_golrie",
-        "roving_islwyn",
         "roving_update_female_woodelf"
       ]
     },
@@ -6842,16 +6773,6 @@
       "role": "ambient_npc"
     },
     {
-      "id": 1209,
-      "debugname": "caveguide6",
-      "name": "Koftik",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
       "id": 2324,
       "debugname": "dantaera",
       "name": "Dantaera",
@@ -8606,26 +8527,6 @@
       "debugname": "easter06_npc_3726",
       "name": "Rabbit",
       "spawn_count": 0,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1185,
-      "debugname": "elf_city_guard",
-      "name": "Elven city guard",
-      "spawn_count": 2,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1201,
-      "debugname": "elf_overpass_guard",
-      "name": "Elf warrior",
-      "spawn_count": 2,
       "classification": "ambient_npc",
       "quest_id": null,
       "quest_name": null,
@@ -10442,46 +10343,6 @@
       "role": "ambient_npc"
     },
     {
-      "id": 1337,
-      "debugname": "horror_girlfriend_postquest",
-      "name": "Larrissa",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "horror",
-      "quest_name": "Horror from the Deep",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1336,
-      "debugname": "horror_girlfriend_prequest",
-      "name": "Larrissa",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "horror",
-      "quest_name": "Horror from the Deep",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1335,
-      "debugname": "horror_lighthousekeeeper_injured",
-      "name": "Jossik",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "horror",
-      "quest_name": "Horror from the Deep",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1334,
-      "debugname": "horror_lighthousekeeeper_well",
-      "name": "Jossik",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "horror",
-      "quest_name": "Horror from the Deep",
-      "role": "quest_npc"
-    },
-    {
       "id": 3385,
       "debugname": "hundred_aris_base",
       "name": "Gypsy",
@@ -10822,26 +10683,6 @@
       "role": "ambient_npc"
     },
     {
-      "id": 2879,
-      "debugname": "jb_viking_dude",
-      "name": "Bardur",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 697,
-      "debugname": "kennith",
-      "name": "Kennith",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "seaslug",
-      "quest_name": "Sea Slug Quest",
-      "role": "quest_npc"
-    },
-    {
       "id": 2325,
       "debugname": "kragen",
       "name": "Kragen",
@@ -10869,16 +10710,6 @@
       "classification": "quest_npc",
       "quest_id": "wanted",
       "quest_name": "Wanted!",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1182,
-      "debugname": "lord_iorwerth",
-      "name": "Lord Iorwerth",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
       "role": "quest_npc"
     },
     {
@@ -11652,806 +11483,6 @@
       "role": "ambient_npc"
     },
     {
-      "id": 1375,
-      "debugname": "misc_advisor_ghrim",
-      "name": "Advisor Ghrim",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1360,
-      "debugname": "misc_banker",
-      "name": "Banker",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1361,
-      "debugname": "misc_etc_man_1",
-      "name": "Arnor",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1362,
-      "debugname": "misc_etc_man_2",
-      "name": "Haming",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1363,
-      "debugname": "misc_etc_man_3",
-      "name": "Moldof",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1364,
-      "debugname": "misc_etc_woman_1",
-      "name": "Helga",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1365,
-      "debugname": "misc_etc_woman_2",
-      "name": "Matilda",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1366,
-      "debugname": "misc_etc_woman_3",
-      "name": "Ashild",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1393,
-      "debugname": "misc_fish_monger",
-      "name": "Fishmonger",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1397,
-      "debugname": "misc_fisherman",
-      "name": "Fisherman Frodi",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1378,
-      "debugname": "misc_flowergirl",
-      "name": "Flower Girl",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1398,
-      "debugname": "misc_gardener",
-      "name": "Gardener Gunnhild",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1373,
-      "debugname": "misc_king_vargas",
-      "name": "King Vargas",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "start_npc"
-    },
-    {
-      "id": 1395,
-      "debugname": "misc_lumberjack",
-      "name": "Lumberjack Leif",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1379,
-      "debugname": "misc_man_1",
-      "name": "Ragnar",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1380,
-      "debugname": "misc_man_2",
-      "name": "Einar",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1381,
-      "debugname": "misc_man_3",
-      "name": "Alrik",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1389,
-      "debugname": "misc_man_4",
-      "name": "Skraeling",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1390,
-      "debugname": "misc_man_5",
-      "name": "Broddi",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1391,
-      "debugname": "misc_man_6",
-      "name": "Skraeling",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1392,
-      "debugname": "misc_man_7",
-      "name": "Ragnvald",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1396,
-      "debugname": "misc_miner",
-      "name": "Miner Magnus",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1371,
-      "debugname": "misc_prince_brand",
-      "name": "Prince Brand",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1372,
-      "debugname": "misc_princess_astrid",
-      "name": "Princess Astrid",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1359,
-      "debugname": "misc_queen_sigrid",
-      "name": "Queen Sigrid",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1385,
-      "debugname": "misc_sailor",
-      "name": "Sailor",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1376,
-      "debugname": "misc_smithy",
-      "name": "Derrik",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1374,
-      "debugname": "misc_ulby_doorguard",
-      "name": "Guard",
-      "spawn_count": 2,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1394,
-      "debugname": "misc_veg_monger",
-      "name": "Greengrocer",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1382,
-      "debugname": "misc_woman_1",
-      "name": "Thorhild",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1383,
-      "debugname": "misc_woman_2",
-      "name": "Halla",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1384,
-      "debugname": "misc_woman_3",
-      "name": "Yrsa",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1386,
-      "debugname": "misc_woman_4",
-      "name": "Rannveig",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1387,
-      "debugname": "misc_woman_5",
-      "name": "Thora",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1388,
-      "debugname": "misc_woman_6",
-      "name": "Valgerd",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "misc",
-      "quest_name": "Throne of Miscellania",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1432,
-      "debugname": "mm_aberab",
-      "name": "Aberab",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1448,
-      "debugname": "mm_awowogei_cutscene",
-      "name": "Awowogei",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1468,
-      "debugname": "mm_bonzara",
-      "name": "Bonzara",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1415,
-      "debugname": "mm_bunkdo",
-      "name": "Bunkdo",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1423,
-      "debugname": "mm_bunkwicket",
-      "name": "Bunkwicket",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1417,
-      "debugname": "mm_carado",
-      "name": "Carado",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1427,
-      "debugname": "mm_caranock",
-      "name": "G.L.O. Caranock",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1428,
-      "debugname": "mm_caranock_cutscene",
-      "name": "G.L.O. Caranock",
-      "spawn_count": 3,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1407,
-      "debugname": "mm_daero",
-      "name": "Daero",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1434,
-      "debugname": "mm_daga",
-      "name": "Daga",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1439,
-      "debugname": "mm_denadu",
-      "name": "Denadu",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1429,
-      "debugname": "mm_dugopul",
-      "name": "Dugopul",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1461,
-      "debugname": "mm_elder_guard_1",
-      "name": "Elder Guard",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1462,
-      "debugname": "mm_elder_guard_2",
-      "name": "Elder Guard",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1464,
-      "debugname": "mm_freed_zoo_monkey",
-      "name": "Monkey",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1411,
-      "debugname": "mm_garkor",
-      "name": "Garkor",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1412,
-      "debugname": "mm_garkor_final_battle",
-      "name": "Garkor",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1438,
-      "debugname": "mm_hafuba",
-      "name": "Hafuba",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1437,
-      "debugname": "mm_hamab",
-      "name": "Hamab",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1436,
-      "debugname": "mm_ifaba",
-      "name": "Ifaba",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1420,
-      "debugname": "mm_karam",
-      "name": "Karam",
-      "spawn_count": 2,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1422,
-      "debugname": "mm_karam_talker",
-      "name": "Karam",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1441,
-      "debugname": "mm_kruk",
-      "name": "Kruk",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1440,
-      "debugname": "mm_lofu",
-      "name": "Lofu",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1419,
-      "debugname": "mm_lumdo",
-      "name": "Lumdo",
-      "spawn_count": 2,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1413,
-      "debugname": "mm_lumo",
-      "name": "Lumo",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1452,
-      "debugname": "mm_monkey_child",
-      "name": "Monkey Child",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1469,
-      "debugname": "mm_monkey_minder",
-      "name": "Monkey Minder",
-      "spawn_count": 3,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1454,
-      "debugname": "mm_monkeys_aunt",
-      "name": "The Monkey's Aunt",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1453,
-      "debugname": "mm_monkeys_uncle",
-      "name": "The Monkey's Uncle",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1450,
-      "debugname": "mm_murowoi",
-      "name": "Muruwoi",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1447,
-      "debugname": "mm_padulah",
-      "name": "Padulah",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1430,
-      "debugname": "mm_salenab",
-      "name": "Salenab",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1451,
-      "debugname": "mm_sleeping_monkey_guard",
-      "name": "Sleeping Monkey",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1433,
-      "debugname": "mm_solihib",
-      "name": "Solihib",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1431,
-      "debugname": "mm_trefaji",
-      "name": "Trefaji",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1435,
-      "debugname": "mm_tutab",
-      "name": "Tutab",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1449,
-      "debugname": "mm_uwogo",
-      "name": "Uwogo",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1408,
-      "debugname": "mm_waydar",
-      "name": "Waydar",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1409,
-      "debugname": "mm_waydar_cutscene",
-      "name": "Waydar",
-      "spawn_count": 2,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1424,
-      "debugname": "mm_waymottin",
-      "name": "Waymottin",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1463,
-      "debugname": "mm_zoo_monkey",
-      "name": "Monkey",
-      "spawn_count": 9,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1425,
-      "debugname": "mm_zooknock",
-      "name": "Zooknock",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1426,
-      "debugname": "mm_zooknock_final_battle",
-      "name": "Zooknock",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "mm",
-      "quest_name": "Monkey Madness",
-      "role": "quest_npc"
-    },
-    {
-      "id": 248,
-      "debugname": "morgan_le_faye",
-      "name": "Morgan Le Faye",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "vampire",
-      "quest_name": "Vampire Slayer",
-      "role": "quest_npc"
-    },
-    {
       "id": 1257,
       "debugname": "mort_afflicted_man",
       "name": "Afflicted",
@@ -13062,126 +12093,6 @@
       "role": "quest_npc"
     },
     {
-      "id": 1187,
-      "debugname": "regicide_evil_elf1",
-      "name": "Essyllt",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1188,
-      "debugname": "regicide_evil_elf2",
-      "name": "Morvran",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1207,
-      "debugname": "regicide_general_hining",
-      "name": "General Hining",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1186,
-      "debugname": "regicide_good_elf1",
-      "name": "Idris",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1202,
-      "debugname": "regicide_good_elf3",
-      "name": "Arianwyn",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1210,
-      "debugname": "regicide_kings_messenger",
-      "name": "Kings messenger",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1199,
-      "debugname": "regicide_old_camp_tracker",
-      "name": "Elf Tracker",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1203,
-      "debugname": "regicide_tyras_camp_guard",
-      "name": "Tyras guard",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1206,
-      "debugname": "regicide_tyras_camp_tent_guard",
-      "name": "Tyras guard",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1204,
-      "debugname": "regicide_tyras_guard",
-      "name": "Tyras guard",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1205,
-      "debugname": "regicide_tyras_lazy_guard",
-      "name": "Tyras guard",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1208,
-      "debugname": "regicidegeneralshopkeeper",
-      "name": "Quartermaster",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "regicide",
-      "quest_name": "Regicide",
-      "role": "quest_npc"
-    },
-    {
       "id": 2266,
       "debugname": "roguesden_mazemaster",
       "name": "Brian O'Richard",
@@ -13322,39 +12233,9 @@
       "role": "ambient_npc"
     },
     {
-      "id": 1679,
-      "debugname": "roving_female_woodelf",
-      "name": "Eluned",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "roving_elves",
-      "quest_name": "Roving Elves",
-      "role": "quest_npc"
-    },
-    {
       "id": 2376,
       "debugname": "roving_female_woodelf_temp_1",
       "name": "Eluned",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "roving_elves",
-      "quest_name": "Roving Elves",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1682,
-      "debugname": "roving_golrie",
-      "name": "Golrie",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "roving_elves",
-      "quest_name": "Roving Elves",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1680,
-      "debugname": "roving_islwyn",
-      "name": "Islwyn",
       "spawn_count": 1,
       "classification": "quest_npc",
       "quest_id": "roving_elves",
@@ -13376,16 +12257,6 @@
       "debugname": "santa_claus",
       "name": "Santa",
       "spawn_count": 0,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1528,
-      "debugname": "saradominist_zealot",
-      "name": "Zealot",
-      "spawn_count": 1,
       "classification": "ambient_npc",
       "quest_id": null,
       "quest_name": null,
@@ -13880,86 +12751,6 @@
       "quest_id": null,
       "quest_name": null,
       "role": "ambient_npc"
-    },
-    {
-      "id": 1171,
-      "debugname": "tbwt_lubufu",
-      "name": "Lubufu",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "tbwt",
-      "quest_name": "Tai Bwo Wannai Trio",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1167,
-      "debugname": "tbwt_tamayu",
-      "name": "Tamayu",
-      "spawn_count": 2,
-      "classification": "quest_npc",
-      "quest_id": "tbwt",
-      "quest_name": "Tai Bwo Wannai Trio",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1168,
-      "debugname": "tbwt_tamayu_final",
-      "name": "Tamayu",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "tbwt",
-      "quest_name": "Tai Bwo Wannai Trio",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1163,
-      "debugname": "tbwt_tiadeche",
-      "name": "Tiadeche",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "tbwt",
-      "quest_name": "Tai Bwo Wannai Trio",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1164,
-      "debugname": "tbwt_tiadeche_final",
-      "name": "Tiadeche",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "tbwt",
-      "quest_name": "Tai Bwo Wannai Trio",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1162,
-      "debugname": "tbwt_timfraku",
-      "name": "Timfraku",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "tbwt",
-      "quest_name": "Tai Bwo Wannai Trio",
-      "role": "start_npc"
-    },
-    {
-      "id": 1165,
-      "debugname": "tbwt_tinsay",
-      "name": "Tinsay",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "tbwt",
-      "quest_name": "Tai Bwo Wannai Trio",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1166,
-      "debugname": "tbwt_tinsay_final",
-      "name": "Tinsay",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "tbwt",
-      "quest_name": "Tai Bwo Wannai Trio",
-      "role": "quest_npc"
     },
     {
       "id": 3624,
@@ -14599,386 +13390,6 @@
       "classification": "quest_npc",
       "quest_id": "ratcatch",
       "quest_name": "Rat Catchers",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1295,
-      "debugname": "viking_askelapen",
-      "name": "Askeladden",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2439,
-      "debugname": "viking_askelapen_dagganoth_mountain",
-      "name": "Askeladden",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1294,
-      "debugname": "viking_brundt",
-      "name": "Brundt the Chieftain",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1301,
-      "debugname": "viking_clothing_shopkeeper",
-      "name": "Yrsa",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2436,
-      "debugname": "viking_dagganoth_cave_ferryman_1op",
-      "name": "Jarvald",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2437,
-      "debugname": "viking_dagganoth_cave_ferryman_island",
-      "name": "Jarvald",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2438,
-      "debugname": "viking_dagganoth_cave_waterbirth_island",
-      "name": "Jarvald",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1315,
-      "debugname": "viking_fish_monger",
-      "name": "Fish monger",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1302,
-      "debugname": "viking_fisherman1",
-      "name": "Fisherman",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1316,
-      "debugname": "viking_fur_monger",
-      "name": "Fur trader",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1283,
-      "debugname": "viking_hallifred",
-      "name": "Swensen the Navigator",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1274,
-      "debugname": "viking_heckler",
-      "name": "Ospak",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1275,
-      "debugname": "viking_heckler_2",
-      "name": "Styrmir",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1276,
-      "debugname": "viking_heckler_3",
-      "name": "Torbrund",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1277,
-      "debugname": "viking_heckler_4",
-      "name": "Fridgeir",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1273,
-      "debugname": "viking_lake_spirit",
-      "name": "Fossegrimen",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1270,
-      "debugname": "viking_lalli_troll",
-      "name": "Lalli",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1278,
-      "debugname": "viking_longhall_bouncer",
-      "name": "Longhall Bouncer",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1305,
-      "debugname": "viking_man",
-      "name": "Agnar",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1306,
-      "debugname": "viking_man2",
-      "name": "Freidir",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1307,
-      "debugname": "viking_man3",
-      "name": "Borrokar",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1308,
-      "debugname": "viking_man4",
-      "name": "Lanzig",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1309,
-      "debugname": "viking_man5",
-      "name": "Pontak",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1269,
-      "debugname": "viking_olaf",
-      "name": "Olaf the Bard",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1288,
-      "debugname": "viking_peer",
-      "name": "Peer the Seer",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1284,
-      "debugname": "viking_reveller",
-      "name": "Bjorn",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1285,
-      "debugname": "viking_reveller_2",
-      "name": "Eldgrim",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1286,
-      "debugname": "viking_reveller_3",
-      "name": "Manni the Reveller",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1304,
-      "debugname": "viking_sailor",
-      "name": "Sailor",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1281,
-      "debugname": "viking_sigli",
-      "name": "Sigli the Huntsman",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1282,
-      "debugname": "viking_sigmund",
-      "name": "Sigmund The Merchant",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1289,
-      "debugname": "viking_thorvald",
-      "name": "Thorvald the Warrior",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1303,
-      "debugname": "viking_weapons_salesman",
-      "name": "Skulgrimen",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1310,
-      "debugname": "viking_woman",
-      "name": "Freygerd",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1311,
-      "debugname": "viking_woman2",
-      "name": "Lensa",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1312,
-      "debugname": "viking_woman3",
-      "name": "Jennella",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1313,
-      "debugname": "viking_woman4",
-      "name": "Sassilik",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1314,
-      "debugname": "viking_woman_indoors",
-      "name": "Inga",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "viking",
-      "quest_name": "The Fremennik Trials",
       "role": "quest_npc"
     },
     {

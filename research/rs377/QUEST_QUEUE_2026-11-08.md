@@ -8,12 +8,12 @@
 ## Summary Metrics
 - **Total 377 Quests on `questlist.if`:** `104`
 - **Total 377 Miniquests / Adjacent Flows:** `7`
-- **COMPLETE-VERIFIED:** `62`
+- **COMPLETE-VERIFIED:** `69`
 - **COMPLETE-UNVERIFIED:** `0`
 - **PARTIAL:** `0`
-- **STUB (config only):** `6`
-- **NOT STARTED:** `36`
-- **Unhandled `Talk-to` NPCs Cross-Referenced:** `969` (`511` quest-linked, `458` ambient)
+- **STUB (config only):** `4`
+- **NOT STARTED:** `31`
+- **Unhandled `Talk-to` NPCs Cross-Referenced:** `817` (`364` quest-linked, `453` ambient)
 
 ## Chronological Quest Queue (Oldest to Newest, F2P First on Ties)
 
@@ -26,7 +26,7 @@
 | 5 | `2001-01-04` | **Sheep Shearer** | `questlist:sheep` | Free | Batch A | 1 | `sheep` | `fred_the_farmer` (North of Lumbridge) | `COMPLETE-VERIFIED` | 42 | 0 |
 | 6 | `2001-01-04` | **Shield of Arrav** | `questlist:blackarmgang` | Free | Batch A | 1 | `blackarmgang / phoenixgang` | `reldo` (Varrock Palace Library) | `COMPLETE-VERIFIED` | 353 | 0 |
 | 7 | `2001-01-21` | **Ernest the Chicken** | `questlist:haunted` | Free | Batch A | 4 | `haunted` | `veronica` (Outside Draynor Manor) | `COMPLETE-VERIFIED` | 384 | 0 |
-| 8 | `2001-01-28` | **Vampire Slayer** | `questlist:vampire` | Free | Batch A | 3 | `vampire` | `morgan` (Draynor Village) | `COMPLETE-VERIFIED` | 192 | 1 |
+| 8 | `2001-01-28` | **Vampire Slayer** | `questlist:vampire` | Free | Batch A | 3 | `vampire` | `morgan` (Draynor Village) | `COMPLETE-VERIFIED` | 192 | 0 |
 | 9 | `2001-02-16` | **Imp Catcher** | `questlist:imp` | Free | Batch A | 1 | `imp` | `wizard_mizgog` (Wizards' Tower top floor) | `COMPLETE-VERIFIED` | 48 | 0 |
 | 10 | `2001-02-28` | **Prince Ali Rescue** | `questlist:prince` | Free | Batch A | 3 | `princequest` | `hassan` (Al Kharid Palace) | `COMPLETE-VERIFIED` | 155 | 0 |
 | 11 | `2001-05-06` | **Doric's Quest** | `questlist:doric` | Free | Batch A | 1 | `doricquest` | `doric` (North of Falador) | `COMPLETE-VERIFIED` | 154 | 0 |
@@ -39,7 +39,7 @@
 | 18 | `2002-02-27` | **Druidic Ritual** | `questlist:druid` | Members | Batch B | 4 | `druidquest` | `kaqemeex` (Druids' Circle north of Taverley) | `COMPLETE-VERIFIED` | 55 | 0 |
 | 19 | `2002-02-27` | **Lost City** | `questlist:zanaris` | Members | Batch B | 3 | `zanaris` | `warrior_adventurer` (Camp west of Lumbridge Swamp) | `COMPLETE-VERIFIED` | 248 | 0 |
 | 20 | `2002-02-27` | **Witch's House** | `questlist:ball` | Members | Batch B | 4 | `ballquest` | `boy` (East of Taverley) | `COMPLETE-VERIFIED` | 343 | 0 |
-| 21 | `2002-02-27` | **Merlin's Crystal** | `questlist:arthur` | Members | Batch B | 6 | `arthur` | `king_arthur` (Camelot Castle) | `COMPLETE-VERIFIED` | 515 | 0 |
+| 21 | `2002-02-27` | **Merlin's Crystal** | `questlist:arthur` | Members | Batch B | 6 | `arthur` | `king_arthur` (Camelot Castle) | `COMPLETE-VERIFIED` | 517 | 0 |
 | 22 | `2002-02-27` | **Heroes Quest** | `questlist:hero` | Members | Batch B | 1 | `heroquest` | `achietties` (Heroes' Guild north of Taverley) | `COMPLETE-VERIFIED` | 618 | 0 |
 | 23 | `2002-04-04` | **Scorpion Catcher** | `questlist:scorpcatcher` | Members | Batch B | 1 | `scorpcatcher` | `thormac` (Sorcerer's Tower south of Seers' Village) | `COMPLETE-VERIFIED` | 170 | 0 |
 | 24 | `2002-04-09` | **Family Crest** | `questlist:crest` | Members | Batch B | 1 | `crestquest` | `dimintheis` (South-east Varrock) | `COMPLETE-VERIFIED` | 865 | 0 |
@@ -54,11 +54,11 @@
 | 33 | `2002-07-23` | **Hazeel Cult** | `questlist:hazeelcult` | Members | Batch B | 1 | `hazeelcultquest` | `ceril_carnillean` (Carnillean Mansion in East Ardougne) | `COMPLETE-VERIFIED` | 984 | 0 |
 | 34 | `2002-08-06` | **Sheep Herder** | `questlist:sheepherder` | Members | Batch B | 4 | `sheepherderquest` | `councillor_halgrive` (East Ardougne south of church) | `COMPLETE-VERIFIED` | 568 | 0 |
 | 35 | `2002-08-27` | **Plague City** | `questlist:elena` | Members | Batch B | 1 | `elenaquest` | `edmond` (East Ardougne garden) | `COMPLETE-VERIFIED` | 867 | 3 |
-| 36 | `2002-09-16` | **Sea Slug Quest** | `questlist:seaslug` | Members | Batch B | 1 | `seaslugquest` | `caroline` (Witchaven east of Ardougne) | `COMPLETE-VERIFIED` | 239 | 1 |
-| 37 | `2002-10-03` | **Waterfall Quest** | `questlist:waterfall` | Members | Batch B | 1 | `waterfall_quest` | `almera` (Baxtorian Falls) | `COMPLETE-VERIFIED` | 884 | 0 |
+| 36 | `2002-09-16` | **Sea Slug Quest** | `questlist:seaslug` | Members | Batch B | 1 | `seaslugquest` | `caroline` (Witchaven east of Ardougne) | `COMPLETE-VERIFIED` | 239 | 0 |
+| 37 | `2002-10-03` | **Waterfall Quest** | `questlist:waterfall` | Members | Batch B | 1 | `waterfall_quest` | `almera` (Baxtorian Falls) | `COMPLETE-VERIFIED` | 891 | 0 |
 | 38 | `2002-11-13` | **Biohazard** | `questlist:biohazard` | Members | Batch B | 3 | `biohazard` | `elena` (East Ardougne) | `COMPLETE-VERIFIED` | 755 | 0 |
 | 39 | `2002-12-04` | **Jungle Potion** | `questlist:junglepotion` | Members | Batch B | 1 | `junglepotion` | `trufitus` (Tai Bwo Wannai on Karamja) | `COMPLETE-VERIFIED` | 190 | 0 |
-| 40 | `2002-12-12` | **The Grand Tree** | `questlist:grandtree` | Members | Batch B | 5 | `grandtree` | `king_narnode_shareen` (Grand Tree in Tree Gnome Stronghold) | `COMPLETE-VERIFIED` | 1572 | 0 |
+| 40 | `2002-12-12` | **The Grand Tree** | `questlist:grandtree` | Members | Batch B | 5 | `grandtree` | `king_narnode_shareen` (Grand Tree in Tree Gnome Stronghold) | `COMPLETE-VERIFIED` | 1569 | 0 |
 | 41 | `2003-03-10` | **Underground Pass** | `questlist:upass` | Members | Batch C | 5 | `upass` | `king_lathas` (East Ardougne Castle) | `COMPLETE-VERIFIED` | 2450 | 0 |
 | 42 | `2003-03-17` | **Observatory Quest** | `questlist:itgronigen` | Members | Batch C | 2 | `itgronigen` | `observatory_professor` (Observatory reception north of Castle Wars) | `COMPLETE-VERIFIED` | 832 | 0 |
 | 43 | `2003-03-27` | **Shilo Village** | `questlist:zombiequeen` | Members | Batch C | 2 | `zombiequeen` | `mosol_rei` (Outside Shilo Village on Karamja) | `COMPLETE-VERIFIED` | 2170 | 0 |
@@ -76,19 +76,19 @@
 | 55 | `2004-06-29` | **Nature Spirit** | `questlist:druidspirit` | Members | Batch C | 2 | `druidspirit` | `drezel` (Paterdomus Temple) | `COMPLETE-VERIFIED` | 1371 | 0 |
 | 56 | `2004-07-12` | **Death Plateau** | `questlist:death` | Members | Batch C | 1 | `death_equiproom` | `denulth` (Burthorpe Imperial Guard camp) | `COMPLETE-VERIFIED` | 1524 | 0 |
 | 57 | `2004-07-12` | **Troll Stronghold** | `questlist:troll` | Members | Batch C | 1 | `troll_quest` | `denulth` (Burthorpe Imperial Guard camp) | `COMPLETE-VERIFIED` | 845 | 0 |
-| 58 | `2004-09-14` | **Tai Bwo Wannai Trio** | `questlist:tbwt` | Members | Batch C | 2 | `tbwt_main` | `tbwt_timfraku` (Tai Bwo Wannai Village) | `COMPLETE-VERIFIED` | 881 | 8 |
+| 58 | `2004-09-14` | **Tai Bwo Wannai Trio** | `questlist:tbwt` | Members | Batch C | 2 | `tbwt_main` | `tbwt_timfraku` (Tai Bwo Wannai Village) | `COMPLETE-VERIFIED` | 881 | 0 |
 | 59 | `2004-09-20` | **Eadgar's Ruse** | `questlist:eadgar` | Members | Batch C | 1 | `eadgar_quest` | `sanfew` (Taverley) | `COMPLETE-VERIFIED` | 554 | 0 |
-| 60 | `2004-09-20` | **Regicide** | `questlist:regicide` | Members | Batch C | 3 | `regicide_quest` | `king_lathas` (East Ardougne Castle (after Royal Messenger summons)) | `STUB` | 0 | 13 |
+| 60 | `2004-09-20` | **Regicide** | `questlist:regicide` | Members | Batch C | 3 | `regicide_quest` | `king_lathas` (East Ardougne Castle (after Royal Messenger summons)) | `COMPLETE-VERIFIED` | 1112 | 0 |
 | 61 | `2004-10-13` | **Shades of Mort'ton** | `questlist:mortton` | Members | Batch C | 3 | `morttonquest` | `Diary of Herbi Flax` (Mort'ton) | `COMPLETE-VERIFIED` | 650 | 0 |
-| 62 | `2004-11-02` | **The Fremennik Trials** | `questlist:viking` | Members | Batch C | 3 | `viking` | `viking_brundt_child` (Rellekka Longhall) | `NOT STARTED` | 0 | 38 |
-| 63 | `2004-11-17` | **Horror from the Deep** | `questlist:horror` | Members | Batch C | 2 | `deephorror / horrorquest` | `larrissa` (Lighthouse north of Barbarian Outpost) | `NOT STARTED` | 0 | 4 |
-| 64 | `2004-11-17` | **Throne of Miscellania** | `questlist:misc` | Members | Batch C | 1 | `misc_quest` | `misc_king_vargas` (Miscellania Castle) | `NOT STARTED` | 0 | 35 |
-| 65 | `2004-12-06` | **Monkey Madness** | `questlist:mm` | Members | Batch C | 3 | `mm_main` | `king_narnode_shareen` (Grand Tree) | `STUB` | 0 | 44 |
-| 66 | `2004-12-20` | **Haunted Mine** | `questlist:hauntedmine` | Members | Batch C | 2 | `hauntedmine` | `zealot` (Outside the Abandoned Mine in southern Morytania) | `NOT STARTED` | 0 | 0 |
+| 62 | `2004-11-02` | **The Fremennik Trials** | `questlist:viking` | Members | Batch C | 3 | `viking` | `viking_brundt_child` (Rellekka Longhall) | `COMPLETE-VERIFIED` | 790 | 0 |
+| 63 | `2004-11-17` | **Horror from the Deep** | `questlist:horror` | Members | Batch C | 2 | `deephorror / horrorquest` | `larrissa` (Lighthouse north of Barbarian Outpost) | `COMPLETE-VERIFIED` | 358 | 0 |
+| 64 | `2004-11-17` | **Throne of Miscellania** | `questlist:misc` | Members | Batch C | 1 | `misc_quest` | `misc_king_vargas` (Miscellania Castle) | `COMPLETE-VERIFIED` | 467 | 0 |
+| 65 | `2004-12-06` | **Monkey Madness** | `questlist:mm` | Members | Batch C | 3 | `mm_main` | `king_narnode_shareen` (Grand Tree) | `COMPLETE-VERIFIED` | 715 | 0 |
+| 66 | `2004-12-20` | **Haunted Mine** | `questlist:hauntedmine` | Members | Batch C | 2 | `hauntedmine` | `zealot` (Outside the Abandoned Mine in southern Morytania) | `COMPLETE-VERIFIED` | 545 | 0 |
 | 67 | `2005-01-11` | **Troll Romance** | `questlist:troll_love` | Members | Batch D | 2 | `troll_love` | `ug` (Troll Stronghold) | `COMPLETE-VERIFIED` | 555 | 0 |
 | 68 | `2005-01-17` | **In Search of the Myreque** | `questlist:routequest` | Members | Batch D | 2 | `routequest` | `vanstrom_klause` (Hair of the Dog tavern in Canifis) | `NOT STARTED` | 0 | 0 |
 | 69 | `2005-01-24` | **Creature of Fenkenstrain** | `questlist:creatureoffenkenstrain` | Members | Batch D | 2 | `fenk_quest` | `canifis_signpost / dr_fenkenstrain` (Canifis signpost / Fenkenstrain's Castle) | `NOT STARTED` | 0 | 4 |
-| 70 | `2005-02-01` | **Roving Elves** | `questlist:roving_elves` | Members | Batch D | 1 | `roving_elves_quest` | `islwyn` (Isafdar) | `NOT STARTED` | 0 | 5 |
+| 70 | `2005-02-01` | **Roving Elves** | `questlist:roving_elves` | Members | Batch D | 1 | `roving_elves_quest` | `islwyn` (Isafdar) | `COMPLETE-VERIFIED` | 248 | 2 |
 | 71 | `2005-02-15` | **Ghosts Ahoy** | `questlist:ahoy` | Members | Batch D | 2 | `ahoy_varbits_1` | `velorina` (Port Phasmatys) | `NOT STARTED` | 0 | 17 |
 | 72 | `2005-02-21` | **One Small Favour** | `questlist:onesmallfavour` | Members | Batch D | 2 | `onesmallfavour` | `yanni_salika` (Shilo Village) | `NOT STARTED` | 0 | 15 |
 | 73 | `2005-02-28` | **Mountain Daughter** | `questlist:mdaughter` | Members | Batch D | 2 | `mdaughter_var` | `hamal_the_chieftain` (Mountain Camp east of Rellekka) | `NOT STARTED` | 0 | 13 |
