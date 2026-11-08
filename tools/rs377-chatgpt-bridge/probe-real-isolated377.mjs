@@ -102,6 +102,26 @@ try {
     obj.count>0&&Number.isInteger(obj.x)&&Number.isInteger(obj.z)&&
     Math.max(Math.abs(obj.x-first.position.x),Math.abs(obj.z-first.position.z))<=16))
    reject('native ground item projection has invalid or nonlocal entries');
+ // Task 28: require native, bot-scoped prayer and UI/bank/combat foundations.
+ // These are *not* full client SDK state. The native observer must preserve
+ // null for unavailable client message/history/death/combat event telemetry.
+ const details=first.sdkDetails;
+ if(!details || !Array.isArray(details.nearbyPlayers) ||
+    !details.nearbyPlayers.every(p=>p.kind==='player'&&
+      Number.isInteger(p.index)&&p.name!==username&&p.distance<=16) ||
+    !details.playerBase||details.playerBase.name!==username ||
+    details.playerBase.x!==first.position.x ||
+    details.playerBase.z!==first.position.z ||
+    !Number.isInteger(details.playerBase.hp) ||
+    !details.prayers||details.prayers.activePrayers.length!==15||
+    !details.prayers.activePrayers.every(p=>typeof p==='boolean')||
+    !Number.isInteger(details.prayers.prayerLevel)||
+    details.bank?.isOpen!==false ||
+    details.shop?.isOpen!==false ||
+    details.interface?.isOpen!==false ||
+    details.player!==null || details.gameMessages!==null ||
+    details.recentDialogs!==null || details.combatEvents!==null)
+   reject('real native SDK prayer/player/public visibility/UI foundations incomplete or fabricated');
  if(!first.dialogue||typeof first.dialogue.isOpen!=='boolean'||
    typeof first.dialogue.isWaiting!=='boolean'||
    !Array.isArray(first.dialogue.pendingComponentIds)||
@@ -320,6 +340,8 @@ try {
    nearbyLocCount:later.nearbyLocs.length,
    groundItemsObserved:Array.isArray(later.groundItems),
    groundItemCount:later.groundItems.length,
+   playerBaseObserved:true,prayersObserved:true,
+   nearbyPlayersObserved:true,bankClosedObserved:true,shopClosedObserved:true,
    dialogueFlagsObserved:true,
    sdkStateComplete:false,
    genuineSdkGatewayAction:true,walkObserved:true,
