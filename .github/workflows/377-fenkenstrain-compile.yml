@@ -135,6 +135,7 @@ jobs:
           test -s "$quest/scripts/fenk_npcs.rs2"
           FENK_CONTENT="$target" python3 -I "$patchdir/tools/check_fenk_symbols.py"
           python3 "$patchdir/tools/audit_fenk_triggers.py" --content "$target"
+          python3 "$patchdir/tools/verify_fenk_map.py" --content "$target" --quest "$quest"
           echo "Exact pinned content prepared with isolated Fenkenstrain patch and duplicate-trigger check."
       - name: Allow only the intentional NPC cache CRC difference
         run: python content-factory/patch_377_npc_crc.py --engine "$RUNNER_TEMP/joshrs-377-build/engine"
