@@ -41,7 +41,24 @@ def run():
         }
         from pywinauto import Desktop
         from pywinauto.keyboard import send_keys
-        from ufo.automator.ui_control.inspector import ControlInspectorFacade
+        # Load the exact UFO2 inspector source module directly. Its package-wide
+        # __init__ eagerly loads other agent services and LLM libraries that
+        # are not needed for this *UIA capability* test.
+        import importlib.util
+        import subprocess
+        repo = Path(os.environ["PYTHONPATH"]).resolve(strict=True)
+        actual = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"], text=True).strip()
+        expected = "eae3c0a8d168c47cb10df0652e293e092eda1078"
+        if actual != expected:
+            raise RuntimeError("UFO2 pinned SHA mismatch; refusing unsafe source")
+        module_path = repo / "ufo" / "automator" / "ui_control" / "inspector.py"
+        spec = importlib.util.spec_from_file_location("ms_ufo2_uia_inspector", module_path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError("Microsoft UFO2 UIA module spec missing")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        ControlInspectorFacade = module.ControlInspectorFacade
+        data["ufo2_source_commit"] = actual
         data["ufo2_imported"] = True
     except Exception as ex:
         data["blockers"].append("Import of real UFO2 UIA inspector failed: "+type(ex).__name__+": "+str(ex)[:200])
