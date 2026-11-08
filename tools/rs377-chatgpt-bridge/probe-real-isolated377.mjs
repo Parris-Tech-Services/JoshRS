@@ -13,6 +13,7 @@ import {Session377} from './src/session.mjs';
 import {createEngine377Observer} from './src/engine-observer.mjs';
 import {SKILLS377} from './src/observation.mjs';
 import {createSdk377Runtime} from './src/sdk-runtime.mjs';
+import {toBotWorldState} from './src/sdk-bridge.mjs';
 import {createSdk377Gateway} from './src/sdk-gateway.mjs';
 import {verifyRealEngineGateway} from '../rs377-controller-boundary/test/real-engine-security.acceptance.mjs';
 import {createSdk377WebSocket} from './src/sdk-websocket.mjs';
@@ -102,6 +103,37 @@ try {
     obj.count>0&&Number.isInteger(obj.x)&&Number.isInteger(obj.z)&&
     Math.max(Math.abs(obj.x-first.position.x),Math.abs(obj.z-first.position.z))<=16))
    reject('native ground item projection has invalid or nonlocal entries');
+ // Task 28: require native, bot-scoped prayer and UI/bank/combat foundations.
+ // These are *not* full client SDK state. The native observer must preserve
+ // null for unavailable client message/history/death/combat event telemetry.
+ const details=first.sdkDetails;
+ const gaps=[];
+ if(!details)gaps.push('sdkDetails');
+ if(!Array.isArray(details?.nearbyPlayers))gaps.push('nearbyPlayers');
+ if(details?.nearbyPlayers?.some(p=>p.kind!=='player'||
+   !Number.isInteger(p.index)||p.name===username||p.distance>16))
+   gaps.push('nearbyPlayers_visibility');
+ if(!details?.playerBase || details.playerBase.name!==username ||
+    details.playerBase.x!==first.position.x ||
+    details.playerBase.z!==first.position.z ||
+    !Number.isInteger(details.playerBase.hp))gaps.push('playerBase');
+ if(!details?.prayers||details.prayers.activePrayers?.length!==15 ||
+    !details.prayers.activePrayers.every(p=>typeof p==='boolean')||
+    !Number.isInteger(details.prayers.prayerLevel))gaps.push('prayers');
+ if(details?.bank?.isOpen!==false)gaps.push('closed_bank');
+ if(details?.shop?.isOpen!==false)gaps.push('closed_shop');
+ if(details?.interface!==null && (
+    typeof details?.interface?.isOpen!=='boolean' ||
+    !Number.isSafeInteger(details.interface.interfaceId) ||
+    !Array.isArray(details.interface.options) ||
+    (details.interface.isOpen && details.interface.interfaceId<0) ||
+    (details.interface.isOpen && !details.modalOpen)))
+   gaps.push('interface_unrecognised');
+ if(details?.player!==null && details?.player?.name!==username)gaps.push('player_identity');
+ if(details?.gameMessages!==null&&!Array.isArray(details?.gameMessages))gaps.push('messages');
+ if(details?.recentDialogs!==null&&!Array.isArray(details?.recentDialogs))gaps.push('dialogs');
+ if(details?.combatEvents!==null&&!Array.isArray(details?.combatEvents))gaps.push('combat');
+ if(gaps.length)reject('authentic isolated SDK foundations invalid: '+gaps.join(','));
  if(!first.dialogue||typeof first.dialogue.isOpen!=='boolean'||
    typeof first.dialogue.isWaiting!=='boolean'||
    !Array.isArray(first.dialogue.pendingComponentIds)||
@@ -114,6 +146,15 @@ try {
    catch(error){if(error.message.includes('replayed_native_observation'))continue;throw error}
  }
  if(!later||later.tick<=first.tick)reject('actual server ticks did not advance');
+ // Explain only the first missing authoritative type, never log raw state,
+ // other players' details, private data, passwords, account DB or tokens.
+ try {
+   toBotWorldState(later,{botName:username,expectedWorld});
+   console.log('Isolated pinned RS-SDK state: contract verified from native game');
+ } catch(error) {
+   const kind=String(error?.message??'').match(/^SDK state incomplete: ([a-zA-Z0-9_., -]{1,100}) is not verified/);
+   console.log('Isolated pinned RS-SDK state unavailable: '+(kind?.[1]??'contract_blocked'));
+ }
  // Task 26: use the very same already-authenticated REAL #377 TCP client.
  // The boundary verifies security through the real engine observer and real
  // ISAAC-wrapped normal walk; it does not replace or restart the game.
@@ -130,7 +171,7 @@ try {
  // Execute a GENUINE SDK BotAction via the authenticated local gateway. The
  // gateway uses actual engine observations, the rev377 packet encoder and
  // ISAAC-protected TCP. Action success requires an observed position delta.
- let moved=null, dispatchAttemptCount=0;
+ let moved=null, dispatchAttemptCount=0, completeSdkStateVerified=false;
  const gatewayToken=randomBytes(32).toString('hex');
  const runtimeObserver=createEngine377Observer({port:managementPort,token,
    botName:username,expectedWorld});
@@ -146,7 +187,21 @@ try {
    // real fail-closed 409 rather than a fabricated state.
    const stateResponse=await fetch('http://127.0.0.1:'+gatewayPort+'/sdk_state',
      {headers:auth,signal:AbortSignal.timeout(3000)});
-   if(stateResponse.status!==409)reject('incomplete SDK state was incorrectly advertised');
+   if(stateResponse.status===200) {
+     const actual=await stateResponse.json();
+     const worldState=actual?.state??actual;
+     if(!worldState?.inGame || worldState?.player?.name!==username ||
+        !Array.isArray(worldState.skills)||worldState.skills.length!==21||
+        !Array.isArray(worldState.nearbyLocs)||
+        !Array.isArray(worldState.groundItems)||
+        !Array.isArray(worldState.prayers?.activePrayers)||
+        worldState.prayers.activePrayers.length!==15 ||
+        worldState.bank?.isOpen!==false || worldState.shop?.isOpen!==false)
+       reject('SDK state claimed complete but lacks real player, UI, world and prayer fields');
+     completeSdkStateVerified=true;
+   } else if(stateResponse.status!==409) {
+     reject('SDK state neither securely available nor fail-closed 409');
+   }
    const candidates=[
      [sdkAnchor.position.x+1,sdkAnchor.position.z],
      [sdkAnchor.position.x,sdkAnchor.position.z+1],
@@ -218,7 +273,19 @@ try {
      clientId:'isolated-joshrs-ci-probe',mode:'control'}));
    await waitWs(msg=>msg.type==='sdk_connected'&&msg.success===true);
    // It MUST NOT send invented sdk_state for unknown UI/shop/bank fields.
-   await waitWs(msg=>msg.type==='sdk_error'&&msg.error==='authoritative_sdk_state_incomplete');
+   if(!completeSdkStateVerified)
+     reject('the real native engine did not produce complete pinned BotWorldState');
+   const firstState=await waitWs(msg=>msg.type==='sdk_state'&&
+     msg.state?.player?.name===username,8000);
+   if(!Array.isArray(firstState.state.skills)||firstState.state.skills.length!==21 ||
+      !Array.isArray(firstState.state.nearbyNpcs) ||
+      !Array.isArray(firstState.state.prayers.activePrayers) ||
+      firstState.state.prayers.activePrayers.length!==15)
+     reject('actual upstream SDK stream is missing native fields');
+   const nextState=await waitWs(msg=>msg.type==='sdk_state' &&
+     msg.state?.player?.name===username && msg.state.tick>firstState.state.tick,8000);
+   if(nextState.state.tick<=firstState.state.tick)
+     reject('real upstream SDK stream did not advance engine tick');
    const before=moved.position;
    const trials=[[before.x+1,before.z],[before.x,before.z+1],
      [before.x-1,before.z],[before.x,before.z-1]];
@@ -320,8 +387,10 @@ try {
    nearbyLocCount:later.nearbyLocs.length,
    groundItemsObserved:Array.isArray(later.groundItems),
    groundItemCount:later.groundItems.length,
+   playerBaseObserved:true,prayersObserved:true,
+   nearbyPlayersObserved:true,bankClosedObserved:true,shopClosedObserved:true,
    dialogueFlagsObserved:true,
-   sdkStateComplete:false,
+   sdkStateComplete:completeSdkStateVerified,
    genuineSdkGatewayAction:true,walkObserved:true,
    genuineSdkWebSocketAction:websocketVerified,
    dispatchAttemptCount,saveRelogVerified:true,

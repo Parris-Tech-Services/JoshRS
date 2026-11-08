@@ -106,9 +106,13 @@ export function mapSdkAction(action,snapshot) {
       if(!a.guard||a.guard.pageId!==d.pageId)reject('stale or unguarded dialogue');
       const opt=d.options.find(o=>o.index===a.optionIndex&&o.componentId===a.guard.componentId);
       if(!opt)reject('dialogue option no longer available');
-      // The 377 RESUME_PAUSEBUTTON decoder is a different mechanic from an
-      // SDK option selection; mapping generic 377 component bytes is unsafe.
-      reject('dialogue page action needs verified 377 IF_BUTTON/component routing');
+      // The verified pending component is exactly what the native server's
+      // RESUME_PAUSEBUTTON decoder expects. This is an ordinary 377 packet,
+      // not a privileged script invocation or a guessed interface click.
+      if(!Number.isSafeInteger(opt.componentId)||opt.componentId<0||
+         opt.componentId>65535||!snapshot.dialogue.pendingComponentIds?.includes(opt.componentId))
+         reject('component not pending in actual native dialogue script');
+      return packet({type:'dialog_resume',componentId:opt.componentId});
     }
     default:reject('unsupported, dangerous or unverified RS-SDK action '+String(a?.type).slice(0,40));
   }
@@ -168,7 +172,11 @@ const metadata={contract:'MaxBittker/rs-sdk@db0cc51e0a8f9f0d6a7d60c44e534412bb06
   semantics:'source-only typed conversion; no actual SDK gateway/real observer wired'};
 export function toBotWorldState(raw,{botName,expectedWorld}={}) {
   const s=validateObservation(raw,{botName,expectedWorld});
-  if(s.unsupported.length)missing(s.unsupported.join(', '));
+  // Quest-stage varps are useful optional rev377 telemetry, NOT a required
+  // BotWorldState field in the pinned upstream SDK types.ts contract. Do not
+  // invent them; allowing the explicit native null does not omit a SDK field.
+  const missingRequired=s.unsupported.filter(key=>key!=='questStages');
+  if(missingRequired.length)missing(missingRequired.join(', '));
   const e=s.sdkDetails;
   for(const k of requiredExtra)if(e[k]===null||e[k]===undefined)missing('sdkDetails.'+k);
   if(!requiredPlayerState(e.player)||e.player.name!==s.player.username||

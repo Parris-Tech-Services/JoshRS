@@ -19,6 +19,8 @@ on:
       - "JoshRS-Fix-Yrsa.cmd"
       - ".github/workflows/377-native-compile.yml"
       - "tools/rs377-bot-bench/engine-patch/src/web.ts"
+      - "tools/rs377-bot-bench/engine-patch/src/engine/observer/Native377Trace.ts"
+      - "content-factory/patch_377_sdk_trace.py"
       - "tools/rs377-chatgpt-bridge/probe-real-isolated377.mjs"
       - "content-factory/smoke_377.py"
   push:
@@ -33,6 +35,8 @@ on:
       - "content-factory/tests/**"
       - ".github/workflows/377-native-compile.yml"
       - "tools/rs377-bot-bench/engine-patch/src/web.ts"
+      - "tools/rs377-bot-bench/engine-patch/src/engine/observer/Native377Trace.ts"
+      - "content-factory/patch_377_sdk_trace.py"
       - "tools/rs377-chatgpt-bridge/probe-real-isolated377.mjs"
       - "content-factory/smoke_377.py"
   workflow_dispatch:
@@ -158,6 +162,11 @@ jobs:
       - name: Overlay isolated observer server patch onto disposable pinned engine
         shell: bash
         run: cp tools/rs377-bot-bench/engine-patch/src/web.ts "$RUNNER_TEMP/joshrs-377-build/engine/src/web.ts"
+      - name: Install bot-scoped passive event trace only in disposable 377 engine
+        shell: bash
+        run: |
+          python content-factory/patch_377_sdk_trace.py --engine "$RUNNER_TEMP/joshrs-377-build/engine"
+          test -s "$RUNNER_TEMP/joshrs-377-build/engine/src/engine/observer/Native377Trace.ts"
       - name: Compile with the actual Lost City 377 packer
         shell: bash
         env:

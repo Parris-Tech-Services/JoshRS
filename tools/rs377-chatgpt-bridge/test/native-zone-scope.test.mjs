@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 
 // Source-only checks complement (but never replace) native-377 server CI.
 const file=readFileSync(new URL('../../rs377-bot-bench/engine-patch/src/web.ts',import.meta.url),'utf8');
-const body=file.slice(file.indexOf('// Task 27: native 377'),file.indexOf('// Dialogue is genuinely observable'));
+const body=file.slice(file.indexOf('// Task 27: native 377'),file.indexOf('// The authoritative PAUSEBUTTON script'));
 test('nearby observation reads existing ZoneMap; never allocates new zones',()=>{
  assert.match(body,/mapData\.zonemap\?\.zones/);
  assert.match(body,/existingZones\.get\(zoneIndex\)/);
@@ -23,5 +23,8 @@ test('strict scope prevents out-of-plane, far and foreign-player drops',()=>{
 test('missing pinned ZoneMap internals stay explicitly unknown; no invented SDK state',()=>{
  assert.match(body,/let nearbyLocs: Array<Record<string, unknown>> \| null = null/);
  assert.match(body,/let groundItems: Array<Record<string, unknown>> \| null = null/);
- assert.match(file,/nearbyLocs, groundItems,\s+dialogue, questStages: null, sdkDetails: null/);
+ assert.match(file,/nearbyLocs, groundItems,\s+dialogue, questStages: null, sdkDetails/);
+ assert.match(file,/combatEvents, prayers/);
+ assert.match(file,/const shop = !shopOpen/);
+ assert.match(file,/const bank = !bankOpen/);
 });

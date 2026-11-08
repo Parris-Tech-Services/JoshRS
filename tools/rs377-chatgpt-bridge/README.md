@@ -69,9 +69,58 @@ still missing. The gateway must continue returning
 `authoritative_sdk_state_incomplete` until these are genuinely observed.
 No production/family-world engine is modified by this repository change.
 
-## What is NOT done yet
+## November 8, 2026 — native SDK UI, bank/shop and combat bridge
 
-Agy's draft harness, actual 377 server-side observer, 377 inbound game packet decoder, native client world-state parser, live account authentication, multi-client visibility, Friends presence, genuine dialogue, real gathering/XP, save/relog and WebSocket RS-SDK gateway are all **unimplemented / unverified here**. This module must not be described as a playable bot or connected to Elrothiro without explicit permission and proper isolated acceptance.
+The isolated observer now derives real player HP/combat-level, energy, weight,
+animation, actual 15 prayer-varps, RSBuf-visible other players, item names and
+normal item options from the pinned rev-377 engine. It reads the authenticated
+bot's own bank inventory and bank-note varp only when the real bank modal is
+open, and projects the closed bank/shop accurately.
+
+For a genuinely opened shop, the observer reads the real shared stock
+inventory, player inventory, per-shop buy/sell/haggle varps, and the server's
+actual `IfSetText` shop title. The price calculation follows the pinned
+Content `shop.rs2` calculation including base-stock deltas, 100–1000
+clamps, and integer scaling. Missing dynamic shop data causes `null`,
+never fabricated prices.
+
+A disposable CI-only passive trace intercepts messages that the engine
+already writes to that specific bot. It records real `MessageGame`, UI
+text updates and dialogue-open page revisions; it tracks HP transitions
+during normal ticks. Dialogue option actions are admitted **only** for
+genuinely suspended `PAUSEBUTTON` scripts with matching page/version and
+server-pending component IDs, sent through the normal 377
+`RESUME_PAUSEBUTTON` packet. No direct script calls or privileged
+XP/item modification are exposed.
+
+**Authority boundary:** The source must continue returning `null` when
+the actual 377 network/client state is insufficient. In particular,
+unknown client-only dialogue text/history, hidden UI scripting, combat
+damage source attribution, NPC health that was not visible to the client,
+and open shop pricing whose native varps are unavailable are **not**
+reported as complete. `toBotWorldState()` and the websocket publisher
+fail closed until every mandatory pinned RS-SDK field is grounded. Passing
+a compile or packet-dispatch test is not the same as proving every game
+state and agent capability. These changes are intentionally **not**
+installed on JParrisDesktop or any family account.
+
+## Outstanding acceptance
+
+The disposable native revision-377 CI harness now proves **normal network
+authentication, genuine authoritative observation, SDK-shaped WebSocket
+movement, visible positions, and save/relogin**. The pinned SDK converter
+has also produced a complete source-grounded `BotWorldState` on that
+running isolated server. The native CI probe separately checks streaming
+consecutive increasing ticks.
+
+What is **not** proven for every game state is reliable full feed behaviour
+while a genuine conversation, bank, shop or combat encounter is active.
+Unavailable client-only facts must trigger `sdk_error`, not a fabricated
+state. Full upstream `BotSDK` class interoperability, ordinary agent NPC
+interactions/quests/trading, multi-client family presence, an ergonomic bot
+launcher and a verified JParrisDesktop deployment still require their own
+independent real-world acceptance. **Nothing in this source-only repo
+change authorises replacing the family's customised engine or saves.**
 
 ## Run offline tests
 
