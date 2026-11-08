@@ -310,6 +310,50 @@ working just because the source line changed. This fixes a narrow
 native-engine bot race and does **not** complete the full RS-SDK
 revision-377 adapter.
 
+## Repair a custom Eadgar's Ruse RuneScript queue-arity error
+
+On JParrisDesktop, the active revision-377 game content is a **copied folder,
+not a Git worktree**. `git -C <content> status` legitimately reports
+`not a git repository`; this does **not** mean any saves are lost.
+
+The compiler may print `queue,int` vs `queue,int,int` at
+`scripts/quests/quest_eadgar/scripts/quest_eadgar.rs2` for
+`queue(eadgar_quest_complete, 0);`. Pinned source examples confirm
+revision-377 expects `queue(eadgar_quest_complete, 0, 0);`.
+
+Use the **read-only** preflight while the server is still running:
+
+```powershell
+cd 'C:\\JoshRS-Launcher\\JoshRS-main'
+& '.\\deploy\\jparris-windows\\Repair-EadgarQueue.ps1'
+```
+
+`PATCH_READY` means one and only one unsafe call is found and the patch is
+available. `ALREADY_PATCHED` means no further change is required.
+If the output is `UNRECOGNISED_SOURCE`, stop; do not force it.
+
+To **apply**, log Elrothiro and Sylvie out normally, stop the server with
+Ctrl+C and close its engine console. Then use:
+
+```powershell
+& '.\\deploy\\jparris-windows\\Repair-EadgarQueue.ps1' -Apply
+```
+
+The repair refuses active game processes/listeners, requires a verified
+full-world backup through `Protect-Elrothiro.ps1 -CreateBackup`,
+creates a SHA256-checkable original copy of just the quest script in
+`runtime/jparris-377/save-backups`, and atomically changes only the
+specific queue arity call. It does **not** run git commands, download
+unknown versions of the content, edit player/account saves, or touch
+unrelated scripts.
+
+`QUEUE_ARITY_REPAIR_APPLIED` proves the single local source edit, **not**
+that the full quest has compiled successfully. After restarting the game,
+check the server's packing log for **all remaining** script errors.
+Earlier reports of unresolved `@eadgar_*` labels may indicate missing
+additional custom quest definitions. Do not fabricate stub labels or
+replace the whole quest from a different Lost City revision.
+
 ## Troubleshooting
 
 ### Broken desktop Java client: Could not find or load main class .java2d.d3d=false
