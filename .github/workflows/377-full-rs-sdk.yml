@@ -49,6 +49,10 @@ jobs:
         if: runner.os == 'Windows'
         shell: powershell
         run: |
+          $cmd = Get-Content 'JoshRS-Install-RSSDK.cmd' -Raw
+          foreach($marker in @('53fdc137e7f9f2fc96ecc5afd659f1b9412fc8e2','a7fcbdfc7736c502bb1fa0fe3fd1afb3c0048678','git hash-object','-CheckOnly','pause >nul','if exist "%SCRIPT%" goto :race')) {
+            if(-not $cmd.Contains($marker)){ throw ('One-click SDK launcher omitted ' + $marker) }
+          }
           $file = (Resolve-Path 'deploy/jparris-windows/Install-RSSDK377.ps1').Path
           $tokens=$null; $errors=$null
           [void][System.Management.Automation.Language.Parser]::ParseFile($file,[ref]$tokens,[ref]$errors)
