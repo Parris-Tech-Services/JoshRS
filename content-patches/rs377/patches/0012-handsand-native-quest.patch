@@ -1,0 +1,31 @@
+--- a/scripts/_unpack/377/all.varp
++++ b/scripts/_unpack/377/all.varp
+@@ -1250,2 +1250,3 @@
+ [handsand]
++scope=perm
+ 
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -278,3 +278,6 @@
+ if (~mh_progress = 2) {
+     $questpoints = add($questpoints, ^mh_questpoints);
+ }
++if (%handsand = ^hs_complete) {
++    $questpoints = add($questpoints, ^hs_questpoints);
++}
+ return ($questpoints);
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -356,3 +359,4 @@
+ ~send_quest_progress_colour(questlist:lost_tribe, %lost_tribe, ^lt_complete);
+ ~send_quest_progress_colour(questlist:makinghistory, ~mh_progress, 2);
++~send_quest_progress_colour(questlist:handsand, %handsand, ^hs_complete);
+ ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
+--- a/scripts/areas/area_port_sarim/scripts/betty.rs2
++++ b/scripts/areas/area_port_sarim/scripts/betty.rs2
+@@ -1,2 +1,5 @@
+ [opnpc1,betty]
++if (~hs_betty_quest = true) {
++    return;
++}
+ ~chatnpc("<p,happy>Welcome to the magic emporium.");

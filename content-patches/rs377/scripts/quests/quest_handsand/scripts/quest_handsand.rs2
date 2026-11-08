@@ -1,0 +1,258 @@
+// JoshRS original English dialogue and server-side revision-377 gameplay.
+// No binary assets or copied quest transcripts. Known fidelity gaps in README.
+// All steps use real player inventory, real cache object/NPC interactions and permanent quest varp.
+[opnpc1,handsand_bert]
+switch_int (%handsand) {
+    case ^hs_not_started :
+        ~chatnpc("<p,sad>I've found something horrible among the sand at work. I fear I'll be blamed.");
+        if (stat_base(thieving) < 17 | stat_base(crafting) < 49) {
+            ~chatnpc("<p,neutral>I'd feel better with help from someone trained in both Thieving and Crafting.");
+            mes("You need 17 Thieving and 49 Crafting to begin The Hand in the Sand.");
+            return;
+        }
+        def_int $o = ~p_choice2("I'll look into it.", 1, "I'd rather not.", 2);
+        if ($o != 1) {
+            return;
+        }
+        if (inv_freespace(inv) < 1) {
+            mes("You need room for the evidence.");
+            return;
+        }
+        inv_add(inv, handsand_sandyhand, 1);
+        %handsand = ^hs_hand;
+        ~chatnpc("<p,neutral>Please take the hand to the captain at the Yanille tavern.");
+        ~send_quest_progress(questlist:handsand, %handsand, ^hs_complete);
+    case ^hs_hand :
+        ~chatnpc("<p,neutral>The guard captain is at the tavern. Please show him the hand.");
+    case ^hs_guard :
+        ~chatnpc("<p,neutral>That hand was found in my sandpit. Perhaps the Wizards' Guild can help.");
+    case ^hs_wizard :
+        if (inv_freespace(inv) < 1) {
+            mes("Make room for Bert's working rota.");
+            return;
+        }
+        inv_add(inv, handsand_rota_bert, 1);
+        %handsand = ^hs_bert_rota;
+        ~chatnpc("<p,neutral>I work for Sandy in Brimhaven. Compare this rota with his old records.");
+    case ^hs_bert_rota :
+        if (inv_total(inv, handsand_rota_sandy) = 0 | inv_total(inv, handsand_rota_bert) = 0) {
+            ~chatnpc("<p,neutral>Bring back both rotas, the old one and my copy.");
+            return;
+        }
+        inv_del(inv, handsand_rota_sandy, 1);
+        inv_del(inv, handsand_rota_bert, 1);
+        inv_add(inv, handsand_scroll_magic, 1);
+        %handsand = ^hs_magic_scroll;
+        ~chatnpc("<p,neutral>My hours changed without my remembering it. This strange scroll may explain why.");
+    case ^hs_magic_scroll, ^hs_orb_empty, ^hs_serum, ^hs_coffee, ^hs_confession, ^hs_wizard_spell, ^hs_wizard_head :
+        ~chatnpc("<p,neutral>The Wizards' Guild can help explain what Sandy has been doing.");
+    case ^hs_complete :
+        ~chatnpc("<p,happy>You've helped me out of trouble, and I won't forget it.");
+}
+
+[opnpc1,handsand_guard_captain]
+if (%handsand = ^hs_hand) {
+    if (inv_total(inv, handsand_sandyhand) < 1) {
+        ~chatnpc("<p,neutral>Bring me the evidence from Bert.");
+        return;
+    }
+    if (inv_total(inv, beer) < 1) {
+        ~chatnpc("<p,neutral>I'll look at the evidence after I've had a beer.");
+        return;
+    }
+    inv_del(inv, beer, 1);
+    inv_del(inv, handsand_sandyhand, 1);
+    inv_add(inv, handsand_beerhand, 1);
+    %handsand = ^hs_guard;
+    ~chatnpc("<p,shock>Well, that is unsettling. Ask the wizard Zavistic who this belonged to.");
+} else {
+    ~chatnpc("<p,neutral>Keep the peace in Yanille, traveller.");
+}
+
+// Zavistic Rarve is a native 377 NPC already present by Yanille's Wizards' Guild.
+[opnpc1,zogre_human_zavistic_rarve]
+switch_int (%handsand) {
+    case ^hs_guard :
+        if (inv_total(inv, handsand_beerhand) < 1) {
+            ~chatnpc("<p,neutral>You said you had evidence; bring it from your bank.");
+            return;
+        }
+        inv_del(inv, handsand_beerhand, 1);
+        %handsand = ^hs_wizard;
+        ~chatnpc("<p,sad>This belongs to a missing apprentice. Find out why Bert's working hours changed.");
+    case ^hs_magic_scroll :
+        if (inv_total(inv, handsand_scroll_magic) < 1) {
+            ~chatnpc("<p,neutral>I need to inspect Bert's strange scroll.");
+            return;
+        }
+        inv_del(inv, handsand_scroll_magic, 1);
+        if (inv_freespace(inv) < 1) {
+            mes("You need room for the magical recording orb.");
+            return;
+        }
+        inv_add(inv, handsand_orb_storage, 1);
+        %handsand = ^hs_orb_empty;
+        ~chatnpc("<p,neutral>That scroll could alter a person's memory. Ask Betty in Port Sarim for truth serum.");
+        ~chatnpc("<p,neutral>Take this orb to record what Sandy says.");
+    case ^hs_confession :
+        if (inv_total(inv, handsand_orb_recording) < 1) {
+            ~chatnpc("<p,neutral>Bring back the orb containing Sandy's confession.");
+            return;
+        }
+        if (inv_total(inv, earthrune) < 5 | inv_total(inv, bucket_sand) < 1) {
+            ~chatnpc("<p,neutral>The recorded confession is convincing. Bring five earth runes and a bucket of sand for the remedy.");
+            return;
+        }
+        inv_del(inv, handsand_orb_recording, 1);
+        inv_del(inv, earthrune, 5);
+        inv_del(inv, bucket_sand, 1);
+        %handsand = ^hs_wizard_spell;
+        ~chatnpc("<p,happy>I will use the runes to make Bert's sandpit self-filling. Find Mazion on Entrana.");
+    case ^hs_wizard_head :
+        if (inv_total(inv, handsand_wizhead) < 1) {
+            ~chatnpc("<p,neutral>Please bring back the missing apprentice's remains.");
+            return;
+        }
+        inv_del(inv, handsand_wizhead, 1);
+        %handsand = ^hs_complete;
+        queue(hs_quest_complete, 0, 0);
+        ~chatnpc("<p,sad>Then we have the truth. You have helped bring a measure of justice.");
+    case ^hs_not_started :
+        ~chatnpc("<p,neutral>Our guild has many mysteries to investigate.");
+    case ^hs_complete :
+        ~chatnpc("<p,happy>Thank you for your careful work.");
+    case default :
+        ~chatnpc("<p,neutral>Follow the evidence. Return when you have something to show me.");
+}
+
+// This remains a real native desk in Sandy's Brimhaven office.
+[oploc1,handsand_desk]
+if (%handsand < ^hs_bert_rota | %handsand > ^hs_magic_scroll) {
+    mes("The desk is full of ordinary paperwork.");
+    return;
+}
+if (inv_total(inv, handsand_rota_sandy) > 0 | inv_total(bank, handsand_rota_sandy) > 0) {
+    mes("You already have Sandy's original rota.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("There is a rota in the desk, but your pack is full.");
+    return;
+}
+inv_add(inv, handsand_rota_sandy, 1);
+mes("You compare the paperwork and take a copy of the original rota.");
+
+// Sandy's normal dialogue is kept separate from his genuine Pickpocket option.
+[opnpc1,handsand_sandy0]
+@hs_talk_sandy;
+[opnpc1,handsand_sandy1]
+@hs_talk_sandy;
+[label,hs_talk_sandy]
+if (%handsand = ^hs_coffee) {
+    if (inv_total(inv, handsand_orb_storage) < 1) {
+        ~chatnpc("<p,neutral>You're asking a lot of questions without any proof.");
+        return;
+    }
+    inv_del(inv, handsand_orb_storage, 1);
+    inv_add(inv, handsand_orb_recording, 1);
+    %handsand = ^hs_confession;
+    ~chatnpc("<p,neutral>I arranged Bert's longer shifts and erased his memory. I hid the missing wizard's remains.");
+    mes("The orb records Sandy's admission.");
+} else {
+    ~chatnpc("<p,neutral>Work is hard; everybody ought to know that.");
+}
+
+[opnpc3,handsand_sandy0]
+@hs_pickpocket_sandy;
+[opnpc3,handsand_sandy1]
+@hs_pickpocket_sandy;
+[label,hs_pickpocket_sandy]
+if (%handsand < ^hs_bert_rota | %handsand > ^hs_coffee) {
+    mes("There is no reason to search Sandy's pockets.");
+    return;
+}
+if (inv_total(inv, handsand_sand) > 0 | inv_total(bank, handsand_sand) > 0) {
+    mes("You already found what you need in Sandy's pockets.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("Your pack is full.");
+    return;
+}
+if (stat(thieving) < 17) {
+    mes("You need 17 Thieving.");
+    return;
+}
+if (stat_random(thieving, 80, 160) = ^false) {
+    ~fail_pick_pocket(2, 4, "Sandy's pocket");
+    return;
+}
+anim(human_pickpocket, 0);
+inv_add(inv, handsand_sand, 1);
+mes("You find a suspicious handful of sand in Sandy's pocket.");
+
+// Betty's existing shop dialogue is preserved unless the quest item hand-in is available.
+[proc,hs_betty_quest]()(boolean)
+if (%handsand ! ^hs_orb_empty) {
+    return(false);
+}
+~chatnpc("<p,neutral>I can make a truth serum if you bring the ingredients.");
+if (inv_total(inv, vial_empty) < 1 | inv_total(inv, white_berries) < 1 |
+    inv_total(inv, redberries) < 1 | inv_total(inv, lens) < 1 |
+    inv_total(inv, handsand_sand) < 1) {
+    ~chatnpc("<p,neutral>I need an empty vial, white and red berries, a lantern lens, and a sample of Sandy's sand.");
+    return(true);
+}
+inv_del(inv, vial_empty, 1);
+inv_del(inv, white_berries, 1);
+inv_del(inv, redberries, 1);
+inv_del(inv, lens, 1);
+inv_del(inv, handsand_sand, 1);
+inv_add(inv, handsand_truthserum, 1);
+%handsand = ^hs_serum;
+~chatnpc("<p,happy>Take this serum to Sandy's office and put it in his coffee.");
+return(true);
+
+// Both possible source types of the coffee spot, since it is a cache multiloc.
+[oplocu,handsand_coffee_multiloc]
+@hs_spike_coffee;
+[oplocu,handsand_coffee]
+@hs_spike_coffee;
+[label,hs_spike_coffee]
+if (%handsand ! ^hs_serum | last_useitem ! handsand_truthserum |
+    inv_total(inv, handsand_truthserum) < 1) {
+    ~displaymessage(^dm_default);
+    return;
+}
+inv_del(inv, handsand_truthserum, 1);
+%handsand = ^hs_coffee;
+mes("While Sandy is distracted, you mix the serum into his coffee.");
+mes("Now ask him about the changed working rota.");
+
+[opnpc1,handsand_naziom]
+if (%handsand ! ^hs_wizard_spell) {
+    ~chatnpc("<p,neutral>I have been assigned to look after the sand here.");
+    return;
+}
+if (inv_total(inv, handsand_wizhead) > 0 | inv_total(bank, handsand_wizhead) > 0) {
+    ~chatnpc("<p,neutral>You already have the evidence I recovered.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    ~chatnpc("<p,neutral>Make room for what I found.");
+    return;
+}
+inv_add(inv, handsand_wizhead, 1);
+%handsand = ^hs_wizard_head;
+~chatnpc("<p,sad>I found the missing apprentice's head in this sand. Return it to Zavistic.");
+
+[queue,hs_quest_complete]
+if (%handsand ! ^hs_complete) {
+    return;
+}
+session_log(^log_adventure, "Quest complete: The Hand in the Sand");
+~send_quest_complete(questlist:handsand, handsand_sandyhand, 250,
+    ^hs_questpoints, "You have completed the\\nHand in the Sand Quest!",
+    "1 Quest point|1,000 Thieving XP|9,000 Crafting XP");
+stat_advance(thieving, ^hs_thieving_xp);
+stat_advance(crafting, ^hs_crafting_xp);
