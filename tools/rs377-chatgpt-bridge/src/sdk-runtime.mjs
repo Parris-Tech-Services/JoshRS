@@ -4,7 +4,7 @@ import {mapSdkAction,toBotWorldState} from './sdk-bridge.mjs';
  * No gateway, account selection, state fabrication or privileged commands.
  * Dispatch is not evidence that the game server performed an action.
  */
-export function createSdk377Runtime({session,observer,botName,expectedWorld}={}){
+export function createSdk377Runtime({session,observer,botName,expectedWorld,clientControl=null}={}){
  if(!session||typeof session.sendPacket!=='function'||typeof session.status!=='function')
   throw new Error('authenticated_native_session_required');
  if(!observer||typeof observer.observe!=='function')throw new Error('authoritative_observer_required');
@@ -40,6 +40,17 @@ export function createSdk377Runtime({session,observer,botName,expectedWorld}={})
      return Object.freeze({status:'observed_read_only',tick:snapshot.tick,
        world:expectedWorld,readType:mapped.readType,data:structuredClone(mapped.data),
        verifiedEffect:false});
+    }
+    if(mapped.kind==='client'){
+     if(!clientControl||typeof clientControl.perform!=='function')
+      throw new Error('native_java_client_companion_not_connected');
+     // Only the actual Java client may perform client-local actions.
+     // The optional controller is paired with the SAME isolated Harness bot.
+     const effect=await clientControl.perform(mapped.action);
+     if(effect.status!=='client_effect_observed'&&
+        effect.status!=='client_packet_dispatched_unverified')
+      throw new Error('native_client_action_not_acknowledged');
+     return Object.freeze({...effect,sourceTick:snapshot.tick,world:expectedWorld});
     }
     if(mapped.kind!=='packet')throw new Error('unsupported_mapped_action');
     if(snapshot.tick<=lastActionTick)throw new Error('sdk_action_replay_or_stale_tick');
