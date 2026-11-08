@@ -1,0 +1,182 @@
+// Creature of Fenkenstrain: original gameplay for the experiment cave.
+// All object and coordinate targets below exist in the pinned 377 map.
+// These source scripts do NOT create or overwrite world assets or player saves.
+//
+// The game-era guide requires killing a WOLF-WOMAN experiment (NPC 1676),
+// taking its dropped cavern key, unlocking the north-west gate, finding the
+// replacement key in an open chest, and digging the three mausoleum graves.
+//
+// Confirmed map coordinates in LostCityRS/Content@44eab090:
+// entrance: fenk_coffin at 0_55_55_58_7
+// cave gate: fenk_mausoleum_door at 0_54_155_54_37
+// cave chest: fenk_chest_open at 0_54_155_44_47
+// mausoleum island: graves 0_54_55_46_56, 0_54_55_48_57,
+//                  0_54_55_50_56 (west to east).
+
+// The OTHER coffin at 0_55_55_54_6 is not a dungeon entrance.
+// The mausoleum exit coffin at 0_54_55_49_51 is handled separately.
+[oplocu,fenk_coffin]
+if (loc_coord ! 0_55_55_58_7 | last_useitem ! fenk_star_amulet) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%fenk_quest < ^fenk_hired) {
+    mes("You have no reason to disturb this memorial.");
+    return;
+}
+%fenk_coffin = 1;
+mes("The star-shaped amulet fits an indentation on the eastern memorial.");
+mes("The stone slides aside, revealing a dark opening beneath.");
+
+// Enter ONLY after using the star amulet, not merely by clicking a
+// random decorative coffin with the same native loc ID.
+[oploc1,fenk_coffin]
+if (loc_coord = 0_54_55_49_51) {
+    // The island has one coffin above the concealed underground ladder.
+    if (%fenk_unlocked_cavern = 0) {
+        mes("You cannot find the way back into the tunnel yet.");
+        return;
+    }
+    mes("You descend the mausoleum steps.");
+    p_arrivedelay;
+    p_teleport(0_54_155_44_46);
+    return;
+}
+if (loc_coord ! 0_55_55_58_7) {
+    mes("A quiet memorial. There is nothing to move here.");
+    return;
+}
+if (%fenk_quest < ^fenk_hired | %fenk_coffin = 0) {
+    mes("The heavy memorial is stuck fast. There is a star-shaped mark on its side.");
+    return;
+}
+mes("You push aside the memorial and climb down into the experiment cave.");
+p_arrivedelay;
+p_teleport(0_55_155_34_27);
+
+// The same entrance location is also the visible exit from the dungeon;
+// unlike other caves there is no dedicated fenk_* cave-exit model in the
+// pinned map. Do not invent a global trigger for all cave_generic_hole_l.
+// For now, the island coffin allows backtracking after passing the key gate.
+
+// Exact combat death queue, from pinned Content scripts/drop_tables:
+// [ai_queue3,fire_bird], [ai_queue3,_citizen], gosub(npc_death),
+// npc_findhero and obj_add(npc_coord, ...). The NPC must really die first.
+[ai_queue3,fenk_experiment_1]
+gosub(npc_death);
+if (npc_findhero = ^false) {
+    return;
+}
+if (%fenk_quest < ^fenk_hired | %fenk_quest >= ^fenk_complete) {
+    return;
+}
+if (%fenk_unlocked_cavern = 1) {
+    return;
+}
+obj_add(npc_coord, fenk_mausoleum_key, 1, ^lootdrop_duration);
+
+// Only the actual dungeon gate at 0_54_155_54_37 is unlocked.
+// Without an earned cavern key, no teleports/flags are granted.
+[oploc1,fenk_mausoleum_door]
+if (loc_coord ! 0_54_155_54_37) {
+    return;
+}
+if (%fenk_unlocked_cavern = 0) {
+    if (inv_total(inv, fenk_mausoleum_key) < 1) {
+        mes("The cavern gate is locked. One of the experiments might carry its key.");
+        return;
+    }
+    %fenk_unlocked_cavern = 1;
+    mes("The key turns and the cavern gate unlocks.");
+}
+~open_and_close_door2(fenk_mausoleum_door_open, ~check_axis(coord, loc_coord, loc_angle), door_open);
+
+[oplocu,fenk_mausoleum_door]
+if (loc_coord ! 0_54_155_54_37 | last_useitem ! fenk_mausoleum_key) {
+    ~displaymessage(^dm_default);
+    return;
+}
+%fenk_unlocked_cavern = 1;
+mes("You unlock the cavern gate with the key.");
+~open_and_close_door2(fenk_mausoleum_door_open, ~check_axis(coord, loc_coord, loc_angle), door_open);
+
+// This chest is at the BOTTOM of the mausoleum ladder. It is beyond
+// the genuine cavern gate, and is not an alternate way to avoid combat.
+[oploc1,fenk_chest_open]
+if (loc_coord ! 0_54_155_44_47) {
+    mes("There is nothing useful here.");
+    return;
+}
+if (%fenk_quest < ^fenk_hired | %fenk_unlocked_cavern = 0) {
+    mes("There is nothing that you need from this chest.");
+    return;
+}
+if (inv_total(inv, fenk_mausoleum_key) > 0 |
+    inv_total(bank, fenk_mausoleum_key) > 0) {
+    mes("The chest holds a spare cavern key, but you already have one.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("Your backpack is full.");
+    return;
+}
+inv_add(inv, fenk_mausoleum_key, 1);
+mes("You find a spare cavern key in the open chest.");
+
+// The underground chest is the only named cave object by this exit.
+// This is a distinct, nearby source interaction, rather than extending
+// global cave ladders used by unrelated quests.
+[oploc2,fenk_chest_open]
+if (loc_coord ! 0_54_155_44_47) {
+    return;
+}
+if (%fenk_unlocked_cavern = 0) {
+    mes("You must unlock the gate before reaching the mausoleum.");
+    return;
+}
+mes("You follow the steps up from the cavern to the mausoleum.");
+p_arrivedelay;
+p_teleport(0_54_55_49_52);
+
+// The exact three mapped graves are 5168 fenk_grave, west to east.
+// No grave in the Haunted Woods should award a monster body part.
+// Check ALL existing sources to avoid endlessly duplicating rewards.
+[oploc2,fenk_grave]
+if (%fenk_quest < ^fenk_hired | %fenk_quest >= ^fenk_complete |
+    %fenk_unlocked_cavern = 0) {
+    mes("You see no reason to dig up this grave.");
+    return;
+}
+if (inv_total(inv, spade) < 1) {
+    mes("You need a spade to dig here.");
+    return;
+}
+if (loc_coord = 0_54_55_46_56) {
+    @fenk_dig_mausoleum_part(fenk_torso);
+} else if (loc_coord = 0_54_55_48_57) {
+    @fenk_dig_mausoleum_part(fenk_arms);
+} else if (loc_coord = 0_54_55_50_56) {
+    @fenk_dig_mausoleum_part(fenk_legs);
+} else {
+    mes("The grave has already been disturbed, and contains nothing of use.");
+}
+
+[label,fenk_dig_mausoleum_part](namedobj $part)
+if (($part = fenk_torso & %fenk_torso = 1) |
+    ($part = fenk_arms & %fenk_arms = 1) |
+    ($part = fenk_legs & %fenk_legs = 1)) {
+    mes("You've already given this body part to the doctor.");
+    return;
+}
+if (inv_total(inv, $part) > 0 | inv_total(bank, $part) > 0) {
+    mes("You already have this body part.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need space to carry what you uncover.");
+    return;
+}
+anim(human_dig, 0);
+p_delay(2);
+inv_add(inv, $part, 1);
+mes("You uncover part of a body that Dr Fenkenstrain could use.");
