@@ -87,6 +87,10 @@ function readNearby(s,field,radius){
  const view=list.filter(item=>{
   const d=Math.max(Math.abs(item.x-s.position.x),Math.abs(item.z-s.position.z));
   return d<=radius && (item.level===undefined||item.level===s.position.plane);
+ }).sort((a,b)=>{
+  const da=Math.max(Math.abs(a.x-s.position.x),Math.abs(a.z-s.position.z));
+  const db=Math.max(Math.abs(b.x-s.position.x),Math.abs(b.z-s.position.z));
+  return da-db;
  }).slice(0,48);
  return Object.freeze({kind:'read',tick:s.tick,
    readType:field,data:structuredClone(view),verifiedEffect:false});
