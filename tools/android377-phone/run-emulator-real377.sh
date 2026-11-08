@@ -26,17 +26,27 @@ stop_server() {
 }
 trap stop_server EXIT
 
-(
-  cd "$engine"
-  export EASY_STARTUP=true NODE_PROFILE=joshrs_android_emulator_377
-  export DB_BACKEND=sqlite NODE_PORT=15402 WEB_PORT=18880
-  export WEB_MANAGEMENT_PORT=18881 LOGIN_SERVER=true
-  export FRIEND_SERVER=true LOGGER_SERVER=true
-  export WEBSITE_REGISTRATION=false BUILD_SRC_DIR=../content
-  export NODE_DEBUG_SOCKET=false
-  exec setsid npm run quickstart
-) >"$log" 2>&1 &
-pid=$!
+# Detached process group with a known PID, so teardown cannot accidentally
+# terminate the GitHub worker's own shell process group.
+python3 - "$engine" "$log" "$RUNNER_TEMP/android377-server.pid" <<'PY'
+import os, pathlib, subprocess, sys
+engine, log, pidfile = sys.argv[1:]
+env = dict(os.environ)
+env.update({
+    "EASY_STARTUP": "true", "NODE_PROFILE": "joshrs_android_emulator_377",
+    "DB_BACKEND": "sqlite", "NODE_PORT": "15402", "WEB_PORT": "18880",
+    "WEB_MANAGEMENT_PORT": "18881", "LOGIN_SERVER": "true",
+    "FRIEND_SERVER": "true", "LOGGER_SERVER": "true",
+    "WEBSITE_REGISTRATION": "false", "BUILD_SRC_DIR": "../content",
+    "NODE_DEBUG_SOCKET": "false"
+})
+with open(log, "wb") as output:
+    p = subprocess.Popen(["npm", "run", "quickstart"], cwd=engine,
+                         env=env, stdout=output, stderr=subprocess.STDOUT,
+                         start_new_session=True)
+pathlib.Path(pidfile).write_text(str(p.pid), encoding="ascii")
+PY
+pid="$(cat "$RUNNER_TEMP/android377-server.pid")"
 
 echo "Starting AUTHENTIC disposable revision-377 engine; awaiting both listeners..."
 python3 - <<'PY'
