@@ -17,7 +17,7 @@ object Cache377Vault {
     private const val MAX_DAT = 64 * 1024 * 1024
     private const val MAX_IDX = 1024 * 1024
 
-    data class Receipt(val readableArchives: Int, val cacheId: String)
+    data class Receipt(val readableArchives: Int, val cacheId: String, val indexNumber: Int)
 
     private fun filename(context: Context, uri: Uri): String {
         context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME),
@@ -45,16 +45,20 @@ object Cache377Vault {
     }
 
     fun importPair(context: Context, sources: List<Uri>): Receipt {
-        require(sources.size == 2) { "Select main_file_cache.dat AND main_file_cache.idx0 together" }
+        require(sources.size == 2) { "Select main_file_cache.dat and either idx0 or idx1 together" }
         val named = sources.associateBy { filename(context, it) }
-        require(named.size == 2 &&
-            named.containsKey("main_file_cache.dat") &&
-            named.containsKey("main_file_cache.idx0")) {
-            "Expected exact legacy cache names: main_file_cache.dat and .idx0"
+        val indexName = when {
+            named.containsKey("main_file_cache.idx0") -> "main_file_cache.idx0"
+            named.containsKey("main_file_cache.idx1") -> "main_file_cache.idx1"
+            else -> throw IllegalArgumentException("Select .dat plus .idx0 or .idx1")
         }
+        require(named.size == 2 && named.containsKey("main_file_cache.dat")) {
+            "Expected exact legacy .dat and index file pair"
+        }
+        val indexNumber = if (indexName.endsWith("idx1")) 1 else 0
         val dat = bytes(context, named.getValue("main_file_cache.dat"), MAX_DAT)
-        val idx = bytes(context, named.getValue("main_file_cache.idx0"), MAX_IDX)
-        val store = LegacyStore377(dat, idx, 0)
+        val idx = bytes(context, named.getValue(indexName), MAX_IDX)
+        val store = LegacyStore377(dat, idx, indexNumber)
         // Verify actual sector structure from the user's private cache before storing.
         var readable = 0
         for (id in 0..minOf(128, idx.size / 6 - 1)) {
@@ -76,7 +80,7 @@ object Cache377Vault {
             val staging = File(root, "import-$identifier.tmp")
             check(staging.mkdir()) { "Cache staging directory exists" }
             try {
-                for ((name, payload) in listOf("main_file_cache.dat" to dat, "main_file_cache.idx0" to idx)) {
+                for ((name, payload) in listOf("main_file_cache.dat" to dat, indexName to idx)) {
                     FileOutputStream(File(staging, name)).use { output ->
                         output.write(payload)
                         output.fd.sync()
@@ -87,6 +91,6 @@ object Cache377Vault {
                 if (staging.exists()) staging.deleteRecursively()
             }
         }
-        return Receipt(readable, identifier.take(12))
+        return Receipt(readable, identifier.take(12), indexNumber)
     }
 }
