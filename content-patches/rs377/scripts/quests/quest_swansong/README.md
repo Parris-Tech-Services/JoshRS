@@ -1,30 +1,22 @@
-# Swan Song (2 May 2006) — 377-native, original-dialogue port
+# Swan Song (2 May 2006) — pinned rev-377, independently authored RuneScript
 
-**Status: native compilation and disposable server boot PASS; real Java-client playthrough NOT VERIFIED.** The source project does not include the personalised Windows/Fedora world or player save. Do not install the overlay into a running family world.
+**State: source-implemented and compilation/isolated-world boot tested when CI is green. Real normal-client playthrough and dual-player persistence NOT VERIFIED.** Do not install into the family world before independent backup and rollback verification.
 
-## Added in this batch
+## Source present
+- Quest start requires 100 QP; Herman sends player to the Draynor Wise Old Man for 10 lava, 10 mist and 5 blood runes, then Franklin and Arnold. Original author dialogue, not extracted Jagex scripts.
+- At Piscatoris the existing pinned `m36_57.jm2` West wall has five **distinct physical damaged-wall locs** at plane 0 local (7,19), (7,25), (7,31), (7,43), (7,45). Map patch `0020` replaces only the five pinned wall tiles with original-cache `14945..47`; `check_swansong_wall_map.py` verifies those five exact squares. The repair script checks `loc_coord`, the matching permanent per-character flag and consumes one sheet per tile. Repeated clicks on the same wall cannot count as additional repairs. Visual patched-wall morphing after completion remains unimplemented; physical placement does not prove a working normal-client click.
+- Franklin's iron-sheet press uses existing firebox/press loc morphs, logs, tinderbox, iron bars and 42 Firemaking/45 Smithing, while wall repair requires a hammer, sheet and 40 Crafting.
+- Three **attackable fishing sea troll NPC types** are spawned on successive fishing interactions, one at a time, and only genuine credited kills increment `swansong_trolls=0..3`. Arnold receives five freshly caught and cooked quest-only monkfish. All three kills + food + all five wall flags are required for the next stage.
+- Herman triggers eight sequential **native combat** sea troll ambusher spawns, credits only their death, advancing stages 50..58 and then 60. The quest continues via Wizard Frumscone (direction to Malignius Mortifer), Malignius (seven bones, pot, lid and 66 Magic), the real-cache bone-seed item and the queen fight. The Queen uses her own existing NPC, and three existing skeleton mage NPCs spawn as visible defenders; the skeletons **do not yet fight automatically**. Queen must be defeated with true combat kill credit before Herman rewards.
+- Quest reward is the historical 2006 **10,000 Fishing, 15,000 Magic, 10,000 Prayer XP and 25,000 coins**; the Fishing reward was raised to 50,000 in late 2022 OSRS, not in May 2006. Stage guarding prevents repeat reward calls.
+- After quest, the existing fishing spot yields ordinary `raw_monkfish` with 120 Fishing XP and new generic 62 Cooking row yielding `monkfish`/burnt monkfish with 150 Cooking XP. Burn success curve is provisional; historical client outcome not proven.
+- Corrected the quest-point counter to read the `swansong` varbit rather than the multi-purpose packed `swansong_quest` varp. New source regression tests cover NPC map spots, stage guards, monster drops and postquest fishing.
 
-- Herman now requires at least 100 quest points to begin the quest and sends the player to the pinned `swan_wom_draynor` NPC. The Wise Old Man takes 10 lava, 10 mist and 5 blood runes and advances the original 377 quest state.
-- Franklin introduces the five wall repairs; the pinned metal press uses logs (firebox 14958), a tinderbox (firebox 14959), and iron bars (press 14956) to make genuine `iron_sheet` items, checking 42 Firemaking and 45 Smithing.
-- Using an iron sheet on the pinned damaged-wall locs (14945–14947) consumes it if a hammer and 40 Crafting are present, setting five persistent `swansong_wall_1..5` varbits; Arnold's five cooked fish set the persistent `swansong_arnold` flag. The main stage advances only after both tasks are done.
-- Corrected the fresh monkfish fishing action to the client's **Net / NPC option 3** while Harpoon / option 1 displays guidance. The existing generic cooking table handles the cooked monkfish.
-- Scripted death events for the three fishing-troll NPC variants record real kills up to the 377 two-bit limit; ambush and final queen death rewards remain stage-gated.
-- Added a scoped Wizard Frumscone interaction using his *existing* NPC and seven bones, an empty pot and a pot lid to create the existing `swan_army` bone-seed item at level 66 Magic. Using the item advances to a new 65 / army-deployed stage.
-- Corrected 377 quest-point counting to read **`%swansong`** rather than equality against the full packed `%swansong_quest` varp, which also contains wall and other progress flags.
-- Quest completion gives 50,000 Fishing XP, 15,000 Magic XP, 10,000 Prayer XP and 25,000 coins once, with inventory-space and stage guards.
+## Still incomplete / unverified
+- The script **does not yet reproduce the original Wise Old Man combat prologue**; for save compatibility the eight initial troll kills currently occur *after* colony repair rather than the original chronology. Neither is exact 2006 dialogue or a historically precise sequence.
+- Skeleton magi are visible when spawned, but have no proven NPC-versus-NPC combat targeting, healing, duration or death behaviour. Queen arena bounds, client visibility, model collision and player safety have no real gameplay evidence. NPC pathfinding/wave targeting must be verified, including disconnections, relogs and simultaneous family clients.
+- Fixed wall tiles currently don't morph visually to repaired equivalents per player after the corresponding saved flag changes. No live client clicks, quest rewards, correct NPC placement in all regions, boat trip, bank usage, combat XP or quest completion have been confirmed. Real wave kills may not behave exactly as intended.
+- Prerequisite dependencies, combat balancing, chest/teleport routes, family character save isolation and original 2006 script fidelity remain unverified.
 
-## Material differences from a complete, real-player 2006 quest
-
-**Not completed:** The Wise Old Man's original combat prologue and eight-troll initial battle, reliable spawn/instancing and NPC combat target attribution, per-wall location identity and persistent world visual patching, the skeletons visibly fighting the final sea-troll wave, accurate Sea Troll Queen encounter placement/pathfinding, and actual travel/bank/shop access. The interim bone-seed activation changes the stage but does not spawn the skeleton army or prove any fight occurred. You can currently interact with the same damaged wall repeatedly to increment all five flags; client/map coordinate verification is required to fix that exploit before release.
-
-Further historic prerequisites (One Small Favour, Garden of Tranquillity), post-quest monkfish use and world access, asset rights, and gameplay fidelity remain unverified. Do not advertise this as a faithful complete quest or a working adventure with Sylvie until observed in the personalised Java client.
-
-## Acceptance checklist
-
-1. Back up family saves; create a **separate disposable world** with no private accounts or data.
-2. Verify genuine NPC spawns and dialogue from Herman, Draynor Wise Old Man, Franklin, Arnold and Frumscone at quest stages 0/10/20/30/40/50/60/65/70/100.
-3. Verify rune removal exactly once; net fishing at NPC option 3; cooking at real range; press consumes one bar per sheet; wall repair cannot be repeated on the same tile; five unique sections visibly change and persist across relog.
-4. Verify the initial troll fights, fishing troll encounters, defensive skeletons and queen combat are spawned/attributed, involve *real* combat rather than scripted stage changes, survive disconnect/relog, and cannot pay XP/coins twice.
-5. Verify full client quest journal, QP, bank/service access, map area, item conservation and safe restart/relog, then both family accounts in the shared world. Do not mark any of these passed from a compiler or socket check.
-
-Run GitHub's disposable `batch-quests-disposable-377.yml` build to validate source. It does not substitute for the gameplay checklist.
+### Actual acceptance, not source assumptions
+Test separately in an authenticated disposable 377 world: all NPC Talk-to handlers; 100QP gate; rune/inventory; 3 true fishing troll deaths; five distinct wall clicks; press; catch/cook; eight ambushers; Malignius equipment requirement; real bone-seed deployment; skeleton behaviour; queen **true kill**; Herman one-time reward; postquest fish/cook; disconnect/relog and 2 simultaneous client sessions. Record actual client packets/screenshots and save changes. Only then deploy following backed-up family-world acceptance.
