@@ -1,0 +1,12 @@
+[if_button,questlist:makinghistory]
+def_string $text;
+if (~mh_progress = 0) {
+    $text = "@dbl@I can help @dre@Jorral@dbl@ investigate the old outpost|north-west of West Ardougne.||@dbl@I must complete the Restless Ghost and Priest in Peril.";
+} else if (~mh_progress = 2) {
+    $text = "@str@I gathered Erin, Droalak and Dron's histories and|@str@convinced King Lathas to preserve the outpost.||@red@QUEST COMPLETE!";
+} else if (testbit(%makinghistory, ^mh_jorral_letter_bit) = true) {
+    $text = "@str@I gathered three histories.||@dbl@Take the letter to @dre@King Lathas@dbl@, then return his reply to Jorral.";
+} else {
+    $text = "@str@I agreed to find the history of the Ardougne outpost.||@dbl@I need the buried journal from Erin's enchanted key,|@dbl@Droalak's scroll in Port Phasmatys, and Dron's account in Rellekka.";
+}
+~quest_journal("Making History", $text);

@@ -1,0 +1,47 @@
+--- a/scripts/_unpack/377/all.varp
++++ b/scripts/_unpack/377/all.varp
+@@ -1174,2 +1174,3 @@
+ [makinghistory]
++scope=perm
+ transmit=yes
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -272,6 +272,9 @@
+ if (%lost_tribe = ^lt_complete) {
+     $questpoints = add($questpoints, ^lt_questpoints);
+ }
++if (~mh_progress = 2) {
++    $questpoints = add($questpoints, ^mh_questpoints);
++}
+ return ($questpoints);
+ 
+ [proc,update_questlist]
+@@ -354,6 +357,7 @@
+ ~send_quest_progress_colour(questlist:mdaughter, %mdaughter_var, ^mdaughter_complete);
+ ~send_quest_progress_colour(questlist:hauntedmine, %hauntedmine, ^hm_complete);
+ ~send_quest_progress_colour(questlist:lost_tribe, %lost_tribe, ^lt_complete);
++~send_quest_progress_colour(questlist:makinghistory, ~mh_progress, 2);
+ ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
+ if_settab(questlist, ^tab_quest_journal);
+--- a/scripts/areas/area_ardougne_east/scripts/silver_merchant.rs2
++++ b/scripts/areas/area_ardougne_east/scripts/silver_merchant.rs2
+@@ -3,6 +3,9 @@
+     npc_say("You stole from me. Talk to me when you've considered your actions!");
+     return;
+ }
++if (~mh_erin_interaction = true) {
++    return;
++}
+ ~chatnpc("<p,happy>Silver! Silver!|Best prices for buying and selling in all Kandarin!");
+ 
+ def_int $option = ~p_choice2("Yes please.", 1, "No thank you.", 2);
+--- a/scripts/areas/area_ardougne_east/scripts/king_lathas.rs2
++++ b/scripts/areas/area_ardougne_east/scripts/king_lathas.rs2
+@@ -1,4 +1,7 @@
+ [opnpc1,kinglathas]
++if (~mh_king_interaction = true) {
++    return;
++}
+ if(%biohazard = ^biohazard_reported_elena) {
+     ~chatplayer("<p,quiz>I assume that you are the King of East Ardougne?");
+     ~chatnpc("<p,angry>You assume correctly, but where do you get such impertinence.");
