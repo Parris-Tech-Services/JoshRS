@@ -1,0 +1,62 @@
+// Rat Catchers - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp main_ratcatch_var (batch-5 patch).
+// NOT IMPLEMENTED: the Ardougne rat pits minigame and cat training; the chain here
+// is a condensed reconstruction. Rewards: 2 quest points.
+// Gertrude (the canonical quest giver) already has two handlers in the pinned content,
+// so the ratcatchers' chief guard starts this chain instead.
+
+// Chief guard of the ratcatchers - the rat pits beneath East Ardougne.
+[opnpc1,ratcatcher_chiefguard]
+switch_int (%main_ratcatch_var) {
+    case ^rc_not_started :
+        ~chatnpc("<p,neutral>Down here on business, or just lost? The ratcatchers|could use a hand, if you're offering. The pits are crawling -|the rats have gone clever on us. Traps get sprung, cats get|ignored, and the little beggars breed faster than we can count.|Even Gertrude's cats have given up on this lot.|Poisoned cheese is the old answer - want to try it?");
+        %main_ratcatch_var = ^rc_cheese;
+        ~send_quest_progress(questlist:ratcatch, %main_ratcatch_var, ^rc_complete);
+    case ^rc_cheese :
+        if (inv_total(inv, ratcatchers_poisonedcheese) > 0) {
+            ~chatnpc("<p,neutral>You've got the cheese. Place it down in the tunnels -|the far end, where the big ones nest. Mind your fingers.");
+        } else {
+            ~chatnpc("<p,neutral>Take this poisoned cheese and place it at the far end|of the tunnels. The rats won't take it from a hand -|it has to look abandoned.");
+            inv_add(inv, ratcatchers_poisonedcheese, 1);
+            mes("The chief guard gives you a wedge of poisoned cheese.");
+        }
+    case ^rc_smoke :
+        if (inv_total(inv, ratcatchers_smokey_weedpot) > 0) {
+            ~chatnpc("<p,neutral>The pot's smoking - get it into the nest chamber|before it goes out!");
+        } else {
+            ~chatnpc("<p,neutral>Ha! Dead rats by the dozen - but the big one, the|smoky grey, she's holed up in the nest chamber with her|brood. Take this weed pot, light it, and smoke them out.");
+            inv_add(inv, ratcatchers_smokey_weedpot, 1);
+            mes("The chief guard gives you a smouldering weed pot.");
+        }
+    case default :
+        ~chatnpc("<p,neutral>The pits are quiet for once. The lads drink to you|when you're not around, which is the ratcatcher way.");
+}
+
+// Place the poisoned cheese in the tunnels.
+[opheld1,ratcatchers_poisonedcheese]
+inv_del(inv, ratcatchers_poisonedcheese, 1);
+%main_ratcatch_var = ^rc_smoke;
+~send_quest_progress(questlist:ratcatch, %main_ratcatch_var, ^rc_complete);
+mes("You place the poisoned cheese at the far end of the tunnels and withdraw.|Before long, the squeaking stops.");
+
+// Smoke the nest chamber.
+[opheld1,ratcatchers_smokey_weedpot]
+inv_del(inv, ratcatchers_smokey_weedpot, 1);
+%main_ratcatch_var = ^rc_complete;
+~send_quest_progress(questlist:ratcatch, %main_ratcatch_var, ^rc_complete);
+mes("You roll the smoking weed pot into the nest chamber. Grey shapes bolt past you|into the traps above, and the brood is broken.");
+queue(rc_complete, 0, 0);
+
+[queue,rc_complete]
+session_log(^log_adventure, "Quest complete: Rat Catchers");
+~send_quest_complete(questlist:ratcatch, ratcatchers_poisonedcheese, 200, ^rc_questpoints, "You have completed Rat Catchers!", "2 quest points");
+
+[if_button,questlist:ratcatch]
+def_string $text;
+switch_int (%main_ratcatch_var) {
+    case ^rc_not_started : $text = "@dbl@I can start this quest by speaking to the @dre@chief guard@dbl@ of the ratcatchers beneath East Ardougne.";
+    case ^rc_cheese : $text = "@str@The ratcatchers need the pits cleared.||@dbl@I should place the @dre@poisoned cheese@dbl@ at the far end of the tunnels.";
+    case ^rc_smoke : $text = "@str@The tunnels are cleared, but the brood remains.||@dbl@I should use the @dre@smoking weed pot@dbl@ on the nest chamber.";
+    case default : $text = "@str@The rat pits are clear.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Rat Catchers", $text);

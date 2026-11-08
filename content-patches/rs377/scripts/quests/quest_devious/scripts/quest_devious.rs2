@@ -1,0 +1,80 @@
+// Devious Minds - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp devious_base (batch-5 patch).
+// NOT IMPLEMENTED: the Paterdomus tunnel crawlspace and the Entrana ambush; the chain
+// here is a condensed reconstruction. Rewards: 1 quest point.
+// A hooded monk at the Paterdomus Temple asks for a very strange favour.
+
+// The hooded monk - Paterdomus Temple, on the road to Morytania.
+[opnpc1,devious_monk_hooded]
+switch_int (%devious_base) {
+    case ^dv_not_started :
+        ~chatnpc("<p,neutral>Psst. Traveller. Yes, you. I have a task that requires|a discreet soul, and you have the look of one who does not|ask questions. I need a weapon that is no weapon: a bow|that a monk might carry past the Entrana monks unchallenged.|Bring me a longbow and an orb of air, and I will do the rest.");
+        %devious_base = ^dv_weapon;
+        ~send_quest_progress(questlist:devious, %devious_base, ^dv_complete);
+    case ^dv_weapon :
+        if (inv_total(inv, longbow) > 0) {
+            if (inv_total(inv, air_orb) > 0) {
+                ~chatnpc("<p,neutral>Good. Good. (The monk binds the orb to the bow with|sinew and whispered words, until it is hard to say which|is which.) A bowsword. Now - take this pouch through the|tunnels below the temple, to the one who waits. Do not|open it. Do not speak of it.");
+                inv_del(inv, longbow, 1);
+                inv_del(inv, air_orb, 1);
+                inv_add(inv, devious_bowsword, 1);
+                inv_add(inv, devious_glowingpouch, 1);
+                %devious_base = ^dv_deliver;
+                ~send_quest_progress(questlist:devious, %devious_base, ^dv_complete);
+                mes("The monk gives you the bowsword and a faintly glowing pouch.");
+            } else {
+                ~chatnpc("<p,neutral>An orb of air. The wizards make them from unpowered|orbs - or you might relieve a monster of one.");
+            }
+        } else {
+            ~chatnpc("<p,neutral>A longbow, plain and whole. Fletchers make them,|general stores sell them, monsters drop them.");
+        }
+    case ^dv_deliver :
+        ~chatnpc("<p,neutral>The tunnels are below the temple. The one who waits|is at the far end. Walk, deliver, return.");
+    case ^dv_return :
+        ~chatnpc("<p,neutral>(The hooded monk is gone. Only the dead monk remains,|and the questions you were wise not to ask.)");
+    case default :
+        ~chatnpc("<p,neutral>(The monk says nothing more. The dead monk says|nothing at all.)");
+}
+
+// The high priest - at the end of the tunnels beneath Paterdomus.
+[opnpc1,devious_cutscene_highpriest]
+if (%devious_base = ^dv_deliver) {
+    if (inv_total(inv, devious_glowingpouch) > 0) {
+        ~chatnpc("<p,neutral>You carry the pouch? Give it here - carefully.|(The priest lifts a relic fragment from the pouch and|presses it into the bowsword's binding.)|It is done. Saradomin's blessing on the weapon - and|on the one who carried it. Return to my brother above.|Tell him the relic is bound.");
+        inv_del(inv, devious_glowingpouch, 1);
+        %devious_base = ^dv_return;
+        ~send_quest_progress(questlist:devious, %devious_base, ^dv_complete);
+    } else {
+        ~chatnpc("<p,neutral>The pouch, traveller. Without it, all of this is|for nothing.");
+    }
+} else {
+    mes("An old priest tends a shrine in the dark. He does not look up.");
+}
+
+// The dead monk - back at the temple entrance.
+[opnpc1,devious_monk_dead]
+if (%devious_base = ^dv_return) {
+    ~chatnpc("<p,neutral>(You return to the temple - and stop. The hooded monk|lies where you left him, and he is not sleeping.|The bowsword is gone from your pack as well, as if it|never was. Whatever the two of them intended, the|deed is done, and you were the blade they used.|Best to walk away from this one.)");
+    queue(dv_complete, 0, 0);
+} else {
+    mes("A dead monk. He carries no identification, and no answers.");
+}
+
+[queue,dv_complete]
+%devious_base = ^dv_complete;
+if (inv_total(inv, devious_bowsword) > 0) {
+    inv_del(inv, devious_bowsword, 1);
+}
+session_log(^log_adventure, "Quest complete: Devious Minds");
+~send_quest_complete(questlist:devious, devious_bowsword, 200, ^dv_questpoints, "You have completed Devious Minds!", "1 quest point");
+
+[if_button,questlist:devious]
+def_string $text;
+switch_int (%devious_base) {
+    case ^dv_not_started : $text = "@dbl@I can start this quest by speaking to the @dre@hooded monk@dbl@ at the Paterdomus Temple.";
+    case ^dv_weapon : $text = "@str@The monk wants a weapon that is no weapon.||@dbl@I should bring him a @dre@longbow@dbl@ and an @dre@orb of air@dbl@.";
+    case ^dv_deliver : $text = "@str@The monk made a bowsword and gave me a glowing pouch.||@dbl@I should deliver the @dre@pouch@dbl@ through the tunnels to the @dre@one who waits@dbl@.";
+    case ^dv_return : $text = "@str@The relic is bound to the bowsword.||@dbl@I should return to the @dre@hooded monk@dbl@ above.";
+    case default : $text = "@str@The deed is done, whatever it was.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Devious Minds", $text);

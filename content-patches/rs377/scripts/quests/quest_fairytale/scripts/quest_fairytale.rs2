@@ -1,0 +1,80 @@
+// A Fairy Tale Pt. 1 - Growing Pains - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp fairytale_multi (batch-5 patch).
+// NOT IMPLEMENTED: the crop inspections and the Zanaris farming patches; the chain here
+// is a condensed reconstruction. Rewards: 2 quest points.
+// The farmers' crops are failing, and Martin the Master Farmer wants answers.
+
+// Martin the Master Farmer - Draynor Village.
+[opnpc1,martin_the_master_farmer]
+switch_int (%fairytale_multi) {
+    case ^fq_not_started :
+        ~chatnpc("<p,neutral>Bad year. Bad, bad year. Every crop from here to|Ardougne is withering on the stem, and no blight I know|does that. The farmers are scared, and scared farmers|talk nonsense - little winged folk, they say, dancing|over the fields at night. Ask around the farms. Find me|a cause I can put in a bucket.");
+        %fairytale_multi = ^fq_farmers;
+        ~send_quest_progress(questlist:fairy_farmers, %fairytale_multi, ^fq_complete);
+    case ^fq_farmers :
+        ~chatnpc("<p,neutral>Ask the farmers. They will not talk to me -|a master farmer asking questions makes them think|the tax man has come.");
+    case ^fq_zandar :
+        if (inv_total(inv, fairy_symptoms_list) > 0) {
+            ~chatnpc("<p,neutral>A symptoms list from a wizard, and a story about|fairies. I have heard worse this year. Take it to|this godfather of theirs, then - and if the little|folk are killing our crops, tell them the farmers|of Gielinor carry pitchforks.");
+        } else {
+            ~chatnpc("<p,neutral>A wizard named Zandar Horfyre, up in the Dark|Wizards' Tower. The farmers say he knows about the|winged folk. Go and see him.");
+        }
+    case ^fq_godfather :
+        ~chatnpc("<p,neutral>The godfather of the fairies, in Zanaris. Off you|go, then - mind the lumbridge shed.");
+    case default :
+        ~chatnpc("<p,neutral>The fairies will mend the crops, so they say.|And if they do not, we will see about those|pitchforks. Thanks for the legwork.");
+}
+
+// A fruit gardener - one of the scared farmers.
+[opnpc1,farming_gardener_fruit_3]
+if (%fairytale_multi = ^fq_farmers) {
+    ~chatnpc("<p,neutral>Little folk? Aye, I've seen 'em - dancing over the|patches of a night, small as your thumb, wings like|dragonflies. And where they dance, the crops die by|morning. Old Zandar Horfyre in the Dark Wizards' Tower|knows more than he lets on. He studies 'em, does Zandar.|Wrote it all down somewhere.");
+    %fairytale_multi = ^fq_zandar;
+    ~send_quest_progress(questlist:fairy_farmers, %fairytale_multi, ^fq_complete);
+} else {
+    ~chatnpc("<p,neutral>Leave the tools be, and the gardener be. It's been|a hard year for growing anything, conversation included.");
+}
+
+// Zandar Horfyre - Dark Wizards' Tower.
+[opnpc1,zandar_horfyre]
+if (%fairytale_multi = ^fq_zandar) {
+    ~chatnpc("<p,neutral>Fairies killing crops? No, no - fairies are the|reason crops grow at all. What the farmers describe is|fairy magic gone wrong, or fairy magic gone missing.|Here - a list of the symptoms as reported. Take it to|the Fairy Godfather in Zanaris, through the shed in|Lumbridge swamp. He is... political, as fairies go.|Mind your manners and your pockets.");
+    inv_add(inv, fairy_symptoms_list, 1);
+    %fairytale_multi = ^fq_godfather;
+    ~send_quest_progress(questlist:fairy_farmers, %fairytale_multi, ^fq_complete);
+    mes("Zandar Horfyre gives you a list of symptoms.");
+} else {
+    ~chatnpc("<p,neutral>The tower is closed to visitors. Well - it is|always closed to visitors. You are simply more|visitor than most.");
+}
+
+// The Fairy Godfather - Zanaris.
+[opnpc1,fairy_godfather]
+if (%fairytale_multi = ^fq_godfather) {
+    if (inv_total(inv, fairy_symptoms_list) > 0) {
+        ~chatnpc("<p,neutral>Let's see what we have here. Withered stems, black|roots, no response to charms... Yeah, yeah. The Queen's|sick, see? Real sick. The whole of Zanaris is her|garden, capisce? No Queen, no magic, no crops for your|farmers. We're looking for a cure. Until then - take|these secateurs back to your farmer friend. Tell him|the fairies will handle it. We handle everything.");
+        inv_del(inv, fairy_symptoms_list, 1);
+        inv_add(inv, fairy_enchanted_secateurs, 1);
+        %fairytale_multi = ^fq_complete;
+        ~send_quest_progress(questlist:fairy_farmers, %fairytale_multi, ^fq_complete);
+        queue(fq_complete, 0, 0);
+    } else {
+        ~chatnpc("<p,neutral>You lost the list? Some messenger. Get it back|from the wizard and we'll talk business.");
+    }
+} else {
+    ~chatnpc("<p,neutral>The Queen's sick, the crops are dying, and I got|fairies stepping on each other's wings. What do you|want, a hug? Beat it.");
+}
+
+[queue,fq_complete]
+session_log(^log_adventure, "Quest complete: A Fairy Tale Pt. 1 - Growing Pains");
+~send_quest_complete(questlist:fairy_farmers, fairy_enchanted_secateurs, 200, ^fq_questpoints, "You have completed A Fairy Tale Pt. 1!", "2 quest points");
+
+[if_button,questlist:fairy_farmers]
+def_string $text;
+switch_int (%fairytale_multi) {
+    case ^fq_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Martin the Master Farmer@dbl@ in Draynor Village.";
+    case ^fq_farmers : $text = "@str@The crops are failing across Gielinor.||@dbl@I should ask a @dre@farmer@dbl@ what they have seen.";
+    case ^fq_zandar : $text = "@str@The farmers speak of little winged folk.||@dbl@I should ask @dre@Zandar Horfyre@dbl@ in the Dark Wizards' Tower about them.";
+    case ^fq_godfather : $text = "@str@Zandar gave me a list of symptoms.||@dbl@I should take it to the @dre@Fairy Godfather@dbl@ in Zanaris.";
+    case default : $text = "@str@The Fairy Queen is sick; the fairies will mend the crops.||@red@QUEST COMPLETE!";
+}
+~quest_journal("A Fairy Tale Pt. 1 - Growing Pains", $text);

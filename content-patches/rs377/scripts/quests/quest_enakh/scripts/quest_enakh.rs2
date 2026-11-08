@@ -1,0 +1,94 @@
+// Enakhra's Lament - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp enakh_quest_expositbits (batch-5 patch).
+// NOT IMPLEMENTED: the full statue-building puzzle and the bone guardian fight; the chain
+// here is a condensed reconstruction. Rewards: 2 quest points.
+// Lazim, a weary dwarf at the desert quarry, wants a statue built.
+
+// Lazim - the quarry south of the Bandit Camp.
+[opnpc1,enakh_lazim]
+switch_int (%enakh_quest_expositbits) {
+    case ^en_not_started :
+        ~chatnpc("<p,neutral>Ah - a traveller with a strong back. Look at this place:|sandstone, granite, and a dwarf with a dream. I mean to build|a statue here that will be remembered. My hands are too old|for the chisel now. Take this block of sandstone - carve it|for me, and I will see you paid.");
+        inv_add(inv, enakh_sandstone_large, 1);
+        %enakh_quest_expositbits = ^en_carve;
+        ~send_quest_progress(questlist:enakh, %enakh_quest_expositbits, ^en_complete);
+    case ^en_carve :
+        if (inv_total(inv, enakh_sandstone_medium) > 1) {
+            ~chatnpc("<p,neutral>Two clean blocks - that's the work of a proper mason.|(Lazim stacks the blocks and shapes them with surprising|speed for hands he calls too old.)|There. A statue to stand the ages. And now...|Now I need it to stand somewhere else. Somewhere below.|Push it over the soft ground, there.");
+            inv_del(inv, enakh_sandstone_medium, 2);
+            %enakh_quest_expositbits = ^en_statue;
+            ~send_quest_progress(questlist:enakh, %enakh_quest_expositbits, ^en_complete);
+        } else {
+            ~chatnpc("<p,neutral>Carve the large block with your chisel - two medium|blocks is what the statue needs.");
+        }
+    case ^en_statue :
+        ~chatnpc("<p,neutral>PUSH. THE. STATUE. The ground will do the rest.");
+    case ^en_temple :
+        ~chatnpc("<p,neutral>So. The temple of my masters, buried where no one|would look. Go down and speak with the hooded one -|she has waited a very long time for a visitor.");
+    case ^en_awaken :
+        ~chatnpc("<p,neutral>The guardian wakes? Then it is nearly finished.|Go back down. What happens next should be witnessed.");
+    case default :
+        ~chatnpc("<p,neutral>The desert keeps its secrets, and I keep mine.|You have earned your pay - and my silence.");
+}
+
+// Carve the large sandstone block with a chisel.
+[opheld1,enakh_sandstone_large]
+if (inv_total(inv, chisel) > 0) {
+    inv_del(inv, enakh_sandstone_large, 1);
+    inv_add(inv, enakh_sandstone_medium, 2);
+    mes("You carve the large sandstone block into two medium blocks.");
+} else {
+    mes("I need a chisel to carve this sandstone.");
+}
+
+// Push the finished statue over the soft ground.
+[opnpc1,enakh_lazim_statue_east_multinpc]
+if (%enakh_quest_expositbits = ^en_statue) {
+    ~chatnpc("<p,neutral>(You give the statue a shove. It tips, topples - and|sinks, grinding, into the soft sand. Stairs gape where|it stood, leading down into the dark.)");
+    %enakh_quest_expositbits = ^en_temple;
+    ~send_quest_progress(questlist:enakh, %enakh_quest_expositbits, ^en_complete);
+    mes("The statue sinks into the ground, revealing stairs below.");
+} else {
+    mes("A half-built statue of sandstone blocks.");
+}
+
+// The hooded one - the temple below the quarry.
+[opnpc1,enakh_enakhra_hooded]
+if (%enakh_quest_expositbits = ^en_temple) {
+    ~chatnpc("<p,neutral>At last. A visitor. Do you know how long it has been,|mortal, since anything walked down those stairs that was|not bone? I am called Enakhra. The one who sleeps in|this temple is called Akthanakos - and he is not a|friend of mine. Wake the bone guardian at the altar.|Wake it, and I will handle the rest.");
+    %enakh_quest_expositbits = ^en_awaken;
+    ~send_quest_progress(questlist:enakh, %enakh_quest_expositbits, ^en_complete);
+} else {
+    if (%enakh_quest_expositbits = ^en_awaken) {
+        ~chatnpc("<p,neutral>The guardian, mortal. The altar. Do try to keep up.");
+    } else {
+        ~chatnpc("<p,neutral>Go. This is no place for the living.");
+    }
+}
+
+// The bone guardian - it is not what it seems.
+[opnpc1,enakh_boneguard]
+if (%enakh_quest_expositbits = ^en_awaken) {
+    ~chatnpc("<p,neutral>(The bone guardian shudders, and turns its skull to face|you. When it speaks, the voice is not a guardian's.)|'Enakhra's puppet no longer. Hear me, mortal: I am|Akthanakos. She would use you to free her and bind me|here forever. Break the altar's focus - the pedestal|stone - and her hold on this place breaks with it.'");
+    %enakh_quest_expositbits = ^en_complete;
+    ~send_quest_progress(questlist:enakh, %enakh_quest_expositbits, ^en_complete);
+    queue(en_complete, 0, 0);
+} else {
+    mes("A guardian of bone, still as the grave.");
+}
+
+[queue,en_complete]
+session_log(^log_adventure, "Quest complete: Enakhra's Lament");
+~send_quest_complete(questlist:enakh, enakh_sandstone_medium, 200, ^en_questpoints, "You have completed Enakhra's Lament!", "2 quest points");
+
+[if_button,questlist:enakh]
+def_string $text;
+switch_int (%enakh_quest_expositbits) {
+    case ^en_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Lazim@dbl@ at the quarry south of the Bandit Camp.";
+    case ^en_carve : $text = "@str@Lazim wants a statue built.||@dbl@I should carve the @dre@sandstone block@dbl@ with a @dre@chisel@dbl@ and bring him the blocks.";
+    case ^en_statue : $text = "@str@The statue is built.||@dbl@I should @dre@push the statue@dbl@ over the soft ground.";
+    case ^en_temple : $text = "@str@The statue sank, revealing stairs below.||@dbl@I should speak with the @dre@hooded one@dbl@ in the temple.";
+    case ^en_awaken : $text = "@str@Enakhra asked me to wake the bone guardian.||@dbl@I should speak to the @dre@bone guardian@dbl@ at the altar.";
+    case default : $text = "@str@Akthanakos is free of Enakhra's binding.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Enakhra's Lament", $text);

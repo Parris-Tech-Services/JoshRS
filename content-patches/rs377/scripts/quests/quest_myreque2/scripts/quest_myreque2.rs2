@@ -1,0 +1,73 @@
+// In Aid of the Myreque - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp myreque_2_main_var (batch-5 patch).
+// NOT IMPLEMENTED: the Burgh de Rott repair minigames and the juvinate fight; the chain
+// here is a condensed reconstruction. Rewards: 2 quest points.
+// The Myreque have fled the Hollows for Burgh de Rott, and Veliaf Hurtz needs silver.
+
+// Veliaf Hurtz - Burgh de Rott, the Myreque's new refuge.
+[opnpc1,burgh_rescue_veliaf_hurtz_talk]
+switch_int (%myreque_2_main_var) {
+    case ^mi_not_started :
+        ~chatnpc("<p,neutral>So. You found us again. The Hollows are lost -|the Vyrelords burned every bridge behind us - and|Burgh de Rott is where we make our stand. But stand|we cannot, not with steel alone. The vyres cannot|abide silver. A sickle of silver, blessed by the|powers of nature - that is a weapon a Myreque can|carry. Get me one, and you will have earned our|thanks twice over.");
+        inv_add(inv, sickle_mould, 1);
+        %myreque_2_main_var = ^mi_sickle;
+        ~send_quest_progress(questlist:myreque_2, %myreque_2_main_var, ^mi_complete);
+    case ^mi_sickle :
+        if (inv_total(inv, silver_sickle) > 0) {
+            ~chatnpc("<p,neutral>A silver sickle, and honest work in the making.|But a sickle is not enough - it must be blessed, or|it is just farming equipment with opinions. Take it|to the nature grotto, south of Mort Myre, and bless|it on the altar there. Nature's power is the one|thing the vyres fear as much as silver.");
+        } else {
+            ~chatnpc("<p,neutral>The mould I gave you - use it with a silver bar,|at a furnace. A smith of any skill can manage it.|The silver itself, you will have to find.");
+        }
+    case ^mi_blessed :
+        if (inv_total(inv, silver_sickle_blessed) > 0) {
+            ~chatnpc("<p,neutral>Blessed silver. Listen to it - the swamp itself|hums through the blade. (Veliaf takes the sickle,|weighs it, and hangs it at his belt with great care.)|The Myreque have a weapon again, and a friend again.|When we move against the vyres, you will hear of it.|Until then - the swamp keeps its own counsel.");
+            inv_del(inv, silver_sickle_blessed, 1);
+            queue(mi_complete, 0, 0);
+        } else {
+            ~chatnpc("<p,neutral>The nature grotto, south of Mort Myre. Bless the|sickle on the altar, and bring it back to me.");
+        }
+    case default :
+        ~chatnpc("<p,neutral>Burgh de Rott holds, and the Myreque with it.|The sickle hangs at my belt, and the vyres will learn|to fear it. You did well, friend.");
+}
+
+// Craft the silver sickle from the mould and a silver bar.
+[opheld1,sickle_mould]
+if (inv_total(inv, silver_bar) > 0) {
+    inv_del(inv, silver_bar, 1);
+    inv_del(inv, sickle_mould, 1);
+    inv_add(inv, silver_sickle, 1);
+    mes("You cast a silver sickle from the mould and the silver bar.");
+} else {
+    mes("I need a silver bar to cast a sickle from this mould.");
+}
+
+// Bless the silver sickle at the nature grotto altar.
+[opheld1,silver_sickle]
+if (%myreque_2_main_var = ^mi_sickle) {
+    if (inv_total(inv, silver_sickle) > 0) {
+        inv_del(inv, silver_sickle, 1);
+        inv_add(inv, silver_sickle_blessed, 1);
+        %myreque_2_main_var = ^mi_blessed;
+        ~send_quest_progress(questlist:myreque_2, %myreque_2_main_var, ^mi_complete);
+        mes("You hold the sickle over the nature grotto's altar. The swamp's power|settles into the silver like mist into water.");
+    } else {
+        mes("A silver sickle of Myreque make.");
+    }
+} else {
+    mes("A silver sickle of Myreque make.");
+}
+
+[queue,mi_complete]
+%myreque_2_main_var = ^mi_complete;
+session_log(^log_adventure, "Quest complete: In Aid of the Myreque");
+~send_quest_complete(questlist:myreque_2, silver_sickle_blessed, 200, ^mi_questpoints, "You have completed In Aid of the Myreque!", "2 quest points");
+
+[if_button,questlist:myreque_2]
+def_string $text;
+switch_int (%myreque_2_main_var) {
+    case ^mi_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Veliaf Hurtz@dbl@ in Burgh de Rott.";
+    case ^mi_sickle : $text = "@str@Veliaf needs a blessed silver sickle.||@dbl@I should cast a @dre@silver sickle@dbl@ from the mould and a @dre@silver bar@dbl@, then bless it at the @dre@nature grotto@dbl@ altar.";
+    case ^mi_blessed : $text = "@str@The sickle is blessed with nature's power.||@dbl@I should bring it to @dre@Veliaf Hurtz@dbl@.";
+    case default : $text = "@str@The Myreque have their weapon and their refuge.||@red@QUEST COMPLETE!";
+}
+~quest_journal("In Aid of the Myreque", $text);

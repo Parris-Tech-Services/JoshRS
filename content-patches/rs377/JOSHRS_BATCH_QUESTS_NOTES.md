@@ -155,6 +155,33 @@ folders + the Morytania addendum files -> BUILD_VERIFY compile exit 0 (12.7s pac
 smoke_377.py green. CI script updated to 24 patches / 24 folders / 24 quest-list keys /
 23 permanent varp blocks.
 
+## Batch 5 - next-oldest not-started quests (2026-11-08, quest audit round 2 continued)
+
+Five more quests, all JoshRS-original reconstructions in the established pattern. After this
+batch the queue doc's not-started list is exhausted except for the four STUB quests and
+Monkey Madness (parallel session, PR #148):
+
+| Folder | Quest | Released | Varp | Start NPC |
+|---|---|---|---|---|
+| quest_ratcatch | Rat Catchers | 2005-10-10 | main_ratcatch_var | ratcatchers' chief guard (ratcatcher_chiefguard; Gertrude has two existing handlers) |
+| quest_devious | Devious Minds | 2005-10-31 | devious_base | hooded monk (devious_monk_hooded) |
+| quest_enakh | Enakhra's Lament | 2005-11-15 | enakh_quest_expositbits | Lazim (enakh_lazim) |
+| quest_fairytale | A Fairy Tale Pt. 1 | 2006-02-27 | fairytale_multi | Martin the Master Farmer (martin_the_master_farmer) |
+| quest_myreque2 | In Aid of the Myreque | 2006-03-30 | myreque_2_main_var | Veliaf Hurtz (burgh_rescue_veliaf_hurtz_talk; route_veliaf_hurtz is owned by quest_myreque) |
+
+New patches (anchored on the post-0024 state):
+- `0025-batch5-quest-varps-permanent.patch` - scope=perm on the five quest varps in all.varp.
+- `0026-register-batch5-quests.patch` - 5 QP blocks + 5 quest-list colour lines in quests.rs2.
+- No handler-extension patch: every start NPC was a fresh cache NPC with no existing opnpc1.
+  Stand-ins were needed where the canonical NPC is already owned (Gertrude -> ratcatcher_chiefguard;
+  Veliaf Hurtz -> burgh_rescue_veliaf_hurtz_talk).
+
+Verification: full chain 0001-0026 applied in order + all 29 quest folders + the Morytania
+addendum files on the post-#160 tree (=/tmp/b5) -> BUILD_VERIFY compile exit 0 (18.5s full
+pack, engine stamp cache cleared first - the cache can mask duplicate-trigger errors) and
+smoke_377.py green. CI script updated to 26 patches / 29 folders / 29 quest-list keys /
+28 permanent varp blocks.
+
 New engine facts: NPC trigger names resolve via npc.pack names (`[opnpc1,<name>]`); cache
 quest NPCs exist with quest prefixes (favour_*, dwarfrock_*, feud_*, zogre_*, dwarf_city_*,
 tog_*) and quest items in obj.pack - checked all referenced names against both packs and
