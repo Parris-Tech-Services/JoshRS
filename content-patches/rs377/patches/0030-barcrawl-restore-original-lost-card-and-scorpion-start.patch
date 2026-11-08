@@ -17,6 +17,20 @@ index 7b48c2c6..7543e810 100644
      inv_add(inv, barcrawl_card, 1);
      ~mesbox("The guard hands you a Barcrawl card");
  } else if(inv_total(bank, barcrawl_card) > 0 & inv_total(inv, barcrawl_card) = 0 ) {
+diff --git a/scripts/areas/area_karamja/scripts/zambo.rs2 b/scripts/areas/area_karamja/scripts/zambo.rs2
+index cda8b10b..223a9b15 100644
+--- a/scripts/areas/area_karamja/scripts/zambo.rs2
++++ b/scripts/areas/area_karamja/scripts/zambo.rs2
+@@ -31,8 +31,7 @@ mes("You buy some Ape Bite Liqueur.");
+ p_delay(2);
+ mes("You swirl it around and swallow it.");
+ p_delay(2);
+-stat_sub(attack, 5, 5);
+-stat_sub(defence, 5, 5);
++// Ape Bite Liqueur has no stat or life-point penalty in the 2004-2007 guides (RuneHQ, Tip.it).
+ mes("Zambo signs your card.");
+ p_delay(2);
+ %barcrawl = setbit(%barcrawl, ^karamjaspirits_index);
 diff --git a/scripts/areas/area_seers/scripts/thormac.rs2 b/scripts/areas/area_seers/scripts/thormac.rs2
 index 2ec608bf..1186a62f 100644
 --- a/scripts/areas/area_seers/scripts/thormac.rs2

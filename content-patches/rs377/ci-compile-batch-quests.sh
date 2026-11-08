@@ -124,6 +124,8 @@ assert guard.count('inv_freespace(inv) < 1') >= 2, 'guard must check space for f
 assert '%barcrawl = 1;' in guard and 'start all over' in guard, 'lost card must restart the Barcrawl (original behaviour, patch 0030)'
 assert 'if(%barcrawl ! ^barcrawl_complete) {\n        mes("Finish Alfred Grimhand' in gate, 'gate must deny entry'
 assert 'barcrawl_complete' not in thormac, 'Scorpion Catcher has no Barcrawl start requirement (patch 0030)'
+zambo = (scripts / 'areas/area_karamja/scripts/zambo.rs2').read_text()
+assert 'stat_sub' not in zambo, 'Ape Bite Liqueur has no stat penalty in period guides (patch 0030)'
 assert 'if(inv_total(inv, coins) < 8)' in rusty and 'inv_del(inv, coins, 8);' in rusty, 'Rusty Anchor charge'
 zambo = (scripts / 'areas/area_karamja/scripts/zambo.rs2').read_text()
 assert 'stat_sub(attack, 5, 5);\nstat_sub(defence, 5, 5);' in zambo, 'Ape Bite temporary debuffs'
