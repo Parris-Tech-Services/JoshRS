@@ -2056,9 +2056,17 @@ export function tickFredAndGeorgeBots(world: WorldRuntime): void {
                 }
             } else if (world.currentTick - state.relogTick >= 25) {
                 if (world.logoutRequests.has(name) || admitted) {
-                    // Avoid creating a duplicate while an old logout or queued login exists.
-                    state.currentTask = 'relog_waiting_for_world_or_logout';
-                    state.relogTick = world.currentTick;
+                    // Avoid duplicates, but never wait forever on a stuck admission/logout.
+                    state.relogAttempts++;
+                    state.currentTask = state.relogAttempts >= 3
+                        ? 'relog_admission_stalled_needs_operator'
+                        : 'relog_waiting_for_world_or_logout';
+                    if (state.relogAttempts >= 3) {
+                        state.relogTick = -1;
+                        console.error('[Fred & George] ' + name + ' admission still pending: refusing duplicate player creation.');
+                    } else {
+                        state.relogTick = world.currentTick;
+                    }
                 } else if (state.relogAttempts < 3) {
                     const savePath = getSavePath(name);
                     if (!fs.existsSync(savePath) || !PlayerLoading.verify(new Packet(fs.readFileSync(savePath)))) {
