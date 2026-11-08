@@ -57,27 +57,26 @@ if (inv_total(inv, steel_dagger) < 1 | inv_total(inv, steel_mace) < 1 |
 }
 return(true);
 
-// Bitmask of five introductions held within existing permanent routequest varp.
+// Five unique introductions use dedicated *existing* cache varp ID 389,
+// so quest stage only records major story milestones.
 [proc,route_members_count]()(int)
 if (%routequest < ^route_hideout) return(0);
-if (%routequest > ^route_members_met) return(^route_member_count);
-def_int $flags = calc(%routequest - ^route_hideout);
+if (%routequest >= ^route_hound_fight) return(^route_member_count);
 def_int $count = 0;
 def_int $i = 0;
 while ($i < ^route_member_count) {
-    if (testbit($flags, $i) = ^true) $count = calc($count + 1);
+    if (testbit(%routequest_myreque_bits, $i) = ^true) $count = calc($count + 1);
     $i = calc($i + 1);
 }
 return($count);
 
 [proc,route_mark_member](int $bit)
-if (%routequest < ^route_hideout | %routequest >= ^route_members_met) return;
-def_int $flags = calc(%routequest - ^route_hideout);
-if (testbit($flags, $bit) = ^false) {
-    $flags = setbit($flags, $bit);
-    %routequest = calc(^route_hideout + $flags);
+if (%routequest < ^route_hideout | %routequest > ^route_members_met) return;
+if (testbit(%routequest_myreque_bits, $bit) = ^false) {
+    %routequest_myreque_bits = setbit(%routequest_myreque_bits, $bit);
 }
-if (%routequest = ^route_members_met) {
+if (~route_members_count = ^route_member_count) {
+    %routequest = ^route_members_met;
     mes("You have spoken to all five members. Return to Veliaf.");
 }
 
