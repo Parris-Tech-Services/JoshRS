@@ -1,16 +1,16 @@
 {
-  "candidate_pool": 4924,
+  "candidate_pool": 5423,
   "deduplicated_reference_versions": 1783,
-  "next_rotation_offset": 2700,
+  "next_rotation_offset": 2800,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
-  "raw_reference_versions": 6707,
-  "rotation_offset": 2600,
+  "raw_reference_versions": 7206,
+  "rotation_offset": 2700,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
     {
       "automatically_installed": false,
-      "candidate_id": "11a6e5d91ade4380aabd",
+      "candidate_id": "9a5f749f23a4de0d1257",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -18,17 +18,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/bots/BotConstants.java",
+      "path": "scripts/quests/quest_grail/configs/quest_grail.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/bots/BotConstants.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_grail/configs/quest_grail.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-11a6e5d91ade4380aabd"
+      "work_id": "377-9a5f749f23a4de0d1257"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8b24abff56f855e897c9",
+      "candidate_id": "abb6919be1a5206a87a1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -36,17 +36,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/bots/BotHandler.java",
+      "path": "scripts/quests/quest_grandtree/configs/quest_grandtree.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/bots/BotHandler.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_grandtree/configs/quest_grandtree.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-8b24abff56f855e897c9"
+      "work_id": "377-abb6919be1a5206a87a1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "75d7fff887c19aaeabb1",
+      "candidate_id": "a12b6d09a4a53024a68b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -54,17 +54,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/BankPin.java",
+      "path": "scripts/quests/quest_grandtree/configs/quest_grandtree.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/BankPin.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_grandtree/configs/quest_grandtree.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-75d7fff887c19aaeabb1"
+      "work_id": "377-a12b6d09a4a53024a68b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "630feb881bd55a695322",
+      "candidate_id": "cdc4e6fbad0e9ddca2d4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -72,17 +72,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/EmoteHandler.java",
+      "path": "scripts/quests/quest_grandtree/configs/quest_grandtree.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/EmoteHandler.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_grandtree/configs/quest_grandtree.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-630feb881bd55a695322"
+      "work_id": "377-cdc4e6fbad0e9ddca2d4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f2dd39ebd0817310bdc1",
+      "candidate_id": "59871b816d8ed6dfb379",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -90,17 +90,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/StaticItemList.java",
+      "path": "scripts/quests/quest_haunted/configs/ernest.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/StaticItemList.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_haunted/configs/ernest.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-f2dd39ebd0817310bdc1"
+      "work_id": "377-59871b816d8ed6dfb379"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4adb9eb457fb5ce0b26e",
+      "candidate_id": "c299db29d0cdbeff8a9a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -108,17 +108,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/StaticNpcList.java",
+      "path": "scripts/quests/quest_haunted/configs/quest_haunted.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/StaticNpcList.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_haunted/configs/quest_haunted.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-4adb9eb457fb5ce0b26e"
+      "work_id": "377-c299db29d0cdbeff8a9a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7c18978bbbfacbd1cba7",
+      "candidate_id": "3579cf85885231a29a84",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -126,17 +126,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/StaticObjectList.java",
+      "path": "scripts/quests/quest_haunted/configs/quest_haunted.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/StaticObjectList.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_haunted/configs/quest_haunted.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-7c18978bbbfacbd1cba7"
+      "work_id": "377-3579cf85885231a29a84"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b6dd44a71216f5a71acc",
+      "candidate_id": "247e131638eee308cd4d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -144,17 +144,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/AttackType.java",
+      "path": "scripts/quests/quest_hazeelcult/configs/quest_hazeelcult.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/AttackType.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_hazeelcult/configs/quest_hazeelcult.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-b6dd44a71216f5a71acc"
+      "work_id": "377-247e131638eee308cd4d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "993d0f3cb15adb7b49c4",
+      "candidate_id": "4d301f5d0682329c2853",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -162,17 +162,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/CombatAssistant.java",
+      "path": "scripts/quests/quest_hazeelcult/configs/quest_hazeelcult.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/CombatAssistant.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_hazeelcult/configs/quest_hazeelcult.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-993d0f3cb15adb7b49c4"
+      "work_id": "377-4d301f5d0682329c2853"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f7b22511833155cd5ab7",
+      "candidate_id": "d38459396673b117cb92",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -180,17 +180,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/CombatConstants.java",
+      "path": "scripts/quests/quest_hazeelcult/configs/quest_hazeelcult.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/CombatConstants.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_hazeelcult/configs/quest_hazeelcult.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-f7b22511833155cd5ab7"
+      "work_id": "377-d38459396673b117cb92"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "eacda818c4d4f68f7a75",
+      "candidate_id": "c797aefe269e27ae7f84",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -198,17 +198,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/Specials.java",
+      "path": "scripts/quests/quest_hero/configs/quest_hero.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/Specials.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_hero/configs/quest_hero.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-eacda818c4d4f68f7a75"
+      "work_id": "377-c797aefe269e27ae7f84"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d94dfda0218e0b1cc5b2",
+      "candidate_id": "d8e88c5af15e971bf6bc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -216,17 +216,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/CastOnOther.java",
+      "path": "scripts/quests/quest_hero/configs/quest_hero.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/CastOnOther.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_hero/configs/quest_hero.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-d94dfda0218e0b1cc5b2"
+      "work_id": "377-d8e88c5af15e971bf6bc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "683a756daf9095c273f5",
+      "candidate_id": "0573cc2d4c86a3978669",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -234,17 +234,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/CastRequirements.java",
+      "path": "scripts/quests/quest_hero/configs/quest_hero.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/CastRequirements.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_hero/configs/quest_hero.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-683a756daf9095c273f5"
+      "work_id": "377-0573cc2d4c86a3978669"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3b5c29e39643c4d4f352",
+      "candidate_id": "0eee42b1b055f521efb6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -252,17 +252,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/Enchanting.java",
+      "path": "scripts/quests/quest_hetty/configs/quest_hetty.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/Enchanting.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_hetty/configs/quest_hetty.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-3b5c29e39643c4d4f352"
+      "work_id": "377-0eee42b1b055f521efb6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7ddaf9c9c9b23daecf85",
+      "candidate_id": "584e28c0bd12471362ea",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -270,17 +270,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/MagicData.java",
+      "path": "scripts/quests/quest_horror/configs/quest_horror.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/MagicData.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_horror/configs/quest_horror.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-7ddaf9c9c9b23daecf85"
+      "work_id": "377-584e28c0bd12471362ea"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "82449687dc379f8eb2be",
+      "candidate_id": "87affcf104f8264c8df7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -288,17 +288,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/MagicMaxHit.java",
+      "path": "scripts/quests/quest_horror/configs/quest_horror.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/MagicMaxHit.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_horror/configs/quest_horror.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-82449687dc379f8eb2be"
+      "work_id": "377-87affcf104f8264c8df7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1910638fe8b16512b135",
+      "candidate_id": "6339a179783f1c049eea",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -306,17 +306,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/MagicRequirements.java",
+      "path": "scripts/quests/quest_horror/configs/quest_horror.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/MagicRequirements.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_horror/configs/quest_horror.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-1910638fe8b16512b135"
+      "work_id": "377-6339a179783f1c049eea"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ddc29fa17549a313c1f4",
+      "candidate_id": "200e646c85387f916c3d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -324,17 +324,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/MagicSpells.java",
+      "path": "scripts/quests/quest_hunt/configs/quest_hunt.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/MagicSpells.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_hunt/configs/quest_hunt.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-ddc29fa17549a313c1f4"
+      "work_id": "377-200e646c85387f916c3d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "71e1f2a944cf3d850f8f",
+      "candidate_id": "ef9fc79ec445918daa33",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -342,17 +342,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/MagicTeleports.java",
+      "path": "scripts/quests/quest_hunt/configs/quest_hunt.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/MagicTeleports.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_hunt/configs/quest_hunt.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-71e1f2a944cf3d850f8f"
+      "work_id": "377-ef9fc79ec445918daa33"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "88b1fc8e643152523cc7",
+      "candidate_id": "3d50d3b2c31c7baa7383",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -360,17 +360,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/NonCombatSpells.java",
+      "path": "scripts/quests/quest_ikov/configs/quest_ikov.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/NonCombatSpells.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_ikov/configs/quest_ikov.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-88b1fc8e643152523cc7"
+      "work_id": "377-3d50d3b2c31c7baa7383"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f92e2b777796a2dd8df7",
+      "candidate_id": "30f9515b6614d698dcdb",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -378,17 +378,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/SpellTeleport.java",
+      "path": "scripts/quests/quest_ikov/configs/quest_ikov.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/SpellTeleport.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_ikov/configs/quest_ikov.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-f92e2b777796a2dd8df7"
+      "work_id": "377-30f9515b6614d698dcdb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "95ae960cc883b463426c",
+      "candidate_id": "8e1c8c660a0e7d72dbe4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -396,17 +396,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/melee/MeleeData.java",
+      "path": "scripts/quests/quest_ikov/configs/quest_ikov.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/melee/MeleeData.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_ikov/configs/quest_ikov.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-95ae960cc883b463426c"
+      "work_id": "377-8e1c8c660a0e7d72dbe4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e73aefe0a43b5a58dbcc",
+      "candidate_id": "7b6d8a3e6c7ec084ef4e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -414,17 +414,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/melee/MeleeMaxHit.java",
+      "path": "scripts/quests/quest_imp/configs/quest_imp.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/melee/MeleeMaxHit.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_imp/configs/quest_imp.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-e73aefe0a43b5a58dbcc"
+      "work_id": "377-7b6d8a3e6c7ec084ef4e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "59620d8de5a8c5ee2bed",
+      "candidate_id": "85c89babf54aae737abe",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -432,17 +432,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/melee/PlayerKilling.java",
+      "path": "scripts/quests/quest_itexam/configs/quest_itexam.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/melee/PlayerKilling.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_itexam/configs/quest_itexam.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-59620d8de5a8c5ee2bed"
+      "work_id": "377-85c89babf54aae737abe"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b5f2cb5acd0f01fd2852",
+      "candidate_id": "cfa145d1e37fb3a4e587",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -450,17 +450,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/npcs/NpcAggressive.java",
+      "path": "scripts/quests/quest_itexam/configs/quest_itexam.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/npcs/NpcAggressive.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_itexam/configs/quest_itexam.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-b5f2cb5acd0f01fd2852"
+      "work_id": "377-cfa145d1e37fb3a4e587"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "330146720e4f5d755760",
+      "candidate_id": "e35d48c3f4a0ead0083d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -468,17 +468,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/npcs/NpcCombat.java",
+      "path": "scripts/quests/quest_itgronigen/configs/grave_of_scorpius.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/npcs/NpcCombat.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_itgronigen/configs/grave_of_scorpius.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-330146720e4f5d755760"
+      "work_id": "377-e35d48c3f4a0ead0083d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "443e1e65cf8bacc45f07",
+      "candidate_id": "4cec6396924e09c16efc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -486,17 +486,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/npcs/NpcEmotes.java",
+      "path": "scripts/quests/quest_itgronigen/configs/grave_of_scorpius.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/npcs/NpcEmotes.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_itgronigen/configs/grave_of_scorpius.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-443e1e65cf8bacc45f07"
+      "work_id": "377-4cec6396924e09c16efc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "df9f7ef0e6458727a99a",
+      "candidate_id": "66524374d439b66920cf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -504,17 +504,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/prayer/ActivatePrayers.java",
+      "path": "scripts/quests/quest_itgronigen/configs/quest_itgronigen.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/prayer/ActivatePrayers.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_itgronigen/configs/quest_itgronigen.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-df9f7ef0e6458727a99a"
+      "work_id": "377-66524374d439b66920cf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8ac2d9c311a3022dd8f2",
+      "candidate_id": "397fbd0f3daf20f36610",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -522,17 +522,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/prayer/PrayerData.java",
+      "path": "scripts/quests/quest_itgronigen/configs/quest_itgronigen.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/prayer/PrayerData.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_itgronigen/configs/quest_itgronigen.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-8ac2d9c311a3022dd8f2"
+      "work_id": "377-397fbd0f3daf20f36610"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "796406d109fd82fc45fa",
+      "candidate_id": "3071a8521d2c29092740",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -540,17 +540,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/prayer/PrayerDrain.java",
+      "path": "scripts/quests/quest_itgronigen/configs/quest_itgronigen.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/prayer/PrayerDrain.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_itgronigen/configs/quest_itgronigen.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-796406d109fd82fc45fa"
+      "work_id": "377-3071a8521d2c29092740"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d46c5d280008bc36d090",
+      "candidate_id": "7c3a9618b69a8d8bc7ff",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -558,17 +558,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/range/DwarfCannon.java",
+      "path": "scripts/quests/quest_itwatchtower/configs/quest_itwatchtower.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/range/DwarfCannon.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_itwatchtower/configs/quest_itwatchtower.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-d46c5d280008bc36d090"
+      "work_id": "377-7c3a9618b69a8d8bc7ff"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5358628a28f3b2894bfa",
+      "candidate_id": "d8406d09c71b0b01fe5b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -576,17 +576,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/range/RangeData.java",
+      "path": "scripts/quests/quest_itwatchtower/configs/quest_itwatchtower.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/range/RangeData.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_itwatchtower/configs/quest_itwatchtower.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-5358628a28f3b2894bfa"
+      "work_id": "377-d8406d09c71b0b01fe5b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bbfedf631bdddb34a261",
+      "candidate_id": "a4bb2a08d7a30c313069",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -594,17 +594,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/range/RangeMaxHit.java",
+      "path": "scripts/quests/quest_junglepotion/configs/quest_junglepotion.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/range/RangeMaxHit.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_junglepotion/configs/quest_junglepotion.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-bbfedf631bdddb34a261"
+      "work_id": "377-a4bb2a08d7a30c313069"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fbe65ad0b688d428e998",
+      "candidate_id": "857fb8119de6a42d5bce",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -612,17 +612,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/consumables/Beverages.java",
+      "path": "scripts/quests/quest_legends/configs/quest_legends.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/consumables/Beverages.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_legends/configs/quest_legends.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-fbe65ad0b688d428e998"
+      "work_id": "377-857fb8119de6a42d5bce"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b2ee6f93d4e940c62e79",
+      "candidate_id": "3501f26f0336ba9a27d2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -630,17 +630,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/consumables/Food.java",
+      "path": "scripts/quests/quest_legends/configs/quest_legends.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/consumables/Food.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_legends/configs/quest_legends.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-b2ee6f93d4e940c62e79"
+      "work_id": "377-3501f26f0336ba9a27d2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "33b044b85b55955a8ce5",
+      "candidate_id": "c9ddcf8a2f4f9b7d7123",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -648,17 +648,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/consumables/Kebabs.java",
+      "path": "scripts/quests/quest_legends/configs/quest_legends.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/consumables/Kebabs.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_legends/configs/quest_legends.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-33b044b85b55955a8ce5"
+      "work_id": "377-c9ddcf8a2f4f9b7d7123"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f580393f70de3e516d21",
+      "candidate_id": "20223656152866cbdb77",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -666,17 +666,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/consumables/Potions.java",
+      "path": "scripts/quests/quest_mcannon/configs/quest_mcannon.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/consumables/Potions.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_mcannon/configs/quest_mcannon.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-f580393f70de3e516d21"
+      "work_id": "377-20223656152866cbdb77"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "51019ecdb25a85185b72",
+      "candidate_id": "a5373d11111852f926cd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -684,17 +684,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/guilds/Guilds.java",
+      "path": "scripts/quests/quest_mcannon/configs/quest_mcannon.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/guilds/Guilds.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_mcannon/configs/quest_mcannon.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-51019ecdb25a85185b72"
+      "work_id": "377-a5373d11111852f926cd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fcbfaf4e0a9e1d7f1ae7",
+      "candidate_id": "80c8d2c32ac79c6805cf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -702,17 +702,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/guilds/impl/RangersGuild.java",
+      "path": "scripts/quests/quest_mcannon/configs/quest_mcannon.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/guilds/impl/RangersGuild.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_mcannon/configs/quest_mcannon.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-fcbfaf4e0a9e1d7f1ae7"
+      "work_id": "377-80c8d2c32ac79c6805cf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7b508166143a2910538c",
+      "candidate_id": "a6253bab3faf72d1b2c8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -720,17 +720,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/Barrows.java",
+      "path": "scripts/quests/quest_mcannon/configs/quest_mcannon.seq",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/Barrows.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_mcannon/configs/quest_mcannon.seq",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-7b508166143a2910538c"
+      "work_id": "377-a6253bab3faf72d1b2c8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "491ea20a80c7c42ef4a8",
+      "candidate_id": "a39aa3ba68ada8c07fbc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -738,17 +738,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/Dueling.java",
+      "path": "scripts/quests/quest_mortton/configs/quest_mortton.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/Dueling.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_mortton/configs/quest_mortton.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-491ea20a80c7c42ef4a8"
+      "work_id": "377-a39aa3ba68ada8c07fbc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a514ea10f613df70f4df",
+      "candidate_id": "cc0ed429e5adb4ee7ce5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -756,17 +756,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/FightCaves.java",
+      "path": "scripts/quests/quest_mortton/configs/quest_mortton.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/FightCaves.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_mortton/configs/quest_mortton.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-a514ea10f613df70f4df"
+      "work_id": "377-cc0ed429e5adb4ee7ce5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "082b908aefc5b3efa41d",
+      "candidate_id": "35e8d9b4cabd2fb896d8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -774,17 +774,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/FightPits.java",
+      "path": "scripts/quests/quest_murder/configs/quest_murder.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/FightPits.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_murder/configs/quest_murder.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-082b908aefc5b3efa41d"
+      "work_id": "377-35e8d9b4cabd2fb896d8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4b8228ddec959a63864b",
+      "candidate_id": "503ef532246961ef4b63",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -792,17 +792,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/PestControl.java",
+      "path": "scripts/quests/quest_murder/configs/quest_murder.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/PestControl.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_murder/configs/quest_murder.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-4b8228ddec959a63864b"
+      "work_id": "377-503ef532246961ef4b63"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c4d15e175ab0154915dd",
+      "candidate_id": "54f3f6e7580f32eb6e33",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -810,17 +810,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/TreasureTrails.java",
+      "path": "scripts/quests/quest_murder/configs/sinclair_mansion.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/TreasureTrails.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_murder/configs/sinclair_mansion.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-c4d15e175ab0154915dd"
+      "work_id": "377-54f3f6e7580f32eb6e33"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a2134d52f0a42e48816d",
+      "candidate_id": "93ec08a731c809578009",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -828,17 +828,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/castlewars/CastleWarObjects.java",
+      "path": "scripts/quests/quest_priest/configs/quest_priest.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/castlewars/CastleWarObjects.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_priest/configs/quest_priest.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-a2134d52f0a42e48816d"
+      "work_id": "377-93ec08a731c809578009"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bc79d45026b92973b3e8",
+      "candidate_id": "7cb2ea7827c418d51dec",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -846,17 +846,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/castlewars/CastleWars.java",
+      "path": "scripts/quests/quest_priest/configs/quest_priest.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/castlewars/CastleWars.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_priest/configs/quest_priest.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-bc79d45026b92973b3e8"
+      "work_id": "377-7cb2ea7827c418d51dec"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "cb912d3add02ec18afd6",
+      "candidate_id": "58a8dfec31c7142bb68c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -864,17 +864,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Alchemy.java",
+      "path": "scripts/quests/quest_priestperil/configs/priestperil.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Alchemy.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_priestperil/configs/priestperil.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-cb912d3add02ec18afd6"
+      "work_id": "377-58a8dfec31c7142bb68c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "343d79681b8c805210aa",
+      "candidate_id": "6f19d10542dd9d8fbfe9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -882,17 +882,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Enchanting.java",
+      "path": "scripts/quests/quest_priestperil/configs/priestperil.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Enchanting.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_priestperil/configs/priestperil.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-343d79681b8c805210aa"
+      "work_id": "377-6f19d10542dd9d8fbfe9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a83fd8b78579005aa6a5",
+      "candidate_id": "35c08ca05a59b518c946",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -900,17 +900,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Graveyard.java",
+      "path": "scripts/quests/quest_priestperil/configs/priestperil.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Graveyard.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_priestperil/configs/priestperil.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-a83fd8b78579005aa6a5"
+      "work_id": "377-35c08ca05a59b518c946"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f59498e7bb8e06c3b310",
+      "candidate_id": "6ef8428ecdd05b5c08bb",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -918,17 +918,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/MageTrainingArena.java",
+      "path": "scripts/quests/quest_prince/configs/quest_prince.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/MageTrainingArena.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_prince/configs/quest_prince.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-f59498e7bb8e06c3b310"
+      "work_id": "377-6ef8428ecdd05b5c08bb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fe34aef6f79a23ed5f28",
+      "candidate_id": "d301c91ebcd39eabe799",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -936,17 +936,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Telekinetic.java",
+      "path": "scripts/quests/quest_prince/configs/quest_prince.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Telekinetic.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_prince/configs/quest_prince.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-fe34aef6f79a23ed5f28"
+      "work_id": "377-d301c91ebcd39eabe799"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f650b15da767a383d217",
+      "candidate_id": "e023ddec5f2262f3f44c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -954,17 +954,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/trawler/GroupMinigame.java",
+      "path": "scripts/quests/quest_regicide/configs/quest_regicide.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/trawler/GroupMinigame.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_regicide/configs/quest_regicide.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-f650b15da767a383d217"
+      "work_id": "377-e023ddec5f2262f3f44c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "521329c33de063c5e123",
+      "candidate_id": "ed0f246ab78e5ea2cac3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -972,17 +972,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/trawler/Trawler.java",
+      "path": "scripts/quests/quest_regicide/configs/quest_regicide.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/trawler/Trawler.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_regicide/configs/quest_regicide.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-521329c33de063c5e123"
+      "work_id": "377-ed0f246ab78e5ea2cac3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "249b609186627141d641",
+      "candidate_id": "b99173cadbaf1fcc8086",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -990,17 +990,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/trawler/TrawlerWaitingRoom.java",
+      "path": "scripts/quests/quest_regicide/configs/quest_regicide.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/trawler/TrawlerWaitingRoom.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_regicide/configs/quest_regicide.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-249b609186627141d641"
+      "work_id": "377-b99173cadbaf1fcc8086"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a6f602806272056898ab",
+      "candidate_id": "ecc5a62badbf7a3becc6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1008,17 +1008,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/trawler/WaitingRoom.java",
+      "path": "scripts/quests/quest_romeojuliet/configs/quest_romeojuliet.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/trawler/WaitingRoom.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_romeojuliet/configs/quest_romeojuliet.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-a6f602806272056898ab"
+      "work_id": "377-ecc5a62badbf7a3becc6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b04c3ccedd28f604f73d",
+      "candidate_id": "50611972ce5bf7e4c481",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1026,17 +1026,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/QuestAssistant.java",
+      "path": "scripts/quests/quest_runemysteries/configs/quest_runemysteries.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/QuestAssistant.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_runemysteries/configs/quest_runemysteries.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-b04c3ccedd28f604f73d"
+      "work_id": "377-50611972ce5bf7e4c481"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c87b86a53514e4604c61",
+      "candidate_id": "d509bb109bae3b1bfa56",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1044,17 +1044,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/QuestRewards.java",
+      "path": "scripts/quests/quest_runemysteries/configs/quest_runemysteries.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/QuestRewards.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_runemysteries/configs/quest_runemysteries.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-c87b86a53514e4604c61"
+      "work_id": "377-d509bb109bae3b1bfa56"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "850d5f06684af0068724",
+      "candidate_id": "e9f7f9f228972016c350",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1062,17 +1062,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/BlackKnightsFortress.java",
+      "path": "scripts/quests/quest_scorpcatcher/configs/quest_scorpcatcher.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/BlackKnightsFortress.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_scorpcatcher/configs/quest_scorpcatcher.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-850d5f06684af0068724"
+      "work_id": "377-e9f7f9f228972016c350"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0ef36365aa48e0af2e3a",
+      "candidate_id": "3d3089b935a1eb450941",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1080,17 +1080,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/CooksAssistant.java",
+      "path": "scripts/quests/quest_scorpcatcher/configs/quest_scorpcatcher.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/CooksAssistant.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_scorpcatcher/configs/quest_scorpcatcher.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-0ef36365aa48e0af2e3a"
+      "work_id": "377-3d3089b935a1eb450941"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "427057be4468aa359dfa",
+      "candidate_id": "889eab18a387fe560c2d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1098,17 +1098,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/DoricsQuest.java",
+      "path": "scripts/quests/quest_sheepherder/configs/quest_sheepherder.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/DoricsQuest.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_sheepherder/configs/quest_sheepherder.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-427057be4468aa359dfa"
+      "work_id": "377-889eab18a387fe560c2d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6da2384a348781fbd94a",
+      "candidate_id": "5832169ae0ebcff3a7ca",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1116,17 +1116,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/GertrudesCat.java",
+      "path": "scripts/quests/quest_sheepherder/configs/quest_sheepherder.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/GertrudesCat.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_sheepherder/configs/quest_sheepherder.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-6da2384a348781fbd94a"
+      "work_id": "377-5832169ae0ebcff3a7ca"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9863539c8f54a22db512",
+      "candidate_id": "1c66abb0f4b419525bbc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1134,17 +1134,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/ImpCatcher.java",
+      "path": "scripts/quests/quest_sheepherder/configs/quest_sheepherder.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/ImpCatcher.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_sheepherder/configs/quest_sheepherder.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-9863539c8f54a22db512"
+      "work_id": "377-1c66abb0f4b419525bbc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b21ac1c3f0c8d16ab64e",
+      "candidate_id": "cb198d8a020f6a6a14dd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1152,17 +1152,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/KnightsSword.java",
+      "path": "scripts/quests/quest_squire/configs/quest_squire.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/KnightsSword.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_squire/configs/quest_squire.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-b21ac1c3f0c8d16ab64e"
+      "work_id": "377-cb198d8a020f6a6a14dd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ac3988d1992ad5cacd86",
+      "candidate_id": "df2f316877b2dcd6e919",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1170,17 +1170,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/LostCity.java",
+      "path": "scripts/quests/quest_tbwt/configs/quest_tbwt.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/LostCity.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tbwt/configs/quest_tbwt.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-ac3988d1992ad5cacd86"
+      "work_id": "377-df2f316877b2dcd6e919"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "cf7c01d91a75dda35578",
+      "candidate_id": "cea075e274e2bb6b85e2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1188,17 +1188,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/PiratesTreasure.java",
+      "path": "scripts/quests/quest_totem/configs/quest_totem.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/PiratesTreasure.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_totem/configs/quest_totem.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-cf7c01d91a75dda35578"
+      "work_id": "377-cea075e274e2bb6b85e2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "68bf36fa9a2fcb14ef05",
+      "candidate_id": "e67ad3f5e65ef5a5c0f5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1206,17 +1206,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/RestlessGhost.java",
+      "path": "scripts/quests/quest_tree/configs/gnome_battlefield.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/RestlessGhost.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tree/configs/gnome_battlefield.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-68bf36fa9a2fcb14ef05"
+      "work_id": "377-e67ad3f5e65ef5a5c0f5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d635471f3f93e50141c1",
+      "candidate_id": "5b0dd7aea1890b1d5efe",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1224,17 +1224,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/RomeoJuliet.java",
+      "path": "scripts/quests/quest_tree/configs/quest_tree.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/RomeoJuliet.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tree/configs/quest_tree.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-d635471f3f93e50141c1"
+      "work_id": "377-5b0dd7aea1890b1d5efe"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "324bac55cc92750af75e",
+      "candidate_id": "74308d0c9d2528c149bd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1242,17 +1242,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/RuneMysteries.java",
+      "path": "scripts/quests/quest_tree/configs/quest_tree.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/RuneMysteries.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tree/configs/quest_tree.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-324bac55cc92750af75e"
+      "work_id": "377-74308d0c9d2528c149bd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "da06b6f8413a073c9c53",
+      "candidate_id": "5f839a8ed96ad03dec55",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1260,17 +1260,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/SheepShearer.java",
+      "path": "scripts/quests/quest_tree/configs/tracker_gnome.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/SheepShearer.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_tree/configs/tracker_gnome.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-da06b6f8413a073c9c53"
+      "work_id": "377-5f839a8ed96ad03dec55"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "235eebf4a367536ba3f2",
+      "candidate_id": "78689756a7451e12c219",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1278,17 +1278,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/ShieldArrav.java",
+      "path": "scripts/quests/quest_troll/configs/quest_troll.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/ShieldArrav.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_troll/configs/quest_troll.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-235eebf4a367536ba3f2"
+      "work_id": "377-78689756a7451e12c219"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f5e7a11fa0b13ee073c7",
+      "candidate_id": "deb9f2365aae8e38363f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1296,17 +1296,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/VampyreSlayer.java",
+      "path": "scripts/quests/quest_troll/configs/quest_troll.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/VampyreSlayer.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_troll/configs/quest_troll.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-f5e7a11fa0b13ee073c7"
+      "work_id": "377-deb9f2365aae8e38363f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ef83ac71840dbb43be5a",
+      "candidate_id": "97cee8191f39b3b0fbf3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1314,17 +1314,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/WitchsPotion.java",
+      "path": "scripts/quests/quest_troll/configs/quest_troll.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/WitchsPotion.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_troll/configs/quest_troll.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-ef83ac71840dbb43be5a"
+      "work_id": "377-97cee8191f39b3b0fbf3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0f3d38080abc3ce8046f",
+      "candidate_id": "461e72e5eb71e71bcf46",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1332,17 +1332,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/random/Balloons.java",
+      "path": "scripts/quests/quest_upass/configs/upass.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/random/Balloons.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/configs/upass.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-0f3d38080abc3ce8046f"
+      "work_id": "377-461e72e5eb71e71bcf46"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "71d9028e20171ae3943a",
+      "candidate_id": "27f4cf406a3f231f1090",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1350,17 +1350,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/random/HolidayDrops.java",
+      "path": "scripts/quests/quest_upass/configs/upass.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/random/HolidayDrops.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/configs/upass.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-71d9028e20171ae3943a"
+      "work_id": "377-27f4cf406a3f231f1090"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "48c0d44b28a3225fb8f9",
+      "candidate_id": "22616d94f0392400a368",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1368,17 +1368,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/random/Holidays.java",
+      "path": "scripts/quests/quest_upass/configs/upass.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/random/Holidays.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_upass/configs/upass.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-48c0d44b28a3225fb8f9"
+      "work_id": "377-22616d94f0392400a368"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "eebbaacbb92de01aa0a4",
+      "candidate_id": "23896ff138255871b564",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1386,17 +1386,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/random/PartyRoom.java",
+      "path": "scripts/quests/quest_vampire/configs/quest_vampire.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/random/PartyRoom.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_vampire/configs/quest_vampire.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-eebbaacbb92de01aa0a4"
+      "work_id": "377-23896ff138255871b564"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "16ede65c2eb859be931e",
+      "candidate_id": "a26fd35037418c2d902e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1404,17 +1404,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/EvilChicken.java",
+      "path": "scripts/quests/quest_vampire/configs/quest_vampire_coffin.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/EvilChicken.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_vampire/configs/quest_vampire_coffin.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-16ede65c2eb859be931e"
+      "work_id": "377-a26fd35037418c2d902e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b2b3f9d4a23fc12df1e5",
+      "candidate_id": "9c576e876cc1f9549993",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1422,17 +1422,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/FreakyForester.java",
+      "path": "scripts/quests/quest_vampire/configs/stake.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/FreakyForester.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_vampire/configs/stake.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-b2b3f9d4a23fc12df1e5"
+      "work_id": "377-9c576e876cc1f9549993"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "83be64eda011b9b93052",
+      "candidate_id": "e6683d7de8dc4560c11d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1440,17 +1440,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/Frog.java",
+      "path": "scripts/quests/quest_viking/configs/horror_rockcrab.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/Frog.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/configs/horror_rockcrab.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-83be64eda011b9b93052"
+      "work_id": "377-e6683d7de8dc4560c11d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d2676cf068ec0eb8de80",
+      "candidate_id": "8948809f8cdd95ad501e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1458,17 +1458,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/GenieLamp.java",
+      "path": "scripts/quests/quest_viking/configs/viking.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/GenieLamp.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/configs/viking.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-d2676cf068ec0eb8de80"
+      "work_id": "377-8948809f8cdd95ad501e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ef244e8a70d5cc500c00",
+      "candidate_id": "3c029443d16e604d4825",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1476,17 +1476,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/RandomEventHandler.java",
+      "path": "scripts/quests/quest_viking/configs/viking.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/RandomEventHandler.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/configs/viking.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-ef244e8a70d5cc500c00"
+      "work_id": "377-3c029443d16e604d4825"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "27fba42a4ddd5742eb25",
+      "candidate_id": "10beb9e2ffda0187444b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1494,17 +1494,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/RiverTroll.java",
+      "path": "scripts/quests/quest_viking/configs/viking.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/RiverTroll.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/configs/viking.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-27fba42a4ddd5742eb25"
+      "work_id": "377-10beb9e2ffda0187444b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "90fdfbfb21e50497828a",
+      "candidate_id": "13cff65b63285a005c34",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1512,17 +1512,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/RockGolem.java",
+      "path": "scripts/quests/quest_viking/configs/viking.seq",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/RockGolem.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_viking/configs/viking.seq",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-90fdfbfb21e50497828a"
+      "work_id": "377-13cff65b63285a005c34"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "123d39feed5b5c8c120a",
+      "candidate_id": "daca53288cc20b3a95fb",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1530,17 +1530,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/SandwhichLady.java",
+      "path": "scripts/quests/quest_waterfall/configs/waterfall.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/SandwhichLady.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_waterfall/configs/waterfall.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-123d39feed5b5c8c120a"
+      "work_id": "377-daca53288cc20b3a95fb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "352ff92ccb997d59ed3a",
+      "candidate_id": "e8bcef1ba4c15d3eac28",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1548,17 +1548,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/Shade.java",
+      "path": "scripts/quests/quest_waterfall/configs/waterfall.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/Shade.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_waterfall/configs/waterfall.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-352ff92ccb997d59ed3a"
+      "work_id": "377-e8bcef1ba4c15d3eac28"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b403121aae04e177351b",
+      "candidate_id": "9d84950ce340a91dba05",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1566,17 +1566,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/Swarm.java",
+      "path": "scripts/quests/quest_waterfall/configs/waterfall.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/Swarm.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_waterfall/configs/waterfall.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-b403121aae04e177351b"
+      "work_id": "377-9d84950ce340a91dba05"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8a399e73b604b4a74f75",
+      "candidate_id": "7cb39f5e571340b48bc5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1584,17 +1584,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/TreeSpirit.java",
+      "path": "scripts/quests/quest_zanaris/configs/quest_zanaris.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/TreeSpirit.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_zanaris/configs/quest_zanaris.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-8a399e73b604b4a74f75"
+      "work_id": "377-7cb39f5e571340b48bc5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "54cc4e3494bd98d47a7c",
+      "candidate_id": "470322e0a18799403956",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1602,17 +1602,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/Zombie.java",
+      "path": "scripts/quests/quest_zanaris/configs/shamus.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/Zombie.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_zanaris/configs/shamus.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-54cc4e3494bd98d47a7c"
+      "work_id": "377-470322e0a18799403956"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "63937b27f389ac007c51",
+      "candidate_id": "a3cf2eadfad72c16ef43",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1620,17 +1620,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/Menus.java",
+      "path": "scripts/quests/quest_zanaris/configs/tree_spirit.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/Menus.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_zanaris/configs/tree_spirit.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-63937b27f389ac007c51"
+      "work_id": "377-a3cf2eadfad72c16ef43"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "cff4a7c6fc675ec075d7",
+      "candidate_id": "b0406bab2aa8fc90d1d5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1638,17 +1638,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/SkillConstants.java",
+      "path": "scripts/quests/quest_zombiequeen/configs/quest_zombiequeen.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/SkillConstants.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_zombiequeen/configs/quest_zombiequeen.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-cff4a7c6fc675ec075d7"
+      "work_id": "377-b0406bab2aa8fc90d1d5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ad7d544ec4db05652023",
+      "candidate_id": "1ad34c0a48f02781c079",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1656,17 +1656,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/SkillData.java",
+      "path": "scripts/quests/quest_zombiequeen/configs/quest_zombiequeen.npc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/SkillData.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_zombiequeen/configs/quest_zombiequeen.npc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-ad7d544ec4db05652023"
+      "work_id": "377-1ad34c0a48f02781c079"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0fbce759c1a6500a5b5f",
+      "candidate_id": "032f4c6a478e7a37027c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1674,17 +1674,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/SkillHandler.java",
+      "path": "scripts/quests/quest_zombiequeen/configs/quest_zombiequeen.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/SkillHandler.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/quests/quest_zombiequeen/configs/quest_zombiequeen.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-0fbce759c1a6500a5b5f"
+      "work_id": "377-032f4c6a478e7a37027c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b2bc3c355add5869b702",
+      "candidate_id": "443c039be79cea3e0c97",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1692,17 +1692,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/SkillInterfaces.java",
+      "path": "scripts/skill_agility/configs/barbarian_course.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/SkillInterfaces.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_agility/configs/barbarian_course.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-b2bc3c355add5869b702"
+      "work_id": "377-443c039be79cea3e0c97"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a9a2d910a564829f8bf2",
+      "candidate_id": "106f9ff6f12154b80b2a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1710,17 +1710,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/SkillMenu.java",
+      "path": "scripts/skill_agility/configs/gnome_course.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/SkillMenu.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_agility/configs/gnome_course.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-a9a2d910a564829f8bf2"
+      "work_id": "377-106f9ff6f12154b80b2a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1fed38ae9291a9f6d9a8",
+      "candidate_id": "5214179e2b70897235cf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1728,17 +1728,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/agility/Agility.java",
+      "path": "scripts/skill_agility/configs/shortcuts.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/agility/Agility.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_agility/configs/shortcuts.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-1fed38ae9291a9f6d9a8"
+      "work_id": "377-5214179e2b70897235cf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3e2dd246db48c602e0b5",
+      "candidate_id": "015a27c8d0e8ffb700d8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1746,17 +1746,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/agility/AgilityShortcut.java",
+      "path": "scripts/skill_agility/configs/wilderness_course.loc",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/agility/AgilityShortcut.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_agility/configs/wilderness_course.loc",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-3e2dd246db48c602e0b5"
+      "work_id": "377-015a27c8d0e8ffb700d8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1af7dcae7b3787f7d547",
+      "candidate_id": "b1ba2a125cbb3d75e6ba",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1764,17 +1764,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/agility/ApeAtollAgility.java",
+      "path": "scripts/skill_combat/configs/magic/battlestaves.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/agility/ApeAtollAgility.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/configs/magic/battlestaves.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-1af7dcae7b3787f7d547"
+      "work_id": "377-b1ba2a125cbb3d75e6ba"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a5084cc51fa15eaa8ef7",
+      "candidate_id": "6d1395d531ab744fb753",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1782,17 +1782,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/agility/BarbarianAgility.java",
+      "path": "scripts/skill_combat/configs/magic/mysticstaves.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/agility/BarbarianAgility.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/configs/magic/mysticstaves.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-a5084cc51fa15eaa8ef7"
+      "work_id": "377-6d1395d531ab744fb753"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a2ad1f15fd615e4a6604",
+      "candidate_id": "85a52c8cef77dce43ad5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1800,13 +1800,13 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/agility/GnomeAgility.java",
+      "path": "scripts/skill_combat/configs/magic/staves.obj",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/agility/GnomeAgility.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_combat/configs/magic/staves.obj",
+      "source": "LostCityRS/Content",
+      "source_commit_sha": "65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe",
       "status": "blocked_rights_review",
-      "work_id": "377-a2ad1f15fd615e4a6604"
+      "work_id": "377-85a52c8cef77dce43ad5"
     }
   ]
 }
