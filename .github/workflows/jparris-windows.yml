@@ -162,60 +162,10 @@ jobs:
           if (-not (Test-Path (Join-Path $state.engine 'src/app.ts'))) { throw 'Engine missing' }
           if (-not (Test-Path (Join-Path $state.client 'build/classes/java/main/jagex2/client/Client.class'))) { throw 'Client class missing' }
           if ($state.portOffset -ne 8808) { throw 'Client port offset wrong' }
-          $bar=(Get-Content (Join-Path $state.content 'scripts/areas/area_barbarian_outpost/scripts/outpost_gate.rs2') -Raw)
-          if ($bar -notmatch 'Finish Alfred Grimhand') { throw 'Fresh GitHub setup did not automatically install the Barcrawl guard' }
-          $friend=(Get-Content (Join-Path $state.engine '.env') -Raw)
-          if ($friend -notmatch '(?m)^FRIEND_SERVER=true\r?
-      - name: Start revision 377 game world and verify both local ports
-        shell: powershell
-        run: |
-          $state = Get-Content 'runtime/jparris-377/active.json' -Raw | ConvertFrom-Json
-          $log = Join-Path $env:RUNNER_TEMP 'joshrs-377-startup.log'
-          $command = 'npm.cmd run quickstart > "' + $log + '" 2>&1'
-          $process = Start-Process -FilePath 'cmd.exe' -ArgumentList @('/d','/c',$command) -WorkingDirectory $state.engine -PassThru -WindowStyle Hidden
-          try {
-            $ready = $false
-            for ($i = 0; $i -lt 120; $i++) {
-              $game = Get-NetTCPConnection -State Listen -LocalPort ([int]$state.gamePort) -ErrorAction SilentlyContinue
-              $web = Get-NetTCPConnection -State Listen -LocalPort ([int]$state.webPort) -ErrorAction SilentlyContinue
-              if ($game -and $web) { $ready = $true; break }
-              if ($process.HasExited) { break }
-              Start-Sleep -Seconds 5
-            }
-            if (-not $ready) { throw 'Revision 377 did not start its TCP and HTTP listeners in the test world.' }
-            Write-Host "Verified game TCP $($state.gamePort) and HTTP $($state.webPort) in a disposable Windows test world."
-          } finally {
-            if (Test-Path $log) { Get-Content $log -Tail 120 }
-            if (-not $process.HasExited) {
-              & taskkill.exe /PID $process.Id /T /F 2>$null | Out-Null
-            }
-          }
- -or $friend -notmatch '(?m)^EASY_STARTUP=true\r?
-      - name: Start revision 377 game world and verify both local ports
-        shell: powershell
-        run: |
-          $state = Get-Content 'runtime/jparris-377/active.json' -Raw | ConvertFrom-Json
-          $log = Join-Path $env:RUNNER_TEMP 'joshrs-377-startup.log'
-          $command = 'npm.cmd run quickstart > "' + $log + '" 2>&1'
-          $process = Start-Process -FilePath 'cmd.exe' -ArgumentList @('/d','/c',$command) -WorkingDirectory $state.engine -PassThru -WindowStyle Hidden
-          try {
-            $ready = $false
-            for ($i = 0; $i -lt 120; $i++) {
-              $game = Get-NetTCPConnection -State Listen -LocalPort ([int]$state.gamePort) -ErrorAction SilentlyContinue
-              $web = Get-NetTCPConnection -State Listen -LocalPort ([int]$state.webPort) -ErrorAction SilentlyContinue
-              if ($game -and $web) { $ready = $true; break }
-              if ($process.HasExited) { break }
-              Start-Sleep -Seconds 5
-            }
-            if (-not $ready) { throw 'Revision 377 did not start its TCP and HTTP listeners in the test world.' }
-            Write-Host "Verified game TCP $($state.gamePort) and HTTP $($state.webPort) in a disposable Windows test world."
-          } finally {
-            if (Test-Path $log) { Get-Content $log -Tail 120 }
-            if (-not $process.HasExited) {
-              & taskkill.exe /PID $process.Id /T /F 2>$null | Out-Null
-            }
-          }
-) { throw 'Friends service was not enabled by fresh setup' }
+          $bar = Get-Content (Join-Path $state.content 'scripts/areas/area_barbarian_outpost/scripts/outpost_gate.rs2') -Raw
+          if ($bar -notmatch 'Finish Alfred Grimhand') { throw 'Fresh GitHub setup did not auto-install Barcrawl gate' }
+          $friend = Get-Content (Join-Path $state.engine '.env') -Raw
+          if ($friend -notmatch '(?m)^FRIEND_SERVER=true' -or $friend -notmatch '(?m)^EASY_STARTUP=true') { throw 'Fresh Friends startup flags missing' }
       - name: Start revision 377 game world and verify both local ports
         shell: powershell
         run: |
