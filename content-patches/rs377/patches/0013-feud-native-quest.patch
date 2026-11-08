@@ -10,7 +10,7 @@
  
 --- a/scripts/general/scripts/quests.rs2
 +++ b/scripts/general/scripts/quests.rs2
-@@ -280,3 +280,6 @@
+@@ -280,4 +280,7 @@
  if (%handsand = ^hs_complete) {
      $questpoints = add($questpoints, ^hs_questpoints);
  }
