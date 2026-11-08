@@ -2,7 +2,7 @@
 # Only for a disposable GitHub Actions runner. NEVER apply to a live JoshRS install.
 # Overlays the Fenkenstrain quest, the batch-2 quest bundles, the Morytania
 # addendum, the batch-3/4 quests and Cook range helpers onto the pinned 377
-# content, applying patches 0001-0027 in numeric order.
+# content, applying patches 0001-0029 in numeric order.
 set -euo pipefail
 : "${RUNNER_TEMP:?missing runner temp}"
 : "${GITHUB_WORKSPACE:?missing checkout}"
@@ -17,7 +17,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 28 ]] || { echo "BLOCKED: expected 27 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 29 ]] || { echo "BLOCKED: expected 29 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -103,7 +103,7 @@ src = (scripts / 'general/scripts/quests.rs2').read_text()
 for key in ('creatureoffenkenstrain', 'rag', 'soulbane', 'swansong', 'routequest',
             'ics_little', 'mdaughter', 'hauntedmine', 'lost_tribe', 'makinghistory', 'handsand', 'feud', 'elid',
             'onesmallfavour', 'dwarfrock', 'tog', 'zogre', 'giantdwarf',
-            'forget', 'garden', 'twocats', 'wanted', 'deal', 'agrith'):
+            'forget', 'garden', 'twocats', 'wanted', 'deal', 'agrith', 'mortton'):
     assert src.count(f'send_quest_progress_colour(questlist:{key}') == 1, key
 shop = (scripts / 'areas/area_draynor/scripts/fortunato.rs2').read_text()
 assert 'openshop(wine_vinegar_merchant' in shop

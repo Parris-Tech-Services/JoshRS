@@ -1,0 +1,10 @@
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -417,6 +417,7 @@
+ ~send_quest_progress_colour(questlist:wanted, %quest_wanted, ^w_complete);
+ ~send_quest_progress_colour(questlist:deal, %deal_quest, ^dl_complete);
+ ~send_quest_progress_colour(questlist:agrith, %agrith_quest_varp, ^as_complete);
++~send_quest_progress_colour(questlist:mortton, %morttonquest, ^mortton_complete);
+ ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
+ if_settab(questlist, ^tab_quest_journal);
+
