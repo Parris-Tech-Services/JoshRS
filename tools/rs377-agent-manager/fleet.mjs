@@ -5,10 +5,10 @@
  */
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const VALID_NAME=/^Harness[A-Za-z0-9_-]{1,10}$/;
-const GOALS=new Set(['idle','explore']);
+const GOALS=new Set(['idle','explore','woodcut','talk']);
 export function validateProfile({name,goal}={}){
   if(typeof name!=='string'||!VALID_NAME.test(name))throw new Error('disposable_Harness_name_required');
-  if(!GOALS.has(goal))throw new Error('unsupported_goal_choose_idle_or_explore');
+  if(!GOALS.has(goal))throw new Error('unsupported_goal_choose_idle_explore_woodcut_or_talk');
   return Object.freeze({name,goal});
 }
 export class AgentFleet{
@@ -23,7 +23,7 @@ export class AgentFleet{
     if(this.entries.has(p.name.toLowerCase()))throw new Error('agent_name_already_exists');
     this.entries.set(p.name.toLowerCase(),{
       profile:p,phase:'stopped',goal:p.goal,adapter:null,
-      task:null,abort:null,verifiedSteps:0,lastVerified:null,error:null
+      task:null,abort:null,verifiedSteps:0,verifiedActivities:0,lastVerified:null,error:null
     });
     this.onChange();
     return p;
@@ -36,7 +36,7 @@ export class AgentFleet{
   list(){
     return [...this.entries.values()].map(e=>({
       name:e.profile.name,goal:e.goal,phase:e.phase,
-      verifiedSteps:e.verifiedSteps,lastVerified:e.lastVerified,error:e.error,
+      verifiedSteps:e.verifiedSteps,verifiedActivities:e.verifiedActivities,lastVerified:e.lastVerified,error:e.error,
       nativeSaveVerified:false,fullSdkStateVerified:false,questingVerified:false
     }));
   }
@@ -47,8 +47,8 @@ export class AgentFleet{
   async start(name,password){
     const e=this.get(name);
     if(e.phase!=='stopped'&&e.phase!=='error')throw new Error('agent_already_started');
-    if(typeof password!=='string'||password.length<8||password.length>200)
-      throw new Error('disposable_password_required');
+    if(typeof password!=='string'||password.length<8||password.length>20||!/^\x21-\x7e+$/.test(password))
+      throw new Error('native_377_password_must_be_8_to_20_printable_ASCII_characters');
     e.phase='connecting';e.error=null;e.abort=new AbortController();this.onChange();
     const signal=e.abort.signal;
     try{
@@ -98,6 +98,14 @@ export class AgentFleet{
     try{
       while(!signal.aborted){
         if(e.phase!=='running'||e.goal==='idle'){await sleep(180);continue}
+        if(e.goal==='woodcut'){
+          await this.woodcut(e,signal);
+          continue;
+        }
+        if(e.goal==='talk'){
+          await this.talk(e,signal);
+          continue;
+        }
         const first=await e.adapter.observe();
         if(!first.position)throw new Error('native_position_unavailable');
         let verified=false;
@@ -135,4 +143,75 @@ export class AgentFleet{
       this.onChange();
     }
   }
+  async woodcut(e,signal){
+    const s=await e.adapter.observe();
+    const woodcut=s.skills?.find(skill=>skill.name==='Woodcutting');
+    if(!woodcut||!Number.isSafeInteger(woodcut.xpTenths)||!Array.isArray(s.nearbyLocs))
+      throw new Error('woodcutting_skill_or_real_map_unavailable');
+    const inventory=[...(s.inventory??[]),...(s.equipment??[])];
+    if(!Array.isArray(s.inventory)||!Array.isArray(s.equipment)||
+       !inventory.some(i=>typeof i.name==='string'&&/\baxe\b/i.test(i.name)))
+      throw new Error('real_axe_required_before_chopping');
+    const trees=s.nearbyLocs.filter(loc=>typeof loc.name==='string'&&
+      /tree/i.test(loc.name)&&Array.isArray(loc.optionsWithIndex)&&
+      loc.optionsWithIndex.some(op=>/chop/i.test(op.text)&&
+        Number.isInteger(op.opIndex)&&op.opIndex>=1&&op.opIndex<=5)&&
+      Math.max(Math.abs(loc.x-s.position.x),Math.abs(loc.z-s.position.z))<=4);
+    if(!trees.length)throw new Error('no_observed_choppable_tree_within_four_tiles');
+    trees.sort((a,b)=>Math.max(Math.abs(a.x-s.position.x),Math.abs(a.z-s.position.z))-
+      Math.max(Math.abs(b.x-s.position.x),Math.abs(b.z-s.position.z)));
+    const target=trees[0];
+    const optionIndex=target.optionsWithIndex.find(op=>/chop/i.test(op.text)).opIndex;
+    if(typeof e.adapter.interactLoc!=='function')
+      throw new Error('native_location_action_not_available');
+    const dispatch=await e.adapter.interactLoc({
+      x:target.x,z:target.z,locId:target.id,optionIndex
+    });
+    if(!['queued_unverified','dispatched_unverified'].includes(dispatch.status))
+      throw new Error('native_chop_packet_not_dispatched');
+    for(let i=0;i<16&&!signal.aborted&&e.phase==='running';i++){
+      await sleep(700);
+      if(signal.aborted||e.phase!=='running')return;
+      const after=await e.adapter.observe();
+      const current=after.skills?.find(skill=>skill.name==='Woodcutting');
+      if(current?.xpTenths>woodcut.xpTenths){
+        e.verifiedActivities++;
+        e.lastVerified={activity:'Woodcutting',xpGainTenths:current.xpTenths-woodcut.xpTenths,tick:after.tick};
+        this.onChange();
+        return;
+      }
+    }
+    if(!signal.aborted&&e.phase==='running')
+      throw new Error('chop_dispatched_but_no_native_woodcutting_xp_observed');
+  }
+  async talk(e,signal){
+    const s=await e.adapter.observe();
+    if(!s.position||!Array.isArray(s.nearbyNpcs))
+      throw new Error('native_npcs_unavailable');
+    const npc=s.nearbyNpcs.find(n=>Array.isArray(n.optionsWithIndex)&&
+      n.optionsWithIndex.some(op=>/^talk/i.test(op.text))&&
+      Math.max(Math.abs(n.x-s.position.x),Math.abs(n.z-s.position.z))<=4);
+    if(!npc)throw new Error('no_observed_talkable_npc_within_four_tiles');
+    if(typeof e.adapter.interactNpc!=='function')
+      throw new Error('native_npc_action_not_available');
+    const op=npc.optionsWithIndex.find(op=>/^talk/i.test(op.text));
+    const dispatch=await e.adapter.interactNpc({npcIndex:npc.index,optionIndex:op.opIndex});
+    if(!['queued_unverified','dispatched_unverified'].includes(dispatch.status))
+      throw new Error('native_npc_packet_not_dispatched');
+    for(let i=0;i<12&&!signal.aborted&&e.phase==='running';i++){
+      await sleep(700);
+      if(signal.aborted||e.phase!=='running')return;
+      const after=await e.adapter.observe();
+      if(after.dialogue?.isOpen===true&&after.dialogue?.isWaiting===true){
+        e.verifiedActivities++;
+        e.lastVerified={activity:'NPC dialogue',npcIndex:npc.index,tick:after.tick};
+        e.phase='paused';
+        this.onChange();
+        return;
+      }
+    }
+    if(!signal.aborted&&e.phase==='running')
+      throw new Error('talk_dispatched_but_no_native_dialogue_opened');
+  }
+
 }
