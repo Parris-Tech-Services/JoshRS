@@ -37,11 +37,11 @@ if (-not $CreateBackup) { throw 'missing backup switch' }
 Write-Host 'VERIFIED OFFLINE BACKUP CREATED: synthetic fixture only'
 '@
     [IO.File]::WriteAllText($stubTool, $backupStub)
-    $dryRun = (& $tool -RepoRoot $root | Out-String)
+    $dryRun = (& $tool -RepoRoot $root 6>&1 | Out-String)
     Assert ($dryRun -match 'PATCH_READY') 'Read-only preflight should find vulnerable guard'
     Assert ((Get-FileHash $srcPath -Algorithm SHA256).Hash -eq $oldHash) 'Dry run must not change code'
 
-    $result = (& $tool -RepoRoot $root -Apply | Out-String)
+    $result = (& $tool -RepoRoot $root -Apply 6>&1 | Out-String)
     Assert ($result -match 'SOURCE_REPAIR_APPLIED') 'Guarded source patch did not succeed'
     $changed = [IO.File]::ReadAllText($srcPath)
     Assert ($changed.Contains('world.logoutRequests.has(player?.username ?? name.toLowerCase())')) 'Normalised guard absent after patch'
@@ -52,7 +52,7 @@ Write-Host 'VERIFIED OFFLINE BACKUP CREATED: synthetic fixture only'
     Assert ((Get-FileHash $backupFile[0].FullName -Algorithm SHA256).Hash -eq $oldHash) 'Source backup is not byte-for-byte original'
     Assert ((Get-FileHash $fakeSave -Algorithm SHA256).Hash -eq $saveHash) 'Synthetic player save was touched'
     Assert ((Get-FileHash (Join-Path $engine '.env') -Algorithm SHA256).Hash -eq $configHash) 'Engine .env changed'
-    $again = (& $tool -RepoRoot $root -Apply | Out-String)
+    $again = (& $tool -RepoRoot $root -Apply 6>&1 | Out-String)
     Assert ($again -match 'ALREADY_PATCHED') 'Second patch should be idempotent'
     Assert (@(Get-ChildItem (Join-Path $runtime 'save-backups') -File -Filter 'FredGeorgeBot.ts.original' -Recurse).Count -eq 1) 'Second run must not back up again'
 
