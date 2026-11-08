@@ -4,6 +4,57 @@
 
 This is **not** the Fedora sandbox. Players in an isolated Fedora disposable world can never appear in JParrisDesktop's already-running game.
 
+## Fedora AVANCE-WS7: the existing local game (9 November 2026)
+
+**Important correction:** AVANCE-WS7 also has its *own* JoshRS rev377
+installation at `~/dev/JoshRS/lostcity377`. On 9 November, the operator
+backed up the existing `elrothiro.sav` and ran `start-joshrs.sh`, which
+returned a launcher PID. **A launcher PID is not proof the TCP/HTTP server
+actually started**, and the latest supplied log has no post-launch listener
+check.
+
+When intending to see a bot beside the **Fedora** Elrothiro, do not use
+Windows PowerShell syntax: Fedora Bash has no `$env:USERPROFILE`, and paths
+to source files must use forward slashes. There is already a full checkout at
+`~/dev/JoshRS-quest-runner`; there is no reason to clone another copy inside
+the live game directory.
+
+**Step 1 — read-only check from a fresh Fedora terminal:**
+
+~~~bash
+cd ~/dev/JoshRS-quest-runner || exit 1
+git pull --ff-only
+bash ~/dev/JoshRS/lostcity377/status-joshrs.sh
+node tools/rs377-net-doctor/doctor.mjs --host 127.0.0.1 --port 52402 --json
+node tools/rs377-net-doctor/doctor.mjs --host 127.0.0.1 --port 8888 --json
+~~~
+
+Verify the **actual intended Fedora family world** is the one listening at
+127.0.0.1:52402 and its matching HTTP cache service at 8888. TCP reachability
+alone is not sufficient to prove identity; inspect the existing game client
+and status output as well. If either port is unavailable, **do not launch the
+bot** or guess a different port; investigate the Fedora server status.
+
+**Step 2 — only after both checks pass and the intended world is confirmed:**
+
+~~~bash
+cd ~/dev/JoshRS-quest-runner || exit 1
+node tools/rs377-family-visible/join.mjs --connect --allow-family --host 127.0.0.1 --bot HarnessView1 --patrol
+~~~
+
+Enter a **separate bot password** at the hidden prompt, never the family
+player password. This is a normal player login trial. Watch the existing
+Fedora Java client in Lumbridge at approximately (3233,3218); if the bot
+spawns elsewhere, a patrol packet is not proof of arrival. Ctrl+C stops
+the client. A successful login still does **not** mean upstream RS-SDK AI
+is attached.
+
+An earlier Windows-command mistake created a second clone with a literal
+name `:USERPROFILE\\JoshRS-bot-tools` under the Fedora installation.
+This is not where the new tool lives. Leave it alone until its contents
+have been inspected; never use an unreviewed recursive deletion command
+inside a game/save directory.
+
 ## Fastest live test — directly on JParrisDesktop
 
 Do not stop/restart the family server. Open a separate PowerShell or Terminal on that **same Windows PC**. In the JoshRS source checkout containing the new file, with Node 24 or later:
