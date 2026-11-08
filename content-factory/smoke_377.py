@@ -52,6 +52,7 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
             "RS377_OBSERVER_ENABLED": "true",
             "RS377_OBSERVER_ISOLATED": "true",
             "RS377_OBSERVER_BOT": "HarnessProbe",
+            "RS377_OBSERVER_BOTS": "HarnessProbe,HarnessScout",
             "RS377_OBSERVER_TOKEN": secrets.token_hex(32),
             "RS377_OBSERVER_WORLD": "isolated-joshrs-ci-377",
             "RS377_OBSERVER_SOURCE_SHA": "b5ac859b47915afb545e60e4c1208f25d43cb3fb",
