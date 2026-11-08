@@ -1,0 +1,13 @@
+// Creature of Fenkenstrain: stage values for %fenk_quest (varp defined in the 377 cache as fenk_quest).
+// The cache's multinpc morphs treat 0-7 as "in progress" and 8 as complete, so only 8 is fixed;
+// the in-between stage numbers are a reconstruction. See JOSHRS_FENKENSTRAIN_NOTES.md.
+^fenk_not_started = 0
+^fenk_hired = 1
+^fenk_sewn = 2
+^fenk_conductor_fixed = 3
+^fenk_tower_key_given = 4
+^fenk_met_creature = 5
+^fenk_complete = 8
+^fenk_questpoints = 2
+^fenk_thieving_xp = 10000
+^fenk_threads_needed = 5

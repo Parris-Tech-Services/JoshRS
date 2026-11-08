@@ -1,0 +1,50 @@
+[if_button,questlist:creatureoffenkenstrain]
+def_string $text;
+
+if(%fenk_quest = ^fenk_not_started) {
+    $text = "@dbl@I can start this quest by reading the @dre@signpost@dbl@ in the middle of|@dre@Canifis@dbl@, then speaking to @dre@Dr Fenkenstrain@dbl@ at his castle|north east of the village.||@dbl@I will need to have completed @dre@The Restless Ghost@dbl@ and|@dre@Priest in Peril@dbl@, and have @dre@20 Crafting@dbl@ and @dre@25 Thieving@dbl@.";
+} else if(%fenk_quest = ^fenk_hired) {
+    $text = "@str@I read the signpost in Canifis and was hired by Dr Fenkenstrain.||@dbl@Dr Fenkenstrain wants a head with a brain, a torso, arms and legs,|@dbl@plus a needle and five spools of thread to sew them together.||";
+    if(%fenk_head = 1) {
+        $text = append($text, "@str@I have given him the head and brain.|");
+    } else {
+        $text = append($text, "@dre@A head with a brain.|");
+    }
+    if(%fenk_torso = 1) {
+        $text = append($text, "@str@I have given him the torso.|");
+    } else {
+        $text = append($text, "@dre@A torso.|");
+    }
+    if(%fenk_arms = 1) {
+        $text = append($text, "@str@I have given him the arms.|");
+    } else {
+        $text = append($text, "@dre@A pair of arms.|");
+    }
+    if(%fenk_legs = 1) {
+        $text = append($text, "@str@I have given him the legs.|");
+    } else {
+        $text = append($text, "@dre@A pair of legs.|");
+    }
+    if(%fenk_needle = 1) {
+        $text = append($text, "@str@I have given him a needle.|");
+    } else {
+        $text = append($text, "@dre@A needle.|");
+    }
+    if(%fenk_threads_given >= ^fenk_threads_needed) {
+        $text = append($text, "@str@I have given him enough thread.|");
+    } else {
+        $text = append($text, "@dre@Five spools of thread.|");
+    }
+} else if(%fenk_quest = ^fenk_sewn) {
+    $text = "@str@I was hired by Dr Fenkenstrain and gave him all the parts.||@dbl@The body is sewn together, but it needs lightning to bring it|@dbl@to life. I must repair the @dre@lightning conductor@dbl@ on the castle roof.||@dbl@I need a mould made from a @dre@garden brush@dbl@ and three @dre@canes@dbl@,|@dbl@then a @dre@silver bar@dbl@ cast in that mould.";
+} else if(%fenk_quest = ^fenk_conductor_fixed) {
+    $text = "@str@I repaired the lightning conductor and the body came to life.||@dbl@I should speak to @dre@Dr Fenkenstrain@dbl@ again.";
+} else if(%fenk_quest = ^fenk_tower_key_given) {
+    $text = "@str@I repaired the lightning conductor and the body came to life.||@dbl@Dr Fenkenstrain says the creature attacked him and he locked it in|@dbl@the tower. He gave me the key. I should go and see it.";
+} else if(%fenk_quest = ^fenk_met_creature) {
+    $text = "@str@I spoke to the creature in the tower. It is Lord Rologarth, the|@str@true owner of the castle.||@dbl@He wants Dr Fenkenstrain's experiments stopped. Perhaps I can|@dbl@take something useful from the doctor without him noticing.";
+} else {
+    $text = "@str@I helped Dr Fenkenstrain build his creature.||@str@I discovered it was Lord Rologarth, and took Dr Fenkenstrain's|@str@ring of charos from him.||@red@QUEST COMPLETE!";
+}
+
+~quest_journal("Creature of Fenkenstrain", $text);
