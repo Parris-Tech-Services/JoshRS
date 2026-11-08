@@ -1,0 +1,21 @@
+--- a/scripts/_unpack/377/all.varp
++++ b/scripts/_unpack/377/all.varp
+@@ -1206,2 +1206,3 @@
+ [elid_main]
++scope=perm
+ transmit=yes
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -283,4 +283,7 @@
+ if (%main_feud_var = ^feud_complete) {
+     $questpoints = add($questpoints, ^feud_questpoints);
+ }
++if (~elid_progress = 2) {
++    $questpoints = add($questpoints, ^elid_questpoints);
++}
+ return ($questpoints);
+@@ -363,3 +366,4 @@
+ ~send_quest_progress_colour(questlist:handsand, %handsand, ^hs_complete);
+ ~send_quest_progress_colour(questlist:feud, %main_feud_var, ^feud_complete);
++~send_quest_progress_colour(questlist:elid, ~elid_progress, 2);
+ ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);

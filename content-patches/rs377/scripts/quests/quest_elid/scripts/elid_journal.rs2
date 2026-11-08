@@ -1,0 +1,18 @@
+[if_button,questlist:elid]
+def_string $text;
+if (~elid_progress = 0) {
+    $text = "@dbl@Talk to @dre@Awusah the Mayor@dbl@ in Nardah about the dry fountain.";
+} else if (~elid_progress = 2) {
+    $text = "@str@I restored the statue to the shrine and water to Nardah.||@red@QUEST COMPLETE!";
+} else if (testbit(%elid_main, ^elid_bit_ballad) = ^false |
+    testbit(%elid_main, ^elid_bit_robes) = ^false |
+    testbit(%elid_main, ^elid_bit_key) = ^false) {
+    $text = "@dbl@Get the ballad from Ghaslor, repair the robes with thread|@dbl@and a needle, and retrieve the ancestral key with magic.";
+} else if (testbit(%elid_main, ^elid_bit_spirits) = ^false) {
+    $text = "@dbl@Enter the River Elid cave and defeat the three golems.|@dbl@Clear the ranged, mining and thieving water channels|@dbl@then speak to the water spirits.";
+} else if (testbit(%elid_main, ^elid_bit_genie) = ^false) {
+    $text = "@dbl@Return to the mayor. Get his old shoes, remove a sole|@dbl@with a knife and barter with the genie in the western crevice.";
+} else {
+    $text = "@dbl@Use the recovered statuette on Nardah's shrine plinth.";
+}
+~quest_journal("Spirits of the Elid", $text);

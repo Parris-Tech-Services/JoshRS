@@ -1,0 +1,428 @@
+// Original JoshRS revision-377 quest reconstruction — no Jagex transcripts or assets.
+// Quest is a source-level playable slice. Map and spell approximations in README.
+// All rewards require player actions, actual golem kills and real handed-in quest items.
+[proc,elid_progress]()(int)
+if (testbit(%elid_main, ^elid_bit_complete) = ^true) {
+    return(2);
+}
+if (testbit(%elid_main, ^elid_bit_start) = ^true) {
+    return(1);
+}
+return(0);
+
+[opnpc1,elid_mayor]
+if (~elid_progress = 0) {
+    ~chatnpc("<p,sad>Our river is no longer filling the fountain. The people of Nardah need help.");
+    if (~p_choice2("I'll try to restore the water.", 1, "Not now.", 2) ! 1) {
+        return;
+    }
+    %elid_main = setbit(%elid_main, ^elid_bit_start);
+    ~chatnpc("<p,neutral>Ask Ghaslor about the old river legends. Our shrine keeper may also help.");
+    ~send_quest_progress(questlist:elid, 1, 2);
+    return;
+}
+if (~elid_progress = 2) {
+    ~chatnpc("<p,happy>The fountain is flowing again. You've given this town new hope!");
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_spirits) = ^true) {
+    ~chatnpc("<p,sad>We threw the sacred statue away when the fountain dried up. It fell into a crevice west of town.");
+    if (inv_total(inv, elid_shoes) = 0 & inv_total(bank, elid_shoes) = 0 &
+        testbit(%elid_main, ^elid_bit_sole) = ^false) {
+        if (inv_freespace(inv) < 1) {
+            ~chatnpc("<p,neutral>I can lend you an old pair of shoes, if you have room.");
+            return;
+        }
+        inv_add(inv, elid_shoes, 1);
+        %elid_main = setbit(%elid_main, ^elid_bit_shoes);
+        ~chatnpc("<p,neutral>Take these old shoes, if you need them. I don't know what use they could be.");
+    }
+    return;
+}
+~chatnpc("<p,neutral>Find out why the water is no longer reaching us. Ghaslor knows the old song.");
+
+[opnpc1,elid_ghaslor]
+if (~elid_progress = 0) {
+    ~chatnpc("<p,neutral>There was once a song to honour the river spirits.");
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_ballad) = ^true) {
+    ~chatnpc("<p,neutral>Wear the robes and carry the song when you approach the river source.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    ~chatnpc("<p,neutral>Make room for the old ballad.");
+    return;
+}
+inv_add(inv, elid_ballad, 1);
+%elid_main = setbit(%elid_main, ^elid_bit_ballad);
+~chatnpc("<p,neutral>The ballad honours three spirits. Read it before entering their cave.");
+
+[opnpc1,elid_shiratti]
+if (~elid_progress = 0) {
+    ~chatnpc("<p,neutral>Our shrine has long kept the river's memory.");
+    return;
+}
+~chatnpc("<p,neutral>The old cupboard contains torn ceremonial robes. Repair them with a needle and thread.");
+~chatnpc("<p,neutral>The ancestral key is also near the shrine. Retrieve it with magic before visiting the waterfall.");
+
+[oploc1,elid_cupboard_closed_withrobes]
+if (~elid_progress = 0) {
+    mes("An old cupboard full of torn ceremonial cloth.");
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_robes) = ^true |
+    inv_total(inv, elid_robetop_torn) > 0 | inv_total(inv, elid_robebottoms_torn) > 0 |
+    inv_total(inv, elid_robetop) > 0 | inv_total(inv, elid_robebottoms) > 0 |
+    inv_total(worn, elid_robetop) > 0 | inv_total(worn, elid_robebottoms) > 0) {
+    mes("You have already found the ceremonial robes.");
+    return;
+}
+if (inv_freespace(inv) < 2) {
+    mes("You need two free inventory spaces.");
+    return;
+}
+inv_add(inv, elid_robetop_torn, 1);
+inv_add(inv, elid_robebottoms_torn, 1);
+mes("You recover two torn sections of old ceremonial robes.");
+
+[opheldu,elid_robetop_torn]
+if (last_useitem = needle | last_useitem = thread) {
+    @elid_repair_robes;
+} else {
+    ~displaymessage(^dm_default);
+}
+[opheldu,elid_robebottoms_torn]
+if (last_useitem = needle | last_useitem = thread) {
+    @elid_repair_robes;
+} else {
+    ~displaymessage(^dm_default);
+}
+[label,elid_repair_robes]
+if (~elid_progress = 0 | inv_total(inv, elid_robetop_torn) < 1 |
+    inv_total(inv, elid_robebottoms_torn) < 1) {
+    mes("You need both torn pieces.");
+    return;
+}
+if (inv_total(inv, needle) < 1 | inv_total(inv, thread) < 1) {
+    mes("You need a needle and thread to repair the robes.");
+    return;
+}
+inv_del(inv, elid_robetop_torn, 1);
+inv_del(inv, elid_robebottoms_torn, 1);
+inv_del(inv, thread, 1);
+inv_add(inv, elid_robetop, 1);
+inv_add(inv, elid_robebottoms, 1);
+%elid_main = setbit(%elid_main, ^elid_bit_robes);
+mes("You sew the torn pieces into a set of ceremonial robes.");
+
+// The shrine's cache-backed statuette plinth supports both ancient-key retrieval
+// (requires a genuine item-on-object packet and rune costs) and final restoration.
+[oplocu,elid_statuette_multiloc]
+if (last_useitem = elid_statuette) {
+    @elid_restore_statue;
+    return;
+}
+if (last_useitem ! lawrune) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (~elid_progress = 0 | testbit(%elid_main, ^elid_bit_key) = ^true) {
+    mes("There is nothing else to retrieve.");
+    return;
+}
+if (stat_base(magic) < 33 | inv_total(inv, lawrune) < 1 |
+    inv_total(inv, airrune) < 1) {
+    mes("You need 33 Magic, a law rune and an air rune to retrieve the ancestral key.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("Make some room for the key.");
+    return;
+}
+inv_del(inv, lawrune, 1);
+inv_del(inv, airrune, 1);
+inv_add(inv, elid_key, 1);
+%elid_main = setbit(%elid_main, ^elid_bit_key);
+mes("You draw the ancestral key away from the inaccessible ledge.");
+// Note: Telekinetic Grab spell targeting is a historical-fidelity follow-up.
+
+[oplocu,elid_climbing_rope_root]
+if (last_useitem ! rope) {
+    ~displaymessage(^dm_default);
+    return;
+}
+@elid_enter_river;
+[oploc1,elid_climbing_rope_up]
+@elid_enter_river;
+[label,elid_enter_river]
+if (~elid_progress = 0 | testbit(%elid_main, ^elid_bit_ballad) = ^false |
+    testbit(%elid_main, ^elid_bit_key) = ^false |
+    testbit(%elid_main, ^elid_bit_robes) = ^false) {
+    mes("Bring the old song, ancestral key and ceremonial robes before entering.");
+    return;
+}
+if (inv_total(worn, elid_robetop) < 1 | inv_total(worn, elid_robebottoms) < 1 |
+    inv_total(inv, elid_key) < 1) {
+    mes("Wear the ceremonial robes and carry your ancestral key.");
+    return;
+}
+if (inv_total(inv, rope) < 1) {
+    mes("You need a rope to reach the cave.");
+    return;
+}
+mes("You secure the rope and descend towards the river's hidden chambers.");
+p_teleport(0_52_149_40_38);
+
+[oploc1,elid_underground_robe_door]
+if (~elid_progress = 0 | inv_total(inv, elid_key) < 1 |
+    inv_total(worn, elid_robetop) < 1 | inv_total(worn, elid_robebottoms) < 1) {
+    mes("An ancestral key and the ceremonial robes are needed to enter.");
+    return;
+}
+mes("The ancestral key fits the lock, and the door opens.");
+loc_change(elid_underground_robe_door_open, 100);
+
+// The actual three golem NPCs are spawned by their real cache doors,
+// not granted as completed flags via dialogue.
+[oploc1,elid_blackgolem_door]
+if (testbit(%elid_main, ^elid_bit_black) = ^true) {
+    mes("The black golem has been defeated.");
+    return;
+}
+if (~elid_progress = 0 | inv_total(inv, elid_key) < 1) {
+    mes("You are not ready to challenge this guardian.");
+    return;
+}
+if (npc_find(loc_coord, elid_golem_black, 6, 0) = true) {
+    mes("The black golem already guards this room.");
+    return;
+}
+mes("A black golem blocks the way. Crushing blows are the most effective.");
+npc_add(movecoord(loc_coord, 1, 0, 0), elid_golem_black, 1000);
+npc_setmode(opplayer2);
+[oploc1,elid_greygolem_door]
+if (testbit(%elid_main, ^elid_bit_grey) = ^true) {
+    mes("The grey golem has been defeated.");
+    return;
+}
+if (~elid_progress = 0 | inv_total(inv, elid_key) < 1) {
+    mes("You are not ready to challenge this guardian.");
+    return;
+}
+if (npc_find(loc_coord, elid_golem_grey, 6, 0) = true) {
+    mes("The grey golem is already guarding this room.");
+    return;
+}
+mes("A grey golem challenges you. Slashing blows seem most effective.");
+npc_add(movecoord(loc_coord, 1, 0, 0), elid_golem_grey, 1000);
+npc_setmode(opplayer2);
+[oploc1,elid_whitegolem_door]
+if (testbit(%elid_main, ^elid_bit_white) = ^true) {
+    mes("The white golem has been defeated.");
+    return;
+}
+if (~elid_progress = 0 | inv_total(inv, elid_key) < 1) {
+    mes("You are not ready to challenge this guardian.");
+    return;
+}
+if (npc_find(loc_coord, elid_golem_white, 6, 0) = true) {
+    mes("The white golem already guards this room.");
+    return;
+}
+mes("A white golem attacks. Stabbing attacks seem particularly effective.");
+npc_add(movecoord(loc_coord, 1, 0, 0), elid_golem_white, 1000);
+npc_setmode(opplayer2);
+
+[ai_queue3,elid_golem_black]
+~npc_default_death;
+if (npc_findhero = ^false) {
+    return;
+}
+queue(elid_black_defeated, 0, 0);
+[queue,elid_black_defeated]
+if (~elid_progress = 1) {
+    %elid_main = setbit(%elid_main, ^elid_bit_black);
+    mes("The black golem falls. The ranged water channel is now accessible.");
+}
+[ai_queue3,elid_golem_grey]
+~npc_default_death;
+if (npc_findhero = ^false) {
+    return;
+}
+queue(elid_grey_defeated, 0, 0);
+[queue,elid_grey_defeated]
+if (~elid_progress = 1) {
+    %elid_main = setbit(%elid_main, ^elid_bit_grey);
+    mes("The grey golem falls. The mining water channel is now accessible.");
+}
+[ai_queue3,elid_golem_white]
+~npc_default_death;
+if (npc_findhero = ^false) {
+    return;
+}
+queue(elid_white_defeated, 0, 0);
+[queue,elid_white_defeated]
+if (~elid_progress = 1) {
+    %elid_main = setbit(%elid_main, ^elid_bit_white);
+    mes("The white golem falls. The trap water channel is now accessible.");
+}
+
+// Different channels require the corresponding defeated guardian and real
+// inventory/equipment or skill evidence; no generic option grants all three.
+[oploc1,elid_waterchannel_ranged_multiloc]
+if (testbit(%elid_main, ^elid_bit_black) = ^false) {
+    mes("The black golem must be defeated first.");
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_ranged) = ^true) {
+    mes("The distant target has already been cleared.");
+    return;
+}
+if (stat_base(ranged) < 37 |
+    inv_total(worn, shortbow) < 1 |
+    inv_total(inv, bronze_arrow) < 1) {
+    mes("You need 37 Ranged, an equipped shortbow, and a bronze arrow to hit the target.");
+    return;
+}
+inv_del(inv, bronze_arrow, 1);
+%elid_main = setbit(%elid_main, ^elid_bit_ranged);
+mes("The arrow strikes the target. Water rushes through the northern channel.");
+
+[oplocu,elid_waterchannel_mining_multiloc]
+if (last_useitem ! bronze_pickaxe & last_useitem ! iron_pickaxe &
+    last_useitem ! steel_pickaxe & last_useitem ! rune_pickaxe) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_grey) = ^false) {
+    mes("The grey golem still guards this channel.");
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_mining) = ^true) {
+    mes("You have already cleared the rocks.");
+    return;
+}
+if (stat_base(mining) < 37) {
+    mes("You need 37 Mining.");
+    return;
+}
+anim(human_dig, 0);
+p_delay(2);
+%elid_main = setbit(%elid_main, ^elid_bit_mining);
+mes("You break up the rocks blocking the second channel.");
+
+[oploc1,elid_waterchannel_thieving_multiloc]
+if (testbit(%elid_main, ^elid_bit_white) = ^false) {
+    mes("The white golem still guards this passage.");
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_thieving) = ^true) {
+    mes("The trap is already safe.");
+    return;
+}
+if (stat_base(thieving) < 37) {
+    mes("You need 37 Thieving.");
+    return;
+}
+anim(human_pickpocket, 0);
+p_delay(1);
+%elid_main = setbit(%elid_main, ^elid_bit_thieving);
+mes("You disarm the trap. Water begins to flow in the third channel.");
+
+[opnpc1,elid_waterspirit]
+@elid_speak_spirits;
+[opnpc1,elid_waterspirit_sitting]
+@elid_speak_spirits;
+[opnpc1,elid_waterspirit_male]
+@elid_speak_spirits;
+[label,elid_speak_spirits]
+if (~elid_progress = 0) {
+    ~chatnpc("<p,neutral>The river remembers the old days.");
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_ranged) = ^false |
+    testbit(%elid_main, ^elid_bit_mining) = ^false |
+    testbit(%elid_main, ^elid_bit_thieving) = ^false) {
+    ~chatnpc("<p,neutral>Three channels must flow before we can speak of the village.");
+    return;
+}
+%elid_main = setbit(%elid_main, ^elid_bit_spirits);
+~chatnpc("<p,neutral>Water was withdrawn when our sacred statue was cast away.");
+~chatnpc("<p,neutral>Find it in a crevice to the west of Nardah and restore it to our shrine.");
+
+[opheldu,elid_shoes]
+if (last_useitem ! knife) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_spirits) = ^false |
+    inv_total(inv, elid_shoes) < 1) {
+    mes("These shoes are of no use yet.");
+    return;
+}
+inv_del(inv, elid_shoes, 1);
+inv_add(inv, elid_sole, 1);
+%elid_main = setbit(%elid_main, ^elid_bit_sole);
+mes("You carefully remove the sole from the mayor's old shoes.");
+
+[oplocu,elid_crevice_clickzone]
+if (last_useitem ! rope) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_spirits) = ^false |
+    inv_total(inv, rope) < 1) {
+    mes("You need a rope and a reason to descend into this dark crevice.");
+    return;
+}
+mes("You secure your rope and descend into the crevice.");
+p_teleport(0_52_145_42_40);
+
+[opnpc1,elid_genie]
+if (~elid_progress = 0) {
+    ~chatnpc("<p,neutral>This place is not for sightseeing.");
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_genie) = ^true) {
+    ~chatnpc("<p,neutral>Enjoy your restored statue.");
+    return;
+}
+if (testbit(%elid_main, ^elid_bit_spirits) = ^false) {
+    ~chatnpc("<p,neutral>You wouldn't know what to do with the statue.");
+    return;
+}
+if (inv_total(inv, elid_sole) < 1) {
+    ~chatnpc("<p,neutral>I'll trade the statue for the mayor's sole. You know, the sole of a shoe.");
+    return;
+}
+inv_del(inv, elid_sole, 1);
+inv_add(inv, elid_statuette, 1);
+%elid_main = setbit(%elid_main, ^elid_bit_genie);
+~chatnpc("<p,happy>A fine bargain. You may take the old statue.");
+ 
+[label,elid_restore_statue]
+if (testbit(%elid_main, ^elid_bit_spirits) = ^false |
+    testbit(%elid_main, ^elid_bit_genie) = ^false |
+    inv_total(inv, elid_statuette) < 1 |
+    testbit(%elid_main, ^elid_bit_complete) = ^true) {
+    ~displaymessage(^dm_default);
+    return;
+}
+inv_del(inv, elid_statuette, 1);
+%elid_main = setbit(%elid_main, ^elid_bit_fountain);
+%elid_main = setbit(%elid_main, ^elid_bit_complete);
+queue(elid_complete, 0, 0);
+mes("You restore the old statue to the shrine. Water flows again into Nardah.");
+
+[queue,elid_complete]
+if (testbit(%elid_main, ^elid_bit_complete) = ^false) {
+    return;
+}
+session_log(^log_adventure, "Quest complete: Spirits of the Elid");
+~send_quest_complete(questlist:elid, elid_statuette, 250, ^elid_questpoints,
+    "You have completed the\\nSpirits of the Elid Quest!",
+    "2 Quest Points|8,000 Prayer XP|1,000 Thieving XP|1,000 Magic XP");
+stat_advance(prayer, ^elid_prayer_xp);
+stat_advance(thieving, ^elid_thieving_xp);
+stat_advance(magic, ^elid_magic_xp);
