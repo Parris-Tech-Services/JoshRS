@@ -16,6 +16,22 @@
     {
       "path": "scripts/areas/area_varrock/scripts/juliet.rs2",
       "blob": "510d1e770c86ae35da6bce3432074a7be44cce89"
+    },
+    {
+      "path": "scripts/areas/area_varrock/scripts/father_lawrence.rs2",
+      "blob": "3a27730498262dd5d3af111051d7000e7028585b"
+    },
+    {
+      "path": "scripts/areas/area_varrock/scripts/apothecary.rs2",
+      "blob": "8f9cf52c687ec2619e8c560d2d06477e8db7952d"
+    },
+    {
+      "path": "scripts/quests/quest_romeojuliet/scripts/quest_romeojuliet.rs2",
+      "blob": "adf6b873123a27b90c76360915b44ab923fe35e5"
+    },
+    {
+      "path": "scripts/general/configs/quest.constant",
+      "blob": "e5703ee9b635ed668a174a6fadf2a95f10ddfb6b"
     }
   ],
   "stages": [
@@ -49,7 +65,7 @@
     },
     {
       "symbol": "romeojuliet_complete",
-      "value": null
+      "value": 100
     }
   ],
   "transitions": [
@@ -83,20 +99,22 @@
     {
       "from": "romeojuliet_passed_message",
       "to": "romeojuliet_spoken_father",
-      "actor": null,
-      "source_location": null,
-      "trace": "unverified",
-      "effect_to_check": "find intervening handler",
-      "test_result": "not_run"
+      "actor": "Father Lawrence",
+      "source_location": "father_lawrence.rs2:54-62",
+      "trace": "source_traced",
+      "effect_to_check": "stage advances to 40 after Father Lawrence explains cadava potion; live NPC click still untested",
+      "test_result": "not_run",
+      "historical_source_trace_2026_10_31": "unverified"
     },
     {
       "from": "romeojuliet_spoken_father",
       "to": "romeojuliet_spoken_apothecary",
-      "actor": null,
-      "source_location": null,
-      "trace": "unverified",
-      "effect_to_check": "find intervening handler",
-      "test_result": "not_run"
+      "actor": "Apothecary",
+      "source_location": "apothecary.rs2:72-82",
+      "trace": "source_traced",
+      "effect_to_check": "stage advances to 50 when Apothecary requests cadava berries; live NPC click still untested",
+      "test_result": "not_run",
+      "historical_source_trace_2026_10_31": "unverified"
     },
     {
       "from": "romeojuliet_spoken_apothecary",
@@ -123,5 +141,11 @@
   "completion_verified": false,
   "rights": "reference_metadata_only",
   "game_dialogue_copied": false,
-  "source_claim": "Source stage graph only; complete quest outcome not proven."
+  "source_claim": "All 377 Romeo & Juliet progression transitions now traced in pinned source following 2026-11-09 reconciliation. Live gameplay, item effects, cutscenes and persistence remain unverified.",
+  "source_reconciliation": {
+    "date": "2026-11-09",
+    "scope": "Correct only historical static source-inspection false negatives for Father Lawrence and Apothecary, and global completion constant",
+    "runtime_verification": "not_run",
+    "reference": "research/rs377/playability_audits/003_romeo_and_juliet_2026-11-09.md"
+  }
 }
