@@ -1,0 +1,35 @@
+// Swan Song quest journal. STATUS: scaffold; compiled against pinned disposable 377; full player
+// playthrough unverified. Journal wording is original (nothing copied from game transcripts).
+[if_button,questlist:swansong]
+def_string $text;
+
+if(%swansong = ^swansong_not_started) {
+    $text = "@dbl@I can start this quest by speaking to @dre@Herman Caranos@dbl@ at the|@dre@Piscatoris Fishing Colony@dbl@, north west of the @dre@Tree Gnome Stronghold@dbl@.||@dbl@I must have at least @dre@100 quest points@dbl@ to begin.|@dbl@Later tasks need high @dre@Fishing@dbl@, @dre@Cooking@dbl@ and @dre@Magic@dbl@, plus the|@dbl@ability to defeat a very powerful sea creature.";
+} else if(%swansong = ^swansong_sent_to_find_wom) {
+    $text = "@str@Herman Caranos asked me to recruit a famous retired adventurer for him.||@dbl@I should find the @dre@Wise Old Man@dbl@ in his house in @dre@Draynor Village@dbl@ and ask him|@dbl@to help the fishing colony.";
+} else if(%swansong = ^swansong_runes_requested) {
+    $text = "@str@Herman Caranos asked me to recruit a famous retired adventurer.||@str@I found the Wise Old Man and he agreed to consider it.||@dbl@The Wise Old Man wants runes before he will travel: @dre@blood runes@dbl@.|@dbl@NOTE: the original lava and mist rune request is substituted in this world,|@dbl@because those runes do not exist here.||@dbl@I should bring him the runes and speak to him again.";
+} else if(%swansong = ^swansong_trolls_defended) {
+    $text = "@str@Herman Caranos asked me to recruit a famous retired adventurer.||@str@The Wise Old Man travelled to the colony with me.||@dbl@The colony is under attack by @dre@sea trolls@dbl@. The Wise Old Man and I should|@dbl@drive them away from the colony entrance.||@red@NOT YET IMPLEMENTED IN THIS WORLD: the sea troll battle.";
+} else if(%swansong = ^swansong_colony_repaired) {
+    $text = "@str@The sea trolls were driven away from the colony.||@dbl@Herman wants the colony put back in order before the Wise Old Man will continue:||";
+    if(%swansong_arnold = ^swansong_arnold_done) {
+        $text = append($text, "@str@I brought Arnold Lydspor his cooked monkfish.||");
+    } else {
+        $text = append($text, "@dbl@Bring @dre@Arnold Lydspor@dbl@ five cooked fresh @dre@monkfish@dbl@.||");
+    }
+    if(%swansong_franklin = ^swansong_franklin_done) {
+        $text = append($text, "@str@I helped Franklin Caranos repair the west wall.||");
+    } else {
+        $text = append($text, "@dbl@Make @dre@iron sheets@dbl@ and use them to repair the colony's west wall for|@dbl@@dre@Franklin Caranos@dbl@.||@red@NOT YET IMPLEMENTED IN THIS WORLD: the wall repair.");
+    }
+    $text = append($text, "@dbl@I should speak to @dre@Herman@dbl@ again once the colony is in order.");
+} else if(%swansong = ^swansong_frumscone_visited) {
+    $text = "@str@The colony is in order and the Wise Old Man wants to understand the trolls.||@dbl@He sent me to speak to @dre@Wizard Frumscone@dbl@ in the basement of the @dre@Wizards' Guild@dbl@|@dbl@in @dre@Yanille@dbl@.";
+} else if(%swansong = ^swansong_malignius_dealt) {
+    $text = "@str@Wizard Frumscone pointed me to a necromancer.||@str@Malignius Mortifer has given me what the Wise Old Man needs.||@dbl@I should return to the @dre@Piscatoris Fishing Colony@dbl@. The Wise Old Man expects|@dbl@to face the @dre@Sea Troll Queen@dbl@.";
+} else {
+    $text = "@str@I helped the Piscatoris Fishing Colony survive the sea troll invasion.||@str@The Wise Old Man defeated the Sea Troll Queen and decided his adventuring days|@str@are not over yet.||@red@QUEST COMPLETE!";
+}
+
+~quest_journal("Swan Song", $text);

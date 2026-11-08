@@ -1,0 +1,19 @@
+// Cabin Fever. Stage values on the cache varp [fever_quest] are a JoshRS reconstruction; the
+// sea battle, hull repair, plunder and cannon mechanics are not implemented in this scaffold.
+// See JOSHRS_SIXQUEST_NOTES.md.
+^fever_not_started = 0
+^fever_agreed = 1
+^fever_sailed = 2
+^fever_enemy_cannon_destroyed = 3
+^fever_hull_repaired = 4
+^fever_plunder_stored = 5
+^fever_cannon_fixed = 6
+^fever_complete = 7
+// Wiki-sourced, UNVERIFIED for 377. The quest prerequisites (Pirate's Treasure, Rum Deal,
+// Big Chompy Bird Hunting, Jungle Potion, Druidic Ritual) are not all trackable in the pinned
+// content yet; see notes. 50 Smithing and 40 Ranged are required to start and are enforced.
+^fever_questpoints = 2
+^fever_req_smithing = 50
+^fever_req_ranged = 40
+^fever_req_agility = 42
+^fever_req_crafting = 45

@@ -1,0 +1,82 @@
+diff --git a/pack/varp.pack b/pack/varp.pack
+index b7eaa1e4..5fb4d15c 100644
+--- a/pack/varp.pack
++++ b/pack/varp.pack
+@@ -676,7 +676,7 @@
+ 675=canoeing_menu
+ 676=varp_676
+ 677=varp_677
+-678=100intro
++678=rfd_quest
+ 679=100council
+ 680=hundred_dave
+ 681=hundred_dwarf
+diff --git a/scripts/_unpack/377/all.varbit b/scripts/_unpack/377/all.varbit
+index ff8aae0a..4e3f9295 100644
+--- a/scripts/_unpack/377/all.varbit
++++ b/scripts/_unpack/377/all.varbit
+@@ -9064,42 +9064,42 @@ startbit=0
+ endbit=3
+ 
+ [hundred_main_quest_var]
+-basevar=100intro
++basevar=rfd_quest
+ startbit=0
+ endbit=6
+ 
+ [hundred_chest_exposition]
+-basevar=100intro
++basevar=rfd_quest
+ startbit=7
+ endbit=7
+ 
+ [hundred_subquest_tally]
+-basevar=100intro
++basevar=rfd_quest
+ startbit=11
+ endbit=20
+ 
+ [hundred_arbitrary_delay]
+-basevar=100intro
++basevar=rfd_quest
+ startbit=21
+ endbit=21
+ 
+ [hundred_timebubble_exposition]
+-basevar=100intro
++basevar=rfd_quest
+ startbit=22
+ endbit=22
+ 
+ [hundred_minionskilled_tally]
+-basevar=100intro
++basevar=rfd_quest
+ startbit=23
+ endbit=28
+ 
+ [hundred_finale_warning_spam]
+-basevar=100intro
++basevar=rfd_quest
+ startbit=29
+ endbit=29
+ 
+ [100_ilm_cooking_snake_state]
+-basevar=100intro
++basevar=rfd_quest
+ startbit=30
+ endbit=31
+ 
+diff --git a/scripts/_unpack/377/all.varp b/scripts/_unpack/377/all.varp
+index a4f33df3..bfcf066e 100644
+--- a/scripts/_unpack/377/all.varp
++++ b/scripts/_unpack/377/all.varp
+@@ -1351,9 +1351,6 @@ transmit=yes
+ 
+ [varp_677]
+ 
+-[100intro]
+-transmit=yes
+-scope=perm
+ 
+ [100council]
+ transmit=yes

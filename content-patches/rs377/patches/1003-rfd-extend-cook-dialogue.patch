@@ -1,0 +1,42 @@
+diff --git a/scripts/areas/area_lumbridge/scripts/cook.rs2 b/scripts/areas/area_lumbridge/scripts/cook.rs2
+index 14c9c638..a07f54fc 100644
+--- a/scripts/areas/area_lumbridge/scripts/cook.rs2
++++ b/scripts/areas/area_lumbridge/scripts/cook.rs2
+@@ -10,6 +10,37 @@ if(%cookquest = 0) {
+ } else if(%cookquest = 1) {
+     @cooks_assistant_inprogress;
+ } else if(%cookquest = ^cook_complete) {
++    if(%rfd_quest = ^rfd_not_started) {
++        if(stat_base(cooking) >= ^rfd_req_cooking) {
++            ~chatnpc("<p,happy>My friend! The Duke's birthday is coming, and this time I want to bake a cake like no other.");
++            def_int $rfd = ~p_choice2("What do you need this time?", 1, "Maybe later.", 2);
++            if($rfd = 1) {
++                ~chatplayer("<p,quiz>What do you need this time?");
++                ~chatnpc("<p,neutral>The finest ingredients: a bucket of milk, a pot of flour and an egg. The Duke expects nothing less.");
++                %rfd_quest = ^rfd_ingredients_requested;
++                ~send_quest_progress(questlist:hundred_main, %rfd_quest, ^rfd_full_complete);
++                return;
++            }
++            ~chatplayer("<p,neutral>Maybe later.");
++            ~chatnpc("<p,happy>No hurry. The Duke's birthday is not until next month.");
++        }
++    } else if(%rfd_quest = ^rfd_ingredients_requested) {
++        ~chatnpc("<p,quiz>Have you brought the ingredients for the Duke's feast?");
++        if(inv_total(inv, bucket_milk) > 0 & inv_total(inv, pot_flour) > 0 & inv_total(inv, egg) > 0) {
++            ~chatplayer("<p,happy>Here: milk, flour and an egg.");
++            inv_del(inv, bucket_milk, 1);
++            inv_del(inv, pot_flour, 1);
++            inv_del(inv, egg, 1);
++            %rfd_quest = ^rfd_intro_complete;
++            ~send_quest_progress(questlist:hundred_main, %rfd_quest, ^rfd_full_complete);
++            ~chatnpc("<p,happy>Wonderful! The feast can begin!");
++            ~mesbox("The Duke's birthday feast begins in the castle hall...| |A strange chill fills the air. Something is not right with the food.| |NOT YET IMPLEMENTED IN THIS WORLD: the Culinaromancer, the eight chapters and the final battle of Recipe for Disaster.");
++            return;
++        }
++        ~chatplayer("<p,sad>Not yet.");
++        ~chatnpc("<p,neutral>A bucket of milk, a pot of flour and an egg. The kitchen is waiting.");
++        return;
++    }
+     ~chatnpc("<p,happy>How is the adventuring going, my friend?");
+ 
+     def_int $option = ~p_choice4("I am getting strong and mighty.", 1, "I keep on dying.", 2, "Nice hat!", 3, "Can I use your range?", 4);

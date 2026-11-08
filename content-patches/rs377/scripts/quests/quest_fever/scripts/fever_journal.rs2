@@ -1,0 +1,16 @@
+// Cabin Fever quest journal. STATUS: scaffold; compiled against pinned disposable 377; full
+// player playthrough unverified. Wording is original.
+[if_button,questlist:fever]
+def_string $text;
+
+if(%fever_quest = ^fever_not_started) {
+    $text = "@dbl@I can start this quest by speaking to @dre@Bill Teach@dbl@ in @dre@The Green Ghost@dbl@ inn|@dbl@at @dre@Port Phasmatys@dbl@.||@dbl@I need @dre@50 Smithing@dbl@ and @dre@40 Ranged@dbl@ to begin, and I should have|@dbl@proved myself a capable pirate first.||@dbl@Later tasks need @dre@42 Agility@dbl@, @dre@45 Crafting@dbl@ and plenty of patience with|@dbl@gunpowder.";
+} else if(%fever_quest = ^fever_agreed) {
+    $text = "@str@Bill Teach has asked me to help him run his ship, The Adventurous.||@dbl@I should board @dre@The Adventurous@dbl@ at the Port Phasmatys docks and speak to|@dbl@Bill again to set sail.";
+} else if(%fever_quest = ^fever_sailed) {
+    $text = "@str@We set sail from Port Phasmatys.||@dbl@An enemy pirate ship has attacked us! I need to repair our ship and deal with|@dbl@their cannon.||@red@NOT YET IMPLEMENTED IN THIS WORLD: the sea battle, hull repair and plunder.";
+} else {
+    $text = "@str@I helped Bill Teach run The Adventurous and we reached Mos Le'Harmless.||@str@Bill gave me the Book o' Piracy to learn the ways of the pirates.||@red@QUEST COMPLETE!";
+}
+
+~quest_journal("Cabin Fever", $text);

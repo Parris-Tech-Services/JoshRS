@@ -1,0 +1,55 @@
+name: Compile six quests in disposable revision-377 world
+on:
+  pull_request:
+    paths:
+      - 'content-patches/rs377/**'
+      - '.github/workflows/sixquests-disposable-377.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sixquests-disposable:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Clone immutable pinned 377 sources to disposable runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/joshrs-377-build"
+          mkdir -p "$root"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Engine-TS.git "$root/engine"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Content.git "$root/content"
+          for spec in 'engine b5ac859b47915afb545e60e4c1208f25d43cb3fb' 'content 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50'; do
+            read -r name pin <<< "$spec"
+            actual="$(git -C "$root/$name" rev-parse HEAD)"
+            if [ "$actual" != "$pin" ]; then
+              git -C "$root/$name" fetch --depth 1 origin "$pin"
+              git -C "$root/$name" checkout --detach "$pin"
+            fi
+            test "$(git -C "$root/$name" rev-parse HEAD)" = "$pin"
+          done
+      - name: Overlay six quests on disposable content only
+        shell: bash
+        run: bash content-patches/rs377/ci-compile-sixquests.sh
+      - name: Compile and pack actual 377 RuneScript
+        shell: bash
+        env:
+          BUILD_SRC_DIR: ../content
+          BUILD_VERIFY: 'true'
+          BUILD_VERIFY_PACK: 'true'
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/joshrs-377-build/engine"
+          npm ci --no-audit --no-fund
+          npm run build
+          test -s data/pack/server/script.dat
+          test -s data/pack/server/script.idx
+          echo 'SIXQUESTS_NATIVE_COMPILE_PASSED'

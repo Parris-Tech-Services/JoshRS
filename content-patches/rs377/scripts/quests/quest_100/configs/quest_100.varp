@@ -1,0 +1,9 @@
+// Recipe for Disaster main-state varp. This is the cache's real RFD main var (id 678, upstream
+// name 100intro - a digit-leading name that RuneScript cannot reference). Patch
+// 1006-rfd-claim-cache-varp.patch renames it to rfd_quest in pack/varp.pack and the varbit
+// basevar references, and moves the definition here so the quest owns it. Client-side RFD
+// varbits (hundred_main_quest_var bits 0-6, subquest tally bits 11-20, ...) keep resolving.
+// scope=perm and transmit=yes were already set on the cache definition.
+[rfd_quest]
+scope=perm
+transmit=yes

@@ -1,0 +1,17 @@
+diff --git a/scripts/quests/quest_grandtree/scripts/king_narnode.rs2 b/scripts/quests/quest_grandtree/scripts/king_narnode.rs2
+index 4558ed18..f580dde1 100644
+--- a/scripts/quests/quest_grandtree/scripts/king_narnode.rs2
++++ b/scripts/quests/quest_grandtree/scripts/king_narnode.rs2
+@@ -5,6 +5,12 @@ if(coordy(npc_coord) > 0 & (%grandtree <= ^grandtree_found_journal | %grandtree
+ }
+ switch_int(%grandtree) {
+     case ^grandtree_complete :
++        // Monkey Madness scaffold: once Tree Gnome Village is also done, Narnode's post-quest
++        // chat routes into the quest_mm overlay proc (same cross-file pattern as fenkenstrain).
++        if(%mm_main ! ^mm_not_started | %treequest = ^tree_complete) {
++            ~mm_narnode_branch;
++            return;
++        }
+         ~chatplayer("<p,happy>Hello your highness!");
+         ~chatnpc("<p,happy>Well, hello again Traveller! How are you?");
+         ~chatplayer("<p,happy>I'm good thanks, how's the tree?");

@@ -1,0 +1,79 @@
+// Monkey Madness: NPC handlers. STATUS: scaffold; compiled against pinned disposable 377; full
+// player playthrough unverified. Dialogue is original wording. The quest start is routed
+// through King Narnode Shareen via patch 1005-mm-extend-narnode-dialogue.patch (his existing
+// handler belongs to The Grand Tree). Implemented: Narnode start with Grand Tree + Tree Gnome
+// Village gates. Not implemented: shipyard, Daero, the hangar puzzle, Crash Island, Ape Atoll
+// stealth, Zooknock, the greegree, the Jungle Demon (see JOSHRS_SIXQUEST_NOTES.md).
+// Note: stage dispatch uses nested procs, not @label jumps - the compiler forbids jumping to
+// labels from inside a proc.
+
+[proc,mm_meets_requirements]()(boolean)
+if(%grandtree ! ^grandtree_complete) {
+    return(false);
+}
+if(%treequest ! ^tree_complete) {
+    return(false);
+}
+return(true);
+
+// ---------------------------------------------------------------------------
+// King Narnode Shareen (Grand Tree; MM start branch, called from patch 1005)
+// Proc, not label: the guarded patch to his existing grandtree script invokes it cross-file,
+// exactly like the fenkenstrain Roavar pattern.
+// ---------------------------------------------------------------------------
+[proc,mm_narnode_branch]()
+if(%mm_main = ^mm_not_started) {
+    ~mm_narnode_not_started;
+    return;
+}
+if(%mm_main = ^mm_shipyard_investigated) {
+    ~mm_narnode_shipyard;
+    return;
+}
+if(%mm_main = ^mm_reported_to_king) {
+    ~mm_narnode_daero;
+    return;
+}
+if(%mm_main = ^mm_complete) {
+    ~mm_narnode_complete;
+    return;
+}
+~mm_narnode_later;
+
+[proc,mm_narnode_not_started]()
+~chatnpc("<p,sad>My friend, dark news. The 10th Squad, my finest military unit, has vanished on a reconnaissance mission.");
+~chatnpc("<p,neutral>They were last seen heading towards the shipyard on Karamja. I cannot send more soldiers after them without knowing what happened.");
+if(~mm_meets_requirements = false) {
+    ~chatnpc("<p,quiz>Though I would not ask this of someone who has not already proved themselves to the gnomes. Complete your business with the Grand Tree and Tree Gnome Village first.");
+    ~mesbox("You must complete The Grand Tree and Tree Gnome Village before King Narnode will discuss the 10th Squad.");
+    return;
+}
+def_int $option = ~p_choice2("I'll investigate the shipyard.", 1, "I can't help right now.", 2);
+if($option = 2) {
+    ~chatplayer("<p,neutral>I can't help right now.");
+    ~chatnpc("<p,sad>Then I must wait, and hope they are alive.");
+    return;
+}
+~chatplayer("<p,happy>I'll investigate the shipyard.");
+~chatnpc("<p,neutral>Speak with G.L.O. Caranock at the Karamja shipyard, west of the gnome glider landing. Report back to me with whatever you find.");
+%mm_main = ^mm_shipyard_investigated;
+~send_quest_progress(questlist:mm, %mm_main, ^mm_complete);
+
+[proc,mm_narnode_shipyard]()
+~chatnpc("<p,quiz>What did you find at the shipyard?");
+~chatplayer("<p,neutral>Signs that the squad left Karamja by air. Their glider was loaded for a long flight.");
+~chatnpc("<p,neutral>Then they live, and they have gone somewhere dangerous. Speak to Daero, the new head tree guardian, near the Blurberry Bar. He guards the way to our hangar.");
+%mm_main = ^mm_reported_to_king;
+~send_quest_progress(questlist:mm, %mm_main, ^mm_complete);
+
+[proc,mm_narnode_daero]()
+~chatnpc("<p,neutral>Daero waits near the Blurberry Bar. He will take you to the hangar beneath the Grand Tree.");
+~chatnpc("<p,quiz>Be careful, friend. Whatever took my squad is beyond anything the gnomes have faced.");
+
+[proc,mm_narnode_later]()
+~chatnpc("<p,quiz>Any word from my squad, friend?");
+~chatplayer("<p,neutral>Not yet.");
+~chatnpc("<p,neutral>They are strong soldiers. They will hold out.");
+
+[proc,mm_narnode_complete]()
+~chatnpc("<p,happy>My squad is home and the demon is dead. The gnomes will sing of you for generations, friend.");

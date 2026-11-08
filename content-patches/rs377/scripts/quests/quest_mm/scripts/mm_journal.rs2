@@ -1,0 +1,30 @@
+// Monkey Madness quest journal. STATUS: scaffold; compiled against pinned disposable 377; full
+// player playthrough unverified. Wording is original.
+[if_button,questlist:mm]
+def_string $text;
+
+if(%mm_main = ^mm_not_started) {
+    $text = "@dbl@I can start this quest by speaking to @dre@King Narnode Shareen@dbl@ inside the|@dre@Grand Tree@dbl@ in the @dre@Gnome Stronghold@dbl@.||@dbl@I must have completed @dre@The Grand Tree@dbl@ and @dre@Tree Gnome Village@dbl@ to begin.|@dbl@I should be ready to face a very powerful demon.";
+} else if(%mm_main = ^mm_shipyard_investigated) {
+    $text = "@str@King Narnode asked me to investigate the shipyard on Karamja.||@dbl@I found signs that the 10th Squad of the gnome army went to @dre@Karamja@dbl@.|@dbl@I should report back to the King.";
+} else if(%mm_main = ^mm_reported_to_king) {
+    $text = "@str@I reported what I found to King Narnode.||@dbl@I should speak to @dre@Daero@dbl@ near the Blurberry Bar in the Grand Tree. He can|@dbl@take me to the hangar beneath the tree.";
+} else if(%mm_main = ^mm_hangar_ready) {
+    $text = "@str@Daero showed me the hidden gnome hangar.||@dbl@I need to solve @dre@Waydar's reinitialisation puzzle@dbl@, then travel with him|@dbl@to @dre@Crash Island@dbl@.||@red@NOT YET IMPLEMENTED IN THIS WORLD: the hangar puzzle.";
+} else if(%mm_main = ^mm_crash_island) {
+    $text = "@str@I reached Crash Island with Waydar.||@dbl@I should speak to @dre@Lumdo@dbl@ and sail with him to @dre@Ape Atoll@dbl@.";
+} else if(%mm_main = ^mm_ape_atoll) {
+    $text = "@str@I reached Ape Atoll and escaped the monkey prison.||@dbl@I should find @dre@Karam@dbl@ and @dre@Garkor@dbl@ of the 10th Squad hiding on the island.|@dbl@They will tell me about @dre@Zooknock@dbl@, a gnome mage in the island's dungeon.";
+} else if(%mm_main = ^mm_zooknock_items) {
+    $text = "@str@I found the 10th Squad and learned of Zooknock.||@dbl@I need @dre@monkey dentures@dbl@, an @dre@m'amulet mould@dbl@ and a @dre@gold bar@dbl@ to take|@dbl@to @dre@Zooknock@dbl@ at the end of the Ape Atoll dungeon.";
+} else if(%mm_main = ^mm_amulet_made) {
+    $text = "@str@Zooknock enchanted the gold bar for me.||@dbl@I should use it with a @dre@ball of wool@dbl@ to make an @dre@m'speak amulet@dbl@, then|@dbl@get a @dre@monkey talisman@dbl@ from the @dre@Monkey Child@dbl@ in the banana garden.";
+} else if(%mm_main = ^mm_alliance_formed) {
+    $text = "@str@I spoke to the monkeys in their own tongue and met King Awowogei.||@dbl@King Awowogei wants a monkey from @dre@Ardougne Zoo@dbl@ brought to him.|@dbl@I should travel there, collect a monkey, and return to Ape Atoll.";
+} else if(%mm_main = ^mm_zoo_monkey) {
+    $text = "@str@I brought King Awowogei his monkey from Ardougne Zoo.||@dbl@I should speak to @dre@Garkor@dbl@ again. He will give me the 10th Squad sigil, which|@dbl@will teleport me to the @dre@Jungle Demon@dbl@ when I am ready to fight.";
+} else {
+    $text = "@str@I rescued the 10th Squad from Ape Atoll and defeated the Jungle Demon.||@str@King Narnode has rewarded me, and I can now buy dragon scimitars.||@red@QUEST COMPLETE!";
+}
+
+~quest_journal("Monkey Madness", $text);

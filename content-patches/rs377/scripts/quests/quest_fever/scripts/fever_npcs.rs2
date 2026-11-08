@@ -1,0 +1,57 @@
+// Cabin Fever: NPC handlers. STATUS: scaffold; compiled against pinned disposable 377; full
+// player playthrough unverified. Dialogue is original wording. Implemented: Bill Teach start
+// with 50 Smithing / 40 Ranged gates. Not implemented: the sea battle sequence (see
+// JOSHRS_SIXQUEST_NOTES.md).
+
+[proc,fever_meets_start_requirements]()(boolean)
+if(stat_base(smithing) < ^fever_req_smithing) {
+    return(false);
+}
+if(stat_base(ranged) < ^fever_req_ranged) {
+    return(false);
+}
+return(true);
+
+// ---------------------------------------------------------------------------
+// Bill Teach (The Green Ghost inn, Port Phasmatys)
+// ---------------------------------------------------------------------------
+[opnpc1,fever_teach]
+switch_int(%fever_quest) {
+    case ^fever_not_started : @fever_teach_not_started;
+    case ^fever_agreed : @fever_teach_agreed;
+    case default : @fever_teach_sailing;
+}
+
+[label,fever_teach_not_started]
+~chatnpc("<p,sad>Aye, what do ye want? Can't ye see a captain drowning his sorrows?");
+def_int $option = ~p_choice2("What's the matter?", 1, "Nothing, carry on.", 2);
+if($option = 2) {
+    ~chatplayer("<p,neutral>Nothing, carry on.");
+    return;
+}
+~chatplayer("<p,quiz>What's the matter?");
+~chatnpc("<p,sad>My first mate's jumped ship and me vessel, The Adventurous, is stuck in port with no crew.");
+~chatnpc("<p,neutral>I need a hand with repairs and powder work. Someone with strong arms and a good eye.");
+if(~fever_meets_start_requirements = false) {
+    ~chatnpc("<p,quiz>Though maybe not you, eh? Come back when ye can swing a hammer at fifty Smithing and loose an arrow at forty Ranged.");
+    ~mesbox("You need 50 Smithing and 40 Ranged before Bill Teach will take you on. Later tasks need 42 Agility and 45 Crafting.");
+    return;
+}
+def_int $accept = ~p_choice2("I'll crew for you.", 1, "Not for me, thanks.", 2);
+if($accept = 2) {
+    ~chatplayer("<p,neutral>Not for me, thanks.");
+    ~chatnpc("<p,sad>Each to their own.");
+    return;
+}
+~chatplayer("<p,happy>I'll crew for you.");
+~chatnpc("<p,happy>That's the spirit! Meet me aboard The Adventurous at the docks. We sail with the tide.");
+%fever_quest = ^fever_agreed;
+~send_quest_progress(questlist:fever, %fever_quest, ^fever_complete);
+
+[label,fever_teach_agreed]
+~chatnpc("<p,quiz>Ready to sail, crewmate?");
+~chatplayer("<p,neutral>Almost. Where's the ship?");
+~chatnpc("<p,neutral>The Adventurous, at the docks. Board her and we'll be off.");
+
+[label,fever_teach_sailing]
+~chatnpc("<p,neutral>A captain never abandons his post. Back to the ship, crewmate.");

@@ -1,0 +1,14 @@
+// Recruitment Drive quest journal. STATUS: scaffold; compiled against pinned disposable 377;
+// full player playthrough unverified. Wording is original.
+[if_button,questlist:rd]
+def_string $text;
+
+if(%rd_main = ^rd_not_started) {
+    $text = "@dbl@I can start this quest by speaking to @dre@Sir Amik Varze@dbl@ in the|@dre@White Knights' Castle@dbl@ in @dre@Falador@dbl@.||@dbl@He may ask me to speak to the Temple Knights, who are recruiting.";
+} else if(%rd_main = ^rd_sent_by_amik) {
+    $text = "@str@Sir Amik Varze has told me about the Temple Knights.||@dbl@I should find @dre@Sir Tiffy Cashien@dbl@ on a bench at the entrance to|@dre@Falador Park@dbl@ and ask him about joining, then pass the testing|@dbl@grounds' @dre@five tests@dbl@ in a row.||@red@NOT YET IMPLEMENTED IN THIS WORLD: Sir Tiffy and the test rooms.";
+} else {
+    $text = "@str@I passed the Temple Knights' tests and was made an Initiate.||@red@QUEST COMPLETE!";
+}
+
+~quest_journal("Recruitment Drive", $text);

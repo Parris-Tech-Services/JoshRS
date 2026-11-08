@@ -1,0 +1,24 @@
+// Mourning's End Part II quest journal. STATUS: scaffold; compiled against pinned disposable
+// 377; full player playthrough unverified. Wording is original.
+[if_button,questlist:mourning2]
+def_string $text;
+
+if(%mourning_quest_part2 = ^mourning2_not_started) {
+    $text = "@dbl@I can start this quest by speaking to @dre@Arianwyn@dbl@ in @dre@Lletya@dbl@.||@dbl@I must have helped the elves before, in @dre@Mourning's End Part I@dbl@, to begin.";
+} else if(%mourning_quest_part2 = ^mourning2_started) {
+    $text = "@str@Arianwyn has told me of an excavation site beneath the mourner tunnels.||@dbl@I need to find a way into the site. Wearing a full mourner outfit, I should|@dbl@speak to the head mourner in the @dre@Mourner HQ@dbl@ basement in @dre@West Ardougne@dbl@.";
+} else if(%mourning_quest_part2 = ^mourning2_tunnel_key) {
+    $text = "@str@I have the key to the mourner tunnels.||@dbl@I should enter the tunnels, search the dead guard for his journal, and find|@dbl@the @dre@Temple of Light@dbl@ beyond the dark beasts.";
+} else if(%mourning_quest_part2 = ^mourning2_crystal_piece) {
+    $text = "@str@I found the blackened crystal at the heart of the temple and chiselled a|@str@piece from it.||@dbl@Arianwyn and @dre@Eluned@dbl@ can enchant the piece into a new crystal for me.";
+} else if(%mourning_quest_part2 = ^mourning2_crystal_enchanted) {
+    $text = "@str@Eluned has enchanted the crystal piece.||@dbl@I must return to the @dre@Temple of Light@dbl@ and solve its puzzles to reach|@dbl@the @dre@Death Altar@dbl@ far below.||@red@NOT YET IMPLEMENTED IN THIS WORLD: the light puzzles.";
+} else if(%mourning_quest_part2 = ^mourning2_light_puzzles) {
+    $text = "@str@I solved the puzzles of the Temple of Light and reached the Death Altar.||@dbl@I need a @dre@death talisman@dbl@ to enter the altar. The dwarf @dre@Thorgel@dbl@ nearby|@dbl@may be able to help.";
+} else if(%mourning_quest_part2 = ^mourning2_death_altar) {
+    $text = "@str@I charged the newly made crystal at the Death Altar.||@dbl@I should use the charged crystal on the blackened crystal near the temple|@dbl@entrance, then return to @dre@Arianwyn@dbl@ in @dre@Lletya@dbl@.";
+} else {
+    $text = "@str@I repaired the crystal of the Temple of Light and sealed the Death Altar's|@str@power for the elves.||@red@QUEST COMPLETE!";
+}
+
+~quest_journal("Mourning's End Part II", $text);

@@ -1,0 +1,14 @@
+// Recipe for Disaster quest journal (intro chapter only). STATUS: scaffold; compiled against
+// pinned disposable 377; full player playthrough unverified. Wording is original.
+[if_button,questlist:hundred_main]
+def_string $text;
+
+if(%rfd_quest = ^rfd_not_started) {
+    $text = "@dbl@I can start this quest by speaking to the @dre@Cook@dbl@ in the kitchen of|@dre@Lumbridge Castle@dbl@.||@dbl@I must have completed @dre@Cook's Assistant@dbl@ and have at least @dre@10 Cooking@dbl@|@dbl@to begin.||@dbl@This quest is long: it is said to be ten adventures in one.";
+} else if(%rfd_quest = ^rfd_ingredients_requested) {
+    $text = "@str@The Cook has asked for my help again, this time for the Duke's birthday feast.||@dbl@He needs another set of ingredients: a @dre@bucket of milk@dbl@, a @dre@pot of flour@dbl@ and|@dbl@an @dre@egg@dbl@.||@dbl@I should bring them to him in the Lumbridge Castle kitchen.";
+} else {
+    $text = "@str@I brought the Cook his ingredients for the Duke's birthday feast.||@str@The feast did not go as planned: a strange wizard called the Culinaromancer|@str@appeared, and the council members were frozen in time.||@dbl@The @dre@Culinaromancer@dbl@ still has to be defeated, and the guests freed one by one.||@red@NOT YET IMPLEMENTED IN THIS WORLD: the eight chapters and the final battle.";
+}
+
+~quest_journal("Recipe for Disaster", $text);

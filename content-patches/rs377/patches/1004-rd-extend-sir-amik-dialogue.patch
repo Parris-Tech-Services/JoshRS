@@ -1,0 +1,26 @@
+diff --git a/scripts/areas/area_falador/scripts/sir_amik_varze.rs2 b/scripts/areas/area_falador/scripts/sir_amik_varze.rs2
+index d55f555a..df0ada9e 100644
+--- a/scripts/areas/area_falador/scripts/sir_amik_varze.rs2
++++ b/scripts/areas/area_falador/scripts/sir_amik_varze.rs2
+@@ -76,3 +76,21 @@ if (%spy = 1) {
+ [label,black_knights_fortress_sir_amik_postquest]
+ ~chatplayer("<p,happy>Hello Sir Amik.");
+ ~chatnpc("<p,happy>Hello, friend!");
++// Recruitment Drive scaffold: Sir Tiffy Cashien has no NPC definition in the pinned 377 cache,
++// so the Temple Knights' recruitment starts here instead (see quest_rd overlay).
++if(%rd_main = ^rd_not_started) {
++    if(%druidquest = ^druid_complete) {
++        ~chatnpc("<p,quiz>Actually, friend - your work against the Black Knights has attracted attention. The Temple Knights are asking for recruits like you.");
++        def_int $rd = ~p_choice2("Tell me more.", 1, "Maybe another time.", 2);
++        if($rd = 1) {
++            ~chatplayer("<p,quiz>Tell me more.");
++            ~chatnpc("<p,neutral>The Temple Knights are an ancient order that operates beneath Falador. Their trials test loyalty, wit and faith.");
++            ~chatnpc("<p,neutral>Enter the portal in Falador Park when you are ready. Pass their trials and you will be one of them.");
++            %rd_main = ^rd_sent_by_amik;
++            ~send_quest_progress(questlist:rd, %rd_main, ^rd_complete);
++            return;
++        }
++        ~chatplayer("<p,neutral>Maybe another time.");
++        ~chatnpc("<p,neutral>The offer stands.");
++    }
++}

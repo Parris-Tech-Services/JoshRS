@@ -1,0 +1,16 @@
+// Recruitment Drive: object handlers for the testing grounds portals. STATUS: scaffold; the
+// seven test rooms are not implemented (see JOSHRS_SIXQUEST_NOTES.md). Dialogue and messages
+// are original wording. The quest start is routed through Sir Amik Varze via patch
+// 1004-rd-extend-sir-amik-dialogue.patch because Sir Tiffy Cashien has no NPC definition in
+// the pinned 377 cache.
+
+// ---------------------------------------------------------------------------
+// Testing grounds portals (Falador Park entrance, rd.loc)
+// ---------------------------------------------------------------------------
+[oploc1,rd_portal_room1_entrance]
+if(%rd_main < ^rd_sent_by_amik) {
+    ~displaymessage(^dm_default);
+    return;
+}
+// Sir Tiffy Cashien is not present in this world yet, so the testing grounds stay closed.
+mes("The portal hums, but the Temple Knights' testing grounds are not yet open in this world.");

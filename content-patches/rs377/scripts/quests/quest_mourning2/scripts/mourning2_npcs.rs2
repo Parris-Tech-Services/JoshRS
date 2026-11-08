@@ -1,0 +1,48 @@
+// Mourning's End Part II: NPC handlers. STATUS: scaffold; compiled against pinned disposable
+// 377; full player playthrough unverified. Dialogue is original wording. Implemented: Arianwyn
+// start. Not implemented: Essyllt, the tunnels, the Temple of Light, Eluned's enchantment,
+// Thorgel, the Death Altar (see JOSHRS_SIXQUEST_NOTES.md).
+
+// ---------------------------------------------------------------------------
+// Arianwyn (Lletya, main quest giver)
+// ---------------------------------------------------------------------------
+[opnpc1,mourning_arianwyn]
+switch_int(%mourning_quest_part2) {
+    case ^mourning2_not_started : @mourning2_arianwyn_not_started;
+    case ^mourning2_started : @mourning2_arianwyn_started;
+    case default : @mourning2_arianwyn_later;
+}
+
+[label,mourning2_arianwyn_not_started]
+~chatnpc("<p,quiz>Another wanderer in Lletya. What business brings you to us?");
+def_int $option = ~p_choice2("I've come to help the elves.", 1, "Just looking around.", 2);
+if($option = 2) {
+    ~chatplayer("<p,neutral>Just looking around.");
+    ~chatnpc("<p,neutral>Then look carefully. This forest does not forgive carelessness.");
+    return;
+}
+~chatplayer("<p,neutral>I've come to help the elves.");
+if(%mourning_quest = 0) {
+    ~chatnpc("<p,quiz>You have not walked our roads before, human. Return when you have aided us in our mourning, and I may have work for you.");
+    ~mesbox("You must have progressed in Mourning's End Part I before Arianwyn will discuss this. (Mourning's End Part I is not yet implemented in this world either; see JOSHRS_SIXQUEST_NOTES.md.)");
+    return;
+}
+~chatnpc("<p,neutral>Then I have grave work. The mourners dig beneath West Ardougne, near the old tunnels. Something is hidden there that must not be woken.");
+~chatnpc("<p,neutral>Find a way into their excavation. A mourner's uniform will get you past the door.");
+def_int $accept = ~p_choice2("I'll find the excavation.", 1, "Too dangerous for me.", 2);
+if($accept = 2) {
+    ~chatplayer("<p,neutral>Too dangerous for me.");
+    ~chatnpc("<p,sad>As you wish. The forest is patient.");
+    return;
+}
+~chatplayer("<p,happy>I'll find the excavation.");
+%mourning_quest_part2 = ^mourning2_started;
+~send_quest_progress(questlist:mourning2, %mourning_quest_part2, ^mourning2_complete);
+
+[label,mourning2_arianwyn_started]
+~chatnpc("<p,quiz>Any news from the mourner tunnels?");
+~chatplayer("<p,neutral>Not yet.");
+~chatnpc("<p,neutral>The head mourner keeps the key in the Mourner HQ basement in West Ardougne. Wear their uniform or they will not speak to you.");
+
+[label,mourning2_arianwyn_later]
+~chatnpc("<p,neutral>The forest is quieter since the temple was sealed. You have our thanks.");

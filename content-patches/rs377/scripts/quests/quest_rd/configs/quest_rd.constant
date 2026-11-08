@@ -1,0 +1,10 @@
+// Recruitment Drive. The cache's varbit [rd_main] (basevar=recruitmentdrive, bits 0-2) is the
+// main quest state. ^rd_complete = 2 deliberately mirrors upstream's existing
+// ^recruitmentdrive_complete (used by the Temple Knight armour level requirement): the scale
+// is 0=not started, 1=sent by Amik, 2=complete. The seven test rooms are not implemented in
+// this scaffold. See JOSHRS_SIXQUEST_NOTES.md.
+^rd_not_started = 0
+^rd_sent_by_amik = 1
+^rd_complete = 2
+// Wiki-sourced, UNVERIFIED for 377.
+^rd_questpoints = 1

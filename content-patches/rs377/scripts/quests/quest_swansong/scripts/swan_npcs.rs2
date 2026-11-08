@@ -1,0 +1,163 @@
+// Swan Song: NPC handlers. STATUS: scaffold; compiled against pinned disposable 377; full player
+// playthrough unverified. Dialogue is original wording (nothing copied from game transcripts).
+// Implemented: Herman start (100 QP gate), Wise Old Man rune hand-in (substituted runes, see
+// quest_swansong.constant), Arnold monkfish hand-in. Not implemented: sea troll battles, wall
+// repair, Frumscone, Malignius, the Sea Troll Queen (see JOSHRS_SIXQUEST_NOTES.md).
+
+[proc,swan_meets_requirements]()(boolean)
+if(%qp < ^swansong_req_qp) {
+    return(false);
+}
+return(true);
+
+// ---------------------------------------------------------------------------
+// Herman Caranos (Piscatoris Fishing Colony, main quest giver)
+// ---------------------------------------------------------------------------
+[opnpc1,swan_herman]
+switch_int(%swansong) {
+    case ^swansong_not_started : @swan_herman_not_started;
+    case ^swansong_sent_to_find_wom, ^swansong_runes_requested : @swan_herman_waiting_wom;
+    case ^swansong_trolls_defended : @swan_herman_repairs;
+    case ^swansong_colony_repaired, ^swansong_frumscone_visited, ^swansong_malignius_dealt : @swan_herman_waiting_queen;
+    case default : @swan_herman_complete;
+}
+
+[label,swan_herman_not_started]
+~chatnpc("<p,neutral>Welcome to the Piscatoris Fishing Colony, traveller. Though I would ask what brings anyone this far north west.");
+if(~swan_meets_requirements = false) {
+    ~chatnpc("<p,sad>We have trouble enough without needing help from someone still learning the adventuring trade.");
+    ~mesbox("You need at least 100 quest points before Herman will discuss the colony's trouble. Later tasks need high Fishing, Cooking, Magic and Smithing.");
+    return;
+}
+def_int $option = ~p_choice2("What kind of trouble?", 1, "Just passing through.", 2);
+if($option = 2) {
+    ~chatplayer("<p,neutral>Just passing through.");
+    ~chatnpc("<p,neutral>Then mind the trolls on your way out.");
+    return;
+}
+~chatplayer("<p,quiz>What kind of trouble?");
+~chatnpc("<p,sad>Sea trolls. They have been circling the colony for days and our defences will not hold. I need someone with real experience.");
+~chatnpc("<p,neutral>There is a famous retired adventurer in Draynor Village. If anyone can help us, he can. Find him and ask him to come here.");
+def_int $accept = ~p_choice2("I'll find him.", 1, "Sounds too dangerous for me.", 2);
+if($accept = 2) {
+    ~chatplayer("<p,neutral>Sounds too dangerous for me.");
+    ~chatnpc("<p,sad>I understand. The offer stands.");
+    return;
+}
+~chatplayer("<p,happy>I'll find him.");
+%swansong = ^swansong_sent_to_find_wom;
+~send_quest_progress(questlist:swansong, %swansong, ^swansong_complete);
+
+[label,swan_herman_waiting_wom]
+~chatnpc("<p,quiz>Any word from the adventurer you went to find?");
+~chatnpc("<p,neutral>He lives in Draynor Village. Bring him here and we might survive the season.");
+
+[label,swan_herman_repairs]
+~chatnpc("<p,neutral>The trolls have withdrawn for now, but the colony is a mess.");
+if(%swansong_arnold ! ^swansong_arnold_done) {
+    ~chatnpc("<p,neutral>Arnold needs cooked monkfish to keep the workers fed. Five should do.");
+}
+if(%swansong_franklin ! ^swansong_franklin_done) {
+    ~chatnpc("<p,neutral>And Franklin needs iron sheets to patch the west wall.");
+}
+if(%swansong_arnold = ^swansong_arnold_done & %swansong_franklin = ^swansong_franklin_done) {
+    ~chatnpc("<p,happy>With Arnold fed and the wall patched, we can hold out. The old man wants to see you.");
+    %swansong = ^swansong_colony_repaired;
+    ~send_quest_progress(questlist:swansong, %swansong, ^swansong_complete);
+}
+
+[label,swan_herman_waiting_queen]
+~chatnpc("<p,neutral>The old man is preparing for the final confrontation. Speak to him when you are ready.");
+
+[label,swan_herman_complete]
+~chatnpc("<p,happy>The colony owes you everything, friend. The monks practically jump into the nets these days.");
+
+// ---------------------------------------------------------------------------
+// Wise Old Man (Draynor Village; rune hand-in, stage: runes_requested)
+// ---------------------------------------------------------------------------
+[opnpc1,wise_old_man]
+if(%swansong = ^swansong_sent_to_find_wom) {
+    ~chatnpc("<p,quiz>What does a young adventurer want with a tired old man?");
+    ~chatplayer("<p,neutral>Herman Caranos of the Piscatoris Fishing Colony needs help. Sea trolls are closing in.");
+    ~chatnpc("<p,neutral>Retirement has been dull. Very well, I will consider it, for a price.");
+    ~chatnpc("<p,neutral>Bring me blood runes. Ten of them. Then we shall see about trolls.");
+    %swansong = ^swansong_runes_requested;
+    ~send_quest_progress(questlist:swansong, %swansong, ^swansong_complete);
+    return;
+}
+if(%swansong = ^swansong_runes_requested) {
+    @swan_wom_runes;
+    return;
+}
+~chatnpc("<p,neutral>Hello young one.");
+~chatplayer("<p,neutral>Hello.");
+
+[label,swan_wom_runes]
+if(inv_total(inv, bloodrune) < ^swansong_blood_runes_needed) {
+    ~chatnpc("<p,quiz>Do you have my runes?");
+    ~chatplayer("<p,sad>Not yet.");
+    ~chatnpc("<p,neutral>Then I am still a tired old man. Bring me ten blood runes.");
+    return;
+}
+~chatnpc("<p,quiz>Do you have my runes?");
+~chatplayer("<p,happy>Here, all ten blood runes.");
+inv_del(inv, bloodrune, ^swansong_blood_runes_needed);
+~chatnpc("<p,happy>Ha! You remind me of myself. Meet me at the colony when you are ready to sail.");
+%swansong = ^swansong_trolls_defended;
+~send_quest_progress(questlist:swansong, %swansong, ^swansong_complete);
+
+// ---------------------------------------------------------------------------
+// Arnold Lydspor (colony fishing store; monkfish hand-in, stage: trolls_defended)
+// ---------------------------------------------------------------------------
+[opnpc1,swan_arnold]
+if(%swansong = ^swansong_trolls_defended) {
+    if(%swansong_arnold = ^swansong_arnold_done) {
+        ~chatnpc("<p,happy>The workers are fed, thanks to you.");
+        return;
+    }
+    ~chatnpc("<p,neutral>Five cooked fresh monkfish and my workers will not mutiny. Do we have a deal?");
+    def_int $option = ~p_choice2("Here, five monkfish.", 1, "I'll come back.", 2);
+    if($option = 2) {
+        ~chatplayer("<p,neutral>I'll come back.");
+        return;
+    }
+    if(inv_total(inv, swan_monkfish) < ^swansong_monkfish_needed) {
+        ~chatplayer("<p,sad>Here, five monkfish. Well, some of them.");
+        ~chatnpc("<p,quiz>That is not five, friend. Fresh monkfish, cooked, five of them.");
+        return;
+    }
+    ~chatplayer("<p,happy>Here, five fresh monkfish.");
+    inv_del(inv, swan_monkfish, ^swansong_monkfish_needed);
+    %swansong_arnold = ^swansong_arnold_done;
+    ~chatnpc("<p,happy>The crew will sing for these tonight.");
+    return;
+}
+~chatnpc("<p,neutral>Fish, sell fish. It is a simple life.");
+
+// ---------------------------------------------------------------------------
+// Franklin Caranos (colony wall; iron sheet repair - NOT YET IMPLEMENTED)
+// ---------------------------------------------------------------------------
+[opnpc1,swan_franklin]
+if(%swansong = ^swansong_trolls_defended) {
+    if(%swansong_franklin = ^swansong_franklin_done) {
+        ~chatnpc("<p,happy>The wall holds, thanks to you.");
+        return;
+    }
+    ~chatnpc("<p,neutral>The west wall needs five iron sheets, hammered into place. Do you have them?");
+    def_int $option = ~p_choice2("Here are five iron sheets.", 1, "I'll come back.", 2);
+    if($option = 2) {
+        ~chatplayer("<p,neutral>I'll come back.");
+        return;
+    }
+    if(inv_total(inv, iron_sheet) < ^swansong_iron_sheets_needed) {
+        ~chatplayer("<p,sad>Here are five iron sheets. Well, fewer than five.");
+        ~chatnpc("<p,quiz>I need five, friend. Iron sheets, five of them.");
+        return;
+    }
+    ~chatplayer("<p,happy>Here, five iron sheets.");
+    inv_del(inv, iron_sheet, ^swansong_iron_sheets_needed);
+    %swansong_franklin = ^swansong_franklin_done;
+    ~chatnpc("<p,happy>That wall will hold against anything the sea throws at it now.");
+    return;
+}
+~chatnpc("<p,neutral>Walls and sheets and rivets. That is my life.");

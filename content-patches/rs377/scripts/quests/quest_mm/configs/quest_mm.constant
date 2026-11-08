@@ -1,0 +1,18 @@
+// Monkey Madness. Stage values on the cache varp [mm_main] are a JoshRS reconstruction. The
+// completion value is NOT redefined here: upstream's scripts/general/configs/quest.constant
+// already owns ^mm_complete = 10 (the MM armour level requirement reads it), and redefining
+// it is a build error. The demon-defeated beat merges into that completion stage. The hangar
+// puzzle, Ape Atoll stealth, Zooknock's dungeon and the Jungle Demon are not implemented in
+// this scaffold. See JOSHRS_SIXQUEST_NOTES.md.
+^mm_not_started = 0
+^mm_shipyard_investigated = 1
+^mm_reported_to_king = 2
+^mm_hangar_ready = 3
+^mm_crash_island = 4
+^mm_ape_atoll = 5
+^mm_zooknock_items = 6
+^mm_amulet_made = 7
+^mm_alliance_formed = 8
+^mm_zoo_monkey = 9
+// Wiki-sourced, UNVERIFIED for 377.
+^mm_questpoints = 3

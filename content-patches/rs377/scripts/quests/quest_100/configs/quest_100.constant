@@ -1,0 +1,12 @@
+// Recipe for Disaster (the 100th quest). Stage values on the JoshRS-owned [rfd_quest] varp are a
+// reconstruction; the full quest is 10 chapters and only the intro chapter is scaffolded here.
+// See JOSHRS_SIXQUEST_NOTES.md.
+^rfd_not_started = 0
+^rfd_ingredients_requested = 1
+^rfd_intro_complete = 2
+// Full completion (all 10 chapters + Culinaromancer). No script sets this yet; the quest list
+// colour and quest points stay unsatisfied until the chapters are implemented.
+^rfd_full_complete = 255
+// Wiki-sourced, UNVERIFIED for 377.
+^rfd_questpoints = 10
+^rfd_req_cooking = 10
