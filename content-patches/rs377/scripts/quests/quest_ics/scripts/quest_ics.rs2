@@ -108,10 +108,11 @@ mes("The priest collapses, dropping an unholy symbol.");
 
 [queue,ics_quest_complete]
 %ics_little_stage = ^ics_complete;
-stat_advance(thieving, 40000);
-stat_advance(prayer, 30000);
+stat_advance(thieving, 45000);
+stat_advance(agility, 40000);
+stat_advance(woodcutting, 40000);
 session_log(^log_adventure, "Quest complete: Icthlarin's Little Helper");
-~send_quest_complete(questlist:ics_little, ics_little_holy_symbol, 200, ^ics_questpoints, "You have completed Icthlarin's Little Helper!", "4,000 Thieving XP|3,000 Prayer XP");
+~send_quest_complete(questlist:ics_little, ics_little_holy_symbol, 200, ^ics_questpoints, "You have completed Icthlarin's Little Helper!", "4,500 Thieving XP|4,000 Agility XP|4,000 Woodcutting XP");
 
 [if_button,questlist:ics_little]
 def_string $text;

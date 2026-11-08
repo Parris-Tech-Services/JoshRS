@@ -163,8 +163,10 @@ if (%zombie_ogre = ^zg_sithik & inv_total(inv, zogre_cup_of_tea_sithix) = 0) {
 [queue,zg_quest_complete]
 %zombie_ogre = ^zg_complete;
 stat_advance(herblore, 20000);
+stat_advance(fletching, 20000);
+stat_advance(ranged, 20000);
 session_log(^log_adventure, "Quest complete: Zogre Flesh Eaters");
-~send_quest_complete(questlist:zogre, zogre_sithik_portrait_signed, 200, ^zg_questpoints, "You have completed Zogre Flesh Eaters!", "2,000 Herblore XP");
+~send_quest_complete(questlist:zogre, zogre_sithik_portrait_signed, 200, ^zg_questpoints, "You have completed Zogre Flesh Eaters!", "2,000 Herblore XP|2,000 Fletching XP|2,000 Ranged XP");
 
 [if_button,questlist:zogre]
 def_string $text;

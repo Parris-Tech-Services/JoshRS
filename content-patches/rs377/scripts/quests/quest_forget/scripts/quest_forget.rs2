@@ -57,9 +57,14 @@ if (%forget_main_var = ^ft_beer) {
 }
 
 [queue,ft_complete]
+if (%forget_main_var = ^ft_complete) {
+    return;
+}
 %forget_main_var = ^ft_complete;
+stat_advance(cooking, 50000);
+stat_advance(farming, 50000);
 session_log(^log_adventure, "Quest complete: Forgettable Tale of a Drunken Dwarf");
-~send_quest_complete(questlist:forget, forget_gardener_letter, 200, ^ft_questpoints, "You have completed Forgettable Tale of a Drunken Dwarf!", "2 quest points");
+~send_quest_complete(questlist:forget, forget_gardener_letter, 200, ^ft_questpoints, "You have completed Forgettable Tale of a Drunken Dwarf!", "5,000 Cooking XP|5,000 Farming XP|2 Quest Points");
 
 [if_button,questlist:forget]
 def_string $text;

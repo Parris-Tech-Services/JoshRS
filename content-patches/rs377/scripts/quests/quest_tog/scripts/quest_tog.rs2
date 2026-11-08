@@ -44,8 +44,9 @@ if (inv_total(inv, tinderbox) > 0) {
 
 [queue,tog_quest_complete]
 %tog_minigame = ^tog_complete;
+stat_advance(crafting, 10000);
 session_log(^log_adventure, "Quest complete: Tears of Guthix");
-~send_quest_complete(questlist:tog, tog_sapphire_lantern_lit, 200, ^tog_questpoints, "You have completed Tears of Guthix!", "Access to the tears of Guthix");
+~send_quest_complete(questlist:tog, tog_sapphire_lantern_lit, 200, ^tog_questpoints, "You have completed Tears of Guthix!", "1,000 Crafting XP|Access to Tears of Guthix");
 
 [if_button,questlist:tog]
 def_string $text;

@@ -98,9 +98,15 @@ if (%deal_quest = ^dl_blessed) {
 }
 
 [queue,dl_complete]
+if (%deal_quest = ^dl_complete) {
+    return;
+}
 %deal_quest = ^dl_complete;
+stat_advance(fishing, 70000);
+stat_advance(prayer, 70000);
+stat_advance(farming, 70000);
 session_log(^log_adventure, "Quest complete: Rum Deal");
-~send_quest_complete(questlist:deal, deal_wrench_blessed, 200, ^dl_questpoints, "You have completed Rum Deal!", "2 quest points");
+~send_quest_complete(questlist:deal, deal_wrench_blessed, 200, ^dl_questpoints, "You have completed Rum Deal!", "7,000 Fishing XP|7,000 Prayer XP|7,000 Farming XP");
 
 [if_button,questlist:deal]
 def_string $text;

@@ -65,10 +65,14 @@ if (%giantdwarf_main = ^gd_complete) {
 
 [queue,gd_quest_complete]
 %giantdwarf_main = ^gd_complete;
+stat_advance(mining, 25000);
+stat_advance(smithing, 25000);
 stat_advance(crafting, 25000);
-inv_add(inv, coins, 5000);
+stat_advance(magic, 15000);
+stat_advance(thieving, 15000);
+stat_advance(firemaking, 15000);
 session_log(^log_adventure, "Quest complete: The Giant Dwarf");
-~send_quest_complete(questlist:giantdwarf, gold_ore, 200, ^gd_questpoints, "You have completed The Giant Dwarf!", "2,500 Crafting XP|5,000 coins");
+~send_quest_complete(questlist:giantdwarf, gold_ore, 200, ^gd_questpoints, "You have completed The Giant Dwarf!", "2,500 Mining XP|2,500 Smithing XP|2,500 Crafting XP|1,500 Magic XP|1,500 Thieving XP|1,500 Firemaking XP");
 
 [if_button,questlist:giantdwarf]
 def_string $text;
