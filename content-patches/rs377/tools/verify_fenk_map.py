@@ -64,16 +64,21 @@ def check(content,quest):
         "[oplocu,fenk_coffin]",
         "[oploc1,fenk_mausoleum_door]",
         "[oploc1,fenk_chest_open]",
-        "[oploc1,loc_1757]",
+        "loc_1757",
         "[oploc2,fenk_grave]",
         "%fenk_unlocked_cavern = 0",
         "fenk_mausoleum_key",
     ):
         if line not in dungeon:raise ValueError("Missing native combat/dungeon guard "+line)
+    ladder=(content/"scripts/ladders+stairs/scripts/ladders.rs2").read_text()
+    if "[oploc1,loc_1757]" not in ladder or \
+       "~climb_ladder(movecoord(coord(), 0, 0, -6400), true)" not in ladder:
+        raise ValueError("Pinned original generic 377 cave ladder routing changed")
+    if "[oploc1,loc_1757]" in dungeon:
+        raise ValueError("Quest must never shadow the shared ladder trigger")
     if "p_teleport(0_55_155_57_8)" not in dungeon or \
-       "p_teleport(0_55_55_57_8)" not in dungeon or \
-       "p_teleport(0_54_55_49_52)" not in dungeon:
-        raise ValueError("Actual native cave ladder entrances and exits not implemented")
+       "p_teleport(0_54_155_48_49)" not in dungeon:
+        raise ValueError("Two cave entries are not adjacent to native 1757 ladders")
     if "if (%prieststart < ^priest_started)" not in npc:
         raise ValueError("Quest requirement must not falsely require Restless Ghost completion")
     print(f"FENKENSTRAIN_MAP_SOURCE_VALIDATED {count} exact map objects and combat/gate stage guards")
