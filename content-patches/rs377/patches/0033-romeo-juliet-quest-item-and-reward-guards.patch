@@ -1,0 +1,71 @@
+diff --git a/scripts/areas/area_varrock/scripts/romeo.rs2 b/scripts/areas/area_varrock/scripts/romeo.rs2
+--- a/scripts/areas/area_varrock/scripts/romeo.rs2
++++ b/scripts/areas/area_varrock/scripts/romeo.rs2
+@@ -51,8 +51,16 @@
+ ~chatplayer("<p,bored>I can't, it sounds like work to me.");
+ ~chatnpc("<p,angry>Well, I guess you are not the romantic type.|Goodbye!");
+ 
+-[label,romeo_messagefrom]
+-~chatplayer("<p,happy>Romeo, I have a message from Juliet.");
++[label,romeo_messagefrom]
++if (inv_total(inv, julietmessage) < 1) {
++    if (inv_total(bank, julietmessage) > 0) {
++        ~chatnpc("<p,neutral>I believe Juliet's message is in your bank. Please bring it to me.");
++    } else {
++        ~chatnpc("<p,sad>I still need a message from Juliet. Please ask her for another.");
++    }
++    return;
++}
++~chatplayer("<p,happy>Romeo, I have a message from Juliet.");
+ ~mesbox("You pass Juliet's message to Romeo.");
+ inv_del(inv, julietmessage, 1);
+ %rjquest = ^romeojuliet_passed_message;
+diff --git a/scripts/areas/area_varrock/scripts/juliet.rs2 b/scripts/areas/area_varrock/scripts/juliet.rs2
+--- a/scripts/areas/area_varrock/scripts/juliet.rs2
++++ b/scripts/areas/area_varrock/scripts/juliet.rs2
+@@ -56,8 +56,12 @@
+ ~chatnpc("<p,sad>Please, take this message to him.");
+ @juliet_agree_message;
+ 
+-[label,juliet_agree_message]
+-~chatplayer("<p,happy>Certainly, I will deliver your message straight away.");
++[label,juliet_agree_message]
++if (inv_freespace(inv) < 1) {
++    ~chatnpc("<p,neutral>Make some room in your pack, and I will give you a message for Romeo.");
++    return;
++}
++~chatplayer("<p,happy>Certainly, I will deliver your message straight away.");
+ ~chatnpc("<p,sad>It may be our only hope.");
+ inv_add(inv, julietmessage, 1);
+ %rjquest = ^romeojuliet_spoken_juliet;
+@@ -67,9 +71,13 @@
+ [label,juliet_deliver_letter]
+ if(inv_total(inv, julietmessage) > 0 | inv_total(bank, julietmessage) > 0) {
+     ~chatnpc("<p,sad>Please, deliver the message to Romeo with all speed!");
+-} else {
+-    ~chatnpc("<p,angry>How could you lose this most important message?");
+-    ~chatnpc("<p,sad>Please, take this message to him, and please don't lose it.");
++} else {
++    if (inv_freespace(inv) < 1) {
++        ~chatnpc("<p,neutral>Make room in your pack before I give you another message for Romeo.");
++        return;
++    }
++    ~chatnpc("<p,angry>How could you lose this most important message?");
++    ~chatnpc("<p,sad>Please, take this message to him, and please don't lose it.");
+     ~mesbox("Juliet gives you another message.");
+     inv_add(inv, julietmessage, 1);
+ }
+diff --git a/scripts/quests/quest_romeojuliet/scripts/quest_romeojuliet.rs2 b/scripts/quests/quest_romeojuliet/scripts/quest_romeojuliet.rs2
+--- a/scripts/quests/quest_romeojuliet/scripts/quest_romeojuliet.rs2
++++ b/scripts/quests/quest_romeojuliet/scripts/quest_romeojuliet.rs2
+@@ -1,5 +1,8 @@
+-[queue,romeo_and_juliet_complete]
+-%rjquest = ^romeojuliet_complete;
++[queue,romeo_and_juliet_complete]
++if (%rjquest ! ^romeojuliet_juliet_crypt) {
++    return;
++}
++%rjquest = ^romeojuliet_complete;
+ session_log(^log_adventure, "Quest complete: Romeo & Juliet");
+ ~send_quest_complete(questlist:romeojuliet, cadava, 250, ^romeojuliet_questpoints, "You have completed the\\nRomeo & Juliet Quest!", "");
+ 
