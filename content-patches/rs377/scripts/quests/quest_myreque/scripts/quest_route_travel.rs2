@@ -44,16 +44,15 @@ switch_int (%routequest) {
         ~chatnpc("<p,neutral>Board the old rowboat. Do not waste your remaining planks.");
     case ^route_boat_ready :
         ~chatnpc("<p,neutral>The boat is ready. Board it beside the jetty.");
-    case ^route_hollows, ^route_bridge_fixed, ^route_guard_passed, ^route_hideout, ^route_members_met, ^route_hound_fight, ^route_hound_dead, ^route_secret_exit, ^route_tunnel_open, ^route_return :
+    case ^route_hollows, ^route_bridge_one, ^route_bridge_two, ^route_bridge_fixed, ^route_guard_passed, ^route_hideout, ^route_members_met, ^route_hound_fight, ^route_hound_dead, ^route_secret_exit, ^route_tunnel_open, ^route_return :
         ~chatnpc("<p,neutral>That crossing is open to you now. The swamp is still dangerous.");
     case default :
         ~chatnpc("<p,neutral>I am sorry for the part I played.|The boat remains available for your journeys.");
 }
 
-// Southern and northern cache boat objects (5051, 6969, 6970).
+// Use actual map-spawned boats 6969 at (3523,3284), 6970 at (3498,3377).
+// Object 5051 is absent from pinned maps and must not be relied on.
 [oploc1,route_rowboat_mortton]
-@route_board_to_hollows;
-[oploc1,route_rowboat]
 @route_board_to_hollows;
 [oploc1,route_rowboat_hollows]
 @route_board_to_mortton;
@@ -68,9 +67,8 @@ if (inv_total(inv, druid_pouch) < ^route_druid_pouch_charges) {
     return;
 }
 mes("You climb into the rowboat and travel into the Hollows.");
-// The corresponding 377 map label locates the Hollows at (3500, 3384).
-// Find a walkable landing square; never teleport into an unchecked obstacle.
-def_coord $hollows = map_findsquare(0_54_52_44_56, 1, 4, ^map_findsquare_lineofwalk);
+// Actual Hollows rowboat at plane 0, (3498,3377). Land beside it, not on water.
+def_coord $hollows = map_findsquare(0_54_52_43_49, 1, 4, ^map_findsquare_lineofwalk);
 if ($hollows = null) {
     mes("There is no safe landing here. The crossing has not been charged again.");
     return;
@@ -84,16 +82,17 @@ if (%routequest < ^route_hollows) {
     return;
 }
 mes("You take the boat south, back towards Mort'ton.");
-// 377 map label: Mort'ton (3491, 3281).
-def_coord $mortton = map_findsquare(0_54_51_35_17, 1, 4, ^map_findsquare_lineofwalk);
+// Actual southern boat at plane 0, (3523,3284) beside Cyreg.
+def_coord $mortton = map_findsquare(0_55_51_4_20, 1, 4, ^map_findsquare_lineofwalk);
 if ($mortton = null) {
     mes("The boat cannot find a safe landing. You remain in the Hollows.");
     return;
 }
 p_telejump($mortton);
 
-// The swamp bridge on the 377 map has three repairable spans.
-// Each costs 1 plank, 75 nails (225 steel nails in the original 2005 version).
+// All four physical bridge locs are in m54_53 at plane 1, x=3502, z=3427..3430.
+// Require repairs at THREE DISTINCT consecutive locs so the same one cannot be
+// clicked repeatedly to skip a bridge. No new client varp IDs are allocated.
 [oploc1,swamp_bridge1]
 @route_repair_swamp_bridge;
 [oploc2,swamp_bridge1]
@@ -101,94 +100,134 @@ p_telejump($mortton);
 
 [label,route_repair_swamp_bridge]
 if (%routequest < ^route_hollows) {
-    mes("This bridge is unsafe. First arrange your passage with the boatman.");
+    mes("Arrange your passage with Cyreg before trying to cross the swamp.");
     return;
 }
 if (%routequest >= ^route_bridge_fixed) {
-    mes("The three bridge spans are secure. You can cross safely.");
+    mes("The bridge is repaired. Cross to the north end.");
+    return;
+}
+// Each 2005 bridge repair costs one plank and exactly 75 steel nails.
+def_coord $expected = 1_54_53_46_35;
+if (%routequest = ^route_bridge_one) $expected = 1_54_53_46_36;
+if (%routequest = ^route_bridge_two) $expected = 1_54_53_46_37;
+if (loc_coord ! $expected) {
+    mes("Repair the damaged span immediately ahead, starting from the south end.");
     return;
 }
 if (inv_total(inv, hammer) < 1) {
-    mes("You need a hammer to attach the plank.");
+    mes("You need a hammer to fix the bridge.");
     return;
 }
 if (inv_total(inv, woodplank) < 1 | inv_total(inv, nails) < ^route_steel_nails_per_span) {
-    mes("You need one ordinary plank and 75 steel nails for this span.");
+    mes("Each span needs one plank and 75 steel nails.");
     return;
 }
 inv_del(inv, woodplank, 1);
 inv_del(inv, nails, ^route_steel_nails_per_span);
 %routequest = calc(%routequest + 1);
-mes("You hammer the plank into place using 75 nails.");
+mes("You fasten another plank with 75 steel nails.");
 if (%routequest = ^route_bridge_fixed) {
-    mes("All three spans of the bridge are repaired. Find the Myreque lookout beyond the tree.");
+    mes("All three damaged spans are repaired. Cross to the north end.");
 } else {
-    mes("Bridge sections repaired: <tostring(calc(%routequest - ^route_hollows))> of three.");
+    mes("Work forward to the next damaged span.");
 }
 
-// The map contains these distinct tree and cave entrance locs. Gate their use.
-[oploc1,spooky_tree_base_forbridge]
+// In this 377 map the ground-floor trees are *harmless_dead_palm_mid*
+// (5005) at (3502,3426) and (3502,3431).
+// Their walkable bridge endpoints are spooky_tree_mid_forbridge (5004) at plane 1.
+[oploc1,harmless_dead_palm_mid]
 if (%routequest < ^route_hollows) {
-    mes("You should speak to Cyreg Paddlehorn before approaching the bridge.");
+    mes("Speak to Cyreg and take the swamp boat before exploring the bridge.");
     return;
 }
-mes("You climb into the old tree to inspect the raised bridge.");
+if (loc_coord = 0_54_53_46_34) {
+    mes("You climb the southern tree to reach the raised bridge.");
+    p_teleport(1_54_53_46_34);
+} else if (loc_coord = 0_54_53_46_39) {
+    if (%routequest < ^route_bridge_fixed) {
+        mes("The bridge is too dangerous to use from this side.");
+        return;
+    }
+    mes("You climb the northern tree onto the repaired bridge.");
+    p_teleport(1_54_53_46_39);
+}
 
 [oploc1,spooky_tree_mid_forbridge]
-if (%routequest < ^route_bridge_fixed) {
-    mes("The broken bridge needs to be repaired before you can descend beyond it.");
-    return;
+if (loc_coord = 1_54_53_46_34) {
+    mes("You climb down the southern tree.");
+    p_teleport(0_54_53_46_34);
+} else if (loc_coord = 1_54_53_46_39) {
+    if (%routequest < ^route_bridge_fixed) {
+        mes("The bridge must be repaired before crossing to the far side.");
+        return;
+    }
+    mes("You climb down the northern tree.");
+    p_teleport(0_54_53_46_39);
 }
-mes("You descend the far side of the tree.");
 
+// Hollow-tree entrance at (3508,3441), one tile north of Curpile's spawn.
+// The 377 underground Myreque NPCs are at *plane 3* of m54_153.
+// Choosing plane 0 silently misses Sani Piliu and Harold Evans.
 [oploc1,hollowtree_entrance]
-@route_enter_hideout;
-[oploc1,route_boardedupdoor]
-@route_enter_hideout;
-[oploc1,route_stalagmite_cave_entrace]
-@route_enter_hideout;
-
-[label,route_enter_hideout]
 if (%routequest < ^route_guard_passed) {
-    mes("A guarded passage. Curpile Fyod must let you through first.");
+    mes("Curpile Fyod must give you permission to enter this hideout.");
     return;
 }
-if (stat_base(agility) < 25) {
-    mes("You need 25 Agility to squeeze through the cramped passage.");
+mes("You pass through the hollow tree and follow the hidden tunnel.");
+def_coord $hideout = map_findsquare(3_54_153_52_49, 1, 4, ^map_findsquare_lineofwalk);
+if ($hideout = null) {
+    mes("The entrance is blocked; remain here and try again.");
     return;
 }
-mes("You squeeze through the narrow rock passage into the Myreque's tunnels.");
-// The physical map geometry and landing coordinates still need real-client verification.
+p_teleport($hideout);
 
-// A hidden wall and the tavern basement ladder are separate exit requirements.
-[oploc1,route_cavewalltunnel]
-@route_open_secret_wall;
+// The actual stalagmite passage is at (3492,9824), plane 0.
+// It must not award or reset any stage.
+[oploc1,route_stalagmite_cave_entrace]
+if (%routequest < ^route_guard_passed | stat_base(agility) < 25) {
+    mes("You cannot squeeze through this passage until Curpile admits you and you have 25 Agility.");
+    return;
+}
+mes("You squeeze past the stalagmite into the Myreque tunnels.");
+
+// Only the ACTUAL secret wall near Canifis basement (3480,9837)
+// can open the exit. The 16 generic route_cavewalltunnel locs do NOT.
 [oploc1,thrttavernbasementfalsewall]
-@route_open_secret_wall;
-
-[label,route_open_secret_wall]
 if (%routequest < ^route_secret_exit) {
-    mes("You cannot find a way through this wall yet.");
+    mes("You cannot find the hidden passage here yet.");
     return;
 }
 if (%routequest = ^route_secret_exit) {
     %routequest = ^route_tunnel_open;
-    mes("You discover the concealed passage leading to the tavern cellar.");
-} else {
-    mes("The hidden passage remains open.");
+    mes("You find a concealed passage behind the stonework.");
+}
+def_coord $passage = map_findsquare(0_54_153_21_53, 1, 4, ^map_findsquare_lineofwalk);
+if ($passage != null) {
+    p_teleport($passage);
 }
 
 [oploc1,thrttavernbasementladder]
-if (%routequest = ^route_tunnel_open) {
-    mes("You climb out of the cavern into Canifis.");
-    %routequest = ^route_return;
-} else if (%routequest < ^route_secret_exit) {
-    mes("You cannot use this ladder until the hidden passage has been opened.");
+if (%routequest < ^route_tunnel_open) {
+    mes("You cannot leave this way before revealing the secret passage.");
+    return;
 }
+def_coord $canifis = map_findsquare(0_54_54_38_8, 1, 4, ^map_findsquare_lineofwalk);
+if ($canifis = null) {
+    mes("The ladder's exit is obstructed; your quest progress is safe.");
+    return;
+}
+mes("You climb out of the underground passage into Canifis.");
+p_teleport($canifis);
+if (%routequest = ^route_tunnel_open) %routequest = ^route_return;
 
+// Real shortcut after completing the quest, never a pre-quest teleport gate.
 [oploc1,thrt_tavern_trap_door]
-if (%routequest < ^route_complete) {
-    mes("The trapdoor is locked. You must finish In Search of the Myreque first.");
-} else {
-    mes("You can now use the old Canifis cellar shortcut.");
+if (%routequest != ^route_complete) {
+    mes("The trapdoor is locked. Finish In Search of the Myreque first.");
+    return;
+}
+def_coord $basement = map_findsquare(0_54_153_21_53, 1, 4, ^map_findsquare_lineofwalk);
+if ($basement != null) {
+    p_teleport($basement);
 }
