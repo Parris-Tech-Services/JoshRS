@@ -11,10 +11,10 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 [[ "$content" == "$RUNNER_TEMP/joshrs-fenkenstrain-377/content" && -d "$content/.git" && -d "$engine/.git" ]] || { echo "BLOCKED: unrecognised workspace" >&2; exit 2; }
 [[ "$(git -C "$content" rev-parse HEAD)" == "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50" ]] || { echo "BLOCKED: Content SHA drift" >&2; exit 2; }
 [[ "$(git -C "$engine" rev-parse HEAD)" == "b5ac859b47915afb545e60e4c1208f25d43cb3fb" ]] || { echo "BLOCKED: Engine SHA drift" >&2; exit 2; }
-for patch in "$quest/patches/0001-register-fenkenstrain-in-quests-rs2.patch" "$quest/patches/0002-move-fenk-varps-out-of-unpack.patch" "$quest/patches/0003-roavar-fenkenstrain-brain-menu.patch" "$quest/patches/0004-fenkenstrain-native-furnace.patch" "$quest/patches/0005-fenkenstrain-stairs-existing-handler.patch"; do
+for patch in "$quest/patches/0001-register-fenkenstrain-in-quests-rs2.patch" "$quest/patches/0002-move-fenk-varps-out-of-unpack.patch" "$quest/patches/0003-roavar-fenkenstrain-brain-menu.patch" "$quest/patches/0004-fenkenstrain-native-furnace.patch" "$quest/patches/0005-fenkenstrain-stairs-existing-handler.patch" "$quest/patches/0006-mortton-quest-persistence.patch"; do
   git -C "$content" apply --check "$patch"
 done
-for patch in "$quest/patches/0001-register-fenkenstrain-in-quests-rs2.patch" "$quest/patches/0002-move-fenk-varps-out-of-unpack.patch" "$quest/patches/0003-roavar-fenkenstrain-brain-menu.patch" "$quest/patches/0004-fenkenstrain-native-furnace.patch" "$quest/patches/0005-fenkenstrain-stairs-existing-handler.patch"; do
+for patch in "$quest/patches/0001-register-fenkenstrain-in-quests-rs2.patch" "$quest/patches/0002-move-fenk-varps-out-of-unpack.patch" "$quest/patches/0003-roavar-fenkenstrain-brain-menu.patch" "$quest/patches/0004-fenkenstrain-native-furnace.patch" "$quest/patches/0005-fenkenstrain-stairs-existing-handler.patch" "$quest/patches/0006-mortton-quest-persistence.patch"; do
   git -C "$content" apply "$patch"
 done
 dest="$content/scripts/quests/quest_fenkenstrain"
@@ -43,6 +43,16 @@ print("NPC_OVERLAY_CLEAN: 17 exact unhandled Port Phasmatys NPCs")
 PY
 mkdir -p "$(dirname "$ghost_dst")"
 cp "$ghost_src" "$ghost_dst"
+# Add a first genuinely interactive Mort'ton quest slice; preserve all
+# historical cache and existing 377 source. The `quest_mortton` config
+# directory already exists in the pinned content; do not replace it.
+for mort_rel in "scripts/quests/quest_mortton/configs/quest_mortton.varp" "scripts/quests/quest_mortton/scripts/joshrs_mortton_start.rs2"; do
+  src="$quest/$mort_rel"
+  dst="$content/$mort_rel"
+  [[ -f "$src" && ! -e "$dst" ]] || { echo "BLOCKED: unrecognised Mortton file: $mort_rel" >&2; exit 2; }
+  mkdir -p "$(dirname "$dst")"
+  cp "$src" "$dst"
+done
 python - "$content" <<'PY'
 import pathlib, sys, re
 root=pathlib.Path(sys.argv[1])
