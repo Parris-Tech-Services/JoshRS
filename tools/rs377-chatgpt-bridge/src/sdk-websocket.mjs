@@ -163,6 +163,43 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
             }
           }
           if(!dispatch)throw new Error('native_action_tick_unavailable');
+          if(dispatch.status==='observed_read_only'){
+            // No game packet was sent; this was the bot's own authenticated
+            // near-field observation. SDK scan methods expect result.data array.
+            send(ws,{type:'sdk_action_result',actionId,result:{
+              success:true,message:'Read native isolated bot view without mutation',
+              phase:'completion',data:dispatch.data}});
+            return;
+          }
+          if(dispatch.status==='no_action'){
+            send(ws,{type:'sdk_action_result',actionId,result:{
+              success:true,message:'No action requested',phase:'completion'}});
+            return;
+          }
+          if(dispatch.status==='wait_requested'){
+            const until=Date.now()+Math.min(15000,Math.max(actionTimeoutMs,dispatch.ticks*650+1200));
+            let advanced=false;
+            while(Date.now()<until&&!closed&&controller===ws){
+              await sleep(650);
+              let next;
+              try{next=await runtime.observe()}
+              catch(e){
+                if(String(e?.message??'').includes('replayed_native_observation'))continue;
+                throw e;
+              }
+              if(next.world?.instanceId!==start.world?.instanceId||
+                 next.player?.username!==botName)throw new Error('native_world_changed_during_wait');
+              if(next.tick>=dispatch.tick+dispatch.ticks){advanced=true;break}
+            }
+            send(ws,{type:'sdk_action_result',actionId,result:advanced?{
+              success:true,message:'Native isolated game ticks advanced',
+              phase:'completion',data:{verifiedEffect:false}
+            }:{
+              success:false,message:'Native wait not observed',
+              phase:'observation',reason:'observation_timeout'
+            }});
+            return;
+          }
           if(!['dispatched_unverified','queued_unverified'].includes(dispatch.status)){
             send(ws,{type:'sdk_action_result',actionId,result:{
               success:false,message:'No normal game packet dispatched',reason:'unsupported',phase:'validation'}});
