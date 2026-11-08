@@ -234,14 +234,27 @@ if (-not (Test-Path -LiteralPath (Join-Path $client 'gradlew.bat') -PathType Lea
 
 $envFile = Join-Path $engine '.env'
 if (-not (Test-Path -LiteralPath $envFile)) {
+    # Engine-TS 377 defaults WEBSITE_REGISTRATION=true, which rejects all
+    # unknown usernames unless the separate website registration is running.
+    # A genuinely new local world should allow first login to create an account.
+    # Never auto-register an identity from an imported character save: doing so
+    # could bind the old save to a newly created account with a different password.
+    $playerPath = Join-Path $engine 'data\players'
+    $existingSaves = @(Get-ChildItem -LiteralPath $playerPath -Filter '*.sav' -Recurse -File -ErrorAction SilentlyContinue).Count -gt 0
+    $existingDatabase = Test-Path -LiteralPath (Join-Path $engine 'db.sqlite') -PathType Leaf
+    if ($existingSaves -and -not $existingDatabase) {
+        throw 'This copied world has existing player saves but no matching db.sqlite account database. Stop: restore a verified matching private account database; do not create new accounts over old saves.'
+    }
+    $registrationMode = if ($existingSaves) { 'true' } else { 'false' }
     $values = @(
         'WEB_PORT=8888','WEB_MANAGEMENT_PORT=8898','NODE_PORT=52402','NODE_ID=10',
         'NODE_MEMBERS=true','DB_BACKEND=sqlite','LOGIN_SERVER=true',
         'FRIEND_SERVER=true','LOGGER_SERVER=true','EASY_STARTUP=true',
+        ('WEBSITE_REGISTRATION=' + $registrationMode),
         'BUILD_SRC_DIR=../content'
     )
     [System.IO.File]::WriteAllLines($envFile, $values)
-    Write-Host 'Created local server configuration. No existing .env was overwritten.'
+    Write-Host "Created local server configuration (WEBSITE_REGISTRATION=$registrationMode). No existing .env was overwritten."
 }
 $gamePort = [int](EnvironmentValue $envFile 'NODE_PORT' '43594')
 if ($UsbPath -or $ResumeSnapshotPath) {
