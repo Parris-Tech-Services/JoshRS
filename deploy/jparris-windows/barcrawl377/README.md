@@ -17,8 +17,8 @@ The existing card journal, named drinks, all ten prices (208 coins altogether), 
 ### Windows installation
 
 1. Log out Elrothiro and all other players and gracefully stop the local JoshRS server.
-2. Get the **updated launcher source files** from JoshRS `main` (after the fix merges), without replacing your existing `runtime/` folder. The launcher root should contain `JoshRS-Fix-Barcrawl.cmd`.
-3. Double-click `JoshRS-Fix-Barcrawl.cmd`. It performs read-only preflight first, then asks for confirmation before a backup, source update and native `npm run build`.
+2. Download the real [JoshRS-Fix-Barcrawl.cmd](https://github.com/Parris-Tech-Services/JoshRS/blob/main/JoshRS-Fix-Barcrawl.cmd) with GitHub's **Download raw file** option, or use the Windows `.cmd` attachment in ChatGPT. **Do not run the Google Docs source-code copy.** Leave your existing `runtime/` directory untouched. The single `.cmd` works from Downloads or your installed launcher folder; it finds `C:\JoshRS-Launcher\JoshRS-main` when necessary and offers to download the pinned installer helper if it is missing.
+3. Double-click that real `.cmd`. It performs read-only preflight, asks for confirmation, then backs up the selected family world before patching and compiling. The window always remains visible for error reporting, cancellation or success until you press a key.
 4. Alternatively, from PowerShell in the launcher directory:
    - Read-only: `& '.\deploy\jparris-windows\Install-Barcrawl377.ps1'`
    - Apply: `& '.\deploy\jparris-windows\Install-Barcrawl377.ps1' -Apply`
