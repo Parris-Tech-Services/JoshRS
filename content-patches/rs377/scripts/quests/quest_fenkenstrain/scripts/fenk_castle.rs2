@@ -1,0 +1,288 @@
+// Creature of Fenkenstrain — original JoshRS castle interactions.
+// The cache provides scenery and item IDs, not executable quest steps.
+// Coordinate-specific rewards deliberately exclude unrelated identically-typed locs.
+// No character/account is modified until these ordinary player interactions occur.
+
+// The Canifis notice starts the narrative; Dr Fenkenstrain starts the quest.
+[oploc1,fenk_signpost]
+@fenk_read_notice;
+
+[oploc2,fenk_signpost]
+@fenk_read_notice;
+
+[label,fenk_read_notice]
+if (loc_coord ! 0_54_54_37_29) {
+    mes("The sign is too weathered to read.");
+    return;
+}
+%fenk_read_signpost = 1;
+~mesbox("Castle Fenkenstrain seeks an assistant.|A steady hand, a strong stomach and discretion required.|Applicants should speak with the doctor at the castle to the north-east.");
+mes("You decide to visit the doctor at the castle.");
+
+// Give normal, explicitly cache-defined puzzle items only once.
+[oploc1,fenk_bookcase]
+if (%fenk_quest = ^fenk_not_started) {
+    mes("The books are thick with dust.");
+    return;
+}
+def_obj $reward = null;
+if (loc_coord = 1_55_55_22_38) {
+    $reward = fenk_marble_amulet;
+} else if (loc_coord = 1_55_55_35_38) {
+    $reward = fenk_obsidian_amulet;
+} else {
+    mes("You search the books but discover nothing useful.");
+    return;
+}
+if (inv_total(inv, $reward) > 0 | inv_total(bank, $reward) > 0) {
+    mes("You have already taken the strange amulet from these shelves.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need room in your pack to take what you found.");
+    return;
+}
+inv_add(inv, $reward, 1);
+mes("Behind an old book you find an unusual amulet.");
+
+// Either order, normal item-on-item packet (OPHELDU).
+[opheldu,fenk_marble_amulet]
+if (last_useitem = fenk_obsidian_amulet) {
+    @fenk_join_amulets;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[opheldu,fenk_obsidian_amulet]
+if (last_useitem = fenk_marble_amulet) {
+    @fenk_join_amulets;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[label,fenk_join_amulets]
+if (inv_total(inv, fenk_marble_amulet) < 1 | inv_total(inv, fenk_obsidian_amulet) < 1) {
+    mes("You need both amulet halves to fit them together.");
+    return;
+}
+inv_del(inv, fenk_marble_amulet, 1);
+inv_del(inv, fenk_obsidian_amulet, 1);
+inv_add(inv, fenk_star_amulet, 1);
+mes("The two pieces lock together to form a star-shaped amulet.");
+
+// Broom cupboard and cane pile are distinct real castle locs.
+[oploc1,fenk_broomcupboard]
+@fenk_take_broom;
+
+[oploc1,fenk_broomcupboard_open]
+@fenk_take_broom;
+
+[label,fenk_take_broom]
+if (%fenk_quest < ^fenk_sewn) {
+    mes("The broom cupboard contains some old gardening tools.");
+    return;
+}
+if (inv_total(inv, fenk_brush0) + inv_total(inv, fenk_brush1) +
+    inv_total(inv, fenk_brush2) + inv_total(inv, fenk_brush3) +
+    inv_total(inv, fenk_lightning_mould) + inv_total(inv, fenk_conductor) > 0) {
+    mes("You already have the brush you need.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need an empty inventory slot.");
+    return;
+}
+inv_add(inv, fenk_brush0, 1);
+mes("You take a worn garden brush from the cupboard.");
+
+[oploc1,fenk_canepile]
+if (%fenk_quest < ^fenk_sewn) {
+    mes("You see a stack of spare canes.");
+    return;
+}
+if (inv_total(inv, fenk_cane) >= 3) {
+    mes("You already have enough canes for the job.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need an empty inventory slot.");
+    return;
+}
+inv_add(inv, fenk_cane, 1);
+mes("You take a cane from the pile.");
+
+// Three canes strengthen the brush. The bronze wire binds it to a mould.
+[opheldu,fenk_brush0]
+if (last_useitem = fenk_cane) {
+    @fenk_extend_brush(fenk_brush0, fenk_brush1);
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[opheldu,fenk_brush1]
+if (last_useitem = fenk_cane) {
+    @fenk_extend_brush(fenk_brush1, fenk_brush2);
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[opheldu,fenk_brush2]
+if (last_useitem = fenk_cane) {
+    @fenk_extend_brush(fenk_brush2, fenk_brush3);
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[label,fenk_extend_brush](obj $old, obj $new)
+if (inv_total(inv, $old) < 1 | inv_total(inv, fenk_cane) < 1) {
+    mes("You need the brush and one more cane.");
+    return;
+}
+inv_del(inv, $old, 1);
+inv_del(inv, fenk_cane, 1);
+inv_add(inv, $new, 1);
+mes("You fit another cane onto the brush handle.");
+
+// The upstairs west fireplace is the actual location, not any fireplace.
+[oplocu,fenk_fireplace]
+if (last_useitem ! fenk_brush3) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (loc_coord ! 1_55_55_24_35 | %fenk_quest < ^fenk_sewn) {
+    mes("This is not the right place to shape the mould.");
+    return;
+}
+if (inv_total(inv, bronzecraftwire) < 1 | inv_total(inv, fenk_brush3) < 1) {
+    mes("You need the completed brush and some bronze wire.");
+    return;
+}
+inv_del(inv, bronzecraftwire, 1);
+inv_del(inv, fenk_brush3, 1);
+inv_add(inv, fenk_lightning_mould, 1);
+mes("You bind the brush with bronze wire and shape the lightning-conductor mould.");
+
+// Deliberate temporary casting shortcut: a genuine furnace step needs
+// verified coordinates and client interaction, so this is not labelled authentic.
+[opheldu,fenk_lightning_mould]
+if (last_useitem ! silver_bar) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%fenk_quest < ^fenk_sewn | inv_total(inv, silver_bar) < 1 |
+    inv_total(inv, fenk_lightning_mould) < 1) {
+    mes("You cannot cast the conductor just yet.");
+    return;
+}
+inv_del(inv, silver_bar, 1);
+inv_add(inv, fenk_conductor, 1);
+mes("The silver takes the shape of a lightning conductor. The mould can be reused.");
+
+[oplocu,fenk_conductor_broken]
+if (last_useitem ! fenk_conductor) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%fenk_quest ! ^fenk_sewn) {
+    mes("You have no reason to repair the conductor now.");
+    return;
+}
+if (loc_coord ! 2_55_55_28_16 | inv_total(inv, fenk_conductor) < 1) {
+    mes("You cannot reach the conductor from here.");
+    return;
+}
+inv_del(inv, fenk_conductor, 1);
+%fenk_conductor_repaired = 1;
+%fenk_quest = ^fenk_conductor_fixed;
+loc_change(fenk_conductor_repaired, 600);
+mes("You secure the new conductor. Lightning crackles over the castle.");
+mes("You should tell Dr Fenkenstrain the experiment is ready.");
+
+// The doctor supplies the shed key at stage 2; opening is a standard
+// short-lived, collision-aware location change, while access is persistent.
+[oploc1,fenk_shed_door]
+@fenk_open_shed;
+
+[oplocu,fenk_shed_door]
+if (last_useitem = fenk_shed_key) {
+    @fenk_open_shed;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[label,fenk_open_shed]
+if (%fenk_unlocked_shed = 0 & inv_total(inv, fenk_shed_key) < 1) {
+    mes("The shed door is locked. You need its key.");
+    return;
+}
+%fenk_unlocked_shed = 1;
+loc_change(fenk_shed_door_open, 100);
+mes("The shed door swings open.");
+
+[oploc1,fenk_tower_door]
+@fenk_open_tower;
+
+[oplocu,fenk_tower_door]
+if (last_useitem = fenk_tower_key) {
+    @fenk_open_tower;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[label,fenk_open_tower]
+if (%fenk_quest < ^fenk_tower_key_given) {
+    mes("The tower door is firmly locked.");
+    return;
+}
+if (%fenk_unlocked_tower = 0 & inv_total(inv, fenk_tower_key) < 1) {
+    mes("You need the tower key from Dr Fenkenstrain.");
+    return;
+}
+%fenk_unlocked_tower = 1;
+loc_change(fenk_tower_door_open, 100);
+mes("You unlock the tower.");
+
+// Grave location is an unverified candidate in the cache. Only the one
+// candidate can supply the head, so random castle graves are not loot chests.
+[oploc2,fenk_grave_poor]
+if (loc_coord ! 0_56_54_24_35 | %fenk_quest < ^fenk_hired) {
+    mes("You find nothing that would help the doctor's experiment.");
+    return;
+}
+if (inv_total(inv, spade) < 1) {
+    mes("You need a spade to dig here.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need some room to carry what you find.");
+    return;
+}
+if (inv_total(inv, fenk_head_empty) + inv_total(inv, fenk_head_full) > 0 |
+    %fenk_head = 1) {
+    mes("You have already found the head the doctor needs.");
+    return;
+}
+inv_add(inv, fenk_head_empty, 1);
+mes("You carefully uncover an old, empty skull.");
+
+[opheldu,fenk_head_empty]
+if (last_useitem ! fenk_brain) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (inv_total(inv, fenk_head_empty) < 1 | inv_total(inv, fenk_brain) < 1) {
+    mes("You need both the head and the preserved brain.");
+    return;
+}
+inv_del(inv, fenk_head_empty, 1);
+inv_del(inv, fenk_brain, 1);
+inv_add(inv, fenk_head_full, 1);
+mes("The preserved brain fits into the empty skull.");
+
+[oploc1,fenk_clock]
+if (loc_coord ! 1_55_55_20_25 | %fenk_quest < ^fenk_sewn) {
+    mes("A curious clock ticks away inside the castle.");
+    return;
+}
+%fenk_wound_clock = 1;
+mes("You wind the clock. Its mechanism begins ticking steadily.");
