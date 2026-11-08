@@ -1,0 +1,73 @@
+name: Native revision-377 Java client local controls
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-native-client-control/**'
+      - '.github/workflows/377-native-client-controls.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/rs377-native-client-control/**'
+      - '.github/workflows/377-native-client-controls.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-compile:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch the actual historical revision-377 Java game client
+        uses: actions/checkout@v4
+        with:
+          repository: LostCityRS/Client-Java
+          ref: '377'
+          path: disposable-java-client-377
+          persist-credentials: false
+      - name: Exact original source SHA, read-only patch preflight
+        shell: bash
+        run: |
+          python tools/rs377-native-client-control/patch-client377.py --client disposable-java-client-377 --check
+      - name: Verify no live/client or unmarked checkout is modified
+        shell: bash
+        run: |
+          if python tools/rs377-native-client-control/patch-client377.py --client disposable-java-client-377 --apply; then
+            echo 'UNSAFE: applied patch without disposable marker'
+            exit 1
+          fi
+          test ! -e disposable-java-client-377/src/main/java/jagex2/client/JoshRS377ClientControl.java
+      - name: Apply reviewed patch to disposable clone only
+        shell: bash
+        run: |
+          echo isolated-test-only > disposable-java-client-377/.joshrs-isolated-client-control-ok
+          python tools/rs377-native-client-control/patch-client377.py --client disposable-java-client-377 --apply
+          python tools/rs377-native-client-control/patch-client377.py --client disposable-java-client-377 --check
+      - name: Compile actual patched rev377 Java desktop client
+        shell: bash
+        run: |
+          cd disposable-java-client-377
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            ./gradlew.bat classes --no-daemon
+          else
+            chmod +x ./gradlew
+            ./gradlew classes --no-daemon
+          fi
+      - name: Verify original upstream save and new helper remain separate
+        shell: bash
+        run: |
+          cd disposable-java-client-377
+          test "$(git hash-object Client.java.before-JoshRS377ClientControl)" = 0fc9ef32991a903d10da8c7ad53e797adc706b05
+          test -f src/main/java/jagex2/client/JoshRS377ClientControl.java
+          echo 'JAVA_377_LOCAL_CONTROL_COMPILED_IN_DISPOSABLE_CLONE_NOT_WINDOWS_FAMILY'
