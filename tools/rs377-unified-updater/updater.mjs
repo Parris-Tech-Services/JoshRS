@@ -204,9 +204,9 @@ function scanHandler(content,npc) {
   if(matches.length>1) fail('Duplicate Talk-to handlers for '+npc);
   return matches.length===1?matches[0]:null;
 }
-function planUpdate(world,{repo=REPO,minCount=33}={}) {
+function planUpdate(world,{repo=REPO,minCount=33,statePathOverride}={}) {
   const patches=getPatches(repo,minCount);
-  const statePath=stateLocation(world);
+  const statePath=statePathOverride||stateLocation(world);
   const prior=previousState(world,statePath,patches);
   const remaining=patches.slice(prior.skip);
   const targets=new Set(remaining.flatMap(p=>p.paths));
@@ -370,6 +370,11 @@ function applyAndBuild(plan,{build=true,runBuild}={}) {
         const f=path.join(world.engine,rel);
         if(!exists(f)||fs.statSync(f).size<1)fail('Compiled script pack missing: '+rel);
       }
+    }
+    // The build must not silently rewrite quest source behind the planner.
+    for(const [rel,data] of changed) {
+      const target=path.join(world.content,rel);
+      if(!exists(target)||!fs.readFileSync(target).equals(data))fail('Build mutated managed quest source: '+rel);
     }
     for(const item of saves) {
       const key='saves/'+item.rel,prior=savedBefore.get(key);
