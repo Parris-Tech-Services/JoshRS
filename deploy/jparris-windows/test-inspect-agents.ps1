@@ -25,7 +25,7 @@ try {
     ) -join [Environment]::NewLine
     Set-Content -LiteralPath (Join-Path $engine '.env') -Value $envText -Encoding UTF8
     # Synthetic loopback listener makes the fresh report genuinely reachable.
-    $listener = New-Object Net.Sockets.TcpListener([Net.IPAddress]::Loopback, 0)
+    $listener = [Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback, 0)
     $listener.Start()
     $port = [int]$listener.LocalEndpoint.Port
     @{engine=$engine;gamePort=$port;webPort=8888} | ConvertTo-Json -Compress | Set-Content -LiteralPath (Join-Path $runtime 'active.json') -Encoding UTF8
