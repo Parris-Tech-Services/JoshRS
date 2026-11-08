@@ -13,10 +13,10 @@ def verify(root: Path) -> None:
     npc_pack = (root / "pack/npc.pack").read_text()
     loc_pack = (root / "pack/loc.pack").read_text()
     for target,value in (("soulbane_fear_needed",5),("soulbane_hope_needed",15)):
-        assert re.search(r"(?m)^\\^"+target+r" = "+str(value)+r"$",const),target
+        assert f"^{target} = {value}" in const.splitlines(),target
     for target in ("soulbane_confu_creeper","soulbane_hope_monst1",
                    "soulbane_hope_monst2","soulbane_hope_monst3"):
-        assert re.search(r"(?m)^\\d+="+target+r"$",npc_pack),target
+        assert any(line.split("=",1)[-1] == target for line in npc_pack.splitlines()),target
     for index in range(1,6):
         flag=f"soulbane_confu_door{index}pres"
         assert f"[{flag}]" in varbits,flag
