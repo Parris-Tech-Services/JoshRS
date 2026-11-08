@@ -143,7 +143,7 @@ def main():
         state["agent_process_launched"]=True
         execution=subprocess.run(
             command,cwd=upstream,capture_output=True,text=True,
-            timeout=900,check=False,env={**os.environ,"PYTHONPATH":str(upstream)}
+            timeout=900,check=False,env={**os.environ,"PYTHONPATH":str(upstream), "PYTHONIOENCODING":"utf-8", "PYTHONUTF8":"1"}
         )
         state["agent_returncode"]=execution.returncode
         state["ufo2_full_host_app_agent_executed"]=execution.returncode==0
