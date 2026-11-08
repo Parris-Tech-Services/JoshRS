@@ -419,6 +419,7 @@ try {
  if(!cookQuest.observedNativeQuestStageChange || cookQuest.realQuestCompletion)
    reject('Cook quest started without authoritative quest evidence');
 
+ await delay(750);
  const cookStartPosition=await reader.observe();
  const savedPosition={...cookStartPosition.position};
  // Client close is NOT a verified logout/save. Let the actual 377 idle
