@@ -101,3 +101,35 @@ if (inv_freespace(inv) < 1) {
 }
 inv_add(inv, $part, 1);
 mes("You uncover an old wrapped body part and place it carefully in your pack.");
+
+// Map-confirmed memorial at m55_55 (56,6) is aligned with the
+// excavated underground chamber at m55_155 (56,6). The entrance uses
+// a *normal* item-on-location action with the assembled star amulet.
+// This prevents teleporting a player from any other generic grave.
+[oplocu,fenk_grave]
+if (loc_coord ! 0_55_55_56_6 | last_useitem ! fenk_star_amulet) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%fenk_quest < ^fenk_hired | inv_total(inv, fenk_star_amulet) < 1) {
+    mes("You must be helping the doctor and carrying the matching amulet.");
+    return;
+}
+%fenk_coffin = 1;
+mes("The amulet fits a small recess. You push the memorial aside.");
+p_teleport(0_55_155_56_6);
+
+// The two map-confirmed cave exit objects (loc_1757) lead to their
+// corresponding exterior locations. This deliberately does not override
+// ladders elsewhere in the world.
+[oploc1,loc_1757]
+if (loc_coord = 0_55_155_58_7) {
+    mes("You climb back to the castle graveyard.");
+    p_teleport(0_55_55_57_8);
+} else if (loc_coord = 0_54_155_48_50) {
+    mes("You climb out into the mausoleum grounds.");
+    p_teleport(0_54_55_49_50);
+} else {
+    ~displaymessage(^dm_default);
+}
+
