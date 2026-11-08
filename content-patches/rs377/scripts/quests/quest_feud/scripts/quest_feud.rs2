@@ -16,6 +16,11 @@ switch_int (%main_feud_var) {
         %main_feud_var = ^feud_find_nephew;
         ~chatnpc("<p,neutral>Ask for my nephew in the town south of Shantay Pass.");
         ~send_quest_progress(questlist:feud, %main_feud_var, ^feud_complete);
+    case ^feud_find_nephew :
+        ~chatnpc("<p,neutral>Before you leave, you might want something suitable to wear in Pollnivneach.");
+        if (~p_choice2("Buy a desert disguise for 30 coins.", 1, "Not now.", 2) = 1) {
+            ~feud_buy_disguise;
+        }
     case ^feud_mayor_spoken :
         %main_feud_var = ^feud_complete;
         queue(feud_quest_complete, 0, 0);
@@ -28,7 +33,7 @@ switch_int (%main_feud_var) {
 
 // Optional fee for an era-correct disguise: players may also buy the pieces
 // through native trade. Quest progression never grants the outfit for free.
-[opnpc2,feud_ali_m]
+[proc,feud_buy_disguise]
 if (inv_total(inv, feud_karidian_turban) > 0 | inv_total(inv, feud_karidian_fakebeard) > 0 |
     inv_total(inv, feud_desert_disguise) > 0 | inv_total(worn, feud_desert_disguise) > 0) {
     ~chatnpc("<p,neutral>You already have part or all of a local disguise.");
