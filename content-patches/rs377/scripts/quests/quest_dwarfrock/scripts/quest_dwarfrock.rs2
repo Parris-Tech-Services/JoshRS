@@ -1,0 +1,89 @@
+// Between a Rock... - JoshRS original chain on 377 cache items/NPCs (gold rock helmet, gold bars/ore;
+// NPCs Dondakan the dwarf, Rolad, the Keldagrim boatman, the blast engineer).
+// Original JoshRS content. Persistence: add scope=perm to cache varp dwarfrock_main (patch 0009).
+// NOT IMPLEMENTED: the gold-vein wall scene inside the mine, the actual cannon ride, and the
+// alternate entrance; the chain here is a condensed reconstruction. Rewards: 5,000 Mining XP,
+// 5,000 Defence XP, and use of Dondakan's gold mine.
+
+// Dondakan the dwarf - start NPC, stuck at a hard rock wall in the Keldagrim south-east mine.
+[opnpc1,dwarfrock_dondakan]
+switch_int (%dwarfrock_main) {
+    case ^br_not_started :
+        ~chatnpc("<p,neutral>This wall, see? Pure gold behind it - a fortune! But the|rock's too hard for picks. Old dwarven blasting could open|it, if I had the plans. Rolad knows the old designs.|Find him and I'll cut you in.");
+        def_int $option = ~p_choice2("I'll find Rolad.", 1, "Goodbye.", 2);
+        if ($option = 1) {
+            ~chatplayer("<p,neutral>I'll find Rolad for you.");
+            %dwarfrock_main = ^br_started;
+            ~send_quest_progress(questlist:dwarfrock, %dwarfrock_main, ^br_complete);
+        }
+    case ^br_started :
+    case ^br_bruv :
+    case ^br_plans :
+        ~chatnpc("<p,neutral>Rolad! Yes! Bring me those plans, and mind the boatmen.");
+    case ^br_helmet :
+        if (inv_total(inv, dwarf_goldrock_helmet) > 0) {
+            ~chatnpc("<p,happy>The helmet, the plans, the powder's packed! Stand back!|...The wall is open! GOLD! Go on then, help yourself.|You've earned it, and my thanks.");
+            inv_del(inv, dwarf_goldrock_helmet, 1);
+            queue(br_quest_complete, 0, 0);
+        } else {
+            ~chatnpc("<p,neutral>Where's that gold helmet? The blast engineer makes them.");
+        }
+    case default :
+        ~chatnpc("<p,happy>Mine's open! Fill your boots - they're gold too, probably.");
+}
+
+// Rolad - dwarven historian; needs the old blasting design from Keldagrim.
+[opnpc1,dwarfrock_rolad]
+switch_int (%dwarfrock_main) {
+    case ^br_started :
+        ~chatnpc("<p,neutral>Dondakan and his gold wall! The old blasting designs|were copied into the mine records - the boatmen keep|the archive copies on their runs. Speak to the boatman|at the Keldagrim crossing.");
+        %dwarfrock_main = ^br_bruv;
+    case ^br_bruv :
+        ~chatnpc("<p,neutral>The boatman has the archive copy. Keldagrim crossing!");
+    case ^br_plans :
+        ~chatnpc("<p,neutral>So that's the old design... and this... and THERE.|Copy made. One more thing: the blast throws fire -|Dondakan will want a gold rock helmet. The blast|engineer by the crossing makes them from gold bars.");
+        %dwarfrock_main = ^br_helmet;
+    case default :
+        ~chatnpc("<p,neutral>History is a deep mine, friend. Dig carefully.");
+}
+
+// Boatman bruv - ferries the player and fetches the archive copy.
+[opnpc1,dwarfrock_boatman_bruv1]
+if (%dwarfrock_main = ^br_bruv) {
+    ~chatnpc("<p,neutral>Rolad's archive copy? Aye, I've the ledger right here.|One trip across, one page out - between us, eh?");
+    %dwarfrock_main = ^br_plans;
+} else {
+    ~chatnpc("<p,neutral>Crossing's free. Everything else costs.");
+}
+
+// Blast engineer - makes the gold rock helmet from three gold bars.
+[opnpc1,dwarfrock_engineer1]
+if (%dwarfrock_main = ^br_helmet & inv_total(inv, gold_bar) >= 3) {
+    ~chatnpc("<p,neutral>Three gold bars, hammer, mould... there. A gold rock|helmet. Don't stand in the fire and it'll outlive you.");
+    inv_del(inv, gold_bar, 3);
+    inv_add(inv, dwarf_goldrock_helmet, 1);
+} else if (%dwarfrock_main = ^br_helmet) {
+    ~chatnpc("<p,neutral>Helmet needs three gold bars. Smelt them yourself,|I'm not a charity.");
+} else {
+    ~chatnpc("<p,neutral>Mind the powder kegs.");
+}
+
+[queue,br_quest_complete]
+%dwarfrock_main = ^br_complete;
+stat_advance(mining, 50000);
+stat_advance(defence, 50000);
+session_log(^log_adventure, "Quest complete: Between a Rock...");
+~send_quest_complete(questlist:dwarfrock, dwarf_goldrock_helmet, 200, ^br_questpoints, "You have completed Between a Rock...!", "5,000 Mining XP|5,000 Defence XP|Use of Dondakan's gold mine");
+
+[if_button,questlist:dwarfrock]
+def_string $text;
+switch_int (%dwarfrock_main) {
+    case ^br_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Dondakan@dbl@ in the Keldagrim south-east mine.";
+    case ^br_started : $text = "@str@Dondakan wants the old dwarven blasting plans.||@dbl@I should ask @dre@Rolad@dbl@ about the old designs.";
+    case ^br_bruv : $text = "@str@Rolad says the archive copy is with the boatmen.||@dbl@I should speak to the @dre@boatman@dbl@ at the Keldagrim crossing.";
+    case ^br_plans : $text = "@str@I have the old blasting design.||@dbl@I should return it to @dre@Rolad@dbl@.";
+    case ^br_helmet : $text = "@str@Rolad needs a gold rock helmet for the blast.||@dbl@The @dre@blast engineer@dbl@ by the crossing will make one from three gold bars.";
+    case ^br_blast : $text = "@str@I have the gold rock helmet.||@dbl@I should take it to @dre@Dondakan@dbl@.";
+    case default : $text = "@str@Dondakan's wall is open and the gold is flowing.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Between a Rock...", $text);

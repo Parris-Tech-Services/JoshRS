@@ -82,3 +82,51 @@ Applied to: `quest_ics` (ics_possessed_kill), `quest_mdaughter` (mdaughter_bear_
   checks (unique permanent varps, renamed placeholders, single quest-list
   registration per quest), the two Fenkenstrain contract checkers, native compile,
   and the boot smoke. Runs on PRs touching `content-patches/rs377/**`.
+
+## Batch 3 - oldest not-started quests (2026-11-08, quest audit round 2)
+
+Quest audit round 2: the queue doc (research/rs377/QUEST_QUEUE_2026-11-08.md) lists 72
+COMPLETE-VERIFIED quests (re-verified by the parallel NPC-dialogue audit session), so the
+remaining work is the not-started quests, oldest by release date first. Six added in this
+batch, all JoshRS-original reconstructions in the established pattern:
+
+| Folder | Quest | Released | Varp | Start NPC |
+|---|---|---|---|---|
+| quest_osf | One Small Favour | 2005-02-21 | onefavour | Yanni Salika (shiloantiques) |
+| quest_dwarfrock | Between a Rock... | 2005-03-14 | dwarfrock_main | Dondakan (dwarfrock_dondakan) |
+| quest_feud | The Feud | 2005-04-04 | main_feud_var | Ali M (feud_ali_m) |
+| quest_tog | Tears of Guthix | 2005-05-09 | tog_minigame | Juna (tog_juna_dummy) |
+| quest_zogre | Zogre Flesh Eaters | 2005-05-16 | zombie_ogre | ogre guard (zogre_ogre_guard; Grish has no cache NPC) |
+| quest_giantdwarf | The Giant Dwarf | 2005-05-31 | giantdwarf_main | boatman (dwarf_city_boatman_mines_prequest) |
+
+New patches (renumbered 0020-0022 after the merge with main; see below):
+- `0020-batch3-quest-varps-permanent.patch` - scope=perm on the six quest varps in all.varp.
+- `0021-osf-yanni-quest-start.patch` - extends the existing shiloantiques handler in
+  scripts/areas/area_shilo/scripts/yanni_salika.rs2 (Yanni already had antique-buyer
+  dialogue): offers the quest start, shows quest progress, and otherwise falls through
+  to the original dialogue. First patch to touch area_shilo - checked for handler
+  collisions first (only shiloantiques had an existing opnpc1 among all new NPCs).
+- `0022-register-batch3-quests.patch` - 6 QP blocks + 6 quest-list colour lines in
+  quests.rs2, anchored on the post-0019 state.
+
+Merge with main (2026-11-08): main had landed the parallel session's Feud / Making
+History / Hand in the Sand / Elid / Swan Song rebuild / Rag extras as patches
+0009-0019, colliding with this branch's 0009-0011. Resolution: keep main's quest_feud
+folder and patches 0009-0019 verbatim, drop this branch's quest_feud folder and old
+0009-0011, and regenerate this branch's three patches as 0020-0022 against the
+post-0019 state. Full chain 0001-0022 verified on a pristine pin clone with all 19
+quest folders + the Morytania addendum files: BUILD_VERIFY compile exit 0 and
+smoke_377.py green. CI script updated to 22 patches / 18 folders / 18 quest-list
+keys / 17 permanent varp blocks.
+
+New engine facts: NPC trigger names resolve via npc.pack names (`[opnpc1,<name>]`); cache
+quest NPCs exist with quest prefixes (favour_*, dwarfrock_*, feud_*, zogre_*, dwarf_city_*,
+tog_*) and quest items in obj.pack - checked all referenced names against both packs and
+for existing handlers before writing. Quest-owned constants are globally visible, so
+quests.rs2 can use ^osf_* etc. from quest configs. ~p_choice2 works inside procs; use the
+`def_int $option = ~p_choice2(...)` form (cook-quest pattern), not inline comparison.
+
+Verification: patches 0001-0011 applied in order on a pristine pin clone + all 15 quest
+folders -> BUILD_VERIFY compile exit 0 (full 18.6s pack, all CRC checks pass) and
+smoke_377.py green. CI script updated to 11 patches / 15 folders / 15 quest-list keys /
+12 permanent varp blocks.
