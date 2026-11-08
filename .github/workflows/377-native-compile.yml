@@ -201,6 +201,9 @@ jobs:
         run: |
           python content-factory/patch_377_sdk_trace.py --engine "$RUNNER_TEMP/joshrs-377-build/engine"
           test -s "$RUNNER_TEMP/joshrs-377-build/engine/src/engine/observer/Native377Trace.ts"
+      - name: Precondition disposable Cook quest bot near real NPC (CI only)
+        shell: bash
+        run: python3 content-factory/patch_377_quest_fixture.py --engine "$RUNNER_TEMP/joshrs-377-build/engine"
       - name: Compile with the actual Lost City 377 packer
         shell: bash
         env:
@@ -229,6 +232,7 @@ jobs:
           LOGGER_SERVER: "true"
           RS377_OBSERVER_PROBE: "true"
           RS377_LIVE_BOT_PROBE: "true"
+          RS377_CI_QUEST_START: "true"
           RS377_PINNED_UPSTREAM: ${{ github.workspace }}/rs-sdk-pinned
           NODE_PROFILE: joshrs_ci_377
           NODE_PORT: "15402"
