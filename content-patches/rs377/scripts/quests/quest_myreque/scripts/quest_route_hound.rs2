@@ -35,4 +35,7 @@ if (npc_findhero = ^true) {
 [queue,route_hound_defeated]
 if (%routequest ! ^route_hound_fight) return;
 %routequest = ^route_hound_dead;
+// Native 377 morph varbit 396 belongs to existing routequestmulti (ID 388).
+// Preserve and transmit it so Canifis Vanstrom becomes the Stranger after the fight.
+%thsfm_vanstrom_hide = 1;
 mes("The Skeleton Hellhound collapses. Speak to Veliaf to learn the secret exit.");
