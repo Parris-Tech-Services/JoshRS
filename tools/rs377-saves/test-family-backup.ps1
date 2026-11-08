@@ -29,7 +29,7 @@ try {
     Remove-Item -LiteralPath (Join-Path $backup 'players/main/extra.sav')
     [IO.File]::WriteAllBytes((Join-Path $engine 'data/players/main/sylvie.sav'),[byte[]](3..142))
     $second=Join-Path $root 'second';New-Item -ItemType Directory -Path (Join-Path $second 'players/main') -Force | Out-Null
-    Copy-Item -LiteralPath (Join-Path $backup 'players/main/*') -Destination (Join-Path $second 'players/main')
+    Get-ChildItem -LiteralPath (Join-Path $backup 'players/main') -File | Copy-Item -Destination (Join-Path $second 'players/main')
     Copy-Item -LiteralPath (Join-Path $backup 'db.sqlite') -Destination $second
     Assert-Throws { Write-JoshRSBackupIntegrity -BackupPath $second -Engine $engine } 'changed source during backup'
     Write-Host 'PASS: both players, SHA-256, tamper, extra file, manifest non-overwrite, changed source'
