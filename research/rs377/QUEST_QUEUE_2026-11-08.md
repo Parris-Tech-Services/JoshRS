@@ -140,7 +140,7 @@
 | ID | Name | Release Date | Membership | Varp / Varbit | Directory |
 |---|---|---|---|---|---|
 | `tutorial` | Tutorial Island | `2002-09-24` | Free | `tutorial` | `tutorial` |
-| `barcrawl` | Alfred Grimhand's Barcrawl | `2002-02-27` | Members | `barcrawl` | `quest_barcrawl` |
+| `barcrawl` | Alfred Grimhand's Barcrawl | `2002-03-25` | Members | `barcrawl` | `quest_barcrawl` |
 | `magearena` | Mage Arena | `2003-09-22` | Members | `magearena` | `minigame_mage_arena` |
 | `abyssal` | Enter the Abyss | `2005-06-13` | Members | `abyssal_miniquest` | `miniquest_abyssal` |
 | `curse_of_zaros` | Curse of Zaros (Ghostly Robes) | `2005-04-18` | Members | `deserttreasurevarbit` | `quest_deserttreasure` |
