@@ -1,6 +1,6 @@
 --- a/scripts/ladders+stairs/scripts/stairs.rs2
 +++ b/scripts/ladders+stairs/scripts/stairs.rs2
-@@ -729,5 +729,7 @@
+@@ -729,6 +729,8 @@
  [oploc1,fenk_stairs_lv1]
  // arrive delay?
  switch_coord (loc_coord) {
@@ -9,7 +9,7 @@
      case default : @unhandled_stairs(loc_coord);
  }
  
-@@ -735,5 +737,7 @@
+@@ -735,6 +737,8 @@
  [oploc1,fenk_stairs_lv1_top]
  // arrive delay?
  switch_coord (loc_coord) {
