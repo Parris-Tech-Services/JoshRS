@@ -12,7 +12,10 @@ import { CrcBuffer, CrcTable } from '#/cache/CrcTable.js';
 import OnDemand from '#/engine/OnDemand.js';
 import World from '#/engine/World.js';
 import InvType from '#/cache/config/InvType.js';
+import LocType from '#/cache/config/LocType.js';
 import NpcType from '#/cache/config/NpcType.js';
+import ObjType from '#/cache/config/ObjType.js';
+import Obj from '#/engine/entity/Obj.js';
 import { PlayerStatNameMap } from '#/engine/entity/PlayerStat.js';
 import { isClientConnected } from '#/engine/entity/NetworkPlayer.js';
 import ScriptState from '#/engine/script/ScriptState.js';
@@ -305,6 +308,61 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         });
     }
 
+    // Task 27: native 377 *observed* locs and ground items. We use the
+    // existing pinned ZoneMap.zones Map, rather than gameMap.getZone() which
+    // silently allocates missing zones during an otherwise read-only request.
+    // This source gate runs ONLY in the isolated disposable observer above.
+    // Never include another player's private drops or pretend an unavailable
+    // client-only object is known.
+    type ExistingZone = ReturnType<typeof World.gameMap.getZone>;
+    const mapData = World.gameMap as unknown as {
+        zonemap?: { zones?: Map<number, ExistingZone> }
+    };
+    const existingZones = mapData.zonemap?.zones;
+    let nearbyLocs: Array<Record<string, unknown>> | null = null;
+    let groundItems: Array<Record<string, unknown>> | null = null;
+    if (existingZones instanceof Map) {
+        nearbyLocs = [];
+        groundItems = [];
+        const zoneX = bot.x >> 3;
+        const zoneZ = bot.z >> 3;
+        for (let zx = zoneX - 2; zx <= zoneX + 2; zx++) {
+            for (let zz = zoneZ - 2; zz <= zoneZ + 2; zz++) {
+                const zoneIndex = (zx & 0x7ff) | ((zz & 0x7ff) << 11) | ((bot.level & 0x3) << 22);
+                const zone = existingZones.get(zoneIndex);
+                if (!zone) continue;
+                if (nearbyLocs.length < 48) {
+                    for (const loc of zone.getAllLocsSafe()) {
+                        if (nearbyLocs.length >= 48) break;
+                        const distance = Math.max(Math.abs(loc.x - bot.x), Math.abs(loc.z - bot.z));
+                        if (loc.level !== bot.level || distance > 16) continue;
+                        const type = LocType.get(loc.type);
+                        const optionsWithIndex = (type?.op ?? []).flatMap((text, index) =>
+                            text && text !== 'hidden' ? [{ text, opIndex: index + 1 }] : []);
+                        nearbyLocs.push({
+                            id: loc.type, name: type?.name ?? null,
+                            x: loc.x, z: loc.z, level: loc.level, distance,
+                            optionsWithIndex, options: optionsWithIndex.map(o => o.text)
+                        });
+                    }
+                }
+                if (groundItems.length < 48) {
+                    for (const obj of zone.getAllObjsSafe()) {
+                        if (groundItems.length >= 48) break;
+                        const distance = Math.max(Math.abs(obj.x - bot.x), Math.abs(obj.z - bot.z));
+                        if (obj.level !== bot.level || distance > 16 ||
+                            !obj.isValid(bot.hash64) ||
+                            (obj.receiver64 !== Obj.NO_RECEIVER && obj.receiver64 !== bot.hash64)) continue;
+                        groundItems.push({
+                            id: obj.type, name: ObjType.get(obj.type)?.name ?? null,
+                            count: obj.count, x: obj.x, z: obj.z, distance
+                        });
+                    }
+                }
+            }
+        }
+    }
+
     // Dialogue is genuinely observable at the SERVER script layer, but
     // display text and option labels are client-side UI data. Do NOT invent
     // those labels; expose only actual pending component IDs and wait state.
@@ -318,9 +376,9 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         optionTextAvailable: false
     };
 
-    // Strictly expose only the selected bot's live fields. Quest stages,
-    // nearby objects, ground items and full RS-SDK UI state are NOT currently
-    // known at this source boundary: use null, never zero/default guesses.
+    // Strictly expose only the selected bot's live fields. Quest stages
+    // and full client-side RS-SDK UI remain unknown (null), never guessed.
+    // Nearby objects/drops are grounded in the exact pinned native ZoneMap.
     const observation = {
         world: { mode: 'isolated', revision: 377, tickMs: 600,
             xpMultiplier: 1, instanceId: instanceId!, sourceSha: sourceSha! },
@@ -331,7 +389,7 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         inventory: projectItems(inventory),
         equipment: projectItems(worn),
         nearbyNpcs,
-        nearbyLocs: null, groundItems: null,
+        nearbyLocs, groundItems,
         dialogue, questStages: null, sdkDetails: null
     };
     reply.header('Cache-Control', 'no-store');
