@@ -552,7 +552,8 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         return component && typeof label === 'string' && label.trim() ?
             {index:index + 1, text:label, componentId:id} : null;
     });
-    const optionTextAvailable = knownOptions.every(option => option !== null);
+    const optionTextAvailable = pending.length > 0 &&
+        knownOptions.every(option => option !== null);
     const dialogueText = bot.modalChat >= 0 ? displayText(bot.modalChat) : null;
     const dialogue = {
         isOpen: bot.modalChat !== -1 || waitingForButton || waitingForCount,
