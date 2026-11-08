@@ -23,6 +23,7 @@ type Trace = {
     gameMessages: GameMessage[];
     textOverrides: Map<number, string>;
     sawDialogPage: boolean;
+    dialogPageRevision: number;
 };
 const traceByPlayer = new WeakMap<Player, Trace>();
 const allowed = (player: Player): boolean =>
@@ -46,7 +47,8 @@ function forBot(player: Player): Trace | null {
             unknownDamageSource: false,
             gameMessages: [],
             textOverrides: new Map(),
-            sawDialogPage: false
+            sawDialogPage: false,
+            dialogPageRevision: 0
         };
         traceByPlayer.set(player, trace);
     }
@@ -89,9 +91,11 @@ export function captureSdkOutgoing(player: Player, packet: ServerGameMessage, ti
         if (t.gameMessages.length > 32) t.gameMessages.shift();
     } else if (packet instanceof IfOpenChat) {
         t.sawDialogPage = true;
+        t.dialogPageRevision++;
     } else if (packet instanceof IfSetText) {
         // Exact server-set text, not a guessed client-visible label.
         t.textOverrides.set(packet.component, packet.text.slice(0, 1024));
+        if (player.modalChat !== -1) t.dialogPageRevision++;
         if (t.textOverrides.size > 512) t.textOverrides.clear();
     }
 }
@@ -110,6 +114,7 @@ export function readSdkTrace(player: Player, currentTick: number) {
         combatEvents: t.unknownDamageSource ? null : [],
         gameMessages: t.gameMessages.map(message => ({ ...message })),
         sawDialogPage: t.sawDialogPage,
+        dialogPageRevision: t.dialogPageRevision,
         textOverrides: Array.from(t.textOverrides, ([component, text]) => ({component,text}))
     };
 }
