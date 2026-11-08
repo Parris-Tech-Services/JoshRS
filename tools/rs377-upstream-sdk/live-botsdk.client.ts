@@ -31,7 +31,7 @@ assert.match(gatewayUrl,/^ws:\/\/127\.0\.0\.1:\d{4,5}\/gateway$/);
 const port=Number(new URL(gatewayUrl).port);
 assert.ok(port>1024&&![52402,8888,45099,43500,15402,18880,18881].includes(port));
 assert.ok(typeof token==='string'&&Buffer.byteLength(token)>=32);
-assert.ok(Array.isArray(candidates)&&candidates.length===4);
+assert.ok(Array.isArray(candidates)&&candidates.length===5);
 assert.ok(candidates.every(p=>Array.isArray(p)&&p.length===2&&
   p.every(n=>Number.isInteger(n)&&n>0&&n<16384)));
 
@@ -66,6 +66,9 @@ try{
  for(const [x,z] of candidates){
   if(Math.max(Math.abs(origin.x-x),Math.abs(origin.z-z))>2)continue;
   const sent=await sdk.sendWalk(x,z,false);
+  console.error('RS_SDK_ACTION_DIAGNOSTIC:'+JSON.stringify({target:[x,z],
+    success:sent.success,phase:sent.phase,reason:sent.reason??null,
+    message:String(sent.message??'').slice(0,130)}));
   if(sent.success!==true||sent.phase!=='completion'||sent.data?.verifiedEffect!==true)continue;
   for(let attempt=0;attempt<25;attempt++){
    const state=sdk.getState();
@@ -76,7 +79,7 @@ try{
   }
   if(walked)break;
  }
- assert.equal(walked,true,'real upstream BotSDK walk must change native player position');
+ if(!walked)throw new Error('real upstream BotSDK never observed an ordinary walk on any verified nearby tile');
  console.log('RS_SDK_REAL_NATIVE_PROOF:'+JSON.stringify({
   source:'MaxBittker/rs-sdk',sourceSha:PIN,bot:'HarnessProbe',
   realNative377World:true,authenticated,continuousNativeState:true,
