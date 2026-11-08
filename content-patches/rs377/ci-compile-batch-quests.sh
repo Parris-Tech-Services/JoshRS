@@ -2,7 +2,7 @@
 # Only for a disposable GitHub Actions runner. NEVER apply to a live JoshRS install.
 # Overlays the Fenkenstrain quest, the batch-2 quest bundles, the Morytania
 # addendum, the batch-3/4 quests and Cook range helpers onto the pinned 377
-# content, applying patches 0001-0030 in numeric order.
+# content, applying patches 0001-0031 in numeric order.
 set -euo pipefail
 : "${RUNNER_TEMP:?missing runner temp}"
 : "${GITHUB_WORKSPACE:?missing checkout}"
@@ -17,7 +17,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 30 ]] || { echo "BLOCKED: expected 30 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 31 ]] || { echo "BLOCKED: expected 31 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -33,12 +33,14 @@ for folder in quest_fenkenstrain quest_rag quest_soulbane quest_swansong quest_m
   cp -R "$quest/scripts/quests/$folder" "$dest"
 done
 
-# Morytania addendum: scoped original dialogues plus early Mort'ton stages.
+# Morytania addendum: scoped dialogues and physical Mort'ton restoration.
 # Only clone exact allowlisted text files into this disposable runner.
 for rel in \
   "scripts/areas/area_ahoy/scripts/ahoy_ghost_dialogue_377.rs2" \
   "scripts/quests/quest_mortton/configs/quest_mortton.varp" \
-  "scripts/quests/quest_mortton/scripts/joshrs_mortton_start.rs2"; do
+  "scripts/quests/quest_mortton/configs/joshrs_mortton_finish.constant" \
+  "scripts/quests/quest_mortton/scripts/joshrs_mortton_start.rs2" \
+  "scripts/quests/quest_mortton/scripts/joshrs_mortton_finish.rs2"; do
   [[ -f "$quest/$rel" && ! -e "$content/$rel" ]] || { echo "BLOCKED: conflicting Morytania file: $rel" >&2; exit 2; }
   mkdir -p "$(dirname "$content/$rel")"
   cp "$quest/$rel" "$content/$rel"
@@ -104,7 +106,7 @@ for key in ('creatureoffenkenstrain', 'rag', 'soulbane', 'swansong', 'routequest
             'ics_little', 'mdaughter', 'hauntedmine', 'lost_tribe', 'makinghistory', 'handsand', 'feud', 'elid',
             'onesmallfavour', 'dwarfrock', 'tog', 'zogre', 'giantdwarf',
             'forget', 'garden', 'twocats', 'wanted', 'deal', 'agrith',
-            'regicide', 'viking', 'mm', 'rd', 'deserttreasure'):
+            'regicide', 'viking', 'mm', 'rd', 'deserttreasure', 'mortton'):
     assert src.count(f'send_quest_progress_colour(questlist:{key}') == 1, key
 shop = (scripts / 'areas/area_draynor/scripts/fortunato.rs2').read_text()
 assert 'openshop(wine_vinegar_merchant' in shop
@@ -113,9 +115,9 @@ assert '%rag_wine = 1' in shop
 inv = (scripts / '_unpack/727/all.inv').read_text()
 assert '[wine_vinegar_merchant]' in inv and 'stock2=rag_vinegar,500,10' in inv
 
-# Barcrawl hardening: the pre-quest gate must not teleport on failed checks,
-# lost card recovery must keep the ten permanent visit bits, and Thormac must
-# enforce the downstream prerequisite. The Rusty Anchor charges eight coins.
+# Barcrawl source checks: gate denies entry before completion, original card
+# loss restarts the crawl, Thormac remains available before completion,
+# and the Rusty Anchor charges eight coins.
 guard = (scripts / 'areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2').read_text()
 gate = (scripts / 'areas/area_barbarian_outpost/scripts/outpost_gate.rs2').read_text()
 thormac = (scripts / 'areas/area_seers/scripts/thormac.rs2').read_text()
