@@ -168,3 +168,31 @@ if (%morttonquest = ^mortton_kill_shades) {
 } else if (%morttonquest = ^mortton_killed_4_shades) {
     %morttonquest = ^mortton_killed_5_shades;
 }
+
+
+// Mort'ton's four map-spawned afflicted villagers had no specific
+// Talk-to trigger in the source audit. These dialogue branches are
+// observational: no invented serum effect or global morph changes.
+[opnpc1,mort_afflicted_man]
+@joshrs_mort_afflicted_villager;
+
+[opnpc1,mort_afflicted_man2]
+@joshrs_mort_afflicted_villager;
+
+[opnpc1,mort_afflicted_woman]
+@joshrs_mort_afflicted_villager;
+
+[opnpc1,mort_afflicted_woman2]
+@joshrs_mort_afflicted_villager;
+
+[label,joshrs_mort_afflicted_villager]
+if (%morttonquest < ^mortton_read_diary) {
+    ~chatnpc("<p,confused>The villager mutters about a dangerous mist and the nearby temple.");
+    mes("Perhaps there is a journal or book that explains this strange illness.");
+} else if (%morttonquest < ^mortton_made_serum) {
+    ~chatnpc("<p,confused>There is a treatment. Someone was writing about it.");
+    mes("The research diary mentions a serum made from tarromin and ashes.");
+} else {
+    ~chatnpc("<p,sad>The shadows keep returning. The village has known little rest.");
+    ~chatplayer("<p,neutral>I am trying to help Razmire and the others.");
+}
