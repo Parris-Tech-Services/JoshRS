@@ -49,6 +49,10 @@ export function checkFiles(install) {
     throw new Error('Elrothiro save missing: refusing to run against an unidentified world');
   if(!fs.statSync(key,{throwIfNoEntry:false})?.isFile())
     throw new Error('Engine RSA key missing: refusing bot login');
+  // Never silently take over a pre-existing account with the pilot name.
+  const existingBot=path.join(engine,'data','players','main','harnessscout.sav');
+  if(fs.existsSync(existingBot))
+    throw new Error('HarnessScout save already exists: refusing to take over an existing bot');
   return {engine,key};
 }
 
