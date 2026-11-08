@@ -153,7 +153,7 @@ Jagex's [Fan Content Policy §6.1.3](https://legal.jagex.com/docs/policies/fan-c
 3. **Parental modes:** combat on/off or gentle; scary content warning/filter; no forced PvP; no unsolicited player contact; no gambling or paid microtransactions; child-readable text and scalable UI.
 4. **Joyful co-op:** shared gathering trips, building, fishing, easy quest hints, visible crafting results, optional companion NPCs, adjustable difficulty and the option to play without combat.
 5. **No grief mechanics:** disable stealing/attacking other family accounts, dangerous drop parties and destructive housing changes by default. Allow parent-approved opt-ins if desired.
-6. **Recoverability:** automatic snapshots and manual export/import, integrity checks, clean shutdown, migration rollback and isolated backups of Elrothiro/Sylvie state. No silent inventory or quest reset.
+6. **Recoverability:** automatic snapshots and manual export/import, integrity checks, clean shutdown, migration rollback and isolated backups of existing private character state. No silent inventory or quest reset.
 7. **Privacy:** no telemetry or advertising requirement, no remote voice/chat, no strangers, no credentials or player data in GitHub, and a clearly visible offline/only-family status in the client.
 
 Full [family-world specification](FAMILY_OFFLINE_WORLD_ARCHITECTURE_2026-11-08.md) is a companion to this research.

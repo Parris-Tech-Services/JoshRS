@@ -1,0 +1,34 @@
+name: RS3 OSRS parity inventory unit tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/parity-inventory/**'
+      - '.github/workflows/parity-inventory-check.yml'
+  pull_request:
+    paths:
+      - 'tools/parity-inventory/**'
+      - '.github/workflows/parity-inventory-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-metadata-parser-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Use built-in Node runtime
+        run: node --version
+      - name: Run offline scan tests (no wiki network access)
+        run: node --test tools/parity-inventory/scan.test.mjs
+      - name: Refuse live wiki crawling as a CI side effect
+        run: |
+          if node tools/parity-inventory/scan.mjs --game osrs --category Quests --out /tmp/parity.json 2>/tmp/parity-err.txt; then
+            echo "Fail: live opt-in gate absent" >&2
+            exit 1
+          fi
+          grep -q -- '--live' /tmp/parity-err.txt
