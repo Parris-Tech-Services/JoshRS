@@ -264,6 +264,52 @@ server. Before allowing other players or external access, move to a
 strong private credential and Windows-protected auto-login instead.
 This recovery also cannot fix the separate no-listeners server issue.
 
+## Fred/George initially offline after save/relogin (377)
+
+If `Inspect-Agents.ps1` reports `fredOnline:false`,
+`georgeOnline:false`, and both bots show
+`initial_save_persistence_relog_check`, do **not** launch the
+separate `fred-george-family-client.mjs`: the engine may already own
+the two bot player identities. Do not change bot account passwords or
+delete their saves.
+
+On the affected original engine overlay, `PlayerLoading.load('Fred')`
+normalises `player.username` to `fred`, but the old relog gate uses
+`world.logoutRequests.has('Fred')`. The normal login-thread logout
+acknowledgement is keyed by the **lowercase account name**. This can
+mistakenly enqueue a new bot before its previous save finishes, losing
+the bot from the active world. The source patch gates on the actual
+player username and adds explicit relog telemetry. This is a
+**source-rooted diagnosis**, not proof of the current desktop engine
+until its exact local code has been inspected.
+
+The following tool checks the active installed engine without changing it:
+
+```powershell
+cd 'C:\\JoshRS-Launcher\\JoshRS-main'
+& '.\\deploy\\jparris-windows\\Repair-FredGeorgeRelog.ps1'
+```
+
+Only if it prints `PATCH_READY` and you are prepared to restart:
+log out Elrothiro and Sylvie normally, stop the server with Ctrl+C,
+and confirm all Node game processes have ended. The optional
+`-Apply` mode checks for running engines and listening game ports,
+calls the existing verified world-backup tool, creates a separate
+original-source backup, then atomically changes only the single known
+relocation guard. It refuses unfamiliar engine source. It **never**
+kills/restarts the game or edits `.sav`, SQLite or `.env`.
+
+```powershell
+& '.\\deploy\\jparris-windows\\Repair-FredGeorgeRelog.ps1' -Apply
+```
+
+After a successful offline patch, restart using the **existing**
+`jparris-play.cmd` and confirm the new bot live-state telemetry,
+online presence and ordinary gameplay. Do not claim the bots are
+working just because the source line changed. This fixes a narrow
+native-engine bot race and does **not** complete the full RS-SDK
+revision-377 adapter.
+
 ## Troubleshooting
 
 ### Broken desktop Java client: Could not find or load main class .java2d.d3d=false
