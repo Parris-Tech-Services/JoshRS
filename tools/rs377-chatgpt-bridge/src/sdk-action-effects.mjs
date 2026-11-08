@@ -129,7 +129,8 @@ export function verifyActionEffect(action,before,after){
  if(a==='submitCountDialog'){
   return p(before)?.countDialog?.isOpen===true&&
     p(after)?.countDialog?.isOpen===false&&
-    (inventoryDiff||change(bankBefore,bankAfter,995)!==0)?
+    (inventoryDiff||(Number.isSafeInteger(change(bankBefore,bankAfter,995))&&
+      change(bankBefore,bankAfter,995)!==0))?
     event('native_count_dialog_completed_with_inventory_change'):null;
  }
  if(['spellOnNpc','spellOnPlayer','spellOnItem','spellOnGroundItem'].includes(a)){
