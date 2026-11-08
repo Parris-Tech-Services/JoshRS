@@ -1,0 +1,9 @@
+--- a/scripts/skill_combat/scripts/npc/npc_death.rs2
++++ b/scripts/skill_combat/scripts/npc/npc_death.rs2
+@@ -24,2 +24,6 @@
+ npc_delay(1); // osrs has an extra tick of delay here. I think this delay can vary from npc to npc
++// 377-only quest tertiary drops; hero ownership is checked by the engine.
++if (npc_findhero = ^true) {
++    ~rag_drop_quest_bone;
++}
+ npc_del;

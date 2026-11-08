@@ -29,7 +29,7 @@ class SwanSongStoryContracts(unittest.TestCase):
     def test_quest_rebuild_and_rewards(self):
         self.assertIn("%swansong_arnold = 1;",main)
         self.assertIn("~swan_rebuild_advance",main)
-        self.assertIn("stat_advance(fishing, 500000)",main)
+        self.assertIn("stat_advance(fishing, 100000)",main)
         self.assertIn("stat_advance(magic, 150000)",main)
         self.assertIn("stat_advance(prayer, 100000)",main)
         self.assertIn("inv_add(inv, coins, 25000)",main)

@@ -3,7 +3,7 @@
 @@ -1,2 +1,6 @@
  [opnpc1,wizard_frumscone]
 +if (%swansong = ^swansong_queen) {
-+    ~swan_frumscone_army;
++    ~chatnpc("<p,neutral>I cannot raise an army here.|Find Malignius Mortifer near Falador; he knows this magic.");
 +    return;
 +}
  ~chatnpc("<p,neutral>Do you like my magic Zombies?|Feel free to kill them,|there's plenty more where these came from!");

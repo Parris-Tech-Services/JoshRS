@@ -1,16 +1,16 @@
 {
-  "candidate_pool": 5924,
+  "candidate_pool": 4924,
   "deduplicated_reference_versions": 1783,
-  "next_rotation_offset": 2600,
+  "next_rotation_offset": 2700,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
-  "raw_reference_versions": 7707,
-  "rotation_offset": 2500,
+  "raw_reference_versions": 6707,
+  "rotation_offset": 2600,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
     {
       "automatically_installed": false,
-      "candidate_id": "37e1b0d21033f2d9fd75",
+      "candidate_id": "11a6e5d91ade4380aabd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -18,17 +18,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/Player.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/bots/BotConstants.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/Player.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/bots/BotConstants.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-37e1b0d21033f2d9fd75"
+      "work_id": "377-11a6e5d91ade4380aabd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9540a65d16ddb2247a1d",
+      "candidate_id": "8b24abff56f855e897c9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -36,17 +36,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/RSApplet.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/bots/BotHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/RSApplet.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/bots/BotHandler.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-9540a65d16ddb2247a1d"
+      "work_id": "377-8b24abff56f855e897c9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d993ff8affd85712063f",
+      "candidate_id": "75d7fff887c19aaeabb1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -54,17 +54,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/RSColors.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/BankPin.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/RSColors.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/BankPin.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-d993ff8affd85712063f"
+      "work_id": "377-75d7fff887c19aaeabb1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8ff60a92c398dacf976a",
+      "candidate_id": "630feb881bd55a695322",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -72,17 +72,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/RSFrame.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/EmoteHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/RSFrame.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/EmoteHandler.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-8ff60a92c398dacf976a"
+      "work_id": "377-630feb881bd55a695322"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9e4f167ae87e966054d7",
+      "candidate_id": "f2dd39ebd0817310bdc1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -90,17 +90,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/RSImageProducer.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/StaticItemList.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/RSImageProducer.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/StaticItemList.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-9e4f167ae87e966054d7"
+      "work_id": "377-f2dd39ebd0817310bdc1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5c83a02c7ef4a7516fc0",
+      "candidate_id": "4adb9eb457fb5ce0b26e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -108,17 +108,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/RSInterface.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/StaticNpcList.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/RSInterface.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/StaticNpcList.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-5c83a02c7ef4a7516fc0"
+      "work_id": "377-4adb9eb457fb5ce0b26e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3123222966e6425daade",
+      "candidate_id": "7c18978bbbfacbd1cba7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -126,17 +126,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/RSSocket.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/StaticObjectList.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/RSSocket.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/StaticObjectList.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-3123222966e6425daade"
+      "work_id": "377-7c18978bbbfacbd1cba7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a5ab3b5cf9aa54037b7a",
+      "candidate_id": "b6dd44a71216f5a71acc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -144,17 +144,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/Runnable_Impl1.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/AttackType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/Runnable_Impl1.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/AttackType.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-a5ab3b5cf9aa54037b7a"
+      "work_id": "377-b6dd44a71216f5a71acc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6247ae8ee8fbfa9c85ff",
+      "candidate_id": "993d0f3cb15adb7b49c4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -162,17 +162,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/Signlink.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/CombatAssistant.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/Signlink.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/CombatAssistant.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-6247ae8ee8fbfa9c85ff"
+      "work_id": "377-993d0f3cb15adb7b49c4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9b7289599c83d17f721a",
+      "candidate_id": "f7b22511833155cd5ab7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -180,17 +180,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/SizeConstants.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/CombatConstants.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/SizeConstants.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/CombatConstants.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-9b7289599c83d17f721a"
+      "work_id": "377-f7b22511833155cd5ab7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "54039dbedd9d641dfb4d",
+      "candidate_id": "eacda818c4d4f68f7a75",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -198,17 +198,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/Skills.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/Specials.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/Skills.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/Specials.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-54039dbedd9d641dfb4d"
+      "work_id": "377-eacda818c4d4f68f7a75"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b7148ac2e31d2cd05401",
+      "candidate_id": "d94dfda0218e0b1cc5b2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -216,17 +216,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/SoundPlayer.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/CastOnOther.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/SoundPlayer.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/CastOnOther.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-b7148ac2e31d2cd05401"
+      "work_id": "377-d94dfda0218e0b1cc5b2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "abfa0255c78bb953364d",
+      "candidate_id": "683a756daf9095c273f5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -234,17 +234,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/Sounds.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/CastRequirements.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/Sounds.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/CastRequirements.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-abfa0255c78bb953364d"
+      "work_id": "377-683a756daf9095c273f5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "04b58d712167224fd762",
+      "candidate_id": "3b5c29e39643c4d4f352",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -252,17 +252,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/SpotAnim.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/Enchanting.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/SpotAnim.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/Enchanting.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-04b58d712167224fd762"
+      "work_id": "377-3b5c29e39643c4d4f352"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "11210617d866caf735be",
+      "candidate_id": "7ddaf9c9c9b23daecf85",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -270,17 +270,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/Sprite.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/MagicData.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/Sprite.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/MagicData.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-11210617d866caf735be"
+      "work_id": "377-7ddaf9c9c9b23daecf85"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f0305312a9b4b591848e",
+      "candidate_id": "82449687dc379f8eb2be",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -288,17 +288,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/Stream.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/MagicMaxHit.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/Stream.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/MagicMaxHit.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-f0305312a9b4b591848e"
+      "work_id": "377-82449687dc379f8eb2be"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e4d31db019219870926e",
+      "candidate_id": "1910638fe8b16512b135",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -306,17 +306,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/StreamLoader.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/MagicRequirements.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/StreamLoader.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/MagicRequirements.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e4d31db019219870926e"
+      "work_id": "377-1910638fe8b16512b135"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8ba609d05890ea44e9df",
+      "candidate_id": "ddc29fa17549a313c1f4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -324,17 +324,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/TextClass.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/MagicSpells.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/TextClass.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/MagicSpells.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-8ba609d05890ea44e9df"
+      "work_id": "377-ddc29fa17549a313c1f4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "093f683fc736f4f39914",
+      "candidate_id": "71e1f2a944cf3d850f8f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -342,17 +342,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/TextDrawingArea.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/MagicTeleports.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/TextDrawingArea.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/MagicTeleports.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-093f683fc736f4f39914"
+      "work_id": "377-71e1f2a944cf3d850f8f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c58e2bac559db75954d8",
+      "candidate_id": "88b1fc8e643152523cc7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -360,17 +360,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/TextInput.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/NonCombatSpells.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/TextInput.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/NonCombatSpells.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-c58e2bac559db75954d8"
+      "work_id": "377-88b1fc8e643152523cc7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e62865cb59de0266766f",
+      "candidate_id": "f92e2b777796a2dd8df7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -378,17 +378,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/Texture.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/magic/SpellTeleport.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/Texture.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/magic/SpellTeleport.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e62865cb59de0266766f"
+      "work_id": "377-f92e2b777796a2dd8df7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4397cc3e75f68fe77f0d",
+      "candidate_id": "95ae960cc883b463426c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -396,17 +396,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/VarBit.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/melee/MeleeData.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/VarBit.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/melee/MeleeData.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-4397cc3e75f68fe77f0d"
+      "work_id": "377-95ae960cc883b463426c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4ef1e883a70a104eb5e6",
+      "candidate_id": "e73aefe0a43b5a58dbcc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -414,17 +414,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/Varp.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/melee/MeleeMaxHit.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/Varp.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/melee/MeleeMaxHit.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-4ef1e883a70a104eb5e6"
+      "work_id": "377-e73aefe0a43b5a58dbcc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bcf1f023fff666446af4",
+      "candidate_id": "59620d8de5a8c5ee2bed",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -432,17 +432,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Client/src/main/java/WorldController.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/melee/PlayerKilling.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Client/src/main/java/WorldController.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/melee/PlayerKilling.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-bcf1f023fff666446af4"
+      "work_id": "377-59620d8de5a8c5ee2bed"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "000f34777e26dd2ef62e",
+      "candidate_id": "b5f2cb5acd0f01fd2852",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -450,17 +450,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/ServerConfig.Sample.json",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/npcs/NpcAggressive.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/ServerConfig.Sample.json",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/npcs/NpcAggressive.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-000f34777e26dd2ef62e"
+      "work_id": "377-b5f2cb5acd0f01fd2852"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5057e64663e36e74aa8d",
+      "candidate_id": "330146720e4f5d755760",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -468,17 +468,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/data/cfg/ItemDefinitions.json",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/npcs/NpcCombat.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/data/cfg/ItemDefinitions.json",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/npcs/NpcCombat.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-5057e64663e36e74aa8d"
+      "work_id": "377-330146720e4f5d755760"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5e5b90015db828463919",
+      "candidate_id": "443e1e65cf8bacc45f07",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -486,17 +486,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/data/cfg/globaldrops.json",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/npcs/NpcEmotes.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/data/cfg/globaldrops.json",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/npcs/NpcEmotes.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-5e5b90015db828463919"
+      "work_id": "377-443e1e65cf8bacc45f07"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5ba8729833b8cd0ef281",
+      "candidate_id": "df9f7ef0e6458727a99a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -504,17 +504,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/data/cfg/npc.json",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/prayer/ActivatePrayers.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/data/cfg/npc.json",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/prayer/ActivatePrayers.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-5ba8729833b8cd0ef281"
+      "work_id": "377-df9f7ef0e6458727a99a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d7c342785f2261291590",
+      "candidate_id": "8ac2d9c311a3022dd8f2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -522,17 +522,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/data/cfg/npcDefinitions.json",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/prayer/PrayerData.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/data/cfg/npcDefinitions.json",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/prayer/PrayerData.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-d7c342785f2261291590"
+      "work_id": "377-8ac2d9c311a3022dd8f2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c450f1e85ca7a2bb5ea8",
+      "candidate_id": "796406d109fd82fc45fa",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -540,17 +540,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/data/cfg/npcdrops.json",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/prayer/PrayerDrain.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/data/cfg/npcdrops.json",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/prayer/PrayerDrain.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-c450f1e85ca7a2bb5ea8"
+      "work_id": "377-796406d109fd82fc45fa"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e1048930f5cc5dabbb1c",
+      "candidate_id": "d46c5d280008bc36d090",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -558,17 +558,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/data/cfg/shops.json",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/range/DwarfCannon.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/data/cfg/shops.json",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/range/DwarfCannon.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e1048930f5cc5dabbb1c"
+      "work_id": "377-d46c5d280008bc36d090"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "931f0b27eff3d3fc533c",
+      "candidate_id": "5358628a28f3b2894bfa",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -576,17 +576,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/data/cfg/spawns.json",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/range/RangeData.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/data/cfg/spawns.json",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/range/RangeData.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-931f0b27eff3d3fc533c"
+      "work_id": "377-5358628a28f3b2894bfa"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "322e8700bdd8637d88d9",
+      "candidate_id": "bbfedf631bdddb34a261",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -594,17 +594,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/data/doors.json",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/combat/range/RangeMaxHit.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/data/doors.json",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/combat/range/RangeMaxHit.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-322e8700bdd8637d88d9"
+      "work_id": "377-bbfedf631bdddb34a261"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "feeed490b0583952093a",
+      "candidate_id": "fbe65ad0b688d428e998",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -612,17 +612,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/data/doubledoors.json",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/consumables/Beverages.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/data/doubledoors.json",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/consumables/Beverages.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-feeed490b0583952093a"
+      "work_id": "377-fbe65ad0b688d428e998"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "36e45f61f23d7b9edfbf",
+      "candidate_id": "b2ee6f93d4e940c62e79",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -630,17 +630,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/buttons/ButtonClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/consumables/Food.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/buttons/ButtonClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/consumables/Food.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-36e45f61f23d7b9edfbf"
+      "work_id": "377-b2ee6f93d4e940c62e79"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "67c7955ec70e5ef3e0a4",
+      "candidate_id": "33b044b85b55955a8ce5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -648,17 +648,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/buttons/gameframe/BrightnessButtons.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/consumables/Kebabs.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/buttons/gameframe/BrightnessButtons.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/consumables/Kebabs.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-67c7955ec70e5ef3e0a4"
+      "work_id": "377-33b044b85b55955a8ce5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c4c97c506dba521cd3a8",
+      "candidate_id": "f580393f70de3e516d21",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -666,17 +666,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/buttons/gameframe/LogoutButton.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/consumables/Potions.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/buttons/gameframe/LogoutButton.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/consumables/Potions.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-c4c97c506dba521cd3a8"
+      "work_id": "377-f580393f70de3e516d21"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "be5747d42669c1338009",
+      "candidate_id": "51019ecdb25a85185b72",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -684,17 +684,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/buttons/gameframe/MusicVolumeButtons.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/guilds/Guilds.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/buttons/gameframe/MusicVolumeButtons.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/guilds/Guilds.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-be5747d42669c1338009"
+      "work_id": "377-51019ecdb25a85185b72"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3c32ed9b78a22f621e06",
+      "candidate_id": "fcbfaf4e0a9e1d7f1ae7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -702,17 +702,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/buttons/gameframe/SoundVolumeButtons.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/guilds/impl/RangersGuild.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/buttons/gameframe/SoundVolumeButtons.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/guilds/impl/RangersGuild.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-3c32ed9b78a22f621e06"
+      "work_id": "377-fcbfaf4e0a9e1d7f1ae7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b3f7e485b6916c864415",
+      "candidate_id": "7b508166143a2910538c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -720,17 +720,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/buttons/gameframe/ToggleRunButtons.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/Barrows.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/buttons/gameframe/ToggleRunButtons.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/Barrows.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-b3f7e485b6916c864415"
+      "work_id": "377-7b508166143a2910538c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a6925154b214ec5541ad",
+      "candidate_id": "491ea20a80c7c42ef4a8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -738,17 +738,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/buttons/gameframe/ToggleSplitChatButtons.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/Dueling.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/buttons/gameframe/ToggleSplitChatButtons.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/Dueling.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-a6925154b214ec5541ad"
+      "work_id": "377-491ea20a80c7c42ef4a8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "53551c8458bda4f7241a",
+      "candidate_id": "a514ea10f613df70f4df",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -756,17 +756,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/item/ItemFirstClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/FightCaves.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/item/ItemFirstClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/FightCaves.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-53551c8458bda4f7241a"
+      "work_id": "377-a514ea10f613df70f4df"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c2b972c6709064a51963",
+      "candidate_id": "082b908aefc5b3efa41d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -774,17 +774,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/item/ItemOnItem.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/FightPits.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/item/ItemOnItem.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/FightPits.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-c2b972c6709064a51963"
+      "work_id": "377-082b908aefc5b3efa41d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bf9d93170ad71deef7d6",
+      "candidate_id": "4b8228ddec959a63864b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -792,17 +792,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/item/ItemOnNpc.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/PestControl.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/item/ItemOnNpc.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/PestControl.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-bf9d93170ad71deef7d6"
+      "work_id": "377-4b8228ddec959a63864b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "946f5046884cdbfd8878",
+      "candidate_id": "c4d15e175ab0154915dd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -810,17 +810,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/item/ItemOnObject.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/TreasureTrails.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/item/ItemOnObject.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/TreasureTrails.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-946f5046884cdbfd8878"
+      "work_id": "377-c4d15e175ab0154915dd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f296d63dda3d80d9d3a3",
+      "candidate_id": "a2134d52f0a42e48816d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -828,17 +828,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/item/ItemSecondClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/castlewars/CastleWarObjects.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/item/ItemSecondClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/castlewars/CastleWarObjects.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-f296d63dda3d80d9d3a3"
+      "work_id": "377-a2134d52f0a42e48816d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f71d2a6899fc45674def",
+      "candidate_id": "bc79d45026b92973b3e8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -846,17 +846,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/item/ItemThirdClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/castlewars/CastleWars.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/item/ItemThirdClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/castlewars/CastleWars.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-f71d2a6899fc45674def"
+      "work_id": "377-bc79d45026b92973b3e8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f4c728c38ac1bc404c7a",
+      "candidate_id": "cb912d3add02ec18afd6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -864,17 +864,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/magic/MagicOnItem.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Alchemy.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/magic/MagicOnItem.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Alchemy.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-f4c728c38ac1bc404c7a"
+      "work_id": "377-cb912d3add02ec18afd6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e0619917417452f956cc",
+      "candidate_id": "343d79681b8c805210aa",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -882,17 +882,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/npc/NpcFirstClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Enchanting.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/npc/NpcFirstClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Enchanting.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e0619917417452f956cc"
+      "work_id": "377-343d79681b8c805210aa"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "378f800bd9ebaafdabc1",
+      "candidate_id": "a83fd8b78579005aa6a5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -900,17 +900,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/npc/NpcSecondClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Graveyard.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/npc/NpcSecondClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Graveyard.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-378f800bd9ebaafdabc1"
+      "work_id": "377-a83fd8b78579005aa6a5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fa24a678549899d248b3",
+      "candidate_id": "f59498e7bb8e06c3b310",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -918,17 +918,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/npc/NpcThirdClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/MageTrainingArena.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/npc/NpcThirdClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/MageTrainingArena.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-fa24a678549899d248b3"
+      "work_id": "377-f59498e7bb8e06c3b310"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1f69f4177629c3977fa3",
+      "candidate_id": "fe34aef6f79a23ed5f28",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -936,17 +936,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/obj/ObjectFirstClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Telekinetic.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/obj/ObjectFirstClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/magetrainingarena/Telekinetic.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-1f69f4177629c3977fa3"
+      "work_id": "377-fe34aef6f79a23ed5f28"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fb333f01de369186139c",
+      "candidate_id": "f650b15da767a383d217",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -954,17 +954,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/obj/ObjectFourthClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/trawler/GroupMinigame.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/obj/ObjectFourthClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/trawler/GroupMinigame.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-fb333f01de369186139c"
+      "work_id": "377-f650b15da767a383d217"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9763b3dce352c926c364",
+      "candidate_id": "521329c33de063c5e123",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -972,17 +972,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/obj/ObjectSecondClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/trawler/Trawler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/obj/ObjectSecondClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/trawler/Trawler.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-9763b3dce352c926c364"
+      "work_id": "377-521329c33de063c5e123"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "83396e041a92ed5ca5d4",
+      "candidate_id": "249b609186627141d641",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -990,17 +990,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/click/obj/ObjectThirdClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/trawler/TrawlerWaitingRoom.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/click/obj/ObjectThirdClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/trawler/TrawlerWaitingRoom.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-83396e041a92ed5ca5d4"
+      "work_id": "377-249b609186627141d641"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "891f1624ea216be6de57",
+      "candidate_id": "a6f602806272056898ab",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1008,17 +1008,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/plugins/plugin/npc/fadli/SecondClick.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/minigames/trawler/WaitingRoom.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/plugins/plugin/npc/fadli/SecondClick.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/minigames/trawler/WaitingRoom.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-891f1624ea216be6de57"
+      "work_id": "377-a6f602806272056898ab"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f54a9656dfd084f1563e",
+      "candidate_id": "b04c3ccedd28f604f73d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1026,17 +1026,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/ConfigLoader.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/QuestAssistant.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/ConfigLoader.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/QuestAssistant.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-f54a9656dfd084f1563e"
+      "work_id": "377-b04c3ccedd28f604f73d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1283005fa0120c84a355",
+      "candidate_id": "c87b86a53514e4604c61",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1044,17 +1044,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/Connection.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/QuestRewards.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/Connection.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/QuestRewards.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-1283005fa0120c84a355"
+      "work_id": "377-c87b86a53514e4604c61"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8b70d3f763ca7b7ecb49",
+      "candidate_id": "850d5f06684af0068724",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1062,17 +1062,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/Constants.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/BlackKnightsFortress.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/Constants.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/BlackKnightsFortress.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-8b70d3f763ca7b7ecb49"
+      "work_id": "377-850d5f06684af0068724"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "723fcd23c4f60c027620",
+      "candidate_id": "0ef36365aa48e0af2e3a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1080,17 +1080,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/GameEngine.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/CooksAssistant.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/GameEngine.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/CooksAssistant.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-723fcd23c4f60c027620"
+      "work_id": "377-0ef36365aa48e0af2e3a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e668511a27114f2c6f29",
+      "candidate_id": "427057be4468aa359dfa",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1098,17 +1098,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/console/CommandConsole.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/DoricsQuest.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/console/CommandConsole.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/DoricsQuest.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e668511a27114f2c6f29"
+      "work_id": "377-427057be4468aa359dfa"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b14c0d29f450f797ae98",
+      "candidate_id": "6da2384a348781fbd94a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1116,17 +1116,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/console/CommandProcessor.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/GertrudesCat.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/console/CommandProcessor.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/GertrudesCat.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-b14c0d29f450f797ae98"
+      "work_id": "377-6da2384a348781fbd94a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6a75a9293935bcfd2d25",
+      "candidate_id": "9863539c8f54a22db512",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1134,17 +1134,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/console/commands/ListPlayers.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/ImpCatcher.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/console/commands/ListPlayers.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/ImpCatcher.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-6a75a9293935bcfd2d25"
+      "work_id": "377-9863539c8f54a22db512"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c1dc960df5255b06d82f",
+      "candidate_id": "b21ac1c3f0c8d16ab64e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1152,17 +1152,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/console/commands/Stop.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/KnightsSword.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/console/commands/Stop.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/KnightsSword.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-c1dc960df5255b06d82f"
+      "work_id": "377-b21ac1c3f0c8d16ab64e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e5707de976cc6a424eca",
+      "candidate_id": "ac3988d1992ad5cacd86",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1170,17 +1170,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/CycleEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/LostCity.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/CycleEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/LostCity.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e5707de976cc6a424eca"
+      "work_id": "377-ac3988d1992ad5cacd86"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e1b9200ee99ae7f9431c",
+      "candidate_id": "cf7c01d91a75dda35578",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1188,17 +1188,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/CycleEventContainer.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/PiratesTreasure.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/CycleEventContainer.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/PiratesTreasure.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e1b9200ee99ae7f9431c"
+      "work_id": "377-cf7c01d91a75dda35578"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7a6f06a4f8acf81c727b",
+      "candidate_id": "68bf36fa9a2fcb14ef05",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1206,17 +1206,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/CycleEventHandler.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/RestlessGhost.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/CycleEventHandler.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/RestlessGhost.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-7a6f06a4f8acf81c727b"
+      "work_id": "377-68bf36fa9a2fcb14ef05"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ae13571e9ecaa58f3811",
+      "candidate_id": "d635471f3f93e50141c1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1224,17 +1224,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/Event.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/RomeoJuliet.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/Event.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/RomeoJuliet.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-ae13571e9ecaa58f3811"
+      "work_id": "377-d635471f3f93e50141c1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "73c6988a422db126ce82",
+      "candidate_id": "324bac55cc92750af75e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1242,17 +1242,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/EventContext.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/RuneMysteries.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/EventContext.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/RuneMysteries.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-73c6988a422db126ce82"
+      "work_id": "377-324bac55cc92750af75e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d7e86abf5ce604b048cf",
+      "candidate_id": "da06b6f8413a073c9c53",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1260,17 +1260,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/EventProvider.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/SheepShearer.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/EventProvider.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/SheepShearer.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-d7e86abf5ce604b048cf"
+      "work_id": "377-da06b6f8413a073c9c53"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f2dc63c30060bbd8ca14",
+      "candidate_id": "235eebf4a367536ba3f2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1278,17 +1278,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/EventSubscriber.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/ShieldArrav.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/EventSubscriber.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/ShieldArrav.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-f2dc63c30060bbd8ca14"
+      "work_id": "377-235eebf4a367536ba3f2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "949b2503eaa51e857b83",
+      "candidate_id": "f5e7a11fa0b13ee073c7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1296,17 +1296,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/SubscribesTo.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/VampyreSlayer.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/SubscribesTo.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/VampyreSlayer.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-949b2503eaa51e857b83"
+      "work_id": "377-f5e7a11fa0b13ee073c7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3de06467067625b9684d",
+      "candidate_id": "ef83ac71840dbb43be5a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1314,17 +1314,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/UniversalEventContext.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/quests/impl/WitchsPotion.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/UniversalEventContext.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/quests/impl/WitchsPotion.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-3de06467067625b9684d"
+      "work_id": "377-ef83ac71840dbb43be5a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5894358a5acb9d361823",
+      "candidate_id": "0f3d38080abc3ce8046f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1332,17 +1332,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/UniversalEventProvider.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/random/Balloons.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/UniversalEventProvider.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/random/Balloons.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-5894358a5acb9d361823"
+      "work_id": "377-0f3d38080abc3ce8046f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d1d2c76425798e699949",
+      "candidate_id": "71d9028e20171ae3943a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1350,17 +1350,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ButtonActionEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/random/HolidayDrops.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ButtonActionEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/random/HolidayDrops.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-d1d2c76425798e699949"
+      "work_id": "377-71d9028e20171ae3943a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3f88d238ad60888a4aad",
+      "candidate_id": "48c0d44b28a3225fb8f9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1368,17 +1368,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/CommandEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/random/Holidays.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/CommandEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/random/Holidays.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-3f88d238ad60888a4aad"
+      "work_id": "377-48c0d44b28a3225fb8f9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d9af0f7e69d352eb233e",
+      "candidate_id": "eebbaacbb92de01aa0a4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1386,17 +1386,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/DialogueEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/random/PartyRoom.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/DialogueEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/random/PartyRoom.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-d9af0f7e69d352eb233e"
+      "work_id": "377-eebbaacbb92de01aa0a4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "72a7c891c11957cdac14",
+      "candidate_id": "16ede65c2eb859be931e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1404,17 +1404,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/DoorEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/EvilChicken.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/DoorEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/EvilChicken.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-72a7c891c11957cdac14"
+      "work_id": "377-16ede65c2eb859be931e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "755be310b867518ecb8e",
+      "candidate_id": "b2b3f9d4a23fc12df1e5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1422,17 +1422,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ItemFirstClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/FreakyForester.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ItemFirstClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/FreakyForester.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-755be310b867518ecb8e"
+      "work_id": "377-b2b3f9d4a23fc12df1e5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "98ab75713c3712329c14",
+      "candidate_id": "83be64eda011b9b93052",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1440,17 +1440,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ItemOnGroundItemEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/Frog.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ItemOnGroundItemEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/Frog.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-98ab75713c3712329c14"
+      "work_id": "377-83be64eda011b9b93052"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "15756657eb49ae880d9f",
+      "candidate_id": "d2676cf068ec0eb8de80",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1458,17 +1458,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ItemOnItemEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/GenieLamp.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ItemOnItemEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/GenieLamp.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-15756657eb49ae880d9f"
+      "work_id": "377-d2676cf068ec0eb8de80"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "73a3e4cc034e5013c06f",
+      "candidate_id": "ef244e8a70d5cc500c00",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1476,17 +1476,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ItemOnNpcEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/RandomEventHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ItemOnNpcEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/RandomEventHandler.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-73a3e4cc034e5013c06f"
+      "work_id": "377-ef244e8a70d5cc500c00"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a9f04d03223fd7b3e1ec",
+      "candidate_id": "27fba42a4ddd5742eb25",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1494,17 +1494,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ItemOnObjectEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/RiverTroll.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ItemOnObjectEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/RiverTroll.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-a9f04d03223fd7b3e1ec"
+      "work_id": "377-27fba42a4ddd5742eb25"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fb214cd3f14e9975c273",
+      "candidate_id": "90fdfbfb21e50497828a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1512,17 +1512,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ItemOnPlayerEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/RockGolem.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ItemOnPlayerEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/RockGolem.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-fb214cd3f14e9975c273"
+      "work_id": "377-90fdfbfb21e50497828a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "016c355afa21870ca617",
+      "candidate_id": "123d39feed5b5c8c120a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1530,17 +1530,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ItemSecondClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/SandwhichLady.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ItemSecondClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/SandwhichLady.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-016c355afa21870ca617"
+      "work_id": "377-123d39feed5b5c8c120a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "581ceb30f6ec1b446575",
+      "candidate_id": "352ff92ccb997d59ed3a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1548,17 +1548,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ItemThirdClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/Shade.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ItemThirdClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/Shade.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-581ceb30f6ec1b446575"
+      "work_id": "377-352ff92ccb997d59ed3a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c3e2a89d13e7852b0329",
+      "candidate_id": "b403121aae04e177351b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1566,17 +1566,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/MagicOnItemEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/Swarm.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/MagicOnItemEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/Swarm.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-c3e2a89d13e7852b0329"
+      "work_id": "377-b403121aae04e177351b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "36009597ca632fcc30d0",
+      "candidate_id": "8a399e73b604b4a74f75",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1584,17 +1584,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/NpcFirstClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/TreeSpirit.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/NpcFirstClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/TreeSpirit.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-36009597ca632fcc30d0"
+      "work_id": "377-8a399e73b604b4a74f75"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "abf24d2260147c5b4d1f",
+      "candidate_id": "54cc4e3494bd98d47a7c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1602,17 +1602,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/NpcSecondClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/randomevents/Zombie.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/NpcSecondClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/randomevents/Zombie.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-abf24d2260147c5b4d1f"
+      "work_id": "377-54cc4e3494bd98d47a7c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e5bfd262c628267c701b",
+      "candidate_id": "63937b27f389ac007c51",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1620,17 +1620,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/NpcThirdClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/Menus.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/NpcThirdClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/Menus.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e5bfd262c628267c701b"
+      "work_id": "377-63937b27f389ac007c51"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "880fe6b124dfeb72a239",
+      "candidate_id": "cff4a7c6fc675ec075d7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1638,17 +1638,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ObjectFifthClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/SkillConstants.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ObjectFifthClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/SkillConstants.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-880fe6b124dfeb72a239"
+      "work_id": "377-cff4a7c6fc675ec075d7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4ca9c577d8360f41edd7",
+      "candidate_id": "ad7d544ec4db05652023",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1656,17 +1656,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ObjectFirstClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/SkillData.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ObjectFirstClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/SkillData.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-4ca9c577d8360f41edd7"
+      "work_id": "377-ad7d544ec4db05652023"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5b08a9c0074ed8f46b91",
+      "candidate_id": "0fbce759c1a6500a5b5f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1674,17 +1674,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ObjectFourthClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/SkillHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ObjectFourthClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/SkillHandler.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-5b08a9c0074ed8f46b91"
+      "work_id": "377-0fbce759c1a6500a5b5f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a0235461abc58acb013d",
+      "candidate_id": "b2bc3c355add5869b702",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1692,17 +1692,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ObjectSecondClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/SkillInterfaces.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ObjectSecondClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/SkillInterfaces.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-a0235461abc58acb013d"
+      "work_id": "377-b2bc3c355add5869b702"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "01ddae3321d2c877457d",
+      "candidate_id": "a9a2d910a564829f8bf2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1710,17 +1710,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/ObjectThirdClickEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/SkillMenu.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/ObjectThirdClickEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/SkillMenu.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-01ddae3321d2c877457d"
+      "work_id": "377-a9a2d910a564829f8bf2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a169227ff543810bd3f1",
+      "candidate_id": "1fed38ae9291a9f6d9a8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1728,17 +1728,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/WidgetContainerFirstOptionEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/agility/Agility.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/WidgetContainerFirstOptionEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/agility/Agility.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-a169227ff543810bd3f1"
+      "work_id": "377-1fed38ae9291a9f6d9a8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c439665d19c4a64cb6a5",
+      "candidate_id": "3e2dd246db48c602e0b5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1746,17 +1746,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/WidgetContainerFourthOptionEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/agility/AgilityShortcut.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/WidgetContainerFourthOptionEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/agility/AgilityShortcut.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-c439665d19c4a64cb6a5"
+      "work_id": "377-3e2dd246db48c602e0b5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7d9f3f1ad101aa0d94dd",
+      "candidate_id": "1af7dcae7b3787f7d547",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1764,17 +1764,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/WidgetContainerSecondOptionEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/agility/ApeAtollAgility.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/WidgetContainerSecondOptionEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/agility/ApeAtollAgility.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-7d9f3f1ad101aa0d94dd"
+      "work_id": "377-1af7dcae7b3787f7d547"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "68e16a8c53ea0b43b957",
+      "candidate_id": "a5084cc51fa15eaa8ef7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1782,17 +1782,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/event/impl/WidgetContainerThirdOptionEvent.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/agility/BarbarianAgility.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/event/impl/WidgetContainerThirdOptionEvent.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/agility/BarbarianAgility.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-68e16a8c53ea0b43b957"
+      "work_id": "377-a5084cc51fa15eaa8ef7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "18e88b7fe41cb08bd43f",
+      "candidate_id": "a2ad1f15fd615e4a6604",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1800,13 +1800,13 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/game/bots/Bot.java",
+      "path": "2006Scape Server/src/main/java/com/rs2/game/content/skills/agility/GnomeAgility.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/bots/Bot.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/game/content/skills/agility/GnomeAgility.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-18e88b7fe41cb08bd43f"
+      "work_id": "377-a2ad1f15fd615e4a6604"
     }
   ]
 }

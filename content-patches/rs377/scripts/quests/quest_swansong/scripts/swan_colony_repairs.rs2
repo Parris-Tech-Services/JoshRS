@@ -46,6 +46,9 @@ inv_del(inv, iron_bar, 1);
 inv_add(inv, iron_sheet, 1);
 mes("You press the iron bar into a sturdy sheet.");
 
+// The five damaged walls are placed in map m36_57 via patch 0020. A wall is
+// identified by its exact coordinate, not by loc model (five share three models).
+// Per-character swansong_wall_1..5 varbits prevent claiming the same tile twice.
 [oplocu,loc_14945] @swan_wall_repair;
 [oplocu,loc_14946] @swan_wall_repair;
 [oplocu,loc_14947] @swan_wall_repair;
@@ -54,29 +57,39 @@ if (last_useitem ! iron_sheet | %swansong < ^swansong_met_arnold | %swansong > ^
     ~displaymessage(^dm_default);
     return;
 }
+def_int $wall = 0;
+switch_coord (loc_coord) {
+    case 0_36_57_7_19 : $wall = 1;
+    case 0_36_57_7_25 : $wall = 2;
+    case 0_36_57_7_31 : $wall = 3;
+    case 0_36_57_7_43 : $wall = 4;
+    case 0_36_57_7_45 : $wall = 5;
+    case default :
+        mes("This is not one of Franklin's five damaged wall sections.");
+        return;
+}
+switch_int ($wall) {
+    case 1 : if (%swansong_wall_1 = 1) { mes("You have already repaired this section."); return; }
+    case 2 : if (%swansong_wall_2 = 1) { mes("You have already repaired this section."); return; }
+    case 3 : if (%swansong_wall_3 = 1) { mes("You have already repaired this section."); return; }
+    case 4 : if (%swansong_wall_4 = 1) { mes("You have already repaired this section."); return; }
+    case 5 : if (%swansong_wall_5 = 1) { mes("You have already repaired this section."); return; }
+}
 if (inv_total(inv, iron_sheet) < 1 | inv_total(inv, hammer) < 1) {
-    mes("Bring an iron sheet and a hammer to repair the wall.");
+    mes("Bring an iron sheet and a hammer to repair this wall.");
     return;
 }
 if (stat(crafting) < 40) {
     mes("You need 40 Crafting to repair this wall.");
     return;
 }
-if (~swan_wall_count >= 5) {
-    mes("All five wall sections have been repaired.");
-    return;
-}
 inv_del(inv, iron_sheet, 1);
-if (%swansong_wall_1 = 0) {
-    %swansong_wall_1 = 1;
-} else if (%swansong_wall_2 = 0) {
-    %swansong_wall_2 = 1;
-} else if (%swansong_wall_3 = 0) {
-    %swansong_wall_3 = 1;
-} else if (%swansong_wall_4 = 0) {
-    %swansong_wall_4 = 1;
-} else {
-    %swansong_wall_5 = 1;
+switch_int ($wall) {
+    case 1 : %swansong_wall_1 = 1;
+    case 2 : %swansong_wall_2 = 1;
+    case 3 : %swansong_wall_3 = 1;
+    case 4 : %swansong_wall_4 = 1;
+    case 5 : %swansong_wall_5 = 1;
 }
 mes("You patch a wall section. Progress: <tostring(~swan_wall_count)> of 5.");
 ~swan_rebuild_advance;
