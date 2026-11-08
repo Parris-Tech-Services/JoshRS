@@ -1,60 +1,81 @@
-# Creature of Fenkenstrain: work in progress (updated 8 Nov 2026)
+# Creature of Fenkenstrain — disposable revision-377 build handoff
+Updated 8 November 2026
 
-STATUS: PARTIAL, **NOT COMPILED, NOT RUN**. Nothing here has been packed or run against a 377 world.
-The engine's own build (`tsx tools/pack/Build.ts`) was blocked in the Claude session by its permission classifier (it will not run
-code from an external checkout), so the real compile is still outstanding.
+**State: COMPILED AND TEST-SERVER BOOTED (disposable GitHub Actions).**
+**Not yet verified by an ordinary end-to-end player quest playthrough. Not
+installed in the live JoshRS family world.** This branch continues Claude's
+original `quests/377-fenkenstrain-wip-20261108` via PR #136, without
+overwriting or force-pushing Claude's working branch.
 
-What WAS checked instead: `tools/check_fenk_symbols.py` (own code, reads the pinned content as data only). It confirms every NPC, obj,
-varp/varbit, constant, proc, label, queue, questlist component, anim and sound used by the scripts exists in the pinned content, and that
-brackets balance. Result: 199 symbols, 0 unknown. A negative test (planted bad names and an unclosed brace) was caught, so the pass is meaningful.
-This does NOT check types, argument counts, trigger/script semantics or varp duplication, so it is not a substitute for the real compile.
-Run it: `FENK_CONTENT=<pinned content checkout> python3 -I tools/check_fenk_symbols.py`.
+## Reproducible source and build
 
-Pinned: `LostCityRS/Content@44eab090`, `Engine-TS@b5ac859b` (per `deploy/jparris-windows/upstreams.json`).
-This quest has no scripts upstream, but the cache already defines everything it needs: varp `fenk_quest` and
-`fenk_flags` (17 varbits), 13 `fenk_*` NPCs, 21 `fenk_*` objs, ~90 `fenk_*` locs, `questlist:creatureoffenkenstrain`,
-and map spawns (Canifis signpost 0_54_54_37_29, castle m55_55, dungeon m54_155/m55_155).
+- Pinned Content: `LostCityRS/Content@44eab09081ef0f6c5f3eaabd1897a588ad7d9e50`.
+- Pinned Engine: `LostCityRS/Engine-TS@b5ac859b47915afb545e60e4c1208f25d43cb3fb`.
+- `.github/workflows/fenkenstrain-disposable-377.yml` clones *both* immutable
+  pins to `$RUNNER_TEMP/joshrs-fenkenstrain-377`, installs no binaries into
+  JParrisDesktop, and runs the real `npm ci && npm run build` with native
+  `BUILD_VERIFY=true` and `BUILD_VERIFY_PACK=true`.
+- `ci-compile-fenkenstrain.sh` applies three guarded text-only patches on
+  **that disposable content copy only**, verifies unique permanent and
+  transmitted quest varps, invokes the static symbol checker and map contract.
+- Compiled `script.dat` and `script.idx` must exist, then a disposable
+  SQLite test server must boot on ports 15402 and 18880. The smoke test does
+  **not log a player in or complete quest stages**.
+- The automated `check_fenk_map.py` verifies source map object coordinates,
+  key NPC 1676, both underground exit ladders, native ladder handler, and the
+  existing Roavar dialogue extension against the exact pinned map files.
 
-## Files in this patch (copy into the private content checkout at the same relative paths)
-- `tools/check_fenk_symbols.py`: the static checker above (not game content; do not copy into the content tree).
-- `scripts/quests/quest_fenkenstrain/configs/quest_fenkenstrain.constant`: stage, reward and requirement constants.
-- `.../configs/quest_fenkenstrain.varp`: `fenk_quest` and `fenk_flags` with `scope=perm` AND `transmit=yes`.
-- `.../scripts/fenk_journal.rs2`: journal text for every stage.
-- `.../scripts/fenk_npcs.rs2`: Dr Fenkenstrain (hire, hand over parts, sewing, conductor, tower key, after), creature /
-  Lord Rologarth, Gardener Ghost, pickpocket finale, quest-complete queue, requirements proc.
-- `patches/0001-register-fenkenstrain-in-quests-rs2.patch`: QP count + quest list colour. `git apply --check` passes on the pin.
-- `patches/0002-move-fenk-varps-out-of-unpack.patch`: removes the two varp blocks from `_unpack/377/all.varp`. `git apply --check` passes on the pin.
-  Needed because claimed varps (e.g. `prieststart`) live in their quest folder and are absent from `all.varp`; leaving both would likely
-  duplicate the definitions. Not yet proven by a pack run.
+## Scripted quest flow
 
-## Corrections to the earlier plan (found by reading the pinned source)
-- The first `.varp` draft lacked `transmit=yes`. The cache marks both varps `transmit=yes` and the NPC morphs resolve client-side, so it was required.
-- Bind handlers to the PARENT types only. Triggers resolve on the spawned `npc.type` (engine `Player.getOpTrigger`), and `m55_55.jm2` spawns
-  1668 `fenk_fenkenstrain`, 1669 `fenk_fenkenstrain_in_tower`, 1671 `fenk_creature`, 1672 `fenk_creature_released`, 1667 `fenk_gardener_multi_2`.
-  Binding the `*_model` children is unnecessary. The cache confirms stage 8 = complete (doctor moves to the tower, creature becomes Lord Rologarth).
-- Pickpocket (`op3`) is defined on the doctor's model child, so it works at any stage 0-7. The script only allows it from stage 5 on.
+- `fenk_journal.rs2`: quest journal and stage-dependent requirements.
+- `fenk_npcs.rs2`: original dialogue with Dr Fenkenstrain, the Gardener Ghost
+  (shed key when equipped with ghostspeak amulet), Lord Rologarth, body-part
+  turn-ins, final 25-Thieving pickpocket, and one-time reward guard.
+- `fenk_castle.rs2`: Canifis notice; stage-gated amulets from two verified
+  upstairs bookcases; assembling the star amulet; broom and canes; 20-Crafting
+  brush with three canes, three bronze wires, west-fireplace mould; silver
+  conductor; roof repair; unlocked shed/tower doors; map-confirmed castle
+  spiral stairs; mapped head grave/brain assembly; castle clock.
+- `fenk_dungeon.rs2`: star-amulet entry through easternmost memorial
+  `0_55_55_56_6` to `0_55_155_56_6`; normal death-triggered cavern-key drop
+  from actual wolf-woman NPC `fenk_experiment_1` (1676), gate in
+  `m54_155`, chest, three correctly located surface mausoleum graves to
+  retrieve body parts. Existing `[oploc1,loc_1757]` in pinned
+  `scripts/ladders+stairs/scripts/ladders.rs2` provides the normal cave
+  return; **do not add a duplicate trigger**.
+- `fenk_roavar.rs2` and patch 0003: quest-only 50-coin preserved brain
+  purchase via a small injection into **existing** Roavar NPC script.
+  Ordinary tavern dialogue, gossip, and beer remain installed.
+- Quest variables `fenk_quest` and `fenk_flags` are moved from the unpacked
+  placeholder into their own config with **`scope=perm`** and
+  **`transmit=yes`**; quest points and quest list entry are registered by
+  patch 0001.
 
-## Still to write
-1. `fenk_castle.rs2`: signpost read (sets `%fenk_read_signpost`), bookcases (upstairs west 1_55_55_22_38 = marble amulet, east 1_55_55_35_38 =
-   obsidian amulet), marble + obsidian = star amulet, cupboard (26,43), shed door and tower door (keys; sets `fenk_unlocked_shed/tower`), cane pile,
-   brush chain `fenk_brush0..3` (cane + `bronzecraftwire`), west upstairs fireplace 1_55_55_24_35 gives `fenk_lightning_mould`, silver bar + mould
-   gives `fenk_conductor`, `fenk_conductor_broken` at 2_55_55_28_16 (set `%fenk_conductor_repaired` and `%fenk_quest = ^fenk_conductor_fixed`), clock 1_55_55_20_25.
-   Until this exists the quest cannot be started in game (no signpost handler) or advanced past stage 2.
-2. Head: `fenk_grave_poor` locs in m56_54. Candidate head grave 0_56_54_24_35 (UNVERIFIED). `oploc2` Dig gives `fenk_head_empty`; `fenk_brain` on it gives `fenk_head_full`.
-3. Gardener: what toggles `fenk_gardener_directions` and what directions he gives is unknown (TODO in `fenk_npcs.rs2`).
+All dialogue added by this bundle is original JoshRS wording. The patch does
+not commit game caches, proprietary models, client binaries, passwords or saves.
 
-## Not implemented (needs on-machine work)
-- Experiment dungeon: kill an `fenk_experiment_*` for its key, gate `fenk_mausoleum_door` (0_54_155_54_37), chest `fenk_chest_open`, and the arms/legs/torso digs.
-  Surface candidates: `fenk_grave` at 0_54_55_(46,56), (48,57), (50,56) and `fenk_coffin` at (49,51). The mapping from graves to body parts is unconfirmed.
-- Authentic silver casting at a furnace (planned shortcut: silver bar used on the mould).
-- Pickled brain from Roavar (`werewolfinnkeeper`, existing handler in `area_canafis`); needs an extra menu option.
+## Known unfinished or not-playtested behaviour
 
-## Next safe checks (in order)
-1. Apply both patches and copy the quest folder into a DISPOSABLE content checkout (never the live one with saves), then run the pinned pack/compile step.
-2. Fix any compile errors, then start a disposable server and walk the quest with a test account.
-3. Only then mark anything playable. Per AGENTS.md: no claim of runtime-ready from source alone.
+- **Player playthrough is still unverified**: not yet confirmed that the
+  exact client offers every needed click option, pathfinding reaches the
+  memorial/gravestones/ladders, the NPC key drop is visible, the 1,000-XP
+  and 2-QP completion actually occurs once, or logged-out stage continuity
+  works in the live customised world. A successful build/boot is not gameplay.
+- Silver casting currently uses a **temporary direct item-on-mould
+  shortcut**, not authentic furnace casting. Convert it to the existing native
+  furnace interaction before calling the quest historically complete.
+- The mapping of head grave, memorial, dungeon keys and the body parts is
+  grounded in cache object positions and historical quest flow, not yet
+  confirmed by an ordinary player following the entire 2005 quest.
+- Gardener's direction variant `fenk_gardener_directions` and remaining
+  dynamic NPC animation/cutscene beats need in-game acceptance.
+- The original stage numbers 1–7 are reconstructed; the cache explicitly
+  distinguishes completion stage 8. Verify reward XP and difficulty against
+  2005-era evidence if historically exact reproduction is required.
+- No automatic deployment to JParrisDesktop: that engine contains custom
+  source unrelated to this PR. Back up saves and perform a targeted merge
+  only after a separately authorised installation and ordinary family-world
+  regression testing.
 
-## Unverified facts
-Stage numbers 1-7 are a reconstruction (cache only fixes 0-7 vs 8). Requirements (Restless Ghost, Priest in Peril, 20 Crafting, 25 Thieving), thread count of 5,
-the Thieving XP reward (1,000 XP) and the pickpocket success odds (`stat_random(thieving, 80, 220)`) come from memory, the modern wiki or are guesses, and must be
-checked against 377-era sources. Dialogue is original wording; nothing is copied from game transcripts.
+**CI verdict** on every commit is recorded in PR
+https://github.com/Parris-Tech-Services/JoshRS/pull/136.
