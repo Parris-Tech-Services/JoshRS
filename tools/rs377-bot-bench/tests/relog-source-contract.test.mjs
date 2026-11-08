@@ -15,8 +15,8 @@ test('relogVerified only after real active and admitted world player',()=>{
 });
 test('never queue duplicate bot while logout or world admission still pending',()=>{
   assert.match(spawn,/world\.getPlayerByUsername\(name\)/);
-  assert.match(tick,/world\.logoutRequests\.has\(fredGeorgeLogoutAccountKey\(name, state\.player\)\) \|\| admitted/);
-  assert.match(tick,/fredGeorgeLogoutAccountKey\(name, state\.player\)/);
+  assert.match(tick,/world\.logoutRequests\.has\(fredGeorgeLogoutAccountKey\(name, player\)\) \|\| admitted/);
+  assert.match(tick,/fredGeorgeLogoutAccountKey\(name, player\)/);
   assert.match(tick,/state\.relogAttempts < 3/);
   assert.match(tick,/relog_admission_failed_after_three_retries/);
 });
