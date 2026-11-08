@@ -90,47 +90,45 @@ if ($mortton = null) {
 }
 p_telejump($mortton);
 
-// All four physical bridge locs are in m54_53 at plane 1, x=3502, z=3427..3430.
-// Require repairs at THREE DISTINCT consecutive locs so the same one cannot be
-// clicked repeatedly to skip a bridge. No new client varp IDs are allocated.
-[oploc1,swamp_bridge1]
-@route_repair_swamp_bridge;
-[oploc2,swamp_bridge1]
-@route_repair_swamp_bridge;
-
-[label,route_repair_swamp_bridge]
+// Exactly four bridge locs exist on plane 1; only the first THREE need repairs.
+// Cache action on swamp_bridge1: option 1 = Walk-here, option FIVE = Repair.
+// Never repurpose Walk-here as Repair, which would make ordinary travel consume nails.
+[oploc5,swamp_bridge1]
 if (%routequest < ^route_hollows) {
-    mes("Arrange your passage with Cyreg before trying to cross the swamp.");
+    mes("Arrange passage with Cyreg before crossing the swamp.");
     return;
 }
 if (%routequest >= ^route_bridge_fixed) {
-    mes("The bridge is repaired. Cross to the north end.");
+    mes("The three planks are securely attached.");
     return;
 }
-// Each 2005 bridge repair costs one plank and exactly 75 steel nails.
 def_coord $expected = 1_54_53_46_35;
 if (%routequest = ^route_bridge_one) $expected = 1_54_53_46_36;
 if (%routequest = ^route_bridge_two) $expected = 1_54_53_46_37;
 if (loc_coord ! $expected) {
-    mes("Repair the damaged span immediately ahead, starting from the south end.");
+    mes("Repair the next damaged span, starting at the south end.");
     return;
 }
 if (inv_total(inv, hammer) < 1) {
-    mes("You need a hammer to fix the bridge.");
+    mes("You need a hammer.");
     return;
 }
 if (inv_total(inv, woodplank) < 1 | inv_total(inv, nails) < ^route_steel_nails_per_span) {
-    mes("Each span needs one plank and 75 steel nails.");
+    mes("Each damaged span requires one plank and 75 steel nails.");
     return;
 }
 inv_del(inv, woodplank, 1);
 inv_del(inv, nails, ^route_steel_nails_per_span);
+// Cache varbits 176-178 persist and transmit with routequestmulti ID 388.
+if (%routequest = ^route_hollows) %bridgerung1 = 1;
+if (%routequest = ^route_bridge_one) %bridgerung2 = 1;
+if (%routequest = ^route_bridge_two) %bridgerung3 = 1;
 %routequest = calc(%routequest + 1);
-mes("You fasten another plank with 75 steel nails.");
+mes("You secure the damaged span with a plank and 75 nails.");
 if (%routequest = ^route_bridge_fixed) {
-    mes("All three damaged spans are repaired. Cross to the north end.");
+    mes("All three bridge spans are now safe. Continue north.");
 } else {
-    mes("Work forward to the next damaged span.");
+    mes("Move forward to the next damaged span.");
 }
 
 // In this 377 map the ground-floor trees are *harmless_dead_palm_mid*
@@ -153,7 +151,7 @@ if (loc_coord = 0_54_53_46_34) {
     p_teleport(1_54_53_46_39);
 }
 
-[oploc1,spooky_tree_mid_forbridge]
+[oploc2,harmless_dead_palm_mid]
 if (loc_coord = 1_54_53_46_34) {
     mes("You climb down the southern tree.");
     p_teleport(0_54_53_46_34);
@@ -166,30 +164,59 @@ if (loc_coord = 1_54_53_46_34) {
     p_teleport(0_54_53_46_39);
 }
 
-// Hollow-tree entrance at (3508,3441), one tile north of Curpile's spawn.
-// The 377 underground Myreque NPCs are at *plane 3* of m54_153.
-// Choosing plane 0 silently misses Sani Piliu and Harold Evans.
-[oploc1,hollowtree_entrance]
+// Cache hollowtree_entrance loc 5045 has NO clickable options.
+// The actual entrance doors at (3509..3510,3447) do: 5060 & 5061 = Open.
+[oploc1,freedomfighterundergroundentrancel]
+@route_open_hollowtree_doors;
+[oploc1,freedomfighterundergroundentrancer]
+@route_open_hollowtree_doors;
+
+[label,route_open_hollowtree_doors]
 if (%routequest < ^route_guard_passed) {
-    mes("Curpile Fyod must give you permission to enter this hideout.");
+    mes("Curpile Fyod is watching. Ask his permission before entering.");
     return;
 }
-mes("You pass through the hollow tree and follow the hidden tunnel.");
+mes("You open the door and descend through the old hollow tree.");
+def_coord $entrance = map_findsquare(0_54_153_36_32, 1, 4, ^map_findsquare_lineofwalk);
+if ($entrance = null) {
+    mes("You cannot find a safe foothold inside the tunnel.");
+    return;
+}
+p_teleport($entrance);
+
+// The real underground stalagmite at (3492,9824), plane 0,
+// has option 1=Look and option TWO=Squeeze-past.
+[oploc2,route_stalagmite_cave_entrace]
+if (%routequest < ^route_guard_passed | stat_base(agility) < 25) {
+    mes("You need Curpile's permission and 25 Agility to squeeze through.");
+    return;
+}
 def_coord $hideout = map_findsquare(3_54_153_52_49, 1, 4, ^map_findsquare_lineofwalk);
 if ($hideout = null) {
-    mes("The entrance is blocked; remain here and try again.");
+    mes("The narrow way is obstructed.");
     return;
 }
+mes("You squeeze between the rocks and find the Myreque hideout.");
 p_teleport($hideout);
 
-// The actual stalagmite passage is at (3492,9824), plane 0.
-// It must not award or reset any stage.
-[oploc1,route_stalagmite_cave_entrace]
-if (%routequest < ^route_guard_passed | stat_base(agility) < 25) {
-    mes("You cannot squeeze through this passage until Curpile admits you and you have 25 Agility.");
+// Only the specific plane-3 cavewall on the Myreque's passage can return
+// to the plane-0 main tunnel. Other locs of this type are unrelated.
+[oploc1,route_cavewalltunnel]
+if (loc_coord ! 3_54_153_49_39) {
+    mes("This cave wall leads nowhere useful.");
     return;
 }
-mes("You squeeze past the stalagmite into the Myreque tunnels.");
+if (%routequest < ^route_hideout) {
+    mes("You need to meet the Myreque before using this tunnel.");
+    return;
+}
+def_coord $tunnel = map_findsquare(0_54_153_49_39, 1, 4, ^map_findsquare_lineofwalk);
+if ($tunnel = null) {
+    mes("The tunnel is blocked.");
+    return;
+}
+mes("You follow the dim passage towards the Canifis cellar.");
+p_teleport($tunnel);
 
 // Only the ACTUAL secret wall near Canifis basement (3480,9837)
 // can open the exit. The 16 generic route_cavewalltunnel locs do NOT.
