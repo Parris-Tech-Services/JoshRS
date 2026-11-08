@@ -1,0 +1,58 @@
+name: Fedora RS-SDK 377 quest campaign source checks
+on:
+  push:
+    branches: [main, "feat/fedora-rssdk-quest-runner-20261109"]
+    paths:
+      - "tools/rs377-fedora-quests/**"
+      - "tools/rs377-chatgpt-bridge/src/sdk-runtime.mjs"
+      - "tools/rs377-bot-bench/engine-patch/src/web.ts"
+      - ".github/workflows/fedora-rssdk-quests.yml"
+      - "research/rs377/QUEST_QUEUE_2026-11-08.json"
+  pull_request:
+    paths:
+      - "tools/rs377-fedora-quests/**"
+      - "tools/rs377-chatgpt-bridge/src/sdk-runtime.mjs"
+      - "tools/rs377-bot-bench/engine-patch/src/web.ts"
+      - ".github/workflows/fedora-rssdk-quests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-safety-tests:
+    name: Native Linux source and campaign regression tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Check scripts parse
+        run: |
+          bash -n tools/rs377-fedora-quests/setup-fedora.sh
+          node --check tools/rs377-fedora-quests/catalog.mjs
+          node --check tools/rs377-fedora-quests/campaign.mjs
+          node --check tools/rs377-fedora-quests/campaign.test.mjs
+          node --check tools/rs377-chatgpt-bridge/src/sdk-runtime.mjs
+      - name: Run exact 104 plus seven metadata/false-success tests
+        run: node --test tools/rs377-fedora-quests/campaign.test.mjs
+      - name: Verify no default game access
+        run: |
+          node -e "import('./tools/rs377-fedora-quests/catalog.mjs').then(m => {const c=m.readCatalogue(); if(c.questCount!==104||c.miniquestCount!==7) process.exit(1); console.log('104 quests, 7 miniquests, no account touched');})"
+  actual-fedora-container:
+    name: Fedora 44 container quest planner regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run real Fedora OS source test container
+        run: |
+          docker run --rm -v "$PWD:/work:ro" -w /work fedora:44 bash -c '
+            set -euo pipefail
+            dnf install -y --setopt=install_weak_deps=False nodejs git >/dev/null
+            node --version
+            node --test tools/rs377-fedora-quests/campaign.test.mjs
+            bash -n tools/rs377-fedora-quests/setup-fedora.sh
+          '
