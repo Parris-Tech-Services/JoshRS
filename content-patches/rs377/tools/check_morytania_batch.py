@@ -64,7 +64,7 @@ def check(content: Path):
     # The reward must require a real completed pyre, never a quest-start option.
     if "if (%morttonquest >= ^mortton_lit_pyre) {" not in mort_file:
         raise RuntimeError("Mortton completion not gated on lit pyre")
-    for hook in ("[oploc1,_category_226]", "[oploc1,templefire_altar_nofire]",
+    for hook in ("[oploc1,templewall_base]", "[oploc1,templewallcorner_base]", "[oploc1,templefire_altar_nofire]",
                  "[oplocu,templefire_altar]", "[oplocu,temple_pyre]",
                  "[oplocu,temple_pyre_logs]", "[oploc1,temple_pyre_bones_logs]"):
         if finish_file.count(hook)!=1:
