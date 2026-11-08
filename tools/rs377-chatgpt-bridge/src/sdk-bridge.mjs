@@ -172,7 +172,11 @@ const metadata={contract:'MaxBittker/rs-sdk@db0cc51e0a8f9f0d6a7d60c44e534412bb06
   semantics:'source-only typed conversion; no actual SDK gateway/real observer wired'};
 export function toBotWorldState(raw,{botName,expectedWorld}={}) {
   const s=validateObservation(raw,{botName,expectedWorld});
-  if(s.unsupported.length)missing(s.unsupported.join(', '));
+  // Quest-stage varps are useful optional rev377 telemetry, NOT a required
+  // BotWorldState field in the pinned upstream SDK types.ts contract. Do not
+  // invent them; allowing the explicit native null does not omit a SDK field.
+  const missingRequired=s.unsupported.filter(key=>key!=='questStages');
+  if(missingRequired.length)missing(missingRequired.join(', '));
   const e=s.sdkDetails;
   for(const k of requiredExtra)if(e[k]===null||e[k]===undefined)missing('sdkDetails.'+k);
   if(!requiredPlayerState(e.player)||e.player.name!==s.player.username||
