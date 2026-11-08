@@ -119,6 +119,7 @@ interface BotRuntimeState {
     relogVerified: boolean;
     relogPending: boolean;
     relogTick: number;
+    relogAttempts: number;
     currentTask: string;
     nextDecisionTick: number;
     lastActionTick: number;
@@ -170,6 +171,7 @@ function createInitialBotState(name: BotName, policy: BotPolicy): BotRuntimeStat
         relogVerified: false,
         relogPending: false,
         relogTick: -1,
+        relogAttempts: 0,
         currentTask: 'initializing',
         nextDecisionTick: 0,
         lastActionTick: 0,
@@ -320,7 +322,10 @@ function getSnapshotsRootPath(): string {
 
 function spawnSingleBot(world: WorldRuntime, name: BotName): void {
     const state = bots[name];
-    if (state.player && state.player.isActive && state.player.slot >= 0) {
+    // Include pending admissions, not only active slots: never queue duplicate usernames.
+    const existing = world.getPlayerByUsername(name);
+    if (existing) {
+        state.player = existing;
         return;
     }
 
@@ -328,9 +333,17 @@ function spawnSingleBot(world: WorldRuntime, name: BotName): void {
     let savPacket = new Packet(new Uint8Array(0));
     if (fs.existsSync(savePath)) {
         const raw = fs.readFileSync(savePath);
-        if (raw.length >= 2 && PlayerLoading.verify(new Packet(raw))) {
-            savPacket = new Packet(raw);
+        if (raw.length < 2 || !PlayerLoading.verify(new Packet(raw))) {
+            // Never silently replace a damaged existing bot character with a new one.
+            console.error('[Fred & George] Existing bot save failed CRC; refusing to respawn ' + name);
+            state.currentTask = 'blocked_invalid_save';
+            return;
         }
+        savPacket = new Packet(raw);
+    } else if (state.relogPending || state.relogTick >= 0 || state.relogVerified) {
+        console.error('[Fred & George] Existing bot save missing; refusing to reset ' + name);
+        state.currentTask = 'blocked_missing_save';
+        return;
     }
 
     const player = PlayerLoading.load(name, savPacket, null);
@@ -1839,6 +1852,9 @@ function flushLiveStateFile(world: WorldRuntime): void {
                 current_task: b.currentTask,
                 starting_signature: b.startingSignature,
                 relog_verified: b.relogVerified,
+                relog_waiting_since_tick: b.relogTick,
+                relog_attempts: b.relogAttempts,
+                world_admitted: Boolean(p && p.isActive && p.slot >= 0 && !p.loggingOut),
                 phase: b.phase,
                 cooperation_events: b.cooperationEvents,
                 xp_before_tenths: b.xpBeforeTenths,
@@ -2001,31 +2017,68 @@ export function tickFredAndGeorgeBots(world: WorldRuntime): void {
 
     for (const name of ['Fred', 'George'] as const) {
         const state = bots[name];
-        const player = state.player;
-
-        // Handle relog persistence verification when player logged out cleanly
+        // The game owns admission, not spawnSingleBot(). A queued newPlayers entry
+        // and a valid save are not proof that the player is present in the world.
         if (state.relogPending) {
-            const stillInWorld = player && player.slot >= 0 && player.isActive;
+            const prior = state.player;
+            const stillInWorld = Boolean(prior && prior.slot >= 0 && prior.isActive);
             if (!stillInWorld && !world.logoutRequests.has(name)) {
                 const savePath = getSavePath(name);
                 if (fs.existsSync(savePath) && PlayerLoading.verify(new Packet(fs.readFileSync(savePath)))) {
                     state.relogPending = false;
-                    state.relogVerified = true;
+                    state.relogTick = world.currentTick;
+                    state.relogAttempts = 0;
+                    state.currentTask = 'awaiting_verified_world_admission';
                     spawnSingleBot(world, name);
-                    if (state.questRelogVerifyPending) {
-                        const verifiedQuest = state.questRelogVerifyPending;
-                        state.questRelogVerifyPending = null;
-                        state.questsCompletedAllTime.add(verifiedQuest);
-                        state.questsVerifiedNew.add(verifiedQuest);
-                        console.info(`[Fred & George] ${name} verified quest completion across logout/relogin: ${verifiedQuest}`);
-                    } else {
-                        console.info(`[Fred & George] ${name} verified fresh account save persistence across logout/relogin.`);
-                    }
+                } else {
+                    state.currentTask = 'blocked_invalid_or_missing_relog_save';
                 }
             }
             continue;
         }
 
+        if (state.relogTick >= 0) {
+            const admitted = world.getPlayerByUsername(name);
+            if (admitted && admitted.slot >= 0 && admitted.isActive && !admitted.loggingOut) {
+                state.player = admitted;
+                state.relogVerified = true;
+                state.relogTick = -1;
+                state.relogAttempts = 0;
+                state.currentTask = 'verified_relog_resuming_gameplay';
+                if (state.questRelogVerifyPending) {
+                    const verifiedQuest = state.questRelogVerifyPending;
+                    state.questRelogVerifyPending = null;
+                    state.questsCompletedAllTime.add(verifiedQuest);
+                    state.questsVerifiedNew.add(verifiedQuest);
+                    console.info('[Fred & George] ' + name + ' verified quest relog in active world: ' + verifiedQuest);
+                } else {
+                    console.info('[Fred & George] ' + name + ' verified account re-admission in active world.');
+                }
+            } else if (world.currentTick - state.relogTick >= 25) {
+                if (world.logoutRequests.has(name) || admitted) {
+                    // Avoid creating a duplicate while an old logout or queued login exists.
+                    state.currentTask = 'relog_waiting_for_world_or_logout';
+                    state.relogTick = world.currentTick;
+                } else if (state.relogAttempts < 3) {
+                    const savePath = getSavePath(name);
+                    if (!fs.existsSync(savePath) || !PlayerLoading.verify(new Packet(fs.readFileSync(savePath)))) {
+                        state.currentTask = 'blocked_invalid_or_missing_relog_save';
+                        state.relogTick = -1;
+                    } else {
+                        state.relogAttempts++;
+                        state.relogTick = world.currentTick;
+                        state.currentTask = 'retrying_world_admission_' + state.relogAttempts;
+                        spawnSingleBot(world, name);
+                    }
+                } else {
+                    state.currentTask = 'relog_admission_failed_after_three_retries';
+                    state.relogTick = -1;
+                    console.error('[Fred & George] ' + name + ' could not rejoin world after three bounded attempts.');
+                }
+            }
+        }
+
+        const player = state.player;
         if (!player || player.slot < 0 || !player.isActive || player.loggingOut) {
             state.online = false;
             continue;
