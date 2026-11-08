@@ -54,6 +54,8 @@ test('maps visible 377 normal actions only and preserves source exact opcodes',(
   assert.equal(mapSdkAction({type:'pickupItem',x:3220,z:3218,itemId:1925,reason:'Take'},o).packet.opcode,77);
   assert.equal(mapSdkAction({type:'useItemOnLoc',itemSlot:0,x:3221,z:3217,locId:10,reason:'Use'},o).packet.opcode,152);
   assert.equal(mapSdkAction({type:'useInventoryItem',slot:0,interfaceId:3214,optionIndex:1,reason:'Use'},o).packet.opcode,203);
+  assert.equal(mapSdkAction({type:'useInventoryItem',slot:0,optionIndex:1,reason:'Default backpack component'},o).packet.opcode,203);
+  assert.throws(()=>mapSdkAction({type:'useInventoryItem',slot:0,interfaceId:1234,optionIndex:1,reason:'Unknown component'},o),/refused/);
 });
 test('rejects not visible, hostile injected actions, arbitrary stage/XP writes, unguarded dialogs',()=>{
   const o=validateObservation(raw(),opts);
