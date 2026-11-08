@@ -35,6 +35,7 @@ jobs:
       - name: Check scripts parse
         run: |
           bash -n tools/rs377-fedora-quests/setup-fedora.sh
+          bash -n tools/rs377-fedora-quests/sandbox-fedora.sh
           node --check tools/rs377-fedora-quests/catalog.mjs
           node --check tools/rs377-fedora-quests/campaign.mjs
           node --check tools/rs377-fedora-quests/campaign.test.mjs
@@ -64,4 +65,5 @@ jobs:
             node --version
             node --test tools/rs377-fedora-quests/campaign.test.mjs
             bash -n tools/rs377-fedora-quests/setup-fedora.sh
+          bash -n tools/rs377-fedora-quests/sandbox-fedora.sh
           '
