@@ -24,10 +24,14 @@ switch_int (%swansong) {
         ~chatnpc("<p,neutral>Please ask the Wise Old Man in Draynor for help.");
     case ^swansong_met_franklin, ^swansong_met_arnold, ^swansong_fish :
         ~chatnpc("<p,neutral>Help Arnold with food and Franklin with the walls.");
-    case ^swansong_trolls :
-        ~chatnpc("<p,neutral>Our supplies are ready. Defeat the sea troll blocking the defence.");
-    case ^swansong_queen, ^swansong_army_deployed :
+    case ^swansong_trolls, 51, 52, 53, 54, 55, 56, 57 :
+        ~chatnpc("<p,neutral>Our supplies are ready. Defeat all eight sea troll attacks.|You have defeated <tostring(calc(%swansong - ^swansong_trolls))> of eight.");
+        ~swan_spawn_ambusher;
+    case ^swansong_queen :
         ~chatnpc("<p,neutral>Ask Wizard Frumscone in Yanille for help raising our defence.");
+    case ^swansong_army_deployed :
+        ~chatnpc("<p,neutral>Our skeleton magi are deployed. Now defeat the Sea Troll Queen.");
+        ~swan_spawn_queen;
     case ^swansong_return :
         ~chatnpc("<p,happy>The Sea Troll Queen is gone and the colony can fish again!");
         queue(swansong_quest_complete, 0, 0);
@@ -109,17 +113,23 @@ switch_int (%swansong) {
 [ai_queue3,swan_troll_ambush]
 gosub(npc_death);
 if (npc_findhero = ^true) {
-    if (%swansong = ^swansong_trolls) {
+    if (%swansong >= ^swansong_trolls & %swansong < ^swansong_troll_wave_complete) {
         queue(swan_troll_kill, 0, 0);
     }
 }
 
 [queue,swan_troll_kill]
-if (%swansong ! ^swansong_trolls) {
+if (%swansong < ^swansong_trolls | %swansong >= ^swansong_troll_wave_complete) {
     return;
 }
-%swansong = ^swansong_queen;
-mes("The ambushing troll falls. Its queen must be near.");
+%swansong = calc(%swansong + 1);
+if (%swansong = ^swansong_troll_wave_complete) {
+    %swansong = ^swansong_queen;
+    mes("The eighth sea troll falls. Ask Wizard Frumscone to prepare the final defence.");
+} else {
+    mes("A sea troll is defeated. More are approaching!");
+    ~swan_spawn_ambusher;
+}
 
 [ai_queue3,swan_seatroll_queen]
 gosub(npc_death);
@@ -162,7 +172,9 @@ switch_int (%swansong) {
     case ^swansong_met_arnold, ^swansong_fish :
         $text = "@dbl@Arnold needs five cooked fresh monkfish.||@dbl@Franklin needs five repaired walls.";
         $text = append($text, "|@dbl@Walls: <tostring(~swan_wall_count)> / 5.");
-    case ^swansong_trolls : $text = "@dbl@The colony is supplied.||@dbl@I must defeat the sea troll ambusher.";
+    case ^swansong_trolls, 51, 52, 53, 54, 55, 56, 57 :
+        $text = "@dbl@The colony is supplied.||@dbl@I must defeat eight attacking sea trolls.";
+        $text = append($text, "|@dbl@Attacks defeated: <tostring(calc(%swansong - ^swansong_trolls))> / 8.");
     case ^swansong_queen : $text = "@dbl@I must ask Wizard Frumscone in Yanille for bone seeds.";
     case ^swansong_army_deployed : $text = "@dbl@I have deployed the skeleton defenders.||@dbl@Defeat the Sea Troll Queen.";
     case ^swansong_return : $text = "@str@I defeated the Sea Troll Queen.||@dbl@I should tell @dre@Herman@dbl@.";
