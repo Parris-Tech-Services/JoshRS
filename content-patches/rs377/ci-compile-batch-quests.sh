@@ -68,7 +68,7 @@ for folder, names in owned.items():
 
 # The all.varp blocks promoted to permanent by 0006 must be unique and permanent.
 allvarp = (scripts / '_unpack/377/all.varp').read_text(errors='replace')
-for name in ('hauntedmine', 'routequest', 'mdaughter_var', 'lost_tribe', 'soulbane', 'swansong_quest', 'makinghistory', 'handsand', 'main_feud_var', 'feud_var_multi', 'elid_main', 'rag_bone_2', 'onefavour', 'dwarfrock_main', 'tog_minigame', 'zombie_ogre', 'giantdwarf_main', 'forget_main_var', 'garden_varp_1', 'twocats_varbit', 'quest_wanted', 'deal_quest', 'agrith_quest_varp'):
+for name in ('hauntedmine', 'routequest', 'mdaughter_var', 'lost_tribe', 'soulbane', 'swansong_quest', 'makinghistory', 'handsand', 'main_feud_var', 'feud_var_multi', 'elid_main', 'rag_bone_2', 'onesmallfavour', 'dwarfrock_main', 'tog_minigame', 'zombie_ogre', 'giantdwarf_main', 'forget_main_var', 'garden_varp_1', 'twocats_varbit', 'quest_wanted', 'deal_quest', 'agrith_quest_varp'):
     blocks = re.findall(r'(?m)^\[' + name + r'\]\s*\n[^\[]*', allvarp)
     if len(blocks) != 1 or 'scope=perm' not in blocks[0]:
         raise SystemExit(f'BLOCKED: {name} not a single permanent block in all.varp')
