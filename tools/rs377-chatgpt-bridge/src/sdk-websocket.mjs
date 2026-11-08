@@ -8,6 +8,7 @@
 import {createServer} from 'node:http';
 import {timingSafeEqual} from 'node:crypto';
 import {WebSocketServer,WebSocket} from 'ws';
+import {verifyActionEffect} from './sdk-action-effects.mjs';
 
 const safeEqual=(a,b)=>{
   if(typeof a!=='string'||typeof b!=='string')return false;
@@ -227,6 +228,30 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
             }
             if(result.success===false)result={
               success:false,message:'Move dispatched; target position not observed',
+              reason:'observation_timeout',phase:'observation'};
+          }else{
+            // All other actions require a real authoritative state delta.
+            // A successful packet write is never a gameplay success. An
+            // unauthenticated, missing or unchanged observation stays failure.
+            const until=Date.now()+actionTimeoutMs;
+            while(Date.now()<until&&!closed&&ws===controller){
+              await sleep(650);
+              let observed;
+              try{observed=await runtime.observe()}
+              catch(e){
+                if(String(e?.message??'').includes('replayed_native_observation'))continue;
+                throw e;
+              }
+              const verified=verifyActionEffect(action,start,observed);
+              if(!verified)continue;
+              result={success:true,message:'Native 377 game effect observed',
+                phase:'completion',data:{startTick:start.tick,endTick:observed.tick,
+                  world:observed.world.instanceId,
+                  verifiedEffect:true,evidence:verified.evidence}};
+              break;
+            }
+            if(result.success===false)result={
+              success:false,message:'Normal packet dispatched but no grounded game effect observed',
               reason:'observation_timeout',phase:'observation'};
           }
           if(!closed&&ws===controller)send(ws,{type:'sdk_action_result',actionId,result});
