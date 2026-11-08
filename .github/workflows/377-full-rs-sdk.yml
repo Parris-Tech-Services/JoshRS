@@ -1,0 +1,76 @@
+name: Full upstream RS-SDK on JoshRS 377 (safe SDK distribution)
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-upstream-sdk/**'
+      - 'deploy/jparris-windows/Install-RSSDK377.ps1'
+      - 'JoshRS-Install-RSSDK.cmd'
+      - '.github/workflows/377-full-rs-sdk.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/rs377-upstream-sdk/**'
+      - 'deploy/jparris-windows/Install-RSSDK377.ps1'
+      - 'JoshRS-Install-RSSDK.cmd'
+      - '.github/workflows/377-full-rs-sdk.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-original-sdk:
+    name: Pinned upstream SDK and safe installation (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.0'
+      - name: Checkout complete unmodified upstream RS-SDK
+        uses: actions/checkout@v4
+        with:
+          repository: MaxBittker/rs-sdk
+          ref: db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb
+          path: rs-sdk-pinned
+          persist-credentials: false
+      - name: Check pin, install dependencies, load original upstream BotSDK and BotActions
+        shell: bash
+        env:
+          RS377_UPSTREAM_SDK_HOME: ${{ github.workspace }}/rs-sdk-pinned
+        run: |
+          test "$(git -C rs-sdk-pinned rev-parse HEAD)" = db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb
+          (cd rs-sdk-pinned && bun install --ignore-scripts)
+          bun tools/rs377-upstream-sdk/run-isolated.ts --check
+      - name: Parse Windows installer and check no-overwrite/offline fresh install
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $file = (Resolve-Path 'deploy/jparris-windows/Install-RSSDK377.ps1').Path
+          $tokens=$null; $errors=$null
+          [void][System.Management.Automation.Language.Parser]::ParseFile($file,[ref]$tokens,[ref]$errors)
+          if($errors.Count){ throw ('PowerShell 5.1 parse failed: ' + ($errors|Out-String)) }
+          $sandbox=Join-Path $env:RUNNER_TEMP ('joshrs-sdk-fixture-'+[guid]::NewGuid().ToString('N'))
+          $private=Join-Path $sandbox 'runtime\jparris-377'
+          New-Item -ItemType Directory -Path $private -Force | Out-Null
+          [IO.File]::WriteAllText((Join-Path $private 'active.json'),'{}')
+          $marker=Join-Path $private 'untouched-family-save.fixture'
+          [IO.File]::WriteAllText($marker,'PRESERVE')
+          try {
+            & $file -Root $sandbox -CheckOnly
+            if((Get-ChildItem -LiteralPath $private).Count -ne 2){ throw 'Read-only preflight created files' }
+            & $file -Root $sandbox
+            $dest=Join-Path $private 'upstream-rs-sdk-db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb'
+            if(-not (Test-Path (Join-Path $dest 'sdk\index.ts'))){ throw 'Full SDK missing' }
+            if(-not (Test-Path (Join-Path $dest 'node_modules'))){ throw 'Full SDK dependencies missing' }
+            if((& git -C $dest rev-parse HEAD).Trim() -cne 'db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb'){ throw 'Git pin mismatch' }
+            & $file -Root $sandbox
+            if([IO.File]::ReadAllText($marker) -cne 'PRESERVE'){ throw 'Family-save fixture changed' }
+            if((Get-ChildItem -LiteralPath $private -Directory | Measure-Object).Count -ne 1){throw 'Unexpected private runtime directories'}
+            Write-Host 'SDK_INSTALL_SAFETY_VERIFIED: source pin, dependencies, idempotency, family save unchanged.'
+          } finally {
+            Remove-Item -LiteralPath $sandbox -Recurse -Force -ErrorAction SilentlyContinue
+          }
