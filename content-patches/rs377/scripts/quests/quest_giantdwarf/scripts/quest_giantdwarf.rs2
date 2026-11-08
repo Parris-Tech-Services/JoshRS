@@ -1,0 +1,84 @@
+// The Giant Dwarf - JoshRS original chain on 377 cache items/NPCs (gold ore; NPCs the Keldagrim
+// boatman, the Black Guard leader, the Blue Opal director, the Supreme Commander).
+// Original JoshRS content. Persistence: add scope=perm to cache varp giantdwarf_main (patch 0009).
+// NOT IMPLEMENTED: the opening boat cutscene, the eight-company choice, the trading floors,
+// the giant dwarf statue reveal scene, and the library; the chain here is a condensed
+// reconstruction. Rewards: 2,500 Crafting XP and the Keldagrim consortium's favour.
+
+// Boatman at the Keldagrim mines crossing - start NPC.
+[opnpc1,dwarf_city_boatman_mines_prequest]
+switch_int (%giantdwarf_main) {
+    case ^gd_not_started :
+        ~chatnpc("<p,neutral>Crossing to Keldagrim, are you? Mind your head|coming in - the Black Guard commander's in a state.|Statue trouble, they say. Ask for him in the city|and you'll get the whole story.");
+        def_int $option = ~p_choice2("I'll speak to the commander.", 1, "Just the crossing, thanks.", 2);
+        if ($option = 1) {
+            ~chatplayer("<p,neutral>I'll hear what the commander wants.");
+            %giantdwarf_main = ^gd_started;
+            ~send_quest_progress(questlist:giantdwarf, %giantdwarf_main, ^gd_complete);
+        }
+    case default :
+        ~chatnpc("<p,neutral>Crossing's ready when you are.");
+}
+
+// Black Guard leader - the commander with statue trouble.
+[opnpc1,dwarf_city_black_guard_leader]
+switch_int (%giantdwarf_main) {
+    case ^gd_started :
+        ~chatnpc("<p,neutral>A stranger! Good. The Giant Dwarf statue - OUR statue -|was shattered in the night, and the consortium directors|blame each other. The city needs a neutral pair of hands.|Join a company, do some honest work, and put the pieces|back together. The Blue Opal director is hiring.");
+        %giantdwarf_main = ^gd_company;
+    case ^gd_company :
+    case ^gd_ores :
+        ~chatnpc("<p,neutral>The Blue Opal director. His office. Go.");
+    case ^gd_joined :
+        ~chatnpc("<p,neutral>So you're the new company hand. The Supreme Commander|has the last word on the statue. His office is by the|palace. Don't bow - he hates that.");
+        %giantdwarf_main = ^gd_supreme;
+    case default :
+        ~chatnpc("<p,neutral>The Guard keeps the peace. The statue keeps the tourists.");
+}
+
+// Blue Opal director - hiring: six gold ores for the statue's repairs.
+[opnpc1,dwarf_city_director_blue_opal]
+switch_int (%giantdwarf_main) {
+    case ^gd_company :
+        ~chatnpc("<p,neutral>You want work? The statue repairs need gold - pure|Keldagrim gold. Six gold ores, delivered here, and|you're one of us. Company colours, company pension.");
+        %giantdwarf_main = ^gd_ores;
+    case ^gd_ores :
+        if (inv_total(inv, gold_ore) >= 6) {
+            ~chatnpc("<p,happy>Six good ores! Welcome to the Blue Opal company.|Papers signed, hands shaken. The commander will want|to hear you're on the job.");
+            inv_del(inv, gold_ore, 6);
+            %giantdwarf_main = ^gd_joined;
+        } else {
+            ~chatnpc("<p,neutral>Six gold ores. Count them if you must.");
+        }
+    case default :
+        ~chatnpc("<p,neutral>Blue Opal. Finest opals. Bluest, anyway.");
+}
+
+// Supreme Commander - the final word.
+[opnpc1,dwarf_city_black_guard_supreme_leader]
+if (%giantdwarf_main = ^gd_complete) {
+    ~chatnpc("<p,neutral>The new company hand. I've read the report - gold|delivered, directors calmed, and the statue's hands|go back up tomorrow. Keldagrim thanks you, and so does|the Guard. Take this for your trouble.");
+    queue(gd_quest_complete, 0, 0);
+} else {
+    ~chatnpc("<p,neutral>The Supreme Commander is busy. Supreme-ly.");
+}
+
+[queue,gd_quest_complete]
+%giantdwarf_main = ^gd_complete;
+stat_advance(crafting, 25000);
+inv_add(inv, coins, 5000);
+session_log(^log_adventure, "Quest complete: The Giant Dwarf");
+~send_quest_complete(questlist:giantdwarf, gold_ore, 200, ^gd_questpoints, "You have completed The Giant Dwarf!", "2,500 Crafting XP|5,000 coins");
+
+[if_button,questlist:giantdwarf]
+def_string $text;
+switch_int (%giantdwarf_main) {
+    case ^gd_not_started : $text = "@dbl@I can start this quest by speaking to the @dre@boatman@dbl@ at the Keldagrim mines crossing.";
+    case ^gd_started : $text = "@str@The boatman pointed me at the Black Guard commander.||@dbl@I should speak to the @dre@Black Guard leader@dbl@ in Keldagrim.";
+    case ^gd_company : $text = "@str@The commander wants me to join a company and help repair the Giant Dwarf statue.||@dbl@I should speak to the @dre@Blue Opal director@dbl@.";
+    case ^gd_ores : $text = "@str@The Blue Opal company is hiring.||@dbl@I need to deliver @dre@six gold ores@dbl@ to the director.";
+    case ^gd_joined : $text = "@str@I joined the Blue Opal company.||@dbl@I should report back to the @dre@Black Guard leader@dbl@.";
+    case ^gd_supreme : $text = "@str@The commander sent me to the Supreme Commander.||@dbl@I should speak to the @dre@Supreme Commander@dbl@ by the palace.";
+    case default : $text = "@str@The Giant Dwarf stands whole again.||@red@QUEST COMPLETE!";
+}
+~quest_journal("The Giant Dwarf", $text);

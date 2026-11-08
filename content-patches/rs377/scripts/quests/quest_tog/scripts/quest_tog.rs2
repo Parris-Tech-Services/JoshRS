@@ -1,0 +1,58 @@
+// Tears of Guthix - JoshRS original chain on 377 cache items/NPCs (sapphire lantern, light
+// creatures; NPC Juna the serpent, deep in the Lumbridge Swamp Caves).
+// Original JoshRS content. Persistence: add scope=perm to cache varp tog_minigame (patch 0009).
+// NOT IMPLEMENTED: the stone bowl carving, the climb across the chasm, and the weekly tears
+// minigame itself; the chain here is a condensed reconstruction. Rewards: 1 quest point and
+// access to the tears cave.
+
+// Juna - the serpent who guards Guthix's tears.
+[opnpc1,tog_juna_dummy]
+switch_int (%tog_minigame) {
+    case ^tog_not_started :
+        ~chatnpc("<p,neutral>I am Juna, keeper of the tearsss of Guthix. The ssserpent|goddess wove me into this place. Long have I waited for|one who would hear the sssory of the tears.|Bring me a sapphire lantern, lit, and I will ssshare it.");
+        queue(tog_give_lantern, 0, 0);
+        %tog_minigame = ^tog_lantern;
+        ~send_quest_progress(questlist:tog, %tog_minigame, ^tog_complete);
+    case ^tog_lantern :
+        ~chatnpc("<p,neutral>A sssapphire lantern, lit. Catch a light creature's|esssence in the sapphire, and the way will open.");
+    case ^tog_lit :
+        if (inv_total(inv, tog_sapphire_lantern_lit) > 0) {
+            ~chatnpc("<p,neutral>The lantern burnsss with the light creature's glow.|Ssstep forward then, and hear the tale...|Guthix wept, when the wars of gods scarred the land -|and where his tears fell, time itssself pools and flows.|Drink of them, when you return, and what was lost|may be found again. Thisss I allow.");
+            queue(tog_quest_complete, 0, 0);
+        } else {
+            ~chatnpc("<p,neutral>Light the lantern firssst. A tinderbox will serve.");
+        }
+    case default :
+        ~chatnpc("<p,neutral>Return each week, and the tearsss will restore what|you have neglected.");
+}
+
+// Juna gives the player an unlit sapphire lantern.
+[queue,tog_give_lantern]
+inv_add(inv, tog_sapphire_lantern_unlit, 1);
+mes("Juna presses an unlit sapphire lantern into your hands.");
+
+// Light the sapphire lantern with a tinderbox.
+[opheld1,tog_sapphire_lantern_unlit]
+if (inv_total(inv, tinderbox) > 0) {
+    inv_del(inv, tog_sapphire_lantern_unlit, 1);
+    inv_add(inv, tog_sapphire_lantern_lit, 1);
+    %tog_minigame = ^tog_lit;
+    mes("You light the sapphire lantern. It glows with a soft blue light.");
+} else {
+    mes("I need a tinderbox to light this.");
+}
+
+[queue,tog_quest_complete]
+%tog_minigame = ^tog_complete;
+session_log(^log_adventure, "Quest complete: Tears of Guthix");
+~send_quest_complete(questlist:tog, tog_sapphire_lantern_lit, 200, ^tog_questpoints, "You have completed Tears of Guthix!", "Access to the tears of Guthix");
+
+[if_button,questlist:tog]
+def_string $text;
+switch_int (%tog_minigame) {
+    case ^tog_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Juna@dbl@ the serpent, deep in the Lumbridge Swamp Caves.";
+    case ^tog_lantern : $text = "@str@Juna wants a lit sapphire lantern.||@dbl@I should light the unlit lantern she gave me with a @dre@tinderbox@dbl@.";
+    case ^tog_lit : $text = "@str@My sapphire lantern is lit.||@dbl@I should return to @dre@Juna@dbl@.";
+    case default : $text = "@str@I heard the story of Guthix's tears.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Tears of Guthix", $text);
