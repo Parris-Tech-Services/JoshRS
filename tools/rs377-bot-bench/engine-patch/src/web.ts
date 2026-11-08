@@ -240,7 +240,12 @@ management.register(FastifyView, {
  */
 management.get('/dev/rs377-observe', async (req, reply) => {
     const token = process.env.RS377_OBSERVER_TOKEN;
-    const botName = process.env.RS377_OBSERVER_BOT;
+    // Authenticated and strictly allowlisted per-client observer selection.
+    const defaultBot = process.env.RS377_OBSERVER_BOT;
+    const allowedBots = (process.env.RS377_OBSERVER_BOTS ?? defaultBot ?? '')
+        .split(',').map(name => name.trim()).filter(Boolean);
+    const requestedBot = (req.query as { bot?: unknown }).bot;
+    const botName = requestedBot === undefined ? defaultBot : requestedBot;
     const instanceId = process.env.RS377_OBSERVER_WORLD;
     const sourceSha = process.env.RS377_OBSERVER_SOURCE_SHA;
     const supplied = req.headers.authorization ?? '';
@@ -249,7 +254,11 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         process.env.RS377_OBSERVER_ISOLATED !== 'true' ||
         process.env.NODE_XPRATE !== '1' ||
         !token || Buffer.byteLength(token) < 32 ||
-        !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName ?? '') ||
+        typeof botName !== 'string' || !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName) ||
+        allowedBots.length < 1 || allowedBots.length > 4 ||
+        allowedBots.some(name => !/^Harness[A-Za-z0-9_-]{1,10}$/.test(name)) ||
+        new Set(allowedBots.map(name => name.toLowerCase())).size !== allowedBots.length ||
+        !allowedBots.includes(botName) ||
         !/^isolated-[a-z0-9_-]{4,64}$/i.test(instanceId ?? '') ||
         !/^[a-f0-9]{40}$/i.test(sourceSha ?? '') ||
         !['127.0.0.1', '::1'].includes(req.ip) ||
