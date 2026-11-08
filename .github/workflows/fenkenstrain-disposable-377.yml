@@ -23,7 +23,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          root="$RUNNER_TEMP/joshrs-fenkenstrain-377"
+          root="$RUNNER_TEMP/joshrs-377-build"
           mkdir -p "$root"
           git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Engine-TS.git "$root/engine"
           git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Content.git "$root/content"
@@ -39,6 +39,17 @@ jobs:
       - name: Overlay Fenkenstrain on disposable content only
         shell: bash
         run: bash content-patches/rs377/ci-compile-fenkenstrain.sh
+      - name: Add isolated real-revision-377 observer to disposable engine only
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/joshrs-377-build/engine"
+          cp tools/rs377-bot-bench/engine-patch/src/web.ts "$root/src/web.ts"
+          python content-factory/patch_377_sdk_trace.py --engine "$root"
+          test -s "$root/src/engine/observer/Native377Trace.ts"
+      - name: Prepare pinned native RS-SDK transport for real client acceptance
+        shell: bash
+        run: npm --prefix tools/rs377-chatgpt-bridge install --omit=dev --ignore-scripts --no-audit --no-fund
       - name: Compile and pack actual 377 RuneScript
         shell: bash
         env:
@@ -47,7 +58,7 @@ jobs:
           BUILD_VERIFY_PACK: 'true'
         run: |
           set -euo pipefail
-          cd "$RUNNER_TEMP/joshrs-fenkenstrain-377/engine"
+          cd "$RUNNER_TEMP/joshrs-377-build/engine"
           npm ci --no-audit --no-fund
           npm run build
           test -s data/pack/server/script.dat
@@ -62,9 +73,10 @@ jobs:
           WEB_PORT: '18880'
           WEB_MANAGEMENT_PORT: '18881'
           BUILD_SRC_DIR: ../content
+          RS377_LIVE_BOT_PROBE: 'true'
         run: |
           set -euo pipefail
-          cd "$RUNNER_TEMP/joshrs-fenkenstrain-377/engine"
+          cd "$RUNNER_TEMP/joshrs-377-build/engine"
           npm run sqlite:migrate
           cd "$GITHUB_WORKSPACE"
-          python content-factory/smoke_377.py --engine "$RUNNER_TEMP/joshrs-fenkenstrain-377/engine" --game-port 15402 --web-port 18880 --timeout 100
+          python content-factory/smoke_377.py --engine "$RUNNER_TEMP/joshrs-377-build/engine" --game-port 15402 --web-port 18880 --timeout 100

@@ -1,5 +1,5 @@
 // Creature of Fenkenstrain: NPC handlers.
-// STATUS: UNCOMPILED, UNTESTED. Dialogue is original wording (nothing copied from game transcripts).
+// STATUS: COMPILED against pinned disposable 377; full player playthrough unverified. Dialogue is original wording (nothing copied from game transcripts).
 //
 // Script triggers resolve on the spawned NPC's own type (Player.getOpTrigger uses npc.type), and
 // m55_55.jm2 spawns the PARENT multinpc types (1668 fenk_fenkenstrain, 1669 fenk_fenkenstrain_in_tower,
@@ -87,24 +87,48 @@ if (%fenk_quest ! ^fenk_hired) {
 }
 switch_obj (last_useitem) {
     case fenk_head_full :
+        // A forged or stale item-on-NPC packet is never a real hand-in.
+        if (%fenk_head = 1 | inv_total(inv, fenk_head_full) < 1) {
+            ~chatnpc("<p,neutral>I cannot use that item again.");
+            return;
+        }
         inv_del(inv, fenk_head_full, 1);
         %fenk_head = 1;
         ~chatnpc("<p,happy>A head, and the brain is intact. Very good indeed.");
     case fenk_torso :
+        // A forged or stale item-on-NPC packet is never a real hand-in.
+        if (%fenk_torso = 1 | inv_total(inv, fenk_torso) < 1) {
+            ~chatnpc("<p,neutral>I cannot use that item again.");
+            return;
+        }
         inv_del(inv, fenk_torso, 1);
         %fenk_torso = 1;
         ~chatnpc("<p,happy>A fine torso. Set it with the others.");
     case fenk_arms :
+        // A forged or stale item-on-NPC packet is never a real hand-in.
+        if (%fenk_arms = 1 | inv_total(inv, fenk_arms) < 1) {
+            ~chatnpc("<p,neutral>I cannot use that item again.");
+            return;
+        }
         inv_del(inv, fenk_arms, 1);
         %fenk_arms = 1;
         ~chatnpc("<p,happy>Arms. Strong ones too.");
     case fenk_legs :
+        // A forged or stale item-on-NPC packet is never a real hand-in.
+        if (%fenk_legs = 1 | inv_total(inv, fenk_legs) < 1) {
+            ~chatnpc("<p,neutral>I cannot use that item again.");
+            return;
+        }
         inv_del(inv, fenk_legs, 1);
         %fenk_legs = 1;
         ~chatnpc("<p,happy>Legs. Now he can walk away from his critics.");
     case needle :
         if (%fenk_needle = 1) {
             ~chatnpc("<p,neutral>I already have a needle, thank you.");
+            return;
+        }
+        if (inv_total(inv, needle) < 1) {
+            ~displaymessage(^dm_default);
             return;
         }
         inv_del(inv, needle, 1);

@@ -34,6 +34,13 @@ if (loc_coord = 1_55_55_22_38) {
     mes("You search the books but discover nothing useful.");
     return;
 }
+// After both halves are assembled, never allow repeat harvesting
+// from the same bookcase while the finished amulet exists.
+if (inv_total(inv, fenk_star_amulet) > 0 |
+    inv_total(bank, fenk_star_amulet) > 0) {
+    mes("You already assembled the star-shaped amulet.");
+    return;
+}
 if (inv_total(inv, $reward) > 0 | inv_total(bank, $reward) > 0) {
     mes("You have already taken the strange amulet from these shelves.");
     return;
@@ -131,6 +138,16 @@ if (last_useitem = fenk_cane) {
     @fenk_extend_brush(fenk_brush2, fenk_brush3);
 } else {
     ~displaymessage(^dm_default);
+}
+
+// Revision 377 OPHELDU can designate either inventory item as source.
+// Both drag directions must reach the same guarded recipe and inventory checks.
+[opheldu,fenk_cane]
+switch_obj (last_useitem) {
+    case fenk_brush0 : @fenk_extend_brush(fenk_brush0, fenk_brush1);
+    case fenk_brush1 : @fenk_extend_brush(fenk_brush1, fenk_brush2);
+    case fenk_brush2 : @fenk_extend_brush(fenk_brush2, fenk_brush3);
+    case default : ~displaymessage(^dm_default);
 }
 
 [label,fenk_extend_brush](namedobj $old, namedobj $new)
