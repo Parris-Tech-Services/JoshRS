@@ -104,9 +104,23 @@ a compile or packet-dispatch test is not the same as proving every game
 state and agent capability. These changes are intentionally **not**
 installed on JParrisDesktop or any family account.
 
-## What is NOT done yet
+## Outstanding acceptance
 
-Agy's draft harness, actual 377 server-side observer, 377 inbound game packet decoder, native client world-state parser, live account authentication, multi-client visibility, Friends presence, genuine dialogue, real gathering/XP, save/relog and WebSocket RS-SDK gateway are all **unimplemented / unverified here**. This module must not be described as a playable bot or connected to Elrothiro without explicit permission and proper isolated acceptance.
+The disposable native revision-377 CI harness now proves **normal network
+authentication, genuine authoritative observation, SDK-shaped WebSocket
+movement, visible positions, and save/relogin**. The pinned SDK converter
+has also produced a complete source-grounded `BotWorldState` on that
+running isolated server. The native CI probe separately checks streaming
+consecutive increasing ticks.
+
+What is **not** proven for every game state is reliable full feed behaviour
+while a genuine conversation, bank, shop or combat encounter is active.
+Unavailable client-only facts must trigger `sdk_error`, not a fabricated
+state. Full upstream `BotSDK` class interoperability, ordinary agent NPC
+interactions/quests/trading, multi-client family presence, an ergonomic bot
+launcher and a verified JParrisDesktop deployment still require their own
+independent real-world acceptance. **Nothing in this source-only repo
+change authorises replacing the family's customised engine or saves.**
 
 ## Run offline tests
 
