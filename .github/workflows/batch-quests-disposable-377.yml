@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'content-patches/rs377/**'
+      - 'tools/rs377-quest-parity/**'
+      - 'research/rs377/QUEST_QUEUE_2026-11-08.json'
       - '.github/workflows/batch-quests-disposable-377.yml'
   workflow_dispatch:
 permissions:
@@ -39,6 +41,20 @@ jobs:
       - name: Overlay batch quests on disposable content only
         shell: bash
         run: bash content-patches/rs377/ci-compile-batch-quests.sh
+      - name: Audit source-level evidence for every one of the 104 quests
+        shell: bash
+        run: |
+          python3 -I tools/rs377-quest-parity/audit.py \
+            --content "$RUNNER_TEMP/joshrs-batch-377/content" \
+            --out-dir "$RUNNER_TEMP/quest-parity"
+          cat "$RUNNER_TEMP/quest-parity/quests-104-evidence.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload 104-quest evidence matrix
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quest-104-source-accuracy-evidence
+          path: ${{ runner.temp }}/quest-parity/
+          if-no-files-found: warn
       - name: Compile and pack actual 377 RuneScript
         shell: bash
         env:
