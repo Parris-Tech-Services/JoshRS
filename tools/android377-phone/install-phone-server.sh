@@ -46,27 +46,7 @@ pin_repo "$content" 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50
 
 # The upstream engine opens six TCP/HTTP/WS listeners on all network adapters.
 # Phone-local use must close that exposure BEFORE any server is started.
-python3 - "$engine" <<'PY'
-from pathlib import Path
-import sys
-root = Path(sys.argv[1])
-targets = {
-    "src/server/tcp/TcpServer.ts": ("'0.0.0.0'", 1),
-    "src/web.ts": ("host: '0.0.0.0'", 2),
-    "src/server/login/LoginServer.ts": ("host: '0.0.0.0'", 1),
-    "src/server/friend/FriendServer.ts": ("host: '0.0.0.0'", 1),
-    "src/server/logger/LoggerServer.ts": ("host: '0.0.0.0'", 1),
-}
-for rel, (old, count) in targets.items():
-    path = root / rel
-    body = path.read_text()
-    if body.count(old) != count:
-        raise SystemExit(f"BLOCKED: upstream network bind changed: {rel}; refusing public-listener risk")
-    new = "'127.0.0.1'" if old == "'0.0.0.0'" else "host: '127.0.0.1'"
-    path.write_text(body.replace(old, new))
-    assert path.read_text().count(old) == 0
-print("LOOPBACK_BIND_PATCHED: game, web, management, login, friend, logger")
-PY
+python3 -I "$repo/tools/android377-phone/loopback_bind.py" "$engine"
 
 shopt -s nullglob
 patches=("$overlay"/patches/[0-9][0-9][0-9][0-9]-*.patch)
@@ -138,18 +118,7 @@ echo "Installing native Node dependencies and compiling original 377 scripts..."
 )
 
 # Final, fail-closed bind audit before any live engine launch.
-python3 - "$engine" <<'PY'
-from pathlib import Path
-import sys
-root = Path(sys.argv[1])
-for rel in ("src/server/tcp/TcpServer.ts", "src/web.ts",
-            "src/server/login/LoginServer.ts", "src/server/friend/FriendServer.ts",
-            "src/server/logger/LoggerServer.ts"):
-    text = (root / rel).read_text()
-    if "'0.0.0.0'" in text or "127.0.0.1" not in text:
-        raise SystemExit(f"BLOCKED: unsafe binding: {rel}")
-print("PRIVATE_LISTENERS_VERIFIED")
-PY
+python3 -I "$repo/tools/android377-phone/loopback_bind.py" "$engine" --verify
 
 cat > "$tmp/start-local.sh" <<'START'
 #!/usr/bin/env bash
