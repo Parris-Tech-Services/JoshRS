@@ -101,8 +101,7 @@ stat_advance(cooking, 3000);
                           {},[qpath],{}, {},{},d.PIN,refs)
         self.assertEqual(r["shared_area_event_candidate_count"],1)
         self.assertEqual(r["shared_area_npc_dialogue_event_candidates"][0]["path"],area)
-        self.assertEqual(r["shared_area_event_candidates"] if "shared_area_event_candidates" in r else
-                         r["shared_area_or_general_event_candidates"][0]["matched_quest_variables"],
+        self.assertEqual(r["shared_area_or_general_event_candidates"][0]["matched_quest_variables"],
                          ["cookquest"])
 
     def test_missing_start_and_no_scripts_are_not_marked_verified(self):
