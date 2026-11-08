@@ -2229,7 +2229,7 @@ export function formatBotWhereabouts(world: WorldRuntime, targetBot?: BotName): 
             const { region, landmark } = resolveRegionLabel(inWorld.x, inWorld.z, inWorld.level);
             const task = bots[name]?.currentTask || 'active';
             lines.push(
-                `@dre@[Locator]@bla@ @blu@${name}@bla@ (${bots[name].policy}): @gre@ONLINE@bla@ (same world) at x=${inWorld.x}, z=${inWorld.z}, plane=${inWorld.level} — ${region} (${landmark}, task: ${task}).`
+                `[Locator] ${name} (${bots[name].policy}): ONLINE (same world) at x=${inWorld.x}, z=${inWorld.z}, plane=${inWorld.level} — ${region} (${landmark}, task: ${task}).`
             );
             continue;
         }
@@ -2238,14 +2238,14 @@ export function formatBotWhereabouts(world: WorldRuntime, targetBot?: BotName): 
         const fresh = externalState && Date.now() - (externalState.updated_epoch_ms ?? 0) < 30_000;
         if (extBot && fresh && extBot.online) {
             lines.push(
-                `@dre@[Locator]@bla@ @blu@${name}@bla@ (${extBot.policy}): @yel@ONLINE (Isolated Test World ${externalState.world_id}, port ${externalState.game_port})@bla@ at x=${extBot.x}, z=${extBot.z}, plane=${extBot.plane} — ${extBot.region} (${extBot.landmark}, task: ${extBot.current_task}).`
+                `[Locator] ${name} (${extBot.policy}): ONLINE (Isolated Test World ${externalState.world_id}, port ${externalState.game_port}) at x=${extBot.x}, z=${extBot.z}, plane=${extBot.plane} — ${extBot.region} (${extBot.landmark}, task: ${extBot.current_task}).`
             );
         } else if (extBot) {
             lines.push(
-                `@dre@[Locator]@bla@ @blu@${name}@bla@ (${extBot.policy}): @red@OFFLINE@bla@ (last seen in ${extBot.region} at x=${extBot.x}, z=${extBot.z}, plane=${extBot.plane}).`
+                `[Locator] ${name} (${extBot.policy}): OFFLINE (last seen in ${extBot.region} at x=${extBot.x}, z=${extBot.z}, plane=${extBot.plane}).`
             );
         } else {
-            lines.push(`@dre@[Locator]@bla@ @blu@${name}@bla@: @red@OFFLINE@bla@ (no active session found).`);
+            lines.push(`[Locator] ${name}: OFFLINE (no active session found).`);
         }
     }
 
