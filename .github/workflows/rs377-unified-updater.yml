@@ -1,0 +1,114 @@
+name: JoshRS 377 unified Windows Fedora updater
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-unified-updater/**'
+      - 'JoshRS-Update.cmd'
+      - 'content-patches/rs377/**'
+      - '.github/workflows/rs377-unified-updater.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linux-unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Cross-platform updater source safety and rollback tests
+        run: node --test tools/rs377-unified-updater/updater.test.mjs
+      - name: Fedora launcher shell syntax
+        run: bash -n tools/rs377-unified-updater/update-fedora.sh
+      - name: Default Fedora mode must not write or choose unknown game
+        run: |
+          if bash tools/rs377-unified-updater/update-fedora.sh --world /definitely/not/a/world; then
+            echo 'ERROR: updater accepted missing world' >&2; exit 1
+          fi
+
+  windows-unit:
+    runs-on: windows-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Windows updater unit tests
+        shell: pwsh
+        run: node --test tools/rs377-unified-updater/updater.test.mjs
+      - name: Launcher is present and safe
+        shell: pwsh
+        run: |
+          $s = Get-Content 'JoshRS-Update.cmd' -Raw
+          if ($s -notmatch 'updater.mjs --check' -or $s -notmatch 'updater.mjs --apply --confirm-stopped') {
+            throw 'Windows launcher lacks read-only/explicit apply stages'
+          }
+
+  pinned-377-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare isolated pinned revision 377 (no personal data)
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/unified377"
+          mkdir -p "$root"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Engine-TS.git "$root/engine"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Content.git "$root/content"
+          for entry in 'engine b5ac859b47915afb545e60e4c1208f25d43cb3fb' 'content 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50'; do
+            read -r part sha <<< "$entry"
+            if [[ "$(git -C "$root/$part" rev-parse HEAD)" != "$sha" ]]; then
+              git -C "$root/$part" fetch --depth 1 origin "$sha"
+              git -C "$root/$part" checkout --detach "$sha"
+            fi
+            test "$(git -C "$root/$part" rev-parse HEAD)" = "$sha"
+          done
+          mkdir -p "$root/engine/data/pack"
+          printf 'NODE_PORT=15402\nWEB_PORT=18880\nWEB_MANAGEMENT_PORT=18881\nDB_BACKEND=sqlite\nLOGIN_SERVER=true\nBUILD_SRC_DIR=../content\n' > "$root/engine/.env"
+          cd "$root/engine"
+          npm ci --no-audit --no-fund
+      - name: Verify read-only source plan and staging
+        shell: bash
+        run: |
+          node tools/rs377-unified-updater/updater.mjs --check --world "$RUNNER_TEMP/unified377"
+          test "$(git -C "$RUNNER_TEMP/unified377/content" status --short | wc -l)" -eq 0
+      - name: Apply same 33 patches, bundles, back up and compile
+        shell: bash
+        run: |
+          node tools/rs377-unified-updater/updater.mjs --apply --confirm-stopped --world "$RUNNER_TEMP/unified377"
+          test -s "$RUNNER_TEMP/unified377/engine/data/pack/server/script.dat"
+          test -s "$RUNNER_TEMP/unified377/engine/data/pack/server/script.idx"
+          echo 'UNIFIED_377_NATIVE_COMPILE_VERIFIED'
+      - name: Verify idempotence and no reapplication
+        shell: bash
+        run: |
+          node tools/rs377-unified-updater/updater.mjs --check --world "$RUNNER_TEMP/unified377" | tee "$RUNNER_TEMP/updater-check.log"
+          grep -q '"sourceChanges": 0' "$RUNNER_TEMP/updater-check.log"
+          node tools/rs377-unified-updater/updater.mjs --apply --confirm-stopped --world "$RUNNER_TEMP/unified377" | grep -q SOURCE_ALREADY_CURRENT
+      - name: Start and stop disposable native 377 server
+        shell: bash
+        env:
+          DB_BACKEND: sqlite
+          NODE_PROFILE: joshrs_ci_377
+          NODE_PORT: '15402'
+          WEB_PORT: '18880'
+          WEB_MANAGEMENT_PORT: '18881'
+          BUILD_SRC_DIR: ../content
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/unified377/engine"
+          npm run sqlite:migrate
+          cd "$GITHUB_WORKSPACE"
+          python content-factory/smoke_377.py --engine "$RUNNER_TEMP/unified377/engine" --game-port 15402 --web-port 18880 --timeout 100
+          echo 'UNIFIED_377_DISPOSABLE_WORLD_BOOT_PASSED'
