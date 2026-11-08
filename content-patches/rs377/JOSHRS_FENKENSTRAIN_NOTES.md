@@ -15,7 +15,7 @@ overwriting or force-pushing Claude's working branch.
   pins to `$RUNNER_TEMP/joshrs-fenkenstrain-377`, installs no binaries into
   JParrisDesktop, and runs the real `npm ci && npm run build` with native
   `BUILD_VERIFY=true` and `BUILD_VERIFY_PACK=true`.
-- `ci-compile-fenkenstrain.sh` applies three guarded text-only patches on
+- `ci-compile-fenkenstrain.sh` applies five guarded text-only patches on
   **that disposable content copy only**, verifies unique permanent and
   transmitted quest varps, invokes the static symbol checker and map contract.
 - Compiled `script.dat` and `script.idx` must exist, then a disposable
@@ -33,9 +33,11 @@ overwriting or force-pushing Claude's working branch.
   turn-ins, final 25-Thieving pickpocket, and one-time reward guard.
 - `fenk_castle.rs2`: Canifis notice; stage-gated amulets from two verified
   upstairs bookcases; assembling the star amulet; broom and canes; 20-Crafting
-  brush with three canes, three bronze wires, west-fireplace mould; silver
-  conductor; roof repair; unlocked shed/tower doors; map-confirmed castle
-  spiral stairs; mapped head grave/brain assembly; castle clock.
+  brush with three canes, three bronze wires, west-fireplace mould;
+  furnace-driven silver conductor (patch 0004); roof repair; shed/tower
+  doors; map-confirmed castle spiral stairs extended in the existing
+  native stair handlers (patch 0005); mapped head grave/brain assembly;
+  castle clock.
 - `fenk_dungeon.rs2`: star-amulet entry through easternmost memorial
   `0_55_55_56_6` to `0_55_155_56_6`; normal death-triggered cavern-key drop
   from actual wolf-woman NPC `fenk_experiment_1` (1676), gate in
@@ -61,9 +63,10 @@ not commit game caches, proprietary models, client binaries, passwords or saves.
   memorial/gravestones/ladders, the NPC key drop is visible, the 1,000-XP
   and 2-QP completion actually occurs once, or logged-out stage continuity
   works in the live customised world. A successful build/boot is not gameplay.
-- Silver casting currently uses a **temporary direct item-on-mould
-  shortcut**, not authentic furnace casting. Convert it to the existing native
-  furnace interaction before calling the quest historically complete.
+- Silver casting now uses a **normal item-on-furnace interaction** through
+  a guarded addition to the existing native `_smithing_furnace` trigger
+  (patch 0004); the original item-on-mould shortcut has been removed.
+  This compiles, but an in-game casting and client option test remains open.
 - The mapping of head grave, memorial, dungeon keys and the body parts is
   grounded in cache object positions and historical quest flow, not yet
   confirmed by an ordinary player following the entire 2005 quest.
