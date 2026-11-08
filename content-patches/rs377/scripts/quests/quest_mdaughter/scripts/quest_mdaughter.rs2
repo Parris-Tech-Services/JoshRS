@@ -88,10 +88,10 @@ mes("The Kendal falls, dropping a necklace.");
 
 [queue,mdaughter_quest_complete]
 %mdaughter_quest_var = ^mdaughter_complete;
-stat_advance(strength, 50000);
+stat_advance(attack, 10000);
 stat_advance(prayer, 20000);
 session_log(^log_adventure, "Quest complete: Mountain Daughter");
-~send_quest_complete(questlist:mdaughter, mdaughter_necklace, 200, ^mdaughter_questpoints, "You have completed Mountain Daughter!", "5,000 Strength XP|2,000 Prayer XP");
+~send_quest_complete(questlist:mdaughter, mdaughter_necklace, 200, ^mdaughter_questpoints, "You have completed Mountain Daughter!", "1,000 Attack XP|2,000 Prayer XP");
 
 [if_button,questlist:mdaughter]
 def_string $text;

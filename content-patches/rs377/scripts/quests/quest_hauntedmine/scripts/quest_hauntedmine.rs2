@@ -38,11 +38,14 @@ if (%hauntedmine = ^hm_boss) {
 }
 
 [queue,hm_quest_complete]
+if (%hauntedmine ! ^hm_boss) {
+    return;
+}
+// Historical quest reward is 22,000 Strength XP (not Mining/Crafting XP).
 %hauntedmine = ^hm_complete;
-stat_advance(mining, 40000);
-stat_advance(crafting, 20000);
+stat_advance(strength, 220000);
 session_log(^log_adventure, "Quest complete: Haunted Mine");
-~send_quest_complete(questlist:hauntedmine, hauntedmine_reward_key, 200, ^hm_questpoints, "You have completed Haunted Mine!", "4,000 Mining XP|2,000 Crafting XP|Crystal-mine key");
+~send_quest_complete(questlist:hauntedmine, hauntedmine_reward_key, 200, ^hm_questpoints, "You have completed Haunted Mine!", "22,000 Strength XP|Crystal-mine key");
 
 [if_button,questlist:hauntedmine]
 def_string $text;

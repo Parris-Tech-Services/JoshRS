@@ -88,10 +88,13 @@ if (%routequest = ^route_vanstrom) {
 
 [queue,route_quest_complete]
 %routequest = ^route_complete;
-stat_advance(agility, 50000);
-stat_advance(slayer, 20000);
+stat_advance(attack, 6000);
+stat_advance(defence, 6000);
+stat_advance(strength, 6000);
+stat_advance(hitpoints, 6000);
+stat_advance(crafting, 6000);
 session_log(^log_adventure, "Quest complete: In Search of the Myreque");
-~send_quest_complete(questlist:routequest, coins, 200, ^route_questpoints, "You have completed In Search of the Myreque!", "5,000 Agility XP|2,000 Slayer XP");
+~send_quest_complete(questlist:routequest, coins, 200, ^route_questpoints, "You have completed In Search of the Myreque!", "600 Attack XP|600 Defence XP|600 Strength XP|600 Hitpoints XP|600 Crafting XP");
 
 [if_button,questlist:routequest]
 def_string $text;
