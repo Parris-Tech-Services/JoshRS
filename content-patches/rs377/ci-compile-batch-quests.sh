@@ -107,6 +107,8 @@ assert '%barcrawl = 1;' not in guard, 'lost card must not reset permanent visit 
 assert 'if(%barcrawl ! ^barcrawl_complete) {\n        mes("Finish Alfred Grimhand' in gate, 'gate must deny entry'
 assert 'Complete Alfred Grimhand' in thormac and 'if(%barcrawl ! ^barcrawl_complete)' in thormac, 'Scorpion prerequisite'
 assert 'if(inv_total(inv, coins) < 8)' in rusty and 'inv_del(inv, coins, 8);' in rusty, 'Rusty Anchor charge'
+zambo = (scripts / 'areas/area_karamja/scripts/zambo.rs2').read_text()
+assert 'stat_sub(attack, 5, 5);\nstat_sub(defence, 5, 5);' in zambo, 'Ape Bite temporary debuffs'
 print('Barcrawl source contracts verified: gate, card recovery, prerequisite, drink price')
 
 print('Disposable overlay verified: unique permanent varps, renamed placeholders, quest-list registrations')
