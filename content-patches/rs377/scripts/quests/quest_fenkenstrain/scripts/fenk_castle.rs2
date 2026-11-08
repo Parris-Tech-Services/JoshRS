@@ -163,7 +163,7 @@ switch_obj (last_useitem) {
     case default : ~displaymessage(^dm_default);
 }
 
-[label,fenk_extend_brush](obj $old, obj $new)
+[label,fenk_extend_brush](namedobj $old, namedobj $new)
 if (inv_total(inv, $old) < 1 | inv_total(inv, fenk_cane) < 1) {
     mes("You need a brush and a cane.");
     return;
