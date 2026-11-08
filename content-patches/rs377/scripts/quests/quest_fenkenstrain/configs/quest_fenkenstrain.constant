@@ -9,5 +9,9 @@
 ^fenk_met_creature = 5
 ^fenk_complete = 8
 ^fenk_questpoints = 2
+// stat_advance takes XP x10, so this is 1,000 XP. UNVERIFIED for 377.
 ^fenk_thieving_xp = 10000
 ^fenk_threads_needed = 5
+// UNVERIFIED start requirements (modern wiki values); enforced in one place: proc fenk_meets_requirements.
+^fenk_req_crafting = 20
+^fenk_req_thieving = 25
