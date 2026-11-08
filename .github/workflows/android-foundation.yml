@@ -41,6 +41,7 @@ jobs:
         shell: bash
         run: |
           bash -n tools/android377-phone/install-phone-server.sh
+          python3 tools/android377-phone/test_loopback_bind.py
           test "$(grep -c 'pin_repo "\$engine" b5ac859b47915afb545e60e4c1208f25d43cb3fb' tools/android377-phone/install-phone-server.sh)" = 1
           test "$(grep -c 'pin_repo "\$content" 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50' tools/android377-phone/install-phone-server.sh)" = 1
           echo 'PHONE_SERVER_INSTALLER_SOURCE_CHECK_PASSED'
