@@ -43,3 +43,13 @@ A separate, opt-in-by-workflow (not family host) Windows agent trial uses a free
 - **Java canvas:** the game's actual interface may be a single opaque UIA canvas. Add screenshot/coordinate grounding and independent authoritative RS-SDK observations without inventing NPC choices or results.
 - **Full game:** valid pinned 377 cache and a running isolated server; a 107-QP eligible disposable character for Legends; stage-specific assertions; restart-safe reward-once proof.
 - **Privacy and licences:** never upload user saves, real account identities, credentials or Jagex cache/music/dialogue to the public GitHub repo. Do not run the agent on family accounts without separate safe approval.
+
+## Model-agent experiment (separate from the proven Java window test)
+
+- [Run #42479882952](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/42479882952): installed Ollama and `qwen2.5:3b` but full agent did not start because the independent Windows verifier imported `ufo` from the wrong checkout. **FAILED**, corrected by loading the pinned inspector module by full path.
+- [Run #42480425174](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/42480425174): reinstalled full agent dependencies and local Ollama; real UFO2 model subprocess **did launch**, but exited 1 due to Windows CP1252 `UnicodeEncodeError` when printing a status symbol (not due to a successfully observed action). Independent Notepad marker: **FALSE**. **FAILED**. Report artifact captured.
+- [Run #42481499841](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/42481499841): rerun after setting `PYTHONIOENCODING=utf-8` and `PYTHONUTF8=1` for the model subprocess. **STATUS PENDING VERIFICATION** at the 8 Nov research checkpoint, not counted as success. Read its final JSON artifact/exit and independently observed Notepad marker before updating claims.
+
+### What a future complete proof must establish
+
+Even a successful local-model Notepad action would prove only model-directed Windows GUI automation. A full Legends playthrough additionally requires a real running 377 game/cache in the same test environment, normal character login and quest prerequisites, real NPC and location interactions, combat and puzzle actions, 4 QP/rewards and saved state after relog, with authoritative RS-SDK state confirming all effects. No current UFO2 cloud run certifies those conditions.
