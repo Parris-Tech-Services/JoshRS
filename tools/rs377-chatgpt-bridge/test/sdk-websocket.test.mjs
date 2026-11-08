@@ -232,3 +232,53 @@ test('upstream SDK waits for genuine new native ticks instead of granting instan
   assert.ok(observed>=3,'wait must actually observe later ticks');
  }finally{q.ws.close();await gw.close()}
 });
+
+test('upstream SDK reports native drop completion only after real inventory count changes',async()=>{
+ let tick=80,count=3,packets=0;
+ const runtime={
+  async getSdkState(){throw new Error('fixture has no complete native UI')},
+  async observe(){return {
+   tick:tick++,world:{instanceId:'isolated-effect-proof',sourceSha:'a'.repeat(40)},
+   player:{username:BOT},position:{x:3215,z:3215},
+   inventory:[{slot:0,id:1925,count}]
+  }},
+  async action(a){if(a.type!=='dropItem')throw new Error('unexpected action');
+   packets++;count--;return {status:'dispatched_unverified',opcode:4,tick:tick++}}
+ };
+ const gw=createSdk377WebSocket({runtime,token:TOKEN,botName:BOT,actionTimeoutMs:1500});
+ const {port}=await gw.listen(0),q=await socket(port);
+ try{
+  connect(q);await take(q,m=>m.type==='sdk_connected');
+  q.send({type:'sdk_action',username:BOT,actionId:'native-drop',
+   action:{type:'dropItem',slot:0,reason:'normal player drop'}});
+  const res=await take(q,m=>m.type==='sdk_action_result'&&m.actionId==='native-drop',5500);
+  assert.equal(res.result.success,true);
+  assert.equal(res.result.phase,'completion');
+  assert.equal(res.result.data.verifiedEffect,true);
+  assert.equal(res.result.data.evidence,'item_removed_from_backpack');
+  assert.equal(packets,1);
+ }finally{q.ws.close();await gw.close()}
+});
+test('upstream SDK rejects a dispatched drop without observed inventory effect',async()=>{
+ let tick=80,packets=0;
+ const runtime={
+  async getSdkState(){throw new Error('fixture has no complete native UI')},
+  async observe(){return {
+   tick:tick++,world:{instanceId:'isolated-effect-proof',sourceSha:'a'.repeat(40)},
+   player:{username:BOT},position:{x:3215,z:3215},
+   inventory:[{slot:0,id:1925,count:3}]
+  }},
+  async action(a){packets++;return {status:'dispatched_unverified',opcode:4,tick:tick++}}
+ };
+ const gw=createSdk377WebSocket({runtime,token:TOKEN,botName:BOT,actionTimeoutMs:1100});
+ const {port}=await gw.listen(0),q=await socket(port);
+ try{
+  connect(q);await take(q,m=>m.type==='sdk_connected');
+  q.send({type:'sdk_action',username:BOT,actionId:'unobserved-drop',
+   action:{type:'dropItem',slot:0,reason:'check no fake result'}});
+  const res=await take(q,m=>m.type==='sdk_action_result'&&m.actionId==='unobserved-drop',5500);
+  assert.equal(res.result.success,false);
+  assert.equal(res.result.reason,'observation_timeout');
+  assert.equal(packets,1);
+ }finally{q.ws.close();await gw.close()}
+});
