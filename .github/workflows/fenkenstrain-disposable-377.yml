@@ -39,6 +39,17 @@ jobs:
       - name: Overlay Fenkenstrain on disposable content only
         shell: bash
         run: bash content-patches/rs377/ci-compile-fenkenstrain.sh
+      - name: Add isolated real-revision-377 observer to disposable engine only
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/joshrs-fenkenstrain-377/engine"
+          cp tools/rs377-bot-bench/engine-patch/src/web.ts "$root/src/web.ts"
+          python content-factory/patch_377_sdk_trace.py --engine "$root"
+          test -s "$root/src/engine/observer/Native377Trace.ts"
+      - name: Prepare pinned native RS-SDK transport for real client acceptance
+        shell: bash
+        run: npm --prefix tools/rs377-chatgpt-bridge install --omit=dev --ignore-scripts --no-audit --no-fund
       - name: Compile and pack actual 377 RuneScript
         shell: bash
         env:
@@ -62,6 +73,7 @@ jobs:
           WEB_PORT: '18880'
           WEB_MANAGEMENT_PORT: '18881'
           BUILD_SRC_DIR: ../content
+          RS377_LIVE_BOT_PROBE: 'true'
         run: |
           set -euo pipefail
           cd "$RUNNER_TEMP/joshrs-fenkenstrain-377/engine"
