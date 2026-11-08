@@ -9,7 +9,7 @@ test('full rev377 catalogue includes exactly 104 quests and seven miniquests',()
  assert.equal(catalogue.miniquestCount,7);
  assert.equal(catalogue.entries.length,111);
  assert.equal(new Set(catalogue.entries.map(q=>q.id)).size,111);
- assert.equal(catalogue.entries.find(q=>q.id==='legends')?.name,"Legends' Quest");
+ assert.equal(catalogue.entries.find(q=>q.id==='legends')?.name,"Legends Quest");
  assert.equal(catalogue.entries.find(q=>q.id==='swansong')?.releaseDate,'2006-05-02');
  assert.equal(catalogue.entries.find(q=>q.id==='barcrawl')?.kind,'miniquest');
 });
