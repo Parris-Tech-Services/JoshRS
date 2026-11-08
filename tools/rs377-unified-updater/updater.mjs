@@ -77,14 +77,26 @@ function gitApply(root,patch,...args) {
 }
 function parsePatchPaths(text) {
   if(text.includes('GIT binary patch') || text.includes('\0')) fail('Binary patch is not supported');
-  const paths=[];
-  for(const line of text.split(/\r?\n/)) {
-    if(!line.startsWith('diff --git ')) continue;
-    const m=/^diff --git a\/(\S+) b\/(\S+)$/.exec(line);
-    if(!m || m[1]!==m[2]) fail('Renames/binary/quoted patch paths require manual review');
-    paths.push(cleanRel(m[1]));
+  const lines=text.split(/\r?\n/), paths=[];
+  const diffPaths=[];
+  for(let i=0;i<lines.length;i++) {
+    const line=lines[i];
+    if(line.startsWith('diff --git ')) {
+      const m=/^diff --git a\/(\S+) b\/(\S+)$/.exec(line);
+      if(!m || m[1]!==m[2]) fail('Renames/binary/quoted patch paths require manual review');
+      diffPaths.push(cleanRel(m[1]));
+    }
+    if(line.startsWith('--- ')) {
+      if(i+1>=lines.length || !lines[i+1].startsWith('+++ ')) fail('Unpaired unified patch source header');
+      const old=line.slice(4).trim(),updated=lines[i+1].slice(4).trim();
+      const before=old==='/dev/null'?null:old.startsWith('a/')?cleanRel(old.slice(2)):fail('Invalid source path');
+      const after=updated==='/dev/null'?null:updated.startsWith('b/')?cleanRel(updated.slice(2)):fail('Invalid target path');
+      if(!after || (before && before!==after)) fail('Deleting/renaming quest files needs manual review');
+      paths.push(after);
+    }
   }
   if(!paths.length || new Set(paths).size!==paths.length) fail('No valid, unique patch paths');
+  if(diffPaths.some(p=>!paths.includes(p))) fail('Patch diff headers and file sections disagree');
   return paths;
 }
 function fileHash(file) { return digest(fs.readFileSync(file)); }
@@ -310,7 +322,7 @@ async function assertStopped(world) {
   const env=fs.readFileSync(envfile,'utf8');
   const ports=['NODE_PORT','WEB_PORT','WEB_MANAGEMENT_PORT']
     .map(k=>readPort(env,k)).filter(v=>v!==null);
-  if(ports.length<2||ports.some(v=>v<1024||v>65535))fail('Unknown or unsafe game ports in .env');
+  if(ports.length<2||ports.some(v=>v<1||v>65535))fail('Unknown or unsafe game ports in .env');
   for(const port of new Set(ports))if(await isPortOpen(port))fail('Local server listener still active on port '+port);
 }
 function writeAtomic(file,data) {
