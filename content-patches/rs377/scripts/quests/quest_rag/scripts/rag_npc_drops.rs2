@@ -58,7 +58,7 @@ if (%rag_quest = ^rag_started & ~rag_is_required_bone($index) = false) {
 if (%rag_quest = ^rag_complete & ~rag_is_required_bone($index) = true) {
     return;
 }
-def_obj $bone = ~rag_raw_bone($index);
+def_namedobj $bone = ~rag_raw_bone($index);
 if ($bone = null) {
     return;
 }

@@ -8,6 +8,7 @@ class RagKillDropsTests(unittest.TestCase):
     def test_all_thirty_five_indices_not_generic_fake_grants(self):
         rows=[int(x) for x in re.findall(r"(?m)^if \(npc_type = [^\n]+\) \{ return\((\d+)\); \}$",drops)]
         self.assertEqual(list(range(35)),rows)
+        self.assertIn("def_namedobj $bone = ~rag_raw_bone($index);",drops)
         self.assertIn("obj_add(npc_coord, $bone, 1, ^lootdrop_duration)",drops)
         self.assertNotIn("inv_add(inv, $bone",drops)
     def test_no_parallel_npc_queue_override(self):
