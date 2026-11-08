@@ -16,6 +16,17 @@ $activeFile = Join-Path $runtime 'active.json'
 . (Join-Path $PSScriptRoot 'web-port.ps1')
 . (Join-Path $PSScriptRoot 'save-integrity.ps1')
 
+function Get-JoshRSLocalRegistrationMode {
+    param([Parameter(Mandatory)][string]$Engine)
+    $playerPath = Join-Path $Engine 'data\players'
+    $existingSaves = @(Get-ChildItem -LiteralPath $playerPath -Filter '*.sav' -Recurse -File -ErrorAction SilentlyContinue).Count -gt 0
+    $existingDatabase = Test-Path -LiteralPath (Join-Path $Engine 'db.sqlite') -PathType Leaf
+    if ($existingSaves -and -not $existingDatabase) {
+        throw 'This copied world has existing player saves but no db.sqlite account database. Stop: recover and verify a matching private account database; never auto-register an existing saved character.'
+    }
+    if ($existingSaves) { return 'true' }
+    return 'false'
+}
 function Run-Native([string]$exe, [string[]]$arguments, [string]$workingDirectory) {
     Push-Location -LiteralPath $workingDirectory
     try {
@@ -239,13 +250,7 @@ if (-not (Test-Path -LiteralPath $envFile)) {
     # A genuinely new local world should allow first login to create an account.
     # Never auto-register an identity from an imported character save: doing so
     # could bind the old save to a newly created account with a different password.
-    $playerPath = Join-Path $engine 'data\players'
-    $existingSaves = @(Get-ChildItem -LiteralPath $playerPath -Filter '*.sav' -Recurse -File -ErrorAction SilentlyContinue).Count -gt 0
-    $existingDatabase = Test-Path -LiteralPath (Join-Path $engine 'db.sqlite') -PathType Leaf
-    if ($existingSaves -and -not $existingDatabase) {
-        throw 'This copied world has existing player saves but no matching db.sqlite account database. Stop: restore a verified matching private account database; do not create new accounts over old saves.'
-    }
-    $registrationMode = if ($existingSaves) { 'true' } else { 'false' }
+    $registrationMode = Get-JoshRSLocalRegistrationMode -Engine $engine
     $values = @(
         'WEB_PORT=8888','WEB_MANAGEMENT_PORT=8898','NODE_PORT=52402','NODE_ID=10',
         'NODE_MEMBERS=true','DB_BACKEND=sqlite','LOGIN_SERVER=true',
