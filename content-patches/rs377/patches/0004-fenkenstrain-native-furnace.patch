@@ -1,0 +1,11 @@
+--- a/scripts/skill_smithing/scripts/smelting/smelting.rs2
++++ b/scripts/skill_smithing/scripts/smelting/smelting.rs2
+@@ -1,7 +1,8 @@
+ [oplocu,_smithing_furnace]
+ switch_obj (last_useitem)
+ {
++    case fenk_lightning_mould : ~fenk_cast_conductor_furnace;
+     case gold_bar, perfect_gold_bar : @craft_gold_interface;
+     case silver_bar : @craft_silver;
+     case steel_bar : @smelt_cannonballs;
+     case bucket_sand, soda_ash : @smelt_glass;
