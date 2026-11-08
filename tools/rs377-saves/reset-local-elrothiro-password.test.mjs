@@ -30,7 +30,7 @@ function fixture({saveValid=true, includeAccount=true}={}){
   if(includeAccount)db.prepare('INSERT INTO account (id,username,password) VALUES (?,?,?)').run(7,'elrothiro',oldHash);
   db.prepare('INSERT INTO account (id,username,password) VALUES (?,?,?)').run(8,'sylvie',oldHash);
   db.close();
-  return {root,engine,dbPath,savePath,cleanup:()=>fs.rmSync(root,{force:true,recursive:true})};
+  return {root,engine,dbPath,savePath,cleanup:()=>fs.rmSync(root,{force:true,recursive:true,maxRetries:10,retryDelay:200})};
 }
 const hashPassword=(password,work)=>{assert.equal(password,'a');assert.equal(work,10);return newHash};
 const comparePassword=(password,hash)=>password==='a'&&hash===newHash;
