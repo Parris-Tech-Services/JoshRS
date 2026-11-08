@@ -103,6 +103,20 @@ if(inv_total(inv, coins) < 7) {
 if(inv_total(inv, coins) < 8) {
     ~chatplayer("<p,sad>I don't have 8 coins with me.");
 '@
+ },
+ @{File='scripts/areas/area_karamja/scripts/zambo.rs2'
+   Before=@'
+mes("You swirl it around and swallow it.");
+p_delay(2);
+mes("Zambo signs your card.");
+'@
+   After=@'
+mes("You swirl it around and swallow it.");
+p_delay(2);
+stat_sub(attack, 5, 5);
+stat_sub(defence, 5, 5);
+mes("Zambo signs your card.");
+'@
  }
 )
 $lf=[string][char]10
