@@ -1,0 +1,9 @@
+diff --git a/scripts/quests/quest_cook/scripts/quest_cook.rs2 b/scripts/quests/quest_cook/scripts/quest_cook.rs2
+--- a/scripts/quests/quest_cook/scripts/quest_cook.rs2
++++ b/scripts/quests/quest_cook/scripts/quest_cook.rs2
+@@ -99,4 +99,3 @@
+ } else {
+-    //TODO 377 enable Lumbridge range after cooking is ported
+-    //@attempt_cook_item(last_useitem);
++    @attempt_cook_item(last_useitem);
+ }
