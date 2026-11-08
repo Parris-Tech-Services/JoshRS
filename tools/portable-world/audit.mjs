@@ -101,7 +101,8 @@ async function run() {
   const activeFile=path.resolve(opts['active-file']||path.join(root,'runtime','jparris-377','active.json'));
   const output=path.resolve(opts.output||path.join(os.homedir(),'Documents','JoshRS-Exports',new Date().toISOString().replace(/[:.]/g,'-')));
   if(!existsSync(activeFile)) throw new Error('No active.json found. Run this inside your INSTALLED JParrisDesktop launcher; no files changed.');
-  const active=JSON.parse(await readFile(activeFile,'utf8'));
+  // Windows PowerShell 5.1 may write UTF-8 JSON with a BOM (U+FEFF). Strip only that marker.
+  const active=JSON.parse((await readFile(activeFile,'utf8')).replace(/^\uFEFF/,''));
   if(!active.engine || !active.content || !active.client) throw new Error('Incomplete active.json; no files changed.');
   const game={engine:active.engine,content:active.content,client:active.client};
   const baselineRoot=path.join(root,'runtime','jparris-377','upstream');
