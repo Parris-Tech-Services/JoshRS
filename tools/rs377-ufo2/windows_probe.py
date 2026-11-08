@@ -130,9 +130,53 @@ def run():
                             pass
                 except Exception:
                     pass
+            # The screen-input route above may be suppressed in a service
+            # desktop. Also use Notepad's native UIA ValuePattern, the part
+            # of UFO2 specifically meant to avoid fragile coordinate clicks.
+            # Still require an independently read-back exact marker.
+            actions = ["keyboard_send_keys"]
+            for element in child_controls:
+                if seen:
+                    break
+                for operation in ("get_value", "window_text"):
+                    try:
+                        value = getattr(element, operation)()
+                        if isinstance(value, str) and marker in value:
+                            seen = True
+                            break
+                    except Exception:
+                        pass
+                if seen:
+                    break
+                for action in ("set_edit_text", "iface_value"):
+                    try:
+                        if action == "set_edit_text":
+                            element.set_edit_text(marker)
+                            actions.append("uia_set_edit_text")
+                        elif getattr(element, "iface_value", None) is not None:
+                            element.iface_value.SetValue(marker)
+                            actions.append("uia_valuepattern_setvalue")
+                        else:
+                            continue
+                        time.sleep(1)
+                        getter = getattr(element, "get_value", None)
+                        actual = getter() if callable(getter) else ""
+                        if not actual:
+                            try:
+                                actual = element.iface_value.CurrentValue
+                            except Exception:
+                                pass
+                        if isinstance(actual, str) and marker in actual:
+                            seen = True
+                            break
+                    except Exception as ex:
+                        data["native_control_note"] = type(ex).__name__ + ": " + str(ex)[:120]
+                if seen:
+                    break
+            data["input_methods_attempted"] = actions
             data["notepad_ui_action_confirmed"] = seen
             if not seen:
-                data["blockers"].append("Notepad was targeted and text was sent, but UIA did not confirm text inserted.")
+                data["blockers"].append("Notepad UIA Edit detected; typed and ValuePattern inputs were not independently readable.")
             else:
                 data["status"] = "UFO2_UIA_DESKTOP_ACTION_VERIFIED"
         except Exception as ex:
