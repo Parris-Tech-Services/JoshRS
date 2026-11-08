@@ -145,4 +145,7 @@ async function main() {
   console.log('RESULT: ELROTHIRO_STRONG_PASSWORD_SET; existing account ID retained, no character saves edited.');
   console.log('Start the original world, verify in-game login and character progress, then create a fresh cold backup.');
 }
-main().catch(e=>{console.error('RECOVERY BLOCKED: '+String(e.message).replace(/[\r\n]/g,' '));process.exitCode=1;});
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch(e=>{console.error('RECOVERY BLOCKED: '+String(e.message).replace(/[\r\n]/g,' '));process.exitCode=1;});
+}
+
