@@ -2,7 +2,7 @@
 def_string $text;
 
 if(%fenk_quest = ^fenk_not_started) {
-    $text = "@dbl@I can start this quest by reading the @dre@signpost@dbl@ in the middle of|@dre@Canifis@dbl@, then speaking to @dre@Dr Fenkenstrain@dbl@ at his castle|north east of the village.||@dbl@I will need to have completed @dre@The Restless Ghost@dbl@ and|@dre@Priest in Peril@dbl@, and have @dre@20 Crafting@dbl@ and @dre@25 Thieving@dbl@.";
+    $text = "@dbl@I can start this quest by reading the @dre@signpost@dbl@ in the middle of|@dre@Canifis@dbl@, then speaking to @dre@Dr Fenkenstrain@dbl@ at his castle|north east of the village.||@dbl@I must have completed @dre@Priest in Peril@dbl@ to begin.|@dbl@Later tasks need @dre@20 Crafting@dbl@ and @dre@25 Thieving@dbl@.|@dbl@A @dre@ghostspeak amulet@dbl@ will help me speak to the castle gardener.";
 } else if(%fenk_quest = ^fenk_hired) {
     $text = "@str@I read the signpost in Canifis and was hired by Dr Fenkenstrain.||@dbl@Dr Fenkenstrain wants a head with a brain, a torso, arms and legs,|@dbl@plus a needle and five spools of thread to sew them together.||";
     if(%fenk_head = 1) {
