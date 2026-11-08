@@ -1,0 +1,91 @@
+name: UFO2 local-model Windows AI agent proof
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/rs377-ufo2/model_agent_probe.py"
+      - ".github/workflows/ufo2-local-model-agent.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  disposable-local-llm-ufo2:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clone immutable Microsoft UFO2 source
+        uses: actions/checkout@v4
+        with:
+          repository: microsoft/UFO
+          ref: eae3c0a8d168c47cb10df0652e293e092eda1078
+          path: microsoft-ufo
+          persist-credentials: false
+      - name: Configure Windows Python for UFO2
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install full agent's required Python packages except optional heavy RAG embeddings
+        shell: pwsh
+        run: |
+          @'
+          from pathlib import Path
+          req=Path("microsoft-ufo/requirements.txt").read_text()
+          excluded=("faiss-cpu==", "sentence-transformers==", "langchain_huggingface==")
+          choices=[line for line in req.splitlines() if not line.strip().startswith(excluded)]
+          Path("minimal-agent-requirements.txt").write_text("\n".join(choices)+"\n")
+          print("Full-agent requirements prepared without optional disabled RAG models")
+          '@ | python -
+          python -m pip install --disable-pip-version-check --no-input -r minimal-agent-requirements.txt
+          if ($LASTEXITCODE -ne 0) { throw "UFO2 dependency installation failed" }
+      - name: Install isolated Ollama runtime (no API account required)
+        shell: pwsh
+        run: |
+          choco install ollama --version=0.33.3 --yes --no-progress --limit-output
+          if ($LASTEXITCODE -ne 0) { throw "Ollama installation failed" }
+      - name: Start local Ollama service and pull small model
+        shell: pwsh
+        env:
+          OLLAMA_MODELS: ${{ runner.temp }}\ufo2-ollama-models
+        run: |
+          $exe = Join-Path $env:LOCALAPPDATA "Programs\Ollama\ollama.exe"
+          if (-not (Test-Path $exe)) {
+            $resolved = Get-Command ollama -ErrorAction SilentlyContinue
+            if ($resolved) { $exe = $resolved.Source }
+          }
+          if (-not (Test-Path $exe)) { throw "Ollama CLI not installed" }
+          New-Item -ItemType Directory -Path $env:OLLAMA_MODELS -Force | Out-Null
+          try { Invoke-WebRequest 'http://127.0.0.1:11434/api/version' -TimeoutSec 3 | Out-Null }
+          catch { Start-Process -FilePath $exe -ArgumentList "serve" -WindowStyle Hidden | Out-Null }
+          $ready = $false
+          for ($i=0; $i -lt 30; $i++) {
+            try { Invoke-WebRequest 'http://127.0.0.1:11434/api/version' -TimeoutSec 4 | Out-Null; $ready=$true; break }
+            catch { Start-Sleep 2 }
+          }
+          if (-not $ready) { throw "Ollama 127.0.0.1:11434 not reachable" }
+          & $exe pull qwen2.5:3b
+          if ($LASTEXITCODE -ne 0) { throw "Local model download failed" }
+          @"
+          FROM qwen2.5:3b
+          PARAMETER num_ctx 32768
+          PARAMETER num_predict 600
+          "@ | Set-Content -Encoding utf8 "$env:RUNNER_TEMP\Modelfile"
+          & $exe create joshrs-ufo2-3b -f "$env:RUNNER_TEMP\Modelfile"
+          if ($LASTEXITCODE -ne 0) { throw "Ollama model creation failed" }
+          & $exe list
+      - name: Run actual Microsoft UFO2 multi-agent with LOCAL model and independently verify Notepad action
+        shell: pwsh
+        env:
+          OLLAMA_MODELS: ${{ runner.temp }}\ufo2-ollama-models
+        run: |
+          python tools/rs377-ufo2/model_agent_probe.py
+      - name: Retain only redacted AI agent verification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ufo2-local-llm-actual-agent-proof
+          path: ${{ runner.temp }}\ufo2-local-model-proof.json
+          if-no-files-found: warn
+          retention-days: 14
