@@ -16,7 +16,7 @@ const safeEqual=(a,b)=>{
 };
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
-  maxPayload=8192,actionTimeoutMs=5500}={}) {
+  maxPayload=8192,actionTimeoutMs=5500,stateIntervalMs=650}={}) {
   if(!runtime||typeof runtime.action!=='function'||typeof runtime.observe!=='function'||
      typeof runtime.getSdkState!=='function')throw new Error('real_sdk_runtime_required');
   if(typeof botName!=='string'||!/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName))
@@ -27,6 +27,8 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
     throw new Error('invalid_max_payload');
   if(!Number.isInteger(actionTimeoutMs)||actionTimeoutMs<1000||actionTimeoutMs>15000)
     throw new Error('invalid_action_timeout');
+  if(!Number.isInteger(stateIntervalMs)||stateIntervalMs<100||stateIntervalMs>5000)
+    throw new Error('invalid_state_interval');
 
   const server=createServer((req,res)=>{res.writeHead(404,{'cache-control':'no-store'});res.end()});
   const wsServer=new WebSocketServer({server,path:'/gateway',maxPayload,
@@ -40,10 +42,53 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
     if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress??'')){
       ws.close(1008,'loopback_only');return;
     }
-    let authed=false,busy=false,closed=false;
+    let authed=false,busy=false,closed=false,streamTimer=null,streamPending=null;
+    let lastSentTick=-1,reportedIncomplete=false;
     const authDeadline=setTimeout(()=>{if(!authed)ws.close(1008,'auth_timeout')},5000);
-    ws.on('close',()=>{closed=true;clearTimeout(authDeadline);if(controller===ws)controller=null});
-    ws.on('error',()=>{closed=true;clearTimeout(authDeadline)});
+    const stopStream=()=>{
+      if(streamTimer!==null){clearInterval(streamTimer);streamTimer=null;}
+    };
+    ws.on('close',()=>{closed=true;clearTimeout(authDeadline);stopStream();if(controller===ws)controller=null});
+    ws.on('error',()=>{closed=true;clearTimeout(authDeadline);stopStream()});
+    // RS-SDK's BotSDK requires recurring sdk_state events, not just one
+    // snapshot at connection. Every state MUST come from getSdkState() (which
+    // validates the native observer), and must advance the real game tick.
+    const streamState=()=>{
+      if(closed||!authed||controller!==ws||busy||streamPending)return streamPending??Promise.resolve();
+      streamPending=(async()=>{
+        try{
+          const observed=await runtime.getSdkState();
+          if(closed||controller!==ws)return;
+          const state=observed?.state;
+          const required=['player','skills','inventory','equipment','nearbyNpcs',
+            'nearbyPlayers','nearbyLocs','groundItems','gameMessages','recentDialogs',
+            'dialog','interface','shop','bank','modalOpen','modalInterface',
+            'combatEvents','prayers'];
+          if(!state||state.inGame!==true||!Number.isSafeInteger(state.tick)||
+             state.tick<0||observed?.source?.tick!==state.tick||
+             observed?.source?.contract!=='MaxBittker/rs-sdk@db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb'||
+             state.player?.name!==botName||!Array.isArray(state.skills)||
+             state.skills.length!==21||required.some(key=>state[key]===null||state[key]===undefined))
+            throw new Error('sdk_state_requires_grounded_tick_and_complete_contract');
+          if(state.tick<=lastSentTick)return;
+          const response={type:'sdk_state',state,stateReceivedAt:Date.now()};
+          // Bounded output. No unverified or enormous state published to SDK.
+          if(Buffer.byteLength(JSON.stringify(response))>262144)
+            throw new Error('sdk_state_oversized');
+          lastSentTick=state.tick;
+          reportedIncomplete=false;
+          if(!closed&&controller===ws)send(ws,response);
+        }catch{
+          // Never emit a fake SDK state. Warn once until a complete
+          // authoritative state is available, then recover automatically.
+          if(!reportedIncomplete&&!closed&&controller===ws){
+            reportedIncomplete=true;
+            send(ws,{type:'sdk_error',error:'authoritative_sdk_state_incomplete'});
+          }
+        }
+      })().finally(()=>{streamPending=null});
+      return streamPending;
+    };
     ws.on('message',async (wire,isBinary)=>{
       if(closed)return;
       if(isBinary||wire.length>maxPayload){ws.close(1009,'size_limit');return}
@@ -62,13 +107,12 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
         }
         authed=true;controller=ws;clearTimeout(authDeadline);
         send(ws,{type:'sdk_connected',success:true,maxMessageLength:78});
-        // Never send a fake sdk_state; until source fields are complete a real
-        // upstream BotSDK cannot claim a complete BotWorldState.
-        try {
-          const state=await runtime.getSdkState();
-          if(!closed)send(ws,{type:'sdk_state',state:state.state,stateReceivedAt:Date.now()});
-        }catch {
-          send(ws,{type:'sdk_error',error:'authoritative_sdk_state_incomplete'});
+        // Start a recurring, monotonic native-state stream. A missing SDK
+        // field is reported as an error, never invented or defaulted.
+        await streamState();
+        if(!closed&&controller===ws) {
+          streamTimer=setInterval(()=>{void streamState()},stateIntervalMs);
+          streamTimer.unref?.();
         }
         return;
       }
@@ -83,6 +127,9 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
           result:{success:false,message:'One pending action per controller',reason:'busy',phase:'validation'}});return}
         busy=true;
         try {
+          // Never race the native observer reader against a fresh action.
+          if(streamPending)await streamPending;
+          if(closed||controller!==ws)return;
           const action=msg.action;
           // The native observer rejects duplicate samples in the same
           // 600ms tick. Do not re-read it immediately after taking the
@@ -146,10 +193,28 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
     },
     async close(){
       for(const client of wsServer.clients)client.terminate();
-      await new Promise(resolve=>wsServer.close(()=>resolve()));
+      await new Promise((resolve,reject)=>{
+        const timeout=setTimeout(()=>reject(new Error('sdk_ws_server_close_timeout')),3000);
+        wsServer.close(error=>{
+          clearTimeout(timeout);
+          if(error)reject(error);else resolve();
+        });
+      });
       await new Promise((resolve,reject)=>{
         if(!server.listening){resolve();return}
-        server.close(err=>err?reject(err):resolve());
+        // Short-lived upstream SDK HTTP health-check connections must not
+        // keep the bridge's local listener alive after shutdown.
+        server.closeIdleConnections?.();
+        server.closeAllConnections?.();
+        const timeout=setTimeout(()=>reject(new Error('sdk_http_server_close_timeout')),3000);
+        server.close(err=>{
+          clearTimeout(timeout);
+          // Under Bun, wsServer.close() may already close the attached
+          // HTTP server while server.listening is briefly still true.
+          // Closing an already stopped server is successful idempotent cleanup.
+          if(err&&err.code!=='ERR_SERVER_NOT_RUNNING')reject(err);
+          else resolve();
+        });
       });
     }
   });

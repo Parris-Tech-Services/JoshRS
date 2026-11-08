@@ -14,7 +14,7 @@ permissions:
 jobs:
   source-only:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -26,6 +26,25 @@ jobs:
       - name: Run independent offline packet/login/observation tests
         working-directory: tools/rs377-chatgpt-bridge
         run: npm run check
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.0'
+      - name: Checkout the exact upstream RS-SDK for real BotSDK class test
+        uses: actions/checkout@v4
+        with:
+          repository: MaxBittker/rs-sdk
+          ref: db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb
+          path: rs-sdk-pinned
+          persist-credentials: false
+      - name: Install pinned RS-SDK test dependencies without executing scripts
+        working-directory: rs-sdk-pinned
+        run: bun install --ignore-scripts
+      - name: Test actual upstream BotSDK class over authenticated 377-shaped WebSocket
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C rs-sdk-pinned rev-parse HEAD)" = "db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb"
+          timeout --signal=TERM --kill-after=5s 55s bun tools/rs377-chatgpt-bridge/test/upstream-botsdk.acceptance.ts "$GITHUB_WORKSPACE/rs-sdk-pinned"
       - name: Verify exact upstream pinned RS-SDK type contract Git blob
         shell: bash
         run: |
