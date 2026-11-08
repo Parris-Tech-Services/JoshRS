@@ -1,0 +1,13 @@
+--- a/scripts/areas/area_canafis/scripts/werewolfinnkeeper.rs2
++++ b/scripts/areas/area_canafis/scripts/werewolfinnkeeper.rs2
+@@ -1,2 +1,10 @@
+ [opnpc1,werewolfinnkeeper]
++if (%fenk_quest = ^fenk_hired & %fenk_head = 0) {
++    ~chatnpc("<p,neutral>I have a peculiar item in the storeroom. Interested?");
++    def_int $choice = ~p_choice2("Buy a preserved brain (50 coins).", 1, "I'd rather ask about the tavern.", 2);
++    if ($choice = 1) {
++        ~fenk_buy_preserved_brain;
++        return;
++    }
++}
+ ~chatplayer("<p,happy>Hello there!");
