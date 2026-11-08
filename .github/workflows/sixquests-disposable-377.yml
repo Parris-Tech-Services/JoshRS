@@ -4,6 +4,12 @@ on:
     paths:
       - 'content-patches/rs377/**'
       - '.github/workflows/sixquests-disposable-377.yml'
+  push:
+    branches:
+      - 'quests/**'
+    paths:
+      - 'content-patches/rs377/**'
+      - '.github/workflows/sixquests-disposable-377.yml'
   workflow_dispatch:
 permissions:
   contents: read
