@@ -1,0 +1,106 @@
+// Mountain Daughter - JoshRS original dialogue/stages on 377 cache definitions (mdaughter_* NPCs and items).
+// Dialogue, stage flow and rewards are original JoshRS content. Persistence: add scope=perm to cache varp mdaughter_var.
+// NOT IMPLEMENTED: rockslide/ancient rock puzzle, pole vault, White Pearl planting, goats/eagle, bear helmet disguise.
+
+[opnpc1,mdaughter_hamal]
+switch_int (%mdaughter_quest_var) {
+    case ^mdaughter_not_started :
+        ~chatnpc("<p,sad>My daughter Asleif walked into the mountains years ago|and never came back. Her fate gnaws at me.");
+        def_int $o = ~p_choice2("I'll find out what happened.", 1, "I can't help.", 2);
+        if ($o = 1) {
+            ~chatplayer("<p,neutral>I'll find out what happened.");
+            ~chatnpc("<p,neutral>Ask Ragnar in the camp. He was the last to see her.");
+            %mdaughter_quest_var = ^mdaughter_started;
+            ~send_quest_progress(questlist:mdaughter, %mdaughter_quest_var, ^mdaughter_complete);
+        } else {
+            ~chatplayer("<p,neutral>I can't help.");
+        }
+    case ^mdaughter_necklace :
+        if (inv_total(inv, mdaughter_necklace) > 0) {
+            ~chatnpc("<p,sad>Asleif's necklace... so she is gone.");
+            inv_del(inv, mdaughter_necklace, 1);
+            ~chatnpc("<p,neutral>Thank you for the truth, stranger.");
+            queue(mdaughter_quest_complete, 0, 0);
+        } else {
+            ~chatnpc("<p,neutral>Bring me something of hers, anything.");
+        }
+    case ^mdaughter_complete : ~chatnpc("<p,neutral>The camp is in your debt.");
+    case default : ~chatnpc("<p,neutral>Have you learned anything yet?");
+}
+
+[opnpc1,mdaughter_ragnar]
+switch_int (%mdaughter_quest_var) {
+    case ^mdaughter_started :
+        ~chatnpc("<p,neutral>Asleif went up the pass after a stray goat.|Talk to Jokul, he tracked her.");
+        %mdaughter_quest_var = ^mdaughter_ragnar;
+    case default : ~chatnpc("<p,neutral>I wish I had more to tell you.");
+}
+
+[opnpc1,mdaughter_jokul]
+switch_int (%mdaughter_quest_var) {
+    case ^mdaughter_ragnar :
+        ~chatnpc("<p,neutral>I followed her tracks to a cave. A beast lives there,|the Kendal. It killed her and still wears her necklace.");
+        %mdaughter_quest_var = ^mdaughter_jokul;
+    case ^mdaughter_jokul : ~chatnpc("<p,neutral>The Kendal lurks in the cave. Be ready.");
+    case default : ~chatnpc("<p,neutral>The mountains keep their secrets.");
+}
+
+[opnpc1,mdaughter_svidi]
+~chatnpc("<p,neutral>I hope to see Rellekka someday.");
+
+[opnpc1,mdaughter_rockslide_guard]
+~chatnpc("<p,neutral>The path is unsafe.");
+
+[opnpc1,mdaughter_ancientrock_guard]
+~chatnpc("<p,neutral>The Ancient Rock is sacred. Keep your distance.");
+
+[opnpc1,mdaughter_camp_male1]
+~chatnpc("<p,neutral>Hamal has not been the same since Asleif left.");
+
+[opnpc1,mdaughter_camp_male2]
+~chatnpc("<p,neutral>The camp is quiet this season.");
+
+[opnpc1,mdaughter_camp_female1]
+~chatnpc("<p,neutral>Poor Hamal.");
+
+[opnpc1,mdaughter_camp_female2]
+~chatnpc("<p,neutral>The snow comes early here.");
+
+[opnpc1,mdaughter_camp_female3]
+~chatnpc("<p,neutral>Mind the goats, they bite.");
+
+[opnpc1,mdaughter_bearman]
+~chatnpc("<p,angry>Grr!");
+npc_setmode(opplayer2);
+
+[ai_queue3,mdaughter_bearman]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    if (%mdaughter_quest_var = ^mdaughter_jokul) {
+        obj_add(npc_coord, mdaughter_necklace, 1, ^lootdrop_duration);
+        queue(mdaughter_bear_kill, 0, 0);
+    }
+}
+
+[queue,mdaughter_bear_kill]
+%mdaughter_quest_var = ^mdaughter_necklace;
+mes("The Kendal falls, dropping a necklace.");
+
+[queue,mdaughter_quest_complete]
+%mdaughter_quest_var = ^mdaughter_complete;
+stat_advance(strength, 50000);
+stat_advance(prayer, 20000);
+session_log(^log_adventure, "Quest complete: Mountain Daughter");
+~send_quest_complete(questlist:mdaughter, mdaughter_necklace, 200, ^mdaughter_questpoints, "You have completed Mountain Daughter!", "5,000 Strength XP|2,000 Prayer XP");
+
+[if_button,questlist:mdaughter]
+def_string $text;
+switch_int (%mdaughter_quest_var) {
+    case ^mdaughter_not_started : $text = "@dbl@I can start this quest by talking to @dre@Hamal the Chieftain@dbl@ in the mountain camp.";
+    case ^mdaughter_started : $text = "@str@I spoke to Hamal.||@dbl@I should talk to @dre@Ragnar@dbl@ in the camp.";
+    case ^mdaughter_ragnar : $text = "@str@I spoke to Ragnar.||@dbl@I should talk to @dre@Jokul@dbl@.";
+    case ^mdaughter_jokul : $text = "@str@I spoke to Jokul.||@dbl@I must defeat @dre@The Kendal@dbl@ and take Asleif's necklace.";
+    case ^mdaughter_necklace : $text = "@str@I defeated The Kendal.||@dbl@I should show @dre@Hamal@dbl@ the necklace.";
+    case default : $text = "@str@I told Hamal what happened to Asleif.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Mountain Daughter", $text);

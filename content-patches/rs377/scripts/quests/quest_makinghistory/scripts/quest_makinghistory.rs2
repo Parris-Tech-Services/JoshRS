@@ -1,0 +1,269 @@
+// JoshRS original Making History reconstruction. Revision-377 symbols are cache verified.
+// Incomplete historical fidelity: key search is a guarded approximate Castle Wars zone,
+// Dron's interview is shortened and the final museum scenery isn't rebuilt.
+// Every quest branch requires real inventory, quest or location evidence; no free completion.
+[proc,mh_progress]()(int)
+if (testbit(%makinghistory, ^mh_finished_bit) = ^true) {
+    return(2);
+}
+if (testbit(%makinghistory, ^mh_started_bit) = ^true) {
+    return(1);
+}
+return(0);
+
+// The existing silver merchant talk-to invokes this proc AFTER its anti-theft check.
+// Return false when ordinary trading dialogue must continue untouched.
+[proc,mh_erin_interaction]()(boolean)
+if (~mh_progress = 0 | testbit(%makinghistory, ^mh_journal_bit) = ^true) {
+    return(false);
+}
+~chatplayer("<p,quiz>Do you know anything about the old Ardougne outpost?");
+~chatnpc("<p,neutral>My family kept a curious key that came from there. It might reveal what happened.");
+if (inv_total(inv, makinghistory_key) = 0 & inv_total(bank, makinghistory_key) = 0) {
+    if (inv_freespace(inv) < 1) {
+        ~chatnpc("<p,neutral>Make some room, and I'll lend you the key.");
+        return(true);
+    }
+    inv_add(inv, makinghistory_key, 1);
+    ~objbox(makinghistory_key, "Erin lends you an enchanted key.", 250, 0, 0);
+}
+%makinghistory = setbit(%makinghistory, ^mh_key_bit);
+~chatnpc("<p,neutral>Bring a spade and follow its warmth to the bridges north of Castle Wars.");
+return(true);
+
+// The existing King Lathas dialogue invokes this before any existing biohazard branch.
+[proc,mh_king_interaction]()(boolean)
+if (~mh_progress ! 1 | testbit(%makinghistory, ^mh_jorral_letter_bit) = ^false) {
+    return(false);
+}
+if (testbit(%makinghistory, ^mh_king_reply_bit) = ^true) {
+    return(false);
+}
+if (inv_total(inv, makinghistory_letter1) < 1) {
+    return(false);
+}
+if (inv_freespace(inv) < 1) {
+    ~chatnpc("<p,neutral>You have no room to carry my response.");
+    return(true);
+}
+~chatplayer("<p,neutral>Jorral asks you to preserve the outpost. I have gathered its history.");
+~chatnpc("<p,neutral>Perhaps there is more value in an old building than I realised.");
+inv_del(inv, makinghistory_letter1, 1);
+inv_add(inv, makinghistory_letter2, 1);
+%makinghistory = setbit(%makinghistory, ^mh_king_reply_bit);
+~chatnpc("<p,neutral>Take this signed reply back to Jorral.");
+return(true);
+
+[opnpc1,makinghistory_jorral]
+if (~mh_progress = 0) {
+    if (%prieststart < ^priest_complete | %priestperil < ^priestperil_complete) {
+        ~chatnpc("<p,neutral>There is work here for an experienced traveller. Help the lost souls and the people of Morytania first.");
+        return;
+    }
+    ~chatnpc("<p,neutral>They intend to tear down this outpost. Its history deserves to be heard first.");
+    def_int $choice = ~p_choice2("I'll investigate the history.", 1, "Not today.", 2);
+    if ($choice = 1) {
+        %makinghistory = setbit(%makinghistory, ^mh_started_bit);
+        ~chatnpc("<p,neutral>Find Erin the silver trader in Ardougne, Droalak the ghost in Port Phasmatys, and Dron in Rellekka.");
+        ~send_quest_progress(questlist:makinghistory, 1, 2);
+    }
+    return;
+}
+if (~mh_progress = 2) {
+    ~chatnpc("<p,happy>Thank you for helping preserve this place.");
+    return;
+}
+if (testbit(%makinghistory, ^mh_king_reply_bit) = ^true) {
+    if (inv_total(inv, makinghistory_letter2) < 1) {
+        ~chatnpc("<p,neutral>I still need the king's signed reply. Please bring it from your bank.");
+        return;
+    }
+    inv_del(inv, makinghistory_letter2, 1);
+    %makinghistory = setbit(%makinghistory, ^mh_finished_bit);
+    queue(mh_complete, 0, 0);
+    ~chatnpc("<p,happy>Then the outpost can become a place of remembrance!");
+    return;
+}
+if (testbit(%makinghistory, ^mh_jorral_letter_bit) = ^true) {
+    if (inv_total(inv, makinghistory_letter1) = 0 & inv_total(bank, makinghistory_letter1) = 0) {
+        if (inv_freespace(inv) < 1) {
+            ~chatnpc("<p,neutral>Make room and I can replace my letter.");
+            return;
+        }
+        inv_add(inv, makinghistory_letter1, 1);
+    }
+    ~chatnpc("<p,neutral>Please show my letter to King Lathas in Ardougne.");
+    return;
+}
+if (testbit(%makinghistory, ^mh_journal_bit) = ^true &
+    testbit(%makinghistory, ^mh_scroll_bit) = ^true &
+    testbit(%makinghistory, ^mh_dron_bit) = ^true) {
+    if (inv_total(inv, makinghistory_journal) < 1 | inv_total(inv, makinghistory_scroll1) < 1) {
+        ~chatnpc("<p,neutral>Bring the journal and the ghost's scroll from your bank.");
+        return;
+    }
+    inv_del(inv, makinghistory_journal, 1);
+    inv_del(inv, makinghistory_scroll1, 1);
+    inv_add(inv, makinghistory_letter1, 1);
+    %makinghistory = setbit(%makinghistory, ^mh_jorral_letter_bit);
+    ~chatnpc("<p,happy>Three accounts of one place! Take my letter to King Lathas.");
+    return;
+}
+~chatnpc("<p,neutral>I still need all three histories: Erin's journal, Droalak's account, and Dron's story.");
+
+[opnpc1,makinghistory_blanin]
+if (~mh_progress = 0) {
+    ~chatnpc("<p,neutral>My brother Dron has a great many stories.");
+    return;
+}
+~chatnpc("<p,neutral>Dron favours an iron mace and studies the fourth and fifth ages. He is thirty-six years old.");
+%makinghistory = setbit(%makinghistory, ^mh_blanin_bit);
+
+[opnpc1,makinghistory_dron]
+if (~mh_progress = 0) {
+    ~chatnpc("<p,neutral>I have no business with you.");
+    return;
+}
+if (testbit(%makinghistory, ^mh_dron_bit) = ^true) {
+    ~chatnpc("<p,neutral>You already have my account of the old outpost.");
+    return;
+}
+if (testbit(%makinghistory, ^mh_blanin_bit) = ^false) {
+    ~chatnpc("<p,neutral>If you want my stories, ask my brother Blanin about me first.");
+    return;
+}
+~chatnpc("<p,quiz>Then tell me, which weapon do I favour?");
+if (~p_choice2("An iron mace.", 1, "A greatsword.", 2) ! 1) {
+    ~chatnpc("<p,angry>Clearly you have not listened to Blanin!");
+    return;
+}
+~chatnpc("<p,quiz>Which ages do I study?");
+if (~p_choice2("The fourth and fifth.", 1, "The first and second.", 2) ! 1) {
+    ~chatnpc("<p,angry>Ask Blanin again.");
+    return;
+}
+~chatnpc("<p,neutral>The outpost was once a place where rivals saw the cost of war. Tell Jorral that lesson has not been forgotten.");
+%makinghistory = setbit(%makinghistory, ^mh_dron_bit);
+
+[opnpc1,makinghistory_melina_multi]
+@mh_melina_talk;
+[opnpc1,makinghistory_melina]
+@mh_melina_talk;
+[label,mh_melina_talk]
+if (~mh_progress = 0) {
+    ~chatnpc("<p,sad>I am waiting for news of someone I once knew.");
+    return;
+}
+if (testbit(%makinghistory, ^mh_melina_bit) = ^true) {
+    ~chatnpc("<p,happy>Thank you. I can remember him with kindness again.");
+    return;
+}
+if (inv_total(worn, amulet_of_ghostspeak) = 0) {
+    mes("The ghost's words make little sense without a ghostspeak amulet.");
+    return;
+}
+~chatnpc("<p,sad>Droalak and I were parted on bad terms. I wish I had something to remember our happier times.");
+if (inv_total(inv, strung_sapphire_amulet) < 1) {
+    ~chatnpc("<p,neutral>A sapphire amulet would have meant a great deal to me.");
+    return;
+}
+inv_del(inv, strung_sapphire_amulet, 1);
+%makinghistory = setbit(%makinghistory, ^mh_melina_bit);
+~chatnpc("<p,happy>Thank you. Tell Droalak that I forgive him.");
+
+[opnpc1,makinghistory_droalak_multi]
+@mh_droalak_talk;
+[opnpc1,makinghistory_droalak]
+@mh_droalak_talk;
+[label,mh_droalak_talk]
+if (inv_total(worn, amulet_of_ghostspeak) = 0) {
+    mes("The ghost speaks, but you cannot make out the words.");
+    return;
+}
+if (~mh_progress = 0) {
+    ~chatnpc("<p,neutral>I once lived near an old outpost in Ardougne.");
+    return;
+}
+if (testbit(%makinghistory, ^mh_melina_bit) = ^false) {
+    ~chatnpc("<p,sad>Before I share my account, please help me make peace with Melina.");
+    return;
+}
+if (testbit(%makinghistory, ^mh_scroll_bit) = ^true) {
+    ~chatnpc("<p,happy>I gave you my account. May it help preserve that old place.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    ~chatnpc("<p,neutral>Make room for my scroll.");
+    return;
+}
+inv_add(inv, makinghistory_scroll1, 1);
+%makinghistory = setbit(%makinghistory, ^mh_scroll_bit);
+~chatnpc("<p,neutral>Here is what I remember of the outpost. Give this scroll to Jorral.");
+
+// Playable item trail. Exact dig tile still needs a pinned-map investigation.
+// Require real location near the Castle Wars / Observatory bridges AND a spade.
+[opheld1,makinghistory_key]
+if (~mh_progress = 0) {
+    mes("The key feels ordinary.");
+    return;
+}
+if (testbit(%makinghistory, ^mh_journal_bit) = ^true) {
+    mes("The key has already revealed its first secret.");
+    return;
+}
+if (coordx(coord) < 2415 | coordx(coord) > 2470 | coordz(coord) < 3080 | coordz(coord) > 3150) {
+    mes("The key stays cold. It seems to be drawing you towards the bridges north of Castle Wars.");
+    return;
+}
+if (inv_total(inv, spade) < 1 | inv_total(inv, makinghistory_key) < 1) {
+    mes("You will need both your enchanted key and a spade.");
+    return;
+}
+if (inv_total(inv, makinghistory_chest) > 0) {
+    mes("You already have the buried chest.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("Make some room in your pack before digging.");
+    return;
+}
+anim(human_dig, 0);
+p_delay(2);
+inv_add(inv, makinghistory_chest, 1);
+mes("The key grows hot. You dig up an old chest from the ground.");
+
+[opheldu,makinghistory_chest]
+if (last_useitem ! makinghistory_key) {
+    ~displaymessage(^dm_default);
+    return;
+}
+@mh_open_chest;
+[opheldu,makinghistory_key]
+if (last_useitem ! makinghistory_chest) {
+    ~displaymessage(^dm_default);
+    return;
+}
+@mh_open_chest;
+[label,mh_open_chest]
+if (~mh_progress ! 1 | inv_total(inv, makinghistory_chest) < 1 |
+    inv_total(inv, makinghistory_key) < 1 |
+    testbit(%makinghistory, ^mh_journal_bit) = ^true) {
+    ~displaymessage(^dm_default);
+    return;
+}
+inv_del(inv, makinghistory_chest, 1);
+inv_add(inv, makinghistory_journal, 1);
+%makinghistory = setbit(%makinghistory, ^mh_journal_bit);
+mes("The key opens the chest. Inside is an old journal.");
+
+[queue,mh_complete]
+if (testbit(%makinghistory, ^mh_finished_bit) = ^false) {
+    return;
+}
+session_log(^log_adventure, "Quest complete: Making History");
+~send_quest_complete(questlist:makinghistory, makinghistory_key, 250, ^mh_questpoints,
+    "You have completed the\\nMaking History Quest!",
+    "3 Quest points|1,000 Prayer XP|1,000 Crafting XP|750 coins");
+stat_advance(prayer, ^mh_prayer_xp);
+stat_advance(crafting, ^mh_crafting_xp);
+inv_add(inv, coins, 750);
