@@ -1,0 +1,7 @@
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -261,3 +261,3 @@
+-if (%swansong_quest = ^swansong_complete) {
++if (%swansong = ^swansong_complete) {
+     $questpoints = add($questpoints, ^swansong_questpoints);
+ }

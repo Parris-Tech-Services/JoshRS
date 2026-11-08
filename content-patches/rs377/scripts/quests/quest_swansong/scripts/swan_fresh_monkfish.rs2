@@ -2,6 +2,9 @@
 // This produces only the quest-specific fresh fish while Arnold is waiting for food.
 // Regular post-quest monkfish fishing is intentionally NOT enabled here.
 [opnpc1,swan_fishingspot]
+mes("Use your small net to catch fresh monkfish here.");
+
+[opnpc3,swan_fishingspot]
 if (%swansong ! ^swansong_fish) {
     mes("These fishing spots are reserved for the colony's food stores.");
     return;
