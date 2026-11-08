@@ -14,6 +14,12 @@ export async function createJavaClient377Session(clientControl){
  let lastVerifiedAt=Date.now(),lastCycle=initial.clientCycle;
  let closed=false;
  return Object.freeze({
+  async refresh(){
+   if(closed)throw new Error('java_game_session_closed');
+   const observed=await clientControl.status();
+   if(observed.clientCycle<lastCycle)throw new Error('native_java_client_tick_regressed');
+   lastCycle=observed.clientCycle;lastVerifiedAt=Date.now();
+  },
   status:()=>Object.freeze({
     authenticated:!closed&&Date.now()-lastVerifiedAt<5000,
     transport:'real_java_377_isolated_client',
