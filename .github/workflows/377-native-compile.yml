@@ -18,6 +18,7 @@ on:
       - "deploy/jparris-windows/yrsa377/**"
       - "JoshRS-Fix-Yrsa.cmd"
       - ".github/workflows/377-native-compile.yml"
+      - "tools/rs377-barcrawl-qa/**"
       - "tools/rs377-bot-bench/engine-patch/src/web.ts"
       - "tools/rs377-bot-bench/engine-patch/src/engine/observer/Native377Trace.ts"
       - "content-factory/patch_377_sdk_trace.py"
@@ -34,6 +35,7 @@ on:
       - "content-factory/intake/**"
       - "content-factory/tests/**"
       - ".github/workflows/377-native-compile.yml"
+      - "tools/rs377-barcrawl-qa/**"
       - "tools/rs377-bot-bench/engine-patch/src/web.ts"
       - "tools/rs377-bot-bench/engine-patch/src/engine/observer/Native377Trace.ts"
       - "content-factory/patch_377_sdk_trace.py"
@@ -99,6 +101,10 @@ jobs:
               if actual!=item["commit"]: raise SystemExit("Upstream pin mismatch")
               print(key, actual)
           PY
+      - name: Audit all ten Alfred Grimhand Barcrawl signatures in pinned native Content
+        shell: bash
+        run: |
+          python tools/rs377-barcrawl-qa/audit.py --content "$RUNNER_TEMP/joshrs-377-build/content"
       - name: Audit pinned Legends Quest source on disposable cloud runner
         shell: bash
         run: |
