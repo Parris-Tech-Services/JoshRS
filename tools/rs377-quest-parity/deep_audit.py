@@ -28,7 +28,7 @@ from audit import OVERLAYS, QUEUE
 PIN = "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50"
 TRIGGER = re.compile(
     r"^\s*\[\s*((?:op|ap)(?:npc|loc|obj|held)[1-5]|(?:op|ap)(?:npc|loc|obj|held)u|"
-    r"ai_queue3|if_button|queue|proc|label)\s*,\s*([A-Za-z0-9_]+)\s*\]",
+    r"ai_queue3|if_button|queue|proc|label)\s*,\s*([A-Za-z0-9_:]+)\s*\]",
     re.M | re.I,
 )
 # For an item-on-entity trigger the syntax and id are first-class evidence.
@@ -251,7 +251,7 @@ def analyze_quest(q: dict, script_index: dict[str, list[dict]],
         open_checks.append("START_NPC_DIRECT_OR_MORPH_TALKTO_HANDLER_NOT_FOUND")
     if start and not start_placements:
         open_checks.append("START_NPC_NO_STATIC_MAP_SPAWN_SEEN")
-    if not any(e["op"]=="if_button" and e["symbol"]==key for e in events):
+    if not any(e["op"]=="if_button" and e["symbol"]==f"questlist:{key}" for e in events):
         open_checks.append("QUEST_JOURNAL_HANDLER_NOT_IN_OWNED_RS2")
     if "~send_quest_complete(" not in combined:
         open_checks.append("QUEST_COMPLETION_EVENT_NOT_IN_OWNED_RS2")
