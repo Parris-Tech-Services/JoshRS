@@ -38,6 +38,24 @@ function Get-GitBlobSha([string]$Path) {
     try { return [BitConverter]::ToString($sha.ComputeHash($blob)).Replace('-','').ToLowerInvariant() }
     finally { $sha.Dispose() }
 }
+function Get-NormalizedGitBlobSha([string]$Path) {
+    # GitHub/Git for Windows may check out LF text as CRLF without changing
+    # content. Check that ONLY newline normalization explains the mismatch.
+    $bytes = [IO.File]::ReadAllBytes($Path)
+    $strictUtf8 = New-Object Text.UTF8Encoding($false,$true)
+    try { $text = $strictUtf8.GetString($bytes) }
+    catch { return $null }
+    $normalized = $text.Replace([string][char]13+[string][char]10,[string][char]10)
+    if ($normalized -ceq $text) { return $null }
+    $canonical = $strictUtf8.GetBytes($normalized)
+    $header = [Text.Encoding]::ASCII.GetBytes(('blob ' + $canonical.Length + [char]0))
+    $blob = New-Object byte[] ($header.Length + $canonical.Length)
+    [Array]::Copy($header, 0, $blob, 0, $header.Length)
+    [Array]::Copy($canonical, 0, $blob, $header.Length, $canonical.Length)
+    $sha = [Security.Cryptography.SHA1]::Create()
+    try { return [BitConverter]::ToString($sha.ComputeHash($blob)).Replace('-','').ToLowerInvariant() }
+    finally { $sha.Dispose() }
+}
 $pending = @()
 foreach ($entry in $manifest) {
     $rel = $entry.path.Replace('/', [IO.Path]::DirectorySeparatorChar)
@@ -45,10 +63,15 @@ foreach ($entry in $manifest) {
     if (Test-Path -LiteralPath $target) {
         $got = Get-GitBlobSha $target
         if ($got -cne $entry.sha) {
-            throw ('LOCAL_CUSTOMISATION_PRESENT: refusing to overwrite ' + $entry.path +
-                '. No files changed. Compare this file manually before trying again.')
+            $lineEndingOnly = Get-NormalizedGitBlobSha $target
+            if ($lineEndingOnly -cne $entry.sha) {
+                throw ('LOCAL_CUSTOMISATION_PRESENT: refusing to overwrite ' + $entry.path +
+                    '. No files changed. Compare this file manually before trying again.')
+            }
+            Write-Host ('PRESENT (verified CRLF checkout): ' + $entry.path)
+        } else {
+            Write-Host ('PRESENT (verified): ' + $entry.path)
         }
-        Write-Host ('PRESENT (verified): ' + $entry.path)
     } else {
         $pending += [pscustomobject]@{entry=$entry;target=$target}
     }
