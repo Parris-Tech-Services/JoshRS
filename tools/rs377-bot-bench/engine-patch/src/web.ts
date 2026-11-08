@@ -595,8 +595,9 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         lifeId: trace.lifeId, respawnCount: trace.respawnCount,
         lastDeathTick: trace.lastDeathTick
     } : null;
-    const recentDialogs = trace && !trace.sawDialogPage &&
-        bot.modalChat === -1 ? [] : null;
+    const recentDialogs = trace && Array.isArray(trace.recentDialogs) &&
+        (bot.modalChat===-1 || trace.sawDialogPage) ?
+        trace.recentDialogs : null;
     const gameMessages = trace && nearbyPlayers.length === 0 ?
         trace.gameMessages : null;
     const combatEvents = trace?.combatEvents ?? null;
