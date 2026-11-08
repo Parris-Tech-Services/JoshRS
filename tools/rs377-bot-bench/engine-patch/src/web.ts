@@ -366,6 +366,33 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         prayerLevel: bot.baseLevels[PlayerStat.PRAYER]
     } : null;
 
+    const trace = readSdkTrace(bot, World.currentTick);
+    const displayText = (id: number) =>
+        trace?.textOverrides.find(entry => entry.component === id)?.text ??
+        Component.get(id)?.text ?? null;
+    // Native modal components come from the actually packed client/interface
+    // data. Do not publish a button with a dynamic client-only condition.
+    const buttonsForRoot = (rootId: number) => {
+        if (rootId < 0) return null;
+        const root = Component.get(rootId);
+        if (!root || !root.childId) return null;
+        const options: Array<{index:number;text:string;componentId:number}> = [];
+        for (const id of root.childId) {
+            const component = Component.get(id);
+            if (!component) return null;
+            const potentiallyInteractive = component.buttonType > Component.NO_BUTTON &&
+                component.buttonType <= Component.PAUSE_BUTTON;
+            if (!potentiallyInteractive) continue;
+            if (component.scriptComparator?.length || component.scripts?.length || component.hide)
+                return null;
+            const label = component.option ?? displayText(id);
+            if (typeof label !== 'string' || !label.trim()) return null;
+            options.push({index: options.length + 1,text:label,componentId:id});
+            if (options.length >= 64) break;
+        }
+        return options;
+    };
+
     // The native server owns the modal identity and per-player bank items.
     // Bank/shop are never read from another player's inventories. When an
     // interface is open but pricing/text is not known, return NULL: never
@@ -383,10 +410,66 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         { isOpen: true, items: projectNamedItems(bankInventory)
             .map(({ slot, id, name, count }) => ({ slot, id, name, count })),
             noteMode: bot.vars[certVar] !== 0 } : null;
-    const shop = !shopOpen ? { isOpen: false, title: '',
-        shopItems: [], playerItems: [] } : null;
-    const interfaceState = mainModal === -1 ?
-        { isOpen: false, interfaceId: -1, options: [] } : null;
+    // The live shop has a real shared Inventory and varps from pinned Content
+    // ~openshop: shop, shop_buy, shop_sell, shop_haggle. Pricing mirrors
+    // ~adjusted_item_cost_buying/selling and ~calc_shop_value, not guessed
+    // prices; unknown title, stock, multipliers or names => null.
+    const shopVar = VarPlayerType.getId('shop');
+    const shopBuyVar = VarPlayerType.getId('shop_buy');
+    const shopSellVar = VarPlayerType.getId('shop_sell');
+    const shopHaggleVar = VarPlayerType.getId('shop_haggle');
+    const shopId = shopVar >= 0 ? bot.vars[shopVar] : -1;
+    const sharedShop = shopId >= 0 ? Array.from(World.invs)
+        .find(inv => inv.type === shopId) : undefined;
+    const titleId = Component.getId('shop_template:com_76');
+    const shopTitle = titleId >= 0 ?
+        trace?.textOverrides.find(entry => entry.component === titleId)?.text : null;
+    const haveShop = shopId >= 0 && shopBuyVar >= 0 && shopSellVar >= 0 &&
+        shopHaggleVar >= 0 && sharedShop && namesKnown(sharedShop) &&
+        namesKnown(inventory) && typeof shopTitle === 'string';
+    const shopPrice = (id: number, current: number, multiplier: number) => {
+        const type = ObjType.get(id);
+        const config = InvType.get(shopId);
+        if (!type || !config || !Number.isSafeInteger(type.cost)) return null;
+        const baseIndex = config.stockobj?.indexOf(id) ?? -1;
+        const baseCount = baseIndex >= 0 ?
+            config.stockcount?.[baseIndex] ?? 0 : 0;
+        const diff = baseIndex >= 0 ? current - baseCount : current;
+        const haggled = Math.min(1000,Math.max(-5000,diff * bot.vars[shopHaggleVar]));
+        const factor = Math.max(100,multiplier - haggled);
+        return Math.trunc((factor * type.cost) / 1000);
+    };
+    const stock = haveShop ? projectNamedItems(sharedShop).map(item => {
+        const total = sharedShop!.items.reduce((count, entry) =>
+            count + (entry?.id === item.id ? entry.count : 0),0);
+        const buyPrice = shopPrice(item.id,total,bot.vars[shopSellVar]);
+        const sellPrice = shopPrice(item.id,total,bot.vars[shopBuyVar]);
+        return buyPrice === null || sellPrice === null ? null : {
+            slot:item.slot,id:item.id,name:item.name,count:item.count,
+            baseCost:ObjType.get(item.id).cost,
+            buyPrice:Math.max(1,buyPrice),sellPrice
+        };
+    }) : null;
+    const mySaleItems = haveShop ? projectNamedItems(inventory).map(item => {
+        const current = sharedShop!.items.reduce((count,entry) =>
+            count + (entry?.id === item.id ? entry.count : 0),0);
+        const buyPrice = shopPrice(item.id,current,bot.vars[shopSellVar]);
+        const sellPrice = shopPrice(item.id,current,bot.vars[shopBuyVar]);
+        return buyPrice === null || sellPrice === null ? null : {
+            slot:item.slot,id:item.id,name:item.name,count:item.count,
+            baseCost:ObjType.get(item.id).cost,
+            buyPrice:Math.max(1,buyPrice),sellPrice
+        };
+    }) : null;
+    const shop = !shopOpen ? { isOpen:false,title:'',shopItems:[],playerItems:[] } :
+        haveShop && stock?.every(item => item !== null) &&
+        mySaleItems?.every(item => item !== null) ? {
+            isOpen:true,title:shopTitle!,shopItems:stock,playerItems:mySaleItems
+        } : null;
+    const interfaceOptions = mainModal >= 0 ? buttonsForRoot(mainModal) : [];
+    const interfaceState = interfaceOptions === null ? null : {
+        isOpen:mainModal !== -1, interfaceId: mainModal, options:interfaceOptions
+    };
 
     // Native PlayerState values we DO know, kept separate from still-unknown
     // client-observed death lifecycle and combat target events. We deliberately
@@ -456,17 +539,30 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         }
     }
 
-    // Dialogue is genuinely observable at the SERVER script layer, but
-    // display text and option labels are client-side UI data. Do NOT invent
-    // those labels; expose only actual pending component IDs and wait state.
+    // The authoritative PAUSEBUTTON script really contains these component
+    // IDs (populated by IF_ADDRESUMEBUTTON). Text comes from the packed client
+    // Component definition or exact server IfSetText updates. Unknown labels
+    // remain unavailable, rather than fabricated dialogue choices.
     const waitingForButton = bot.activeScript?.execution === ScriptState.PAUSEBUTTON;
     const waitingForCount = bot.activeScript?.execution === ScriptState.COUNTDIALOG;
+    const pending = waitingForButton ? [...bot.resumeButtons] : [];
+    const knownOptions = pending.map((id,index) => {
+        const component = Component.get(id);
+        const label = component?.option ?? displayText(id);
+        return component && typeof label === 'string' && label.trim() ?
+            {index:index + 1, text:label, componentId:id} : null;
+    });
+    const optionTextAvailable = knownOptions.every(option => option !== null);
+    const dialogueText = bot.modalChat >= 0 ? displayText(bot.modalChat) : null;
     const dialogue = {
         isOpen: bot.modalChat !== -1 || waitingForButton || waitingForCount,
         isWaiting: waitingForButton || waitingForCount,
-        options: [],
-        pendingComponentIds: waitingForButton ? [...bot.resumeButtons] : [],
-        optionTextAvailable: false
+        options: optionTextAvailable ? knownOptions : [],
+        pendingComponentIds: pending,
+        optionTextAvailable,
+        pageId: trace && waitingForButton && optionTextAvailable ?
+            `${bot.modalChat}:${trace.dialogPageRevision}:${pending.join(',')}` : undefined,
+        text: dialogueText ?? undefined
     };
 
     // Strictly expose only the selected bot's live fields. Quest stages
@@ -476,7 +572,6 @@ management.get('/dev/rs377-observe', async (req, reply) => {
     // evidence from the passive native Player/World observer hooks.
     // Incomplete combat provenance, unknown attack mode or unseen dialogue
     // history remain NULL, never invented.
-    const trace = readSdkTrace(bot, World.currentTick);
     const lastCombatId = VarPlayerType.getId('lastcombat');
     const lastCombatValue = lastCombatId >= 0 ? bot.vars[lastCombatId] : null;
     const inCombat = lastCombatValue === null ? null :
