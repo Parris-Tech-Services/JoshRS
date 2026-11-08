@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import {spawn} from 'node:child_process';
 import { DatabaseSync } from 'node:sqlite';
 import { crc32 } from './inspect-save.mjs';
-import { recover } from './reset-local-elrothiro-password.mjs';
+import { recover, checkServerOffline } from './reset-local-elrothiro-password.mjs';
 
 const oldHash='$2b$10$'+'0'.repeat(53);
 const newHash='$2b$10$'+'1'.repeat(53);
@@ -93,4 +94,23 @@ test('rechecks server process after backup and blocks if it appears',async()=>{
  assert.equal(count,2);
  assert.ok(before.equals(fs.readFileSync(x.dbPath)));
  }finally{x.cleanup()}
+});
+
+test('Windows guard detects a live Node app.ts process even with no sockets', {skip:process.platform!=='win32'}, async()=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'joshrs-guard-'));
+  const script=path.join(root,'src','app.ts');
+  fs.mkdirSync(path.dirname(script),{recursive:true});
+  fs.writeFileSync(script,'setInterval(()=>{},30000);');
+  const child=spawn(process.execPath,[script],{stdio:'ignore',windowsHide:true});
+  try {
+    await new Promise((resolve,reject)=>{
+      child.once('error',reject);
+      setTimeout(resolve,1500);
+    });
+    assert.equal(child.exitCode,null,'fixture engine must be running');
+    assert.throws(()=>checkServerOffline(),/engine process or service port still present/);
+  } finally {
+    if(child.exitCode===null)child.kill();
+    fs.rmSync(root,{force:true,recursive:true,maxRetries:5,retryDelay:100});
+  }
 });
