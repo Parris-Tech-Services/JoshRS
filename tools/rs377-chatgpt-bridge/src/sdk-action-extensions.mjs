@@ -20,8 +20,8 @@ function exact(a,fields){
  const others=Object.keys(a).filter(k=>!['type','reason',...fields].includes(k));
  if(others.length)fail('unexpected action fields: '+others.join(','));
 }
-function requiredItem(items,slot,name){
- if(!integer(slot,27)||!Array.isArray(items))
+function requiredItem(items,slot,name,maxSlot=27){
+ if(!integer(slot,maxSlot)||!Array.isArray(items))
   fail(name+' inventory not observed');
  const item=items.find(i=>i.slot===slot);
  if(!item||!integer(item.id))fail(name+' slot/item not observed');
@@ -63,7 +63,7 @@ function shopItem(s,side,slot){
  const shop=s.sdkDetails?.shop;
  if(shop?.isOpen!==true)fail('real shop UI not open');
  const items=side==='buy'?shop.shopItems:shop.playerItems;
- return requiredItem(items,slot,side==='buy'?'shop-stock':'shop-player');
+ return requiredItem(items,slot,side==='buy'?'shop-stock':'shop-player',side==='buy'?65535:27);
 }
 function bankItem(s,side,slot){
  const bank=s.sdkDetails?.bank;
@@ -108,7 +108,7 @@ export function mapExtendedSdkAction(a,s){
   }
   case 'clickComponentWithOption':{
    exact(a,['componentId','optionIndex','slot']);
-   if(!validOp(a.optionIndex)||!integer(a.slot,27))
+   if(!validOp(a.optionIndex)||!integer(a.slot,65535))
     fail('visible item component, slot and 1..5 option required');
    const com=a.componentId;
    let item;
@@ -118,6 +118,7 @@ export function mapExtendedSdkAction(a,s){
    else if(com===5382){item=bankItem(s,'withdraw',a.slot)}
    else if(com===2006){item=bankItem(s,'deposit',a.slot)}
    else fail('component inventory is not source-mapped to a visible native UI');
+   if(com===3214&&a.slot>27)fail('player inventory slot must be 0..27');
    return packet({type:com===3214?'held':'inventory',
       componentId:com,slot:a.slot,itemId:item.id,option:a.optionIndex});
   }
