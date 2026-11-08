@@ -128,6 +128,9 @@ try{
   actualUpstreamBotSDK:true,actualUpstreamBotActions:true,
   ordinaryPacketEffectVerified:true,realNativeScanVerified:true,
   realNativeWaitVerified:true,finalPosition,saveRelogVerifiedByParent:false,
+  questCatalogCount:campaign.records.length,questCount:104,miniquestCount:7,
+  observedQuestVarpCount:nativeQuestVarpCount,questCampaignStatuses:campaignStatuses,
+  fullQuestPlaythroughsVerified:0,
   tenPubPlaythroughVerified:false,familyWorldTouched:false
  }));
 }finally{
