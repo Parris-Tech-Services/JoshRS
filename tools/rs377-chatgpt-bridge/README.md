@@ -10,6 +10,45 @@ This package lives in **a separate source path from Agy's draft PR #62** and use
 - **#24:** `createObserver(readRaw,{botName,expectedWorld})` is a narrow, immutable, single-account observation validation facade that requires a **trusted source callback supplied by a future engine/client adapter**. It enforces 377, isolated, world fingerprint, normal tick/XP, 21 skills in tenths XP, correct bot ID and explicit `null` for unsupported data. It does **not** implement the missing real-game observation hook.
 - **#25:** `mapSdkAction()` uses pinned **upstream** RS-SDK `BotAction` variants (1-based optionIndex), guarded visible NPC/loc/item, known inventory ID and strictly normal packets. Unknown dialogue/privileged/unsupported actions are rejected. `toBotWorldState()` refuses to publish a complete SDK state unless **every required upstream `BotWorldState` field** is provided by a real native observer; converts 377 XP tenths to SDK XP. This is *not* a running upstream gateway/SDK integration. 
 
+## 8 November 2026: upstream SDK state stream groundwork
+
+A genuine local RS-SDK controller expects recurring `sdk_state` messages
+as real RuneScape ticks advance, not just one snapshot on login. The
+revision-377 WebSocket gateway now polls its **authoritative** runtime at
+bounded intervals, publishes **only distinct, increasing native ticks**
+with the full pinned BotWorldState contract, pauses native polling while
+an action is being observed, and ends its timer when the controller closes.
+
+If a field is absent or the runtime is not authenticated, it **never**
+creates synthetic bank/dialogue/shop/player-state values. It reports
+`sdk_error: authoritative_sdk_state_incomplete` once and can recover
+if a complete real state later becomes available. The gateway stays
+bound to loopback, uses a strong token and a single controller lease.
+
+**Important: this stream is a transport prerequisite, not proof of full
+RS-SDK bots on JParrisDesktop.** The current native rev377 observer has
+`nearbyLocs: null`, `groundItems: null`, `sdkDetails: null` and
+unknown client-side dialogue details; those required parts must be
+derived from actual 377 game events/client UI (not guessed) before any
+real upstream `BotSDK` sees full `sdk_state`. The already proven
+isolated harness demonstrates real native login/observer/walk/relog,
+not family-world AI agents. No running server or private data is
+modified by the stream change in GitHub.
+
+The path to full Windows integration is:
+1. Implement complete observed rev377 BotWorldState (game client state,
+   dialogue labels, bank/shop, objects, drops, combat/player metadata);
+   preserve unknown fields rather than advertising false data.
+2. Run an **actual pinned upstream BotSDK class** against the local
+   authenticated WebSocket gateway with a separate disposable bot account,
+   and prove continuous state plus completed normal actions.
+3. Add per-bot Windows launcher/supervisor, private account credentials,
+   single-controller leases, durable restart handling, save/relog checks
+   and a safe create/start/stop UI.
+4. Only after isolated acceptance, opt in to the JParrisDesktop family
+   world, never modifying Elrothiro or Sylvie accounts or replacing the
+   customised Fred/George/Luna game engine.
+
 ## What is NOT done yet
 
 Agy's draft harness, actual 377 server-side observer, 377 inbound game packet decoder, native client world-state parser, live account authentication, multi-client visibility, Friends presence, genuine dialogue, real gathering/XP, save/relog and WebSocket RS-SDK gateway are all **unimplemented / unverified here**. This module must not be described as a playable bot or connected to Elrothiro without explicit permission and proper isolated acceptance.
