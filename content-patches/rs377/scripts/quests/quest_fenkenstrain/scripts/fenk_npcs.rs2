@@ -278,6 +278,18 @@ if (inv_total(worn, amulet_of_ghostspeak) = 0) {
 ~chatplayer("<p,quiz>Do you know anything about the doctor?");
 ~chatnpc("<p,neutral>He is not a gentleman. He has been busy in the graveyard beyond the castle, and not with flowers.");
 %fenk_spoken_to_gardener = 1;
+if (%fenk_quest >= ^fenk_sewn & %fenk_quest < ^fenk_complete & %fenk_unlocked_shed = 0) {
+    if (inv_total(inv, fenk_shed_key) = 0 & inv_total(bank, fenk_shed_key) = 0) {
+        ~chatplayer("<p,quiz>Where can I get a brush for cleaning the fireplace?");
+        ~chatnpc("<p,neutral>There is a brush and a pile of canes in the shed. I kept its key.");
+        if (inv_freespace(inv) < 1) {
+            ~chatnpc("<p,neutral>You must make room in your pack for the key.");
+            return;
+        }
+        inv_add(inv, fenk_shed_key, 1);
+        ~objbox(fenk_shed_key, "The gardener gives you the shed key.", 250, 0, 0);
+    }
+}
 // TODO(unverified): the cache has a fenk_gardener_directions varbit (flags bit 31) that morphs the gardener
 // between fenk_gardener_multi and fenk_gardener_multi_2. What toggles it, and what directions he gives,
 // has not been reconstructed.
