@@ -12,7 +12,9 @@ const DEFAULT_ROOT = path.resolve(path.dirname(scriptPath), '../..');
 
 function activeEngine(repoRoot) {
   const statePath = path.join(repoRoot, 'runtime', 'jparris-377', 'active.json');
-  const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+  // Windows PowerShell 5.1 writes UTF-8 JSON with a BOM by default.
+  // Strip only the optional leading marker; never rewrite active.json.
+  const state = JSON.parse(fs.readFileSync(statePath, 'utf8').replace(/^\uFEFF/, ''));
   if (typeof state.engine !== 'string' || !path.isAbsolute(state.engine)) {
     throw new Error('Invalid active.json engine path');
   }
