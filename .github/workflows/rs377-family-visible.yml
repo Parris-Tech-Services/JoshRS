@@ -1,0 +1,29 @@
+name: JoshRS rev377 same-world bot preflight
+on:
+  push:
+    branches: [main, "feat/rs377-family-visible-clean-20261109"]
+    paths:
+      - "tools/rs377-family-visible/**"
+      - ".github/workflows/rs377-family-visible.yml"
+  pull_request:
+    paths:
+      - "tools/rs377-family-visible/**"
+      - ".github/workflows/rs377-family-visible.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  private-client-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Verify syntax, private targets, authentic RSA, CRC and no default login
+        run: |
+          node --check tools/rs377-family-visible/join.mjs
+          node --test tools/rs377-family-visible/join.test.mjs
+      - name: Safe no-login help
+        run: node tools/rs377-family-visible/join.mjs --help
