@@ -57,3 +57,26 @@ test('fails safely when installed runtime is missing',async()=>{
     assert.match(run.stderr,/No active.json found/);
   } finally {await rm(tmp,{recursive:true,force:true});}
 });
+
+test('accepts PowerShell 5.1 UTF-8 BOM active.json without modifying it',async()=>{
+  const tmp=await mkdtemp(join(tmpdir(),'joshrs-active-bom-'));
+  try {
+    const root=join(tmp,'launcher'),live=join(tmp,'live'),out=join(tmp,'out');
+    const activeFile=join(root,'runtime','jparris-377','active.json');
+    const original='\uFEFF'+JSON.stringify({
+      engine:join(live,'engine'),content:join(live,'content'),client:join(live,'client')
+    });
+    await write(activeFile,original);
+    await write(join(live,'engine','src','engine.ts'),'// test content');
+    await write(join(live,'content','scripts','quest.rs2'),'// test content');
+    await write(join(live,'client','src','Main.java'),'// test client');
+    const run=spawnSync(process.execPath,[script,'--root',root,'--output',out],{encoding:'utf8'});
+    assert.equal(run.status,0,run.stderr);
+    const result=JSON.parse(await readFile(join(out,'inventory.json'),'utf8'));
+    for(const type of ['engine','content','client']) {
+      assert.equal(result.worlds[type].present,true);
+      assert.equal(result.worlds[type].fileCount,1);
+    }
+    assert.equal(await readFile(activeFile,'utf8'),original,'must not rewrite BOM configuration');
+  } finally {await rm(tmp,{recursive:true,force:true});}
+});
