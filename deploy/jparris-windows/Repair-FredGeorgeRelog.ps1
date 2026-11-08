@@ -43,7 +43,6 @@ function Assert-Offline {
         Get-CimInstance Win32_Process -ErrorAction Stop |
         Where-Object {
             $_.Name -match '^(node|bun)(\.exe)?$' -and $_.CommandLine -and
-            $_.CommandLine.IndexOf($engine, [StringComparison]::OrdinalIgnoreCase) -ge 0 -and
             $_.CommandLine -match 'src[/\\]app\.ts'
         }
     )
@@ -66,6 +65,7 @@ if ($backupEvidence -notmatch 'VERIFIED OFFLINE BACKUP CREATED') {
     throw 'Verified full-world backup was not confirmed; no source was changed.'
 }
 Assert-Offline
+$prePatchHash = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash
 $current = [IO.File]::ReadAllText($target)
 if ($current -cne $src) { throw 'Bot source changed during backup; no source patched.' }
 $directory = Join-Path $runtime ('save-backups\fred-george-source-repair-' + [guid]::NewGuid().ToString('N'))
@@ -80,10 +80,7 @@ try {
     [IO.File]::Replace($tmp, $target, $sourceBackup)
     if (([IO.File]::ReadAllText($target)) -cne $patched) { throw 'Source verification failed after atomic replacement.' }
     $originalHash = (Get-FileHash -LiteralPath $sourceBackup -Algorithm SHA256).Hash
-    if ($originalHash -ne [Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes($src)).ForEach({$_.ToString('x2')}) -join '') {
-        # The installed original might have contained an initial UTF-8 BOM. Validate against bytes instead below.
-        Write-Host 'Original source saved; validate exact bytes against pre-patch copy if restoration needed.'
-    }
+    if ($originalHash -ne $prePatchHash) { throw 'Original source backup bytes differ from the pre-patch file.' }
     Write-Host 'SOURCE_REPAIR_APPLIED: only the Fred/George logout account-key comparison was corrected.'
     Write-Host ('Original source backup: ' + $sourceBackup)
     Write-Host 'Restart JoshRS normally only after you are ready to log players out. Real bot gameplay remains unverified.'
