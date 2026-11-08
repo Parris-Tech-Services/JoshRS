@@ -1,7 +1,7 @@
 # JoshRS quest acceptance audit 003/077 — Romeo & Juliet
 
 Date: 9 November 2026 (Australia/Sydney). Target: Windows/native revision 377, pinned LostCityRS/Content `44eab09081ef0f6c5f3eaabd1897a588ad7d9e50`.  
-**Verdict: SOURCE AUDIT AND PROPOSED REPAIR; FULL END-TO-END 377 GAMEPLAY NOT VERIFIED.**
+**Verdict: SOURCE REPAIRED AND MERGED TO MAIN; NATIVE 377 COMPILE/BOOT AND WINDOWS BUILD PASSED; FULL REAL-PLAYER PLAYTHROUGH AND PERIOD CINEMATICS NOT VERIFIED.**
 
 Source audit here means actual pinned quest scripts, NPC/item IDs, raw map placements, and a compiled disposable build when CI evidence is attached. It is **not** a player-client completion, cutscene test, save persistence test or proof the user's installed Windows world contains this patch.
 
@@ -29,7 +29,7 @@ This corrects the older [Varrock October stage ledger](../harvest/VARROCK_QUEST_
 
 ### Actual source issues and patch
 
-Proposed [patch 0033](../../../content-patches/rs377/patches/0033-romeo-juliet-quest-item-and-reward-guards.patch) changes only three existing RuneScript files.
+Merged [patch 0033](../../../content-patches/rs377/patches/0033-romeo-juliet-quest-item-and-reward-guards.patch) changes only three existing RuneScript files.
 
 1. **Romeo missing-letter skip:** A player with quest stage 20 could talk to Romeo with no `julietmessage` in their carried inventory and reach stage 30, even if they had lost or banked the letter. The handler now distinguishes banked and missing items and refuses to advance until the letter is carried.
 2. **Juliet full-inventory loss:** Initial letter hand-in set stage 20 even if no inventory slot was available; the reissue branch could also claim to give an item while full. Both paths now require a free slot first.
@@ -44,7 +44,10 @@ Contemporaneous 2004 guides, including [Sal's Realm (17 August 2004)](https://ru
 ### Native checks and live acceptance gate
 
 - [Pinned-source acceptance checker](../../../content-patches/rs377/tools/check_romeo_juliet.py) verifies six stage transitions, four core NPC scripts/placements, three item IDs, three ground-spawn locations, item loss/reissue safeguards, one-berry conversion, 5 QP reward and persistence configuration.
-- [Disposable 377 batch compilation](https://github.com/Parris-Tech-Services/JoshRS/actions/workflows/batch-quests-disposable-377.yml) must pass with 0033 before merging.
+- **PASS:** [disposable native 377 CI run](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/42526152212) applied 33 patches, ran the quest source/map/stairs checker, compiled RuneScript, built the pack and booted reachable game/web ports. No genuine player logged in.
+- **PASS:** [Windows 377 CI run](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/42526152226) completed PowerShell safety/syntax checks and the separate Windows engine/Java-client build.
+- **PASS:** [cross-platform source/fixture gates](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/42526152187), including a repaired negative test that *still* rejects invented NPC evidence after the real Father/Apothecary handlers were traced.
+- [PR #193 merged into main](https://github.com/Parris-Tech-Services/JoshRS/pull/193); [issue #195](https://github.com/Parris-Tech-Services/JoshRS/issues/195) retains the genuine period-cinematic and live-playthrough blockers until independently verified.
 - The guarded Windows files `JoshRS-Fix-RomeoJuliet.cmd` and `deploy/jparris-windows/Install-RomeoJuliet377.ps1` are read-only by default, protect family saves, require a stopped game server, and provide verified source+pack backups with rollback if native compile fails.
 - Never interpret source/compile/boot as evidence of UI dialogue, actual NPC click, berry pickup, potion, cutscene, reward or relog success.
 
