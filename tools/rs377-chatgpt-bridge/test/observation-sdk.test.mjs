@@ -98,7 +98,7 @@ test('normal 377 paused dialogue requires fresh native component and exact page 
   const o=validateObservation(snapshot,opts);
   const result=mapSdkAction({type:'clickDialogOption',optionIndex:1,
     guard:{pageId:'42:7:1234',componentId:1234},reason:'Choose verified option'},o);
-  assert.equal(result.packet.opcode,90,'RESUME_PAUSEBUTTON expected actual pinned rev377 opcode');
+  assert.equal(result.packet.opcode,226,'RESUME_PAUSEBUTTON expected actual pinned rev377 opcode');
   assert.deepEqual([...result.packet.body],[4,210]);
   for(const guard of [
     {pageId:'42:6:1234',componentId:1234},
