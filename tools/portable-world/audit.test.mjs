@@ -80,3 +80,35 @@ test('accepts PowerShell 5.1 UTF-8 BOM active.json without modifying it',async()
     assert.equal(await readFile(activeFile,'utf8'),original,'must not rewrite BOM configuration');
   } finally {await rm(tmp,{recursive:true,force:true});}
 });
+
+test('accepts repeated UTF-8 BOM markers and leading whitespace safely',async()=>{
+  const tmp=await mkdtemp(join(tmpdir(),'joshrs-repeat-bom-'));
+  try {
+    const root=join(tmp,'launcher'),live=join(tmp,'world'),out=join(tmp,'output');
+    const activeFile=join(root,'runtime','jparris-377','active.json');
+    const original='\uFEFF \uFEFF\r\n\uFEFF'+JSON.stringify({
+      engine:join(live,'engine'),content:join(live,'content'),client:join(live,'client')
+    });
+    await write(activeFile,original);
+    await write(join(live,'engine','src','app.ts'),'code');
+    await write(join(live,'content','scripts','quest.rs2'),'content');
+    await write(join(live,'client','src','Main.java'),'client');
+    const run=spawnSync(process.execPath,[script,'--root',root,'--output',out],{encoding:'utf8'});
+    assert.equal(run.status,0,run.stderr);
+    assert.match(run.stdout,/BOM-safe revision 3/);
+    const report=JSON.parse(await readFile(join(out,'inventory.json'),'utf8'));
+    for(const type of ['engine','content','client']) assert.equal(report.worlds[type].fileCount,1);
+    assert.equal(await readFile(activeFile,'utf8'),original);
+  } finally {await rm(tmp,{recursive:true,force:true});}
+});
+test('invalid active.json fails without echoing private JSON content',async()=>{
+  const tmp=await mkdtemp(join(tmpdir(),'joshrs-private-invalid-'));
+  try {
+    const root=join(tmp,'launcher'),out=join(tmp,'out'),filename=join(root,'runtime','jparris-377','active.json');
+    await write(filename,'\uFEFF{"privatePath":"SECRET-PATH-DO-NOT-PRINT",broken');
+    const run=spawnSync(process.execPath,[script,'--root',root,'--output',out],{encoding:'utf8'});
+    assert.notEqual(run.status,0);
+    assert.match(run.stderr,/Cannot parse active.json/);
+    assert.equal(run.stderr.includes('SECRET-PATH-DO-NOT-PRINT'),false);
+  } finally {await rm(tmp,{recursive:true,force:true});}
+});
