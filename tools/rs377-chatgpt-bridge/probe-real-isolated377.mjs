@@ -358,7 +358,7 @@ try {
    }
  }
  if(!relogged)reject('disposable saved player could not relog by normal 377 TCP');
- let reloggedPosition=null;
+ let reloggedPosition=null,fenkQuestClickVerified=false;
  try {
    for(let attempt=0;attempt<12;attempt++){
      await delay(670);
@@ -374,6 +374,56 @@ try {
       reloggedPosition.z!==savedPosition.z||
       reloggedPosition.plane!==savedPosition.plane)
      reject('normal relog did not restore observed walking position');
+
+   // Opt-in, isolated Canifis gameplay check. The only CI fixture is a new
+   // starting location/tutorial flag; this RuneScript quest interaction itself
+   // must come through an authenticated normal ISAAC 377 location-click packet.
+   if(process.env.RS377_FENK_SIGNPOST_PROBE==='true'){
+     if(Math.max(Math.abs(reloggedPosition.x-3493),Math.abs(reloggedPosition.z-3485))>9)
+       reject('fenk disposable player did not start near actual Canifis signpost');
+     const questReader=createEngine377Observer({
+       port:managementPort,token,botName:username,expectedWorld
+     });
+     const current=await questReader.observe();
+     const sign=current.nearbyLocs.find(loc=>loc.id===5164&&loc.x===3493&&loc.z===3485);
+     if(!sign)reject('real Canifis signpost missing from normal client-visible native location list');
+     const option=sign.optionsWithIndex?.find(o=>/read/i.test(o.text)&&
+       Number.isInteger(o.opIndex)&&o.opIndex>=1&&o.opIndex<=5);
+     if(!option)reject('Canifis signpost lacks an actual normal readable client option');
+     if(current.dialogue.isOpen)reject('quest click baseline already has an open dialog');
+     const questRuntime=createSdk377Runtime({
+       session:relogged,observer:createEngine377Observer({
+         port:managementPort,token,botName:username,expectedWorld
+       }),botName:username,expectedWorld
+     });
+     await delay(725);
+     const result=await questRuntime.action({
+       type:'interactLoc',x:3493,z:3485,locId:5164,optionIndex:option.opIndex,
+       reason:'Real isolated Fenkenstrain quest signpost acceptance'
+     });
+     if(!['queued_unverified','dispatched_unverified'].includes(result.status)||
+         result.verifiedEffect!==false)reject('quest signpost packet not normally dispatched');
+     for(let attempt=0;attempt<14;attempt++){
+       await delay(700);
+       let after;
+       try{after=await questReader.observe()}
+       catch(error){
+         if(/replayed_native_observation/.test(error.message))continue;
+         throw error;
+       }
+       const textDelivered=[
+         ...(after.sdkDetails?.gameMessages??[]).map(m=>m.text),
+         ...(after.sdkDetails?.recentDialogs??[]).flatMap(d=>d.text??[])
+       ].join(' ').toLowerCase();
+       if(textDelivered.includes('fenkenstrain seeks an assistant')||
+          textDelivered.includes('decide to visit the doctor')||
+          (after.dialogue?.isOpen===true && after.dialogue?.isWaiting===true)){
+         fenkQuestClickVerified=true;break;
+       }
+     }
+     if(!fenkQuestClickVerified)
+       reject('normal 377 signpost click did not produce observed quest message/dialogue');
+   }
  }finally{relogged.close()}
  console.log(JSON.stringify({
    verified:'isolated_real_377_engine_observation',
@@ -394,6 +444,7 @@ try {
    genuineSdkGatewayAction:true,walkObserved:true,
    genuineSdkWebSocketAction:websocketVerified,
    dispatchAttemptCount,saveRelogVerified:true,
+   fenkQuestClickVerified,
    familyWorldTouched:false,
    task26RealBoundaryVerified:true,task26SecurityChecks:task26.checks,
    task26PacketDispatched:task26.packetDispatched,
