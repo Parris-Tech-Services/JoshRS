@@ -21,6 +21,7 @@ import {
     computeStartingSignature,
     formatBotWhereabouts,
     handleBotPrivateMessage,
+    getFredGeorgeBotStates,
     spawnFredAndGeorgeBots,
     tickFredAndGeorgeBots
 } from '#/engine/bot/FredGeorgeBot.js';
@@ -66,6 +67,16 @@ test('2. Fresh Fred & George accounts reach mainland with identical starting_sig
     const george = World.getPlayerByUsername('George');
     assert.ok(fred, 'Fred should be active in World');
     assert.ok(george, 'George should be active in World');
+    // Regression: a verified .sav and queued login alone must never count as
+    // successful re-entry. Both bots need an active world slot after relog.
+    const state = getFredGeorgeBotStates();
+    for (const [name, player] of [['Fred', fred], ['George', george]] as const) {
+        assert.equal(state[name].relogVerified, true, name + ' must verify the actual world admission');
+        assert.equal(state[name].relogTick, -1, name + ' must leave pending admission state');
+        assert.equal(state[name].player, player, name + ' must bind to its actual admitted Player');
+        assert.equal(player.isActive, true, name + ' must be active');
+        assert.ok(player.slot >= 0, name + ' must have a world slot');
+    }
 
     const fredSig = computeStartingSignature(fred);
     const georgeSig = computeStartingSignature(george);
