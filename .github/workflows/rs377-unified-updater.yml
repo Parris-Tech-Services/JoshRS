@@ -28,6 +28,21 @@ jobs:
             echo 'ERROR: updater accepted missing world' >&2; exit 1
           fi
 
+  fedora-44-unit:
+    runs-on: ubuntu-latest
+    container: fedora:44
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Fedora Node.js and Git prerequisites
+        run: dnf install -y nodejs npm git bash
+      - name: Run updater tests on Fedora 44 userspace
+        run: |
+          node --version
+          node --test tools/rs377-unified-updater/updater.test.mjs
+          bash -n tools/rs377-unified-updater/update-fedora.sh
+          echo 'FEDORA_44_UPDATER_SOURCE_TESTS_PASSED'
+
   windows-unit:
     runs-on: windows-latest
     timeout-minutes: 12
