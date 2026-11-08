@@ -412,6 +412,14 @@ try {
      });
      if(!['queued_unverified','dispatched_unverified'].includes(result.status)||
          result.verifiedEffect!==false)reject('quest signpost packet not normally dispatched');
+     let lastSignEvidence={
+       afterTickAdvanced:false,afterPositionChanged:false,
+       dialogueOpened:false,dialogueWaiting:false,
+       deliveredMessages:0,receivedDialogs:0,
+       newMessageAfterClick:false,newDialogAfterClick:false
+     };
+     const messagesBefore=current.sdkDetails?.gameMessages?.length??0;
+     const dialogsBefore=current.sdkDetails?.recentDialogs?.length??0;
      for(let attempt=0;attempt<14;attempt++){
        await delay(700);
        let after;
@@ -424,6 +432,17 @@ try {
          ...(after.sdkDetails?.gameMessages??[]).map(m=>m.text),
          ...(after.sdkDetails?.recentDialogs??[]).flatMap(d=>d.text??[])
        ].join(' ').toLowerCase();
+       lastSignEvidence={
+         afterTickAdvanced:after.tick>current.tick,
+         afterPositionChanged:after.position.x!==current.position.x||
+           after.position.z!==current.position.z,
+         dialogueOpened:after.dialogue?.isOpen===true,
+         dialogueWaiting:after.dialogue?.isWaiting===true,
+         deliveredMessages:after.sdkDetails?.gameMessages?.length??0,
+         receivedDialogs:after.sdkDetails?.recentDialogs?.length??0,
+         newMessageAfterClick:(after.sdkDetails?.gameMessages?.length??0)>messagesBefore,
+         newDialogAfterClick:(after.sdkDetails?.recentDialogs?.length??0)>dialogsBefore
+       };
        if(textDelivered.includes('fenkenstrain seeks an assistant')||
           textDelivered.includes('decide to visit the doctor')||
           (after.dialogue?.isOpen===true && after.dialogue?.isWaiting===true)){
@@ -431,7 +450,8 @@ try {
        }
      }
      if(!fenkQuestClickVerified)
-       reject('normal 377 signpost click did not produce observed quest message/dialogue');
+       reject('normal 377 signpost click did not produce observed quest message/dialogue: '+
+         Object.entries(lastSignEvidence).map(([k,v])=>k+'='+v).join(','));
    }
  }finally{relogged.close()}
  console.log(JSON.stringify({
