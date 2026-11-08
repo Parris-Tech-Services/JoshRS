@@ -34,9 +34,19 @@ def report(payload):
     return payload["status"] == "UFO2_LOCAL_LLM_GUI_ACTION_VERIFIED"
 
 def get_windows(marker):
+    # The independent verifier runs in JoshRS' checkout, not the UFO repo.
+    # Load Microsoft's pinned inspector by absolute path to avoid ambient
+    # package import/working-directory assumptions.
+    import importlib.util
     from pywinauto import Desktop
-    from ufo.automator.ui_control.inspector import ControlInspectorFacade
-    return ControlInspectorFacade("uia"),Desktop(backend="uia")
+    pinned = Path(os.environ["GITHUB_WORKSPACE"]) / "microsoft-ufo"
+    module_path = pinned / "ufo" / "automator" / "ui_control" / "inspector.py"
+    spec = importlib.util.spec_from_file_location("ms_ufo2_real_ollama_verifier", module_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Pinned UFO2 native inspector cannot be loaded")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.ControlInspectorFacade("uia"), Desktop(backend="uia")
 
 def get_marker_presence(inspector):
     found_window=False
