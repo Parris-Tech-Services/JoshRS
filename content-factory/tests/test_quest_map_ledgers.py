@@ -27,8 +27,23 @@ class QuestAndMapLedgerTests(unittest.TestCase):
         self.assertTrue(any('cannot declare completed tests' in x for x in m.validate_quest(self.quest)))
 
     def test_quest_unknown_actor_must_not_be_invented(self):
-        self.quest['transitions'][3]['actor']='Unknown Guess'
+        # Re-create an *unverified* source edge in an isolated fixture.
+        # The real Father Lawrence and Apothecary handlers have now been
+        # traced; replacing their names alone would not test this invariant.
+        edge = self.quest['transitions'][3]
+        edge['trace'] = 'unverified'
+        edge['source_location'] = None
+        edge['actor'] = 'Unknown Guess'
         self.assertTrue(any('invent' in x for x in m.validate_quest(self.quest)))
+
+    def test_reconciled_father_apothecary_are_source_only(self):
+        father, apothecary = self.quest['transitions'][3:5]
+        self.assertEqual(('Father Lawrence', 'source_traced', 'father_lawrence.rs2:54-62'),
+                         (father['actor'], father['trace'], father['source_location']))
+        self.assertEqual(('Apothecary', 'source_traced', 'apothecary.rs2:72-82'),
+                         (apothecary['actor'], apothecary['trace'], apothecary['source_location']))
+        self.assertTrue(all(t['test_result'] == 'not_run' for t in (father, apothecary)))
+        self.assertFalse(self.quest['completion_verified'])
 
     def test_quest_duplicate_stage_or_transition_fails(self):
         self.quest['stages'].append(copy.deepcopy(self.quest['stages'][0]))
