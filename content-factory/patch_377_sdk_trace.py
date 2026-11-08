@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Guarded CI-only injection of bot-scoped native observation trace.
+"""Guarded injection of passive bot trace into EXACT pinned disposable game.
 
-Never apply to the JParrisDesktop/USB family engine. Fails closed outside a
-disposable GITHUB_ACTIONS runner with an exact pinned LostCity Engine-TS HEAD.
-No credentials, accounts, private saves or production ports are accessed.
+Accept CI temp build or explicitly marked new Fedora throwaway checkout only.
+NEVER apply to a family engine, old private save, or ordinary game install.
 """
 from __future__ import annotations
 
@@ -23,11 +22,44 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
     return text.replace(old, new)
 
 
-def run(engine: Path) -> None:
-    root = Path(os.environ.get("RUNNER_TEMP", "")).resolve()
-    if (os.environ.get("GITHUB_ACTIONS") != "true" or
-            not root.is_dir() or engine != root / "joshrs-377-build" / "engine"):
-        raise RuntimeError("only immutable disposable GitHub runner engine is permitted")
+def is_allowed_disposable_engine(engine: Path, fedora_root: Path | None = None) -> bool:
+    """Evaluate exact allowed checkout, no database or account permissions."""
+    ci_temp = os.environ.get("RUNNER_TEMP")
+    if fedora_root is None:
+        return bool(
+            os.environ.get("GITHUB_ACTIONS") == "true" and ci_temp and
+            engine == Path(ci_temp).resolve() / "joshrs-377-build" / "engine"
+        )
+    # This second mode is intentionally Linux/Fedora-only. No patching a live
+    # ~/.cache or ~/dev engine by simply passing a matching --engine argument.
+    import sys
+    if not sys.platform.startswith("linux") or os.geteuid() == 0:
+        return False
+    os_release = Path("/etc/os-release")
+    if not os_release.is_file() or not any(
+        line.strip() == "ID=fedora" for line in os_release.read_text().splitlines()
+    ):
+        return False
+    home = Path.home().resolve()
+    canonical_parent = home / ".cache" / "joshrs-disposable-quests"
+    if (fedora_root.is_symlink() or engine.is_symlink() or
+            fedora_root != canonical_parent / fedora_root.name or
+            not fedora_root.name.startswith("377-run-") or
+            engine != fedora_root / "engine" or not fedora_root.is_dir()):
+        return False
+    if not (fedora_root / ".joshrs-disposable-only").is_file():
+        return False
+    stats = fedora_root.stat()
+    if stats.st_uid != os.geteuid() or stats.st_mode & 0o077:
+        return False
+    return True
+
+
+def run(engine: Path, fedora_root: Path | None = None) -> None:
+    if not is_allowed_disposable_engine(engine, fedora_root):
+        raise RuntimeError(
+            "only exact pinned CI or explicitly marked throwaway Fedora engine is permitted"
+        )
     head = subprocess.check_output(
         ["git", "-C", str(engine), "rev-parse", "HEAD"], text=True
     ).strip()
@@ -61,7 +93,7 @@ def run(engine: Path) -> None:
     after_world = IMPORT + after_world
     if not source.is_file() or "export function readSdkTrace" not in source.read_text():
         raise RuntimeError("tracked native observation module missing")
-    # All checks passed; only writes in the CI temp engine. Atomic per file.
+    # All checks passed; only writes in the explicitly scoped temp engine.
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(source.read_bytes())
     player.write_text(after_player)
@@ -72,5 +104,7 @@ def run(engine: Path) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--engine", type=Path, required=True)
+    parser.add_argument("--fedora-disposable-root", type=Path)
     args = parser.parse_args()
-    run(args.engine.resolve())
+    run(args.engine.resolve(),
+        args.fedora_disposable_root.resolve() if args.fedora_disposable_root else None)
