@@ -47,10 +47,12 @@ test('offline reset preserves account id, other players, sav bytes and full veri
     assert.ok(r.accountIdUnchanged&&r.accountCountUnchanged&&r.saveSha256Unchanged);
     assert.ok(fs.readFileSync(x.savePath).equals(sourceSav));
     const db=new DatabaseSync(x.dbPath,{readOnly:true});
-    assert.deepEqual(db.prepare('SELECT id,username,password FROM account ORDER BY id').all(),[
+    let accounts;
+    try { accounts=db.prepare('SELECT id,username,password FROM account ORDER BY id').all().map(row=>({...row})); }
+    finally { db.close(); }
+    assert.deepEqual(accounts,[
       {id:7,username:'elrothiro',password:newHash},{id:8,username:'sylvie',password:oldHash}
     ]);
-    db.close();
     assert.ok(fs.readFileSync(path.join(r.backupPath,'db.sqlite')).equals(sourceDb));
     assert.ok(fs.readFileSync(path.join(r.backupPath,'players','main','elrothiro.sav')).equals(sourceSav));
     const manifest=JSON.parse(fs.readFileSync(path.join(r.backupPath,'integrity.json'),'utf8'));
