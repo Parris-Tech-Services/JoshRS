@@ -19,11 +19,17 @@ function parseStatus(response){
  return Object.freeze({tab:Number(m[1]),designOpen:m[2]==='1',
   gender:Number(m[3]),appearanceHash:Number(m[4]),clientCycle:Number(m[5])});
 }
-async function exchange({port,token},action,arg){
- if(!['status','setTab','randomizeCharacterDesign','acceptCharacterDesign'].includes(action)||
-    !Number.isSafeInteger(arg)||arg<0||arg>13)
+async function exchange({port,token},action,arg,body=null){
+ if(!['status','setTab','randomizeCharacterDesign','acceptCharacterDesign','nativePacket'].includes(action)||
+    !Number.isSafeInteger(arg)||arg<0||arg>(action==='nativePacket'?255:13))
   throw new Error('isolated_client_control_invalid_action');
- const line=token+'\t'+action+'\t'+arg+'\n';
+ if(body!==null&&action!=='nativePacket')
+  throw new Error('unexpected_native_payload');
+ if(action==='nativePacket'&&(!Buffer.isBuffer(body)||body.length>100||
+    (body.length<1&&arg!==110)))
+  throw new Error('normal_game_packet_body_required');
+ const line=token+'\t'+action+'\t'+arg+
+   (body===null?'':'\t'+body.toString('base64'))+'\n';
  if(Buffer.byteLength(line)>300)throw new Error('client_control_request_too_large');
  return new Promise((resolve,reject)=>{
   const socket=net.createConnection({host:'127.0.0.1',port});
@@ -59,6 +65,63 @@ export function createNativeClient377Control({port,token,botName,worldId}={}){
  return Object.freeze({
   async status(){
    return parseStatus(await exchange(config,'status',0));
+  },
+  async sendPacket(packet){
+   if(active)throw new Error('concurrent_native_java_client_action_denied');
+   if(!packet||!Number.isSafeInteger(packet.opcode)||
+      !Buffer.isBuffer(packet.body))
+    throw new Error('verified_377_packet_required');
+   active=true;
+   try{
+    const ack=await exchange(config,'nativePacket',packet.opcode,packet.body);
+    if(!new RegExp('^OK\\|native_packet_queued_unverified\\|'+packet.opcode+'\\|[0-9]+
+   if(active)throw new Error('concurrent_native_java_client_action_denied');
+   active=true;
+   try{
+    if(!action||typeof action!=='object'||
+       !['setTab','randomizeCharacterDesign','acceptCharacterDesign'].includes(action.type))
+      throw new Error('unsupported_local_java_client_action');
+    const before=parseStatus(await exchange(config,'status',0));
+    if(action.type==='setTab'){
+     if(!Number.isInteger(action.tabIndex)||action.tabIndex<0||action.tabIndex>13)
+      throw new Error('unavailable_native_client_tab');
+     const ack=await exchange(config,'setTab',action.tabIndex);
+     if(!new RegExp('^OK\\|tab\\|'+action.tabIndex+'\\|[0-9]+$').test(ack))
+      throw new Error('unverified_native_tab_ack');
+     const after=parseStatus(await exchange(config,'status',0));
+     if(after.tab!==action.tabIndex||after.clientCycle<=before.clientCycle)
+      throw new Error('native_client_tab_change_not_observed');
+     return Object.freeze({status:'client_effect_observed',effect:'tab',
+       verifiedEffect:true,tabIndex:after.tab,clientCycle:after.clientCycle});
+    }
+    if(!before.designOpen)throw new Error('native_player_kit_interface_not_open');
+    if(action.type==='randomizeCharacterDesign'){
+     const ack=await exchange(config,'randomizeCharacterDesign',0);
+     if(!/^OK\|randomized\|[0-9]+\|OK\|status\|/.test(ack))
+      throw new Error('native_randomize_not_acknowledged');
+     const after=parseStatus(await exchange(config,'status',0));
+     if(!after.designOpen||after.clientCycle<=before.clientCycle||
+        (after.appearanceHash===before.appearanceHash&&after.gender===before.gender))
+       throw new Error('native_character_design_not_changed');
+     return Object.freeze({status:'client_effect_observed',effect:'randomize',
+       verifiedEffect:true,clientCycle:after.clientCycle});
+    }
+    const ack=await exchange(config,'acceptCharacterDesign',0);
+    if(!/^OK\|design_packet_queued_unverified\|[0-9]+$/.test(ack))
+     throw new Error('native_design_packet_not_acknowledged');
+    // Java client reporting packet queued is not proof it was processed by
+    // the rev377 game. SDK gateway must observe server-side appearance delta.
+    return Object.freeze({status:'client_packet_dispatched_unverified',
+      verifiedEffect:false,effect:'accept_design',clientCycle:before.clientCycle});
+   }finally{active=false}
+  }
+ });
+}
+).test(ack))
+     throw new Error('native_java_game_packet_not_queued');
+    return Object.freeze({status:'queued_unverified',opcode:packet.opcode,
+      verifiedEffect:false,transport:'real_java_client_377'});
+   }finally{active=false}
   },
   async perform(action){
    if(active)throw new Error('concurrent_native_java_client_action_denied');
