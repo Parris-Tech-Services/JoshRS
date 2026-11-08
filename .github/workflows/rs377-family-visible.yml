@@ -1,7 +1,7 @@
 name: JoshRS rev377 same-world bot preflight
 on:
   push:
-    branches: [main, "feat/rs377-family-visible-clean-20261109"]
+    branches: [main, "fix/rs377-bot-tutorial-spawn-20261109"]
     paths:
       - "tools/rs377-family-visible/**"
       - ".github/workflows/rs377-family-visible.yml"
@@ -25,5 +25,9 @@ jobs:
         run: |
           node --check tools/rs377-family-visible/join.mjs
           node --test tools/rs377-family-visible/join.test.mjs
+      - name: Verify revision-377 saved-position and tutorial fix (synthetic fixtures only)
+        run: |
+          python3 -m py_compile tools/rs377-family-visible/prepare_lumbridge.py
+          python3 -m unittest discover -s tools/rs377-family-visible -p 'test_prepare_lumbridge.py' -v
       - name: Safe no-login help
         run: node tools/rs377-family-visible/join.mjs --help

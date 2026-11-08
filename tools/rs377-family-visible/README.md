@@ -4,6 +4,52 @@
 
 This is **not** the Fedora sandbox. Players in an isolated Fedora disposable world can never appear in JParrisDesktop's already-running game.
 
+## Fix confirmed on 9 November: HarnessView1 was on Tutorial Island
+
+The real user-provided revision-377 save reports **3094,3106,level 0**.
+The pinned upstream `Player` constructor spawns at exactly 3094,3106.
+Therefore repeated walk packets for Lumbridge 3233,3218 were only **dispatched**;
+none proved movement. The previous instructions to search the castle were wrong.
+
+**Immediate optional visibility diagnostic:** a fresh `HarnessView1` bot can be
+placed near Elrothiro using a reversible, *bot-only setup fixture*. It is not
+legitimate completion of the game's tutorial, not a quest acceptance result
+and not the eventual autonomous tutorial playbook. The exact historical
+377 server checks varp `tutorial` (ID 281) against `tutorial_complete=1000`
+on login; setting coordinates alone is insufficient.
+
+The fixture is read-only unless `--apply --bot-offline` are both supplied.
+It verifies save v7 magic, exact original 3094,3106 spawn, no tutorial
+progress, original CRC32, ordered permanent varp records, and the bot's
+exclusive filename `harnessview1.sav`. It safely creates a private,
+timestamped backup of the original bot save, writes atomically and verifies
+the modified save. **Never** run against an online bot. It does not read,
+modify or rename Elrothiro or Sylvie, does not restart the game, and will
+refuse unexpected version/coordinates/tutorial progress.
+
+On **AVANCE-WS7**, after the previous two-minute bot login has finished:
+
+~~~bash
+cd ~/dev/JoshRS-quest-runner || exit 1
+git pull --ff-only || exit 1
+python3 tools/rs377-family-visible/prepare_lumbridge.py
+python3 tools/rs377-family-visible/prepare_lumbridge.py --apply --bot-offline
+node tools/rs377-family-visible/join.mjs --connect --allow-family --host 127.0.0.1 --bot HarnessView1 --patrol --seconds 600
+~~~
+
+The first Python command only reports what would be changed. **Check that
+the expected account, position and checksum are printed before running the
+second one.** The last command starts the normal bot and asks for the
+separate bot password privately. In Elrothiro's Java client, look near the
+Lumbridge castle courtyard (3233,3218). Remain logged into the same world.
+
+If the first command refuses (CRC, source position, tutorial progress or
+missing bot file), **do not force it**, reset anything or edit the character
+save manually. If `BOT_ONLY_TEST_FIXTURE_APPLIED` prints but the player is
+still not visible, the next defect is player-update parsing/rendering or
+server session state—not navigation. Record the outcome and investigate
+those packets rather than falsely claiming multiplayer success.
+
 ## Fedora AVANCE-WS7: the existing local game (9 November 2026)
 
 **Important correction:** AVANCE-WS7 also has its *own* JoshRS rev377
