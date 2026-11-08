@@ -1,11 +1,26 @@
-// In Search of the Myreque (10 January 2005). Stage values are original JoshRS; cache varp is routequest.
+// In Search of the Myreque (10 January 2005): native revision-377 cache quest.
+// routequest is the existing cache varp and must remain permanent.
+// Existing completed saves are retained: route_complete = 100.
 ^route_not_started = 0
 ^route_started = 1
-^route_boat = 2
-^route_veliaf = 3
-^route_scouts = 4
-^route_burgh = 5
-^route_vanstrom = 6
-^route_return = 7
+^route_boat_ready = 2
+^route_hollows = 3
+^route_bridge_fixed = 4
+^route_guard_passed = 5
+^route_hideout = 6
+^route_members_met = 7
+^route_hound_fight = 8
+^route_hound_dead = 9
+^route_secret_exit = 10
+^route_return = 11
 ^route_complete = 100
 ^route_questpoints = 2
+
+// Authentic 2005-era item costs: later RS3 revisions lowered the nail count.
+^route_steel_nails_per_span = 75
+^route_bridge_spans = 3
+^route_woodplanks_to_boatman = 3
+^route_woodplanks_to_bridge = 3
+^route_boat_fare = 10
+^route_druid_pouch_charges = 5
+^route_member_count = 5
