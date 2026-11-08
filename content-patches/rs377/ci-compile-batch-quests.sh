@@ -17,7 +17,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 31 ]] || { echo "BLOCKED: expected 31 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 32 ]] || { echo "BLOCKED: expected 31 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -139,4 +139,5 @@ python3 -I "$quest/tools/check_fenk_map.py" --content "$content"
 python3 -I "$quest/tools/check_morytania_batch.py" --content "$content"
 python3 -I "$quest/tools/check_swansong_wall_map.py" --content "$content"
 python3 -I "$quest/tools/check_rag_npc_drops.py" --content "$content"
+python3 -I "$quest/tools/check_demon_slayer.py" --content "$content" --engine "$engine"
 echo "DISPOSABLE_BATCH_QUESTS_OVERLAY_READY"
