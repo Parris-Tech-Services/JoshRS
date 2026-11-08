@@ -1,0 +1,169 @@
+// JoshRS original #377 Shades of Mort'ton restoration — early playable stages.
+// Uses the pinned 377 map, cache item/NPC names, and stock RuneScript semantics.
+// No completion rewards are awarded: temple rebuild, pyres, and full quest
+// completion are not implemented by this increment.
+[oploc1,shades_experimentshelf]
+if (inv_total(inv, serum_book) > 0 | inv_total(bank, serum_book) > 0) {
+    mes("You already have the research diary from this shelf.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("Make room in your pack to take the diary.");
+    return;
+}
+inv_add(inv, serum_book, 1);
+mes("You find a weathered notebook describing an unusual herbal serum.");
+
+[oploc5,shades_experimenttable]
+if (testbit(%morttonmulti, ^shades_table_searched) = ^true) {
+    mes("You search the table, but there is nothing more to take.");
+    return;
+}
+if (inv_freespace(inv) < 3) {
+    mes("You need three empty inventory slots.");
+    return;
+}
+%morttonmulti = setbit(%morttonmulti, ^shades_table_searched);
+inv_add(inv, unidentified_tarromin, 2);
+inv_add(inv, unidentified_rogues_purse, 1);
+mes("You find two unfamiliar herbs and another plant tucked under the table.");
+
+[opheld1,serum_book]
+~mesbox("The research diary describes a town troubled by a strange illness.|It records a treatment using tarromin and ordinary ashes in water.|The writer feared the shadows gathering near the ruined temple.");
+if (%morttonquest = ^mortton_not_started) {
+    %morttonquest = ^mortton_read_diary;
+    ~send_quest_progress(questlist:mortton, %morttonquest, 100);
+    mes("Quest started: Shades of Mort'ton. Try making the serum.");
+}
+
+[if_button,questlist:mortton]
+def_string $text;
+if (%morttonquest = ^mortton_not_started) {
+    $text = "@dbl@A strange illness is troubling the villagers in @dre@Mort'ton@dbl@.|@dbl@I should search the ruined house for an old research diary.";
+} else if (%morttonquest = ^mortton_read_diary) {
+    $text = "@str@I found a research diary in Mort'ton.||@dbl@The notes describe a treatment made from @dre@tarromin@dbl@ and|@dre@ashes@dbl@ in water. I need to make some serum.";
+} else if (%morttonquest = ^mortton_made_serum) {
+    $text = "@str@I read the diary and prepared some serum.||@dbl@I should use it on @dre@Razmire Keelgan@dbl@, the afflicted shopkeeper.";
+} else if (%morttonquest >= ^mortton_kill_shades & %morttonquest < ^mortton_shades_to_razmire) {
+    $text = "@str@I treated Razmire and learned about the restless shades.||@dbl@I should defeat five of the shades and collect their remains.|@dbl@Speak to Razmire again once I have them.";
+} else if (%morttonquest >= ^mortton_shades_to_razmire) {
+    $text = "@str@I found the diary, made serum and confronted the shades.||@dbl@The temple and the funeral pyres still need to be restored.|@dbl@This quest is not yet complete.";
+} else {
+    $text = "@dbl@Return to Mort'ton to continue investigating the illness.";
+}
+~quest_journal("Shades of Mort'ton", $text);
+
+// The existing unfinished tarromin potion is provided by normal Herblore.
+// Ashes may be used onto the unfinished potion, or the potion onto ashes.
+[opheldu,tarrominvial]
+if (last_useitem = ashes) {
+    @mortton_prepare_serum;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[opheldu,ashes]
+if (last_useitem = tarrominvial) {
+    @mortton_prepare_serum;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[label,mortton_prepare_serum]
+if (%morttonquest < ^mortton_read_diary) {
+    mes("You should study the Mort'ton research diary first.");
+    return;
+}
+if (stat(herblore) < 15) {
+    mes("You need 15 Herblore to make the treatment safely.");
+    return;
+}
+if (inv_total(inv, tarrominvial) < 1 | inv_total(inv, ashes) < 1) {
+    mes("You need an unfinished tarromin potion and some ashes.");
+    return;
+}
+inv_del(inv, tarrominvial, 1);
+inv_del(inv, ashes, 1);
+inv_add(inv, mort_serum4, 1);
+if (%morttonquest = ^mortton_read_diary) {
+    %morttonquest = ^mortton_made_serum;
+    ~send_quest_progress(questlist:mortton, %morttonquest, 100);
+}
+mes("You mix the ashes into the solution and prepare a four-dose serum.");
+
+[opnpc1,razmire_keelgan_afflicted]
+~chatnpc("<p,confused>The afflicted shopkeeper tries to speak, but his words make little sense.");
+if (%morttonquest < ^mortton_made_serum) {
+    ~chatplayer("<p,neutral>I should look for a way to ease this illness.");
+} else {
+    ~chatplayer("<p,neutral>I have the treatment from the diary. I should use it on him.");
+}
+
+[opnpcu,razmire_keelgan_afflicted]
+if (last_useitem ! mort_serum4) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%morttonquest < ^mortton_made_serum | inv_total(inv, mort_serum4) < 1) {
+    mes("You have not prepared the treatment yet.");
+    return;
+}
+inv_del(inv, mort_serum4, 1);
+inv_add(inv, mort_serum3, 1);
+%morttonmulti = setbit(%morttonmulti, ^razmire_visible);
+if (%morttonquest = ^mortton_made_serum) {
+    %morttonquest = ^mortton_kill_shades;
+    ~send_quest_progress(questlist:mortton, %morttonquest, 100);
+}
+mes("Razmire becomes lucid. The serum seems to have a temporary effect.");
+
+[opnpc1,razmire_keelgan]
+if (%morttonquest < ^mortton_kill_shades) {
+    ~chatnpc("<p,neutral>The shadows have taken their toll on this village.");
+    return;
+}
+if (%morttonquest < ^mortton_killed_5_shades) {
+    ~chatnpc("<p,neutral>Five shades must be laid to rest before this place can recover.");
+    ~chatplayer("<p,neutral>I will deal with the shades and return.");
+} else if (%morttonquest = ^mortton_killed_5_shades) {
+    ~chatnpc("<p,neutral>You have faced the shades. Bring me their remains.");
+    if (inv_total(inv, shade_bones1) >= 5) {
+        inv_del(inv, shade_bones1, 2);
+        %morttonquest = ^mortton_shades_to_razmire;
+        ~send_quest_progress(questlist:mortton, %morttonquest, 100);
+        ~chatnpc("<p,neutral>I will study these remains. Ulsquire knows more about the old temple.");
+    }
+} else {
+    ~chatnpc("<p,neutral>The ruined temple north-east of the village remains our greatest concern.");
+}
+
+[opnpc1,ulsquire_shauncy_afflicted]
+~chatnpc("<p,confused>The local priest stares into the distance, unable to make himself understood.");
+mes("The research diary may contain a way to help him.");
+
+[opnpc1,ulsquire_shauncy]
+if (%morttonquest < ^mortton_shades_to_razmire) {
+    ~chatnpc("<p,neutral>The temple cannot be restored while the shades control the streets.");
+} else {
+    ~chatnpc("<p,neutral>The old sanctuary and its funeral pyres are the key to helping the town.");
+    mes("Temple repairs and sacred oil are not yet implemented in this JoshRS content batch.");
+}
+
+// Only count genuine deaths attributed to a player. Ordinary combat still
+// decides hits, loot and respawns; no quest stage is granted for clicking.
+[ai_queue3,shade_level1]
+~npc_default_death;
+if (npc_findhero = ^false) {
+    return;
+}
+if (%morttonquest = ^mortton_kill_shades) {
+    %morttonquest = ^mortton_killed_1_shade;
+} else if (%morttonquest = ^mortton_killed_1_shade) {
+    %morttonquest = ^mortton_killed_2_shades;
+} else if (%morttonquest = ^mortton_killed_2_shades) {
+    %morttonquest = ^mortton_killed_3_shades;
+} else if (%morttonquest = ^mortton_killed_3_shades) {
+    %morttonquest = ^mortton_killed_4_shades;
+} else if (%morttonquest = ^mortton_killed_4_shades) {
+    %morttonquest = ^mortton_killed_5_shades;
+}
