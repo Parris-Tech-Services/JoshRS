@@ -166,8 +166,6 @@ def analyze_quest(q: dict, script_index: dict[str, list[dict]],
                   upstream_sha: str) -> dict[str,Any]:
     key = q["quest_id"]
     hint = q.get("evidence",{}).get("quest_dir") or ""
-    roots = sorted(set(x for x in (hint, "quests/"+OVERLAYS.get(key,"")) if x and
-                       ("scripts/"+x+"/" in path for path in [])))  # replaced below
     roots = [r for r in (hint, "quests/"+OVERLAYS[key] if key in OVERLAYS else None) if r]
     roots = list(dict.fromkeys(roots))
     source_files = sorted(p for p in full_paths if any(
