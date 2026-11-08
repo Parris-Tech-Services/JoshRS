@@ -7,17 +7,9 @@
 // The visible *_model children are only used by the engine to validate ops.
 
 [proc,fenk_meets_requirements]()(boolean)
-// UNVERIFIED for 377: Restless Ghost, Priest in Peril, 20 Crafting, 25 Thieving.
-if (%prieststart ! ^priest_complete) {
-    return(false);
-}
+// Priest in Peril permits reaching Canifis. The other 377-era
+// requirements are for later quest actions, not for taking the job.
 if (%priestperil < ^priestperil_complete) {
-    return(false);
-}
-if (stat(crafting) < ^fenk_req_crafting) {
-    return(false);
-}
-if (stat(thieving) < ^fenk_req_thieving) {
     return(false);
 }
 return(true);
@@ -43,8 +35,8 @@ if (%fenk_read_signpost = 0) {
 }
 ~chatnpc("<p,neutral>You have the look of someone who read my notice in the village.");
 if (~fenk_meets_requirements = false) {
-    ~chatnpc("<p,neutral>But I need a helper who is capable and has dealt with the dead before. You are not yet that person.");
-    ~mesbox("You need to have finished The Restless Ghost and Priest in Peril, and have 20 Crafting and 25 Thieving.");
+    ~chatnpc("<p,neutral>Before we can work together you must be able to travel safely through Morytania.");
+    ~mesbox("Complete Priest in Peril to begin this quest. The later tasks require 20 Crafting and 25 Thieving, and a ghostspeak amulet is useful.");
     return;
 }
 ~chatnpc("<p,happy>Excellent. I require a helper who is discreet, and who will not ask what the work is for.");
@@ -194,6 +186,10 @@ if (inv_total(inv, fenk_tower_key) = 0 & inv_total(bank, fenk_tower_key) = 0) {
 [opnpc3,fenk_fenkenstrain]
 if (%fenk_quest ! ^fenk_met_creature) {
     mes("You have no reason to rob Dr Fenkenstrain right now.");
+    return;
+}
+if (stat(thieving) < ^fenk_req_thieving) {
+    mes("You need 25 Thieving to steal the ring.");
     return;
 }
 if (inv_freespace(inv) < 1) {
