@@ -1,0 +1,25 @@
+--- a/scripts/_unpack/377/all.varp
++++ b/scripts/_unpack/377/all.varp
+@@ -746,5 +746,7 @@
+ [main_feud_var]
++scope=perm
+ transmit=yes
+ 
+ [feud_var_multi]
++scope=perm
+ 
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -280,3 +280,6 @@
+ if (%handsand = ^hs_complete) {
+     $questpoints = add($questpoints, ^hs_questpoints);
+ }
++if (%main_feud_var = ^feud_complete) {
++    $questpoints = add($questpoints, ^feud_questpoints);
++}
+ return ($questpoints);
+@@ -359,3 +362,4 @@
+ ~send_quest_progress_colour(questlist:makinghistory, ~mh_progress, 2);
+ ~send_quest_progress_colour(questlist:handsand, %handsand, ^hs_complete);
++~send_quest_progress_colour(questlist:feud, %main_feud_var, ^feud_complete);
+ ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
