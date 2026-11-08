@@ -84,14 +84,23 @@ export function mapSdkAction(action,snapshot) {
       const item=pickSlot(snapshot.inventory,a.slot);
       if(!item)reject('inventory slot not observed');
       if(!validOption(a.optionIndex))reject('inventory option must be 1..5');
-      if(a.interfaceId===undefined)reject('item interface/component must be known, not guessed');
-      if(a.interfaceId===3214) {
+      // The upstream BotSDK defaults the main backpack interface to 3214.
+      // That component is pinned in native Content and always represents the
+      // already-observed backpack item, so omitting it is not a guessed UI.
+      const com=a.interfaceId??3214;
+      if(!Number.isSafeInteger(com)||com<0||com>65535)
+        reject('invalid interface component');
+      if(com===3214) {
         return packet({type:'held',slot:a.slot,itemId:item.id,
-          componentId:a.interfaceId,option:a.optionIndex});
+          componentId:com,option:a.optionIndex});
       }
-      // Interface inventory interactions dispatch INV_BUTTON rather than OPHELD.
+      // Alternative components are legal only while the corresponding native
+      // side inventory is actually open. Never click arbitrary interface IDs.
+      if(!((com===2006&&snapshot.sdkDetails?.bank?.isOpen===true)||
+           (com===3823&&snapshot.sdkDetails?.shop?.isOpen===true)))
+        reject('other inventory component not observed as an open native side UI');
       return packet({type:'inventory',slot:a.slot,itemId:item.id,
-        componentId:a.interfaceId,option:a.optionIndex});
+        componentId:com,option:a.optionIndex});
     }
     case 'useItemOnLoc': {
       exact(a,['itemSlot','x','z','locId']);verifiedLoc(snapshot,a);
