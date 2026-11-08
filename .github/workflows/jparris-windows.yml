@@ -55,6 +55,9 @@ jobs:
           if (-not (Test-Path 'JoshRS-Play-Android.cmd')) { throw 'Mobile streaming entrypoint missing' }
           & '.\deploy\jparris-windows\setup.ps1' -CheckOnly
 
+      - name: Verify read-only 377 login diagnostic with synthetic SQLite accounts
+        shell: pwsh
+        run: node --test tools/rs377-saves/verify-local-login.test.mjs
       - name: Exercise USB import and save preservation with synthetic files
         shell: powershell
         run: '& .\deploy\jparris-windows\test-bootstrap.ps1'
