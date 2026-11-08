@@ -178,8 +178,10 @@ if (%rag_quest ! ^rag_started | ~rag_delivered_count ! ^rag_bone_total) {
     return;
 }
 %rag_quest = ^rag_complete;
+stat_advance(cooking, 5000);
+stat_advance(prayer, 5000);
 session_log(^log_adventure, "Quest complete: Rag and Bone Man");
-~send_quest_complete(questlist:rag, rag_ram_helm, 200, ^rag_questpoints, "You have completed the Rag and Bone Man Quest!", "1 Quest Point");
+~send_quest_complete(questlist:rag, rag_ram_helm, 200, ^rag_questpoints, "You have completed the Rag and Bone Man Quest!", "1 Quest Point|500 Cooking XP|500 Prayer XP");
 
 [if_button,questlist:rag]
 def_string $text;

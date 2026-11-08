@@ -20,7 +20,7 @@ class SwanSongFishingContract(unittest.TestCase):
         self.assertIn("[opnpc1,swan_fishingspot]", FISHING)
         self.assertIn("inv_add(inv, swan_raw_monkfish, 1)", FISHING)
         self.assertNotIn("inv_add(inv, raw_monkfish, 1)", FISHING)
-        self.assertIn("%swansong ! ^swansong_fish", FISHING)
+        self.assertIn("%swansong ! ^swansong_fish & %swansong ! ^swansong_complete", FISHING)
         self.assertIn("stat(fishing) < 62", FISHING)
         self.assertIn("~check_fish_equipment(net)", FISHING)
 
