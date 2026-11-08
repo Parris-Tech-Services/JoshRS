@@ -47,6 +47,7 @@ jobs:
           cp tools/rs377-bot-bench/engine-patch/src/web.ts "$root/src/web.ts"
           python content-factory/patch_377_sdk_trace.py --engine "$root"
           test -s "$root/src/engine/observer/Native377Trace.ts"
+          python content-patches/rs377/tools/ci_spawn_fenk_probe.py
       - name: Prepare pinned native RS-SDK transport for real client acceptance
         shell: bash
         run: npm --prefix tools/rs377-chatgpt-bridge install --omit=dev --ignore-scripts --no-audit --no-fund
@@ -74,6 +75,7 @@ jobs:
           WEB_MANAGEMENT_PORT: '18881'
           BUILD_SRC_DIR: ../content
           RS377_LIVE_BOT_PROBE: 'true'
+          RS377_FENK_SIGNPOST_PROBE: 'true'
         run: |
           set -euo pipefail
           cd "$RUNNER_TEMP/joshrs-377-build/engine"

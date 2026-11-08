@@ -240,6 +240,15 @@ try {
  // sdk_connected / sdk_action / sdk_action_result) with the SAME normal TCP
  // game session and a fresh authenticated native 377 observer. This is a
  // subset while full BotWorldState remains unsupported and clearly rejected.
+ // A busy quest region can have native NPC/loc fields that remain
+ // legitimately UNKNOWN. A quest-specific normal packet test may proceed
+ // with the validated PARTIAL observer, but must never report a full SDK
+ // state or a successful upstream WebSocket state/action in that case.
+ if(!completeSdkStateVerified &&
+    process.env.RS377_FENK_SIGNPOST_PROBE!=='true')
+   reject('the real native engine did not produce complete pinned BotWorldState');
+ let websocketVerified=false;
+ if(completeSdkStateVerified){
  const websocketToken=randomBytes(32).toString('hex');
  const wsObserver=createEngine377Observer({port:managementPort,token,
    botName:username,expectedWorld});
@@ -248,7 +257,6 @@ try {
  });
  const webSocketGateway=createSdk377WebSocket({runtime:wsRuntime,botName:username,
    token:websocketToken});
- let websocketVerified=false;
  await webSocketGateway.listen(18883);
  const sdkSocket=new WebSocket('ws://127.0.0.1:18883/gateway');
  const sdkReplies=[];
@@ -311,6 +319,7 @@ try {
    sdkSocket.close();
    await webSocketGateway.close();
  }
+ }
  const savedPosition={...moved.position};
  // Client close is NOT a verified logout/save. Let the actual 377 idle
  // logout/save flow finish; look for the server-generated CRC save on disk.
@@ -358,7 +367,7 @@ try {
    }
  }
  if(!relogged)reject('disposable saved player could not relog by normal 377 TCP');
- let reloggedPosition=null;
+ let reloggedPosition=null,fenkQuestClickVerified=false;
  try {
    for(let attempt=0;attempt<12;attempt++){
      await delay(670);
@@ -374,6 +383,81 @@ try {
       reloggedPosition.z!==savedPosition.z||
       reloggedPosition.plane!==savedPosition.plane)
      reject('normal relog did not restore observed walking position');
+
+   // Opt-in, isolated Canifis gameplay check. The only CI fixture is a new
+   // starting location/tutorial flag; this RuneScript quest interaction itself
+   // must come through an authenticated normal ISAAC 377 location-click packet.
+   if(process.env.RS377_FENK_SIGNPOST_PROBE==='true'){
+     if(Math.max(Math.abs(reloggedPosition.x-3493),Math.abs(reloggedPosition.z-3485))>9)
+       reject('fenk disposable player did not start near actual Canifis signpost');
+     const questReader=createEngine377Observer({
+       port:managementPort,token,botName:username,expectedWorld
+     });
+     const current=await questReader.observe();
+     const sign=current.nearbyLocs.find(loc=>loc.id===5164&&loc.x===3493&&loc.z===3485);
+     if(!sign)reject('real Canifis signpost missing from normal client-visible native location list');
+     const option=sign.optionsWithIndex?.find(o=>/read/i.test(o.text)&&
+       Number.isInteger(o.opIndex)&&o.opIndex>=1&&o.opIndex<=5);
+     if(!option)reject('Canifis signpost lacks an actual normal readable client option');
+     if(current.dialogue.isOpen)reject('quest click baseline already has an open dialog');
+     const questRuntime=createSdk377Runtime({
+       session:relogged,observer:createEngine377Observer({
+         port:managementPort,token,botName:username,expectedWorld
+       }),botName:username,expectedWorld
+     });
+     await delay(725);
+     const result=await questRuntime.action({
+       type:'interactLoc',x:3493,z:3485,locId:5164,optionIndex:option.opIndex,
+       reason:'Real isolated Fenkenstrain quest signpost acceptance'
+     });
+     if(!['queued_unverified','dispatched_unverified'].includes(result.status)||
+         result.verifiedEffect!==false)reject('quest signpost packet not normally dispatched');
+     let lastSignEvidence={
+       afterTickAdvanced:false,afterPositionChanged:false,
+       dialogueOpened:false,dialogueWaiting:false,
+       deliveredMessages:0,receivedDialogs:0,
+       lastSyntheticMessages:'',newMessageAfterClick:false,newDialogAfterClick:false
+     };
+     const messagesBefore=current.sdkDetails?.gameMessages?.length??0;
+     const dialogsBefore=current.sdkDetails?.recentDialogs?.length??0;
+     for(let attempt=0;attempt<14;attempt++){
+       await delay(700);
+       let after;
+       try{after=await questReader.observe()}
+       catch(error){
+         if(/replayed_native_observation/.test(error.message))continue;
+         throw error;
+       }
+       const textDelivered=[
+         ...(after.sdkDetails?.gameMessages??[]).map(m=>m.text),
+         ...(after.sdkDetails?.recentDialogs??[]).flatMap(d=>d.text??[])
+       ].join(' ').toLowerCase();
+       lastSignEvidence={
+         afterTickAdvanced:after.tick>current.tick,
+         afterPositionChanged:after.position.x!==current.position.x||
+           after.position.z!==current.position.z,
+         dialogueOpened:after.dialogue?.isOpen===true,
+         dialogueWaiting:after.dialogue?.isWaiting===true,
+         deliveredMessages:after.sdkDetails?.gameMessages?.length??0,
+         receivedDialogs:after.sdkDetails?.recentDialogs?.length??0,
+         // Disposable HarnessProbe only. Log bounded printable game text
+         // to identify genuine native 377 navigation or click errors.
+         lastSyntheticMessages:(after.sdkDetails?.gameMessages??[]).slice(-2)
+           .map(m=>String(m.text).replace(/[^a-zA-Z0-9 !.,:;'?()-]/g,'_').slice(0,105))
+           .join('|'),
+         newMessageAfterClick:(after.sdkDetails?.gameMessages?.length??0)>messagesBefore,
+         newDialogAfterClick:(after.sdkDetails?.recentDialogs?.length??0)>dialogsBefore
+       };
+       if(textDelivered.includes('fenkenstrain seeks an assistant')||
+          textDelivered.includes('decide to visit the doctor')||
+          (after.dialogue?.isOpen===true && after.dialogue?.isWaiting===true)){
+         fenkQuestClickVerified=true;break;
+       }
+     }
+     if(!fenkQuestClickVerified)
+       reject('normal 377 signpost click did not produce observed quest message/dialogue: '+
+         Object.entries(lastSignEvidence).map(([k,v])=>k+'='+v).join(','));
+   }
  }finally{relogged.close()}
  console.log(JSON.stringify({
    verified:'isolated_real_377_engine_observation',
@@ -394,6 +478,7 @@ try {
    genuineSdkGatewayAction:true,walkObserved:true,
    genuineSdkWebSocketAction:websocketVerified,
    dispatchAttemptCount,saveRelogVerified:true,
+   fenkQuestClickVerified,
    familyWorldTouched:false,
    task26RealBoundaryVerified:true,task26SecurityChecks:task26.checks,
    task26PacketDispatched:task26.packetDispatched,
