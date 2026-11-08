@@ -33,7 +33,7 @@ switch_int (%routequest) {
         ~send_quest_progress(questlist:routequest, %routequest, ^route_complete);
     case ^route_started, ^route_boat_ready, ^route_hollows, ^route_bridge_fixed, ^route_guard_passed, ^route_hideout, ^route_members_met :
         ~chatnpc("<p,neutral>The people waiting for that delivery will not wait forever.|Ask Cyreg about the boat near Mort'ton.");
-    case ^route_hound_fight, ^route_hound_dead, ^route_secret_exit, ^route_return :
+    case ^route_hound_fight, ^route_hound_dead, ^route_secret_exit, ^route_tunnel_open, ^route_return :
         ~chatnpc("<p,neutral>You have a great deal to learn about Morytania.");
     case default :
         ~chatnpc("<p,neutral>Even the bravest adventurers need a quiet evening.");
@@ -130,7 +130,7 @@ switch_int (%routequest) {
     case ^route_hound_dead :
         ~chatnpc("<p,sad>We survived, though two friends did not.|A passage through the cavern wall leads towards Canifis.|Search the concealed stonework in the tunnel.");
         %routequest = ^route_secret_exit;
-    case ^route_secret_exit, ^route_return :
+    case ^route_secret_exit, ^route_tunnel_open, ^route_return :
         ~chatnpc("<p,neutral>Find the hidden wall, climb out behind the Canifis tavern,|then speak to the stranger inside.");
     case default :
         ~chatnpc("<p,neutral>The Myreque are still here. We remember what you did.");
@@ -202,6 +202,8 @@ switch_int (%routequest) {
         $text = "@str@The Skeleton Hellhound fell.||@dbl@Ask Veliaf about the exit.";
     case ^route_secret_exit :
         $text = "@str@Veliaf described a hidden tunnel.||@dbl@Search the secret wall in the cave.";
+    case ^route_tunnel_open :
+        $text = "@str@I opened the secret tunnel.||@dbl@Climb the tavern's basement ladder back to Canifis.";
     case ^route_return :
         $text = "@str@I escaped to Canifis.||@dbl@Speak to the stranger at the Hair of the Dog tavern.";
     case default :
