@@ -29,6 +29,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.0"
       - name: Check scripts parse
         run: |
           bash -n tools/rs377-fedora-quests/setup-fedora.sh
@@ -38,6 +41,12 @@ jobs:
           node --check tools/rs377-chatgpt-bridge/src/sdk-runtime.mjs
       - name: Run exact 104 plus seven metadata/false-success tests
         run: node --test tools/rs377-fedora-quests/campaign.test.mjs
+      - name: Compile and execute actual Bun campaign planner without a game login
+        shell: bash
+        run: |
+          bun build tools/rs377-fedora-quests/run.ts --target=bun --outfile="$RUNNER_TEMP/quest-runner-bundle.js"
+          bun tools/rs377-fedora-quests/run.ts --plan > "$RUNNER_TEMP/quest-plan.json"
+          node -e "const a=require(process.argv[1]); if(a.total!==111||a.livePlayableVerified!==0||a.mode!=='READ_ONLY_SOURCE_PLAN') process.exit(1)" "$RUNNER_TEMP/quest-plan.json"
       - name: Verify no default game access
         run: |
           node -e "import('./tools/rs377-fedora-quests/catalog.mjs').then(m => {const c=m.readCatalogue(); if(c.questCount!==104||c.miniquestCount!==7) process.exit(1); console.log('104 quests, 7 miniquests, no account touched');})"
