@@ -1,0 +1,36 @@
+diff --git a/scripts/areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2 b/scripts/areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2
+index 7b48c2c6..7543e810 100644
+--- a/scripts/areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2
++++ b/scripts/areas/area_barbarian_outpost/scripts/barbarian_outpost_guard.rs2
+@@ -40,11 +40,13 @@ if($option = 1) {
+ ~chatnpc("<p,quiz>So, how's the Barcrawl coming along?");
+ if(inv_total(inv, barcrawl_card) = 0 & inv_total(bank, barcrawl_card) = 0) {
+     ~chatplayer("<p,sad>I've lost my barcrawl card...");
+-    ~chatnpc("<p,neutral>I'll replace your card. Your earlier stops still count.");
+     if(inv_freespace(inv) < 1) {
+         ~chatnpc("<p,neutral>Make room in your pack and ask me again.");
+         return;
+     }
++    // Original behaviour (RSC and current wiki): a lost card means every bar must be visited again.
++    ~chatnpc("<p,angry>What are you like?|You're gonna have to start all over now.");
++    %barcrawl = 1;
+     inv_add(inv, barcrawl_card, 1);
+     ~mesbox("The guard hands you a Barcrawl card");
+ } else if(inv_total(bank, barcrawl_card) > 0 & inv_total(inv, barcrawl_card) = 0 ) {
+diff --git a/scripts/areas/area_seers/scripts/thormac.rs2 b/scripts/areas/area_seers/scripts/thormac.rs2
+index 2ec608bf..1186a62f 100644
+--- a/scripts/areas/area_seers/scripts/thormac.rs2
++++ b/scripts/areas/area_seers/scripts/thormac.rs2
+@@ -6,11 +6,7 @@ switch_int (%scorpcatcher) {
+ }
+ 
+ [label,thormac_assistance]
+-if(%barcrawl ! ^barcrawl_complete) {
+-    ~chatnpc("<p,neutral>Only those who have finished the Barbarian Outpost drinking challenge can help me.");
+-    ~mesbox("Complete Alfred Grimhand's Barcrawl before starting Scorpion Catcher.");
+-    return;
+-}
++// No Barcrawl start requirement: 2007-era guides only need it to enter the Barbarian Outpost for the second scorpion.
+ ~chatnpc("<p,neutral>Hello I am Thormac the sorcerer.|I don't suppose you could be of assistance to me?");
+ switch_int(~p_choice2("What do you need assistance with?", 1, "I'm a little busy.", 2)) {
+     case 1 :

@@ -2,7 +2,7 @@
 # Only for a disposable GitHub Actions runner. NEVER apply to a live JoshRS install.
 # Overlays the Fenkenstrain quest, the batch-2 quest bundles, the Morytania
 # addendum, the batch-3/4 quests and Cook range helpers onto the pinned 377
-# content, applying patches 0001-0029 in numeric order.
+# content, applying patches 0001-0030 in numeric order.
 set -euo pipefail
 : "${RUNNER_TEMP:?missing runner temp}"
 : "${GITHUB_WORKSPACE:?missing checkout}"
@@ -17,7 +17,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 29 ]] || { echo "BLOCKED: expected 29 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 30 ]] || { echo "BLOCKED: expected 30 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -121,9 +121,9 @@ gate = (scripts / 'areas/area_barbarian_outpost/scripts/outpost_gate.rs2').read_
 thormac = (scripts / 'areas/area_seers/scripts/thormac.rs2').read_text()
 rusty = (scripts / 'areas/area_port_sarim/scripts/bartender.rs2').read_text()
 assert guard.count('inv_freespace(inv) < 1') >= 2, 'guard must check space for first and replacement cards'
-assert '%barcrawl = 1;' not in guard, 'lost card must not reset permanent visit flags'
+assert '%barcrawl = 1;' in guard and 'start all over' in guard, 'lost card must restart the Barcrawl (original behaviour, patch 0030)'
 assert 'if(%barcrawl ! ^barcrawl_complete) {\n        mes("Finish Alfred Grimhand' in gate, 'gate must deny entry'
-assert 'Complete Alfred Grimhand' in thormac and 'if(%barcrawl ! ^barcrawl_complete)' in thormac, 'Scorpion prerequisite'
+assert 'barcrawl_complete' not in thormac, 'Scorpion Catcher has no Barcrawl start requirement (patch 0030)'
 assert 'if(inv_total(inv, coins) < 8)' in rusty and 'inv_del(inv, coins, 8);' in rusty, 'Rusty Anchor charge'
 zambo = (scripts / 'areas/area_karamja/scripts/zambo.rs2').read_text()
 assert 'stat_sub(attack, 5, 5);\nstat_sub(defence, 5, 5);' in zambo, 'Ape Bite temporary debuffs'
