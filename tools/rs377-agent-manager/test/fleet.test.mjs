@@ -46,8 +46,10 @@ test('rejects duplicate starts and disallowed unknown/privileged goals',async()=
  })});
  fleet.add({name:'HarnessC',goal:'idle'});
  await assert.rejects(()=>fleet.start('HarnessC','weak'),/password/);
- await fleet.start('HarnessC','valid-long-disposable-secret');
- await assert.rejects(()=>fleet.start('HarnessC','valid-long-disposable-secret'),/already_started/);
+ await assert.rejects(()=>fleet.start('HarnessC','this-password-is-more-than-twenty-chars'),/password/);
+ await assert.rejects(()=>fleet.start('HarnessC','invalid-unicode-🚀'),/password/);
+ await fleet.start('HarnessC','valid-secret-1234');
+ await assert.rejects(()=>fleet.start('HarnessC','valid-secret-1234'),/already_started/);
  assert.throws(()=>fleet.setGoal('HarnessC','bank'),/unsupported_goal/);
  await fleet.stop('HarnessC');
 });
