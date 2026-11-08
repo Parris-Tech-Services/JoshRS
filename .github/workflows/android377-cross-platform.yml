@@ -57,8 +57,8 @@ jobs:
           from pathlib import Path
           for p in Path('content-patches/rs377/patches').glob('*.patch'):
               raw = p.read_bytes()
-              if b'\\r\\n' in raw:
-                  p.write_bytes(raw.replace(b'\\r\\n', b'\\n'))
+              if b'\r\n' in raw:
+                  p.write_bytes(raw.replace(b'\r\n', b'\n'))
           PY
           bash content-patches/rs377/ci-compile-batch-quests.sh
           python3 tools/android377-phone/loopback_bind.py "$RUNNER_TEMP/joshrs-batch-377/engine" --verify
