@@ -416,7 +416,7 @@ try {
        afterTickAdvanced:false,afterPositionChanged:false,
        dialogueOpened:false,dialogueWaiting:false,
        deliveredMessages:0,receivedDialogs:0,
-       newMessageAfterClick:false,newDialogAfterClick:false
+       lastSyntheticMessages:'',newMessageAfterClick:false,newDialogAfterClick:false
      };
      const messagesBefore=current.sdkDetails?.gameMessages?.length??0;
      const dialogsBefore=current.sdkDetails?.recentDialogs?.length??0;
@@ -440,6 +440,11 @@ try {
          dialogueWaiting:after.dialogue?.isWaiting===true,
          deliveredMessages:after.sdkDetails?.gameMessages?.length??0,
          receivedDialogs:after.sdkDetails?.recentDialogs?.length??0,
+         // Disposable HarnessProbe only. Log bounded printable game text
+         // to identify genuine native 377 navigation or click errors.
+         lastSyntheticMessages:(after.sdkDetails?.gameMessages??[]).slice(-2)
+           .map(m=>String(m.text).replace(/[^a-zA-Z0-9 !.,:;'?()-]/g,'_').slice(0,105))
+           .join('|'),
          newMessageAfterClick:(after.sdkDetails?.gameMessages?.length??0)>messagesBefore,
          newDialogAfterClick:(after.sdkDetails?.recentDialogs?.length??0)>dialogsBefore
        };
