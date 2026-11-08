@@ -1,0 +1,50 @@
+name: JoshRS Windows Agent Manager safety
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-agent-manager/**'
+      - 'deploy/jparris-windows/Start-JoshRSAgentManager.ps1'
+      - 'JoshRS-Agent-Manager.cmd'
+      - '.github/workflows/rs377-windows-agent-manager.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/rs377-agent-manager/**'
+      - 'deploy/jparris-windows/Start-JoshRSAgentManager.ps1'
+      - 'JoshRS-Agent-Manager.cmd'
+      - '.github/workflows/rs377-windows-agent-manager.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixture-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Parse manager source and browser code
+        shell: bash
+        run: |
+          node --check tools/rs377-agent-manager/fleet.mjs
+          node --check tools/rs377-agent-manager/native377.mjs
+          node --check tools/rs377-agent-manager/serve.mjs
+          node --check tools/rs377-agent-manager/public/app.js
+          node --check tools/rs377-chatgpt-bridge/src/sdk-runtime.mjs
+      - name: Run no-network disposable bot and isolation tests
+        shell: bash
+        run: node --test tools/rs377-agent-manager/test/*.test.mjs
+      - name: Parse one-command Windows launcher using PowerShell AST
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $tokens=$null
+          $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'deploy/jparris-windows/Start-JoshRSAgentManager.ps1').Path,[ref]$tokens,[ref]$errors)|Out-Null
+          if($errors.Count -gt 0){$errors|ForEach-Object {Write-Host $_.Message};exit 1}
