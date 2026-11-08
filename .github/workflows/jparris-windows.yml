@@ -15,6 +15,8 @@ on:
       - 'tools/rs377-saves/reset-local-elrothiro-password.test.mjs'
       - 'tools/rs377-saves/reset-local-sylvie-password.mjs'
       - 'tools/rs377-saves/reset-local-sylvie-password.test.mjs'
+      - 'tools/rs377-saves/replace-temporary-elrothiro-password.mjs'
+      - 'tools/rs377-saves/replace-temporary-elrothiro-password.test.mjs'
       - '.github/workflows/jparris-windows.yml'
   pull_request:
     paths:
@@ -28,6 +30,8 @@ on:
       - 'tools/rs377-saves/reset-local-elrothiro-password.test.mjs'
       - 'tools/rs377-saves/reset-local-sylvie-password.mjs'
       - 'tools/rs377-saves/reset-local-sylvie-password.test.mjs'
+      - 'tools/rs377-saves/replace-temporary-elrothiro-password.mjs'
+      - 'tools/rs377-saves/replace-temporary-elrothiro-password.test.mjs'
       - '.github/workflows/jparris-windows.yml'
   workflow_dispatch:
 
@@ -76,6 +80,9 @@ jobs:
       - name: Verify Sylvie recovery preserves existing Elrothiro account and progress
         shell: pwsh
         run: node --test tools/rs377-saves/reset-local-sylvie-password.test.mjs
+      - name: Verify temporary-password replacement requires intact cold snapshot
+        shell: pwsh
+        run: node --test tools/rs377-saves/replace-temporary-elrothiro-password.test.mjs
       - name: Exercise USB import and save preservation with synthetic files
         shell: powershell
         run: '& .\deploy\jparris-windows\test-bootstrap.ps1'
