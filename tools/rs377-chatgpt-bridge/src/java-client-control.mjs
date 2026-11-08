@@ -74,50 +74,8 @@ export function createNativeClient377Control({port,token,botName,worldId}={}){
    active=true;
    try{
     const ack=await exchange(config,'nativePacket',packet.opcode,packet.body);
-    if(!new RegExp('^OK\\|native_packet_queued_unverified\\|'+packet.opcode+'\\|[0-9]+
-   if(active)throw new Error('concurrent_native_java_client_action_denied');
-   active=true;
-   try{
-    if(!action||typeof action!=='object'||
-       !['setTab','randomizeCharacterDesign','acceptCharacterDesign'].includes(action.type))
-      throw new Error('unsupported_local_java_client_action');
-    const before=parseStatus(await exchange(config,'status',0));
-    if(action.type==='setTab'){
-     if(!Number.isInteger(action.tabIndex)||action.tabIndex<0||action.tabIndex>13)
-      throw new Error('unavailable_native_client_tab');
-     const ack=await exchange(config,'setTab',action.tabIndex);
-     if(!new RegExp('^OK\\|tab\\|'+action.tabIndex+'\\|[0-9]+$').test(ack))
-      throw new Error('unverified_native_tab_ack');
-     const after=parseStatus(await exchange(config,'status',0));
-     if(after.tab!==action.tabIndex||after.clientCycle<=before.clientCycle)
-      throw new Error('native_client_tab_change_not_observed');
-     return Object.freeze({status:'client_effect_observed',effect:'tab',
-       verifiedEffect:true,tabIndex:after.tab,clientCycle:after.clientCycle});
-    }
-    if(!before.designOpen)throw new Error('native_player_kit_interface_not_open');
-    if(action.type==='randomizeCharacterDesign'){
-     const ack=await exchange(config,'randomizeCharacterDesign',0);
-     if(!/^OK\|randomized\|[0-9]+\|OK\|status\|/.test(ack))
-      throw new Error('native_randomize_not_acknowledged');
-     const after=parseStatus(await exchange(config,'status',0));
-     if(!after.designOpen||after.clientCycle<=before.clientCycle||
-        (after.appearanceHash===before.appearanceHash&&after.gender===before.gender))
-       throw new Error('native_character_design_not_changed');
-     return Object.freeze({status:'client_effect_observed',effect:'randomize',
-       verifiedEffect:true,clientCycle:after.clientCycle});
-    }
-    const ack=await exchange(config,'acceptCharacterDesign',0);
-    if(!/^OK\|design_packet_queued_unverified\|[0-9]+$/.test(ack))
-     throw new Error('native_design_packet_not_acknowledged');
-    // Java client reporting packet queued is not proof it was processed by
-    // the rev377 game. SDK gateway must observe server-side appearance delta.
-    return Object.freeze({status:'client_packet_dispatched_unverified',
-      verifiedEffect:false,effect:'accept_design',clientCycle:before.clientCycle});
-   }finally{active=false}
-  }
- });
-}
-).test(ack))
+    const prefix='OK|native_packet_queued_unverified|'+packet.opcode+'|';
+    if(!ack.startsWith(prefix)||!(/^[0-9]+$/).test(ack.slice(prefix.length)))
      throw new Error('native_java_game_packet_not_queued');
     return Object.freeze({status:'queued_unverified',opcode:packet.opcode,
       verifiedEffect:false,transport:'real_java_client_377'});
