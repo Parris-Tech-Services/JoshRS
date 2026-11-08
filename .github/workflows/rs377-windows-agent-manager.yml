@@ -4,6 +4,7 @@ on:
     paths:
       - 'tools/rs377-agent-manager/**'
       - 'deploy/jparris-windows/Start-JoshRSAgentManager.ps1'
+      - 'deploy/jparris-windows/Install-JoshRSAgentManager.ps1'
       - 'JoshRS-Agent-Manager.cmd'
       - '.github/workflows/rs377-windows-agent-manager.yml'
   push:
@@ -11,6 +12,7 @@ on:
     paths:
       - 'tools/rs377-agent-manager/**'
       - 'deploy/jparris-windows/Start-JoshRSAgentManager.ps1'
+      - 'deploy/jparris-windows/Install-JoshRSAgentManager.ps1'
       - 'JoshRS-Agent-Manager.cmd'
       - '.github/workflows/rs377-windows-agent-manager.yml'
   workflow_dispatch:
@@ -40,6 +42,21 @@ jobs:
       - name: Run no-network disposable bot and isolation tests
         shell: bash
         run: node --test tools/rs377-agent-manager/test/*.test.mjs
+      - name: Verify offline installer manifest matches all pinned source files (Windows)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $tokens=$null
+          $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'deploy/jparris-windows/Install-JoshRSAgentManager.ps1').Path,[ref]$tokens,[ref]$errors)|Out-Null
+          if($errors.Count -gt 0){$errors|ForEach-Object {Write-Host $_.Message};exit 1}
+          New-Item -ItemType Directory -Path 'runtime/jparris-377' -Force | Out-Null
+          Set-Content 'runtime/jparris-377/active.json' '{}' -Encoding UTF8
+          try {
+            & '.\deploy\jparris-windows\Install-JoshRSAgentManager.ps1' -Root (Get-Location).Path
+          } finally {
+            Remove-Item 'runtime/jparris-377/active.json' -Force -ErrorAction SilentlyContinue
+          }
       - name: Parse one-command Windows launcher using PowerShell AST
         if: runner.os == 'Windows'
         shell: powershell
