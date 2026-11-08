@@ -52,6 +52,7 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
             "RS377_OBSERVER_ENABLED": "true",
             "RS377_OBSERVER_ISOLATED": "true",
             "RS377_OBSERVER_BOT": "HarnessProbe",
+            "RS377_OBSERVER_BOTS": "HarnessProbe,HarnessA,HarnessB",
             "RS377_OBSERVER_TOKEN": secrets.token_hex(32),
             "RS377_OBSERVER_WORLD": "isolated-joshrs-ci-377",
             "RS377_OBSERVER_SOURCE_SHA": "b5ac859b47915afb545e60e4c1208f25d43cb3fb",
@@ -99,6 +100,17 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
                     raise RuntimeError("Disposable 377 bot observer FAILED: " +
                                        attempt.stderr[-1400:])
                 print("Disposable real engine bot observation:", attempt.stdout.strip())
+                dual = (Path(__file__).resolve().parents[1] /
+                        "tools/rs377-chatgpt-bridge/probe-two-agents-isolated377.mjs")
+                if not dual.is_file():
+                    raise RuntimeError("Two-agent disposable acceptance source missing")
+                both = subprocess.run(["node", str(dual)], cwd=engine,
+                                      env=env, capture_output=True, text=True,
+                                      timeout=245, check=False)
+                if both.returncode != 0:
+                    raise RuntimeError("Two-agent genuine 377 acceptance failed: " +
+                                       both.stderr[-2000:])
+                print("Two independent 377 network agents:", both.stdout.strip())
             return {"compiled_world_started": True, "game_tcp_port_reachable": True,
                     "web_http_port_reachable": True, "real_player_logged_in": real_bot_probe,
                     "genuine_game_state_observed": real_bot_probe,
