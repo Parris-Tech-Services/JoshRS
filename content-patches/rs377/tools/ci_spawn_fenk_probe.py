@@ -33,8 +33,8 @@ def main():
             if (process.env.RS377_FENK_SIGNPOST_PROBE === 'true' &&
                 process.env.NODE_PROFILE === 'joshrs_ci_377' &&
                 safeName === 'harnessprobe') {
-                player.x = 3492;
-                player.z = 3485;
+                player.x = 3493;
+                player.z = 3486;
                 player.level = 0;
                 // 281=tutorial in pinned varp.pack, ^tutorial_complete=1000.
                 player.vars[281] = 1000;
