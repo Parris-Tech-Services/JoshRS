@@ -11,7 +11,7 @@ import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const SOURCE_EXT = new Set(['.ts','.tsx','.js','.jsx','.mjs','.cjs','.rs2','.java','.kt','.kts','.gradle','.json','.yaml','.yml','.toml','.xml','.properties','.cfg','.npc','.loc','.obj','.inv','.param','.seq','.spotanim','.if','.area','.flo','.idk','.md','.sh','.cmd','.bat','.ps1','.css','.html','.sql','.py','.txt','.packsrc']);
+const SOURCE_EXT = new Set(['.ts','.tsx','.js','.jsx','.mjs','.cjs','.rs2','.java','.kt','.kts','.gradle','.json','.yaml','.yml','.toml','.xml','.properties','.cfg','.npc','.loc','.obj','.inv','.param','.seq','.spotanim','.if','.area','.flo','.idk','.md','.sh','.cmd','.bat','.ps1','.css','.html','.sql','.py','.txt','.packsrc', '.pack','.varp','.varbit','.constant','.enum','.struct','.dbrow','.dbtable','.hunt','.sound','.synth','.mesanim','.map','.param','.string','.queue','.hitmark','.interface','.font']);
 const REVIEW_EXT = new Set(['.png','.jpg','.jpeg','.gif','.webp','.bmp','.svg','.ogg','.mp3','.wav','.mid','.midi','.dat','.bin','.jag','.jgz','.jar','.zip']);
 const SKIP_DIRS = new Set(['.git','node_modules','.gradle','.idea','.vscode','.cache','cache','build','dist','coverage','logs','log','save-backups','backups','snapshots','temp','tmp','out','target','players','secrets','credentials','private','keystore','certificates','gradle-cache']);
 const PRIVATE_PATTERN = /(^|[._-])(private|secrets?|passwords?|credentials?|tokens?|apikeys?|api_keys?|keypairs?|ssh|auth(?:entication)?|sessions?|accounts?|wallets?|personal)([._-]|$)/i;
@@ -141,6 +141,7 @@ async function run() {
     requiresOfflineConsistentEncryptedBackup:true
   };
   report.notes.push('A source difference does not establish GitHub sync, source-licensing rights, or a working restore.');
+  report.notes.push('Compiling does not establish gameplay parity. Preserve all custom quests while investigating overlaps.');
   report.notes.push('This inventory does not protect saves: offline encrypted backup and isolated restore are still required.');
   await mkdir(output,{recursive:true});
   await writeFile(path.join(output,'inventory.json'),JSON.stringify(report,null,2)+'\n',{flag:'wx',mode:0o600});
