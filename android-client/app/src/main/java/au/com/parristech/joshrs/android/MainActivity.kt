@@ -53,6 +53,12 @@ class MainActivity : Activity() {
         window.statusBarColor = Color.rgb(49, 45, 39)
         window.navigationBarColor = Color.rgb(49, 45, 39)
         showHome()
+        if (savedInstanceState?.getBoolean("preview377", false) == true) {
+            showPreview(
+                savedInstanceState.getFloat("previewX", 8f),
+                savedInstanceState.getFloat("previewY", 8f)
+            )
+        }
     }
 
     private fun showHome() {
@@ -101,7 +107,7 @@ class MainActivity : Activity() {
                 runOnUiThread {
                     if (statusText === target) {
                         target?.text = result.message +
-                            "\\nNo player account or world state has been loaded."
+                            "\nNo player account or world state has been loaded."
                     }
                 }
             }.start()
@@ -147,10 +153,9 @@ class MainActivity : Activity() {
         ))
     }
 
-    private fun showPreview() {
-        root.removeAllViews()
+    private fun showPreview(x: Float = 8f, y: Float = 8f) {
         showingPreview = true
-        val world = PreviewWorld()
+        val world = PreviewWorld(x, y)
         val surface = GameSurfaceView(this, world)
         game = surface
         root = LinearLayout(this).apply {
@@ -227,6 +232,16 @@ class MainActivity : Activity() {
             showHome()
             statusText?.text = "Import rejected: ${e.message ?: "invalid save"}"
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        val snapshot = game?.playerSnapshot()
+        if (showingPreview && snapshot != null) {
+            outState.putBoolean("preview377", true)
+            outState.putFloat("previewX", snapshot.x)
+            outState.putFloat("previewY", snapshot.y)
+        }
+        super.onSaveInstanceState(outState)
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
