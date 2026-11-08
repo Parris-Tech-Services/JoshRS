@@ -4,7 +4,16 @@
 // Travel/bridge interactions live in quest_route_travel.rs2.
 // Boss combat/death callbacks live in quest_route_hound.rs2.
 
-// The Canifis tavern's sitting Vanstrom is the correct quest entry point.
+// The actual pinned world spawns the polymorphic Vanstrom/Stranger parent (NPC 2020).
+// Handle the parent as well as real child morphs so clicking the visible NPC works.
+[opnpc1,multi_vanstrom_stranger_entity]
+if (%routequest = ^route_return) {
+    ~chatnpc("<p,neutral>The face before you is not quite the face you remember.");
+    queue(route_quest_complete, 0, 0);
+} else {
+    @route_vanstrom_start;
+}
+
 [opnpc1,route_vanstrom_klause_sitting]
 @route_vanstrom_start;
 
@@ -31,7 +40,7 @@ switch_int (%routequest) {
         if ($yes ! 1) return;
         %routequest = ^route_started;
         ~send_quest_progress(questlist:routequest, %routequest, ^route_complete);
-    case ^route_started, ^route_boat_ready, ^route_hollows, ^route_bridge_fixed, ^route_guard_passed, ^route_hideout, ^route_members_met :
+    case ^route_started, ^route_boat_ready, ^route_hollows, ^route_bridge_one, ^route_bridge_two, ^route_bridge_fixed, ^route_guard_passed :
         ~chatnpc("<p,neutral>The people waiting for that delivery will not wait forever.|Ask Cyreg about the boat near Mort'ton.");
     case ^route_hound_fight, ^route_hound_dead, ^route_secret_exit, ^route_tunnel_open, ^route_return :
         ~chatnpc("<p,neutral>You have a great deal to learn about Morytania.");
@@ -195,7 +204,7 @@ if (%routequest = ^route_not_started) {
     $text = "@str@Vanstrom asked me to carry six steel weapons.|@dbl@Find Cyreg near Mort'ton with six planks, 225 nails,|@dbl@a hammer, blessed sickle, charged druid pouch and ten coins.";
 } else if (%routequest = ^route_boat_ready) {
     $text = "@dbl@The boat is ready. Board it for the Hollows.";
-} else if (%routequest >= ^route_hollows & %routequest <= ^route_bridge_fixed) {
+} else if (%routequest >= ^route_hollows & %routequest < ^route_bridge_fixed) {
     $text = "@dbl@Repair the three bridge spans using a plank,|@dbl@75 steel nails and a hammer per span.";
     $text = append($text, "|@dbl@Spans repaired: <tostring(calc(%routequest - ^route_hollows))> of three.");
 } else if (%routequest = ^route_guard_passed) {
