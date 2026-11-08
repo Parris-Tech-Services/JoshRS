@@ -9,6 +9,7 @@ import type Player from '#/engine/entity/Player.js';
 import type ServerGameMessage from '#/network/game/server/ServerGameMessage.js';
 import MessageGame from '#/network/game/server/model/MessageGame.js';
 import IfSetText from '#/network/game/server/model/IfSetText.js';
+import IfOpenChat from '#/network/game/server/model/IfOpenChat.js';
 
 type GameMessage = {type: number; text: string; sender: string; tick: number; fromSelf: boolean};
 type Trace = {
@@ -86,6 +87,8 @@ export function captureSdkOutgoing(player: Player, packet: ServerGameMessage, ti
             tick, fromSelf: false
         });
         if (t.gameMessages.length > 32) t.gameMessages.shift();
+    } else if (packet instanceof IfOpenChat) {
+        t.sawDialogPage = true;
     } else if (packet instanceof IfSetText) {
         // Exact server-set text, not a guessed client-visible label.
         t.textOverrides.set(packet.component, packet.text.slice(0, 1024));
@@ -106,6 +109,7 @@ export function readSdkTrace(player: Player, currentTick: number) {
         respawnCount: t.respawnCount,
         combatEvents: t.unknownDamageSource ? null : [],
         gameMessages: t.gameMessages.map(message => ({ ...message })),
+        sawDialogPage: t.sawDialogPage,
         textOverrides: Array.from(t.textOverrides, ([component, text]) => ({component,text}))
     };
 }
