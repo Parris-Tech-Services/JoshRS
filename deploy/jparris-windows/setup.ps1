@@ -345,7 +345,25 @@ if ($ClientGradleTimeoutMs -gt 0) {
     Write-Host "CI client Gradle wrapper network timeout: $ClientGradleTimeoutMs ms"
 }
 Write-Host 'Compiling the revision 377 Java client...'
-Run-Native (Join-Path $client 'gradlew.bat') @('--no-daemon','classes') $client
+$gradleWrapperExe = Join-Path $client 'gradlew.bat'
+if ($env:GITHUB_ACTIONS -eq 'true' -and $ClientGradleTimeoutMs -gt 0) {
+    # GitHub occasionally returns HTTP 504 for the *unchanged* pinned Gradle
+    # distribution ZIP. A retry cannot turn a real compilation error into a pass:
+    # it repeats the same pinned build and still fails closed after four attempts.
+    for ($attempt = 1; $attempt -le 4; $attempt++) {
+        try {
+            Run-Native $gradleWrapperExe @('--no-daemon','classes') $client
+            break
+        } catch {
+            if ($attempt -eq 4) { throw }
+            Write-Warning "CI Gradle build attempt $attempt failed. Retrying the same pinned wrapper and client on this disposable runner."
+            Start-Sleep -Seconds (5 * $attempt)
+        }
+    }
+} else {
+    # Local installations keep the existing fail-fast behaviour and files.
+    Run-Native $gradleWrapperExe @('--no-daemon','classes') $client
+}
 
 $state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort; webPort=$webPort; portOffset=$offset; source=$(if($UsbPath -or $ResumeSnapshotPath){'usb'}else{'upstream-or-existing'}) }
 $pendingState = $activeFile + '.tmp'

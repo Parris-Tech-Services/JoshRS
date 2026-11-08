@@ -13,3 +13,7 @@ class GradleCdnSafety(unittest.TestCase):
         self.assertIn("refusing to redirect an unrecognised distribution",s)
         self.assertIn("if ($replacement -cne $originalWrapper)",s)
         self.assertIn("[IO.File]::WriteAllText($wrapper,$replacement)",s)
+        self.assertIn("if ($env:GITHUB_ACTIONS -eq 'true' -and $ClientGradleTimeoutMs -gt 0)",s)
+        self.assertIn("for ($attempt = 1; $attempt -le 4; $attempt++)",s)
+        self.assertIn("if ($attempt -eq 4) { throw }",s)
+        self.assertIn("Run-Native $gradleWrapperExe @('--no-daemon','classes') $client",s)
