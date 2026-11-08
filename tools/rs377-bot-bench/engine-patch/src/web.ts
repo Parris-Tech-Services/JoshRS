@@ -619,8 +619,10 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         tick: World.currentTick,
         position: { x: bot.x, z: bot.z, plane: bot.level },
         skills,
-        inventory: projectItems(inventory),
-        equipment: projectItems(worn),
+        // A complete SDK InventoryItem must include the *actual* cached name
+        // and 377 item options; never silently omit unknown named items.
+        inventory: namesKnown(inventory) ? projectNamedItems(inventory) : null,
+        equipment: namesKnown(worn) ? projectNamedItems(worn) : null,
         nearbyNpcs,
         nearbyLocs, groundItems,
         dialogue, questStages: null, sdkDetails
