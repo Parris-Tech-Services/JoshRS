@@ -23,7 +23,7 @@ async function refresh(){
   for(const agent of data.agents){
    const row=el('article','');
    row.append(el('strong',agent.name),
-    el('span',agent.phase+' · '+agent.goal+' · verified steps: '+agent.verifiedSteps));
+    el('span',agent.phase+' · '+agent.goal+' · verified steps: '+agent.verifiedSteps+' · verified activities: '+(agent.verifiedActivities||0)));
    if(agent.error)row.append(el('p',agent.error,'error'));
    if(agent.lastVerified)row.append(el('p','Last verified move '+agent.lastVerified.x+', '+agent.lastVerified.z+' at game tick '+agent.lastVerified.tick,'muted'));
    const controls=el('div','');controls.className='controls';
@@ -51,7 +51,7 @@ async function refresh(){
     controls.append(btn);
    }
    const select=el('select','');
-   for(const goal of ['idle','explore']){
+   for(const goal of ['idle','explore','woodcut','talk']){
     const option=el('option',goal);option.value=goal;
     option.selected=goal===agent.goal;select.append(option);
    }
