@@ -11,10 +11,10 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 [[ "$content" == "$RUNNER_TEMP/joshrs-fenkenstrain-377/content" && -d "$content/.git" && -d "$engine/.git" ]] || { echo "BLOCKED: unrecognised workspace" >&2; exit 2; }
 [[ "$(git -C "$content" rev-parse HEAD)" == "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50" ]] || { echo "BLOCKED: Content SHA drift" >&2; exit 2; }
 [[ "$(git -C "$engine" rev-parse HEAD)" == "b5ac859b47915afb545e60e4c1208f25d43cb3fb" ]] || { echo "BLOCKED: Engine SHA drift" >&2; exit 2; }
-for patch in "$quest/patches/0001-register-fenkenstrain-in-quests-rs2.patch" "$quest/patches/0002-move-fenk-varps-out-of-unpack.patch" "$quest/patches/0003-roavar-fenkenstrain-brain-menu.patch" "$quest/patches/0004-fenkenstrain-native-furnace.patch" "$quest/patches/0005-fenkenstrain-stairs-existing-handler.patch" "$quest/patches/0006-mortton-quest-persistence.patch"; do
+for patch in "$quest/patches/0001-register-fenkenstrain-in-quests-rs2.patch" "$quest/patches/0002-move-fenk-varps-out-of-unpack.patch" "$quest/patches/0003-roavar-fenkenstrain-brain-menu.patch" "$quest/patches/0004-fenkenstrain-native-furnace.patch" "$quest/patches/0005-fenkenstrain-stairs-existing-handler.patch" "$quest/patches/0006-mortton-quest-persistence.patch" "$quest/patches/0007-mortton-native-tarromin-serum.patch"; do
   git -C "$content" apply --check "$patch"
 done
-for patch in "$quest/patches/0001-register-fenkenstrain-in-quests-rs2.patch" "$quest/patches/0002-move-fenk-varps-out-of-unpack.patch" "$quest/patches/0003-roavar-fenkenstrain-brain-menu.patch" "$quest/patches/0004-fenkenstrain-native-furnace.patch" "$quest/patches/0005-fenkenstrain-stairs-existing-handler.patch" "$quest/patches/0006-mortton-quest-persistence.patch"; do
+for patch in "$quest/patches/0001-register-fenkenstrain-in-quests-rs2.patch" "$quest/patches/0002-move-fenk-varps-out-of-unpack.patch" "$quest/patches/0003-roavar-fenkenstrain-brain-menu.patch" "$quest/patches/0004-fenkenstrain-native-furnace.patch" "$quest/patches/0005-fenkenstrain-stairs-existing-handler.patch" "$quest/patches/0006-mortton-quest-persistence.patch" "$quest/patches/0007-mortton-native-tarromin-serum.patch"; do
   git -C "$content" apply "$patch"
 done
 dest="$content/scripts/quests/quest_fenkenstrain"
