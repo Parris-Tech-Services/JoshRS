@@ -76,25 +76,23 @@ assert 'rfd_questpoints' not in src
 # Swan Song belongs to the batch-quests bundle (JOSHRS_BATCH_QUESTS_NOTES.md): exactly one
 # registration, from the batch patch series, never from the 1000N bundles.
 assert src.count('questlist:swansong')==1
-# questbundle2: four more quests (Mourning's End I, Wanted!, In Aid of the Myreque,
-# Rum Deal) registered exactly once each. One Small Favour is owned by the batch
-# bundle's batch3 series (patches 0020-0022), like Swan Song before it.
-for comp in ('mourning','wanted','myreque_2','deal'):
+# questbundle2: two more quests (Mourning's End I, In Aid of the Myreque) registered
+# exactly once each. One Small Favour is owned by the batch bundle's batch3 series
+# (patches 0020-0022); Wanted! and Rum Deal are owned by its batch4 series (0023/0024).
+for comp in ('mourning','myreque_2'):
     assert src.count(f'send_quest_progress_colour(questlist:{comp},')==1, comp
-for v in ('%mourning_quest, ^mourning1_complete','%quest_wanted, ^wanted_complete',
-          '%myreque_2_main_var, ^myreque2_complete','%deal_quest, ^deal_complete'):
+for v in ('%mourning_quest, ^mourning1_complete','%myreque_2_main_var, ^myreque2_complete'):
     assert src.count(v)==1, v
 # questbundle2 varps stay in all.varp (in-place scope=perm, batch-0006 pattern) so the
 # batch bundle's Veliaf handler can reference %myreque_2_main_var independently.
 av=(scripts/'_unpack/377/all.varp').read_text(errors='replace')
-for name in ('mourning_quest','quest_wanted','myreque_2_main_var','deal_quest'):
+for name in ('mourning_quest','myreque_2_main_var'):
     assert re.search(r'(?m)^\['+name+r'\]\nscope=perm\n',av), name
 # the batch bundle's Veliaf handler carries the self-contained In Aid of the Myreque
 # start branch (raw stages; no questbundle2 symbols).
 vr=(scripts/'quests/quest_myreque/scripts/quest_route.rs2').read_text(errors='replace')
 assert vr.count('%myreque_2_main_var')==4 and 'questlist:myreque_2' in vr
-for q,need in (('quest_mourning','mourning1_journal.rs2'),('quest_wanted','wanted_npcs.rs2'),
-               ('quest_myreque_2','myreque2_journal.rs2'),('quest_deal','deal_npcs.rs2')):
+for q,need in (('quest_mourning','mourning1_journal.rs2'),('quest_myreque_2','myreque2_journal.rs2')):
     assert (scripts/'quests'/q/'scripts'/need).is_file(), q
 print('Disposable overlay verified: unique permanent varps, quest-list registrations, merged stubs intact')
 PY

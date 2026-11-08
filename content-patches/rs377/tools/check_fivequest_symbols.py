@@ -8,7 +8,7 @@ import os, re, sys, glob
 C = os.environ.get("SIXQUEST_CONTENT", "/tmp/pinned/lc-content")  # pinned LostCityRS/Content checkout
 BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 QUESTS = ["quest_100", "quest_fever", "quest_rd", "quest_mourning2", "quest_mm",
-         "quest_mourning", "quest_wanted", "quest_myreque_2", "quest_deal"]
+         "quest_mourning", "quest_myreque_2"]
 
 def pack_names(name):
     out = set()
