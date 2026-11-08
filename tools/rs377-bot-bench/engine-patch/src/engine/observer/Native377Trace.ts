@@ -5,6 +5,7 @@
  * normal outbound packet must not modify or suppress the original packet.
  * Never publish any other player, plaintext login credentials or full saves.
  */
+import Component from '#/cache/config/Component.js';
 import type Player from '#/engine/entity/Player.js';
 import type ServerGameMessage from '#/network/game/server/ServerGameMessage.js';
 import MessageGame from '#/network/game/server/model/MessageGame.js';
@@ -24,6 +25,7 @@ type Trace = {
     textOverrides: Map<number, string>;
     sawDialogPage: boolean;
     dialogPageRevision: number;
+    dialogPages: Array<{tick:number;interfaceId:number;text:string[];complete:boolean}>;
 };
 const traceByPlayer = new WeakMap<Player, Trace>();
 const allowed = (player: Player): boolean =>
@@ -48,7 +50,8 @@ function forBot(player: Player): Trace | null {
             gameMessages: [],
             textOverrides: new Map(),
             sawDialogPage: false,
-            dialogPageRevision: 0
+            dialogPageRevision: 0,
+            dialogPages: []
         };
         traceByPlayer.set(player, trace);
     }
@@ -78,6 +81,32 @@ export function observeSdkTick(player: Player, tick: number): void {
     t.lastObservedTick = tick;
 }
 
+// Resolve ONLY text the packed client interface can actually display or
+// text the native server has already explicitly supplied via IfSetText.
+// Dynamic client scripts, hidden layers or absent widgets are UNKNOWN.
+function verifiedPageText(rootId:number, overrides:Map<number,string>):string[]|null {
+    const todo=[rootId], visited=new Set<number>(), out:string[]=[];
+    while(todo.length) {
+        if(visited.size>=128) return null;
+        const id=todo.shift()!;
+        if(visited.has(id)) continue;
+        visited.add(id);
+        const comp=Component.get(id);
+        if(!comp || comp.hide || comp.scriptComparator?.length || comp.scripts?.length)
+            return null;
+        if(comp.comType===Component.TYPE_LAYER){
+            if(!comp.childId) return null;
+            todo.push(...comp.childId);
+        }
+        if(comp.comType===Component.TYPE_TEXT) {
+            const value=overrides.get(id) ?? comp.text;
+            if(typeof value!=='string') return null;
+            if(value.trim())out.push(value.slice(0,1024));
+        }
+    }
+    return out.slice(0,32);
+}
+
 /** Called only after Player.write has confirmed the bot's real client exists. */
 export function captureSdkOutgoing(player: Player, packet: ServerGameMessage, tick: number): void {
     const t = forBot(player);
@@ -92,10 +121,23 @@ export function captureSdkOutgoing(player: Player, packet: ServerGameMessage, ti
     } else if (packet instanceof IfOpenChat) {
         t.sawDialogPage = true;
         t.dialogPageRevision++;
+        const text=verifiedPageText(packet.component,t.textOverrides);
+        t.dialogPages.push({
+            tick,interfaceId:packet.component,text:text ?? [],complete:text!==null
+        });
+        if(t.dialogPages.length>16)t.dialogPages.shift();
     } else if (packet instanceof IfSetText) {
         // Exact server-set text, not a guessed client-visible label.
         t.textOverrides.set(packet.component, packet.text.slice(0, 1024));
-        if (player.modalChat !== -1) t.dialogPageRevision++;
+        if (player.modalChat !== -1) {
+            t.dialogPageRevision++;
+            const last=t.dialogPages[t.dialogPages.length - 1];
+            if(last && last.interfaceId===player.modalChat){
+                const text=verifiedPageText(last.interfaceId,t.textOverrides);
+                last.text=text??[];
+                last.complete=text!==null;
+            }
+        }
         if (t.textOverrides.size > 512) t.textOverrides.clear();
     }
 }
@@ -115,6 +157,10 @@ export function readSdkTrace(player: Player, currentTick: number) {
         gameMessages: t.gameMessages.map(message => ({ ...message })),
         sawDialogPage: t.sawDialogPage,
         dialogPageRevision: t.dialogPageRevision,
+        recentDialogs: t.dialogPages.every(page=>page.complete) ?
+            t.dialogPages.map(page=>({
+                text:[...page.text],tick:page.tick,interfaceId:page.interfaceId
+            })) : null,
         textOverrides: Array.from(t.textOverrides, ([component, text]) => ({component,text}))
     };
 }
