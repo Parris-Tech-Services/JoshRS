@@ -309,30 +309,70 @@ $install = if (Test-Path -LiteralPath (Join-Path $engine 'package-lock.json')) {
 Run-Native 'npm.cmd' @($install,'--no-audit','--no-fund') $engine
 Write-Host 'Applying non-destructive SQLite database migrations...'
 Run-Native 'npm.cmd' @('run','sqlite:migrate') $engine
-# CI-only network resilience. Default zero preserves all local/user client files.
-# This changes only the disposable checkout's wrapper download timeout, never
-# its version, distribution URL, engine, accounts, content or saves.
-if ($ClientGradleTimeoutMs -gt 0) {
-    if ($ClientGradleTimeoutMs -lt 10000 -or $ClientGradleTimeoutMs -gt 300000) {
+# Both fresh Windows setup and CI use the official Gradle distribution directly
+# when the selected client is on the exact pinned 8.11.1 wrapper. The standard
+# services.gradle.org URL redirects to a GitHub release that may return HTTP 504.
+# The direct official Gradle host avoids that redirect, with SHA-256 validation.
+# A customised/unknown Gradle version is left untouched.
+$gradleWrapper = Join-Path $client 'gradle/wrapper/gradle-wrapper.properties'
+if (-not (Test-Path -LiteralPath $gradleWrapper -PathType Leaf)) {
+    throw 'The Java client Gradle wrapper properties are missing.'
+}
+$wrapperBefore = [IO.File]::ReadAllText($gradleWrapper)
+$wrapperNew = $wrapperBefore
+$defaultGradle = 'distributionUrl=https\://services.gradle.org/distributions/gradle-8.11.1-bin.zip'
+$directGradle = 'distributionUrl=https\://downloads.gradle.org/distributions/gradle-8.11.1-bin.zip'
+$expectedGradleHash = 'f397b287023acdba1e9f6fc5ea72d22dd63669d59ed4a289a29b1a76eee151c6'
+$hasPinned = $wrapperBefore.Contains($defaultGradle) -or $wrapperBefore.Contains($directGradle)
+if ($hasPinned) {
+    if ([regex]::Matches($wrapperBefore,'(?m)^distributionUrl=').Count -ne 1 -or
+        [regex]::Matches($wrapperBefore,'(?m)^distributionSha256Sum=').Count -gt 1) {
+        throw 'Duplicate Java client Gradle wrapper settings; refusing to choose a distribution.'
+    }
+    if ($wrapperBefore -match '(?m)^distributionSha256Sum=(.+)\r?$' -and
+        $Matches[1].Trim() -cne $expectedGradleHash) {
+        throw 'Existing Gradle download checksum conflicts with the pinned 8.11.1 release.'
+    }
+    $wrapperNew = $wrapperNew.Replace($defaultGradle,$directGradle)
+    if ($wrapperNew -notmatch '(?m)^distributionSha256Sum=') {
+        $wrapperNew += [Environment]::NewLine + 'distributionSha256Sum=' + $expectedGradleHash + [Environment]::NewLine
+    }
+    $desiredTimeout = if ($ClientGradleTimeoutMs -gt 0) { $ClientGradleTimeoutMs } else { 120000 }
+    if ($desiredTimeout -lt 10000 -or $desiredTimeout -gt 300000) {
         throw 'ClientGradleTimeoutMs must be between 10000 and 300000.'
     }
-    $wrapper = Join-Path $client 'gradle/wrapper/gradle-wrapper.properties'
-    if (-not (Test-Path -LiteralPath $wrapper -PathType Leaf)) {
-        throw 'Client Gradle wrapper properties are missing; cannot set CI timeout.'
+    if ($wrapperNew -match '(?m)^networkTimeout=[0-9]+') {
+        $wrapperNew = [regex]::Replace($wrapperNew,'(?m)^networkTimeout=[0-9]+',
+            ('networkTimeout=' + $desiredTimeout))
+    } else {
+        $wrapperNew += [Environment]::NewLine + 'networkTimeout=' + $desiredTimeout + [Environment]::NewLine
     }
-    $originalWrapper = [IO.File]::ReadAllText($wrapper)
-    $replacement = [regex]::Replace($originalWrapper,'(?m)^networkTimeout=[0-9]+','networkTimeout=' + $ClientGradleTimeoutMs)
-    if ($replacement -ceq $originalWrapper -and $originalWrapper -notmatch '(?m)^networkTimeout=') {
-        $replacement = $originalWrapper.TrimEnd([char[]]@([char]13,[char]10)) + [Environment]::NewLine +
-            'networkTimeout=' + $ClientGradleTimeoutMs + [Environment]::NewLine
+} else {
+    Write-Warning 'Custom Java client Gradle wrapper version/URL preserved. Direct official 8.11.1 download not applied.'
+}
+$wrapperBackup = $null
+if ($wrapperNew -cne $wrapperBefore) {
+    $backupDirectory = Join-Path $runtime 'gradle-wrapper-backups'
+    New-Item -ItemType Directory -Path $backupDirectory -Force | Out-Null
+    $wrapperBackup = Join-Path $backupDirectory ('wrapper-' + (Get-Date -Format 'yyyyMMdd-HHmmss-fffffff') + '.properties')
+    Copy-Item -LiteralPath $gradleWrapper -Destination $wrapperBackup -ErrorAction Stop
+    if ((Get-FileHash -LiteralPath $gradleWrapper -Algorithm SHA256).Hash -ne
+        (Get-FileHash -LiteralPath $wrapperBackup -Algorithm SHA256).Hash) {
+        throw 'Gradle wrapper backup integrity mismatch. No source changed.'
     }
-    if ($replacement -cne $originalWrapper) {
-        [IO.File]::WriteAllText($wrapper,$replacement)
-    }
-    Write-Host "CI client Gradle wrapper network timeout: $ClientGradleTimeoutMs ms"
+    [IO.File]::WriteAllText($gradleWrapper,$wrapperNew,[Text.UTF8Encoding]::new($false))
+    Write-Host 'Using official Gradle 8.11.1 direct download with pinned SHA-256; wrapper backup saved locally.'
 }
 Write-Host 'Compiling the revision 377 Java client...'
-Run-Native (Join-Path $client 'gradlew.bat') @('--no-daemon','classes') $client
+try {
+    Run-Native (Join-Path $client 'gradlew.bat') @('--no-daemon','classes') $client
+} catch {
+    if ($wrapperBackup) {
+        Copy-Item -LiteralPath $wrapperBackup -Destination $gradleWrapper -Force
+        Write-Warning 'Gradle download/build failed. Original Java client wrapper restored; player saves and game content untouched.'
+    }
+    throw
+}
 
 # Preserve the recorded world origin across later Update/Repair sessions.
 $sourceKind=if($UsbPath -or $ResumeSnapshotPath){'usb'}elseif($existing -and $existing.source){[string]$existing.source}else{'upstream'}
