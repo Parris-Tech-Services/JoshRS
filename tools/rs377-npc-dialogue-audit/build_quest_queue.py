@@ -1711,7 +1711,7 @@ MINIQUESTS_377 = [
     {
         "miniquest_id": "barcrawl",
         "name": "Alfred Grimhand's Barcrawl",
-        "release_date": "2002-02-27",
+        "release_date": "2002-03-25",
         "membership": "Members",
         "varp_or_varbit": "barcrawl",
         "quest_dir_hint": "quest_barcrawl",

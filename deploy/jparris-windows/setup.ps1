@@ -3,6 +3,7 @@ param(
     [string]$UsbPath = '',
     [string]$ResumeSnapshotPath = '',
     [switch]$SkipStart,
+    [int]$ClientGradleTimeoutMs = 0,
     [switch]$CheckOnly,
     [switch]$Interactive
 )
@@ -308,6 +309,28 @@ $install = if (Test-Path -LiteralPath (Join-Path $engine 'package-lock.json')) {
 Run-Native 'npm.cmd' @($install,'--no-audit','--no-fund') $engine
 Write-Host 'Applying non-destructive SQLite database migrations...'
 Run-Native 'npm.cmd' @('run','sqlite:migrate') $engine
+# CI-only network resilience. Default zero preserves all local/user client files.
+# This changes only the disposable checkout's wrapper download timeout, never
+# its version, distribution URL, engine, accounts, content or saves.
+if ($ClientGradleTimeoutMs -gt 0) {
+    if ($ClientGradleTimeoutMs -lt 10000 -or $ClientGradleTimeoutMs -gt 300000) {
+        throw 'ClientGradleTimeoutMs must be between 10000 and 300000.'
+    }
+    $wrapper = Join-Path $client 'gradle/wrapper/gradle-wrapper.properties'
+    if (-not (Test-Path -LiteralPath $wrapper -PathType Leaf)) {
+        throw 'Client Gradle wrapper properties are missing; cannot set CI timeout.'
+    }
+    $originalWrapper = [IO.File]::ReadAllText($wrapper)
+    $replacement = [regex]::Replace($originalWrapper,'(?m)^networkTimeout=[0-9]+','networkTimeout=' + $ClientGradleTimeoutMs)
+    if ($replacement -ceq $originalWrapper -and $originalWrapper -notmatch '(?m)^networkTimeout=') {
+        $replacement = $originalWrapper.TrimEnd([char[]]@([char]13,[char]10)) + [Environment]::NewLine +
+            'networkTimeout=' + $ClientGradleTimeoutMs + [Environment]::NewLine
+    }
+    if ($replacement -cne $originalWrapper) {
+        [IO.File]::WriteAllText($wrapper,$replacement)
+    }
+    Write-Host "CI client Gradle wrapper network timeout: $ClientGradleTimeoutMs ms"
+}
 Write-Host 'Compiling the revision 377 Java client...'
 Run-Native (Join-Path $client 'gradlew.bat') @('--no-daemon','classes') $client
 
