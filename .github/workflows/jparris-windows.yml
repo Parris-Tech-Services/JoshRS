@@ -9,6 +9,8 @@ on:
       - 'JoshRS-Backup-Elrothiro.cmd'
       - 'JoshRS-Play-Android.cmd'
       - 'deploy/jparris-windows/**'
+      - 'tools/rs377-saves/verify-local-login.mjs'
+      - 'tools/rs377-saves/verify-local-login.test.mjs'
       - '.github/workflows/jparris-windows.yml'
   pull_request:
     paths:
@@ -16,6 +18,8 @@ on:
       - 'jparris-play.cmd'
       - 'JoshRS.cmd'
       - 'deploy/jparris-windows/**'
+      - 'tools/rs377-saves/verify-local-login.mjs'
+      - 'tools/rs377-saves/verify-local-login.test.mjs'
       - '.github/workflows/jparris-windows.yml'
   workflow_dispatch:
 
