@@ -41,6 +41,9 @@ jobs:
       - name: Overlay batch quests on disposable content only
         shell: bash
         run: bash content-patches/rs377/ci-compile-batch-quests.sh
+      - name: Test deep quest source comparison (negative fixtures)
+        shell: bash
+        run: python3 -m unittest discover -s tools/rs377-quest-parity/tests -v
       - name: Audit source-level evidence for every one of the 104 quests
         shell: bash
         run: |
@@ -48,6 +51,14 @@ jobs:
             --content "$RUNNER_TEMP/joshrs-batch-377/content" \
             --out-dir "$RUNNER_TEMP/quest-parity"
           cat "$RUNNER_TEMP/quest-parity/quests-104-evidence.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Deep audit all 104 quest NPCs, dialogues, item/object hooks and stage transitions
+        shell: bash
+        run: |
+          python3 -I tools/rs377-quest-parity/deep_audit.py \
+            --content "$RUNNER_TEMP/joshrs-batch-377/content" \
+            --output "$RUNNER_TEMP/quest-parity"
+          printf '\n---\n\n' >> "$GITHUB_STEP_SUMMARY"
+          head -n 15 "$RUNNER_TEMP/quest-parity/deep-104-quests.md" >> "$GITHUB_STEP_SUMMARY"
       - name: Upload 104-quest evidence matrix
         if: always()
         uses: actions/upload-artifact@v4
