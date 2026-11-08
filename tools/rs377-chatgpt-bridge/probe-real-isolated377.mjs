@@ -240,6 +240,15 @@ try {
  // sdk_connected / sdk_action / sdk_action_result) with the SAME normal TCP
  // game session and a fresh authenticated native 377 observer. This is a
  // subset while full BotWorldState remains unsupported and clearly rejected.
+ // A busy quest region can have native NPC/loc fields that remain
+ // legitimately UNKNOWN. A quest-specific normal packet test may proceed
+ // with the validated PARTIAL observer, but must never report a full SDK
+ // state or a successful upstream WebSocket state/action in that case.
+ if(!completeSdkStateVerified &&
+    process.env.RS377_FENK_SIGNPOST_PROBE!=='true')
+   reject('the real native engine did not produce complete pinned BotWorldState');
+ let websocketVerified=false;
+ if(completeSdkStateVerified){
  const websocketToken=randomBytes(32).toString('hex');
  const wsObserver=createEngine377Observer({port:managementPort,token,
    botName:username,expectedWorld});
@@ -248,7 +257,6 @@ try {
  });
  const webSocketGateway=createSdk377WebSocket({runtime:wsRuntime,botName:username,
    token:websocketToken});
- let websocketVerified=false;
  await webSocketGateway.listen(18883);
  const sdkSocket=new WebSocket('ws://127.0.0.1:18883/gateway');
  const sdkReplies=[];
@@ -310,6 +318,7 @@ try {
  } finally {
    sdkSocket.close();
    await webSocketGateway.close();
+ }
  }
  const savedPosition={...moved.position};
  // Client close is NOT a verified logout/save. Let the actual 377 idle
