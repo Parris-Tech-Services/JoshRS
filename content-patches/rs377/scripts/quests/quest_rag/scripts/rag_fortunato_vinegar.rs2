@@ -1,0 +1,20 @@
+// Fortunato's 2006 quest-aware dialogue. The pinned shop inventory already
+// defines wine_vinegar_merchant (500 jugs of vinegar), but the base script
+// never unlocks it. The rag_wine varbit persists through rag_bone_2.
+[opnpc1,rag_wine_merchant]
+if (map_members = ^false) {
+    ~chatnpc("<p,neutral>I'm selling wine and empty jugs, if you need any.");
+    return;
+}
+if (%rag_quest = ^rag_not_started) {
+    ~chatnpc("<p,neutral>Welcome to my wine shop. What can I get you?");
+} else if (%rag_wine = 0) {
+    ~chatnpc("<p,neutral>Vinegar? Not a popular request!|If you're helping that bone collector, I suppose I can sell you some.");
+    %rag_wine = 1;
+} else {
+    ~chatnpc("<p,happy>Welcome back. Do you need more vinegar?");
+}
+def_int $choice = ~p_choice2("Show me your stock.", 1, "Not right now.", 2);
+if ($choice = 1) {
+    ~openshop_fortunato;
+}

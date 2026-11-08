@@ -1,0 +1,82 @@
+// Pinned 377 objects/varbits: loc_14954/55 morph by swansong_franklin;
+// loc_14956/57 press, loc_14958/59/60 firebox, loc_14945..47 damaged walls.
+// Wall bitfields live in the permanent swansong_quest varp.
+[oplocu,loc_14958]
+if (last_useitem ! logs | %swansong < ^swansong_met_arnold) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%swansong_franklin > 1) {
+    mes("The press already has fuel.");
+    return;
+}
+if (inv_total(inv, logs) < 1) { return; }
+inv_del(inv, logs, 1);
+%swansong_franklin = 2;
+mes("You feed logs into the metal press firebox.");
+
+[oplocu,loc_14959]
+if (last_useitem ! tinderbox | %swansong < ^swansong_met_arnold) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (stat(firemaking) < 42) {
+    mes("You need 42 Firemaking to heat this press.");
+    return;
+}
+if (inv_total(inv, tinderbox) < 1) { return; }
+%swansong_franklin = 3;
+mes("You ignite the firebox. The press begins to heat up.");
+
+[oplocu,loc_14956]
+if (last_useitem ! iron_bar | %swansong < ^swansong_met_arnold) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%swansong_franklin < 3) {
+    mes("The metal press is not hot enough yet.");
+    return;
+}
+if (stat(smithing) < 45) {
+    mes("You need 45 Smithing to press the iron.");
+    return;
+}
+if (inv_total(inv, iron_bar) < 1) { return; }
+inv_del(inv, iron_bar, 1);
+inv_add(inv, iron_sheet, 1);
+mes("You press the iron bar into a sturdy sheet.");
+
+[oplocu,loc_14945] @swan_wall_repair;
+[oplocu,loc_14946] @swan_wall_repair;
+[oplocu,loc_14947] @swan_wall_repair;
+[label,swan_wall_repair]
+if (last_useitem ! iron_sheet | %swansong < ^swansong_met_arnold | %swansong > ^swansong_fish) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (inv_total(inv, iron_sheet) < 1 | inv_total(inv, hammer) < 1) {
+    mes("Bring an iron sheet and a hammer to repair the wall.");
+    return;
+}
+if (stat(crafting) < 40) {
+    mes("You need 40 Crafting to repair this wall.");
+    return;
+}
+if (~swan_wall_count >= 5) {
+    mes("All five wall sections have been repaired.");
+    return;
+}
+inv_del(inv, iron_sheet, 1);
+if (%swansong_wall_1 = 0) {
+    %swansong_wall_1 = 1;
+} else if (%swansong_wall_2 = 0) {
+    %swansong_wall_2 = 1;
+} else if (%swansong_wall_3 = 0) {
+    %swansong_wall_3 = 1;
+} else if (%swansong_wall_4 = 0) {
+    %swansong_wall_4 = 1;
+} else {
+    %swansong_wall_5 = 1;
+}
+mes("You patch a wall section. Progress: <tostring(~swan_wall_count)> of 5.");
+~swan_rebuild_advance;

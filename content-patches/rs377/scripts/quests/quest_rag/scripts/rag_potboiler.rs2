@@ -4,6 +4,10 @@
 // UNVERIFIED: boil duration.
 
 [oplocu,rag_potboiler_nologs]
+if (%rag_quest < ^rag_started) {
+    mes("You should speak to the Odd Old Man first.");
+    return;
+}
 if (last_useitem = logs) {
     inv_del(inv, logs, 1);
     %rag_boiler = 1;
@@ -13,6 +17,10 @@ if (last_useitem = logs) {
 }
 
 [oplocu,rag_potboiler_nopot]
+if (%rag_quest < ^rag_started | %rag_potboiler ! 0) {
+    mes("Finish the bone already in the boiler first.");
+    return;
+}
 def_int $i = ~rag_bone_index(last_useitem);
 if ($i = -1 | last_useitem ! ~rag_potted_bone($i)) {
     ~displaymessage(^dm_default);
@@ -28,6 +36,9 @@ if (last_useitem = tinderbox) {
     %rag_boiler = 3;
     mes("You light the logs.");
     p_delay(20);
+    if (%rag_boiler ! 3 | %rag_potboiler < 1 | %rag_potboiler > ^rag_bone_catalog_total) {
+        return;
+    }
     %rag_boiler = 4;
     mes("The pot has boiled dry.");
 } else {
@@ -35,6 +46,14 @@ if (last_useitem = tinderbox) {
 }
 
 [oploc1,rag_potboiler_with_pot]
+if (%rag_potboiler < 1 | %rag_potboiler > ^rag_bone_catalog_total) {
+    mes("There is no bone to take from the boiler.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need an empty inventory slot.");
+    return;
+}
 def_int $i = calc(%rag_potboiler - 1);
 inv_add(inv, ~rag_potted_bone($i), 1);
 %rag_potboiler = 0;
@@ -42,6 +61,14 @@ inv_add(inv, ~rag_potted_bone($i), 1);
 mes("You take the pot back out.");
 
 [oploc1,rag_potboiler_with_pot_boiled]
+if (%rag_potboiler < 1 | %rag_potboiler > ^rag_bone_catalog_total) {
+    mes("There is no polished bone to take.");
+    return;
+}
+if (inv_freespace(inv) < 2) {
+    mes("You need two empty inventory slots for the bone and its pot.");
+    return;
+}
 def_int $i = calc(%rag_potboiler - 1);
 inv_add(inv, ~rag_polished_bone($i), 1);
 inv_add(inv, pot_empty, 1);

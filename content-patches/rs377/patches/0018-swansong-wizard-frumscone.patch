@@ -1,0 +1,9 @@
+--- a/scripts/areas/area_yanille/scripts/wizard_frumscone.rs2
++++ b/scripts/areas/area_yanille/scripts/wizard_frumscone.rs2
+@@ -1,2 +1,6 @@
+ [opnpc1,wizard_frumscone]
++if (%swansong = ^swansong_queen) {
++    ~swan_frumscone_army;
++    return;
++}
+ ~chatnpc("<p,neutral>Do you like my magic Zombies?|Feel free to kill them,|there's plenty more where these came from!");
