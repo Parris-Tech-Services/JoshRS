@@ -10,8 +10,8 @@ SCRIPT = (QUEST / "scripts/quest_rag.rs2").read_text()
 CONSTANTS = (QUEST / "configs/quest_rag.constant").read_text()
 FORTUNATO = (QUEST / "scripts/rag_fortunato_vinegar.rs2").read_text()
 BOILER = (QUEST / "scripts/rag_potboiler.rs2").read_text()
-PATCHSHOP = (ROOT / "content-patches/rs377/patches/0014-rag-fortunato-vinegar-shop.patch").read_text()
-PATCHVARP = (ROOT / "content-patches/rs377/patches/0013-rag-boiler-persistence.patch").read_text()
+PATCHSHOP = (ROOT / "content-patches/rs377/patches/0015-rag-fortunato-vinegar-shop.patch").read_text()
+PATCHVARP = (ROOT / "content-patches/rs377/patches/0014-rag-boiler-persistence.patch").read_text()
 
 
 class RagAndBoneManContracts(unittest.TestCase):
