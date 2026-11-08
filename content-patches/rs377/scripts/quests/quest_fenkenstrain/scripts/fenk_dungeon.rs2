@@ -119,17 +119,8 @@ if (%fenk_quest < ^fenk_hired | inv_total(inv, fenk_star_amulet) < 1) {
 mes("The amulet fits a small recess. You push the memorial aside.");
 p_teleport(0_55_155_56_6);
 
-// The two map-confirmed cave exit objects (loc_1757) lead to their
-// corresponding exterior locations. This deliberately does not override
-// ladders elsewhere in the world.
-[oploc1,loc_1757]
-if (loc_coord = 0_55_155_58_7) {
-    mes("You climb back to the castle graveyard.");
-    p_teleport(0_55_55_57_8);
-} else if (loc_coord = 0_54_155_48_50) {
-    mes("You climb out into the mausoleum grounds.");
-    p_teleport(0_54_55_49_50);
-} else {
-    ~displaymessage(^dm_default);
-}
-
+// Both cave exits are already implemented by the upstream generic
+// [oploc1,loc_1757] handler in ladders.rs2, which calls
+// climb_ladder(movecoord(coord(), 0, 0, -6400), true).
+// Do not add a competing trigger: this preserves normal collision/movement
+// and safely returns to the matching overworld tile for each cave exit.
