@@ -76,8 +76,9 @@ if (%garden_varp_1 = ^gt_plant) {
 }
 
 [queue,gt_complete]
+stat_advance(farming, 50000);
 session_log(^log_adventure, "Quest complete: Garden of Tranquillity");
-~send_quest_complete(questlist:garden, gardening_trowel, 200, ^gt_questpoints, "You have completed Garden of Tranquillity!", "2 quest points");
+~send_quest_complete(questlist:garden, gardening_trowel, 200, ^gt_questpoints, "You have completed Garden of Tranquillity!", "5,000 Farming XP|2 Quest Points");
 
 [if_button,questlist:garden]
 def_string $text;
