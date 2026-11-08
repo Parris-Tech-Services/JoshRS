@@ -47,12 +47,12 @@ function Read-Source([string]$Path){
     $raw=[IO.File]::ReadAllBytes($Path)
     $bom=$raw.Length -ge 3 -and $raw[0] -eq 239 -and $raw[1] -eq 187 -and $raw[2] -eq 191
     $offset=if($bom){3}else{0}
-    $encoding=New-Object System.Text.UTF8Encoding($false,$true)
+    $encoding=[System.Text.UTF8Encoding]::new($false,$true)
     $text=$encoding.GetString($raw,$offset,$raw.Length-$offset)
     return [pscustomobject]@{Text=$text;Bom=$bom}
 }
 function Write-Source([string]$Path,[string]$Text,[bool]$Bom){
-    $encoding=New-Object System.Text.UTF8Encoding($Bom)
+    $encoding=[System.Text.UTF8Encoding]::new($Bom)
     [IO.File]::WriteAllText($Path,$Text,$encoding)
 }
 
