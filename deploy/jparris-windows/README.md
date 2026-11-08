@@ -148,11 +148,28 @@ login does **not** prove that Elrothiro's personal account can log in.
    corresponding WAL files, where present). Do **not** clear the database,
    reset the character, create a new Elrothiro account or toggle automatic
    registration to claim an existing saved character.
+3. If the character and matching account record are present, the optional
+   **read-only local password check** can distinguish a password/hash mismatch
+   from a client/server connection problem. Download only this public-source
+   diagnostic into your existing launcher checkout (do not replace `runtime/`):
+
+   ```powershell
+   Invoke-WebRequest 'https://raw.githubusercontent.com/Parris-Tech-Services/JoshRS/main/tools/rs377-saves/verify-local-login.mjs' -OutFile '.\\tools\\rs377-saves\\verify-local-login.mjs'
+   node '.\\tools\\rs377-saves\\verify-local-login.mjs'
+   ```
+
+   Type the password at the **hidden terminal prompt** on the desktop, never
+   in chat or a shell argument. It uses Node 24's read-only SQLite access and
+   the **active engine's own** bcrypt-ts comparator with its lowercase
+   password policy; it prints only a match/mismatch or case-mismatch result.
+   It neither updates account hashes nor registers new accounts. A matching
+   hash still does not independently establish which game process is running.
+
 3. If the account is present and the save passes verification, the correct
    password still needs to be tested *privately* on the real local client.
    Neither this report nor a GitHub CI run can validate a user's password.
    Keep passwords, hashes and databases off GitHub/chat.
-4. Unknown/new usernames are a separate case: upstream Engine-TS defaults
+5. Unknown/new usernames are a separate case: upstream Engine-TS defaults
    `WEBSITE_REGISTRATION=true`, which **rejects unknown names** if no website
    signup has provisioned them. New, empty Windows worlds created by the
    corrected launcher explicitly choose `WEBSITE_REGISTRATION=false`. Existing
