@@ -1,10 +1,14 @@
 # Creature of Fenkenstrain: work in progress (updated 8 Nov 2026)
 
-STATUS: PARTIAL, **UNCOMPILED, UNTESTED**. Nothing here has been compiled, packed or run against a 377 world.
-A compile attempt (`tsx tools/pack/Build.ts` from the pinned Engine-TS) was blocked in the Claude session by its
-permission classifier (it will not run code from an external checkout), so that check still has to be done
-on-machine or explicitly authorised. The rs2 was checked by reading only: every command and idiom used was
-matched to an existing use in the pinned content or engine source.
+STATUS: PARTIAL, **NOT COMPILED, NOT RUN**. Nothing here has been packed or run against a 377 world.
+The engine's own build (`tsx tools/pack/Build.ts`) was blocked in the Claude session by its permission classifier (it will not run
+code from an external checkout), so the real compile is still outstanding.
+
+What WAS checked instead: `tools/check_fenk_symbols.py` (own code, reads the pinned content as data only). It confirms every NPC, obj,
+varp/varbit, constant, proc, label, queue, questlist component, anim and sound used by the scripts exists in the pinned content, and that
+brackets balance. Result: 199 symbols, 0 unknown. A negative test (planted bad names and an unclosed brace) was caught, so the pass is meaningful.
+This does NOT check types, argument counts, trigger/script semantics or varp duplication, so it is not a substitute for the real compile.
+Run it: `FENK_CONTENT=<pinned content checkout> python3 -I tools/check_fenk_symbols.py`.
 
 Pinned: `LostCityRS/Content@44eab090`, `Engine-TS@b5ac859b` (per `deploy/jparris-windows/upstreams.json`).
 This quest has no scripts upstream, but the cache already defines everything it needs: varp `fenk_quest` and
@@ -12,6 +16,7 @@ This quest has no scripts upstream, but the cache already defines everything it 
 and map spawns (Canifis signpost 0_54_54_37_29, castle m55_55, dungeon m54_155/m55_155).
 
 ## Files in this patch (copy into the private content checkout at the same relative paths)
+- `tools/check_fenk_symbols.py`: the static checker above (not game content; do not copy into the content tree).
 - `scripts/quests/quest_fenkenstrain/configs/quest_fenkenstrain.constant`: stage, reward and requirement constants.
 - `.../configs/quest_fenkenstrain.varp`: `fenk_quest` and `fenk_flags` with `scope=perm` AND `transmit=yes`.
 - `.../scripts/fenk_journal.rs2`: journal text for every stage.
