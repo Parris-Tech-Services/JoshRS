@@ -273,15 +273,19 @@ try {
      clientId:'isolated-joshrs-ci-probe',mode:'control'}));
    await waitWs(msg=>msg.type==='sdk_connected'&&msg.success===true);
    // It MUST NOT send invented sdk_state for unknown UI/shop/bank fields.
-   if(completeSdkStateVerified) {
-     const result=await waitWs(msg=>msg.type==='sdk_state'&&
-       msg.state?.player?.name===username,8000);
-     if(!Array.isArray(result.state.skills)||result.state.skills.length!==21)
-       reject('actual upstream SDK envelope omitted authoritative skill array');
-   } else {
-     await waitWs(msg=>msg.type==='sdk_error'&&
-       msg.error==='authoritative_sdk_state_incomplete');
-   }
+   if(!completeSdkStateVerified)
+     reject('the real native engine did not produce complete pinned BotWorldState');
+   const firstState=await waitWs(msg=>msg.type==='sdk_state'&&
+     msg.state?.player?.name===username,8000);
+   if(!Array.isArray(firstState.state.skills)||firstState.state.skills.length!==21 ||
+      !Array.isArray(firstState.state.nearbyNpcs) ||
+      !Array.isArray(firstState.state.prayers.activePrayers) ||
+      firstState.state.prayers.activePrayers.length!==15)
+     reject('actual upstream SDK stream is missing native fields');
+   const nextState=await waitWs(msg=>msg.type==='sdk_state' &&
+     msg.state?.player?.name===username && msg.state.tick>firstState.state.tick,8000);
+   if(nextState.state.tick<=firstState.state.tick)
+     reject('real upstream SDK stream did not advance engine tick');
    const before=moved.position;
    const trials=[[before.x+1,before.z],[before.x,before.z+1],
      [before.x-1,before.z],[before.x,before.z-1]];
