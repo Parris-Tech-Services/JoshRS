@@ -106,9 +106,13 @@ export function mapSdkAction(action,snapshot) {
       if(!a.guard||a.guard.pageId!==d.pageId)reject('stale or unguarded dialogue');
       const opt=d.options.find(o=>o.index===a.optionIndex&&o.componentId===a.guard.componentId);
       if(!opt)reject('dialogue option no longer available');
-      // The 377 RESUME_PAUSEBUTTON decoder is a different mechanic from an
-      // SDK option selection; mapping generic 377 component bytes is unsafe.
-      reject('dialogue page action needs verified 377 IF_BUTTON/component routing');
+      // The verified pending component is exactly what the native server's
+      // RESUME_PAUSEBUTTON decoder expects. This is an ordinary 377 packet,
+      // not a privileged script invocation or a guessed interface click.
+      if(!Number.isSafeInteger(opt.componentId)||opt.componentId<0||
+         opt.componentId>65535||!snapshot.dialogue.pendingComponentIds?.includes(opt.componentId))
+         reject('component not pending in actual native dialogue script');
+      return packet({type:'dialog_resume',componentId:opt.componentId});
     }
     default:reject('unsupported, dangerous or unverified RS-SDK action '+String(a?.type).slice(0,40));
   }
