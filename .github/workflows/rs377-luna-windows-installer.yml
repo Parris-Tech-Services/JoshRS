@@ -1,0 +1,24 @@
+name: JoshRS Windows safe Luna playtime installer
+on:
+  pull_request:
+    paths:
+      - 'deploy/jparris-windows/Repair-LunaPlaytime.ps1'
+      - 'deploy/jparris-windows/tests/Repair-LunaPlaytime.test.ps1'
+      - '.github/workflows/rs377-luna-windows-installer.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'deploy/jparris-windows/Repair-LunaPlaytime.ps1'
+      - 'deploy/jparris-windows/tests/Repair-LunaPlaytime.test.ps1'
+      - '.github/workflows/rs377-luna-windows-installer.yml'
+permissions:
+  contents: read
+jobs:
+  windows-safe-preflight:
+    runs-on: windows-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify read-only and fail-closed Luna repair in PowerShell 5.1
+        shell: powershell
+        run: '& .\deploy\jparris-windows\tests\Repair-LunaPlaytime.test.ps1'
