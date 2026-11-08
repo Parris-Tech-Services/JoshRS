@@ -10,6 +10,7 @@
 // entrance: fenk_coffin at 0_55_55_58_7
 // cave gate: fenk_mausoleum_door at 0_54_155_54_37
 // cave chest: fenk_chest_open at 0_54_155_44_47
+// two real cave ladders: loc_1757 at 0_55_155_58_7 and 0_54_155_48_50
 // mausoleum island: graves 0_54_55_46_56, 0_54_55_48_57,
 //                  0_54_55_50_56 (west to east).
 
@@ -39,7 +40,7 @@ if (loc_coord = 0_54_55_49_51) {
     }
     mes("You descend the mausoleum steps.");
     p_arrivedelay;
-    p_teleport(0_54_155_44_46);
+    p_teleport(0_54_155_48_49);
     return;
 }
 if (loc_coord ! 0_55_55_58_7) {
@@ -52,12 +53,27 @@ if (%fenk_quest < ^fenk_hired | %fenk_coffin = 0) {
 }
 mes("You push aside the memorial and climb down into the experiment cave.");
 p_arrivedelay;
-p_teleport(0_55_155_34_27);
+p_teleport(0_55_155_57_8);
 
-// The same entrance location is also the visible exit from the dungeon;
-// unlike other caves there is no dedicated fenk_* cave-exit model in the
-// pinned map. Do not invent a global trigger for all cave_generic_hole_l.
-// For now, the island coffin allows backtracking after passing the key gate.
+// There ARE two actual, map-placed ladders (loc_1757). Dispatch is
+// strictly coordinate-guarded so unrelated ladders elsewhere in RuneScape
+// never teleport to this quest. Never fabricate a ladder on a chest.
+[oploc1,loc_1757]
+if (loc_coord = 0_55_155_58_7) {
+    mes("You climb back out of the experiment cave.");
+    p_arrivedelay;
+    p_teleport(0_55_55_57_8);
+} else if (loc_coord = 0_54_155_48_50) {
+    if (%fenk_unlocked_cavern = 0) {
+        mes("The way to the mausoleum is closed.");
+        return;
+    }
+    mes("You climb up the ladder to the mausoleum.");
+    p_arrivedelay;
+    p_teleport(0_54_55_49_52);
+} else {
+    mes("You cannot find a safe route up this ladder.");
+}
 
 // Exact combat death queue, from pinned Content scripts/drop_tables:
 // [ai_queue3,fire_bird], [ai_queue3,_citizen], gosub(npc_death),
@@ -122,21 +138,6 @@ if (inv_freespace(inv) < 1) {
 }
 inv_add(inv, fenk_mausoleum_key, 1);
 mes("You find a spare cavern key in the open chest.");
-
-// The underground chest is the only named cave object by this exit.
-// This is a distinct, nearby source interaction, rather than extending
-// global cave ladders used by unrelated quests.
-[oploc2,fenk_chest_open]
-if (loc_coord ! 0_54_155_44_47) {
-    return;
-}
-if (%fenk_unlocked_cavern = 0) {
-    mes("You must unlock the gate before reaching the mausoleum.");
-    return;
-}
-mes("You follow the steps up from the cavern to the mausoleum.");
-p_arrivedelay;
-p_teleport(0_54_55_49_52);
 
 // The exact three mapped graves are 5168 fenk_grave, west to east.
 // No grave in the Haunted Woods should award a monster body part.
