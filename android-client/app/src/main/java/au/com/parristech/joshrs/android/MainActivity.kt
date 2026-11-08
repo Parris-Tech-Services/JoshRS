@@ -93,6 +93,19 @@ class MainActivity : Activity() {
                 }
             }.start()
         }
+        action("Test real 377 login negotiation (no password)") {
+            val target = statusText
+            target?.text = "Negotiating revision-377 protocol on 127.0.0.1..."
+            Thread {
+                val result = Negotiation377.probe()
+                runOnUiThread {
+                    if (statusText === target) {
+                        target?.text = result.message +
+                            "\\nNo player account or world state has been loaded."
+                    }
+                }
+            }.start()
+        }
         root.addView(label("Offline 377 character backup", 19f))
         root.addView(label(
             "Import a copy of a native .sav file into Android private storage. " +
