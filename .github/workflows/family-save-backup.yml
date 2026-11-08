@@ -1,0 +1,19 @@
+name: Family 377 save backup integrity
+on:
+  pull_request:
+    paths:
+      - 'deploy/jparris-windows/save-integrity.ps1'
+      - 'deploy/jparris-windows/Protect-Elrothiro.ps1'
+      - 'tools/rs377-saves/test-family-backup.ps1'
+      - '.github/workflows/family-save-backup.yml'
+  workflow_dispatch:
+jobs:
+  synthetic-backup:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test synthetic save integrity and refusal gates
+        shell: pwsh
+        run: ./tools/rs377-saves/test-family-backup.ps1
