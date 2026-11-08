@@ -33,7 +33,7 @@ return(true);
 
 // The existing King Lathas dialogue invokes this before any existing biohazard branch.
 [proc,mh_king_interaction]()(boolean)
-if (~mh_progress != 1 | testbit(%makinghistory, ^mh_jorral_letter_bit) = false) {
+if (~mh_progress ! 1 | testbit(%makinghistory, ^mh_jorral_letter_bit) = false) {
     return(false);
 }
 if (testbit(%makinghistory, ^mh_king_reply_bit) = true) {
@@ -133,12 +133,12 @@ if (testbit(%makinghistory, ^mh_blanin_bit) = false) {
     return;
 }
 ~chatnpc("<p,quiz>Then tell me, which weapon do I favour?");
-if (~p_choice2("An iron mace.", 1, "A greatsword.", 2) != 1) {
+if (~p_choice2("An iron mace.", 1, "A greatsword.", 2) ! 1) {
     ~chatnpc("<p,angry>Clearly you have not listened to Blanin!");
     return;
 }
 ~chatnpc("<p,quiz>Which ages do I study?");
-if (~p_choice2("The fourth and fifth.", 1, "The first and second.", 2) != 1) {
+if (~p_choice2("The fourth and fifth.", 1, "The first and second.", 2) ! 1) {
     ~chatnpc("<p,angry>Ask Blanin again.");
     return;
 }
@@ -233,19 +233,19 @@ inv_add(inv, makinghistory_chest, 1);
 mes("The key grows hot. You dig up an old chest from the ground.");
 
 [opheldu,makinghistory_chest]
-if (last_useitem != makinghistory_key) {
+if (last_useitem ! makinghistory_key) {
     ~displaymessage(^dm_default);
     return;
 }
 @mh_open_chest;
 [opheldu,makinghistory_key]
-if (last_useitem != makinghistory_chest) {
+if (last_useitem ! makinghistory_chest) {
     ~displaymessage(^dm_default);
     return;
 }
 @mh_open_chest;
 [label,mh_open_chest]
-if (~mh_progress != 1 | inv_total(inv, makinghistory_chest) < 1 |
+if (~mh_progress ! 1 | inv_total(inv, makinghistory_chest) < 1 |
     inv_total(inv, makinghistory_key) < 1 |
     testbit(%makinghistory, ^mh_journal_bit) = true) {
     ~displaymessage(^dm_default);
