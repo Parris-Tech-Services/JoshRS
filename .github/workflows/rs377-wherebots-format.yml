@@ -1,0 +1,28 @@
+name: JoshRS wherebots plain chat format
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-bot-bench/engine-patch/src/engine/bot/FredGeorgeBot.ts'
+      - 'tools/rs377-bot-bench/engine-patch/src/engine/bot/FredGeorgeBot.test.ts'
+      - 'tools/rs377-bot-bench/tests/wherebots-format.test.mjs'
+      - '.github/workflows/rs377-wherebots-format.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/rs377-bot-bench/engine-patch/src/engine/bot/FredGeorgeBot.ts'
+      - 'tools/rs377-bot-bench/engine-patch/src/engine/bot/FredGeorgeBot.test.ts'
+      - 'tools/rs377-bot-bench/tests/wherebots-format.test.mjs'
+      - '.github/workflows/rs377-wherebots-format.yml'
+permissions:
+  contents: read
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify chat format without starting a game
+        run: node --test tools/rs377-bot-bench/tests/wherebots-format.test.mjs
