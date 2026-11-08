@@ -2032,12 +2032,13 @@ export function tickFredAndGeorgeBots(world: WorldRuntime): void {
 
     for (const name of ['Fred', 'George'] as const) {
         const state = bots[name];
+        let player = state.player;
         // The game owns admission, not spawnSingleBot(). A queued newPlayers entry
         // and a valid save are not proof that the player is present in the world.
         if (state.relogPending) {
             const prior = state.player;
             const stillInWorld = Boolean(prior && prior.slot >= 0 && prior.isActive);
-            if (!stillInWorld && !world.logoutRequests.has(fredGeorgeLogoutAccountKey(name, state.player))) {
+            if (!stillInWorld && !world.logoutRequests.has(fredGeorgeLogoutAccountKey(name, player))) {
                 const savePath = getSavePath(name);
                 if (fs.existsSync(savePath) && PlayerLoading.verify(new Packet(fs.readFileSync(savePath)))) {
                     state.relogPending = false;
@@ -2070,7 +2071,7 @@ export function tickFredAndGeorgeBots(world: WorldRuntime): void {
                     console.info('[Fred & George] ' + name + ' verified account re-admission in active world.');
                 }
             } else if (world.currentTick - state.relogTick >= 25) {
-                if (world.logoutRequests.has(fredGeorgeLogoutAccountKey(name, state.player)) || admitted) {
+                if (world.logoutRequests.has(fredGeorgeLogoutAccountKey(name, player)) || admitted) {
                     // Avoid duplicates, but never wait forever on a stuck admission/logout.
                     state.relogAttempts++;
                     state.currentTask = state.relogAttempts >= 3
@@ -2101,7 +2102,7 @@ export function tickFredAndGeorgeBots(world: WorldRuntime): void {
             }
         }
 
-        const player = state.player;
+        player = state.player;
         if (!player || player.slot < 0 || !player.isActive || player.loggingOut) {
             state.online = false;
             continue;
