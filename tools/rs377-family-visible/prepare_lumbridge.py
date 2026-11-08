@@ -89,14 +89,19 @@ def inspect_save(raw: bytes) -> dict:
     }
 
 
-def patched_save(raw: bytes) -> bytes:
+def patched_save(raw: bytes, *, allow_progressed_tutorial: bool = False) -> bytes:
     before = inspect_save(raw)
     if (before["x"], before["z"], before["level"], before["tutorial"]) == (*SPAWN, TUTORIAL_COMPLETE):
         return raw
     if (before["x"], before["z"], before["level"]) != (3094, 3106, 0):
         raise ValueError("bot is not at original Tutorial Island spawn; refuse unknown progress")
-    if before["tutorial"] != 0:
-        raise ValueError("bot has already started tutorial; refuse to override progress")
+    if before["tutorial"] >= TUTORIAL_COMPLETE:
+        raise ValueError("unexpected completed/over-complete tutorial at island spawn; refuse repair")
+    if before["tutorial"] > 0 and not allow_progressed_tutorial:
+        raise ValueError(
+            "bot has already started tutorial; explicit --allow-progressed-tutorial "
+            "required to replace ONLY this bot's partial stage after backup"
+        )
     data = bytearray(raw[:-4])
     struct.pack_into(">HHB", data, 4, *SPAWN)
     span = before["tutorial_span"]
@@ -142,6 +147,10 @@ def command(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Backed-up, one-time HarnessView1 Lumbridge test spawn")
     p.add_argument("--apply", action="store_true", help="explicitly authorise bot-only save edit")
     p.add_argument("--bot-offline", action="store_true", help="confirm bot is logged out")
+    p.add_argument(
+        "--allow-progressed-tutorial", action="store_true",
+        help="explicitly permit replacing partial tutorial progress on HarnessView1 only"
+    )
     ns = p.parse_args(argv)
     if os.geteuid() == 0:
         raise SystemExit("BLOCKED: never run as root")
@@ -158,20 +167,35 @@ def command(argv: list[str] | None = None) -> int:
     raw = target.read_bytes()
     try:
         before = inspect_save(raw)
-        updated = patched_save(raw)
+    except ValueError as err:
+        raise SystemExit("BLOCKED: invalid bot save: " + str(err))
+    print("HarnessView1 bot save:", target)
+    print(f"Current: ({before['x']},{before['z']},level {before['level']}), tutorial={before['tutorial']}, CRC valid", flush=True)
+    print("This is a test-only setup, not genuine Tutorial Island completion.", flush=True)
+    try:
+        # Inspection must always work for an intact in-progress save; only
+        # an actual write needs the extra explicit partial-progress approval.
+        updated = patched_save(
+            raw,
+            allow_progressed_tutorial=(not ns.apply or ns.allow_progressed_tutorial),
+        )
     except ValueError as err:
         raise SystemExit("BLOCKED: " + str(err))
-    print("HarnessView1 bot save:", target)
-    print(f"Current: ({before['x']},{before['z']},level {before['level']}), tutorial={before['tutorial']}, CRC valid")
     if updated == raw:
         print("ALREADY_PREPARED: bot at (3233,3218); no changes")
         return 0
     if not ns.apply:
         print("READ_ONLY: would set bot position (3233,3218) and tutorial=1000")
-        print("After bot logs out: add --apply --bot-offline (only on this test account)")
+        if before["tutorial"] > 0:
+            print("An in-progress tutorial will be replaced on HarnessView1 ONLY.")
+            print("After logging out, use --apply --bot-offline --allow-progressed-tutorial")
+        else:
+            print("After bot logs out: add --apply --bot-offline (only on this test account)")
         return 0
     if not ns.bot_offline:
         raise SystemExit("BLOCKED: explicit --bot-offline acknowledgment required")
+    if 0 < before["tutorial"] < TUTORIAL_COMPLETE and not ns.allow_progressed_tutorial:
+        raise SystemExit("BLOCKED: explicitly add --allow-progressed-tutorial for an in-progress bot")
     if time.time() - metadata.st_mtime < 15:
         raise SystemExit("BLOCKED: bot save too recent; ensure the bot finished logging out")
     backup_dir = Path.home() / "JoshRS-save-backups" / (
