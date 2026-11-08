@@ -4,7 +4,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import os from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { pathToFileURL, fileURLToPath } from 'node:url';
@@ -53,7 +52,7 @@ function verifyAccount(dbPath) {
     const matches = db.prepare('SELECT id,username,password FROM account WHERE username=?').all(USERNAME);
     if (matches.length !== 1 || !Number.isInteger(matches[0].id)) throw Error('Exact existing Elrothiro account not found; no account was created');
     const account = matches[0];
-    if (typeof account.password !== 'string' || !/^\\$2[aby]\\$\\d{2}\\$/.test(account.password)) throw Error('Stored account hash has an unexpected format');
+    if (typeof account.password !== 'string' || !/^\$2[aby]\$\d{2}\$/.test(account.password)) throw Error('Stored account hash has an unexpected format');
     return { id:account.id, username:account.username, oldHash:account.password, total:all };
   } finally { db.close(); }
 }
@@ -155,5 +154,5 @@ async function main() {
   console.log('This does not repair the separate server listener problem. Start the server only after investigating its failure.');
 }
 if(process.argv[1] && path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
-  main().catch(err=>{console.error('RECOVERY BLOCKED: '+err.message.replace(/[\\r\\n]/g,' '));process.exitCode=1;});
+  main().catch(err=>{console.error('RECOVERY BLOCKED: '+err.message.replace(/[\r\n]/g,' '));process.exitCode=1;});
 }
