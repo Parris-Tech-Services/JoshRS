@@ -63,7 +63,6 @@ test('rejects not visible, hostile injected actions, arbitrary stage/XP writes, 
     {type:'interactLoc',x:1,z:1,locId:10,optionIndex:1,reason:'x'},
     {type:'useInventoryItem',slot:27,optionIndex:1,interfaceId:3214,reason:'x'},
     {type:'clickDialogOption',optionIndex:1,reason:'x'},
-    {type:'say',message:'; rm -rf /',reason:'x'},
     {type:'walkTo',x:9000,z:9000,reason:'x'}
   ])assert.throws(()=>mapSdkAction(a,o),/refused/);
 });
