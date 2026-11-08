@@ -9,15 +9,15 @@
     "total_377_quests": 104,
     "total_377_miniquests": 7,
     "status_counts": {
-      "COMPLETE-VERIFIED": 72,
+      "COMPLETE-VERIFIED": 77,
       "COMPLETE-UNVERIFIED": 0,
       "PARTIAL": 0,
       "STUB": 4,
-      "NOT STARTED": 28
+      "NOT STARTED": 23
     },
-    "unhandled_talk_to_npcs_total": 756,
-    "unhandled_quest_npcs": 315,
-    "unhandled_ambient_npcs": 441
+    "unhandled_talk_to_npcs_total": 673,
+    "unhandled_quest_npcs": 257,
+    "unhandled_ambient_npcs": 416
   },
   "quests": [
     {
@@ -3911,7 +3911,15 @@
       "start_npc": "dondakan_the_dwarf",
       "start_location": "Keldagrim south-east mine",
       "varp_or_varbit": "dwarfrock_main",
-      "stages": [],
+      "stages": [
+        "^dwarfrock_not_started = 0",
+        "^dwarfrock_started = 10",
+        "^dwarfrock_spoken_rolad = 20",
+        "^dwarfrock_made_gold_cannonball = 40",
+        "^dwarfrock_inside_rock = 70",
+        "^dwarfrock_defeated_avatar = 90",
+        "^dwarfrock_complete = 110"
+      ],
       "rewards": [
         "2 Quest Points",
         "5,000 Defence XP",
@@ -3921,28 +3929,19 @@
         "Access to Arzinian gold mine"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_dwarfrock",
+        "rs2_file_count": 2,
+        "rs2_lines": 244,
+        "config_files": [
+          "quests/quest_dwarfrock/configs/quest_dwarfrock.constant"
+        ],
+        "journal_button_script": "quests/quest_dwarfrock/scripts/dwarfrock_journal.rs2",
+        "quest_complete_script": "quests/quest_dwarfrock/scripts/quest_dwarfrock.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "dwarfrock_boatman_bruv1",
-        "dwarfrock_boatman_bruv2",
-        "dwarfrock_boatman_bruv3",
-        "dwarfrock_dondakan",
-        "dwarfrock_dondakan_noaxe",
-        "dwarfrock_engineer1",
-        "dwarfrock_engineer2",
-        "dwarfrock_ferryman1",
-        "dwarfrock_ferryman2",
-        "dwarfrock_gold_boatman"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 75,
@@ -3959,7 +3958,15 @@
       "start_npc": "feud_ali_m",
       "start_location": "Al Kharid north of the palace",
       "varp_or_varbit": "main_feud_var",
-      "stages": [],
+      "stages": [
+        "^feud_not_started = 0",
+        "^feud_started = 1",
+        "^feud_disguised = 5",
+        "^feud_camel_trouble = 12",
+        "^feud_gang_champions = 20",
+        "^feud_defeated_champions = 25",
+        "^feud_complete = 28"
+      ],
       "rewards": [
         "1 Quest Point",
         "15,000 Thieving XP",
@@ -3968,48 +3975,19 @@
         "Blackjacking & Rogue Trader access"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_feud",
+        "rs2_file_count": 2,
+        "rs2_lines": 222,
+        "config_files": [
+          "quests/quest_feud/configs/quest_feud.constant"
+        ],
+        "journal_button_script": "quests/quest_feud/scripts/feud_journal.rs2",
+        "quest_complete_script": "quests/quest_feud/scripts/quest_feud.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "feud_ali_the_barman",
-        "feud_ali_the_discount_camel_seller",
-        "feud_arabian_guard1_1",
-        "feud_arabian_guard1_2",
-        "feud_arabian_guard2_1",
-        "feud_arabian_guard2_2",
-        "feud_arabian_guard_coward",
-        "feud_bandit_boss_vis",
-        "feud_bjseller",
-        "feud_drunken_ali",
-        "feud_dye_lady",
-        "feud_egyptian_doorman_1",
-        "feud_egyptian_doorman_2",
-        "feud_egyptian_minder",
-        "feud_hag",
-        "feud_kebabman",
-        "feud_marketseller",
-        "feud_mayor_geom",
-        "feud_menap_boss_vis",
-        "feud_snakecharmer",
-        "feud_street_urchin",
-        "feud_villager_1_1",
-        "feud_villager_1_2",
-        "feud_villager_1_3",
-        "feud_villager_2_1",
-        "feud_villager_2_2",
-        "feud_villager_2_3",
-        "feud_villager_3_1",
-        "feud_villager_3_2",
-        "feud_villager_3_3"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 76,
@@ -4092,7 +4070,12 @@
       "start_npc": "dt_archaeologist",
       "start_location": "Bedabin Camp",
       "varp_or_varbit": "deserttreasuremain",
-      "stages": [],
+      "stages": [
+        "^deserttreasure_not_started = 0",
+        "^deserttreasure_started = 1",
+        "^deserttreasure_spoken_eblis = 5",
+        "^deserttreasure_all_diamonds = 10"
+      ],
       "rewards": [
         "3 Quest Points",
         "20,000 Magic XP",
@@ -4100,20 +4083,19 @@
         "Ancient Magicks spellbook"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_deserttreasure",
+        "rs2_file_count": 2,
+        "rs2_lines": 351,
+        "config_files": [
+          "quests/quest_deserttreasure/configs/quest_deserttreasure.constant"
+        ],
+        "journal_button_script": "quests/quest_deserttreasure/scripts/deserttreasure_journal.rs2",
+        "quest_complete_script": "quests/quest_deserttreasure/scripts/quest_deserttreasure.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "azzanadra_real",
-        "dt_bandit_shopkeeper"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 78,
@@ -4130,7 +4112,14 @@
       "start_npc": "ics_wanderer",
       "start_location": "Outside Sophanem gates",
       "varp_or_varbit": "main_ics_var",
-      "stages": [],
+      "stages": [
+        "^ics_little_not_started = 0",
+        "^ics_little_started = 2",
+        "^ics_little_entered_pyramid = 8",
+        "^ics_little_returned_jars = 16",
+        "^ics_little_defeated_priest = 22",
+        "^ics_little_complete = 26"
+      ],
       "rewards": [
         "2 Quest Points",
         "4,500 Thieving XP",
@@ -4140,34 +4129,19 @@
         "Access to Sophanem"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_ics_little",
+        "rs2_file_count": 2,
+        "rs2_lines": 205,
+        "config_files": [
+          "quests/quest_ics_little/configs/quest_ics_little.constant"
+        ],
+        "journal_button_script": "quests/quest_ics_little/scripts/ics_little_journal.rs2",
+        "quest_complete_script": "quests/quest_ics_little/scripts/quest_ics_little.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "ics_little_carpenter",
-        "ics_little_cat",
-        "ics_little_cat_visible",
-        "ics_little_embalmer",
-        "ics_little_hipriest_vis",
-        "ics_little_ic_vis",
-        "ics_little_linen1",
-        "ics_little_linen2",
-        "ics_little_priest",
-        "ics_little_priestdoorman",
-        "ics_little_redheadlady",
-        "ics_little_redheadlady_normeyes",
-        "ics_little_spectre_vis",
-        "ics_little_sphinx",
-        "ics_little_worker1",
-        "ics_little_worker2"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 79,
@@ -4187,22 +4161,28 @@
       "start_npc": "juna",
       "start_location": "Lumbridge Swamp Caves",
       "varp_or_varbit": "tog_minigame",
-      "stages": [],
+      "stages": [
+        "^tog_not_started = 0",
+        "^tog_started = 1",
+        "^tog_complete = 2"
+      ],
       "rewards": [
         "1 Quest Point",
         "1,000 Crafting XP",
         "Access to Tears of Guthix weekly minigame"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_tog",
+        "rs2_file_count": 2,
+        "rs2_lines": 128,
+        "config_files": [
+          "quests/quest_tog/configs/quest_tog.constant"
+        ],
+        "journal_button_script": "quests/quest_tog/scripts/tog_journal.rs2",
+        "quest_complete_script": "quests/quest_tog/scripts/quest_tog.rs2",
+        "in_update_questlist": true
       },
       "linked_unhandled_npcs": []
     },
@@ -5866,16 +5846,6 @@
       "role": "quest_npc"
     },
     {
-      "id": 1971,
-      "debugname": "azzanadra_real",
-      "name": "Azzanadra",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "deserttreasure",
-      "quest_name": "Desert Treasure",
-      "role": "quest_npc"
-    },
-    {
       "id": 2024,
       "debugname": "barrows_oldman",
       "name": "Strange Old Man",
@@ -6873,16 +6843,6 @@
       "classification": "quest_npc",
       "quest_id": "devious",
       "quest_name": "Devious Minds",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1917,
-      "debugname": "dt_bandit_shopkeeper",
-      "name": "Bandit shopkeeper",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "deserttreasure",
-      "quest_name": "Desert Treasure",
       "role": "quest_npc"
     },
     {
@@ -7906,116 +7866,6 @@
       "role": "ambient_npc"
     },
     {
-      "id": 1859,
-      "debugname": "dwarf_rock_actual_demon",
-      "name": "Arzinian Being of Bordanzan",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1847,
-      "debugname": "dwarfrock_boatman_bruv1",
-      "name": "Miodvetnir",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "dwarfrock",
-      "quest_name": "Between a Rock...",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1848,
-      "debugname": "dwarfrock_boatman_bruv2",
-      "name": "Dernu",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "dwarfrock",
-      "quest_name": "Between a Rock...",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1849,
-      "debugname": "dwarfrock_boatman_bruv3",
-      "name": "Derni",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "dwarfrock",
-      "quest_name": "Between a Rock...",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1837,
-      "debugname": "dwarfrock_dondakan",
-      "name": "Dondakan the Dwarf",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "dwarfrock",
-      "quest_name": "Between a Rock...",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1838,
-      "debugname": "dwarfrock_dondakan_noaxe",
-      "name": "Dondakan the Dwarf",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "dwarfrock",
-      "quest_name": "Between a Rock...",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1840,
-      "debugname": "dwarfrock_engineer1",
-      "name": "Dwarven Engineer",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "dwarfrock",
-      "quest_name": "Between a Rock...",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1842,
-      "debugname": "dwarfrock_engineer2",
-      "name": "Khorvak, a dwarven engineer",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "dwarfrock",
-      "quest_name": "Between a Rock...",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1843,
-      "debugname": "dwarfrock_ferryman1",
-      "name": "Dwarven Ferryman",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "dwarfrock",
-      "quest_name": "Between a Rock...",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1844,
-      "debugname": "dwarfrock_ferryman2",
-      "name": "Dwarven Ferryman",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "dwarfrock",
-      "quest_name": "Between a Rock...",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1846,
-      "debugname": "dwarfrock_gold_boatman",
-      "name": "Dwarven Boatman",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "dwarfrock",
-      "quest_name": "Between a Rock...",
-      "role": "quest_npc"
-    },
-    {
       "id": 1835,
       "debugname": "easter05_bunny",
       "name": "Easter Bunny",
@@ -8896,366 +8746,6 @@
       "role": "ambient_npc"
     },
     {
-      "id": 1925,
-      "debugname": "fd_elder_by_mirrors",
-      "name": "Eblis",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1923,
-      "debugname": "fd_elder_village",
-      "name": "Eblis",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1948,
-      "debugname": "fd_troll_dad",
-      "name": "Troll father",
-      "spawn_count": 2,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1950,
-      "debugname": "fd_troll_mum",
-      "name": "Troll mother",
-      "spawn_count": 2,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1944,
-      "debugname": "fd_trollblock1",
-      "name": "Ice block",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1946,
-      "debugname": "fd_trollblock2",
-      "name": "Ice block",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1864,
-      "debugname": "feud_ali_the_barman",
-      "name": "Ali The barman",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1867,
-      "debugname": "feud_ali_the_discount_camel_seller",
-      "name": "Ali the Camel Man",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1880,
-      "debugname": "feud_arabian_guard1_1",
-      "name": "Bandit",
-      "spawn_count": 5,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1881,
-      "debugname": "feud_arabian_guard1_2",
-      "name": "Bandit",
-      "spawn_count": 5,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1883,
-      "debugname": "feud_arabian_guard2_1",
-      "name": "Bandit",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1884,
-      "debugname": "feud_arabian_guard2_2",
-      "name": "Bandit",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1886,
-      "debugname": "feud_arabian_guard_coward",
-      "name": "Cowardly Bandit",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1878,
-      "debugname": "feud_bandit_boss_vis",
-      "name": "Bandit Leader",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2548,
-      "debugname": "feud_bjseller",
-      "name": "Blackjack seller",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1863,
-      "debugname": "feud_drunken_ali",
-      "name": "Drunken Ali",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2549,
-      "debugname": "feud_dye_lady",
-      "name": "Ali the dyer",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1904,
-      "debugname": "feud_egyptian_doorman_1",
-      "name": "Menaphite Thug",
-      "spawn_count": 10,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1905,
-      "debugname": "feud_egyptian_doorman_2",
-      "name": "Menaphite Thug",
-      "spawn_count": 10,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1902,
-      "debugname": "feud_egyptian_minder",
-      "name": "Ali the Operator",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1871,
-      "debugname": "feud_hag",
-      "name": "Ali the Hag",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1865,
-      "debugname": "feud_kebabman",
-      "name": "Ali the Kebab seller",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1866,
-      "debugname": "feud_marketseller",
-      "name": "Market seller",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1870,
-      "debugname": "feud_mayor_geom",
-      "name": "Ali the Mayor",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1901,
-      "debugname": "feud_menap_boss_vis",
-      "name": "Menaphite Leader",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1872,
-      "debugname": "feud_snakecharmer",
-      "name": "Ali the Snake Charmer",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1868,
-      "debugname": "feud_street_urchin",
-      "name": "Street urchin",
-      "spawn_count": 3,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1888,
-      "debugname": "feud_villager_1_1",
-      "name": "Villager",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1889,
-      "debugname": "feud_villager_1_2",
-      "name": "Villager",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1890,
-      "debugname": "feud_villager_1_3",
-      "name": "Villager",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1892,
-      "debugname": "feud_villager_2_1",
-      "name": "Villager",
-      "spawn_count": 5,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1893,
-      "debugname": "feud_villager_2_2",
-      "name": "Villager",
-      "spawn_count": 5,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1894,
-      "debugname": "feud_villager_2_3",
-      "name": "Villager",
-      "spawn_count": 5,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1896,
-      "debugname": "feud_villager_3_1",
-      "name": "Villager",
-      "spawn_count": 5,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1897,
-      "debugname": "feud_villager_3_2",
-      "name": "Villager",
-      "spawn_count": 5,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1898,
-      "debugname": "feud_villager_3_3",
-      "name": "Villager",
-      "spawn_count": 5,
-      "classification": "quest_npc",
-      "quest_id": "feud",
-      "quest_name": "The Feud",
-      "role": "quest_npc"
-    },
-    {
       "id": 3198,
       "debugname": "fever_banker_01",
       "name": "Banker",
@@ -9696,116 +9186,6 @@
       "role": "quest_npc"
     },
     {
-      "id": 1921,
-      "debugname": "fourdiamonds_bartender",
-      "name": "Bartender",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1918,
-      "debugname": "fourdiamonds_indiana",
-      "name": "Archaeologist",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1926,
-      "debugname": "fourdiamonds_sword_bandit_1",
-      "name": "Bandit",
-      "spawn_count": 10,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1931,
-      "debugname": "fourdiamonds_sword_bandit_free",
-      "name": "Bandit",
-      "spawn_count": 16,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1929,
-      "debugname": "fourdiamonds_sword_bandit_siteast",
-      "name": "Bandit",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1928,
-      "debugname": "fourdiamonds_sword_bandit_sitnorth",
-      "name": "Bandit",
-      "spawn_count": 2,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1927,
-      "debugname": "fourdiamonds_sword_bandit_sitsouth",
-      "name": "Bandit",
-      "spawn_count": 2,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1930,
-      "debugname": "fourdiamonds_sword_bandit_sitwest",
-      "name": "Bandit",
-      "spawn_count": 4,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1934,
-      "debugname": "fourdiamonds_troll_child_crying",
-      "name": "Troll child",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1933,
-      "debugname": "fourdiamonds_troll_child_okay",
-      "name": "Troll child",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1920,
-      "debugname": "fourdiamonds_vampire_lord",
-      "name": "Malak",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
       "id": 2327,
       "debugname": "francis",
       "name": "Francis",
@@ -10134,166 +9514,6 @@
       "quest_id": null,
       "quest_name": null,
       "role": "ambient_npc"
-    },
-    {
-      "id": 1981,
-      "debugname": "ics_little_carpenter",
-      "name": "Carpenter",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1992,
-      "debugname": "ics_little_cat",
-      "name": "Neite",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2653,
-      "debugname": "ics_little_cat_visible",
-      "name": "Neite",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1980,
-      "debugname": "ics_little_embalmer",
-      "name": "Embalmer",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1986,
-      "debugname": "ics_little_hipriest_vis",
-      "name": "High Priest",
-      "spawn_count": 2,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2012,
-      "debugname": "ics_little_ic_vis",
-      "name": "Icthlarin",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1982,
-      "debugname": "ics_little_linen1",
-      "name": "Linen Worker",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1983,
-      "debugname": "ics_little_linen2",
-      "name": "Siamun",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1988,
-      "debugname": "ics_little_priest",
-      "name": "Priest",
-      "spawn_count": 8,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1989,
-      "debugname": "ics_little_priestdoorman",
-      "name": "Priest",
-      "spawn_count": 2,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2006,
-      "debugname": "ics_little_redheadlady",
-      "name": "Wanderer",
-      "spawn_count": 3,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2005,
-      "debugname": "ics_little_redheadlady_normeyes",
-      "name": "Wanderer",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 2014,
-      "debugname": "ics_little_spectre_vis",
-      "name": "Klenter",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1990,
-      "debugname": "ics_little_sphinx",
-      "name": "Sphinx",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1978,
-      "debugname": "ics_little_worker1",
-      "name": "Slave",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1979,
-      "debugname": "ics_little_worker2",
-      "name": "Slave",
-      "spawn_count": 3,
-      "classification": "quest_npc",
-      "quest_id": "ics_little",
-      "quest_name": "Icthlarin's Little Helper",
-      "role": "quest_npc"
     },
     {
       "id": 201,
@@ -11676,80 +10896,10 @@
       "role": "ambient_npc"
     },
     {
-      "id": 2399,
-      "debugname": "secret_ghost_explorer",
-      "name": "Mysterious ghost",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 2398,
-      "debugname": "secret_ghost_mage",
-      "name": "Mysterious ghost",
-      "spawn_count": 3,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 2400,
-      "debugname": "secret_ghost_messenger",
-      "name": "Mysterious ghost",
-      "spawn_count": 3,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 2401,
-      "debugname": "secret_ghost_spy",
-      "name": "Mysterious ghost",
-      "spawn_count": 3,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 2402,
-      "debugname": "secret_ghost_swordsman",
-      "name": "Mysterious ghost",
-      "spawn_count": 3,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 2397,
-      "debugname": "secret_ghost_thief",
-      "name": "Mysterious ghost",
-      "spawn_count": 3,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
       "id": 791,
       "debugname": "seth",
       "name": "Seth",
       "spawn_count": 0,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1972,
-      "debugname": "shadow_warrior_rasool",
-      "name": "Rasolo",
-      "spawn_count": 1,
       "classification": "ambient_npc",
       "quest_id": null,
       "quest_name": null,

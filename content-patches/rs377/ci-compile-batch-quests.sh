@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Only for a disposable GitHub Actions runner. NEVER apply to a live JoshRS install.
-# Overlays the Fenkenstrain quest plus the nine quest bundles onto the
-# immutable pinned 377 content, applying patches 0001-0009 in numeric order.
+# Overlays the Fenkenstrain quest plus the eight batch-2 quest bundles onto the
+# immutable pinned 377 content, applying patches 0001-0008 in numeric order.
 set -euo pipefail
 : "${RUNNER_TEMP:?missing runner temp}"
 : "${GITHUB_WORKSPACE:?missing checkout}"
@@ -16,7 +16,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 9 ]] || { echo "BLOCKED: expected 9 patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 11 ]] || { echo "BLOCKED: expected 11 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -30,6 +30,17 @@ for folder in quest_fenkenstrain quest_rag quest_soulbane quest_swansong quest_m
   dest="$content/scripts/quests/$folder"
   [[ ! -e "$dest" ]] || { echo "BLOCKED: pinned content already has a $folder folder" >&2; exit 2; }
   cp -R "$quest/scripts/quests/$folder" "$dest"
+done
+
+# Morytania addendum: scoped original dialogues plus early Mort'ton stages.
+# Only clone exact allowlisted text files into this disposable runner.
+for rel in \
+  "scripts/areas/area_ahoy/scripts/ahoy_ghost_dialogue_377.rs2" \
+  "scripts/quests/quest_mortton/configs/quest_mortton.varp" \
+  "scripts/quests/quest_mortton/scripts/joshrs_mortton_start.rs2"; do
+  [[ -f "$quest/$rel" && ! -e "$content/$rel" ]] || { echo "BLOCKED: conflicting Morytania file: $rel" >&2; exit 2; }
+  mkdir -p "$(dirname "$content/$rel")"
+  cp "$quest/$rel" "$content/$rel"
 done
 
 python - "$content" <<'PY'
@@ -79,4 +90,5 @@ PY
 
 FENK_CONTENT="$content" FENK_QUEST_DIR="$content/scripts/quests/quest_fenkenstrain" python3 -I "$quest/tools/check_fenk_symbols.py"
 python3 -I "$quest/tools/check_fenk_map.py" --content "$content"
+python3 -I "$quest/tools/check_morytania_batch.py" --content "$content"
 echo "DISPOSABLE_BATCH_QUESTS_OVERLAY_READY"

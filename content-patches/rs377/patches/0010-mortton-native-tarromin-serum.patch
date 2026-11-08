@@ -1,0 +1,9 @@
+--- a/scripts/skill_herblore/scripts/brewing/brew_potion.rs2
++++ b/scripts/skill_herblore/scripts/brewing/brew_potion.rs2
+@@ -30,2 +30,6 @@
+ [opheldu,tarrominvial]
++if (last_useitem = ashes) {
++    ~mortton_prepare_serum;
++    return;
++}
+ ~attempt_brew_potion(last_useslot, last_slot);

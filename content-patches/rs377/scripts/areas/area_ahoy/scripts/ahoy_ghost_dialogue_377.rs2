@@ -1,0 +1,272 @@
+// JoshRS: original, revision-377-compatible Port Phasmatys dialogue.
+// These map-spawned NPCs were classified as having NO OPNPC1/APNPC1
+// handler in the pinned content. This is atmosphere and legitimate bank
+// access, NOT a claim that the full Ghosts Ahoy quest is implemented.
+// All words are newly authored: no game dialogue has been copied.
+
+[proc,joshrs_ahoy_ghostspeak]()(boolean)
+if (inv_total(worn, amulet_of_ghostspeak) > 0 |
+    inv_total(worn, amulet_of_ghostspeak_enchanted) > 0) {
+    return(true);
+}
+return(false);
+
+[opnpc1,ahoy_akharanu]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>I have sailed from far away to barter with the living.");
+def_int $choice = ~p_choice2("What brings you to this harbour?", 1, "What should a traveller know?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>What brings you to this harbour?");
+    ~chatnpc("<p,neutral>Trade brings ships here, but it takes courage to stay. The harbour is busy with spirits.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>What should a traveller know?");
+    ~chatnpc("<p,neutral>A ghostspeak amulet helps you understand those who linger here.");
+}
+
+[opnpc1,ahoy_crone]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>The old road carries more than footsteps these days.");
+def_int $choice = ~p_choice2("Why do people avoid the village?", 1, "Do you know the port?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>Why do people avoid the village?");
+    ~chatnpc("<p,neutral>There is a restless history in these woods. A traveller should watch the road.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Do you know the port?");
+    ~chatnpc("<p,neutral>The priests in Port Phasmatys do not like strangers asking questions.");
+}
+
+[opnpc1,ahoy_disciple]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>The Ectofuntus stands over us all.");
+def_int $choice = ~p_choice2("Why do you guard the temple?", 1, "Can I learn about the Ectofuntus?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>Why do you guard the temple?");
+    ~chatnpc("<p,neutral>We keep its chambers in order and obey Necrovarus.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Can I learn about the Ectofuntus?");
+    ~chatnpc("<p,neutral>The worshippers bring offerings, but many ghosts are not here by choice.");
+}
+
+[opnpc1,ahoy_ghost_banker]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>Your account is secure, even on the other side.");
+def_int $choice = ~p_choice2("Can I access my bank?", 1, "Do the dead keep their possessions?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>Can I access my bank?");
+    ~chatnpc("<p,neutral>Of course. Your bank is ready.");
+    @openbank;
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Do the dead keep their possessions?");
+    ~chatnpc("<p,neutral>Some of us remember the value of a key more than the value of gold.");
+}
+
+[opnpc1,ahoy_ghost_captain_1]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>My ship has sailed many tides since I last felt the wind.");
+def_int $choice = ~p_choice2("Where do you sail?", 1, "Any advice?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>Where do you sail?");
+    ~chatnpc("<p,neutral>The eastern sea holds islands and rough currents. Good crews know the charts.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Any advice?");
+    ~chatnpc("<p,neutral>Take provisions, check the weather and listen to your navigator.");
+}
+
+[opnpc1,ahoy_ghost_captain_2]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>These docks have known calmer days.");
+def_int $choice = ~p_choice2("Is there passage from the port?", 1, "Why do you stay?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>Is there passage from the port?");
+    ~chatnpc("<p,neutral>Ask at the gangplanks. I can only speak for the voyages I remember.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Why do you stay?");
+    ~chatnpc("<p,neutral>A sailor with unfinished business finds it hard to leave the harbour.");
+}
+
+[opnpc1,ahoy_ghost_farmer]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>Even a spirit remembers the smell of tilled earth.");
+def_int $choice = ~p_choice2("Is this good farmland?", 1, "Can I help?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>Is this good farmland?");
+    ~chatnpc("<p,neutral>The soil is stubborn, but the weather is mild enough for patient work.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Can I help?");
+    ~chatnpc("<p,neutral>Keep the fences standing and mind the tools. A neglected field soon goes wild.");
+}
+
+[opnpc1,ahoy_ghost_guard]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>Halt. State your purpose in Port Phasmatys.");
+def_int $choice = ~p_choice2("I'm just passing through.", 1, "Is the harbour safe?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>I'm just passing through.");
+    ~chatnpc("<p,neutral>Then keep to the streets and leave the temple business to its keepers.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Is the harbour safe?");
+    ~chatnpc("<p,neutral>There are sailors, merchants and restless souls. Keep a careful eye on your things.");
+}
+
+[opnpc1,ahoy_ghost_innkeeper]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>The rooms are quiet; that is one advantage of serving ghosts.");
+def_int $choice = ~p_choice2("What is the town like?", 1, "Do you have a room?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>What is the town like?");
+    ~chatnpc("<p,neutral>Sailors once filled these tables. Some still come in to remember the old days.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Do you have a room?");
+    ~chatnpc("<p,neutral>Not one I can offer you today. Try the other inns on your journey.");
+}
+
+[opnpc1,ahoy_ghost_protestor]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>A town should not have to remain troubled forever.");
+def_int $choice = ~p_choice2("What are you protesting?", 1, "Can I help?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>What are you protesting?");
+    ~chatnpc("<p,neutral>The temple's power weighs heavily on the spirits who live here.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Can I help?");
+    ~chatnpc("<p,neutral>Listen to those who cannot make themselves heard. Velorina has much to say.");
+}
+
+[opnpc1,ahoy_ghost_sailor]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>There is no peace at sea when you are carrying regrets.");
+def_int $choice = ~p_choice2("Where is your ship?", 1, "Can you teach me about sailing?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>Where is your ship?");
+    ~chatnpc("<p,neutral>Look along the docks. Some vessels have sailed, others have stories left aboard.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Can you teach me about sailing?");
+    ~chatnpc("<p,neutral>Learn the landmarks first, then find a captain willing to take you.");
+}
+
+[opnpc1,ahoy_ghost_shopkeeper]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>I know every shelf in this shop, though my customers have changed.");
+def_int $choice = ~p_choice2("What supplies do you keep?", 1, "Can I trade?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>What supplies do you keep?");
+    ~chatnpc("<p,neutral>Ordinary provisions used to arrive with the trading ships.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Can I trade?");
+    ~chatnpc("<p,neutral>The stockroom is still being counted. I cannot promise goods I do not have.");
+}
+
+[opnpc1,ahoy_ghost_villager]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>It is strange to see a living visitor here.");
+def_int $choice = ~p_choice2("What happened to the village?", 1, "Do the ghosts ever leave?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>What happened to the village?");
+    ~chatnpc("<p,neutral>There are stories about the temple and its guardian. Ask the people who remember.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Do the ghosts ever leave?");
+    ~chatnpc("<p,neutral>Some travel on, but many remain close to what they knew in life.");
+}
+
+[opnpc1,ahoy_necrovarus]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>You stand before a servant of the Ectofuntus.");
+def_int $choice = ~p_choice2("Why do the spirits linger?", 1, "Can I free the ghosts?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>Why do the spirits linger?");
+    ~chatnpc("<p,neutral>Questions of the departed are not answered by careless travellers.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Can I free the ghosts?");
+    ~chatnpc("<p,neutral>You do not yet understand the duties I hold. Speak to the townsfolk first.");
+}
+
+[opnpc1,ahoy_oldman]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>I have had a long time to consider the roads I took.");
+def_int $choice = ~p_choice2("What brings you here?", 1, "Do you know anything useful?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>What brings you here?");
+    ~chatnpc("<p,neutral>Memory can be a stronger anchor than any ship's chain.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>Do you know anything useful?");
+    ~chatnpc("<p,neutral>Do not mistake an old story for a map. Ask those who travel the route.");
+}
+
+[opnpc1,ahoy_robin]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>Cards and conversation make a dull evening pass.");
+def_int $choice = ~p_choice2("Do you play games?", 1, "What do you know about the port?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>Do you play games?");
+    ~chatnpc("<p,neutral>I like a fair contest, but I prefer to know the rules before I sit down.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>What do you know about the port?");
+    ~chatnpc("<p,neutral>There are good stories in the tavern and better questions at the temple.");
+}
+
+[opnpc1,ahoy_velorina]
+if (~joshrs_ahoy_ghostspeak = false) {
+    mes("The ghost speaks, but you cannot understand a word.");
+    return;
+}
+~chatnpc("<p,neutral>Thank you for listening. Few living travellers can hear us.");
+def_int $choice = ~p_choice2("Why are you troubled?", 1, "How can I help?", 2);
+if ($choice = 1) {
+    ~chatplayer("<p,quiz>Why are you troubled?");
+    ~chatnpc("<p,neutral>The spirits here are bound by the power of the temple. We long for release.");
+} else if ($choice = 2) {
+    ~chatplayer("<p,quiz>How can I help?");
+    ~chatnpc("<p,neutral>Learn more about Necrovarus and the Ectofuntus. A willing listener is a good beginning.");
+}
+
+// Bank access is the actual native interface, not a simulated ledger.
+[opnpc3,ahoy_ghost_banker]
+@openbank;
