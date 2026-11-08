@@ -89,6 +89,19 @@ try {
    !first.nearbyNpcs.every(n=>Number.isInteger(n.index)&&Number.isInteger(n.id)&&
      Number.isInteger(n.x)&&Number.isInteger(n.z)))
    reject('real rsbuf-visible NPC list unavailable');
+ // Task 27: require genuine server ZoneMap visibility, not fixture-filled
+ // object state or an empty array substituted for an unsupported field.
+ if(!Array.isArray(first.nearbyLocs) || !Array.isArray(first.groundItems))
+   reject('real native nearby locs and ground items are still unsupported');
+ if(!first.nearbyLocs.every(loc=>Number.isInteger(loc.id) &&
+    Number.isInteger(loc.x)&&Number.isInteger(loc.z)&&
+    loc.level===first.position.plane &&
+    Math.max(Math.abs(loc.x-first.position.x),Math.abs(loc.z-first.position.z))<=16))
+   reject('native nearby loc projection has invalid or nonlocal entries');
+ if(!first.groundItems.every(obj=>Number.isInteger(obj.id)&&Number.isInteger(obj.count) &&
+    obj.count>0&&Number.isInteger(obj.x)&&Number.isInteger(obj.z)&&
+    Math.max(Math.abs(obj.x-first.position.x),Math.abs(obj.z-first.position.z))<=16))
+   reject('native ground item projection has invalid or nonlocal entries');
  if(!first.dialogue||typeof first.dialogue.isOpen!=='boolean'||
    typeof first.dialogue.isWaiting!=='boolean'||
    !Array.isArray(first.dialogue.pendingComponentIds)||
@@ -302,7 +315,12 @@ try {
    tickAdvanced:later.tick>first.tick,
    positionObserved:true,skillCount:later.skills.length,
    inventoryObserved:true,equipmentObserved:true,
-   visibleNpcCount:later.nearbyNpcs.length,dialogueFlagsObserved:true,
+   visibleNpcCount:later.nearbyNpcs.length,
+   nearbyLocsObserved:Array.isArray(later.nearbyLocs),
+   nearbyLocCount:later.nearbyLocs.length,
+   groundItemsObserved:Array.isArray(later.groundItems),
+   groundItemCount:later.groundItems.length,
+   dialogueFlagsObserved:true,
    sdkStateComplete:false,
    genuineSdkGatewayAction:true,walkObserved:true,
    genuineSdkWebSocketAction:websocketVerified,
