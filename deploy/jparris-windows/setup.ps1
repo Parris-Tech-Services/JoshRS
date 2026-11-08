@@ -326,13 +326,44 @@ if ($ClientGradleTimeoutMs -gt 0) {
         $replacement = $originalWrapper.TrimEnd([char[]]@([char]13,[char]10)) + [Environment]::NewLine +
             'networkTimeout=' + $ClientGradleTimeoutMs + [Environment]::NewLine
     }
+    # The upstream services.gradle.org/8.11.1 URL currently redirects the
+    # GitHub-hosted release ZIP, where GitHub Actions encountered repeated 504s.
+    # On a disposable CI runner ONLY, pin the SAME Gradle 8.11.1 -bin ZIP on
+    # Gradle's official direct download CDN. Do not rewrite anyone's local copy.
+    if ($env:GITHUB_ACTIONS -eq 'true') {
+        $expectedDistribution = 'distributionUrl=https\://services.gradle.org/distributions/gradle-8.11.1-bin.zip'
+        $officialCdn = 'distributionUrl=https\://downloads.gradle.org/distributions/gradle-8.11.1-bin.zip'
+        if (-not $replacement.Contains($expectedDistribution)) {
+            throw 'CI Gradle source/version changed: refusing to redirect an unrecognised distribution.'
+        }
+        $replacement = $replacement.Replace($expectedDistribution,$officialCdn)
+        Write-Host 'CI Gradle 8.11.1: using the official direct Gradle distribution host instead of GitHub redirect.'
+    }
     if ($replacement -cne $originalWrapper) {
         [IO.File]::WriteAllText($wrapper,$replacement)
     }
     Write-Host "CI client Gradle wrapper network timeout: $ClientGradleTimeoutMs ms"
 }
 Write-Host 'Compiling the revision 377 Java client...'
-Run-Native (Join-Path $client 'gradlew.bat') @('--no-daemon','classes') $client
+$gradleWrapperExe = Join-Path $client 'gradlew.bat'
+if ($env:GITHUB_ACTIONS -eq 'true' -and $ClientGradleTimeoutMs -gt 0) {
+    # GitHub occasionally returns HTTP 504 for the *unchanged* pinned Gradle
+    # distribution ZIP. A retry cannot turn a real compilation error into a pass:
+    # it repeats the same pinned build and still fails closed after four attempts.
+    for ($attempt = 1; $attempt -le 4; $attempt++) {
+        try {
+            Run-Native $gradleWrapperExe @('--no-daemon','classes') $client
+            break
+        } catch {
+            if ($attempt -eq 4) { throw }
+            Write-Warning "CI Gradle build attempt $attempt failed. Retrying the same pinned wrapper and client on this disposable runner."
+            Start-Sleep -Seconds (5 * $attempt)
+        }
+    }
+} else {
+    # Local installations keep the existing fail-fast behaviour and files.
+    Run-Native $gradleWrapperExe @('--no-daemon','classes') $client
+}
 
 $state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort; webPort=$webPort; portOffset=$offset; source=$(if($UsbPath -or $ResumeSnapshotPath){'usb'}else{'upstream-or-existing'}) }
 $pendingState = $activeFile + '.tmp'

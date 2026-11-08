@@ -26,12 +26,12 @@ if (%swansong_wall_5 = 1) { $count = calc($count + 1); }
 return($count);
 
 [proc,swan_rebuild_advance]
-if (%swansong = ^swansong_fish & %swansong_arnold = 1 & ~swan_wall_count = 5) {
+if (%swansong = ^swansong_fish & %swansong_arnold = 1 & ~swan_wall_count = 5 & %swansong_trolls = 3) {
     %swansong = ^swansong_trolls;
     mes("The food stores and five wall sections are ready. Defeat the sea troll ambusher.");
 }
 
-[proc,swan_frumscone_army]
+[proc,swan_malignius_army]
 if (%swansong ! ^swansong_queen) {
     return;
 }
@@ -44,7 +44,7 @@ if (stat(magic) < 66) {
     return;
 }
 if (inv_total(inv, bones) < 7 | inv_total(inv, pot_empty) < 1 | inv_total(inv, potlid) < 1) {
-    ~chatnpc("<p,neutral>Bring seven ordinary bones, an empty pot and a pot lid.");
+    ~chatnpc("<p,neutral>Bring seven ordinary bones and an airtight pot, made from an empty pot and a pot lid.");
     return;
 }
 inv_del(inv, bones, 7);
@@ -53,9 +53,86 @@ inv_del(inv, potlid, 1);
 inv_add(inv, swan_army, 1);
 ~chatnpc("<p,happy>Here are the enchanted bone seeds. Use them to defend the colony.");
 
+// While collecting food, three DIFFERENT pinned attackable sea troll variants
+// appear one at a time. The native death AI increments the 2-bit 0..3 counter;
+// neither a fishing click nor a merchant dialogue gives kill credit.
+[proc,swan_spawn_fishing_troll]
+if (%swansong ! ^swansong_fish | %swansong_trolls >= 3) {
+    return;
+}
+if (inzone(0_36_57_0_14, 0_36_57_53_63, coord) = false) {
+    return;
+}
+def_npc $troll;
+switch_int (%swansong_trolls) {
+    case 0 : $troll = swan_troll_fishing_1;
+    case 1 : $troll = swan_troll_fishing_2;
+    case 2 : $troll = swan_troll_fishing_3;
+}
+if (npc_find(coord, $troll, 15, 0) = true) {
+    mes("Defeat the attacking sea troll before continuing to fish.");
+    return;
+}
+def_coord $spawn = map_findsquare(coord, 1, 5, ^map_findsquare_lineofwalk);
+npc_add($spawn, $troll, 500);
+%npc_aggressive_player = uid;
+npc_setmode(opplayer2);
+mes("A sea troll interrupts your fishing! Defeat it to continue.");
+
+// All combat spawns are confined to the colony map and stage gated.
+// The server chooses a walkable square and the native AI attacks the real player.
+// No quest stage is advanced by merely talking to a combat NPC.
+[proc,swan_spawn_ambusher]
+if (%swansong < ^swansong_trolls | %swansong >= ^swansong_troll_wave_complete) {
+    return;
+}
+if (inzone(0_36_57_7_14, 0_36_57_53_50, coord) = false) {
+    mes("Return to the colony for the next sea troll attack.");
+    return;
+}
+if (npc_find(coord, swan_troll_ambush, 12, 0) = true) {
+    mes("There is already a sea troll nearby. Defeat it before the next attack.");
+    return;
+}
+def_coord $loc = map_findsquare(coord, 1, 5, ^map_findsquare_lineofwalk);
+npc_add($loc, swan_troll_ambush, 500);
+%npc_aggressive_player = uid;
+npc_setmode(opplayer2);
+mes("An attacking sea troll appears! Defend the colony.");
+
+[proc,swan_spawn_queen]
+if (%swansong ! ^swansong_army_deployed) {
+    return;
+}
+if (inzone(0_36_57_7_14, 0_36_57_53_50, coord) = false) {
+    mes("The Sea Troll Queen is at the colony. Return there to face her.");
+    return;
+}
+if (npc_find(coord, swan_seatroll_queen, 18, 0) = true) {
+    mes("The Sea Troll Queen is already attacking. Prepare for battle.");
+    return;
+}
+// Full-size queen and three visible skeleton mage defenders.
+// The skeletons are visible allies, not an assertion of NPC-on-NPC combat.
+def_coord $queen_loc = map_findsquare(coord, 5, 12, ^map_findsquare_lineofwalk);
+npc_add($queen_loc, swan_seatroll_queen, 800);
+%npc_aggressive_player = uid;
+npc_setmode(opplayer2);
+def_int $i = 0;
+while ($i < 3) {
+    def_coord $skeleton_loc = map_findsquare(coord, 1, 6, ^map_findsquare_lineofwalk);
+    npc_add($skeleton_loc, swan_skeleton_battle, 800);
+    $i = calc($i + 1);
+}
+mes("Three skeleton magi rise as defenders. The Sea Troll Queen attacks!");
+
 [opheld1,swan_army]
 if (%swansong ! ^swansong_queen) {
-    mes("There is no need to deploy the skeletons here.");
+    mes("There is no need to deploy the skeletons now.");
+    return;
+}
+if (inzone(0_36_57_7_14, 0_36_57_53_50, coord) = false) {
+    mes("Bring the bone seeds to the Piscatoris Fishing Colony.");
     return;
 }
 if (inv_total(inv, swan_army) < 1) {
@@ -63,7 +140,8 @@ if (inv_total(inv, swan_army) < 1) {
 }
 inv_del(inv, swan_army, 1);
 %swansong = ^swansong_army_deployed;
-mes("You deploy the skeleton mage defenders. The Sea Troll Queen still needs to be defeated.");
+mes("You deploy the skeleton mage defenders.");
+~swan_spawn_queen;
 
 // The 377 cache has all three fishing troll NPC types. Track encounter kills without
 // duplicate credit on stale death queues (counter fits the existing two-bit varbit).
@@ -87,4 +165,5 @@ if (%swansong ! ^swansong_fish | %swansong_trolls >= 3) {
     return;
 }
 %swansong_trolls = calc(%swansong_trolls + 1);
-mes("A sea troll is defeated while the colony rebuilds.");
+mes("A fishing sea troll is defeated: <tostring(%swansong_trolls)> of 3.");
+~swan_rebuild_advance;

@@ -75,3 +75,23 @@ inv_add(inv, pot_empty, 1);
 %rag_potboiler = 0;
 %rag_boiler = 0;
 mes("You take the polished bone out of the pot-boiler.");
+
+// The stage-3 pot is the cache's rag_potboiler_onfire loc. If a player
+// disconnects during the 20-tick wait the permanent stage survives, while
+// the suspended action does not. Using the tinderbox again permits safe
+// recovery; it NEVER creates a fresh bone and waits the full boil duration.
+[oplocu,rag_potboiler_onfire]
+if (last_useitem ! tinderbox | %rag_boiler ! 3) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%rag_potboiler < 1 | %rag_potboiler > ^rag_bone_catalog_total) {
+    mes("There is no valid bone in the boiler.");
+    return;
+}
+mes("You tend the burning logs until the pot boils dry.");
+p_delay(20);
+if (%rag_boiler = 3 & %rag_potboiler >= 1 & %rag_potboiler <= ^rag_bone_catalog_total) {
+    %rag_boiler = 4;
+    mes("The pot has boiled dry. You can remove your polished bone.");
+}
