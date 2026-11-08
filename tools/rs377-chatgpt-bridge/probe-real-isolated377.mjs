@@ -119,8 +119,10 @@ try {
     details.bank?.isOpen!==false ||
     details.shop?.isOpen!==false ||
     details.interface?.isOpen!==false ||
-    details.player!==null || details.gameMessages!==null ||
-    details.recentDialogs!==null || details.combatEvents!==null)
+    (details.player!==null && details.player.name!==username) ||
+    (details.gameMessages!==null&&!Array.isArray(details.gameMessages)) ||
+    (details.recentDialogs!==null&&!Array.isArray(details.recentDialogs)) ||
+    (details.combatEvents!==null&&!Array.isArray(details.combatEvents)))
    reject('real native SDK prayer/player/public visibility/UI foundations incomplete or fabricated');
  if(!first.dialogue||typeof first.dialogue.isOpen!=='boolean'||
    typeof first.dialogue.isWaiting!=='boolean'||
@@ -150,7 +152,7 @@ try {
  // Execute a GENUINE SDK BotAction via the authenticated local gateway. The
  // gateway uses actual engine observations, the rev377 packet encoder and
  // ISAAC-protected TCP. Action success requires an observed position delta.
- let moved=null, dispatchAttemptCount=0;
+ let moved=null, dispatchAttemptCount=0, completeSdkStateVerified=false;
  const gatewayToken=randomBytes(32).toString('hex');
  const runtimeObserver=createEngine377Observer({port:managementPort,token,
    botName:username,expectedWorld});
@@ -166,7 +168,21 @@ try {
    // real fail-closed 409 rather than a fabricated state.
    const stateResponse=await fetch('http://127.0.0.1:'+gatewayPort+'/sdk_state',
      {headers:auth,signal:AbortSignal.timeout(3000)});
-   if(stateResponse.status!==409)reject('incomplete SDK state was incorrectly advertised');
+   if(stateResponse.status===200) {
+     const actual=await stateResponse.json();
+     const worldState=actual?.state??actual;
+     if(!worldState?.inGame || worldState?.player?.name!==username ||
+        !Array.isArray(worldState.skills)||worldState.skills.length!==21||
+        !Array.isArray(worldState.nearbyLocs)||
+        !Array.isArray(worldState.groundItems)||
+        !Array.isArray(worldState.prayers?.activePrayers)||
+        worldState.prayers.activePrayers.length!==15 ||
+        worldState.bank?.isOpen!==false || worldState.shop?.isOpen!==false)
+       reject('SDK state claimed complete but lacks real player, UI, world and prayer fields');
+     completeSdkStateVerified=true;
+   } else if(stateResponse.status!==409) {
+     reject('SDK state neither securely available nor fail-closed 409');
+   }
    const candidates=[
      [sdkAnchor.position.x+1,sdkAnchor.position.z],
      [sdkAnchor.position.x,sdkAnchor.position.z+1],
@@ -238,7 +254,15 @@ try {
      clientId:'isolated-joshrs-ci-probe',mode:'control'}));
    await waitWs(msg=>msg.type==='sdk_connected'&&msg.success===true);
    // It MUST NOT send invented sdk_state for unknown UI/shop/bank fields.
-   await waitWs(msg=>msg.type==='sdk_error'&&msg.error==='authoritative_sdk_state_incomplete');
+   if(completeSdkStateVerified) {
+     const result=await waitWs(msg=>msg.type==='sdk_state'&&
+       msg.state?.player?.name===username,8000);
+     if(!Array.isArray(result.state.skills)||result.state.skills.length!==21)
+       reject('actual upstream SDK envelope omitted authoritative skill array');
+   } else {
+     await waitWs(msg=>msg.type==='sdk_error'&&
+       msg.error==='authoritative_sdk_state_incomplete');
+   }
    const before=moved.position;
    const trials=[[before.x+1,before.z],[before.x,before.z+1],
      [before.x-1,before.z],[before.x,before.z-1]];
@@ -343,7 +367,7 @@ try {
    playerBaseObserved:true,prayersObserved:true,
    nearbyPlayersObserved:true,bankClosedObserved:true,shopClosedObserved:true,
    dialogueFlagsObserved:true,
-   sdkStateComplete:false,
+   sdkStateComplete:completeSdkStateVerified,
    genuineSdkGatewayAction:true,walkObserved:true,
    genuineSdkWebSocketAction:websocketVerified,
    dispatchAttemptCount,saveRelogVerified:true,
