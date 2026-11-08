@@ -96,8 +96,13 @@ def smoke(engine: Path, ports: tuple[int, int], timeout: int) -> dict:
                 if attempt.returncode != 0:
                     # The Node probe emits only bounded reason codes, never
                     # passwords, encrypted key material or game save contents.
+                    # The bot prints ONLY a named incomplete SDK contract.
+                    # Include that bounded reason, not account/private payloads.
+                    missing = [line[:180] for line in attempt.stdout.splitlines()
+                               if line.startswith("Isolated pinned RS-SDK state ")]
                     raise RuntimeError("Disposable 377 bot observer FAILED: " +
-                                       attempt.stderr[-1400:])
+                                       ("; ".join(missing[-2:]) + " | " if missing else "") +
+                                       attempt.stderr[-1000:])
                 print("Disposable real engine bot observation:", attempt.stdout.strip())
             return {"compiled_world_started": True, "game_tcp_port_reachable": True,
                     "web_http_port_reachable": True, "real_player_logged_in": real_bot_probe,
