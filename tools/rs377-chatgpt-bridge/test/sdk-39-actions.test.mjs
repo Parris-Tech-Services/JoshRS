@@ -183,3 +183,48 @@ test('pinned native 377 fields and alt transforms match decoders (not invented)'
  assert.throws(()=>u('item_on_item',{sourceItemId:1925,sourceSlot:0,targetItemId:316,
   targetSlot:1,componentId:3214,privileged:true}));
 });
+
+test('all extended item/player/spell packet bodies decode against original 377 field layouts',()=>{
+ const decode=(buf,kind)=>{
+  if(kind==='normal')return buf.readUInt16BE(0);
+  if(kind==='a1')return (buf[1]<<8)|buf[0];
+  if(kind==='a2')return (buf[0]<<8)|((buf[1]-128)&255);
+  if(kind==='a3')return (buf[1]<<8)|((buf[0]-128)&255);
+  throw new Error('unexpected transform');
+ };
+ const get=(buf,offset,kind)=>decode(buf.subarray(offset,offset+2),kind);
+ const cases=[
+  ['item_on_npc',{npcSlot:12,itemId:1925,slot:3,componentId:3214},
+   57,[[0,'normal',12],[2,'a1',1925],[4,'a3',3214],[6,'normal',3]]],
+  ['spell_on_player',{playerSlot:19,spellComponent:112},
+   31,[[0,'normal',19],[2,'a1',112]]],
+  ['spell_on_item',{itemId:1925,slot:3,componentId:3214,spellComponent:112},
+   36,[[0,'normal',112],[2,'a2',3214],[4,'a2',3],[6,'a2',1925]]],
+  ['spell_on_ground',{x:3221,z:3218,itemId:1925,spellComponent:112},
+   83,[[0,'a1',1925],[2,'normal',3218],[4,'a1',112],[6,'a3',3221]]],
+  ['item_on_item',{sourceItemId:1925,sourceSlot:3,targetItemId:316,targetSlot:4,componentId:3214},
+   1,[[0,'normal',316],[2,'a1',3],[4,'a1',1925],[6,'a3',3214],[8,'a2',4],[10,'a2',3214]]]
+ ];
+ for(const [type,args,opcode,layout] of cases){
+  const pkt=buildAction({type,...args});
+  assert.equal(pkt.opcode,opcode,type);
+  assert.equal(pkt.body.length,layout.length*2,type);
+  for(const [offset,kind,value] of layout)
+   assert.equal(get(pkt.body,offset,kind),value,type+' at byte '+offset);
+ }
+ for(const [i,alt] of ['a3','a2','a1','a1','a2'].entries()){
+  const pkt=buildAction({type:'player',playerSlot:19,option:i+1});
+  assert.equal(get(pkt.body,0,alt),19,'OPPLAYER option '+(i+1));
+ }
+ const simple=buildAction({type:'if_button',componentId:5609});
+ assert.equal(simple.opcode,79);assert.equal(get(simple.body,0,'normal'),5609);
+ const modal=buildAction({type:'close_modal'});
+ assert.equal(modal.opcode,110);assert.equal(modal.body.length,0);
+ const publicChat=buildAction({type:'chat_plain',message:'hello'});
+ assert.equal(publicChat.opcode,49);
+ assert.deepEqual([...publicChat.body],[0,0,0x61,0xbb,0x40]);
+ const privateChat=buildAction({type:'private_chat',targetName:'bob',message:'hello'});
+ assert.equal(privateChat.opcode,227);
+ assert.equal(privateChat.body.readBigUInt64BE(0),3295n);
+ assert.deepEqual([...privateChat.body.subarray(8)],[0x61,0xbb,0x40]);
+});
