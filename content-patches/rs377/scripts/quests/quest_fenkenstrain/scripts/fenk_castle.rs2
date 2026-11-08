@@ -166,21 +166,34 @@ inv_del(inv, fenk_brush3, 1);
 inv_add(inv, fenk_lightning_mould, 1);
 mes("You bind the brush with bronze wire and shape the lightning-conductor mould.");
 
-// Deliberate temporary casting shortcut: a genuine furnace step needs
-// verified coordinates and client interaction, so this is not labelled authentic.
-[opheldu,fenk_lightning_mould]
-if (last_useitem ! silver_bar) {
-    ~displaymessage(^dm_default);
+// Cast silver in the *actual native furnace*. This proc is invoked by the
+// narrowly scoped extension to the existing smelting furnace handler. It
+// uses the normal item-on-furnace packet, furnace animation and game delay;
+// no direct item-on-mould shortcut or privileged inventory alteration.
+[proc,fenk_cast_conductor_furnace]
+if (%fenk_quest ! ^fenk_sewn) {
+    mes("The doctor has not asked you to make a lightning conductor yet.");
     return;
 }
-if (%fenk_quest < ^fenk_sewn | inv_total(inv, silver_bar) < 1 |
-    inv_total(inv, fenk_lightning_mould) < 1) {
-    mes("You cannot cast the conductor just yet.");
+if (inv_total(inv, fenk_lightning_mould) < 1) {
+    mes("You need the mould made from the garden brush.");
+    return;
+}
+if (inv_total(inv, silver_bar) < 1) {
+    mes("You need a silver bar to cast the conductor.");
+    return;
+}
+p_arrivedelay;
+anim(human_furnace, 0);
+sound_synth(furnace, 1, 0);
+mes("You pour the molten silver into the conductor mould.");
+p_delay(2);
+if (inv_total(inv, fenk_lightning_mould) < 1 | inv_total(inv, silver_bar) < 1) {
     return;
 }
 inv_del(inv, silver_bar, 1);
 inv_add(inv, fenk_conductor, 1);
-mes("The silver takes the shape of a lightning conductor. The mould can be reused.");
+mes("The silver cools into a usable lightning conductor.");
 
 [oplocu,fenk_conductor_broken]
 if (last_useitem ! fenk_conductor) {
