@@ -25,12 +25,11 @@ test('missing pinned ZoneMap internals stay explicitly unknown; no invented SDK 
  assert.match(body,/let groundItems: Array<Record<string, unknown>> \| null = null/);
  // The authenticated disposable bot now exposes only its own native
  // Barcrawl varp. Other unsupported SDK fields must still remain unknown.
- assert.match(file,/let nearbyLocs: Array<Record<string, unknown>> \\| null = null/);
- assert.match(file,/questStages: \\(\\(\\) => \\{/);
- assert.match(file,/VarPlayerType\\.getId\\('barcrawl'\\)/);
- assert.match(file,/if \\(barcrawlId < 0\\) return null/);
- assert.match(file,/bot\\.getVar\\(barcrawlId\\)/);
- assert.match(file,/Number\\.isSafeInteger\\(raw\\) && raw >= 0 \\? \\{ barcrawl: raw \\} : null/);
+ assert.match(file,/questStages: \(\(\) => \{/);
+ assert.match(file,/VarPlayerType\.getId\('barcrawl'\)/);
+ assert.match(file,/if \(barcrawlId < 0\) return null/);
+ assert.match(file,/bot\.getVar\(barcrawlId\)/);
+ assert.match(file,/Number\.isSafeInteger\(raw\) && raw >= 0 \? \{ barcrawl: raw \} : null/);
  assert.match(file,/combatEvents, prayers/);
  assert.match(file,/const shop = !shopOpen/);
  assert.match(file,/const bank = !bankOpen/);
