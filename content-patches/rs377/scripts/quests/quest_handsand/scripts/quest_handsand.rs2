@@ -69,62 +69,6 @@ if (%handsand = ^hs_hand) {
     ~chatnpc("<p,neutral>Keep the peace in Yanille, traveller.");
 }
 
-// Zavistic Rarve is a native 377 NPC already present by Yanille's Wizards' Guild.
-[opnpc1,zogre_human_zavistic_rarve]
-switch_int (%handsand) {
-    case ^hs_guard :
-        if (inv_total(inv, handsand_beerhand) < 1) {
-            ~chatnpc("<p,neutral>You said you had evidence; bring it from your bank.");
-            return;
-        }
-        inv_del(inv, handsand_beerhand, 1);
-        %handsand = ^hs_wizard;
-        ~chatnpc("<p,sad>This belongs to a missing apprentice. Find out why Bert's working hours changed.");
-    case ^hs_magic_scroll :
-        if (inv_total(inv, handsand_scroll_magic) < 1) {
-            ~chatnpc("<p,neutral>I need to inspect Bert's strange scroll.");
-            return;
-        }
-        inv_del(inv, handsand_scroll_magic, 1);
-        if (inv_freespace(inv) < 1) {
-            mes("You need room for the magical recording orb.");
-            return;
-        }
-        inv_add(inv, handsand_orb_storage, 1);
-        %handsand = ^hs_orb_empty;
-        ~chatnpc("<p,neutral>That scroll could alter a person's memory. Ask Betty in Port Sarim for truth serum.");
-        ~chatnpc("<p,neutral>Take this orb to record what Sandy says.");
-    case ^hs_confession :
-        if (inv_total(inv, handsand_orb_recording) < 1) {
-            ~chatnpc("<p,neutral>Bring back the orb containing Sandy's confession.");
-            return;
-        }
-        if (inv_total(inv, earthrune) < 5 | inv_total(inv, bucket_sand) < 1) {
-            ~chatnpc("<p,neutral>The recorded confession is convincing. Bring five earth runes and a bucket of sand for the remedy.");
-            return;
-        }
-        inv_del(inv, handsand_orb_recording, 1);
-        inv_del(inv, earthrune, 5);
-        inv_del(inv, bucket_sand, 1);
-        %handsand = ^hs_wizard_spell;
-        ~chatnpc("<p,happy>I will use the runes to make Bert's sandpit self-filling. Find Mazion on Entrana.");
-    case ^hs_wizard_head :
-        if (inv_total(inv, handsand_wizhead) < 1) {
-            ~chatnpc("<p,neutral>Please bring back the missing apprentice's remains.");
-            return;
-        }
-        inv_del(inv, handsand_wizhead, 1);
-        %handsand = ^hs_complete;
-        queue(hs_quest_complete, 0, 0);
-        ~chatnpc("<p,sad>Then we have the truth. You have helped bring a measure of justice.");
-    case ^hs_not_started :
-        ~chatnpc("<p,neutral>Our guild has many mysteries to investigate.");
-    case ^hs_complete :
-        ~chatnpc("<p,happy>Thank you for your careful work.");
-    case default :
-        ~chatnpc("<p,neutral>Follow the evidence. Return when you have something to show me.");
-}
-
 // This remains a real native desk in Sandy's Brimhaven office.
 [oploc1,handsand_desk]
 if (%handsand < ^hs_bert_rota | %handsand > ^hs_magic_scroll) {

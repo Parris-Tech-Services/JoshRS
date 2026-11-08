@@ -1,0 +1,75 @@
+// Wanted! - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp quest_wanted (batch-4 patch).
+// NOT IMPLEMENTED: the full cross-Gielinor disguise chase and the Black Knight fortress siege;
+// the chain here is a condensed reconstruction. Rewards: 1 quest point.
+// Sir Tiffy Cashien has no cache NPC; the Savant (the quest's Temple Knight contact) starts it.
+
+// The Savant - Temple Knight contact.
+[opnpc1,wanted_savant]
+switch_int (%quest_wanted) {
+    case ^w_not_started :
+        ~chatnpc("<p,neutral>Temple Knight business - you'll do nicely.|A murderer called Solus Dellagar is loose. Every|witness who could identify him is dead, and every|clue has gone cold. You are to be my eyes.|Find Solus. The White Knights' records say he was|last seen near the Black Knights' Fortress.");
+        %quest_wanted = ^w_hunt;
+        ~send_quest_progress(questlist:wanted, %quest_wanted, ^w_complete);
+    case ^w_hunt :
+        ~chatnpc("<p,neutral>Solus was seen near the Black Knights' Fortress,|north of Falador. He wears many faces - trust the|crystal ball, not your eyes.");
+    case ^w_found :
+        ~chatnpc("<p,neutral>So he mocks you from his own doorstep? Then finish|it. Return to him and show him the Temple does not|forgive.");
+    case ^w_fight :
+        ~chatnpc("<p,neutral>He will not come quietly. If he draws a blade,|end it. The Temple Knight armoury will want a trophy.");
+    case default :
+        ~chatnpc("<p,neutral>Solus Dellagar is in the records at last - deceased.|The Temple thanks you. I never doubted you. Much.");
+}
+
+// Solus - the murderer with many faces.
+[opnpc1,wanted_solus1]
+if (%quest_wanted = ^w_hunt) {
+    ~chatnpc("<p,angry>Well, well. The Temple sends a errand-runner.|Do you know how many of your kind have come before|you? Neither do I - I stopped counting.|Come closer, little knight. I have a gift for you.");
+    %quest_wanted = ^w_found;
+    ~send_quest_progress(questlist:wanted, %quest_wanted, ^w_complete);
+    mes("Solus vanishes in a puff of smoke. The Savant said he would not come quietly.");
+} else {
+    if (%quest_wanted = ^w_found) {
+        if (npc_find(npc_coord, wanted_solus_attackable, 8, 0) = true) {
+            ~chatnpc("<p,angry>You again? Fight, then!");
+        } else {
+            ~chatnpc("<p,angry>Back so soon? Very well - no more games.|Let us see how the Temple's errand-runner dies!");
+            npc_add(movecoord(npc_coord, 1, 0, 0), wanted_solus_attackable, 1000);
+            npc_setmode(opplayer2);
+            %quest_wanted = ^w_fight;
+            ~send_quest_progress(questlist:wanted, %quest_wanted, ^w_complete);
+        }
+    } else {
+        mes("Solus is long gone.");
+    }
+}
+
+// Solus, attackable form - defeated in normal combat.
+[ai_queue3,wanted_solus_attackable]
+~npc_default_death;
+if (npc_findhero = ^false) {
+    return;
+}
+if (%quest_wanted = ^w_fight) {
+    queue(wanted_solus_defeated, 0, 0);
+}
+
+[queue,wanted_solus_defeated]
+if (%quest_wanted = ^w_fight) {
+    %quest_wanted = ^w_complete;
+    inv_add(inv, wanted_solus_trophy, 1);
+    mes("Solus Dellagar falls. You take a trophy for the Temple Knight armoury.");
+    session_log(^log_adventure, "Quest complete: Wanted!");
+    ~send_quest_complete(questlist:wanted, wanted_solus_trophy, 200, ^w_questpoints, "You have completed Wanted!", "1 quest point");
+}
+
+[if_button,questlist:wanted]
+def_string $text;
+switch_int (%quest_wanted) {
+    case ^w_not_started : $text = "@dbl@I can start this quest by speaking to the @dre@Savant@dbl@, the Temple Knight contact.";
+    case ^w_hunt : $text = "@str@The Temple Knights want the murderer Solus Dellagar.||@dbl@He was last seen near the @dre@Black Knights' Fortress@dbl@ north of Falador.";
+    case ^w_found : $text = "@str@Solus mocked me and vanished.||@dbl@I should confront @dre@Solus@dbl@ again - and be ready for a fight.";
+    case ^w_fight : $text = "@str@Solus has drawn a blade!||@dbl@I must @dre@defeat Solus@dbl@ in combat.";
+    case default : $text = "@str@Solus Dellagar is no more.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Wanted!", $text);

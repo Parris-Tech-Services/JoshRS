@@ -1,0 +1,84 @@
+// A Tail of Two Cats - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp twocats_varbit (batch-4 patch).
+// NOT IMPLEMENTED: the Robert the Strong cutscenes and the Sphinx riddle; the chain here
+// is a condensed reconstruction. Rewards: 2 quest points and an antique lamp.
+// Unferth's cat Bob has gone missing again.
+
+// Unferth - Burthorpe.
+[opnpc1,twocats_unferth]
+switch_int (%twocats_varbit) {
+    case ^tc_not_started :
+        ~chatnpc("<p,neutral>Oh, it's you. My cat Bob's gone off again - he does that.|He's getting old, you know. Worried sick, I am.|Here - take my catspeak amulet. If you can find Bob,|ask him what he's playing at.");
+        if (inv_total(inv, twocats_amuletofcatspeak) = 0) {
+            inv_add(inv, twocats_amuletofcatspeak, 1);
+            mes("Unferth lends you his catspeak amulet.");
+        }
+        %twocats_varbit = ^tc_amulet;
+        ~send_quest_progress(questlist:twocats, %twocats_varbit, ^tc_complete);
+    case ^tc_amulet :
+        ~chatnpc("<p,neutral>Bob's a big cat with a lion-like mane - you can't miss him.|He's usually off adventuring somewhere. The Sphinx in|Sophanem knows everything about cats - try her.");
+    case ^tc_bob :
+        ~chatnpc("<p,neutral>Bob's fine? Off with the Sphinx's blessing?|Well I never. And he wants me to take my medicine?|Hmph. Cats. Fetch his mouse toy back from the Sphinx|and I'll believe every word.");
+    case ^tc_chores :
+        if (inv_total(inv, twocats_mouse_toy) > 0) {
+            ~chatnpc("<p,neutral>My mouse toy! Bob carried this about for years.|Well... if Bob says I'm to take my medicine and tidy up,|I suppose I'd better. Tell him I said thank you.|And here - the Sphinx left this lamp for you, said|you'd earned it.");
+            inv_del(inv, twocats_mouse_toy, 1);
+            queue(tc_complete, 0, 0);
+        } else {
+            ~chatnpc("<p,neutral>The Sphinx has Bob's mouse toy. Fetch it back and|I'll do whatever the furry menace asks.");
+        }
+    case default :
+        ~chatnpc("<p,neutral>Bob's home and I've taken my medicine. Life's grand.");
+}
+
+// The Sphinx - keeper of cat lore, Sophanem.
+[opnpc1,twocats_sphinx_cutscene]
+if (%twocats_varbit = ^tc_amulet) {
+    if (inv_total(inv, twocats_amuletofcatspeak) = 0) {
+        ~chatnpc("<p,neutral>Return when you carry the voice of cats, little one.");
+    } else {
+        ~chatnpc("<p,neutral>So. You seek Bob, the cat who walks like a memory.|He is older than kings, little one - older than he knows.|He walks the desert remembering a warrior he once was.|Seek him where the sand meets the stone.|He is well - and he asks that you tend his human.");
+    }
+} else {
+    if (%twocats_varbit = ^tc_bob) {
+        ~chatnpc("<p,neutral>Bob's human doubts, does he? Then take his mouse toy -|I have kept it safe since he was a kitten.|All cats are one cat, little one. Even the ones who forget.");
+        inv_add(inv, twocats_mouse_toy, 1);
+        %twocats_varbit = ^tc_chores;
+        ~send_quest_progress(questlist:twocats, %twocats_varbit, ^tc_complete);
+        mes("The Sphinx gives you Bob's mouse toy.");
+    } else {
+        ~chatnpc("<p,neutral>All cats are one cat, little one. Even the ones|who forget.");
+    }
+}
+
+// Bob - the cat with the lion-like mane.
+[opnpc1,twocats_bob_cutscene]
+if (%twocats_varbit = ^tc_amulet) {
+    if (inv_total(inv, twocats_amuletofcatspeak) = 0) {
+        mes("A large cat with a lion-like mane watches me calmly. I can't understand him without a catspeak amulet.");
+    } else {
+        ~chatnpc("<p,neutral>Mew. Hm? Oh - the amulet. Yes, I'm Bob.|Gone missing? I'm right here, aren't I?|Tell Unferth I'm fine. He fusses. Tell him to take|his medicine and tidy the house, the lazy beggar.|The Sphinx will vouch for me - she usually does.");
+        %twocats_varbit = ^tc_bob;
+        ~send_quest_progress(questlist:twocats, %twocats_varbit, ^tc_complete);
+    }
+} else {
+    ~chatnpc("<p,neutral>Mew. (Bob washes his face and pretends not to know you.)");
+}
+
+[queue,tc_complete]
+%twocats_varbit = ^tc_complete;
+inv_add(inv, twocats_rewardlamp, 1);
+mes("Unferth gives you an antique lamp from the Sphinx.");
+session_log(^log_adventure, "Quest complete: A Tail of Two Cats");
+~send_quest_complete(questlist:twocats, twocats_mouse_toy, 200, ^tc_questpoints, "You have completed A Tail of Two Cats!", "2 quest points and an antique lamp");
+
+[if_button,questlist:twocats]
+def_string $text;
+switch_int (%twocats_varbit) {
+    case ^tc_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Unferth@dbl@ in Burthorpe.";
+    case ^tc_amulet : $text = "@str@Unferth lent me his catspeak amulet.||@dbl@I should find @dre@Bob@dbl@ the cat - the @dre@Sphinx@dbl@ in Sophanem knows where he is.";
+    case ^tc_bob : $text = "@str@Bob is fine - he was off adventuring.||@dbl@I should tell @dre@Unferth@dbl@ the news.";
+    case ^tc_chores : $text = "@str@Unferth wants proof - Bob's mouse toy.||@dbl@I should fetch the @dre@mouse toy@dbl@ from the @dre@Sphinx@dbl@ and bring it to @dre@Unferth@dbl@.";
+    case default : $text = "@str@Bob is home and Unferth is sorted.||@red@QUEST COMPLETE!";
+}
+~quest_journal("A Tail of Two Cats", $text);
