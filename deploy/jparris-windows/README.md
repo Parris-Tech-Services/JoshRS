@@ -127,6 +127,45 @@ The game's development worker broadcasts **Packing changes** while rebuilding co
 
 This fix does **not** set `BUILD_VERIFY=false`. It adds `JOSHRS_CUSTOM_LOCS=true` to the copied world's private `.env`, and selectively bypasses only the original loc CRC comparison. This means a genuinely broken custom loc checksum is not detected by comparison to the original; parsing, other configuration CRC checks, pack ID checks and unrelated consistency checks still run. If a *different* error remains, read the actual server log rather than ignoring it.
 
+## Login says “Invalid username or password”
+
+The native 377 server's error code 1 means **either** there is no matching
+account in its active SQLite database, **or** the supplied password failed the
+stored bcrypt hash check. A reachable game port or successful autonomous bot
+login does **not** prove that Elrothiro's personal account can log in.
+
+1. On JParris Desktop, run this **read-only** command in the *installed* launcher
+   directory (not the source-only GitHub checkout). It checks the active
+   `active.json` selection, native Elrothiro save CRC and matching account record
+   without printing or changing passwords:
+
+   ```powershell
+   & '.\deploy\jparris-windows\Protect-Elrothiro.ps1'
+   ```
+
+2. If it says **Elrothiro account record NOT FOUND**, stop. Preserve the
+   `elrothiro.sav` file and find the *matching* backed-up `db.sqlite` (and
+   corresponding WAL files, where present). Do **not** clear the database,
+   reset the character, create a new Elrothiro account or toggle automatic
+   registration to claim an existing saved character.
+3. If the account is present and the save passes verification, the correct
+   password still needs to be tested *privately* on the real local client.
+   Neither this report nor a GitHub CI run can validate a user's password.
+   Keep passwords, hashes and databases off GitHub/chat.
+4. Unknown/new usernames are a separate case: upstream Engine-TS defaults
+   `WEBSITE_REGISTRATION=true`, which **rejects unknown names** if no website
+   signup has provisioned them. New, empty Windows worlds created by the
+   corrected launcher explicitly choose `WEBSITE_REGISTRATION=false`. Existing
+   `.env` files remain untouched; imported worlds with saved characters
+   default to registration locked, and installs with saved characters but no
+   database fail closed. Don't apply the new-world configuration to a family
+   world without first verifying all account records and saves.
+
+There is no safe way for GitHub code alone to identify or repair a live desktop's
+private account database. Do not claim login restored until the actual Java
+client logs in, displays the expected character and survives a clean
+logout/relogin.
+
 ## Troubleshooting
 
 ### Broken desktop Java client: Could not find or load main class .java2d.d3d=false

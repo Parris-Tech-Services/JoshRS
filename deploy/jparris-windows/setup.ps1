@@ -16,6 +16,17 @@ $activeFile = Join-Path $runtime 'active.json'
 . (Join-Path $PSScriptRoot 'web-port.ps1')
 . (Join-Path $PSScriptRoot 'save-integrity.ps1')
 
+function Get-JoshRSLocalRegistrationMode {
+    param([Parameter(Mandatory)][string]$Engine)
+    $playerPath = Join-Path $Engine 'data\players'
+    $existingSaves = @(Get-ChildItem -LiteralPath $playerPath -Filter '*.sav' -Recurse -File -ErrorAction SilentlyContinue).Count -gt 0
+    $existingDatabase = Test-Path -LiteralPath (Join-Path $Engine 'db.sqlite') -PathType Leaf
+    if ($existingSaves -and -not $existingDatabase) {
+        throw 'This copied world has existing player saves but no db.sqlite account database. Stop: recover and verify a matching private account database; never auto-register an existing saved character.'
+    }
+    if ($existingSaves) { return 'true' }
+    return 'false'
+}
 function Run-Native([string]$exe, [string[]]$arguments, [string]$workingDirectory) {
     Push-Location -LiteralPath $workingDirectory
     try {
@@ -234,14 +245,21 @@ if (-not (Test-Path -LiteralPath (Join-Path $client 'gradlew.bat') -PathType Lea
 
 $envFile = Join-Path $engine '.env'
 if (-not (Test-Path -LiteralPath $envFile)) {
+    # Engine-TS 377 defaults WEBSITE_REGISTRATION=true, which rejects all
+    # unknown usernames unless the separate website registration is running.
+    # A genuinely new local world should allow first login to create an account.
+    # Never auto-register an identity from an imported character save: doing so
+    # could bind the old save to a newly created account with a different password.
+    $registrationMode = Get-JoshRSLocalRegistrationMode -Engine $engine
     $values = @(
         'WEB_PORT=8888','WEB_MANAGEMENT_PORT=8898','NODE_PORT=52402','NODE_ID=10',
         'NODE_MEMBERS=true','DB_BACKEND=sqlite','LOGIN_SERVER=true',
         'FRIEND_SERVER=true','LOGGER_SERVER=true','EASY_STARTUP=true',
+        ('WEBSITE_REGISTRATION=' + $registrationMode),
         'BUILD_SRC_DIR=../content'
     )
     [System.IO.File]::WriteAllLines($envFile, $values)
-    Write-Host 'Created local server configuration. No existing .env was overwritten.'
+    Write-Host "Created local server configuration (WEBSITE_REGISTRATION=$registrationMode). No existing .env was overwritten."
 }
 $gamePort = [int](EnvironmentValue $envFile 'NODE_PORT' '43594')
 if ($UsbPath -or $ResumeSnapshotPath) {
@@ -261,6 +279,9 @@ if ($offset -lt 0 -or $webPort -ne ($offset + 80)) {
 if ((EnvironmentValue $envFile 'DB_BACKEND' 'sqlite') -ne 'sqlite') {
     throw 'The copied server uses a non-SQLite database. No automatic migration will be attempted. Review its database setup first.'
 }
+# Check every imported world, including those with their own .env: migrations
+# must never quietly create an empty database beside preserved player saves.
+$null = Get-JoshRSLocalRegistrationMode -Engine $engine
 # Back up all character saves and the SQLite account database before migrations.
 $playerFolder = Join-Path $engine 'data\players'
 $dbFile = Join-Path $engine 'db.sqlite'

@@ -15,7 +15,8 @@ jobs:
       - run: npm test
       - run: docker compose -f deploy/local/compose.yaml config -q
   browser:
-    runs-on: ubuntu-latest
+    # Playwright 1.57 cannot install Chromium on the new ubuntu-26.04 runner.
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
