@@ -15,7 +15,7 @@ function Get-Flag([string]$File, [string]$Key) {
     $lines = @(Get-Content -LiteralPath $File | Where-Object { $_ -match $pattern })
     if ($lines.Count -ne 1) { return 'unknown' }
     $value = [regex]::Match($lines[0], $pattern).Groups[1].Value.Trim()
-    $value = ($value -replace '\s+#.*
+    $value = ($value -replace '\s+#.*$', '').Trim([char[]]@([char]39, [char]34, [char]32))
     return $value
 }
 function Port-Listening([int]$Port) {
