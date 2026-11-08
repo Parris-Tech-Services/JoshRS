@@ -21,11 +21,21 @@ if ($i < 32) {
     %rag_bones_b = setbit(%rag_bones_b, calc($i - 32));
 }
 
+// The 2006 Rag and Bone Man quest asks for 8 bones; 27 more belong to its wish list.
+[proc,rag_is_required_bone](int $i)(boolean)
+if ($i >= 0 & $i <= 5) {
+    return(true);
+}
+if ($i = 14 | $i = 32) {
+    return(true);
+}
+return(false);
+
 [proc,rag_delivered_count]()(int)
 def_int $i = 0;
 def_int $n = 0;
-while ($i < ^rag_bone_total) {
-    if (~rag_bone_delivered($i) = true) {
+while ($i < ^rag_bone_catalog_total) {
+    if (~rag_is_required_bone($i) = true & ~rag_bone_delivered($i) = true) {
         $n = calc($n + 1);
     }
     $i = calc($i + 1);
@@ -56,9 +66,9 @@ switch_int (%rag_quest) {
 [label,rag_turn_in]
 def_int $given = 0;
 def_int $i = 0;
-while ($i < ^rag_bone_total) {
+while ($i < ^rag_bone_catalog_total) {
     def_namedobj $polished = ~rag_polished_bone($i);
-    if (~rag_bone_delivered($i) = false & inv_total(inv, $polished) > 0) {
+    if (~rag_is_required_bone($i) = true & ~rag_bone_delivered($i) = false & inv_total(inv, $polished) > 0) {
         inv_del(inv, $polished, 1);
         ~rag_mark_delivered($i);
         $given = calc($given + 1);
@@ -80,6 +90,9 @@ if (~rag_delivered_count = ^rag_bone_total) {
 // UNVERIFIED: the real rewards. The cache holds a ram skull helm and a bonesack, but which are quest rewards is unconfirmed.
 // QP value is also unverified.
 [queue,rag_quest_complete]
+if (%rag_quest ! ^rag_started | ~rag_delivered_count ! ^rag_bone_total) {
+    return;
+}
 %rag_quest = ^rag_complete;
 session_log(^log_adventure, "Quest complete: Rag and Bone Man");
 ~send_quest_complete(questlist:rag, rag_ram_helm, 200, ^rag_questpoints, "You have completed the Rag and Bone Man Quest!", "1 Quest Point");
@@ -99,5 +112,6 @@ if (%rag_quest = ^rag_not_started) {
 // Wish-list loc (placeholder text).
 [oploc1,rag_shopping_list]
 // UNVERIFIED: placeholder text
-mes("The wish-list names every bone the Odd Old Man wants.");
+mes("The Odd Old Man needs eight polished bones for his first collection.");
+mes("The list names: goblin, bear, ram, unicorn, giant rat, giant bat, monkey and big frog.");
 mes("You have delivered <tostring(~rag_delivered_count)> of <tostring(^rag_bone_total)>.");
