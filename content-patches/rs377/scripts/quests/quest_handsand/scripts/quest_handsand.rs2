@@ -11,7 +11,7 @@ switch_int (%handsand) {
             return;
         }
         def_int $o = ~p_choice2("I'll look into it.", 1, "I'd rather not.", 2);
-        if ($o != 1) {
+        if ($o ! 1) {
             return;
         }
         if (inv_freespace(inv) < 1) {
