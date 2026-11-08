@@ -48,9 +48,11 @@ public final class JoshRS377ClientControl {
     private static final class Request {
         final String action;
         final int argument;
+        final byte[] packetBody;
+        volatile boolean cancelled = false;
         final CountDownLatch done = new CountDownLatch(1);
         volatile String result = "ERR|controller_not_ready";
-        Request(String action, int argument) { this.action = action; this.argument = argument; }
+        Request(String action, int argument, byte[] packetBody) { this.action = action; this.argument = argument; this.packetBody = packetBody; }
     }
 
     public JoshRS377ClientControl() {
@@ -124,18 +126,30 @@ public final class JoshRS377ClientControl {
                     String line = readLineBounded(socket);
                     String[] parts = line.split("\t", -1);
                     String answer = "ERR|invalid_request";
-                    if (parts.length == 3 &&
+                    if ((parts.length == 3 || parts.length == 4) &&
                         MessageDigest.isEqual(parts[0].getBytes(StandardCharsets.US_ASCII),
                                               token.getBytes(StandardCharsets.US_ASCII))) {
-                        if (!parts[2].matches("[0-9]{1,2}")) {
+                        if (!parts[2].matches("[0-9]{1,3}") ||
+                            (parts.length == 4 && !"nativePacket".equals(parts[1]))) {
                             answer = "ERR|invalid_argument";
                         } else {
                             int arg = Integer.parseInt(parts[2]);
-                            Request request = new Request(parts[1], arg);
-                            if (!queue.offer(request)) answer = "ERR|client_busy";
-                            else if (!request.done.await(3500, TimeUnit.MILLISECONDS))
-                                answer = "ERR|client_tick_timeout";
-                            else answer = request.result;
+                            byte[] nativeBody = null;
+                            if (parts.length == 4) {
+                                try { nativeBody = java.util.Base64.getDecoder().decode(parts[3]); }
+                                catch (IllegalArgumentException bad) {
+                                    answer = "ERR|invalid_packet_base64";
+                                    nativeBody = null;
+                                }
+                            }
+                            if (parts.length != 4 || nativeBody != null) {
+                                Request request = new Request(parts[1], arg, nativeBody);
+                                if (!queue.offer(request)) answer = "ERR|client_busy";
+                                else if (!request.done.await(3500, TimeUnit.MILLISECONDS)) {
+                                    request.cancelled = true;
+                                    answer = "ERR|client_tick_timeout";
+                                } else answer = request.result;
+                            }
                         }
                     }
                     BufferedWriter output = new BufferedWriter(
@@ -156,9 +170,45 @@ public final class JoshRS377ClientControl {
         if (server == null) return;
         Request req = queue.poll();
         if (req == null) return;
-        try { req.result = apply(client, req.action, req.argument); }
+        try { if (!req.cancelled) req.result = apply(client, req.action, req.argument, req.packetBody); }
         catch (RuntimeException ignored) { req.result = "ERR|client_action_refused"; }
         finally { req.done.countDown(); }
+    }
+
+    private static boolean nativePacketValid(int opcode, byte[] body) {
+        if (body == null) return false;
+        // Original pinned Engine-TS ClientGameProt, no admin/control opcodes.
+        // All allowed packet bodies MUST first be created by the validated
+        // SDK->native typed action mapper and authoritative per-bot observer.
+        int size = -1;
+        switch (opcode) {
+            case 28: // MOVE_GAMECLICK fixed minimal step + optional route deltas
+                return body.length >= 5 && body.length <= 53 && (body.length % 2) == 1;
+            case 49: // MESSAGE_PUBLIC (native WordPack)
+                return body.length >= 3 && body.length <= 100;
+            case 227: // MESSAGE_PRIVATE base37 and WordPack
+                return body.length >= 9 && body.length <= 100;
+            case 245: case 233: case 194: case 116: case 45: // OPPLAYER
+            case 112: case 67: case 13: case 42: case 8: // OPNPC
+            case 79: case 226: // IF_BUTTON / RESUME_PAUSEBUTTON
+                size = 2; break;
+            case 110: // CLOSE_MODAL
+                size = 0; break;
+            case 75: // RESUME_P_COUNTDIALOG
+            case 104: case 31: // OPNPCT / OPPLAYERT
+                size = 4; break;
+            case 77: case 100: case 71: case 54: case 230: // OPOBJ
+            case 181: case 241: case 50: case 136: case 55: // OPLOC
+            case 3: case 177: case 91: case 231: case 158: // INV_BUTTON
+            case 203: case 24: case 161: case 228: case 4: // OPHELD
+                size = 6; break;
+            case 57: case 36: case 83: // OPNPCU / OPHELDT / OPOBJT
+                size = 8; break;
+            case 1: case 152: // OPHELDU / OPLOCU
+                size = 12; break;
+            default: return false;
+        }
+        return body.length == size;
     }
 
     private static boolean designOpen(Client client) {
@@ -192,13 +242,23 @@ public final class JoshRS377ClientControl {
             "|" + (sum & 0x7fffffff) + "|" + client.loopCycle;
     }
 
-    private String apply(Client client, String action, int arg) {
+    private String apply(Client client, String action, int arg, byte[] body) {
         // The controller must never select a family user, login screen or
         // disconnected client. Separate isolated bot identity is mandatory.
         if (!client.ingame || client.username == null ||
             !client.username.equalsIgnoreCase(bot) ||
             Client.portOffset + 43594 != gamePort) return "ERR|isolated_bot_or_world_port_not_authenticated";
         if ("status".equals(action)) return status(client);
+        if ("nativePacket".equals(action)) {
+            if (body == null || !nativePacketValid(arg, body))
+                return "ERR|normal_377_packet_not_allowlisted";
+            // Same exact per-account ordinary ISAAC game channel used by
+            // the human-operated Java 377 client. No direct game save access.
+            client.out.p1isaac(arg);
+            if (arg == 28 || arg == 49 || arg == 227) client.out.p1(body.length);
+            client.out.pdata(body, body.length, 0);
+            return "OK|native_packet_queued_unverified|" + arg + "|" + client.loopCycle;
+        }
         if ("setTab".equals(action)) {
             if (arg < 0 || arg > 13 || client.tabInterfaceId[arg] == -1)
                 return "ERR|tab_not_available";
