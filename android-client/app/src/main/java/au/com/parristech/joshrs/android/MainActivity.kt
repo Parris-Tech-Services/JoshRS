@@ -22,7 +22,7 @@ import java.io.FileOutputStream
  * the legacy 377 renderer and authenticated game packets are not implemented.
  */
 class MainActivity : Activity() {
-    companion object { private const val PICK_SAVE = 377 }
+    companion object { private const val PICK_SAVE = 377; private const val PICK_CACHE = 378 }
 
     private var game: GameSurfaceView? = null
     private var showingPreview = false
@@ -121,6 +121,24 @@ class MainActivity : Activity() {
         }
         val count = File(filesDir, "saves377").listFiles { f -> f.isFile && f.name.endsWith(".sav") }?.size ?: 0
         root.addView(label("Validated private save copies: $count"))
+        root.addView(label("Private historical cache inspector", 19f))
+        root.addView(label(
+            "Select your own main_file_cache.dat and main_file_cache.idx0. " +
+                "Validates original legacy cache sectors and stores a private copy. " +
+                "No models or world maps are displayed yet; no assets are downloaded."
+        ))
+        action("Inspect/import both original cache files") {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "*/*"
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            }
+            startActivityForResult(intent, PICK_CACHE)
+        }
+        val cacheCount = File(filesDir, "cache377").listFiles {
+            f -> f.isDirectory && !f.name.endsWith(".tmp")
+        }?.size ?: 0
+        root.addView(label("Private cache snapshots: $cacheCount"))
         root.addView(label("Visual study (not the 377 game)", 19f))
         action("Open original isometric preview") { showPreview() }
         root.addView(label(
@@ -149,6 +167,27 @@ class MainActivity : Activity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_CACHE && resultCode == RESULT_OK) {
+            val uris = buildList {
+                val clips = data?.clipData
+                if (clips != null) {
+                    for (i in 0 until clips.itemCount) add(clips.getItemAt(i).uri)
+                } else {
+                    data?.data?.let { add(it) }
+                }
+            }
+            try {
+                val receipt = Cache377Vault.importPair(this, uris)
+                showHome()
+                statusText?.text = "Real legacy cache structure verified: " +
+                    "${receipt.readableArchives} archives read. Private snapshot ${receipt.cacheId}. " +
+                    "3D model/map rendering still unimplemented."
+            } catch (e: Exception) {
+                showHome()
+                statusText?.text = "Cache import refused: ${e.message ?: "invalid cache"}"
+            }
+            return
+        }
         if (requestCode != PICK_SAVE || resultCode != RESULT_OK) return
         val uri = data?.data ?: return
         try {
