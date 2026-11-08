@@ -19,7 +19,7 @@ class SwanSongFishingContract(unittest.TestCase):
     def test_fishing_uses_quest_specific_npc_and_fish(self):
         self.assertIn("[opnpc1,swan_fishingspot]", FISHING)
         self.assertIn("inv_add(inv, swan_raw_monkfish, 1)", FISHING)
-        self.assertNotIn("raw_monkfish,", FISHING)
+        self.assertNotRegex(FISHING, r"\\binv_add\\(inv, raw_monkfish,")
         self.assertIn("%swansong ! ^swansong_fish", FISHING)
         self.assertIn("stat(fishing) < 62", FISHING)
         self.assertIn("~check_fish_equipment(net)", FISHING)
