@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Only for a disposable GitHub Actions runner. NEVER apply to a live JoshRS install.
 # Overlays the Fenkenstrain quest, the batch-2 quest bundles, the Morytania
-# addendum, the batch-3 and batch-4 quest bundles onto the immutable pinned 377
+# addendum, the batch-3/4 quests and Cook range helpers onto the pinned 377
 # content, applying patches 0001-0027 in numeric order.
 set -euo pipefail
 : "${RUNNER_TEMP:?missing runner temp}"
@@ -17,7 +17,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 27 ]] || { echo "BLOCKED: expected 27 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 28 ]] || { echo "BLOCKED: expected 27 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -43,6 +43,23 @@ for rel in \
   mkdir -p "$(dirname "$content/$rel")"
   cp "$quest/$rel" "$content/$rel"
 done
+
+# Millie Miller and Gillie Groats are optional guidance NPCs. Their cache spawns
+# exist on 377, but the pinned content lacks these Talk-to handlers. Never duplicate
+# an existing installed handler or alter the core Cook quest dialogue.
+for npc in millie_the_miller gillie_the_milkmaid; do
+  rel="scripts/areas/area_lumbridge/scripts/joshrs_cook_${npc%%_*}_377.rs2"
+  src="$quest/$rel"
+  dest="$content/$rel"
+  [[ -f "$src" && ! -e "$dest" ]] || { echo "BLOCKED: missing/conflicting Cook helper: $rel" >&2; exit 2; }
+  if grep -R --include='*.rs2' -Fq "[opnpc1,$npc]" "$content/scripts"; then
+    echo "BLOCKED: $npc already has a Talk-to handler; do not duplicate it" >&2
+    exit 2
+  fi
+  mkdir -p "$(dirname "$dest")"
+  cp "$src" "$dest"
+done
+python3 -I "$quest/tools/check_cooks_range.py" --content "$content"
 
 python - "$content" <<'PY'
 import pathlib, sys, re
