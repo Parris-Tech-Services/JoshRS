@@ -39,7 +39,7 @@ const sleep=ms=>new Promise(done=>setTimeout(done,ms));
 const sdk=new BotSDK({botUsername:botName,password:token,gatewayUrl,
   autoLaunchBrowser:false,autoReconnect:false,showChat:false,
   readyTimeout:0,connectTimeout:9000,actionTimeout:11000});
-let authenticated=false,first=null,second=null,walked=false,actionsClass=false;
+let authenticated=false,first=null,second=null,walked=false,actionsClass=false,finalPosition=null;
 try{
  await sdk.connect();
  authenticated=sdk.isAuthenticated();
@@ -70,7 +70,7 @@ try{
   for(let attempt=0;attempt<25;attempt++){
    const state=sdk.getState();
    if(state?.tick>startTick&&state.player?.worldX===x&&state.player?.worldZ===z){
-    walked=true;break;
+    walked=true;finalPosition={x,z};break;
    }
    await sleep(160);
   }
@@ -81,7 +81,7 @@ try{
   source:'MaxBittker/rs-sdk',sourceSha:PIN,bot:'HarnessProbe',
   realNative377World:true,authenticated,continuousNativeState:true,
   actualUpstreamBotSDK:true,actualUpstreamBotActions:true,
-  ordinaryPacketEffectVerified:true,saveRelogVerifiedByParent:false,
+  ordinaryPacketEffectVerified:true,finalPosition,saveRelogVerifiedByParent:false,
   tenPubPlaythroughVerified:false,familyWorldTouched:false
  }));
 }finally{
