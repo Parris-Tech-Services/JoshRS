@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # Only for a disposable GitHub Actions runner. NEVER apply to a live JoshRS install.
-# Overlays the five-quest scaffold (RFD intro, Cabin Fever, Recruitment Drive,
-# Mourning's End Part II, Monkey Madness) onto the pinned disposable 377 content and verifies
-# it. Swan Song is owned by the batch-quests bundle on main (JOSHRS_BATCH_QUESTS_NOTES.md).
+# Combined quest-bundle CI: applies EVERY patch in content-patches/rs377/patches/ in numeric
+# order (batch-quests 0001-00NN first, then the 1000N quest-bundle series) to the pinned
+# disposable 377 content, overlays EVERY quest folder present in this branch, and verifies
+# the combined result. This validates the real post-merge state of main: bundles that patch
+# the same files (e.g. quests.rs2) must stack cleanly in numeric order.
 set -euo pipefail
 : "${RUNNER_TEMP:?missing runner temp}"
 : "${GITHUB_WORKSPACE:?missing checkout}"
@@ -14,20 +16,28 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 [[ "$content" == "$RUNNER_TEMP/joshrs-377-build/content" && -d "$content/.git" && -d "$engine/.git" ]] || { echo "BLOCKED: unrecognised workspace" >&2; exit 2; }
 [[ "$(git -C "$content" rev-parse HEAD)" == "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50" ]] || { echo "BLOCKED: Content SHA drift" >&2; exit 2; }
 [[ "$(git -C "$engine" rev-parse HEAD)" == "b5ac859b47915afb545e60e4c1208f25d43cb3fb" ]] || { echo "BLOCKED: Engine SHA drift" >&2; exit 2; }
-patches=(10001-register-five-quests-in-quests-rs2 10002-move-four-quest-varps-out-of-unpack 10003-rfd-extend-cook-dialogue 10004-rd-extend-sir-amik-dialogue 10005-mm-extend-narnode-dialogue 10006-rfd-claim-cache-varp)
+
+# All patches, numeric order (ls | sort: 0001-00NN batch, then 10001+ bundles).
+mapfile -t patches < <(ls "$quest"/patches/*.patch | sort)
+if [[ "${#patches[@]}" -eq 0 ]]; then echo "BLOCKED: no patches found" >&2; exit 2; fi
+echo "Applying ${#patches[@]} patches in numeric order:"
+for p in "${patches[@]}"; do echo "  $(basename "$p")"; done
 for p in "${patches[@]}"; do
-  git -C "$content" apply --check "$quest/patches/$p.patch"
+  git -C "$content" apply --check "$p"
 done
 for p in "${patches[@]}"; do
-  git -C "$content" apply "$quest/patches/$p.patch"
+  git -C "$content" apply "$p"
 done
-# Overlay the five quest folders. Four already exist upstream as config-only stubs (a configs/*.loc
-# file each); copy with /. so the overlay merges into them instead of nesting.
-for q in quest_100 quest_fever quest_rd quest_mourning2 quest_mm; do
+
+# Overlay every quest folder carried by this branch. Quest dirs that already exist upstream
+# as config-only stubs merge via /. instead of nesting.
+for src in "$quest"/scripts/quests/*/; do
+  q=$(basename "$src")
   dest="$content/scripts/quests/$q"
   mkdir -p "$dest"
-  cp -R "$quest/scripts/quests/$q/." "$dest/"
+  cp -R "$src." "$dest/"
 done
+
 python - "$content" <<'PY'
 import pathlib, sys, re
 root=pathlib.Path(sys.argv[1])
@@ -63,10 +73,12 @@ for v in ('%fever_quest, ^fever_complete','%rd_main, ^rd_complete',
     assert src.count(v)==1, v
 assert 'rfd_quest, ^rfd_full_complete' in src  # colour only; QP deferred until chapters land
 assert 'rfd_questpoints' not in src
-assert 'questlist:swansong' not in src  # owned by the batch-quests bundle, not this one
+# Swan Song belongs to the batch-quests bundle (JOSHRS_BATCH_QUESTS_NOTES.md): exactly one
+# registration, from the batch patch series, never from the 1000N bundles.
+assert src.count('questlist:swansong')==1
 print('Disposable overlay verified: unique permanent varps, quest-list registrations, merged stubs intact')
 PY
 SIXQUEST_CONTENT="$content" \
 SIXQUEST_EXTRA_SCRIPTS="$content/scripts/areas/area_lumbridge/scripts/cook.rs2:$content/scripts/areas/area_falador/scripts/sir_amik_varze.rs2:$content/scripts/quests/quest_grandtree/scripts/king_narnode.rs2" \
   python3 -I "$quest/tools/check_fivequest_symbols.py"
-echo "DISPOSABLE_SIXQUEST_OVERLAY_READY"
+echo "DISPOSABLE_QUESTBUNDLE_OVERLAY_READY"
