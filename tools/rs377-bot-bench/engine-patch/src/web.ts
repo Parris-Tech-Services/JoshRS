@@ -607,8 +607,10 @@ management.get('/dev/rs377-observe', async (req, reply) => {
     const recentDialogs = trace && Array.isArray(trace.recentDialogs) &&
         (bot.modalChat===-1 || trace.sawDialogPage) ?
         trace.recentDialogs : null;
-    const gameMessages = trace && nearbyPlayers.length === 0 ?
-        trace.gameMessages : null;
+    // Native377Trace is a WeakMap keyed to this exact authenticated
+    // Player. Nearby players must never suppress this bot's OWN messages;
+    // the bot may observe only messages actually sent to its own client.
+    const gameMessages = trace ? trace.gameMessages : null;
     const combatEvents = trace?.combatEvents ?? null;
 
     const sdkDetails = {
