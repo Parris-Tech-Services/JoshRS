@@ -1,0 +1,19 @@
+--- a/scripts/skill_smithing/scripts/smelting/smelting.rs2
++++ b/scripts/skill_smithing/scripts/smelting/smelting.rs2
+@@ -1,9 +1,14 @@
+ [oplocu,_smithing_furnace]
+ switch_obj (last_useitem)
+ {
+     case gold_bar, perfect_gold_bar : @craft_gold_interface;
+-    case silver_bar : @craft_silver;
++    case silver_bar :
++        // Preserve every normal silver jewellery recipe unless THIS player
++        // is in the correct Fenkenstrain stage and actually carries the mould.
++        if (%fenk_quest = ^fenk_sewn & inv_total(inv, fenk_lightning_mould) > 0) {
++            ~fenk_cast_conductor;
++            return;
++        }
++        @craft_silver;
+     case steel_bar : @smelt_cannonballs;
+     case bucket_sand, soda_ash : @smelt_glass;
+     case caveorb1, caveorb2, caveorb3, caveorb4 :
