@@ -55,9 +55,9 @@ def verify(source:Path) -> None:
         raise ValueError("native underground exit ladder route missing")
     if "~fenk_buy_preserved_brain;" not in (source/"scripts/areas/area_canafis/scripts/werewolfinnkeeper.rs2").read_text():
         raise ValueError("Roavar's original NPC trigger was not extended")
-    if "[oploc1,loc_1757]" in (
+    if re.search(r"(?m)^\\[oploc1,loc_1757\\]", (
         source/"scripts/quests/quest_fenkenstrain/scripts/fenk_dungeon.rs2"
-    ).read_text():
+    ).read_text()):
         raise ValueError("duplicate native ladder script was introduced")
     print("FENKENSTRAIN_MAP_CONTRACT_OK:",sum(map(len,PINNED.values())),
           "real map locations, wolf-woman NPCs, entrances, exits, Roavar")
