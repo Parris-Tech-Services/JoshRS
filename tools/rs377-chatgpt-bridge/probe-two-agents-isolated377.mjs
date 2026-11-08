@@ -19,7 +19,7 @@ const token=need('RS377_OBSERVER_TOKEN'),expectedWorld=need('RS377_OBSERVER_WORL
 if(process.env.RS377_LIVE_BOT_PROBE!=='true' ||
   process.env.RS377_OBSERVER_ENABLED!=='true' ||
   process.env.RS377_OBSERVER_ISOLATED!=='true' ||
-  process.env.RS377_OBSERVER_BOTS!=='HarnessProbe,HarnessScout' ||
+  process.env.RS377_OBSERVER_BOTS!=='HarnessProbe,HarnessA,HarnessB' ||
   process.env.NODE_PROFILE!=='joshrs_ci_377' ||
   process.env.NODE_XPRATE!=='1' ||
   process.env.WEBSITE_REGISTRATION!=='false' ||
@@ -36,7 +36,7 @@ requireTrue(resp.ok,'missing_native_crc');
 const crcBytes=Buffer.from(await resp.arrayBuffer());
 requireTrue(crcBytes.length===40,'invalid_native_crc');
 const crcs=crcBytes.subarray(0,36);
-const names=['HarnessProbe','HarnessScout'];
+const names=['HarnessA','HarnessB'];
 const entries=names.map((name,i)=>{
  const password=randomBytes(20).toString('base64url');
  return {
