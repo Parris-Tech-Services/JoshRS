@@ -5,12 +5,14 @@ on:
     paths:
       - 'tools/portable-world/**'
       - 'JoshRS-Check-My-World.cmd'
+      - 'JoshRS-Compare-Pinned-World.cmd'
       - '.github/workflows/portable-world-inventory.yml'
   push:
     branches: [main]
     paths:
       - 'tools/portable-world/**'
       - 'JoshRS-Check-My-World.cmd'
+      - 'JoshRS-Compare-Pinned-World.cmd'
       - '.github/workflows/portable-world-inventory.yml'
   workflow_dispatch:
 
@@ -32,3 +34,5 @@ jobs:
           node-version: '24'
       - name: Run privacy, consistency and fail-closed tests
         run: node --test tools/portable-world/audit.test.mjs
+      - name: Validate pinned-upstream comparison script syntax
+        run: node --check tools/portable-world/compare-pinned.mjs
