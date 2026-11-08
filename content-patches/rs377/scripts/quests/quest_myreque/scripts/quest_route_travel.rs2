@@ -203,7 +203,7 @@ if (%routequest = ^route_secret_exit) {
     mes("You find a concealed passage behind the stonework.");
 }
 def_coord $passage = map_findsquare(0_54_153_21_53, 1, 4, ^map_findsquare_lineofwalk);
-if ($passage != null) {
+if ($passage ! null) {
     p_teleport($passage);
 }
 
@@ -223,11 +223,11 @@ if (%routequest = ^route_tunnel_open) %routequest = ^route_return;
 
 // Real shortcut after completing the quest, never a pre-quest teleport gate.
 [oploc1,thrt_tavern_trap_door]
-if (%routequest != ^route_complete) {
+if (%routequest ! ^route_complete) {
     mes("The trapdoor is locked. Finish In Search of the Myreque first.");
     return;
 }
 def_coord $basement = map_findsquare(0_54_153_21_53, 1, 4, ^map_findsquare_lineofwalk);
-if ($basement != null) {
+if ($basement ! null) {
     p_teleport($basement);
 }
