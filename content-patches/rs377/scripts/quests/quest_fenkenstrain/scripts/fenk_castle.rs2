@@ -134,6 +134,10 @@ if (last_useitem = fenk_cane) {
 }
 
 [label,fenk_extend_brush](namedobj $old, namedobj $new)
+if (stat(crafting) < ^fenk_req_crafting) {
+    mes("You need 20 Crafting to extend the brush without breaking it.");
+    return;
+}
 if (inv_total(inv, $old) < 1 | inv_total(inv, fenk_cane) < 1) {
     mes("You need the brush and one more cane.");
     return;
