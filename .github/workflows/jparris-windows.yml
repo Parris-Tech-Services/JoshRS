@@ -50,7 +50,7 @@ jobs:
       - name: Validate all Windows scripts, source lock and entrypoints
         shell: powershell
         run: |
-          $paths = @('deploy/jparris-windows/setup.ps1','deploy/jparris-windows/play.ps1','deploy/jparris-windows/test-bootstrap.ps1','deploy/jparris-windows/support.ps1','deploy/jparris-windows/control-center.ps1','deploy/jparris-windows/test-support.ps1','deploy/jparris-windows/discovery.ps1','deploy/jparris-windows/test-discovery.ps1','deploy/jparris-windows/launch-control-center.ps1','deploy/jparris-windows/test-recovery.ps1','deploy/jparris-windows/jdk.ps1','deploy/jparris-windows/test-jdk.ps1','deploy/jparris-windows/web-port.ps1','deploy/jparris-windows/test-web-port.ps1','deploy/jparris-windows/custom-loc-core.ps1','deploy/jparris-windows/fix-custom-loc.ps1','deploy/jparris-windows/test-custom-loc.ps1','deploy/jparris-windows/save-integrity.ps1','deploy/jparris-windows/Protect-Elrothiro.ps1','deploy/jparris-windows/Inspect-Agents.ps1','deploy/jparris-windows/test-inspect-agents.ps1','deploy/jparris-windows/Repair-FredGeorgeRelog.ps1','deploy/jparris-windows/test-repair-fred-george-relog.ps1','deploy/jparris-windows/Install-FredGeorgeRelogFix.ps1','deploy/jparris-windows/test-install-fred-george-custom-guard.ps1','deploy/jparris-windows/Repair-EadgarQueue.ps1','deploy/jparris-windows/test-repair-eadgar-queue.ps1','deploy/jparris-windows/test-save-integrity.ps1','deploy/jparris-windows/mobile-existing-game.ps1','deploy/jparris-windows/fix-java-client-launch.ps1','deploy/jparris-windows/launch-java-client-safe.ps1','deploy/jparris-windows/test-java-client-launch.ps1','deploy/jparris-windows/fix-disabled-friends.ps1','deploy/jparris-windows/test-disabled-friends.ps1','deploy/jparris-windows/Install-CooksRange377.ps1','deploy/jparris-windows/test-install-cooks-range.ps1')
+          $paths = @('deploy/jparris-windows/setup.ps1','deploy/jparris-windows/play.ps1','deploy/jparris-windows/test-bootstrap.ps1','deploy/jparris-windows/support.ps1','deploy/jparris-windows/control-center.ps1','deploy/jparris-windows/test-support.ps1','deploy/jparris-windows/discovery.ps1','deploy/jparris-windows/test-discovery.ps1','deploy/jparris-windows/launch-control-center.ps1','deploy/jparris-windows/test-recovery.ps1','deploy/jparris-windows/jdk.ps1','deploy/jparris-windows/test-jdk.ps1','deploy/jparris-windows/web-port.ps1','deploy/jparris-windows/test-web-port.ps1','deploy/jparris-windows/custom-loc-core.ps1','deploy/jparris-windows/fix-custom-loc.ps1','deploy/jparris-windows/test-custom-loc.ps1','deploy/jparris-windows/save-integrity.ps1','deploy/jparris-windows/Protect-Elrothiro.ps1','deploy/jparris-windows/Inspect-Agents.ps1','deploy/jparris-windows/test-inspect-agents.ps1','deploy/jparris-windows/Repair-FredGeorgeRelog.ps1','deploy/jparris-windows/test-repair-fred-george-relog.ps1','deploy/jparris-windows/Install-FredGeorgeRelogFix.ps1','deploy/jparris-windows/test-install-fred-george-custom-guard.ps1','deploy/jparris-windows/Repair-EadgarQueue.ps1','deploy/jparris-windows/test-repair-eadgar-queue.ps1','deploy/jparris-windows/test-save-integrity.ps1','deploy/jparris-windows/mobile-existing-game.ps1','deploy/jparris-windows/fix-java-client-launch.ps1','deploy/jparris-windows/launch-java-client-safe.ps1','deploy/jparris-windows/test-java-client-launch.ps1','deploy/jparris-windows/fix-disabled-friends.ps1','deploy/jparris-windows/test-disabled-friends.ps1','deploy/jparris-windows/Apply-WindowsGameUpdates.ps1','deploy/jparris-windows/test-integrated-updates.ps1','deploy/jparris-windows/Install-Barcrawl377.ps1','deploy/jparris-windows/Repair-LunaPlaytime.ps1','deploy/jparris-windows/Install-CooksRange377.ps1','deploy/jparris-windows/test-install-cooks-range.ps1')
           foreach ($path in $paths) {
             $tokens = $null
             $errors = $null
@@ -132,6 +132,9 @@ jobs:
       - name: Test private Friends service config repair without touching active game
         shell: powershell
         run: '& .\deploy\jparris-windows\test-disabled-friends.ps1'
+      - name: Verify bundled Windows updater is read-only, fail-closed and exposed in the launcher
+        shell: powershell
+        run: '& .\deploy\jparris-windows\test-integrated-updates.ps1'
       - name: Verify standalone Windows GUI entrypoint
         shell: powershell
         run: '& .\deploy\jparris-windows\launch-control-center.ps1 -ValidateLauncher -NoDialog'
@@ -163,6 +166,10 @@ jobs:
           if (-not (Test-Path (Join-Path $state.engine 'src/app.ts'))) { throw 'Engine missing' }
           if (-not (Test-Path (Join-Path $state.client 'build/classes/java/main/jagex2/client/Client.class'))) { throw 'Client class missing' }
           if ($state.portOffset -ne 8808) { throw 'Client port offset wrong' }
+          $bar = Get-Content (Join-Path $state.content 'scripts/areas/area_barbarian_outpost/scripts/outpost_gate.rs2') -Raw
+          if ($bar -notmatch 'Finish Alfred Grimhand') { throw 'Fresh GitHub setup did not auto-install Barcrawl gate' }
+          $friend = Get-Content (Join-Path $state.engine '.env') -Raw
+          if ($friend -notmatch '(?m)^FRIEND_SERVER=true' -or $friend -notmatch '(?m)^EASY_STARTUP=true') { throw 'Fresh Friends startup flags missing' }
       - name: Start revision 377 game world and verify both local ports
         shell: powershell
         run: |
