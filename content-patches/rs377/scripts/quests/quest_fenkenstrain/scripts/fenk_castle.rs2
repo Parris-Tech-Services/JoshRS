@@ -153,11 +153,11 @@ if (loc_coord ! 1_55_55_24_35 | %fenk_quest < ^fenk_sewn) {
     mes("This is not the right place to shape the mould.");
     return;
 }
-if (inv_total(inv, bronzecraftwire) < 1 | inv_total(inv, fenk_brush3) < 1) {
-    mes("You need the completed brush and some bronze wire.");
+if (inv_total(inv, bronzecraftwire) < 3 | inv_total(inv, fenk_brush3) < 1) {
+    mes("You need the completed brush and three pieces of bronze wire.");
     return;
 }
-inv_del(inv, bronzecraftwire, 1);
+inv_del(inv, bronzecraftwire, 3);
 inv_del(inv, fenk_brush3, 1);
 inv_add(inv, fenk_lightning_mould, 1);
 mes("You bind the brush with bronze wire and shape the lightning-conductor mould.");
