@@ -54,7 +54,7 @@ export function createSdk377Runtime({session,observer,botName,expectedWorld,clie
     }
     if(mapped.kind!=='packet')throw new Error('unsupported_mapped_action');
     if(snapshot.tick<=lastActionTick)throw new Error('sdk_action_replay_or_stale_tick');
-    const sent=session.sendPacket(mapped.packet);
+    const sent=await session.sendPacket(mapped.packet);
     if(!['queued_unverified','dispatched_unverified'].includes(sent.status))
      throw new Error('unknown_native_dispatch_result');
     lastActionTick=snapshot.tick;
