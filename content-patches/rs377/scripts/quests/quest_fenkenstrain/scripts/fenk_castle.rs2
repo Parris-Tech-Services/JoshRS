@@ -290,3 +290,25 @@ if (loc_coord ! 1_55_55_20_25 | %fenk_quest < ^fenk_sewn) {
 }
 %fenk_wound_clock = 1;
 mes("You wind the clock. Its mechanism begins ticking steadily.");
+
+// The castle's first-floor spiral stairs use unique Fenkenstrain locs.
+// The pinned m55_55.jm2 places stair bases at x17/x39,z31 (ground)
+// and their tops at x17/x39,z32 (level 1). Ordinary climb_ladder preserves
+// animation and the native game movement pipeline.
+[oploc1,fenk_stairs_lv1]
+if (loc_coord = 0_55_55_17_31) {
+    ~climb_ladder(1_55_55_17_32, true);
+} else if (loc_coord = 0_55_55_39_31) {
+    ~climb_ladder(1_55_55_39_32, true);
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[oploc1,fenk_stairs_lv1_top]
+if (loc_coord = 1_55_55_17_32) {
+    ~climb_ladder(0_55_55_17_31, false);
+} else if (loc_coord = 1_55_55_39_32) {
+    ~climb_ladder(0_55_55_39_31, false);
+} else {
+    ~displaymessage(^dm_default);
+}
