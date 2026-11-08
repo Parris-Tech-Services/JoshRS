@@ -126,7 +126,7 @@ function Update-Dashboard {
     $script:SaveLabel.Text="Player save files: $($s.SaveCount)    Account database: $(if($s.DatabasePresent){'found'}else{'not found'})"
     $script:StartButton.Enabled= -not ($s.GamePortOpen -xor $s.WebPortOpen)
     $script:StartButton.Text=if($ready){'PLAY JOSHRS'}else{'SET UP AND PLAY'}
-    $script:CleanButton.Text=if($ready){'CHECK / REPAIR INSTALLATION'}else{'INSTALL A CLEAN 377 WORLD'}
+    $script:CleanButton.Text=if($ready){'UPDATE GAME / REPAIR'}else{'INSTALL A CLEAN 377 WORLD'}
     $script:BackupButton.Enabled=($ready -and -not $s.GamePortOpen -and -not $s.WebPortOpen -and
         ($s.SavePresent -or $s.DatabasePresent))
     $script:CleanButton.Enabled= -not ($s.GamePortOpen -or $s.WebPortOpen)
@@ -206,7 +206,7 @@ $script:CleanButton.Add_Click({
             throw 'Stop the running server before checking or repairing its installed files.'
         }
         if ($s.Configured) {
-            if (-not (Ask-Yes 'Check and repair the CURRENT installed revision-377 world? This reinstalls dependencies, performs non-destructive SQLite migrations, recompiles the Java client and backs up character data before changes. It does not reset saves or switch to a clean game.' 'Repair existing world')) { return }
+            if (-not (Ask-Yes 'Update the CURRENT JoshRS world? This checks backups, reinstalls dependencies, applies guarded bundled gameplay fixes only when compatible, and rebuilds the Java client. Unknown custom scripts are preserved and reported. No saves are reset and no clean world is substituted.' 'Update existing world')) { return }
             Start-GameTask (Join-Path $PSScriptRoot 'setup.ps1') '' -SkipStart
         } else {
             if (-not (Ask-Yes 'Install a NEW, clean revision-377 world? This will NOT contain your Fedora modifications or original Elrothiro progress.' 'Install clean world')) { return }

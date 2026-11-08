@@ -2,6 +2,47 @@
 
 This is a **local Windows desktop game server and Java client** for JoshRS 377. It is separate from the revision-274 research instance and the Woodlands browser demo.
 
+## Bundled Windows updates (8 November 2026)
+
+**No more separate repair scripts for every fresh installation.** Download the latest
+[JoshRS main ZIP](https://github.com/Parris-Tech-Services/JoshRS/archive/refs/heads/main.zip),
+extract it, then open `JoshRS.cmd`. **Set Up and Play** automatically runs
+the versioned `Apply-WindowsGameUpdates.ps1` coordinator on the installed
+private 377 world, after prerequisites, account backup and client compilation.
+It applies only *reviewed and applicable* changes; an unknown or missing
+source remains untouched and is reported clearly.
+
+- **Automatically included:** Alfred Grimhand's Barcrawl native source repairs
+  (ten-bar game already in pinned 377), correct Friends startup flags on
+  supported local embedded-service setups, and Luna playtime restore **only**
+  if both her native bot source and validated saved character exist.
+- **Existing PC:** Open `JoshRS.cmd` → **UPDATE GAME / REPAIR**, once the game
+  has been gracefully stopped. The updater is included in the same repair flow.
+  The lightweight `JoshRS-Update.cmd` is an optional standalone shortcut;
+  it performs a read-only preflight before asking permission.
+- **Never auto-install:** incomplete Rag and Bone Man or other unverified Jagex
+  quest ports; Yrsa's optional shop, experimental bots, custom map checksum
+  exemptions, Eadgar/Fred-George source replacements, or new original NPCs.
+  Those are opt-in or require local compatibility evidence.
+
+The coordinator validates the **actual** `active.json` paths and ports, rejects
+active game/login/friend services, calls each patch's own exact-source preflight
+and offline backup/rollback guards, and rechecks relevant effects on every run.
+Updates are idempotent: running again must not duplicate NPC handlers,
+transactions, quests or source patches. If it reports `BLOCKED_CUSTOM_SOURCE`,
+do **not** force it; the installed world and saves remain the authority.
+`WINDOWS_GAME_UPDATES_COMPLETE` means the compatible source updates were
+processed, **not** that every optional feature or real-client playthrough passed.
+
+**IMPORTANT for a second computer:** the GitHub launcher downloads pinned
+engine/content/client source, not your private Elrothiro/Sylvie saves,
+modified maps or customised Java client. To transfer *your* world use the
+dashboard's **Restore my Fedora USB game** with an explicit verified backup
+of the corresponding private game, saves and account database. A clean world
+is separate and will have new accounts. Never put private runtime files in a
+public repository or replace a working `runtime/jparris-377/` folder with a
+fresh ZIP.
+
 ## New: JoshRS Control Center
 
 For the easiest experience, **double-click `JoshRS.cmd`** in the extracted JoshRS folder. It opens a native Windows control window rather than asking you to enter PowerShell commands.
@@ -17,7 +58,7 @@ The control window includes:
 - **Install a clean 377 world:** obtains the pinned upstream engine, content and Java client, with a warning that your Fedora customizations and character are not part of the clean source.
 - **Back up my player saves:** offline copy of the whole players directory and SQLite account database (including WAL when present). The button is disabled if either game/network port is listening.
 - **Refresh status:** shows whether the expected TCP and HTTP listeners are responding. Port readiness alone does not prove a successful game login.
-- **Check / Repair Installation:** after a world is installed, the clean-install action changes to offline repair. It backs up saves, reinstalls dependencies, applies non-destructive migrations and recompiles Java without replacing your existing world.
+- **Update Game / Repair:** after a world is installed, the clean-install action updates compatible native 377 gameplay and services, backs up saves, reinstalls dependencies, runs non-destructive migrations and recompiles Java without replacing your world.
 - **View logs:** opens the latest server, client or dashboard diagnostic in Notepad. Logs are private and rotated to at most 25 copies.
 - **Diagnostics:** copies a status report without reading or exposing local passwords, player contents or configuration secrets.
 - **Game files / Backups:** opens the correct private local folder in Windows Explorer.
