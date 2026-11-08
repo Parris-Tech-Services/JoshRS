@@ -74,7 +74,7 @@ python3 "$ROOT/content-factory/patch_377_haunted.py" --content "$WORK/content" -
 python3 "$ROOT/content-factory/prepare_377_overlay.py" --source "$WORK/native377" --dest "$WORK/content"
 python3 "$ROOT/content-factory/patch_377_npc_crc.py" --engine "$WORK/engine"
 cp -- "$ROOT/tools/rs377-bot-bench/engine-patch/src/web.ts" "$WORK/engine/src/web.ts"
-python3 "$ROOT/content-factory/patch_377_sdk_trace.py" --engine "$WORK/engine"
+python3 "$ROOT/content-factory/patch_377_sdk_trace.py" --engine "$WORK/engine" --fedora-disposable
 (
  cd "$WORK/engine"
  npm ci --no-audit --no-fund
