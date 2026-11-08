@@ -1,5 +1,6 @@
 // Creature of Fenkenstrain: NPC handlers.
-// STATUS: UNCOMPILED, UNTESTED. Dialogue is original wording (nothing copied from game transcripts).
+// STATUS: passed disposable native 377 RuneScript compile+boot; no full in-game quest playthrough yet.
+// Dialogue is original wording (nothing copied from game transcripts).
 //
 // Script triggers resolve on the spawned NPC's own type (Player.getOpTrigger uses npc.type), and
 // m55_55.jm2 spawns the PARENT multinpc types (1668 fenk_fenkenstrain, 1669 fenk_fenkenstrain_in_tower,
@@ -192,7 +193,9 @@ if (inv_total(inv, fenk_tower_key) = 0 & inv_total(bank, fenk_tower_key) = 0) {
 // Pickpocketing the doctor finishes the quest. Success odds are a guess (UNVERIFIED).
 // ---------------------------------------------------------------------------
 [opnpc3,fenk_fenkenstrain]
-if (%fenk_quest < ^fenk_met_creature) {
+if (%fenk_quest ! ^fenk_met_creature) {
+    // IMPORTANT: after stage 8, the ring and XP can NEVER be farmed by
+    // repeat pickpocketing a stale NPC morph or cached client option.
     mes("You have no reason to rob Dr Fenkenstrain right now.");
     return;
 }
