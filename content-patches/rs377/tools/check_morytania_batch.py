@@ -56,8 +56,32 @@ def check(content: Path):
         if len(hits) != 1:
             raise RuntimeError(f"Expected exactly one Talk-to trigger for {name}: {len(hits)}")
     mort_file=(content/"scripts/quests/quest_mortton/scripts/joshrs_mortton_start.rs2").read_text()
-    if "~send_quest_complete(" in mort_file or "%morttonquest = ^mortton_quest_complete;" in mort_file:
-        raise RuntimeError("Incomplete Mortton quest must never award completion")
+    finish_file=(content/"scripts/quests/quest_mortton/scripts/joshrs_mortton_finish.rs2").read_text()
+    constants=(content/"scripts/quests/quest_mortton/configs/joshrs_mortton_finish.constant").read_text()
+    assert "^mortton_quest_complete = 85" in constants and "^mortton_questpoints = 3" in constants
+    if "~send_quest_complete(" not in mort_file:
+        raise RuntimeError("Mortton quest has no completion handler")
+    # The reward must require a real completed pyre, never a quest-start option.
+    if "if (%morttonquest >= ^mortton_lit_pyre) {" not in mort_file:
+        raise RuntimeError("Mortton completion not gated on lit pyre")
+    for hook in ("[oploc1,_category_226]", "[oploc1,templefire_altar_nofire]",
+                 "[oplocu,templefire_altar]", "[oplocu,temple_pyre]",
+                 "[oplocu,temple_pyre_logs]", "[oploc1,temple_pyre_bones_logs]"):
+        if finish_file.count(hook)!=1:
+            raise RuntimeError(f"Mortton missing/duplicate physical action: {hook}")
+    for required in ("stat(crafting) < 20", "stat(firemaking) < 5",
+                     "inv_del(inv, woodplank, 1)", "inv_del(inv, limestonebrick, 1)",
+                     "inv_del(inv, swamppaste, 5)", "inv_del(inv, logs_pyre, 1)",
+                     "inv_del(inv, shade_bones1, 1)", "inv_total(inv, tinderbox)"):
+        if required not in finish_file:
+            raise RuntimeError(f"Mortton missing genuine material/skill check: {required}")
+    if finish_file.count("~send_quest_complete("):
+        raise RuntimeError("Mortton completion must remain gated behind Ulsquire")
+    allquest=(content/"scripts/general/scripts/quests.rs2").read_text()
+    if allquest.count("send_quest_progress_colour(questlist:mortton") != 1:
+        raise RuntimeError("Mortton must be registered exactly once")
+    if "if (%morttonquest = ^mortton_quest_complete)" not in allquest:
+        raise RuntimeError("Mortton completion must grant exactly 3 quest points")
     varps=list((content/"scripts").rglob("*.varp"))
     for varp in ("morttonquest","morttonmulti"):
         owner=[p for p in varps if re.search(r"(?m)^\["+varp+r"\]$",p.read_text())]
@@ -70,7 +94,7 @@ def check(content: Path):
     if brew.count("[opheldu,tarrominvial]")!=1 or "~mortton_prepare_serum;" not in brew:
         raise RuntimeError("Mortton recipe not integrated in native Herblore handler")
     print("MORYTANIA_377_SOURCE_CONTRACT_OK: 21 Talk-to handlers, 20 verified spawns, one unspawned Ak-Haranu,"
-          " persistent Mortton stages, native Herblore hook, no premature rewards")
+          " permanent Mortton stages, native Herblore hook, guarded physical repairs/pyre/rewards (source-only)")
 
 if __name__=="__main__":
     parser=argparse.ArgumentParser()
