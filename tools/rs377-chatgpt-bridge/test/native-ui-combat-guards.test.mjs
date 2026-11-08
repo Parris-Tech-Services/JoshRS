@@ -12,7 +12,10 @@ test('all new observations remain isolated, authorised and non-mutating',()=>{
  assert.match(web,/isClientConnected\(bot\)/);
  assert.match(web,/bot\.client\.player !== bot/);
  assert.match(web,/timingSafeEqual/);
- assert.match(trace,/NODE_PROFILE === 'joshrs_ci_377'/);
+ assert.match(trace,/NODE_PROFILE !== 'joshrs_ci_377'/);
+ assert.match(trace,/RS377_OBSERVER_BOTS/);
+ assert.match(trace,/new Set\(allowlist\.map\(n => n\.toLowerCase\(\)\)\)\.size !== allowlist\.length/);
+ assert.match(web,/!allowedBots\.includes\(botName\)/);
  assert.match(script,/GITHUB_ACTIONS/);
  assert.match(script,/b5ac859b47915afb545e60e4c1208f25d43cb3fb/);
  assert.match(trace,/WeakMap<Player, Trace>/);
@@ -47,4 +50,13 @@ test('combat and UI are never invented without source event evidence',()=>{
  assert.match(web,/const shop = !shopOpen/);
  assert.match(web,/\} : null;/);
  assert.match(sdk,/const missingRequired=s\.unsupported\.filter\(key=>key!=='questStages'\)/);
+});
+
+test('distinct registered network bots never share trace state or client message streams',()=>{
+ assert.match(trace,/traceByPlayer = new WeakMap<Player, Trace>\(\)/);
+ assert.match(trace,/traceByPlayer\.get\(player\)/);
+ assert.match(trace,/traceByPlayer\.set\(player, trace\)/);
+ assert.match(trace,/player\.username\.toLowerCase\(\)/);
+ assert.match(web,/const gameMessages = trace \? trace\.gameMessages : null/);
+ assert.match(web,/rsbuf\.hasPlayer\(bot\.slot, person\.slot\)/);
 });
