@@ -121,6 +121,10 @@ jobs:
               if actual!=item["commit"]: raise SystemExit("Upstream pin mismatch")
               print(key, actual)
           PY
+      - name: Verify native 377 SDK opcodes and all original shop/bank/prayer UI pins
+        shell: bash
+        run: |
+          python tools/rs377-upstream-sdk/verify-native-action-sources.py --engine "$RUNNER_TEMP/joshrs-377-build/engine" --content "$RUNNER_TEMP/joshrs-377-build/content"
       - name: Audit all ten Alfred Grimhand Barcrawl signatures in pinned native Content
         shell: bash
         run: |
