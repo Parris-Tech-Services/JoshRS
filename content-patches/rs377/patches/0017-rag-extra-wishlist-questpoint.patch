@@ -1,0 +1,10 @@
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -284,4 +284,7 @@
+ if (~elid_progress = 2) {
+     $questpoints = add($questpoints, ^elid_questpoints);
+ }
++if (%rag_bonesack = 1) {
++    $questpoints = add($questpoints, ^rag_wishlist_questpoints);
++}
+ return ($questpoints);

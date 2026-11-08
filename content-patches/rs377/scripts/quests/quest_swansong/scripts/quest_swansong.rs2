@@ -1,23 +1,33 @@
 // Swan Song - JoshRS original dialogue and stages on top of the 377 cache definitions (swan_* NPCs, varbit swansong).
 // Dialogue, rewards and stage values are original JoshRS content. Catch fresh fish with a small net,
-// cook at a fire/range and bring five cooked fish to Arnold. The colony repair and Wise Old Man
-// scenes remain incomplete; see README and the Swan Song fishing/cooking scripts.
+// cook at a fire/range and bring five cooked fish to Arnold. The pinned client supplies
+// 377 flags for the press, five walls, monkfish, troll deaths and bone seeds.
 
 [opnpc1,swan_herman]
 switch_int (%swansong) {
     case ^swansong_not_started :
         ~chatnpc("<p,sad>Our colony is hungry and the sea trolls grow bolder.|I need someone brave to help us.");
+        if (%qp < 100) {
+            ~chatnpc("<p,neutral>We need an experienced adventurer.|Return once you have at least 100 quest points.");
+            return;
+        }
         def_int $o = ~p_choice2("What can I do?", 1, "Sorry, I'm busy.", 2);
         if ($o = 1) {
             ~chatplayer("<p,neutral>What can I do?");
-            ~chatnpc("<p,neutral>Speak to my brother Franklin and to Arnold.|They will tell you what we need.");
+            ~chatnpc("<p,neutral>First enlist the Wise Old Man in Draynor.|He will ask you to prepare his supplies.");
             %swansong = ^swansong_started;
             ~send_quest_progress(questlist:swansong, %swansong, ^swansong_complete);
         } else {
             ~chatplayer("<p,neutral>Sorry, I'm busy.");
         }
-    case ^swansong_started, ^swansong_met_franklin, ^swansong_met_arnold, ^swansong_fish, ^swansong_trolls, ^swansong_queen :
-        ~chatnpc("<p,neutral>Please hurry. Franklin and Arnold know the plan.");
+    case ^swansong_started :
+        ~chatnpc("<p,neutral>Please ask the Wise Old Man in Draynor for help.");
+    case ^swansong_met_franklin, ^swansong_met_arnold, ^swansong_fish :
+        ~chatnpc("<p,neutral>Help Arnold with food and Franklin with the walls.");
+    case ^swansong_trolls :
+        ~chatnpc("<p,neutral>Our supplies are ready. Defeat the sea troll blocking the defence.");
+    case ^swansong_queen, ^swansong_army_deployed :
+        ~chatnpc("<p,neutral>Ask Wizard Frumscone in Yanille for help raising our defence.");
     case ^swansong_return :
         ~chatnpc("<p,happy>The Sea Troll Queen is gone and the colony can fish again!");
         queue(swansong_quest_complete, 0, 0);
@@ -29,10 +39,15 @@ switch_int (%swansong) {
 switch_int (%swansong) {
     case ^swansong_not_started : ~chatnpc("<p,neutral>Herman handles our visitors.");
     case ^swansong_started :
-        ~chatnpc("<p,neutral>Herman sent you? Good.|The trolls attack whenever we fish. Talk to Arnold about food.");
-        %swansong = ^swansong_met_franklin;
-    case ^swansong_met_franklin, ^swansong_met_arnold, ^swansong_fish, ^swansong_trolls, ^swansong_queen, ^swansong_return :
-        ~chatnpc("<p,neutral>Stay sharp out there.");
+        ~chatnpc("<p,neutral>Herman is waiting for the Wise Old Man.|Please find him in Draynor first.");
+    case ^swansong_met_franklin :
+        ~chatnpc("<p,neutral>The west walls need five iron sheets.|Load logs into the press firebox, light them and press five iron bars.|Use the sheets on the damaged walls and bring a hammer.");
+        %swansong = ^swansong_met_arnold;
+    case ^swansong_met_arnold, ^swansong_fish :
+        ~chatnpc("<p,neutral>Repair five wall sections using iron sheets and a hammer.|You have repaired <tostring(~swan_wall_count)> of five sections.");
+        ~swan_rebuild_advance;
+    case ^swansong_trolls, ^swansong_queen, ^swansong_army_deployed, ^swansong_return :
+        ~chatnpc("<p,neutral>Thank you for repairing our walls.");
     case default : ~chatnpc("<p,happy>Good to see you, friend.");
 }
 
@@ -52,20 +67,26 @@ switch_int (%swansong) {
         }
         %swansong = ^swansong_fish;
     case ^swansong_fish :
+        if (%swansong_arnold = 1) {
+            ~chatnpc("<p,happy>Our food stores have been replenished.");
+            ~swan_rebuild_advance;
+            return;
+        }
         if (inv_total(inv, swan_monkfish) >= ^swansong_fish_needed) {
-            ~chatnpc("<p,happy>That's enough fish. Thank you.|Now the trolls must be dealt with.");
+            ~chatnpc("<p,happy>That's enough fish. Thank you.|Now help Franklin finish the defences.");
             inv_del(inv, swan_monkfish, ^swansong_fish_needed);
-            %swansong = ^swansong_trolls;
+            %swansong_arnold = 1;
+            ~swan_rebuild_advance;
         } else {
             ~chatnpc("<p,neutral>I still need five cooked monkfish.");
         }
-    case ^swansong_trolls, ^swansong_queen, ^swansong_return :
+    case ^swansong_trolls, ^swansong_queen, ^swansong_army_deployed, ^swansong_return :
         ~chatnpc("<p,neutral>The sea trolls will keep coming until their queen falls.");
     case default : ~chatnpc("<p,happy>The fish are plentiful again.");
 }
 
 [opnpc1,swan_wom_ambush]
-~chatnpc("<p,neutral>Beware the trolls, young one. Their queen waits at the bottom.");
+~chatnpc("<p,neutral>We must secure the colony first.|The Sea Troll Queen is our final challenge.");
 
 [opnpc1,swan_drunkendwarf]
 ~chatnpc("<p,happy>Hic! Don't mind me, friend.");
@@ -103,13 +124,13 @@ mes("The ambushing troll falls. Its queen must be near.");
 [ai_queue3,swan_seatroll_queen]
 gosub(npc_death);
 if (npc_findhero = ^true) {
-    if (%swansong = ^swansong_queen) {
+    if (%swansong = ^swansong_army_deployed) {
         queue(swan_queen_kill, 0, 0);
     }
 }
 
 [queue,swan_queen_kill]
-if (%swansong ! ^swansong_queen) {
+if (%swansong ! ^swansong_army_deployed) {
     return;
 }
 %swansong = ^swansong_return;
@@ -119,21 +140,31 @@ mes("The Sea Troll Queen falls. Herman will want to hear of it.");
 if (%swansong ! ^swansong_return) {
     return;
 }
+// Coins use an inventory slot unless the player already carries a stack.
+if (inv_total(inv, coins) < 1 & inv_freespace(inv) < 1) {
+    mes("Make an empty space in your pack for the quest reward.");
+    return;
+}
 %swansong = ^swansong_complete;
-stat_advance(fishing, 100000);
-stat_advance(cooking, 50000);
+stat_advance(fishing, 500000);
+stat_advance(magic, 150000);
+stat_advance(prayer, 100000);
+inv_add(inv, coins, 25000);
 session_log(^log_adventure, "Quest complete: Swan Song");
-~send_quest_complete(questlist:swansong, swan_monkfish, 200, ^swansong_questpoints, "You have completed Swan Song!", "10,000 Fishing XP|5,000 Cooking XP");
+~send_quest_complete(questlist:swansong, swan_monkfish, 200, ^swansong_questpoints, "You have completed Swan Song!", "50,000 Fishing XP|15,000 Magic XP|10,000 Prayer XP|25,000 coins");
 
 [if_button,questlist:swansong]
 def_string $text;
 switch_int (%swansong) {
     case ^swansong_not_started : $text = "@dbl@I can start this quest by talking to @dre@Herman Caranos@dbl@.";
-    case ^swansong_started : $text = "@str@I spoke to Herman.||@dbl@I should speak to @dre@Franklin Caranos@dbl@.";
-    case ^swansong_met_franklin : $text = "@str@I spoke to Franklin.||@dbl@I should speak to @dre@Arnold Lydspor@dbl@.";
-    case ^swansong_met_arnold, ^swansong_fish : $text = "@str@I spoke to Arnold.||@dbl@I must bring Arnold five cooked @dre@monkfish@dbl@.";
-    case ^swansong_trolls : $text = "@str@I delivered the monkfish.||@dbl@I must defeat the @dre@ambushing sea troll@dbl@.";
-    case ^swansong_queen : $text = "@str@I defeated the ambusher.||@dbl@I must defeat the @dre@Sea Troll Queen@dbl@.";
+    case ^swansong_started : $text = "@str@I spoke to Herman.||@dbl@I need to enlist the Wise Old Man in Draynor (10 lava, 10 mist and 5 blood runes).";
+    case ^swansong_met_franklin : $text = "@dbl@The Wise Old Man agreed to help.||@dbl@I should speak to @dre@Franklin Caranos@dbl@.";
+    case ^swansong_met_arnold, ^swansong_fish :
+        $text = "@dbl@Arnold needs five cooked fresh monkfish.||@dbl@Franklin needs five repaired walls.";
+        $text = append($text, "|@dbl@Walls: <tostring(~swan_wall_count)> / 5.");
+    case ^swansong_trolls : $text = "@dbl@The colony is supplied.||@dbl@I must defeat the sea troll ambusher.";
+    case ^swansong_queen : $text = "@dbl@I must ask Wizard Frumscone in Yanille for bone seeds.";
+    case ^swansong_army_deployed : $text = "@dbl@I have deployed the skeleton defenders.||@dbl@Defeat the Sea Troll Queen.";
     case ^swansong_return : $text = "@str@I defeated the Sea Troll Queen.||@dbl@I should tell @dre@Herman@dbl@.";
     case default : $text = "@str@I helped the colony defeat the sea trolls.||@red@QUEST COMPLETE!";
 }

@@ -1,0 +1,90 @@
+// Story additions for the pinned May 2006 revision-377 NPCs. Dialogue is original JoshRS text.
+// No unlicensed cache, map, dialogue transcription or client binary is imported.
+[opnpc1,swan_wom_draynor]
+if (%swansong = ^swansong_started) {
+    ~chatnpc("<p,neutral>The colony is in trouble? I may be able to help.|Bring me ten lava runes, ten mist runes and five blood runes.");
+    if (inv_total(inv, lavarune) < 10 | inv_total(inv, mistrune) < 10 | inv_total(inv, bloodrune) < 5) {
+        ~chatnpc("<p,neutral>I still need those runes before I can set out.");
+        return;
+    }
+    inv_del(inv, lavarune, 10);
+    inv_del(inv, mistrune, 10);
+    inv_del(inv, bloodrune, 5);
+    %swansong = ^swansong_met_franklin;
+    ~chatnpc("<p,happy>That should be enough. Go and tell Franklin I'll be there.");
+    return;
+}
+~chatnpc("<p,neutral>Adventure takes careful preparation, even at my age.");
+
+[proc,swan_wall_count]()(int)
+def_int $count = 0;
+if (%swansong_wall_1 = 1) { $count = calc($count + 1); }
+if (%swansong_wall_2 = 1) { $count = calc($count + 1); }
+if (%swansong_wall_3 = 1) { $count = calc($count + 1); }
+if (%swansong_wall_4 = 1) { $count = calc($count + 1); }
+if (%swansong_wall_5 = 1) { $count = calc($count + 1); }
+return($count);
+
+[proc,swan_rebuild_advance]
+if (%swansong = ^swansong_fish & %swansong_arnold = 1 & ~swan_wall_count = 5) {
+    %swansong = ^swansong_trolls;
+    mes("The food stores and five wall sections are ready. Defeat the sea troll ambusher.");
+}
+
+[proc,swan_frumscone_army]
+if (%swansong ! ^swansong_queen) {
+    return;
+}
+if (inv_total(inv, swan_army) > 0) {
+    ~chatnpc("<p,neutral>You already have the enchanted bone seeds. Bring them to the colony.");
+    return;
+}
+if (stat(magic) < 66) {
+    ~chatnpc("<p,neutral>You need 66 Magic to prepare these bone seeds.");
+    return;
+}
+if (inv_total(inv, bones) < 7 | inv_total(inv, pot_empty) < 1 | inv_total(inv, potlid) < 1) {
+    ~chatnpc("<p,neutral>Bring seven ordinary bones, an empty pot and a pot lid.");
+    return;
+}
+inv_del(inv, bones, 7);
+inv_del(inv, pot_empty, 1);
+inv_del(inv, potlid, 1);
+inv_add(inv, swan_army, 1);
+~chatnpc("<p,happy>Here are the enchanted bone seeds. Use them to defend the colony.");
+
+[opheld1,swan_army]
+if (%swansong ! ^swansong_queen) {
+    mes("There is no need to deploy the skeletons here.");
+    return;
+}
+if (inv_total(inv, swan_army) < 1) {
+    return;
+}
+inv_del(inv, swan_army, 1);
+%swansong = ^swansong_army_deployed;
+mes("You deploy the skeleton mage defenders. The Sea Troll Queen still needs to be defeated.");
+
+// The 377 cache has all three fishing troll NPC types. Track encounter kills without
+// duplicate credit on stale death queues (counter fits the existing two-bit varbit).
+[ai_queue3,swan_troll_fishing_1]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(swan_fishing_troll_kill, 0, 0);
+}
+[ai_queue3,swan_troll_fishing_2]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(swan_fishing_troll_kill, 0, 0);
+}
+[ai_queue3,swan_troll_fishing_3]
+gosub(npc_death);
+if (npc_findhero = ^true) {
+    queue(swan_fishing_troll_kill, 0, 0);
+}
+[queue,swan_fishing_troll_kill]
+if (%swansong ! ^swansong_fish | %swansong_trolls >= 3) {
+    return;
+}
+%swansong_trolls = calc(%swansong_trolls + 1);
+mes("A sea troll is defeated while the colony rebuilds.");
