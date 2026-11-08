@@ -58,5 +58,5 @@ jobs:
             dnf install -y --setopt=install_weak_deps=False python3 >/dev/null
             useradd -m -s /bin/bash tester
             su - tester -c "mkdir -p ~/.cache/joshrs-disposable-quests/377-run-FakeSafe/engine; chmod 700 ~/.cache/joshrs-disposable-quests/377-run-FakeSafe; touch ~/.cache/joshrs-disposable-quests/377-run-FakeSafe/.joshrs-disposable-only"
-            su - tester -c "python3 -c '\''import importlib.util,pathlib; p=pathlib.Path(\"/repo/content-factory/patch_377_sdk_trace.py\");spec=importlib.util.spec_from_file_location(\"trace\",p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);r=pathlib.Path.home()/\".cache/joshrs-disposable-quests/377-run-FakeSafe\"; assert m.is_allowed_disposable_engine(r/\"engine\",r);assert not m.is_allowed_disposable_engine(r/\"other\",r);print(\"Fedora disposable patch policy passed\")'\''"
+            su - tester -c "python3 /repo/tools/rs377-family-visible/test_fedora_guard.py"
           '
