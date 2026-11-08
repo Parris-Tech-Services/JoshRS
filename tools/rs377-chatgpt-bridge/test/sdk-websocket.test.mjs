@@ -282,3 +282,54 @@ test('upstream SDK rejects a dispatched drop without observed inventory effect',
   assert.equal(packets,1);
  }finally{q.ws.close();await gw.close()}
 });
+
+test('real Java client tab state may complete without fabricated native game packet',async()=>{
+ let calls=0,packetCount=0;
+ const runtime={
+  ...harness().runtime,
+  async action(a){
+   calls++;
+   if(a.type!=='setTab'||a.tabIndex!==2)throw Error('unexpected client request');
+   return {status:'client_effect_observed',effect:'tab',verifiedEffect:true,tabIndex:2};
+  }
+ };
+ const gw=createSdk377WebSocket({runtime,botName:BOT,token:TOKEN});
+ const {port}=await gw.listen(0),q=await socket(port);
+ try{
+  connect(q);await take(q,m=>m.type==='sdk_connected');
+  q.send({type:'sdk_action',username:BOT,actionId:'native-java-tab',
+   action:{type:'setTab',tabIndex:2,reason:'test real client branch'}});
+  const result=await take(q,m=>m.type==='sdk_action_result'&&m.actionId==='native-java-tab');
+  assert.equal(result.result.success,true);
+  assert.equal(result.result.phase,'completion');
+  assert.equal(result.result.data.clientOnly,true);
+  assert.equal(result.result.data.verifiedEffect,true);
+  assert.equal(calls,1);assert.equal(packetCount,0);
+ }finally{q.ws.close();await gw.close()}
+});
+test('Java queued character design packet cannot complete without real server appearance change',async()=>{
+ let tick=40;
+ const base={
+  world:{instanceId:'isolated-source-contract',sourceSha:'a'.repeat(40)},
+  player:{username:BOT},position:{x:3215,z:3215},
+  sdkDetails:{appearance:{gender:0,body:[0,10,18,26,33,36,42],
+   colours:[0,0,0,0,0],designModalOpen:true}}
+ };
+ const runtime={
+  ...harness().runtime,
+  async observe(){return {...structuredClone(base),tick:tick++}},
+  async action(a){if(a.type!=='acceptCharacterDesign')throw Error('bad action');
+   return {status:'client_packet_dispatched_unverified',effect:'accept_design',
+    verifiedEffect:false};}
+ };
+ const gw=createSdk377WebSocket({runtime,botName:BOT,token:TOKEN,actionTimeoutMs:1250});
+ const {port}=await gw.listen(0),q=await socket(port);
+ try{
+  connect(q);await take(q,m=>m.type==='sdk_connected');
+  q.send({type:'sdk_action',username:BOT,actionId:'native-design-packet',
+   action:{type:'acceptCharacterDesign',reason:'verify no fake success'}});
+  const result=await take(q,m=>m.type==='sdk_action_result'&&m.actionId==='native-design-packet',5500);
+  assert.equal(result.result.success,false);
+  assert.equal(result.result.reason,'observation_timeout');
+ }finally{q.ws.close();await gw.close()}
+});
