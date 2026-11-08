@@ -28,7 +28,9 @@ if((Split-Path -Leaf $engine) -cne 'engine' -or
     throw 'Engine and content must belong to the same selected 377 snapshot.'
 }
 if([int]$state.gamePort -ne 52402 -or [int]$state.webPort -ne 8888) {
-    throw 'Unexpected game/web ports; manual review required.'
+    Write-Warning 'Bundled patches skipped for nonstandard game/web ports; the configured world was not changed.'
+    Write-Host 'WINDOWS_GAME_UPDATES_SKIPPED: Review the custom service topology before applying patches.'
+    return
 }
 if(-not (Test-Path -LiteralPath (Join-Path $engine 'src/app.ts') -PathType Leaf) -or
    -not (Test-Path -LiteralPath (Join-Path $contentDir 'scripts') -PathType Container)) {
