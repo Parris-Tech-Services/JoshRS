@@ -10,6 +10,7 @@
 import {readFile} from 'node:fs/promises';
 import {createPublicKey,randomBytes} from 'node:crypto';
 import {Session377} from './src/session.mjs';
+import {runCookQuestStart377} from './probe-cooks-quest377.mjs';
 import {createEngine377Observer} from './src/engine-observer.mjs';
 import {SKILLS377} from './src/observation.mjs';
 import {createSdk377Runtime} from './src/sdk-runtime.mjs';
@@ -411,7 +412,15 @@ try {
  }
  if(!nativeSdkProof)reject('upstream_BotSDK_not_verified');
 
- const savedPosition={...moved.position};
+ // Normal NPC conversation on the exact same native 377 TCP session. This is
+ // a real quest stage change, not an imported revision-225 bot log, unit mock,
+ // direct quest varp edit, or a claim that the full quest was completed.
+ const cookQuest = await runCookQuestStart377({session,reader});
+ if(!cookQuest.observedNativeQuestStageChange || cookQuest.realQuestCompletion)
+   reject('Cook quest started without authoritative quest evidence');
+
+ const cookStartPosition=await reader.observe();
+ const savedPosition={...cookStartPosition.position};
  // Client close is NOT a verified logout/save. Let the actual 377 idle
  // logout/save flow finish; look for the server-generated CRC save on disk.
  session.close();
@@ -465,6 +474,8 @@ try {
      try {const snap=await reloggedObserver.observe();
        if(snap.questStages?.barcrawl!==0)
          reject('fresh Barcrawl state changed or disappeared across genuine relog');
+       if(snap.questStages?.cook!==1)
+         reject('Cook quest start did not persist across genuine normal relog');
        reloggedPosition=snap.position;break;
      }catch(error){
        if(error.message.includes('native_observer_http_409')||
@@ -494,6 +505,10 @@ try {
    dialogueFlagsObserved:true,
    barcrawlNativeFreshVarpObserved:true,barcrawlUnmodifiedOnRelog:true,
    barcrawlTenPubPlaythroughVerified:false,
+   cookQuestStartNormalNpcPacketVerified:cookQuest.observedNativeQuestStageChange,
+   cookQuestNativeDialogueObserved:cookQuest.nativeDialogueObserved,
+   cookQuestStartPersistedOnNormalRelog:true,
+   cookQuestCompletePlaythroughVerified:false,
    sdkStateComplete:completeSdkStateVerified,
    genuineSdkGatewayAction:true,walkObserved:true,
    genuineSdkWebSocketAction:websocketVerified,
