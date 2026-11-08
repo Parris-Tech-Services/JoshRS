@@ -326,6 +326,19 @@ if ($ClientGradleTimeoutMs -gt 0) {
         $replacement = $originalWrapper.TrimEnd([char[]]@([char]13,[char]10)) + [Environment]::NewLine +
             'networkTimeout=' + $ClientGradleTimeoutMs + [Environment]::NewLine
     }
+    # The upstream services.gradle.org/8.11.1 URL currently redirects the
+    # GitHub-hosted release ZIP, where GitHub Actions encountered repeated 504s.
+    # On a disposable CI runner ONLY, pin the SAME Gradle 8.11.1 -bin ZIP on
+    # Gradle's official direct download CDN. Do not rewrite anyone's local copy.
+    if ($env:GITHUB_ACTIONS -eq 'true') {
+        $expectedDistribution = 'distributionUrl=https\://services.gradle.org/distributions/gradle-8.11.1-bin.zip'
+        $officialCdn = 'distributionUrl=https\://downloads.gradle.org/distributions/gradle-8.11.1-bin.zip'
+        if (-not $replacement.Contains($expectedDistribution)) {
+            throw 'CI Gradle source/version changed: refusing to redirect an unrecognised distribution.'
+        }
+        $replacement = $replacement.Replace($expectedDistribution,$officialCdn)
+        Write-Host 'CI Gradle 8.11.1: using the official direct Gradle distribution host instead of GitHub redirect.'
+    }
     if ($replacement -cne $originalWrapper) {
         [IO.File]::WriteAllText($wrapper,$replacement)
     }
