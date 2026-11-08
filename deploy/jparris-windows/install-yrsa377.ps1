@@ -143,6 +143,22 @@ if (-not (Get-Command npm.cmd -ErrorAction SilentlyContinue)) {
     throw 'npm.cmd not available; repair Node.js using JoshRS.cmd.'
 }
 
+# Before modifying any native scripts or packs, create and verify a complete
+# offline player/account snapshot using the existing integrity checker. This
+# preserves both family characters, not just Elrothiro's individual save.
+$protect = Join-Path $PSScriptRoot 'Protect-Elrothiro.ps1'
+if (-not (Test-Path -LiteralPath $protect -PathType Leaf)) {
+    throw 'Verified save backup tool is missing. No Yrsa changes made.'
+}
+Write-Host 'Creating and verifying an offline backup of ALL family player saves and accounts...'
+try {
+    & $protect -RepoRoot $root -CreateBackup
+    if (-not $?) { throw 'Save backup tool did not complete successfully.' }
+} catch {
+    throw ('Verified family save backup failed. Yrsa patch NOT applied: ' + $_.Exception.Message)
+}
+Write-Host 'Family save backup verified; proceeding with isolated Yrsa script/pack backup.'
+
 $backup = Join-Path $runtime ('yrsa377-backups/install-' + (Get-Date -Format 'yyyyMMdd-HHmmss-fffffff'))
 New-Item -ItemType Directory -Path $backup -Force | Out-Null
 $watch = @(
