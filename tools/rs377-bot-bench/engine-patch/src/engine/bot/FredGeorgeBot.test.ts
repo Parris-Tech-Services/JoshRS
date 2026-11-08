@@ -146,6 +146,7 @@ test('4. Elrothiro social locator commands (::wherefred, ::wheregeorge, ::whereb
     assert.equal(linesAll.length, 2);
     assert.match(linesAll[0], /Fred.*gather_first.*ONLINE/);
     assert.match(linesAll[1], /George.*quest_first.*ONLINE/);
+    assert.doesNotMatch(linesAll.join('\n'), /@(?:dre|bla|blu|gre|yel|red)@/, 'Game chat must not contain literal colour-code tags');
 
     const elrothiro = PlayerLoading.load('elrothiro', new Packet(new Uint8Array(0)), null);
     const messages: string[] = [];
