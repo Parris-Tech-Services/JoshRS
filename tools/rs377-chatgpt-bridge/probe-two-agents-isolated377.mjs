@@ -39,7 +39,8 @@ requireTrue(crcBytes.length===40,'invalid_native_crc');
 const crcs=crcBytes.subarray(0,36);
 const names=['HarnessA','HarnessB'];
 const entries=names.map((name,i)=>{
- const password=randomBytes(20).toString('base64url');
+ // Revision 377 normal RSA login allows at most 20 password characters.
+ const password=randomBytes(15).toString('base64url');
  return {
   name,password,session:new Session377({
    target:{host:'127.0.0.1',port:gamePort,mode:'isolated'},
