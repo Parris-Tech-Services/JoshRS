@@ -61,7 +61,7 @@ sound_synth
     if(npc_find(coord, barbguard1, 5, 0) = true) {
         @outpost_guard_talk;
     }
-    // The gate must stay closed unless the card has been handed in.
+    // An absent guard, declined challenge or unfinished card must not open the gate.
     if(%barcrawl ! ^barcrawl_complete) {
         mes("Finish Alfred Grimhand's Barcrawl before entering the outpost.");
         return;
@@ -171,7 +171,7 @@ try {
     foreach($p in $changed) {
         $out=$files[$p].New
         if($files[$p].Original.Contains($crlf)) { $out=$out.Replace($lf,$crlf) }
-        [IO.File]::WriteAllText($p,$out,(New-Object Text.UTF8Encoding($false)))
+        [IO.File]::WriteAllText($p,$out,[Text.UTF8Encoding]::new($false))
     }
     Push-Location -LiteralPath $engine
     try {
