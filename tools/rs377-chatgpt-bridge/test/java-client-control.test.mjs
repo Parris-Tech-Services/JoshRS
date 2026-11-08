@@ -28,6 +28,11 @@ async function withFakeClient(fn,{designOpen=true,wrongToken=false}={}){
      state.hash++;response=['OK','randomized',state.cycle,'OK','status',state.tab,1,state.gender,state.hash,state.cycle].join('|');
     }else if(action==='acceptCharacterDesign'&&state.designOpen){
      state.accepted=true;response=['OK','design_packet_queued_unverified',state.cycle].join('|');
+    }else if(action==='nativePacket'){
+     const raw=Buffer.from(body.split('\n')[0].split('\t')[3]||'','base64');
+     if(Number(arg)===112&&raw.length===2)
+      response=['OK','native_packet_queued_unverified',arg,state.cycle].join('|');
+     else response='ERR|normal_377_packet_not_allowlisted';
     }else response='ERR|player_kit_interface_not_open';
    }
    socket.write(response+'\n',()=>socket.end());
@@ -90,4 +95,25 @@ test('no code path reports a disconnected Java client as successful',async()=>{
  await withFakeClient(async c=>{
   await assert.rejects(()=>c.perform({type:'setTab',tabIndex:3}),/invalid_request/);
  },{wrongToken:true});
+});
+
+test('one actual Java client session carries normal mapped ISAAC packets, without second TCP login',async()=>{
+ const {createJavaClient377Session}=await import('../src/java-client-session.mjs');
+ const {buildAction}=await import('../src/protocol.mjs');
+ await withFakeClient(async(c,state,commands)=>{
+  const session=await createJavaClient377Session(c);
+  assert.equal(session.status().authenticated,true);
+  await session.refresh();
+  const native=buildAction({type:'npc',npcSlot:12,option:1});
+  const sent=await session.sendPacket(native);
+  assert.equal(sent.status,'queued_unverified');
+  assert.equal(sent.opcode,112);
+  assert.equal(sent.verifiedEffect,false);
+  assert.ok(commands.includes('nativePacket'));
+  await assert.rejects(()=>session.sendPacket({
+   opcode:250,body:Buffer.from([1])
+  }),/normal_377_packet_not_allowlisted/);
+  await session.disconnect();
+  assert.equal(session.status().authenticated,false);
+ });
 });
