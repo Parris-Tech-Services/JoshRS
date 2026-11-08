@@ -58,7 +58,7 @@ diff --git a/scripts/areas/area_varrock/scripts/juliet.rs2 b/scripts/areas/area_
 diff --git a/scripts/quests/quest_romeojuliet/scripts/quest_romeojuliet.rs2 b/scripts/quests/quest_romeojuliet/scripts/quest_romeojuliet.rs2
 --- a/scripts/quests/quest_romeojuliet/scripts/quest_romeojuliet.rs2
 +++ b/scripts/quests/quest_romeojuliet/scripts/quest_romeojuliet.rs2
-@@ -1,5 +1,8 @@
+@@ -1,4 +1,7 @@
 -[queue,romeo_and_juliet_complete]
 -%rjquest = ^romeojuliet_complete;
 +[queue,romeo_and_juliet_complete]
@@ -68,4 +68,3 @@ diff --git a/scripts/quests/quest_romeojuliet/scripts/quest_romeojuliet.rs2 b/sc
 +%rjquest = ^romeojuliet_complete;
  session_log(^log_adventure, "Quest complete: Romeo & Juliet");
  ~send_quest_complete(questlist:romeojuliet, cadava, 250, ^romeojuliet_questpoints, "You have completed the\\nRomeo & Juliet Quest!", "");
- 
