@@ -16,13 +16,10 @@
  return ($questpoints);
  
  [proc,update_questlist]
-@@ -354,6 +357,7 @@
- ~send_quest_progress_colour(questlist:mdaughter, %mdaughter_var, ^mdaughter_complete);
- ~send_quest_progress_colour(questlist:hauntedmine, %hauntedmine, ^hm_complete);
+@@ -349,2 +352,3 @@
  ~send_quest_progress_colour(questlist:lost_tribe, %lost_tribe, ^lt_complete);
 +~send_quest_progress_colour(questlist:makinghistory, ~mh_progress, 2);
  ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
- if_settab(questlist, ^tab_quest_journal);
 --- a/scripts/areas/area_ardougne_east/scripts/silver_merchant.rs2
 +++ b/scripts/areas/area_ardougne_east/scripts/silver_merchant.rs2
 @@ -3,6 +3,9 @@
