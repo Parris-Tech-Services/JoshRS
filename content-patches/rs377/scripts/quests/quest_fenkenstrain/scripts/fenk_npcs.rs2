@@ -7,8 +7,8 @@
 // The visible *_model children are only used by the engine to validate ops.
 
 [proc,fenk_meets_requirements]()(boolean)
-// UNVERIFIED for 377: Restless Ghost, Priest in Peril, 20 Crafting, 25 Thieving.
-if (%prieststart ! ^priest_complete) {
+// Verified against pinned Restless Ghost stage constants; starting that quest obtains the ghostspeak amulet.
+if (%prieststart < ^priest_started) {
     return(false);
 }
 if (%priestperil < ^priestperil_complete) {
@@ -44,7 +44,7 @@ if (%fenk_read_signpost = 0) {
 ~chatnpc("<p,neutral>You have the look of someone who read my notice in the village.");
 if (~fenk_meets_requirements = false) {
     ~chatnpc("<p,neutral>But I need a helper who is capable and has dealt with the dead before. You are not yet that person.");
-    ~mesbox("You need to have finished The Restless Ghost and Priest in Peril, and have 20 Crafting and 25 Thieving.");
+    ~mesbox("You need to have started The Restless Ghost and completed Priest in Peril, and have 20 Crafting and 25 Thieving.");
     return;
 }
 ~chatnpc("<p,happy>Excellent. I require a helper who is discreet, and who will not ask what the work is for.");
