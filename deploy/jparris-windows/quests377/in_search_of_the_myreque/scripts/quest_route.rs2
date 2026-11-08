@@ -1,0 +1,109 @@
+// In Search of the Myreque - JoshRS original dialogue/stages on the 377 cache (route_* NPCs, varp routequest).
+// Dialogue, rewards, stage values are original JoshRS content. Persistence: add scope=perm to cache varp routequest.
+
+[opnpc1,route_curpile_fyod]
+switch_int (%routequest) {
+    case ^route_not_started :
+        ~chatnpc("<p,neutral>Folk say a band of rebels hides in the swamps,|the Myreque. Few return from looking for them.");
+        def_int $o = ~p_choice2("I'll look for them.", 1, "Not for me.", 2);
+        if ($o = 1) {
+            ~chatplayer("<p,neutral>I'll look for them.");
+            ~chatnpc("<p,neutral>Then speak to Cyreg Paddlehorn. He knows the water.");
+            %routequest = ^route_started;
+            ~send_quest_progress(questlist:routequest, %routequest, ^route_complete);
+        } else {
+            ~chatplayer("<p,neutral>Not for me.");
+        }
+    case ^route_complete :
+        ~chatnpc("<p,happy>The rebels still speak of what you did.");
+    case default :
+        ~chatnpc("<p,neutral>Cyreg Paddlehorn is your best lead.");
+}
+
+[opnpc1,route_cyreg_paddlehorn]
+switch_int (%routequest) {
+    case ^route_started :
+        ~chatnpc("<p,neutral>The swamp is no place for a stranger,|but I can tell you where the Myreque scouts are.");
+        %routequest = ^route_boat;
+    case ^route_boat, ^route_veliaf, ^route_scouts, ^route_burgh, ^route_vanstrom, ^route_return :
+        ~chatnpc("<p,neutral>Keep your eyes open. Veliaf Hurtz knows more than he says.");
+    case ^route_not_started : ~chatnpc("<p,neutral>I just row boats.");
+    case default : ~chatnpc("<p,happy>Good to see you alive.");
+}
+
+[opnpc1,route_veliaf_hurtz]
+switch_int (%routequest) {
+    case ^route_boat :
+        ~chatnpc("<p,neutral>You found us. Prove you can be trusted:|speak to Sani and Radigad as well.");
+        %routequest = ^route_veliaf;
+    case ^route_veliaf, ^route_scouts : ~chatnpc("<p,neutral>Talk to the others. Then we shall see.");
+    case ^route_burgh : ~chatnpc("<p,neutral>Ivan Strom is in trouble in Burgh de Rott. Find him.");
+    case ^route_vanstrom :
+        ~chatnpc("<p,neutral>Vanstrom Klause lurks near Canifis. Face him.");
+    case ^route_return :
+        ~chatnpc("<p,happy>You faced Vanstrom and lived. The Myreque owe you much.");
+        queue(route_quest_complete, 0, 0);
+    case ^route_complete : ~chatnpc("<p,happy>Welcome back, friend.");
+    case default : ~chatnpc("<p,neutral>Be careful out here.");
+}
+
+[opnpc1,route_sani_piliu]
+~chatnpc("<p,neutral>Radigad and I watch the marsh. Speak to him too.");
+if (%routequest = ^route_veliaf) {
+    %routequest = ^route_scouts;
+}
+
+[opnpc1,route_radigad_ponfit]
+switch_int (%routequest) {
+    case ^route_scouts :
+        ~chatnpc("<p,neutral>You have met Sani and Veliaf. Good. Ivan Strom needs help in Burgh de Rott.");
+        %routequest = ^route_burgh;
+    case default : ~chatnpc("<p,neutral>Stay low in the marsh.");
+}
+
+[opnpc1,route_polmafi_ferdygris]
+~chatnpc("<p,neutral>Keep your voice down. Vampyres have sharp ears.");
+
+[opnpc1,route_harold_evans]
+~chatnpc("<p,neutral>I came to Canifis for quiet, and quiet is what I intend to keep.");
+
+[opnpc1,route_ivan_strom]
+switch_int (%routequest) {
+    case ^route_burgh :
+        ~chatnpc("<p,sad>You've come at last. Vanstrom Klause is the one behind this.|He waits near Canifis.");
+        %routequest = ^route_vanstrom;
+    case ^route_vanstrom : ~chatnpc("<p,neutral>Go. End this.");
+    case default : ~chatnpc("<p,neutral>I'm grateful for your help.");
+}
+
+[opnpc1,route_vanstrom_klause_normal]
+if (%routequest = ^route_vanstrom) {
+    ~chatnpc("<p,angry>So the rebels sent a champion. How quaint.");
+    ~chatplayer("<p,angry>It's over, Vanstrom.");
+    ~chatnpc("<p,neutral>Perhaps. You have earned your leave, for now.");
+    %routequest = ^route_return;
+} else {
+    ~chatnpc("<p,neutral>Be on your way.");
+}
+
+[queue,route_quest_complete]
+%routequest = ^route_complete;
+stat_advance(agility, 50000);
+stat_advance(slayer, 20000);
+session_log(^log_adventure, "Quest complete: In Search of the Myreque");
+~send_quest_complete(questlist:routequest, coins, 200, ^route_questpoints, "You have completed In Search of the Myreque!", "5,000 Agility XP|2,000 Slayer XP");
+
+[if_button,questlist:routequest]
+def_string $text;
+switch_int (%routequest) {
+    case ^route_not_started : $text = "@dbl@I can start this quest by talking to @dre@Curpile Fyod@dbl@.";
+    case ^route_started : $text = "@str@I spoke to Curpile Fyod.||@dbl@I should talk to @dre@Cyreg Paddlehorn@dbl@.";
+    case ^route_boat : $text = "@str@I spoke to Cyreg.||@dbl@I must find @dre@Veliaf Hurtz@dbl@ in the swamp.";
+    case ^route_veliaf : $text = "@str@I met Veliaf.||@dbl@I should speak to @dre@Sani Piliu@dbl@.";
+    case ^route_scouts : $text = "@str@I met Sani.||@dbl@I should speak to @dre@Radigad Ponfit@dbl@.";
+    case ^route_burgh : $text = "@str@I met the scouts.||@dbl@I must find @dre@Ivan Strom@dbl@ in Burgh de Rott.";
+    case ^route_vanstrom : $text = "@str@I found Ivan Strom.||@dbl@I must face @dre@Vanstrom Klause@dbl@.";
+    case ^route_return : $text = "@str@I faced Vanstrom Klause.||@dbl@I should tell @dre@Veliaf Hurtz@dbl@.";
+    case default : $text = "@str@I found the Myreque and faced Vanstrom Klause.||@red@QUEST COMPLETE!";
+}
+~quest_journal("In Search of the Myreque", $text);

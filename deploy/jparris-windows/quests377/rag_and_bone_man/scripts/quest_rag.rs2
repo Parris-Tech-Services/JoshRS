@@ -1,0 +1,97 @@
+// Rag and Bone Man - structural implementation on top of the pinned 377 cache definitions.
+// Every line of NPC dialogue below is PLACEHOLDER wording. UNVERIFIED: no 2006 source for the real text was found.
+// See ../README.md for the full UNVERIFIED list.
+
+[proc,rag_bone_delivered](int $i)(boolean)
+if ($i < 32) {
+    return(testbit(%rag_bones_a, $i));
+}
+return(testbit(%rag_bones_b, calc($i - 32)));
+
+[proc,rag_mark_delivered](int $i)
+if ($i < 32) {
+    %rag_bones_a = setbit(%rag_bones_a, $i);
+} else {
+    %rag_bones_b = setbit(%rag_bones_b, calc($i - 32));
+}
+
+[proc,rag_delivered_count]()(int)
+def_int $i = 0;
+def_int $n = 0;
+while ($i < ^rag_bone_total) {
+    if (~rag_bone_delivered($i) = true) {
+        $n = calc($n + 1);
+    }
+    $i = calc($i + 1);
+}
+return($n);
+
+[opnpc1,rag_odd_old_man]
+switch_int (%rag_quest) {
+    case ^rag_not_started :
+        // UNVERIFIED: placeholder dialogue
+        ~chatnpc("<p,neutral>Hello. I collect bones.|Would you like to help me?");
+        def_int $option = ~p_choice2("Yes, I'll help.", 1, "No thanks.", 2);
+        if ($option = 1) {
+            ~chatplayer("<p,happy>Yes, I'll help.");
+            ~chatnpc("<p,neutral>Bring me bones, cleaned in vinegar and polished.|Check my wish-list for what I need.");
+            %rag_quest = ^rag_started;
+            ~send_quest_progress(questlist:rag, %rag_quest, ^rag_complete);
+        } else {
+            ~chatplayer("<p,neutral>No thanks.");
+        }
+    case ^rag_started :
+        @rag_turn_in;
+    case ^rag_complete :
+        // UNVERIFIED: placeholder dialogue
+        ~chatnpc("<p,happy>Thank you again for your help.");
+}
+
+[label,rag_turn_in]
+def_int $given = 0;
+def_int $i = 0;
+while ($i < ^rag_bone_total) {
+    def_obj $polished = ~rag_polished_bone($i);
+    if (~rag_bone_delivered($i) = false & inv_total(inv, $polished) > 0) {
+        inv_del(inv, $polished, 1);
+        ~rag_mark_delivered($i);
+        $given = calc($given + 1);
+    }
+    $i = calc($i + 1);
+}
+if ($given > 0) {
+    ~mesbox("You hand over <tostring($given)> polished bone(s).");
+}
+if (~rag_delivered_count = ^rag_bone_total) {
+    // UNVERIFIED: placeholder dialogue
+    ~chatnpc("<p,happy>That is every bone I wanted. Thank you!");
+    queue(rag_quest_complete, 0, 0);
+} else {
+    // UNVERIFIED: placeholder dialogue
+    ~chatnpc("<p,neutral>I still need <tostring(calc(^rag_bone_total - ~rag_delivered_count))> more bone(s).|Check the wish-list.");
+}
+
+// UNVERIFIED: the real rewards. The cache holds a ram skull helm and a bonesack, but which are quest rewards is unconfirmed.
+// QP value is also unverified.
+[queue,rag_quest_complete]
+%rag_quest = ^rag_complete;
+session_log(^log_adventure, "Quest complete: Rag and Bone Man");
+~send_quest_complete(questlist:rag, rag_ram_helm, 200, ^rag_questpoints, "You have completed the Rag and Bone Man Quest!", "1 Quest Point");
+
+[if_button,questlist:rag]
+def_string $text;
+if (%rag_quest = ^rag_not_started) {
+    $text = "@dbl@I can start this quest by talking to the @dre@Odd Old Man@dbl@.";
+} else if (%rag_quest = ^rag_started) {
+    $text = "@str@I have spoken to the Odd Old Man.||@dbl@I need to bring him @dre@polished bones@dbl@.|";
+    $text = append($text, "@dbl@I have delivered <tostring(~rag_delivered_count)> of <tostring(^rag_bone_total)> bones.");
+} else {
+    $text = "@str@I have spoken to the Odd Old Man.||@str@I brought him all the polished bones.|@red@QUEST COMPLETE!";
+}
+~quest_journal("Rag and Bone Man", $text);
+
+// Wish-list loc (placeholder text).
+[oploc1,rag_shopping_list]
+// UNVERIFIED: placeholder text
+mes("The wish-list names every bone the Odd Old Man wants.");
+mes("You have delivered <tostring(~rag_delivered_count)> of <tostring(^rag_bone_total)>.");
