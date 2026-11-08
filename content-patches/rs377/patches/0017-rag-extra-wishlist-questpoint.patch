@@ -1,0 +1,9 @@
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -253,3 +253,6 @@
+ if (%rag_quest = ^rag_complete) {
+     $questpoints = add($questpoints, ^rag_questpoints);
+ }
++if (%rag_bonesack = 1) {
++    $questpoints = add($questpoints, ^rag_wishlist_questpoints);
++}

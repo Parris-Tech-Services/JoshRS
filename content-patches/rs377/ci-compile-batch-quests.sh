@@ -16,7 +16,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 16 ]] || { echo "BLOCKED: expected 16 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 17 ]] || { echo "BLOCKED: expected 17 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -87,6 +87,7 @@ for key in ('creatureoffenkenstrain', 'rag', 'soulbane', 'swansong', 'routequest
     assert src.count(f'send_quest_progress_colour(questlist:{key}') == 1, key
 shop = (scripts / 'areas/area_draynor/scripts/fortunato.rs2').read_text()
 assert 'openshop(wine_vinegar_merchant' in shop
+assert '%rag_bonesack = 1' in src
 assert '%rag_wine = 1' in shop
 inv = (scripts / '_unpack/727/all.inv').read_text()
 assert '[wine_vinegar_merchant]' in inv and 'stock2=rag_vinegar,500,10' in inv

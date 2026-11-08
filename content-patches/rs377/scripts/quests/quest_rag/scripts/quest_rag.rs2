@@ -59,8 +59,12 @@ switch_int (%rag_quest) {
     case ^rag_started :
         @rag_turn_in;
     case ^rag_complete :
-        // UNVERIFIED: placeholder dialogue
-        ~chatnpc("<p,happy>Thank you again for your help.");
+        if (%rag_bonesack = 0) {
+            @rag_extra_turn_in;
+        } else {
+            ~chatnpc("<p,happy>You have finished both collections. Thank you.");
+            @rag_exchange_reward;
+        }
 }
 
 [label,rag_turn_in]
@@ -87,6 +91,86 @@ if (~rag_delivered_count = ^rag_bone_total) {
     ~chatnpc("<p,neutral>I still need <tostring(calc(^rag_bone_total - ~rag_delivered_count))> more bone(s).|Check the wish-list.");
 }
 
+// The 27 extra bones are a separate 2006 wishlist, not additional prerequisites for the eight-bone main quest.
+[proc,rag_extra_delivered_count]()(int)
+def_int $i = 0;
+def_int $n = 0;
+while ($i < ^rag_bone_catalog_total) {
+    if (~rag_is_required_bone($i) = false & ~rag_bone_delivered($i) = true) {
+        $n = calc($n + 1);
+    }
+    $i = calc($i + 1);
+}
+return($n);
+
+[label,rag_extra_turn_in]
+def_int $i = 0;
+def_int $given = 0;
+while ($i < ^rag_bone_catalog_total) {
+    if (~rag_is_required_bone($i) = false & ~rag_bone_delivered($i) = false) {
+        def_namedobj $bone = ~rag_polished_bone($i);
+        if (inv_total(inv, $bone) > 0) {
+            inv_del(inv, $bone, 1);
+            ~rag_mark_delivered($i);
+            $given = calc($given + 1);
+        }
+    }
+    $i = calc($i + 1);
+}
+if ($given > 0) {
+    mes("You hand over <tostring($given)> more polished bones.");
+}
+if (~rag_extra_delivered_count < ^rag_extra_bone_total) {
+    ~chatnpc("<p,neutral>I have recorded <tostring(~rag_extra_delivered_count)> of the 27 extra bones.|Please keep collecting the rest.");
+    return;
+}
+if (%rag_bonesack = 1) {
+    return;
+}
+~chatnpc("<p,happy>My extra collection is complete.|Choose a reward to carry as a reminder.");
+if (inv_freespace(inv) < 1) {
+    mes("Free one inventory slot and ask me again to collect your reward.");
+    return;
+}
+def_int $chosen = ~p_choice2("A bonesack.", 1, "A ram skull helm.", 2);
+if ($chosen = 1) {
+    inv_add(inv, rag_bonesack, 1);
+    %rag_helmet = 0;
+} else {
+    inv_add(inv, rag_ram_helm, 1);
+    %rag_helmet = 1;
+}
+// Both flags live in the permanent rag_bone_2 varp. Award once per character.
+%rag_bonesack = 1;
+stat_advance(prayer, 50000);
+~update_questpoints;
+session_log(^log_adventure, "Completed Rag and Bone Man extra wish list");
+mes("You completed the extra wish list and received 5,000 Prayer XP.");
+
+[label,rag_exchange_reward]
+def_int $choice = ~p_choice2("Exchange my reward.", 1, "Keep it.", 2);
+if ($choice ! 1) {
+    return;
+}
+if (%rag_helmet = 0) {
+    if (inv_total(inv, rag_bonesack) < 1 | inv_total(inv, rag_ram_helm) > 0) {
+        mes("Bring your existing bonesack to exchange; you cannot duplicate rewards.");
+        return;
+    }
+    inv_del(inv, rag_bonesack, 1);
+    inv_add(inv, rag_ram_helm, 1);
+    %rag_helmet = 1;
+} else {
+    if (inv_total(inv, rag_ram_helm) < 1 | inv_total(inv, rag_bonesack) > 0) {
+        mes("Bring your existing ram skull helm to exchange; you cannot duplicate rewards.");
+        return;
+    }
+    inv_del(inv, rag_ram_helm, 1);
+    inv_add(inv, rag_bonesack, 1);
+    %rag_helmet = 0;
+}
+mes("You exchange your reward. The extra wish list stays complete.");
+
 // UNVERIFIED: the real rewards. The cache holds a ram skull helm and a bonesack, but which are quest rewards is unconfirmed.
 // QP value is also unverified.
 [queue,rag_quest_complete]
@@ -105,13 +189,26 @@ if (%rag_quest = ^rag_not_started) {
     $text = "@str@I have spoken to the Odd Old Man.||@dbl@I need to bring him @dre@polished bones@dbl@.|";
     $text = append($text, "@dbl@I have delivered <tostring(~rag_delivered_count)> of <tostring(^rag_bone_total)> bones.");
 } else {
-    $text = "@str@I have spoken to the Odd Old Man.||@str@I brought him all the polished bones.|@red@QUEST COMPLETE!";
+    $text = "@str@I have spoken to the Odd Old Man.||@str@I brought him all eight required bones.|@red@QUEST COMPLETE!";
+    if (%rag_bonesack = 1) {
+        $text = append($text, "|@red@Extra wish list: COMPLETE!");
+    } else {
+        $text = append($text, "|@dbl@Extra wish list: <tostring(~rag_extra_delivered_count)> / 27 polished bones.");
+    }
 }
 ~quest_journal("Rag and Bone Man", $text);
 
 // Wish-list loc (placeholder text).
 [oploc1,rag_shopping_list]
 // UNVERIFIED: placeholder text
-mes("The Odd Old Man needs eight polished bones for his first collection.");
-mes("The list names: goblin, bear, ram, unicorn, giant rat, giant bat, monkey and big frog.");
-mes("You have delivered <tostring(~rag_delivered_count)> of <tostring(^rag_bone_total)>.");
+if (%rag_quest ! ^rag_complete) {
+    mes("The Odd Old Man needs eight polished bones for his first collection.");
+    mes("The list names: goblin, bear, ram, unicorn, giant rat, giant bat, monkey and big frog.");
+    mes("You have delivered <tostring(~rag_delivered_count)> of <tostring(^rag_bone_total)>.");
+} else {
+    mes("The extra wish list contains all 27 other bone types.");
+    mes("You have delivered <tostring(~rag_extra_delivered_count)> of 27 extra bones.");
+    if (%rag_bonesack = 1) {
+        mes("You completed the extra wish list.");
+    }
+}
