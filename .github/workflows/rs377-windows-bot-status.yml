@@ -1,0 +1,23 @@
+name: JoshRS Windows bot presence read-only checks
+on:
+  push:
+    paths:
+      - 'tools/rs377-host-evidence/windows-bot-presence.ps1'
+      - 'tools/rs377-host-evidence/tests/windows-bot-presence.test.ps1'
+      - '.github/workflows/rs377-windows-bot-status.yml'
+  pull_request:
+    paths:
+      - 'tools/rs377-host-evidence/windows-bot-presence.ps1'
+      - 'tools/rs377-host-evidence/tests/windows-bot-presence.test.ps1'
+      - '.github/workflows/rs377-windows-bot-status.yml'
+permissions:
+  contents: read
+jobs:
+  windows-synthetic:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify bot presence probe is read-only and redacts environment secrets
+        shell: powershell
+        run: '& .\tools\rs377-host-evidence\tests\windows-bot-presence.test.ps1'
