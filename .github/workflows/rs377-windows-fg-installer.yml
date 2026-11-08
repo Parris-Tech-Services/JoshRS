@@ -1,0 +1,24 @@
+name: Verify safe Windows Fred George relog installer
+on:
+  pull_request:
+    paths:
+      - 'deploy/jparris-windows/Install-FredGeorgeRelogFix.ps1'
+      - 'deploy/jparris-windows/tests/Install-FredGeorgeRelogFix.test.ps1'
+      - '.github/workflows/rs377-windows-fg-installer.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'deploy/jparris-windows/Install-FredGeorgeRelogFix.ps1'
+      - 'deploy/jparris-windows/tests/Install-FredGeorgeRelogFix.test.ps1'
+      - '.github/workflows/rs377-windows-fg-installer.yml'
+permissions:
+  contents: read
+jobs:
+  install-safety:
+    runs-on: windows-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate fail-closed source update (PowerShell 5.1)
+        shell: powershell
+        run: '& .\deploy\jparris-windows\tests\Install-FredGeorgeRelogFix.test.ps1'
