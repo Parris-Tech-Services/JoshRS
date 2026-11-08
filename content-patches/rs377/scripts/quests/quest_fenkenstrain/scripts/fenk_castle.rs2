@@ -1,0 +1,312 @@
+// Creature of Fenkenstrain: map-verified castle and Canifis interactions.
+// Original quest wording. Map placements verified against Content@44eab090:
+// fenk_signpost (0_54_54_37_29), bookcases (1_55_55_22_38,35_38),
+// shed (0_55_55_28_45), canes (0_55_55_31_44), cupboard (0_55_55_26_43),
+// west upstairs fireplace (1_55_55_24_35), roof (2_55_55_28_16).
+// Do NOT treat build success as complete in-game testing.
+
+[oploc1,fenk_signpost]
+~mesbox("Help wanted!|The doctor of the castle north-east of Canifis seeks an able assistant.|Applicants should have steady hands and a strong stomach.");
+%fenk_read_signpost = 1;
+if (%fenk_quest = ^fenk_not_started) {
+    mes("Perhaps I should speak to Dr Fenkenstrain at the castle.");
+}
+
+// Only the two upstairs bookcases contain the divided amulet.
+// Exact coordinates avoid stealing from unrelated downstairs bookcases.
+[oploc1,fenk_bookcase]
+if (%fenk_quest < ^fenk_hired) {
+    mes("You find shelves full of old books.");
+    return;
+}
+if (loc_coord = 1_55_55_22_38) {
+    if (inv_total(inv, fenk_marble_amulet) > 0 |
+        inv_total(inv, fenk_star_amulet) > 0) {
+        mes("You have already taken the interesting object from this bookcase.");
+        return;
+    }
+    if (inv_freespace(inv) < 1) {
+        mes("You need room in your pack to take anything from the shelf.");
+        return;
+    }
+    mes("Behind a book on grave digging you find a triangular marble amulet.");
+    inv_add(inv, fenk_marble_amulet, 1);
+} else if (loc_coord = 1_55_55_35_38) {
+    if (inv_total(inv, fenk_obsidian_amulet) > 0 |
+        inv_total(inv, fenk_star_amulet) > 0) {
+        mes("You have already taken the interesting object from this bookcase.");
+        return;
+    }
+    if (inv_freespace(inv) < 1) {
+        mes("You need room in your pack to take anything from the shelf.");
+        return;
+    }
+    mes("You find a dark obsidian amulet behind a book on avoiding maggots.");
+    inv_add(inv, fenk_obsidian_amulet, 1);
+} else {
+    mes("There is nothing here that helps the doctor.");
+}
+
+[opheldu,fenk_marble_amulet]
+if (last_useitem = fenk_obsidian_amulet) {
+    @fenk_combine_amulet;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[opheldu,fenk_obsidian_amulet]
+if (last_useitem = fenk_marble_amulet) {
+    @fenk_combine_amulet;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[label,fenk_combine_amulet]
+if (inv_total(inv, fenk_marble_amulet) < 1 |
+    inv_total(inv, fenk_obsidian_amulet) < 1) {
+    mes("You need both halves of the amulet.");
+    return;
+}
+inv_del(inv, fenk_marble_amulet, 1);
+inv_del(inv, fenk_obsidian_amulet, 1);
+inv_add(inv, fenk_star_amulet, 1);
+mes("The two pieces fit together to make a star-shaped amulet.");
+
+// The shed and tower are locked until their actual quest keys are obtained.
+// Never unlock a door merely because the player is close to it.
+[oploc1,fenk_shed_door]
+if (%fenk_unlocked_shed = 0) {
+    if (inv_total(inv, fenk_shed_key) < 1) {
+        mes("The shed door is locked. Perhaps the gardener knows where the key is.");
+        return;
+    }
+    %fenk_unlocked_shed = 1;
+    mes("You unlock the shed door.");
+}
+~open_and_close_door2(fenk_shed_door_open, ~check_axis(coord, loc_coord, loc_angle), door_open);
+
+[oploc1,fenk_broomcupboard]
+if (%fenk_unlocked_shed = 0) {
+    mes("You should unlock the shed first.");
+    return;
+}
+mes("You open the gardener's cupboard.");
+loc_change(fenk_broomcupboard_open, 5);
+if (inv_total(inv, fenk_brush0) > 0 |
+    inv_total(inv, fenk_brush1) > 0 |
+    inv_total(inv, fenk_brush2) > 0 |
+    inv_total(inv, fenk_brush3) > 0) {
+    mes("You already have a garden brush.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("Your backpack is full.");
+    return;
+}
+inv_add(inv, fenk_brush0, 1);
+mes("You find a stiff garden brush that might reach the fireplace.");
+
+[oploc1,fenk_broomcupboard_open]
+mes("It is the gardener's cupboard.");
+if (inv_total(inv, fenk_brush0) = 0 &
+    inv_total(inv, fenk_brush1) = 0 &
+    inv_total(inv, fenk_brush2) = 0 &
+    inv_total(inv, fenk_brush3) = 0 &
+    inv_freespace(inv) > 0) {
+    inv_add(inv, fenk_brush0, 1);
+    mes("You take another garden brush.");
+}
+
+[oploc1,fenk_canepile]
+if (%fenk_unlocked_shed = 0) {
+    mes("These canes belong to the gardener.");
+    return;
+}
+if (inv_total(inv, fenk_cane) >= 3) {
+    mes("You already have enough garden canes.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need a free inventory space.");
+    return;
+}
+inv_add(inv, fenk_cane, 1);
+mes("You take one long garden cane.");
+
+[opheldu,fenk_brush0]
+if (last_useitem = fenk_cane) {
+    @fenk_extend_brush(fenk_brush0, fenk_brush1);
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[opheldu,fenk_brush1]
+if (last_useitem = fenk_cane) {
+    @fenk_extend_brush(fenk_brush1, fenk_brush2);
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[opheldu,fenk_brush2]
+if (last_useitem = fenk_cane) {
+    @fenk_extend_brush(fenk_brush2, fenk_brush3);
+} else {
+    ~displaymessage(^dm_default);
+}
+
+// Both drag directions must work: cane onto brush and brush onto cane.
+[opheldu,fenk_cane]
+switch_obj (last_useitem) {
+    case fenk_brush0 : @fenk_extend_brush(fenk_brush0, fenk_brush1);
+    case fenk_brush1 : @fenk_extend_brush(fenk_brush1, fenk_brush2);
+    case fenk_brush2 : @fenk_extend_brush(fenk_brush2, fenk_brush3);
+    case default : ~displaymessage(^dm_default);
+}
+
+[label,fenk_extend_brush](obj $old, obj $new)
+if (inv_total(inv, $old) < 1 | inv_total(inv, fenk_cane) < 1) {
+    mes("You need a brush and a cane.");
+    return;
+}
+if (inv_total(inv, bronzecraftwire) < 1) {
+    mes("You need bronze wire to secure each cane to the brush.");
+    return;
+}
+inv_del(inv, $old, 1);
+inv_del(inv, fenk_cane, 1);
+inv_del(inv, bronzecraftwire, 1);
+inv_add(inv, $new, 1);
+mes("You bind another cane to the brush with bronze wire.");
+
+// Only the WEST upstairs fireplace holds the conductor mould.
+[oplocu,fenk_fireplace]
+if (loc_coord ! 1_55_55_24_35 | last_useitem ! fenk_brush3) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%fenk_quest < ^fenk_sewn) {
+    mes("There is nothing useful in this fireplace yet.");
+    return;
+}
+if (inv_total(inv, fenk_lightning_mould) > 0) {
+    mes("You already found the conductor mould.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need room in your pack.");
+    return;
+}
+mes("You sweep out the old fireplace using the extended brush.");
+p_delay(2);
+inv_add(inv, fenk_lightning_mould, 1);
+mes("You uncover a mould for casting the lightning conductor.");
+
+[oploc1,fenk_clock]
+mes("The castle clock ticks on, no matter what the doctor gets up to.");
+
+[oploc1,fenk_tower_door]
+if (%fenk_quest < ^fenk_tower_key_given) {
+    mes("The tower door is locked.");
+    return;
+}
+if (%fenk_unlocked_tower = 0) {
+    if (inv_total(inv, fenk_tower_key) < 1) {
+        mes("You need the tower key from Dr Fenkenstrain.");
+        return;
+    }
+    %fenk_unlocked_tower = 1;
+    mes("You unlock the tower door.");
+}
+~open_and_close_door2(fenk_tower_door_open, ~check_axis(coord, loc_coord, loc_angle), door_open);
+
+// A real silver conductor must be cast at a furnace using the actual mould.
+// See pinned smelting.patch: its normal silver-bar action calls fenk_cast_conductor.
+[proc,fenk_cast_conductor]
+if (%fenk_quest ! ^fenk_sewn |
+    inv_total(inv, fenk_lightning_mould) < 1 |
+    inv_total(inv, silver_bar) < 1) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (stat(crafting) < ^fenk_req_crafting) {
+    mes("You need level 20 Crafting to cast the silver conductor.");
+    return;
+}
+anim(human_furnace, 0);
+sound_synth(furnace, 1, 0);
+p_delay(3);
+inv_del(inv, silver_bar, 1);
+inv_add(inv, fenk_conductor, 1);
+stat_advance(crafting, 500);
+mes("You cast a silver lightning conductor using the mould.");
+
+[oplocu,fenk_conductor_broken]
+if (last_useitem ! fenk_conductor) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%fenk_quest ! ^fenk_sewn) {
+    mes("The conductor does not need repairing now.");
+    return;
+}
+if (inv_total(inv, fenk_conductor) < 1) {
+    mes("You need a newly cast conductor.");
+    return;
+}
+inv_del(inv, fenk_conductor, 1);
+%fenk_conductor_repaired = 1;
+%fenk_quest = ^fenk_conductor_fixed;
+loc_change(fenk_conductor_repaired, 5);
+mes("You replace the broken roof conductor with the new silver rod.");
+mes("Thunder rumbles overhead. I should speak to the doctor again.");
+
+// The head source remains tied to the one actual distinct grave marker.
+// 0_56_54_24_35 is a map-verified fenk_grave_poor, but the tomb identity
+// still needs a real game-era confirmation before this is called canonical.
+[oploc2,fenk_grave_poor]
+if (loc_coord ! 0_56_54_24_35 | %fenk_quest < ^fenk_hired) {
+    mes("You find nothing that belongs in the doctor's experiment.");
+    return;
+}
+if (inv_total(inv, spade) < 1) {
+    mes("You need a spade to dig here.");
+    return;
+}
+if (inv_total(inv, fenk_head_empty) > 0 |
+    inv_total(inv, fenk_head_full) > 0 |
+    %fenk_head = 1) {
+    mes("You already have the head from this grave.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("Your pack is too full to carry the head.");
+    return;
+}
+anim(human_dig, 0);
+p_delay(2);
+inv_add(inv, fenk_head_empty, 1);
+mes("You uncover a head, but the doctor wanted one with a brain.");
+
+[opheldu,fenk_head_empty]
+if (last_useitem = fenk_brain) {
+    @fenk_add_brain;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[opheldu,fenk_brain]
+if (last_useitem = fenk_head_empty) {
+    @fenk_add_brain;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[label,fenk_add_brain]
+if (inv_total(inv, fenk_brain) < 1 | inv_total(inv, fenk_head_empty) < 1) {
+    mes("You need both the head and the pickled brain.");
+    return;
+}
+inv_del(inv, fenk_brain, 1);
+inv_del(inv, fenk_head_empty, 1);
+inv_add(inv, fenk_head_full, 1);
+mes("You put the pickled brain inside the head.");
