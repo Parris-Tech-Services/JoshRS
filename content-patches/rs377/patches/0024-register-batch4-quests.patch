@@ -1,0 +1,40 @@
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -303,6 +303,24 @@
+ if (%giantdwarf_main = ^gd_complete) {
+     $questpoints = add($questpoints, ^gd_questpoints);
+ }
++if (%forget_main_var = ^ft_complete) {
++    $questpoints = add($questpoints, ^ft_questpoints);
++}
++if (%garden_varp_1 = ^gt_complete) {
++    $questpoints = add($questpoints, ^gt_questpoints);
++}
++if (%twocats_varbit = ^tc_complete) {
++    $questpoints = add($questpoints, ^tc_questpoints);
++}
++if (%quest_wanted = ^w_complete) {
++    $questpoints = add($questpoints, ^w_questpoints);
++}
++if (%deal_quest = ^dl_complete) {
++    $questpoints = add($questpoints, ^dl_questpoints);
++}
++if (%agrith_quest_varp = ^as_complete) {
++    $questpoints = add($questpoints, ^as_questpoints);
++}
+ return ($questpoints);
+ 
+ [proc,update_questlist]
+@@ -393,6 +411,12 @@
+ ~send_quest_progress_colour(questlist:tog, %tog_minigame, ^tog_complete);
+ ~send_quest_progress_colour(questlist:zogre, %zombie_ogre, ^zg_complete);
+ ~send_quest_progress_colour(questlist:giantdwarf, %giantdwarf_main, ^gd_complete);
++~send_quest_progress_colour(questlist:forget, %forget_main_var, ^ft_complete);
++~send_quest_progress_colour(questlist:garden, %garden_varp_1, ^gt_complete);
++~send_quest_progress_colour(questlist:twocats, %twocats_varbit, ^tc_complete);
++~send_quest_progress_colour(questlist:wanted, %quest_wanted, ^w_complete);
++~send_quest_progress_colour(questlist:deal, %deal_quest, ^dl_complete);
++~send_quest_progress_colour(questlist:agrith, %agrith_quest_varp, ^as_complete);
+ ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
+ if_settab(questlist, ^tab_quest_journal);
+ 

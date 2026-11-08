@@ -1,0 +1,72 @@
+// Forgettable Tale of a Drunken Dwarf - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp forget_main_var (batch-4 patch).
+// NOT IMPLEMENTED: the Keldagrim tunnel digging and the full forgetfulness dialogue matrix;
+// the chain here is a condensed reconstruction. Rewards: 2 quest points.
+// Veldaban (Keldagrim Palace) has no cache NPC; the Keldagrim Black Guard stand-in is used.
+
+// Black Guard officer - Veldaban's men, Keldagrim.
+[opnpc1,dwarf_city_black_guard1]
+switch_int (%forget_main_var) {
+    case ^ft_not_started :
+        ~chatnpc("<p,neutral>Avant, human. Commander Veldaban has his hands full.|Dwarves have been forgetting things - whole days gone|from their heads. And every one of them was drinking|the Red Axe's new beer before it happened.|The Black Guard can't act without proof, but you...|you're not in the Guard, are you?");
+        %forget_main_var = ^ft_beer;
+        ~send_quest_progress(questlist:forget, %forget_main_var, ^ft_complete);
+    case ^ft_beer :
+        ~chatnpc("<p,neutral>Find a keg of that Red Axe beer. The drunken dwarf|outside the palace has taken a liking to it - he'll|know where to get one. Then take it to the Red Axe|director and see what he lets slip.");
+    case ^ft_director :
+        if (inv_total(inv, forget_gardener_letter) > 0) {
+            ~chatnpc("<p,neutral>A gardener's letter? 'The mushrooms are coming along|nicely, the dwarves remember nothing after a single|pint'... Mushrooms! The Red Axe is brewing memory-mushrooms|into that beer! Veldaban will want to see this at once.|You've done the Guard a service today, human.");
+            inv_del(inv, forget_gardener_letter, 1);
+            queue(ft_complete, 0, 0);
+        } else {
+            ~chatnpc("<p,neutral>You had the letter in your hands - don't tell me|you've forgotten it already. The Red Axe director|dropped it when you gave him the beer.");
+        }
+    case default :
+        ~chatnpc("<p,neutral>The Red Axe's beer is off the shelves and Veldaban|is a happy dwarf. Just don't ask him about mushrooms.");
+}
+
+// Drunken dwarf - trades a keg of the suspicious Red Axe beer.
+[opnpc1,forget_cutscene_drunken_dwarf]
+if (%forget_main_var = ^ft_beer) {
+    if (inv_total(inv, forget_cutscene_beer) > 0) {
+        ~chatnpc("<p,neutral>Yer already got one! Don' drink it, mind -|I can't remember last Tuesday an' I only had the one.");
+    } else {
+        ~chatnpc("<p,neutral>Red Axe beer? *hic* Lovely stuff, that. Can't remember|a thing after a pint o' it, but lovely stuff.|Here, I got a spare keg from a trader.|Don't tell the missus.");
+        inv_add(inv, forget_cutscene_beer, 1);
+        mes("The drunken dwarf hands you a keg of Red Axe beer.");
+    }
+} else {
+    ~chatnpc("<p,neutral>*hic* Lovely day for it. Whatever it is.");
+}
+
+// Red Axe director - the beer distracts him long enough to spot the letter.
+[opnpc1,forget_redaxe_director_cutscene]
+if (%forget_main_var = ^ft_beer) {
+    if (inv_total(inv, forget_cutscene_beer) > 0) {
+        ~chatnpc("<p,neutral>Beer? For me? Well - a small one. Purely to be|sociable, you understand. The Red Axe business is|entirely legitimate... entirely... entirely...|...what was I saying?");
+        inv_del(inv, forget_cutscene_beer, 1);
+        inv_add(inv, forget_gardener_letter, 1);
+        %forget_main_var = ^ft_director;
+        ~send_quest_progress(questlist:forget, %forget_main_var, ^ft_complete);
+        mes("As the director drones on, a letter slips from his pocket. You pick it up.");
+    } else {
+        ~chatnpc("<p,neutral>The Red Axe Mining Company has no comment.|Good day.");
+    }
+} else {
+    ~chatnpc("<p,neutral>The Red Axe Mining Company has no comment.|Good day.");
+}
+
+[queue,ft_complete]
+%forget_main_var = ^ft_complete;
+session_log(^log_adventure, "Quest complete: Forgettable Tale of a Drunken Dwarf");
+~send_quest_complete(questlist:forget, forget_gardener_letter, 200, ^ft_questpoints, "You have completed Forgettable Tale of a Drunken Dwarf!", "2 quest points");
+
+[if_button,questlist:forget]
+def_string $text;
+switch_int (%forget_main_var) {
+    case ^ft_not_started : $text = "@dbl@I can start this quest by speaking to a @dre@Black Guard officer@dbl@ in Keldagrim.";
+    case ^ft_beer : $text = "@str@The Black Guard suspects the Red Axe's beer.||@dbl@I should get a keg of it from the @dre@drunken dwarf@dbl@ and bring it to the @dre@Red Axe director@dbl@.";
+    case ^ft_director : $text = "@str@The director dropped a letter mentioning memory-mushrooms.||@dbl@I should bring the @dre@gardener's letter@dbl@ back to the Black Guard officer.";
+    case default : $text = "@str@I exposed the Red Axe's memory-mushroom beer.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Forgettable Tale of a Drunken Dwarf", $text);

@@ -1,0 +1,90 @@
+// Garden of Tranquillity - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp garden_varp_1 (batch-4 patch).
+// NOT IMPLEMENTED: the Varrock palace garden landscaping and the ring of charos; the chain
+// here is a condensed reconstruction. Rewards: 2 quest points.
+// Queen Ellamaria wants a garden worthy of King Roald.
+
+// Queen Ellamaria - Varrock Palace garden.
+[opnpc1,queen_ellamaria]
+switch_int (%garden_varp_1) {
+    case ^gt_not_started :
+        ~chatnpc("<p,neutral>You there! Yes, you. Do you know anything of gardening?|Of course you don't. Never mind - how hard can it be?|The king requires a garden, and the palace grounds are|a disgrace. Roses. The king adores roses.|White, red and pink - a proper royal rose garden.|Don't just stand there gawping!");
+        %garden_varp_1 = ^gt_seeds;
+        ~send_quest_progress(questlist:garden, %garden_varp_1, ^gt_complete);
+    case ^gt_seeds :
+        if (inv_total(inv, garden_rosebush_seed_white) > 0) {
+            if (inv_total(inv, garden_rosebush_seed_red) > 0) {
+                if (inv_total(inv, garden_rosebush_seed_pink) > 0) {
+                    if (inv_total(inv, gardening_trowel) = 0) {
+                        ~chatnpc("<p,neutral>You have the seeds - now where are your tools?|A trowel, and a decent pair of gardening boots.|One does not plant roses for a king barefoot.");
+                    } else {
+                        if (inv_total(inv, gardening_boots) = 0) {
+                            ~chatnpc("<p,neutral>White, red and pink - but you'll ruin the beds|without proper boots. Gardening boots, human!");
+                        } else {
+                            ~chatnpc("<p,neutral>White, red and pink - yes, these will do nicely.|Take the trolley and plant them along the east bed.|And do try not to trample anything, peasant.");
+                            inv_del(inv, garden_rosebush_seed_white, 1);
+                            inv_del(inv, garden_rosebush_seed_red, 1);
+                            inv_del(inv, garden_rosebush_seed_pink, 1);
+                            %garden_varp_1 = ^gt_plant;
+                            ~send_quest_progress(questlist:garden, %garden_varp_1, ^gt_complete);
+                        }
+                    }
+                } else {
+                    ~chatnpc("<p,neutral>I still require a @dre@pink@dbl@ rosebush seed.|A gardener somewhere in this kingdom will have them.");
+                }
+            } else {
+                ~chatnpc("<p,neutral>I still require a @dre@red@dbl@ rosebush seed.|A gardener somewhere in this kingdom will have them.");
+            }
+        } else {
+            ~chatnpc("<p,neutral>I require @dre@white, red and pink@dbl@ rosebush seeds.|A gardener somewhere in this kingdom will have them.|Honestly, is nothing simple with you people?");
+        }
+    case ^gt_plant :
+        ~chatnpc("<p,neutral>The roses are not yet planted! Use the garden trolley|in the palace grounds and get on with it!");
+    case default :
+        ~chatnpc("<p,neutral>His majesty was most pleased with the roses.|Though between us, he has no idea how much work it was.");
+}
+
+// Gardener - supplies the royal rosebush seeds.
+[opnpc1,misc_gardener]
+if (%garden_varp_1 = ^gt_seeds) {
+    if (inv_total(inv, garden_rosebush_seed_white) > 0) {
+        ~chatnpc("<p,neutral>You've got the seeds I gave you. Off you pop.");
+    } else {
+        ~chatnpc("<p,neutral>Rosebush seeds for the palace, is it? Aye, I've|white, red and pink - the proper stock, not that|wild rubbish. Here, take the lot. Tell her majesty|the gardener sends his regards.");
+        inv_add(inv, garden_rosebush_seed_white, 1);
+        inv_add(inv, garden_rosebush_seed_red, 1);
+        inv_add(inv, garden_rosebush_seed_pink, 1);
+        mes("The gardener gives you one white, one red and one pink rosebush seed.");
+    }
+} else {
+    ~chatnpc("<p,neutral>Lovely weather for the roses.");
+}
+
+// Garden trolley - plant the royal roses.
+[opnpc1,garden_trolley]
+if (%garden_varp_1 = ^gt_plant) {
+    if (inv_total(inv, gardening_trowel) = 0) {
+        mes("I need a gardening trowel to plant these.");
+        return;
+    }
+    ~chatnpc("<p,neutral>(You plant the rosebushes along the east bed with|the trowel, and press the soil firm around them.)");
+    %garden_varp_1 = ^gt_complete;
+    ~send_quest_progress(questlist:garden, %garden_varp_1, ^gt_complete);
+    queue(gt_complete, 0, 0);
+} else {
+    mes("A sturdy garden trolley for moving soil and saplings.");
+}
+
+[queue,gt_complete]
+session_log(^log_adventure, "Quest complete: Garden of Tranquillity");
+~send_quest_complete(questlist:garden, gardening_trowel, 200, ^gt_questpoints, "You have completed Garden of Tranquillity!", "2 quest points");
+
+[if_button,questlist:garden]
+def_string $text;
+switch_int (%garden_varp_1) {
+    case ^gt_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Queen Ellamaria@dbl@ in the Varrock Palace garden.";
+    case ^gt_seeds : $text = "@str@The queen wants a royal rose garden.||@dbl@I need @dre@white, red and pink rosebush seeds@dbl@ from a @dre@gardener@dbl@, plus a @dre@gardening trowel@dbl@ and @dre@gardening boots@dbl@.";
+    case ^gt_plant : $text = "@str@The queen has the seeds and my tools.||@dbl@I should plant the roses with the @dre@garden trolley@dbl@ in the palace grounds.";
+    case default : $text = "@str@The royal rose garden is planted.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Garden of Tranquillity", $text);

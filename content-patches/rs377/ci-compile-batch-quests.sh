@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Only for a disposable GitHub Actions runner. NEVER apply to a live JoshRS install.
 # Overlays the Fenkenstrain quest, the batch-2 quest bundles, the Morytania
-# addendum and the batch-3 quest bundles onto the immutable pinned 377 content,
-# applying patches 0001-0022 in numeric order.
+# addendum, the batch-3 and batch-4 quest bundles onto the immutable pinned 377
+# content, applying patches 0001-0024 in numeric order.
 set -euo pipefail
 : "${RUNNER_TEMP:?missing runner temp}"
 : "${GITHUB_WORKSPACE:?missing checkout}"
@@ -17,7 +17,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 22 ]] || { echo "BLOCKED: expected 22 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 24 ]] || { echo "BLOCKED: expected 24 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -27,7 +27,7 @@ for patch in "${patches[@]}"; do
 done
 
 # Copy every quest bundle; none may already exist in the pinned content.
-for folder in quest_fenkenstrain quest_rag quest_soulbane quest_swansong quest_myreque quest_ics quest_mdaughter quest_hauntedmine quest_losttribe quest_makinghistory quest_handsand quest_feud quest_elid quest_osf quest_dwarfrock quest_tog quest_zogre quest_giantdwarf; do
+for folder in quest_fenkenstrain quest_rag quest_soulbane quest_swansong quest_myreque quest_ics quest_mdaughter quest_hauntedmine quest_losttribe quest_makinghistory quest_handsand quest_feud quest_elid quest_osf quest_dwarfrock quest_tog quest_zogre quest_giantdwarf quest_forget quest_garden quest_twocats quest_wanted quest_deal quest_agrith; do
   dest="$content/scripts/quests/$folder"
   [[ ! -e "$dest" ]] || { echo "BLOCKED: pinned content already has a $folder folder" >&2; exit 2; }
   cp -R "$quest/scripts/quests/$folder" "$dest"
@@ -68,7 +68,7 @@ for folder, names in owned.items():
 
 # The all.varp blocks promoted to permanent by 0006 must be unique and permanent.
 allvarp = (scripts / '_unpack/377/all.varp').read_text(errors='replace')
-for name in ('hauntedmine', 'routequest', 'mdaughter_var', 'lost_tribe', 'soulbane', 'swansong_quest', 'makinghistory', 'handsand', 'main_feud_var', 'feud_var_multi', 'elid_main', 'rag_bone_2', 'onefavour', 'dwarfrock_main', 'tog_minigame', 'zombie_ogre', 'giantdwarf_main'):
+for name in ('hauntedmine', 'routequest', 'mdaughter_var', 'lost_tribe', 'soulbane', 'swansong_quest', 'makinghistory', 'handsand', 'main_feud_var', 'feud_var_multi', 'elid_main', 'rag_bone_2', 'onefavour', 'dwarfrock_main', 'tog_minigame', 'zombie_ogre', 'giantdwarf_main', 'forget_main_var', 'garden_varp_1', 'twocats_varbit', 'quest_wanted', 'deal_quest', 'agrith_quest_varp'):
     blocks = re.findall(r'(?m)^\[' + name + r'\]\s*\n[^\[]*', allvarp)
     if len(blocks) != 1 or 'scope=perm' not in blocks[0]:
         raise SystemExit(f'BLOCKED: {name} not a single permanent block in all.varp')
@@ -85,7 +85,8 @@ for bad in ('713=varp_713', '715=varp_715', '717=varp_717', '724=varp_724'):
 src = (scripts / 'general/scripts/quests.rs2').read_text()
 for key in ('creatureoffenkenstrain', 'rag', 'soulbane', 'swansong', 'routequest',
             'ics_little', 'mdaughter', 'hauntedmine', 'lost_tribe', 'makinghistory', 'handsand', 'feud', 'elid',
-            'onesmallfavour', 'dwarfrock', 'tog', 'zogre', 'giantdwarf'):
+            'onesmallfavour', 'dwarfrock', 'tog', 'zogre', 'giantdwarf',
+            'forget', 'garden', 'twocats', 'wanted', 'deal', 'agrith'):
     assert src.count(f'send_quest_progress_colour(questlist:{key}') == 1, key
 shop = (scripts / 'areas/area_draynor/scripts/fortunato.rs2').read_text()
 assert 'openshop(wine_vinegar_merchant' in shop
