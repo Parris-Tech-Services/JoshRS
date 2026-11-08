@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'content-patches/rs377/**'
+      - 'tools/android377-phone/**'
       - '.github/workflows/batch-quests-disposable-377.yml'
   workflow_dispatch:
 permissions:
@@ -36,6 +37,13 @@ jobs:
             fi
             test "$(git -C "$root/$name" rev-parse HEAD)" = "$pin"
           done
+      - name: Verify Android phone loopback hardening against pinned real engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/android377-phone/test_loopback_bind.py
+          python3 tools/android377-phone/loopback_bind.py "$RUNNER_TEMP/joshrs-batch-377/engine"
+          python3 tools/android377-phone/loopback_bind.py "$RUNNER_TEMP/joshrs-batch-377/engine" --verify
       - name: Overlay batch quests on disposable content only
         shell: bash
         run: bash content-patches/rs377/ci-compile-batch-quests.sh
