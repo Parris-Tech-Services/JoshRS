@@ -44,6 +44,8 @@ if (-not $state.engine -or -not (Test-Path -LiteralPath ([string]$state.engine) 
 $engine = (Resolve-Path -LiteralPath ([string]$state.engine)).Path
 $gamePort = [int]$state.gamePort
 $webPort = [int]$state.webPort
+$gameListening = Port-Listening $gamePort
+$webListening = Port-Listening $webPort
 $envFile = Join-Path $engine '.env'
 $worldSource = Join-Path $engine 'src\engine\World.ts'
 $fredSource = Join-Path $engine 'src\engine\bot\FredGeorgeBot.ts'
@@ -83,7 +85,7 @@ if (Test-Path -LiteralPath $statePath -PathType Leaf) {
             $age = ([DateTimeOffset]::UtcNow - $utc).TotalSeconds
             $live.ageSeconds = [int][Math]::Round($age)
             $live.reportGamePortMatches = ([int]$data.game_port -eq $gamePort)
-            $live.reportFresh = ($age -ge 0 -and $age -le 60 -and $live.reportGamePortMatches)
+            $live.reportFresh = ($age -ge 0 -and $age -le 60 -and $live.reportGamePortMatches -and $gameListening)
             if ($live.reportFresh -and $data.bots -and $data.bots.Fred -and $data.bots.George) {
                 $live.fredOnline = [bool]$data.bots.Fred.online
                 $live.georgeOnline = [bool]$data.bots.George.online
@@ -130,5 +132,5 @@ try {
         completeRevision377AgentBridgeVerified = $false
         note = 'RS-SDK revision-225 agent launch is not a drop-in client for revision 377. Current local agents may be server-side bots only.'
     }
-    interpretation = 'Configuration and installed code do not prove an in-game bot. Fresh matching native report and in-game observation are stronger evidence. Read-only: no processes, credentials, accounts or saves changed.'
+    interpretation = 'Bot telemetry is considered current only while the configured game listener is reachable; a recent file from a stopped server is not live status. Verify online presence in-game. Read-only: no processes, credentials, accounts or saves changed.'
 } | ConvertTo-Json -Depth 8
