@@ -41,6 +41,32 @@ test('read Windows PowerShell 5.1 UTF-8 BOM active.json without rewriting it', (
   } finally { x.cleanup(); }
 });
 
+test('read repeated BOMs, spaces and CRLF without changing active.json', () => {
+  const x = fixture();
+  try {
+    const statePath = path.join(x.root, 'runtime', 'jparris-377', 'active.json');
+    const original = fs.readFileSync(statePath);
+    const mixedPrefix = Buffer.from([0xef, 0xbb, 0xbf, 0x20, 0x0d, 0x0a, 0xef, 0xbb, 0xbf]);
+    const padded = Buffer.concat([mixedPrefix, original]);
+    fs.writeFileSync(statePath, padded);
+    assert.equal(inspectAccount(x.root).status, 'ACCOUNT_FOUND');
+    assert.ok(fs.readFileSync(statePath).equals(padded));
+  } finally { x.cleanup(); }
+});
+
+test('malformed state fails without echoing configuration content', () => {
+  const x = fixture();
+  try {
+    const statePath = path.join(x.root, 'runtime', 'jparris-377', 'active.json');
+    fs.writeFileSync(statePath, '\uFEFF{' + 'PRIVATE_SENTINEL');
+    assert.throws(() => inspectAccount(x.root), err => {
+      assert.match(err.message, /ACTIVE_JSON_PARSE_FAILED/);
+      assert.doesNotMatch(err.message, /PRIVATE_SENTINEL/);
+      return true;
+    });
+  } finally { x.cleanup(); }
+});
+
 test('detect account case mismatch and never prompt', async () => {
   const x = fixture('Elrothiro');
   try {
