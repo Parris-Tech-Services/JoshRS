@@ -10,7 +10,7 @@ $Root = (Resolve-Path -LiteralPath $Root -ErrorAction Stop).Path
 if (-not (Test-Path -LiteralPath (Join-Path $Root 'runtime\jparris-377\active.json') -PathType Leaf)) {
     throw 'Expected JoshRS private runtime is missing. Refusing to install into an unrelated directory.'
 }
-$repo = 'https://raw.githubusercontent.com/Parris-Tech-Services/JoshRS/6800b9dc06c83b8de623587729c83220910d905f'
+$repo = 'https://raw.githubusercontent.com/Parris-Tech-Services/JoshRS/a84c0bfb85c61b4dee2f711d8a92b23ad9d3544f'
 $manifest = @(
     @{path='JoshRS-Agent-Manager.cmd';sha='55453198d08f522b4b68bde4ee184a3cef79aa30'}
     @{path='deploy/jparris-windows/Start-JoshRSAgentManager.ps1';sha='8e0a710e44cfe5c7237308b0c38c0a0699fe0bcb'}
@@ -25,8 +25,9 @@ $manifest = @(
     @{path='tools/rs377-chatgpt-bridge/src/observation.mjs';sha='b18dfc30de00ad9210adeefc87852f2def1eff4d'}
     @{path='tools/rs377-chatgpt-bridge/src/engine-observer.mjs';sha='172d37ef659efc786c998d6a6ed3cc4cb9522042'}
     @{path='tools/rs377-chatgpt-bridge/src/native-observer.mjs';sha='3c6a5893026b9c104e01bd4c46868a6bf0b0fd0b'}
-    @{path='tools/rs377-chatgpt-bridge/src/sdk-bridge.mjs';sha='f3d1232d173de0c2ad338e0c5ea7ae465cc54884'}
+    @{path='tools/rs377-chatgpt-bridge/src/sdk-bridge.mjs';sha='b760e16b3cb377760bd119e6e9f4d0296f5d7543'}
     @{path='tools/rs377-chatgpt-bridge/src/sdk-runtime.mjs';sha='229ea6f4e541e4d8d0176e25f4d771fa2f06b402'}
+    @{path='tools/rs377-agent-manager/barcrawl-acceptance.mjs';sha='3ed48d950f13a369da1c6fc4334c2495dc771a72'}
 )
 function Get-GitBlobSha([string]$Path) {
     $bytes = [IO.File]::ReadAllBytes($Path)
