@@ -192,7 +192,7 @@ if (inv_total(inv, fenk_tower_key) = 0 & inv_total(bank, fenk_tower_key) = 0) {
 // Pickpocketing the doctor finishes the quest. Success odds are a guess (UNVERIFIED).
 // ---------------------------------------------------------------------------
 [opnpc3,fenk_fenkenstrain]
-if (%fenk_quest < ^fenk_met_creature) {
+if (%fenk_quest ! ^fenk_met_creature) {
     mes("You have no reason to rob Dr Fenkenstrain right now.");
     return;
 }
@@ -215,6 +215,9 @@ mes("You pick the doctor's pocket.");
 queue(fenk_quest_complete, 0, 0);
 
 [queue,fenk_quest_complete]
+if (%fenk_quest ! ^fenk_met_creature) {
+    return;
+}
 %fenk_quest = ^fenk_complete;
 inv_add(inv, ring_of_charos, 1);
 session_log(^log_adventure, "Quest complete: Creature of Fenkenstrain");
