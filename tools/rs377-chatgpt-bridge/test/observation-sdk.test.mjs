@@ -83,6 +83,8 @@ test('can translate a complete *supplied* SDK-compatible observation but not syn
     shop:{isOpen:false,title:'',shopItems:[],playerItems:[]},bank:{isOpen:false,items:[],noteMode:false},
     modalOpen:false,modalInterface:0,combatEvents:[],prayers:{activePrayers:Array(15).fill(false),prayerPoints:1,prayerLevel:1}
   };
+  // Pinned upstream BotWorldState does not require optional rev377 quest varps.
+  x.questStages=null;
   const out=toBotWorldState(x,opts);assert.equal(out.state.player.worldX,3222);
   assert.equal(out.state.skills.find(s=>s.name==='Hitpoints').experience,1154);
   assert.equal(out.state.inGame,true);assert.equal(out.state.tick,100);
