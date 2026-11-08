@@ -51,8 +51,8 @@ python3 -I "$repo/tools/android377-phone/loopback_bind.py" "$engine"
 shopt -s nullglob
 patches=("$overlay"/patches/[0-9][0-9][0-9][0-9]-*.patch)
 shopt -u nullglob
-[[ "${#patches[@]}" -eq 28 ]] || fail "expected 28 reviewed revision-377 patches, found ${#patches[@]}"
-for ((i = 0; i < 28; i++)); do
+[[ "${#patches[@]}" -eq 32 ]] || fail "expected 32 reviewed revision-377 patches, found ${#patches[@]}"
+for ((i = 0; i < 32; i++)); do
   n="$(printf %04d "$((i+1))")"
   [[ "$(basename "${patches[i]}")" == "$n-"* ]] || fail "patch order mismatch $n"
   git -C "$content" apply --check "${patches[i]}"
@@ -73,7 +73,9 @@ done
 extras=(
   scripts/areas/area_ahoy/scripts/ahoy_ghost_dialogue_377.rs2
   scripts/quests/quest_mortton/configs/quest_mortton.varp
+  scripts/quests/quest_mortton/configs/joshrs_mortton_finish.constant
   scripts/quests/quest_mortton/scripts/joshrs_mortton_start.rs2
+  scripts/quests/quest_mortton/scripts/joshrs_mortton_finish.rs2
   scripts/areas/area_lumbridge/scripts/joshrs_cook_millie_377.rs2
   scripts/areas/area_lumbridge/scripts/joshrs_cook_gillie_377.rs2
 )
@@ -88,6 +90,7 @@ FENK_CONTENT="$content" FENK_QUEST_DIR="$content/scripts/quests/quest_fenkenstra
 for checker in check_fenk_map.py check_morytania_batch.py check_swansong_wall_map.py check_rag_npc_drops.py check_cooks_range.py; do
   python3 -I "$overlay/tools/$checker" --content "$content"
 done
+python3 -I "$overlay/tools/check_demon_slayer.py" --content "$content" --engine "$engine"
 
 cat > "$engine/.env" <<'ENV'
 EASY_STARTUP=true
