@@ -72,8 +72,9 @@ export function validateObservation(raw,{botName,expectedWorld}={}) {
   if(Object.hasOwn(v,'nearbyPlayers')){
     checkNearby(v.nearbyPlayers,'nearbyPlayers','index');
     if(v.nearbyPlayers!==null&& !v.nearbyPlayers.every(p=>
-      typeof p.name==='string'&&p.name.length>0&&
-      isInt(p.combatLevel,255)))fail('nearbyPlayers identity and combat level');
+      Object.keys(p).every(k=>['index','name','combatLevel','x','z'].includes(k))&&
+      typeof p.name==='string'&&p.name.length>0&&p.name.length<=32&&
+      isInt(p.combatLevel,255)))fail('nearbyPlayers identity, visibility or private fields');
   }
   if(v.dialogue!==null&&(!v.dialogue||typeof v.dialogue!=='object'||typeof v.dialogue.isOpen!=='boolean'||!Array.isArray(v.dialogue.options)))
     fail('dialogue');
