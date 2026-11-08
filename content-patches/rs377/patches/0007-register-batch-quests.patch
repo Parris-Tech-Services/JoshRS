@@ -1,0 +1,48 @@
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -249,6 +249,30 @@
+ if (%fenk_quest = ^fenk_complete) {
+     $questpoints = add($questpoints, ^fenk_questpoints);
+ }
++if (%rag_quest = ^rag_complete) {
++    $questpoints = add($questpoints, ^rag_questpoints);
++}
++if (%soulbane = ^soulbane_complete) {
++    $questpoints = add($questpoints, ^soulbane_questpoints);
++}
++if (%swansong_quest = ^swansong_complete) {
++    $questpoints = add($questpoints, ^swansong_questpoints);
++}
++if (%routequest = ^route_complete) {
++    $questpoints = add($questpoints, ^route_questpoints);
++}
++if (%ics_little_stage = ^ics_complete) {
++    $questpoints = add($questpoints, ^ics_questpoints);
++}
++if (%mdaughter_var = ^mdaughter_complete) {
++    $questpoints = add($questpoints, ^mdaughter_questpoints);
++}
++if (%hauntedmine = ^hm_complete) {
++    $questpoints = add($questpoints, ^hm_questpoints);
++}
++if (%lost_tribe = ^lt_complete) {
++    $questpoints = add($questpoints, ^lt_questpoints);
++}
+ return ($questpoints);
+ 
+ [proc,update_questlist]
+@@ -322,6 +346,14 @@
+ ~send_quest_progress_colour(questlist:troll_love, %troll_love, ^troll_love_complete);
+ ~send_quest_progress_colour(questlist:golem, %golem_a, ^golem_complete);
+ ~send_quest_progress_colour(questlist:creatureoffenkenstrain, %fenk_quest, ^fenk_complete);
++~send_quest_progress_colour(questlist:rag, %rag_quest, ^rag_complete);
++~send_quest_progress_colour(questlist:soulbane, %soulbane, ^soulbane_complete);
++~send_quest_progress_colour(questlist:swansong, %swansong_quest, ^swansong_complete);
++~send_quest_progress_colour(questlist:routequest, %routequest, ^route_complete);
++~send_quest_progress_colour(questlist:ics_little, %ics_little_stage, ^ics_complete);
++~send_quest_progress_colour(questlist:mdaughter, %mdaughter_var, ^mdaughter_complete);
++~send_quest_progress_colour(questlist:hauntedmine, %hauntedmine, ^hm_complete);
++~send_quest_progress_colour(questlist:lost_tribe, %lost_tribe, ^lt_complete);
+ ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
+ if_settab(questlist, ^tab_quest_journal);
+ 

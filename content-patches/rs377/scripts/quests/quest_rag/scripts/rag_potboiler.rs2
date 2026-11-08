@@ -1,0 +1,50 @@
+// Pot-boiler state machine. States come from the cache multiloc on varbit rag_boiler:
+// 0 no logs, 1 logs/no pot, 2 pot in place, 3 on fire, 4 boiled.
+// rag_potboiler (varbit) stores the bone index being polished (+1; 0 = none). UNVERIFIED: original encoding.
+// UNVERIFIED: boil duration.
+
+[oplocu,rag_potboiler_nologs]
+if (last_useitem = logs) {
+    inv_del(inv, logs, 1);
+    %rag_boiler = 1;
+    mes("You place the logs under the pot-boiler.");
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[oplocu,rag_potboiler_nopot]
+def_int $i = ~rag_bone_index(last_useitem);
+if ($i = -1 | last_useitem ! ~rag_potted_bone($i)) {
+    ~displaymessage(^dm_default);
+    return;
+}
+inv_del(inv, last_useitem, 1);
+%rag_potboiler = calc($i + 1);
+%rag_boiler = 2;
+mes("You place the bone in vinegar into the pot-boiler.");
+
+[oplocu,rag_potboiler_with_pot]
+if (last_useitem = tinderbox) {
+    %rag_boiler = 3;
+    mes("You light the logs.");
+    p_delay(20);
+    %rag_boiler = 4;
+    mes("The pot has boiled dry.");
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[oploc1,rag_potboiler_with_pot]
+def_int $i = calc(%rag_potboiler - 1);
+inv_add(inv, ~rag_potted_bone($i), 1);
+%rag_potboiler = 0;
+%rag_boiler = 1;
+mes("You take the pot back out.");
+
+[oploc1,rag_potboiler_with_pot_boiled]
+def_int $i = calc(%rag_potboiler - 1);
+inv_add(inv, ~rag_polished_bone($i), 1);
+inv_add(inv, pot_empty, 1);
+%rag_potboiler = 0;
+%rag_boiler = 0;
+mes("You take the polished bone out of the pot-boiler.");
