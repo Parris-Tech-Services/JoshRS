@@ -47,6 +47,10 @@ mkdir -p -- "$BASE"
 chmod 700 "$BASE"
 WORK="$(mktemp -d "$BASE/377-run-XXXXXXXX")"
 chmod 700 "$WORK"
+# Opt-in marker is solely for the newly allocated, private sandbox;
+# the trace patch refuses every other Fedora/Windows game engine.
+printf 'created by sandbox-fedora.sh; temporary RS377 world only\n' > "$WORK/.joshrs-disposable-only"
+chmod 600 "$WORK/.joshrs-disposable-only"
 echo "Disposable world directory: $WORK"
 # No trap to delete the temporary evidence; it remains under the private
 # directory for diagnosing real failures, never copied into public GitHub.
@@ -74,7 +78,7 @@ python3 "$ROOT/content-factory/patch_377_haunted.py" --content "$WORK/content" -
 python3 "$ROOT/content-factory/prepare_377_overlay.py" --source "$WORK/native377" --dest "$WORK/content"
 python3 "$ROOT/content-factory/patch_377_npc_crc.py" --engine "$WORK/engine"
 cp -- "$ROOT/tools/rs377-bot-bench/engine-patch/src/web.ts" "$WORK/engine/src/web.ts"
-python3 "$ROOT/content-factory/patch_377_sdk_trace.py" --engine "$WORK/engine"
+python3 "$ROOT/content-factory/patch_377_sdk_trace.py" --engine "$WORK/engine" --fedora-disposable-root "$WORK"
 (
  cd "$WORK/engine"
  npm ci --no-audit --no-fund
