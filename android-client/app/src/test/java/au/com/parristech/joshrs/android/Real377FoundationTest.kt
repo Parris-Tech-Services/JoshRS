@@ -72,6 +72,42 @@ class Real377FoundationTest {
         assertThrows(IllegalArgumentException::class.java) { Save377.inspect(ByteArray(136)) }
     }
 
+    @Test fun matchesAuthenticNegotiationFrameWithoutCredentials() {
+        ServerSocket(0, 1, InetAddress.getByName("127.0.0.1")).use { server ->
+            val worker = Thread {
+                server.accept().use { peer ->
+                    peer.soTimeout = 2000
+                    assertEquals(14, peer.getInputStream().read())
+                    assertEquals(0, peer.getInputStream().read())
+                    val response = ByteArray(17)
+                    response[9] = 0x37
+                    peer.getOutputStream().write(response)
+                    peer.getOutputStream().flush()
+                }
+            }
+            worker.start()
+            val status = Negotiation377.probe(server.localPort)
+            worker.join(3000)
+            assertTrue(status.negotiated)
+            assertTrue(status.message.contains("not logged in"))
+        }
+    }
+
+    @Test fun rejectsNon377NegotiationFrames() {
+        ServerSocket(0, 1, InetAddress.getByName("127.0.0.1")).use { server ->
+            val worker = Thread {
+                server.accept().use { peer ->
+                    peer.getInputStream().read(ByteArray(2))
+                    peer.getOutputStream().write(ByteArray(17) { 1 })
+                }
+            }
+            worker.start()
+            val status = Negotiation377.probe(server.localPort)
+            worker.join(3000)
+            assertFalse(status.negotiated)
+        }
+    }
+
     @Test fun probesOnlyRealLocalSocketsAndNeverClaimsLogin() {
         ServerSocket(0, 1, InetAddress.getByName("127.0.0.1")).use { server ->
             val result = Loopback377.check(server.localPort, server.localPort)
