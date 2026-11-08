@@ -150,7 +150,7 @@
 >
 > **Pass 4 — classify every delta:** Present/partial/broken/stub/absent/unknown/deliberately excluded/legally blocked for *each* JoshRS target; identify prerequisites and cascading blockers (e.g. missing dialogue, quest state, map object, bank UI). Produce a true missing-content queue and a separate attractive future-feature catalogue.
 >
-> **Pass 5 — test sample then expand:** validate coverage with reproducible scripts and actual game observations, starting P0 save/login/quest/XP/NP C integrity and high-dependency quests/shops. Correct false positives from code-only analysis.
+> **Pass 5 — test sample then expand:** validate coverage with reproducible scripts and actual game observations, starting P0 save/login/quest/XP/NPC integrity and high-dependency quests/shops. Correct false positives from code-only analysis.
 >
 > **Pass 6 — plan implementations:** produce historical-377 repair sequence, separate original-game feature inspiration roadmap, and optional modern OSRS/RS3 feature expansions subject to rights and deliberate design approval. Small independently verifiable tasks, dependency-order and explicit acceptance tests.
 >
