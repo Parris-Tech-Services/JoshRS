@@ -76,6 +76,34 @@ stat_advance(cooking, 3000);
         self.assertEqual(result["gameplay_mechanics_source"]["reward_xp_literal_sources"],
                          [{"skill":"cooking","xp":300}])
 
+    def test_shared_area_handlers_are_indexed_without_false_name_matching(self):
+        import re
+        q={"quest_id":"cook","name":"Cook's Assistant","release_date":"2001-01-04",
+           "status":"COMPLETE-VERIFIED","start_npc":"cook",
+           "varp_or_varbit":"cookquest","required_skills":[],
+           "required_quests":[],"rewards":[],"stages":[],
+           "evidence":{"quest_dir":"quests/quest_cook"}}
+        qpath="scripts/quests/quest_cook/scripts/quest_cook.rs2"
+        area="scripts/areas/area_lumbridge/scripts/cook.rs2"
+        wrong="scripts/areas/area_lumbridge/scripts/other.rs2"
+        code="[if_button,questlist:cook]\n~quest_journal(\"Cook\", \"...\");\n"
+        area_code="[opnpc1,cook]\nif (%cookquest = 1) { mes(\"Quest active\"); }\n"
+        wrong_code="[opnpc1,other]\nif (%cookquest_other = 1) { mes(\"No match\"); }\n"
+        index={qpath:d.get_script_sections(code),area:d.get_script_sections(area_code),
+               wrong:d.get_script_sections(wrong_code)}
+        refs={}
+        for path in (area,wrong):
+            for event in index[path]:
+                for var in set(re.findall(r"%([A-Za-z_][A-Za-z0-9_]*)\b",event["body"])):
+                    refs.setdefault(var,[]).append(d.concise_event(
+                        event["kind"],event["target"],path,event["line"]))
+        r=d.analyze_quest(q,index,{qpath:code}, {"cook":278}, {},
+                          {},[qpath],{}, {},{},d.PIN,refs)
+        self.assertEqual(r["shared_area_event_candidate_count"],1)
+        self.assertEqual(r["shared_area_npc_dialogue_event_candidates"][0]["path"],area)
+        self.assertEqual(r["shared_area_or_general_event_candidates"][0]["matched_quest_variables"],
+                         ["cookquest"])
+
     def test_missing_start_and_no_scripts_are_not_marked_verified(self):
         q={"quest_id":"unmade","name":"Unmade","release_date":"2006-01-01",
            "status":"NOT STARTED","start_npc":"missing",
