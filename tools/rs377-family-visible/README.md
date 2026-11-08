@@ -33,13 +33,22 @@ On **AVANCE-WS7**, after the previous two-minute bot login has finished:
 cd ~/dev/JoshRS-quest-runner || exit 1
 git pull --ff-only || exit 1
 python3 tools/rs377-family-visible/prepare_lumbridge.py
-python3 tools/rs377-family-visible/prepare_lumbridge.py --apply --bot-offline
+# Only for a partial tutorial (0 < stage < 1000) on HarnessView1:
+python3 tools/rs377-family-visible/prepare_lumbridge.py --apply --bot-offline --allow-progressed-tutorial
 node tools/rs377-family-visible/join.mjs --connect --allow-family --host 127.0.0.1 --bot HarnessView1 --patrol --seconds 600
 ~~~
 
-The first Python command only reports what would be changed. **Check that
-the expected account, position and checksum are printed before running the
-second one.** The last command starts the normal bot and asks for the
+The first Python command only reports what would be changed, including the
+**actual saved tutorial progress value**. Earlier versions refused nonzero
+values outright; the user has now confirmed this bot is **in progress**, so a
+separate `--allow-progressed-tutorial` flag is required before overwriting its
+tutorial stage. This is strictly a temporary visibility fixture; it does not
+count as playing or completing Tutorial Island. **Check that the displayed
+account, source position, and checksum are correct before the second command.**
+The second command refuses every other filename and any completed/unexpected
+tutorial state, creates a timestamped bot-only backup, validates CRC32, and
+does not change other permanent variables. For a genuinely untouched
+`tutorial=0` bot, use `--apply --bot-offline` without the extra flag. The last command starts the normal bot and asks for the
 separate bot password privately. In Elrothiro's Java client, look near the
 Lumbridge castle courtyard (3233,3218). Remain logged into the same world.
 
