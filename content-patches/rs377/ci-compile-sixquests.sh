@@ -17,15 +17,15 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 [[ "$(git -C "$content" rev-parse HEAD)" == "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50" ]] || { echo "BLOCKED: Content SHA drift" >&2; exit 2; }
 [[ "$(git -C "$engine" rev-parse HEAD)" == "b5ac859b47915afb545e60e4c1208f25d43cb3fb" ]] || { echo "BLOCKED: Engine SHA drift" >&2; exit 2; }
 
-# All patches, numeric order (ls | sort: 0001-00NN batch, then 10001+ bundles).
+# All patches, numeric order (ls | sort: 0001-00NN batch, then 10001+ bundles). Later
+# patches depend on earlier ones (e.g. 0007's context includes 0001's fenk lines), so each
+# patch is checked AND applied before the next is considered - never all against pristine.
 mapfile -t patches < <(ls "$quest"/patches/*.patch | sort)
 if [[ "${#patches[@]}" -eq 0 ]]; then echo "BLOCKED: no patches found" >&2; exit 2; fi
 echo "Applying ${#patches[@]} patches in numeric order:"
 for p in "${patches[@]}"; do echo "  $(basename "$p")"; done
 for p in "${patches[@]}"; do
   git -C "$content" apply --check "$p"
-done
-for p in "${patches[@]}"; do
   git -C "$content" apply "$p"
 done
 
