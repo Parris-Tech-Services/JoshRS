@@ -299,6 +299,11 @@ function hashDirectory(root) {
   return out;
 }
 function saveSources(world) {
+  const players=path.join(world.engine,'data/players');
+  const db=path.join(world.engine,'db.sqlite');
+  if(exists(players) && listTree(players).some(x=>x.endsWith('.sav')) && !exists(db)) {
+    fail('Existing character saves lack the matching SQLite account database; stop for recovery');
+  }
   return ['data/players','db.sqlite','db.sqlite-wal','db.sqlite-shm']
     .map(rel=>({rel,src:path.join(world.engine,rel)})).filter(x=>exists(x.src));
 }
@@ -320,6 +325,11 @@ async function assertStopped(world) {
   const envfile=path.join(world.engine,'.env');
   if(!exists(envfile))fail('No engine .env; unable to verify selected game ports');
   const env=fs.readFileSync(envfile,'utf8');
+  // Backups support SQLite only; never silently proceed with PostgreSQL or
+  // an unknown database backend that the updater cannot preserve.
+  if(!/^DB_BACKEND=sqlite\s*$/m.test(env)) {
+    fail('SQLite backup only: verify DB_BACKEND=sqlite before updating this world');
+  }
   const ports=['NODE_PORT','WEB_PORT','WEB_MANAGEMENT_PORT']
     .map(k=>readPort(env,k)).filter(v=>v!==null);
   if(ports.length<2||ports.some(v=>v<1||v>65535))fail('Unknown or unsafe game ports in .env');
@@ -488,4 +498,4 @@ async function main(argv) {
 if(process.argv[1] && real(process.argv[1])===real(fileURLToPath(import.meta.url))) {
   main(process.argv.slice(2)).catch(err=>{console.error(err.message);process.exitCode=1;});
 }
-export {SCHEMA,parsePatchPaths,getPatches,detectWorld,planUpdate,applyAndBuild,parseArgs,saveSources,hashDirectory};
+export {SCHEMA,parsePatchPaths,getPatches,detectWorld,planUpdate,applyAndBuild,parseArgs,saveSources,hashDirectory,assertStopped};

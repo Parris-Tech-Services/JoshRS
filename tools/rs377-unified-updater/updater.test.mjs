@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {parsePatchPaths,planUpdate,applyAndBuild,parseArgs} from './updater.mjs';
+import {parsePatchPaths,planUpdate,applyAndBuild,parseArgs,assertStopped} from './updater.mjs';
 
 const QUESTS=['quest_fenkenstrain','quest_rag','quest_soulbane','quest_swansong',
   'quest_myreque','quest_ics','quest_mdaughter','quest_hauntedmine','quest_losttribe',
@@ -131,4 +131,18 @@ test('new future numbered patch updates a prior manifest without reapplying old 
   assert.ok(next.changed.get(rel).toString().includes('even better behaviour'));
   applyAndBuild(next,{runBuild:()=>({status:0})});
   assert.equal(plan(f).changed.size,0);
+});
+
+test('existing saved character without matching SQLite database blocks before changes',t=>{
+  const f=fixture(t);
+  fs.unlinkSync(path.join(f.world.engine,'db.sqlite'));
+  const before=fs.readFileSync(path.join(f.world.content,rel),'utf8');
+  assert.throws(()=>applyAndBuild(plan(f),{runBuild:()=>({status:0})}),/matching SQLite account database/);
+  assert.equal(fs.readFileSync(path.join(f.world.content,rel),'utf8'),before);
+  assert.equal(fs.readFileSync(path.join(f.world.engine,'data/players/main/TestDummy.sav'),'utf8'),'not a real player');
+});
+test('non-SQLite database backend is refused before live installation',async t=>{
+  const f=fixture(t);
+  write(f.world.engine,'.env','NODE_PORT=15402\nWEB_PORT=18880\nDB_BACKEND=postgresql\n');
+  await assert.rejects(()=>assertStopped(f.world),/SQLite backup only/);
 });
