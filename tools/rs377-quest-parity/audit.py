@@ -48,6 +48,7 @@ OVERLAYS = {
 # Each stat_advance argument uses historical RuneScript tenths of one XP.
 # DO NOT silently replace 2006 Swan Song's Fishing 10,000 with modern OSRS 50,000.
 HISTORIC_REWARD_XP = {
+    "hauntedmine": {"strength": 22000},
     "soulbane": {"defence": 500, "hitpoints": 500},
     "routequest": {"attack": 600, "defence": 600, "strength": 600, "hitpoints": 600, "crafting": 600},
     "ics_little": {"thieving": 4500, "agility": 4000, "woodcutting": 4000},
@@ -67,6 +68,7 @@ HISTORIC_REWARD_XP = {
 
 # Genuine incompatible quest rewards confirmed in historical quest guides.
 BAD_REWARD_SIGNATURES = {
+    "hauntedmine": ("stat_advance(mining, 40000);", "stat_advance(crafting, 20000);"),
     "soulbane": ("stat_advance(prayer, 40000);", "stat_advance(defence, 20000);"),
     "routequest": ("stat_advance(agility, 50000);", "stat_advance(slayer, 20000);"),
     "ics_little": ("stat_advance(prayer, 30000);",),
