@@ -43,7 +43,7 @@ for f in files:
 for f in glob.glob(f"{C}/scripts/**/*.varbit", recursive=True):
     for m in re.finditer(r"^\[([A-Za-z0-9_]+)\]", open(f, errors="ignore").read(), re.M):
         varbit.add(m.group(1))
-# varps: pack + the six quests' own .varp definitions (moved out of all.varp by patch 1002)
+# varps: pack + the six quests' own .varp definitions (moved out of all.varp by patch 10002)
 for q in QUESTS:
     for f in glob.glob(f"{BASE}/scripts/quests/{q}/configs/*.varp"):
         for m in re.finditer(r"^\[([A-Za-z0-9_]+)\]", open(f, errors="ignore").read(), re.M):

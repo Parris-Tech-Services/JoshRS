@@ -41,13 +41,13 @@ ships no quest journal script (`[if_button,questlist:swansong]`).
 
 ## Patches
 
-- **1001** — registers the five quests in `scripts/general/scripts/quests.rs2`:
+- **10001** — registers the five quests in `scripts/general/scripts/quests.rs2`:
   quest points for Cabin Fever (2), Recruitment Drive (1), Mourning's End
   Part II (2), Monkey Madness (3), and quest-list colour lines for all five.
   RFD gets a colour line but **no quest points yet**: the colour only turns
   green at `^rfd_full_complete = 255`, which no script sets until the eight
   chapters and the Culinaromancer are implemented.
-- **1002** — moves the four cache varps (`fever_quest`, `recruitmentdrive`,
+- **10002** — moves the four cache varps (`fever_quest`, `recruitmentdrive`,
   `mourning_quest_part2`, `mm_main`) out of `scripts/_unpack/377/all.varp`
   into their quest configs with `scope=perm` and `transmit=yes`, so the
   cache's client-side varbits on them keep resolving while the definitions
@@ -59,16 +59,16 @@ ships no quest journal script (`[if_button,questlist:swansong]`).
   moved into `quest_100`'s config. The client's RFD varbits
   (`hundred_main_quest_var` bits 0-6, `hundred_subquest_tally` bits 11-20,
   …) keep resolving against the same id 678.
-- **1003** — RFD intro in the **Cook's existing post-quest chat**
+- **10003** — RFD intro in the **Cook's existing post-quest chat**
   (`area_lumbridge/cook.rs2`): 10-Cooking-gated offer, milk/flour/egg hand-in,
   intro completion with an explicit "not yet implemented" wall for the feast.
-- **1004** — Recruitment Drive start in **Sir Amik Varze's existing post-quest
+- **10004** — Recruitment Drive start in **Sir Amik Varze's existing post-quest
   chat** (`area_falador/sir_amik_varze.rs2`), gated on Black Knights' Fortress
   (guaranteed in that branch) and Druidic Ritual. Sir Tiffy Cashien has **no
   NPC definition in the pinned 377 cache**, so the Temple Knights' recruitment
   starts from Amik instead; the Falador Park portal handler states the
   grounds are not yet open.
-- **1005** — Monkey Madness start in **King Narnode's existing post-quest
+- **10005** — Monkey Madness start in **King Narnode's existing post-quest
   branch** (`quest_grandtree/king_narnode.rs2`), gated on The Grand Tree
   (guaranteed in that case) and Tree Gnome Village, invoking the overlay's
   `mm_narnode_branch` proc — the same cross-file pattern as the fenkenstrain
@@ -89,7 +89,7 @@ ships no quest journal script (`[if_button,questlist:swansong]`).
 - **Sir Tiffy Cashien does not exist** as an NPC in the pinned 377 cache;
   Recruitment Drive is routed through Sir Amik Varze instead.
 - **RFD's main cache varp** was named `100intro` — a digit-leading name that
-  RuneScript identifiers cannot reference. Patch 1006 renames it (pack id 678)
+  RuneScript identifiers cannot reference. Patch 10006 renames it (pack id 678)
   to `rfd_quest`; the other RFD cache varps (`100council`, `hundred_dave`, …)
   stay in `all.varp` untouched. No new varp id was invented: the 377 client's
   varp array only covers the cache's 725 ids (0-724), so a fresh id would be

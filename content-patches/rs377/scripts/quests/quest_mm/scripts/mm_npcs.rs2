@@ -1,6 +1,6 @@
 // Monkey Madness: NPC handlers. STATUS: scaffold; compiled against pinned disposable 377; full
 // player playthrough unverified. Dialogue is original wording. The quest start is routed
-// through King Narnode Shareen via patch 1005-mm-extend-narnode-dialogue.patch (his existing
+// through King Narnode Shareen via patch 10005-mm-extend-narnode-dialogue.patch (his existing
 // handler belongs to The Grand Tree). Implemented: Narnode start with Grand Tree + Tree Gnome
 // Village gates. Not implemented: shipyard, Daero, the hangar puzzle, Crash Island, Ape Atoll
 // stealth, Zooknock, the greegree, the Jungle Demon (see JOSHRS_SIXQUEST_NOTES.md).
@@ -17,7 +17,7 @@ if(%treequest ! ^tree_complete) {
 return(true);
 
 // ---------------------------------------------------------------------------
-// King Narnode Shareen (Grand Tree; MM start branch, called from patch 1005)
+// King Narnode Shareen (Grand Tree; MM start branch, called from patch 10005)
 // Proc, not label: the guarded patch to his existing grandtree script invokes it cross-file,
 // exactly like the fenkenstrain Roavar pattern.
 // ---------------------------------------------------------------------------

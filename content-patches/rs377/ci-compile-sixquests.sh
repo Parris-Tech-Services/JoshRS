@@ -14,7 +14,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 [[ "$content" == "$RUNNER_TEMP/joshrs-377-build/content" && -d "$content/.git" && -d "$engine/.git" ]] || { echo "BLOCKED: unrecognised workspace" >&2; exit 2; }
 [[ "$(git -C "$content" rev-parse HEAD)" == "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50" ]] || { echo "BLOCKED: Content SHA drift" >&2; exit 2; }
 [[ "$(git -C "$engine" rev-parse HEAD)" == "b5ac859b47915afb545e60e4c1208f25d43cb3fb" ]] || { echo "BLOCKED: Engine SHA drift" >&2; exit 2; }
-patches=(1001-register-five-quests-in-quests-rs2 1002-move-four-quest-varps-out-of-unpack 1003-rfd-extend-cook-dialogue 1004-rd-extend-sir-amik-dialogue 1005-mm-extend-narnode-dialogue 1006-rfd-claim-cache-varp)
+patches=(10001-register-five-quests-in-quests-rs2 10002-move-four-quest-varps-out-of-unpack 10003-rfd-extend-cook-dialogue 10004-rd-extend-sir-amik-dialogue 10005-mm-extend-narnode-dialogue 10006-rfd-claim-cache-varp)
 for p in "${patches[@]}"; do
   git -C "$content" apply --check "$quest/patches/$p.patch"
 done
@@ -33,7 +33,7 @@ import pathlib, sys, re
 root=pathlib.Path(sys.argv[1])
 scripts=root/'scripts'
 varps=list(scripts.rglob('*.varp'))
-# the four varps moved out of all.varp by patch 1002 + the JoshRS-owned RFD varp
+# the four varps moved out of all.varp by patch 10002 + the JoshRS-owned RFD varp
 for name in ('fever_quest','recruitmentdrive','mourning_quest_part2','mm_main','rfd_quest'):
     found=[str(p.relative_to(root)) for p in varps if re.search(r'(?m)^\['+name+r'\]$',p.read_text(errors='replace'))]
     if len(found)!=1:
@@ -50,7 +50,7 @@ for q,name in cfg.items():
 # the four upstream .loc stubs must have survived the merge
 for q in ('quest_100','quest_fever','quest_rd','quest_mourning2','quest_mm'):
     assert any((scripts/'quests'/q/'configs').glob('*.loc')), f'BLOCKED: {q} lost its upstream .loc'
-# patch 1006 renamed the cache's RFD var (id 678) from 100intro to rfd_quest
+# patch 10006 renamed the cache's RFD var (id 678) from 100intro to rfd_quest
 packtext=(root/'pack/varp.pack').read_text()
 assert '678=rfd_quest' in packtext and '100intro' not in packtext
 vbtext=(scripts/'_unpack/377/all.varbit').read_text(errors='replace')
