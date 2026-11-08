@@ -67,7 +67,7 @@ for folder, names in owned.items():
 
 # The all.varp blocks promoted to permanent by 0006 must be unique and permanent.
 allvarp = (scripts / '_unpack/377/all.varp').read_text(errors='replace')
-for name in ('hauntedmine', 'routequest', 'mdaughter_var', 'lost_tribe', 'soulbane', 'swansong_quest', 'makinghistory', 'handsand', 'main_feud_var', 'feud_var_multi'):
+for name in ('hauntedmine', 'routequest', 'mdaughter_var', 'lost_tribe', 'soulbane', 'swansong_quest', 'makinghistory', 'handsand', 'rag_bone_2', 'main_feud_var', 'feud_var_multi'):
     blocks = re.findall(r'(?m)^\[' + name + r'\]\s*\n[^\[]*', allvarp)
     if len(blocks) != 1 or 'scope=perm' not in blocks[0]:
         raise SystemExit(f'BLOCKED: {name} not a single permanent block in all.varp')
@@ -85,6 +85,13 @@ src = (scripts / 'general/scripts/quests.rs2').read_text()
 for key in ('creatureoffenkenstrain', 'rag', 'soulbane', 'swansong', 'routequest',
             'ics_little', 'mdaughter', 'hauntedmine', 'lost_tribe', 'makinghistory', 'handsand', 'feud'):
     assert src.count(f'send_quest_progress_colour(questlist:{key}') == 1, key
+# Existing pinned shop is real: the patch selects it only for a quest-unlocked member.
+shop = (scripts / 'areas/area_draynor/scripts/fortunato.rs2').read_text()
+assert 'openshop(wine_vinegar_merchant' in shop
+assert '%rag_wine = 1' in shop
+inv = (scripts / '_unpack/727/all.inv').read_text()
+assert '[wine_vinegar_merchant]' in inv and 'stock2=rag_vinegar,500,10' in inv
+
 print('Disposable overlay verified: unique permanent varps, renamed placeholders, quest-list registrations')
 PY
 
