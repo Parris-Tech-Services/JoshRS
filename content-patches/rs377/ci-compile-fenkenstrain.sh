@@ -71,4 +71,5 @@ print('Disposable overlay verified: unique permanent varps, single quest-list re
 PY
 FENK_CONTENT="$content" FENK_QUEST_DIR="$dest" python3 -I "$quest/tools/check_fenk_symbols.py"
 python3 -I "$quest/tools/check_fenk_map.py" --content "$content"
+python3 -I "$quest/tools/check_morytania_batch.py" --content "$content"
 echo "DISPOSABLE_FENKENSTRAIN_OVERLAY_READY"
