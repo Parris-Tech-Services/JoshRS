@@ -1,0 +1,11 @@
+// Quest completion and solo repair bit indices for JoshRS 377.
+// Pinned 377 Mort'ton stages stop at ^mortton_lit_pyre = 80.
+// Temple resource bits 14-27 were reserved in the original configuration.
+// This scoped restoration uses five of those unused bits.
+^mortton_quest_complete = 85
+^mortton_questpoints = 3
+^mortton_repair_one = 14
+^mortton_repair_two = 15
+^mortton_repair_three = 16
+^mortton_repair_four = 17
+^mortton_repair_five = 18
