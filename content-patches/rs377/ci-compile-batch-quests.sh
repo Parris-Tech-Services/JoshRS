@@ -17,10 +17,11 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
 [[ "${#patches[@]}" -eq 8 ]] || { echo "BLOCKED: expected 8 patches, found ${#patches[@]}" >&2; exit 2; }
+# Check-and-apply per patch: later patches anchor on earlier patches' state
+# (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
+# against the pristine tree would wrongly reject them.
 for patch in "${patches[@]}"; do
   git -C "$content" apply --check "$patch"
-done
-for patch in "${patches[@]}"; do
   git -C "$content" apply "$patch"
 done
 
