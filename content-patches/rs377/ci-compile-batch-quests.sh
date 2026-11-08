@@ -127,8 +127,6 @@ assert 'barcrawl_complete' not in thormac, 'Scorpion Catcher has no Barcrawl sta
 zambo = (scripts / 'areas/area_karamja/scripts/zambo.rs2').read_text()
 assert 'stat_sub' not in zambo, 'Ape Bite Liqueur has no stat penalty in period guides (patch 0030)'
 assert 'if(inv_total(inv, coins) < 8)' in rusty and 'inv_del(inv, coins, 8);' in rusty, 'Rusty Anchor charge'
-zambo = (scripts / 'areas/area_karamja/scripts/zambo.rs2').read_text()
-assert 'stat_sub(attack, 5, 5);\nstat_sub(defence, 5, 5);' in zambo, 'Ape Bite temporary debuffs'
 print('Barcrawl source contracts verified: gate, card recovery, prerequisite, drink price')
 
 print('Disposable overlay verified: unique permanent varps, renamed placeholders, quest-list registrations')
