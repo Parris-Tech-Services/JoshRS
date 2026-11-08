@@ -70,9 +70,9 @@ class LegacyStore377Test {
         }
     }
 
-    @Test fun refusesOutOfBoundsAndOversizedIndexEntries() {
+    @Test fun refusesTruncatedChainDeclaredByMaximumRepresentableLength() {
         val (dat, idx) = fixture()
-        put24(idx, 42 * 6, LegacyStore377.MAX_FILE_BYTES + 1)
+        put24(idx, 42 * 6, 0xFFFFFF) // u24 cannot represent 0x1000000
         assertThrows(IllegalArgumentException::class.java) {
             LegacyStore377(dat, idx, 0).read(42)
         }
