@@ -44,8 +44,8 @@ if (-not $state.engine -or -not (Test-Path -LiteralPath ([string]$state.engine) 
 $engine = (Resolve-Path -LiteralPath ([string]$state.engine)).Path
 $gamePort = [int]$state.gamePort
 $webPort = [int]$state.webPort
-$gameListening = $gameListening
-$webListening = $webListening
+$gameListening = Port-Listening $gamePort
+$webListening = Port-Listening $webPort
 $envFile = Join-Path $engine '.env'
 $worldSource = Join-Path $engine 'src\engine\World.ts'
 $fredSource = Join-Path $engine 'src\engine\bot\FredGeorgeBot.ts'
