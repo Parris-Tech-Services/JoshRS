@@ -1,0 +1,62 @@
+name: Rev377 private same-world bot and Fedora sandbox safety
+on:
+  push:
+    branches: [main, "feat/rs377-same-world-visible-trial-20261109"]
+    paths:
+      - "tools/rs377-family-visible/**"
+      - "content-factory/patch_377_sdk_trace.py"
+      - "tools/rs377-fedora-quests/sandbox-fedora.sh"
+      - ".github/workflows/rs377-family-visible.yml"
+  pull_request:
+    paths:
+      - "tools/rs377-family-visible/**"
+      - "content-factory/patch_377_sdk_trace.py"
+      - "tools/rs377-fedora-quests/sandbox-fedora.sh"
+      - ".github/workflows/rs377-family-visible.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Parse source, prove default has no network action
+        run: |
+          node --check tools/rs377-family-visible/join.mjs
+          node --test tools/rs377-family-visible/join.test.mjs
+      - name: Fedora scripts parse and CI-only default still blocks family engines
+        run: |
+          bash -n tools/rs377-fedora-quests/sandbox-fedora.sh
+          python3 -m py_compile content-factory/patch_377_sdk_trace.py
+          python3 - <<'PY'
+          import os, importlib.util
+          from pathlib import Path
+          file=Path("content-factory/patch_377_sdk_trace.py").resolve()
+          spec=importlib.util.spec_from_file_location("joshrs_trace",file)
+          module=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          assert not module.is_allowed_disposable_engine(Path("/home/josh/lostcity377/engine"))
+          assert not module.is_allowed_disposable_engine(Path("/home/josh/JoshRS-Launcher/runtime/engine"))
+          assert not module.is_allowed_disposable_engine(Path("/tmp/not-isolated/engine"),Path("/tmp/not-isolated"))
+          print("Failed closed for family directories and unmarked Fedora paths")
+          PY
+  fedora-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify explicit Fedora disposable root, unsafe path refusal, and syntax
+        shell: bash
+        run: |
+          docker run --rm -v "$PWD:/repo:ro" -w /repo fedora:44 bash -c '
+            set -euo pipefail
+            dnf install -y --setopt=install_weak_deps=False python3 >/dev/null
+            useradd -m -s /bin/bash tester
+            su - tester -c "mkdir -p ~/.cache/joshrs-disposable-quests/377-run-FakeSafe/engine; chmod 700 ~/.cache/joshrs-disposable-quests/377-run-FakeSafe; touch ~/.cache/joshrs-disposable-quests/377-run-FakeSafe/.joshrs-disposable-only"
+            su - tester -c "python3 -c '\''import importlib.util,pathlib; p=pathlib.Path(\"/repo/content-factory/patch_377_sdk_trace.py\");spec=importlib.util.spec_from_file_location(\"trace\",p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);r=pathlib.Path.home()/\".cache/joshrs-disposable-quests/377-run-FakeSafe\"; assert m.is_allowed_disposable_engine(r/\"engine\",r);assert not m.is_allowed_disposable_engine(r/\"other\",r);print(\"Fedora disposable patch policy passed\")'\''"
+          '
