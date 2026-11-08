@@ -31,9 +31,9 @@ switch_int (%soulbane_prog) {
             ~chatnpc("<p,sad>Then I will wait a while longer.");
         }
     case ^soulbane_started, ^soulbane_anger, ^soulbane_fear, ^soulbane_confusion, ^soulbane_hope, ^soulbane_final :
-        ~chatnpc("<p,neutral>The trials are not finished.|Anger, then fear, then confusion, then hopelessness.");
+        ~chatnpc("<p,neutral>Find your way through the rift, facing anger, fear, confusion and hopelessness.");
     case ^soulbane_return :
-        ~chatnpc("<p,happy>It is quiet at last. Thank you.|Please speak to my brother too.");
+        ~chatnpc("<p,happy>It is quiet at last. Thank you.|Speak to Tolna when he comes back to the surface.");
     case ^soulbane_complete :
         ~chatnpc("<p,happy>My son and his father have returned. Thank you for helping us.");
 }
@@ -41,11 +41,11 @@ switch_int (%soulbane_prog) {
 [label,soulbane_talk_tolna]
 switch_int (%soulbane_prog) {
     case ^soulbane_not_started :
-        ~chatnpc("<p,angry>Go and bother my sister, not me.");
+        ~chatnpc("<p,angry>Please leave me alone. I don't want to talk.");
     case ^soulbane_started, ^soulbane_anger, ^soulbane_fear, ^soulbane_confusion, ^soulbane_hope, ^soulbane_final :
-        ~chatnpc("<p,neutral>If you really mean to go down there, be careful.|It feeds on every harsh word.");
+        ~chatnpc("<p,neutral>I cannot hear you properly while I am lost in the rift.");
     case ^soulbane_return :
-        ~chatnpc("<p,happy>You faced all four and came back. I owe you.");
+        ~chatnpc("<p,happy>You helped me escape that terrible place. Thank you.");
         queue(soulbane_quest_complete, 0, 0);
     case ^soulbane_complete :
         ~chatnpc("<p,happy>Mother and I are together again. Thank you for helping us.");
@@ -131,14 +131,49 @@ if (npc_findhero = ^true) {
 }
 
 [queue,soulbane_confu_kill]
-%soulbane_prog = ^soulbane_hope;
-mes("The real creature falls. The fog in your head clears.");
+// The genuine puzzle contains five successive real beasts, each clearing
+// exactly one misleading door. Do not award passage after one kill.
+if (%soulbane_prog ! ^soulbane_confusion) {
+    return;
+}
+if (%soulbane_confu_door1pres = 0) {
+    %soulbane_confu_door1pres = 1;
+    mes("One of the confusing doors fades away. Four remain.");
+    return;
+}
+if (%soulbane_confu_door2pres = 0) {
+    %soulbane_confu_door2pres = 1;
+    mes("Another false doorway disappears.");
+    return;
+}
+if (%soulbane_confu_door3pres = 0) {
+    %soulbane_confu_door3pres = 1;
+    mes("A third confusing door vanishes.");
+    return;
+}
+if (%soulbane_confu_door4pres = 0) {
+    %soulbane_confu_door4pres = 1;
+    mes("Only one more false door remains.");
+    return;
+}
+if (%soulbane_confu_door5pres = 0) {
+    %soulbane_confu_door5pres = 1;
+    %soulbane_confu_door6open = 1;
+    %soulbane_prog = ^soulbane_hope;
+    mes("The real creature falls for the fifth time. The way ahead clears.");
+}
 
-// Trial 4: hope. Defeat three hope monsters.
+// Hopelessness: original task requires five creatures to be defeated through three phases each (15 phase defeats).
 [queue,soulbane_hope_kill]
 if (%soulbane_prog = ^soulbane_hope) {
+    // Four bits are reserved in the original 377 packed varp (0..15).
+    // Never overflow that field or turn repeat deaths into extra progress.
+    if (%soulbane_hope_killedtally >= ^soulbane_hope_needed) {
+        return;
+    }
     %soulbane_hope_killedtally = calc(%soulbane_hope_killedtally + 1);
     if (%soulbane_hope_killedtally >= ^soulbane_hope_needed) {
+        %soulbane_hope_bridgepres = 1;
         %soulbane_prog = ^soulbane_final;
         mes("A strange warmth fills the room. One more thing remains.");
     }
@@ -202,7 +237,7 @@ switch_int (%soulbane_prog) {
     case ^soulbane_fear : $text = "@str@I defeated the anger monsters.||@dbl@Next I must defeat five @dre@fear reapers@dbl@.";
     case ^soulbane_confusion : $text = "@str@I defeated the fear reapers.||@dbl@Now I must find the real @dre@confusion beast@dbl@.";
     case ^soulbane_hope : $text = "@str@I escaped confusion.||@dbl@I must face the creatures of @dre@hopelessness@dbl@.";
-    case ^soulbane_final : $text = "@str@I defeated the hope monsters.||@dbl@Only the three @dre@shades of Tolna@dbl@ remain.";
+    case ^soulbane_final : $text = "@str@I defeated the hopeless creatures.||@dbl@Only the three @dre@shades of Tolna@dbl@ remain.";
     case ^soulbane_return : $text = "@str@I defeated every shade.||@dbl@I should tell @dre@Tolna@dbl@ that it is done.";
     case default : $text = "@str@I faced all four trials and the shades of Tolna.||@red@QUEST COMPLETE!";
 }
