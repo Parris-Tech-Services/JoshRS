@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'deploy/jparris-windows/save-integrity.ps1'
+      - 'deploy/jparris-windows/support.ps1'
       - 'deploy/jparris-windows/Protect-Elrothiro.ps1'
       - 'tools/rs377-saves/test-family-backup.ps1'
       - '.github/workflows/family-save-backup.yml'
