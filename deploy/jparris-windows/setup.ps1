@@ -334,10 +334,22 @@ if ($ClientGradleTimeoutMs -gt 0) {
 Write-Host 'Compiling the revision 377 Java client...'
 Run-Native (Join-Path $client 'gradlew.bat') @('--no-daemon','classes') $client
 
-$state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort; webPort=$webPort; portOffset=$offset; source=$(if($UsbPath -or $ResumeSnapshotPath){'usb'}else{'upstream-or-existing'}) }
+# Preserve the recorded world origin across later Update/Repair sessions.
+$sourceKind=if($UsbPath -or $ResumeSnapshotPath){'usb'}elseif($existing -and $existing.source){[string]$existing.source}else{'upstream'}
+$state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort; webPort=$webPort; portOffset=$offset; source=$sourceKind }
 $pendingState = $activeFile + '.tmp'
 $state | ConvertTo-Json | Set-Content -LiteralPath $pendingState -Encoding UTF8
 Move-Item -LiteralPath $pendingState -Destination $activeFile -Force
+
+# A fresh GitHub deployment should include known-compatible content updates,
+# rather than requiring separate CMD/PowerShell scripts on each new computer.
+# Runs OFFLINE and uses the same active private 377 world; incompatible custom
+# source is reported and preserved. A real compile failure aborts auto-play.
+Write-Host 'Applying bundled JoshRS Windows game updates (verified offline, custom-safe)...'
+& (Join-Path $PSScriptRoot 'Apply-WindowsGameUpdates.ps1') -Apply
+if(-not $?) {
+    throw 'Integrated 377 game updates failed. Review the status before starting the server.'
+}
 try {
     $desktop = [Environment]::GetFolderPath('Desktop')
     if ($desktop) {
