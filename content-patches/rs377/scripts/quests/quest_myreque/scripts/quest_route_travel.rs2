@@ -104,7 +104,7 @@ if (%routequest < ^route_hollows) {
     mes("This bridge is unsafe. First arrange your passage with the boatman.");
     return;
 }
-if (%route_bridge_repairs >= ^route_bridge_spans) {
+if (%routequest >= ^route_bridge_fixed) {
     mes("The three bridge spans are secure. You can cross safely.");
     return;
 }
@@ -118,13 +118,12 @@ if (inv_total(inv, woodplank) < 1 | inv_total(inv, nails) < ^route_steel_nails_p
 }
 inv_del(inv, woodplank, 1);
 inv_del(inv, nails, ^route_steel_nails_per_span);
-%route_bridge_repairs = calc(%route_bridge_repairs + 1);
+%routequest = calc(%routequest + 1);
 mes("You hammer the plank into place using 75 nails.");
-if (%route_bridge_repairs = ^route_bridge_spans) {
-    %routequest = ^route_bridge_fixed;
+if (%routequest = ^route_bridge_fixed) {
     mes("All three spans of the bridge are repaired. Find the Myreque lookout beyond the tree.");
 } else {
-    mes("Bridge sections repaired: <tostring(%route_bridge_repairs)> of three.");
+    mes("Bridge sections repaired: <tostring(calc(%routequest - ^route_hollows))> of three.");
 }
 
 // The map contains these distinct tree and cave entrance locs. Gate their use.
