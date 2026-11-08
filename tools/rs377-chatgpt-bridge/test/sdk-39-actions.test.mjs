@@ -89,10 +89,13 @@ test('all 28 previously-unmapped upstream actions have an explicit mapping or pr
  assert.equal(new Set(covered).size,28);
  for(const type of covered)assert.ok(SDK377_ACTION_COVERAGE[type],type);
  const s=state();
- for(const type of ['acceptCharacterDesign','randomizeCharacterDesign','setTab','searchGE']){
-  const args=type==='searchGE'?{query:'bronze'}:type==='setTab'?{tabIndex:2}:{};
-  assert.throws(()=>mapSdkAction(action(type,args),s),/SDK action refused/,type);
+ for(const type of ['acceptCharacterDesign','randomizeCharacterDesign','setTab']){
+  const args=type==='setTab'?{tabIndex:2}:{};
+  const mapped=mapSdkAction(action(type,args),s);
+  assert.equal(mapped.kind,'client',type);
+  assert.equal(mapped.verifiedEffect,false);
  }
+ assert.throws(()=>mapSdkAction(action('searchGE',{query:'bronze'}),s),/SDK action refused/);
 });
 test('native scans reveal existing visible objects, not a game mutation',()=>{
  const s=state();
