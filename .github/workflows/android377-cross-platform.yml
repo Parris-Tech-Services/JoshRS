@@ -147,6 +147,28 @@ jobs:
           set -euo pipefail
           export RUNNER_TEMP="$(cygpath -u "$RUNNER_TEMP")"
           export GITHUB_WORKSPACE="$(cygpath -u "$GITHUB_WORKSPACE")"
+          # Windows Git checkout may convert content packs to CRLF. Convert
+          # disposable source and patch copies to the pinned Linux LF form.
+          python3 - "$RUNNER_TEMP/joshrs-batch-377/content" <<'PY'
+          from pathlib import Path
+          import sys
+          root = Path(sys.argv[1])
+          if not (root / 'scripts/general/scripts/quests.rs2').is_file():
+              raise SystemExit('Cannot locate disposable Windows 377 content')
+          count = 0
+          for p in root.rglob('*'):
+              if p.is_file() and p.suffix.lower() in {'.rs2', '.pack', '.varp', '.constant'}:
+                  data = p.read_bytes()
+                  if b'\r\n' in data:
+                      p.write_bytes(data.replace(b'\r\n', b'\n'))
+                      count += 1
+          for p in Path('content-patches/rs377/patches').glob('*.patch'):
+              data = p.read_bytes()
+              if b'\r\n' in data:
+                  p.write_bytes(data.replace(b'\r\n', b'\n'))
+                  count += 1
+          print('WINDOWS_DISPOSABLE_LF_CONVERSIONS', count)
+          PY
           bash content-patches/rs377/ci-compile-batch-quests.sh
       - name: Compile, boot, and send real login-negotiation bytes on Windows
         shell: pwsh
