@@ -13,8 +13,19 @@ const DEFAULT_ROOT = path.resolve(path.dirname(scriptPath), '../..');
 function activeEngine(repoRoot) {
   const statePath = path.join(repoRoot, 'runtime', 'jparris-377', 'active.json');
   // Windows PowerShell 5.1 writes UTF-8 JSON with a BOM by default.
-  // Strip only the optional leading marker; never rewrite active.json.
-  const state = JSON.parse(fs.readFileSync(statePath, 'utf8').replace(/^\uFEFF/, ''));
+  // Imported/copied files may have repeated BOMs or leading whitespace.
+  // ECMAScript trimStart strips all leading whitespace AND U+FEFF markers.
+  // Do not rewrite the user's active.json, saves or accounts.
+  const stateBytes = fs.readFileSync(statePath);
+  const raw = stateBytes.toString('utf8');
+  let state;
+  try {
+    state = JSON.parse(raw.trimStart());
+  } catch {
+    // Avoid leaking paths or other contents of the local config in errors.
+    const codes = Array.from(raw.slice(0, 6)).map(ch => ch.codePointAt(0).toString(16).padStart(4, '0'));
+    throw new Error('ACTIVE_JSON_PARSE_FAILED (first code points: ' + codes.join(',') + '). No config contents displayed.');
+  }
   if (typeof state.engine !== 'string' || !path.isAbsolute(state.engine)) {
     throw new Error('Invalid active.json engine path');
   }
@@ -98,6 +109,7 @@ function hiddenInput(label) {
 }
 
 async function main() {
+  console.log('JoshRS read-only login diagnostic 2026-11-08.2 (BOM-safe)');
   const account = inspectAccount(DEFAULT_ROOT);
   if (account.status !== 'ACCOUNT_FOUND') {
     console.log('RESULT: ' + account.status);
