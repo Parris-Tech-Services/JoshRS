@@ -237,3 +237,56 @@ jobs:
           } finally {
             Pop-Location
           }
+
+  arm64-phone-engine:
+    name: Native ARM64 Linux rev377 server build and boot
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Clone immutable exact 377 source commits on real ARM64
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/joshrs-batch-377"
+          mkdir -p "$root"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Engine-TS.git "$root/engine"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Content.git "$root/content"
+          for spec in 'engine b5ac859b47915afb545e60e4c1208f25d43cb3fb' 'content 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50'; do
+            read -r name pin <<< "$spec"
+            if [[ "$(git -C "$root/$name" rev-parse HEAD)" != "$pin" ]]; then
+              git -C "$root/$name" fetch --depth 1 origin "$pin"
+              git -C "$root/$name" checkout --detach "$pin"
+            fi
+            test "$(git -C "$root/$name" rev-parse HEAD)" = "$pin"
+          done
+          test "$(uname -m)" = "aarch64"
+      - name: Apply exact local-only listener policy and actual 377 quest overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/android377-phone/loopback_bind.py "$RUNNER_TEMP/joshrs-batch-377/engine"
+          bash content-patches/rs377/ci-compile-batch-quests.sh
+          python3 tools/android377-phone/loopback_bind.py "$RUNNER_TEMP/joshrs-batch-377/engine" --verify
+      - name: Compile authentic RuneScript, migrate fresh SQLite and boot on ARM64
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/joshrs-batch-377/engine"
+          npm ci --no-audit --no-fund
+          BUILD_SRC_DIR=../content BUILD_VERIFY=true BUILD_VERIFY_PACK=true npm run build
+          test -s data/pack/server/script.dat
+          test -s data/pack/server/script.idx
+          DB_BACKEND=sqlite NODE_PROFILE=joshrs_ci_377 npm run sqlite:migrate
+          cd "$GITHUB_WORKSPACE"
+          python3 content-factory/smoke_377.py \
+            --engine "$RUNNER_TEMP/joshrs-batch-377/engine" \
+            --content "$RUNNER_TEMP/joshrs-batch-377/content" \
+            --game-port 15402 --web-port 18880 --timeout 110
+          echo 'ARM64_PINNED_377_ENGINE_COMPILE_AND_BOOT_VERIFIED'
