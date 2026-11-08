@@ -23,13 +23,18 @@ test('strict scope prevents out-of-plane, far and foreign-player drops',()=>{
 test('missing pinned ZoneMap internals stay explicitly unknown; no invented SDK state',()=>{
  assert.match(body,/let nearbyLocs: Array<Record<string, unknown>> \| null = null/);
  assert.match(body,/let groundItems: Array<Record<string, unknown>> \| null = null/);
- // The authenticated disposable bot now exposes only its own native
- // Barcrawl varp. Other unsupported SDK fields must still remain unknown.
+ // Each quest stage is read ONLY from the current authenticated bot.
+ // Missing config IDs must still fail closed; no guessed or injected stages.
  assert.match(file,/questStages: \(\(\) => \{/);
- assert.match(file,/VarPlayerType\.getId\('barcrawl'\)/);
- assert.match(file,/if \(barcrawlId < 0\) return null/);
- assert.match(file,/bot\.getVar\(barcrawlId\)/);
- assert.match(file,/Number\.isSafeInteger\(raw\) && raw >= 0 \? \{ barcrawl: raw \} : null/);
+ for(const varp of ['barcrawl','cookquest','soulbane']) {
+   assert.ok(file.includes("VarPlayerType.getId('"+varp+"')"));
+ }
+ for(const id of ['barcrawlId','cookId','soulbaneId']) {
+   assert.ok(file.includes('bot.getVar('+id+')'));
+ }
+ assert.match(file,/barcrawlId < 0 \|\| cookId < 0 \|\| soulbaneId < 0/);
+ assert.match(file,/\[barcrawl, cook, soulbaneRaw\]\.every\(Number\.isSafeInteger\)/);
+ assert.match(file,/return \{ barcrawl, cook, soulbaneRaw \}/);
  assert.match(file,/combatEvents, prayers/);
  assert.match(file,/const shop = !shopOpen/);
  assert.match(file,/const bank = !bankOpen/);
