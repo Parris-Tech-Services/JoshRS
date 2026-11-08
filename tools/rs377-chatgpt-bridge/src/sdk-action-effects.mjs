@@ -54,6 +54,20 @@ export function verifyActionEffect(action,before,after){
  const afterQuest=questChanged(before.questStages,after.questStages);
  const inventoryDiff=inventoryChanged(inventoryBefore,inventoryAfter);
  const skillDiff=skillXpChanged(before.skills,after.skills);
+ if(a==='acceptCharacterDesign'){
+  const prev=p(before)?.appearance,next=p(after)?.appearance;
+  if(!prev||!next||prev.designModalOpen!==true||
+     next.designModalOpen!==false||![0,1].includes(next.gender)||
+     !Array.isArray(prev.body)||!Array.isArray(next.body)||
+     !Array.isArray(prev.colours)||!Array.isArray(next.colours)||
+     prev.body.length!==7||next.body.length!==7||
+     prev.colours.length!==5||next.colours.length!==5)return null;
+  if(prev.gender!==next.gender||
+     prev.body.some((n,i)=>n!==next.body[i])||
+     prev.colours.some((n,i)=>n!==next.colours[i]))
+   return event('native_server_accepted_character_design_and_closed_modal');
+  return null;
+ }
  if(a==='dropItem'){
   const id=itemAt(before,action.slot,inventoryBefore)?.id;
   return change(inventoryBefore,inventoryAfter,id)<0?event('item_removed_from_backpack'):null;

@@ -73,3 +73,21 @@ test('wrong bot, world or repeated/stale native tick never validates a packet ef
  assert.equal(verifyActionEffect({type:'dropItem',slot:0},a,{...b,player:{username:'Elrothiro'}}),null);
  assert.equal(verifyActionEffect({type:'dropItem',slot:0},a,{...b,world:{instanceId:'other',sourceSha:'a'.repeat(40)}}),null);
 });
+
+test('character design acceptance requires genuine server appearance change AND modal closure',()=>{
+ const a=state(),b=later();
+ a.sdkDetails.appearance={
+  gender:0,body:[0,10,18,26,33,36,42],colours:[0,0,0,0,0],designModalOpen:true
+ };
+ b.sdkDetails.appearance={
+  gender:1,body:[1,9,17,25,32,35,41],colours:[2,0,1,0,3],designModalOpen:false
+ };
+ const action={type:'acceptCharacterDesign'};
+ assert.equal(verifyActionEffect(action,a,b)?.verified,true);
+ const onlyPacket=later();onlyPacket.sdkDetails.appearance={...a.sdkDetails.appearance};
+ assert.equal(verifyActionEffect(action,a,onlyPacket),null);
+ const noModal=later();noModal.sdkDetails.appearance={...b.sdkDetails.appearance,designModalOpen:true};
+ assert.equal(verifyActionEffect(action,a,noModal),null);
+ const noChange=later();noChange.sdkDetails.appearance={...a.sdkDetails.appearance,designModalOpen:false};
+ assert.equal(verifyActionEffect(action,a,noChange),null);
+});

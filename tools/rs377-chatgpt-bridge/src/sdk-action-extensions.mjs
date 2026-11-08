@@ -282,15 +282,19 @@ export function mapExtendedSdkAction(a,s){
   }
   case 'setTab':{
    exact(a,['tabIndex']);
-   fail('setTab is an enhanced client-local action; TCP TUT_CLICKSIDE does not change the Java 377 client UI');
+   if(!integer(a.tabIndex,13))fail('selected tab must be 0..13');
+   return Object.freeze({kind:'client',action:Object.freeze({type:a.type,tabIndex:a.tabIndex}),
+     verifiedEffect:false,requires:'authenticated_real_377_java_client'});
   }
   case 'acceptCharacterDesign':{
    exact(a,[]);
-   fail('character appearance is hidden client-local state; 377 design values must be observed before sending IDK_SAVEDESIGN');
+   return Object.freeze({kind:'client',action:Object.freeze({type:a.type}),
+     verifiedEffect:false,requires:'genuine_native_player_kit_ui_and_server_ack'});
   }
   case 'randomizeCharacterDesign':{
    exact(a,[]);
-   fail('randomizeCharacterDesign needs a real 377 client appearance adapter; do not invent body kits or colours');
+   return Object.freeze({kind:'client',action:Object.freeze({type:a.type}),
+     verifiedEffect:false,requires:'genuine_native_player_kit_ui'});
   }
   case 'searchGE':{
    exact(a,['query']);

@@ -1285,6 +1285,24 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         trace.gameMessages : null;
     const combatEvents = trace?.combatEvents ?? null;
 
+    // Native appearance state belongs to this already authenticated disposable
+    // bot. These are the REAL persistent values changed by the ordinary
+    // Client-Java 377 IDK_SAVEDESIGN (opcode 163) handler; never infer them
+    // from an unverified WebSocket action acknowledgement.
+    const appearance = {
+        gender: bot.gender,
+        body: Array.from(bot.body),
+        colours: Array.from(bot.colors),
+        designModalOpen: Component.getId('player_kit') >= 0 &&
+            bot.modalMain === Component.getId('player_kit')
+    };
+    if (!(appearance.gender === 0 || appearance.gender === 1) ||
+        appearance.body.length !== 7 || appearance.colours.length !== 5 ||
+        !appearance.body.every(n => Number.isSafeInteger(n)) ||
+        !appearance.colours.every(n => Number.isSafeInteger(n))) {
+        throw new Error('actual_native_377_player_appearance_invalid');
+    }
+
     const sdkDetails = {
         // Native values are always projected only from the authenticated bot.
         // An incomplete required client-side signal is explicitly null.
@@ -1294,7 +1312,7 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         modalOpen: bot.modalMain !== -1 || bot.modalChat !== -1 || bot.modalSide !== -1,
         modalInterface: mainModal !== -1 ? mainModal :
             bot.modalChat !== -1 ? bot.modalChat : bot.modalSide,
-        combatEvents, prayers
+        combatEvents, prayers, appearance
     };
 
     const observation = {

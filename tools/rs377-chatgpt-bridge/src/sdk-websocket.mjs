@@ -201,6 +201,48 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
             }});
             return;
           }
+          if(dispatch.status==='client_effect_observed'){
+            // Local Java client independently returned a post-action status
+            // from its game loop. Tab/design-randomization are client-local,
+            // and must NEVER be interpreted as server quest/save progress.
+            if(!dispatch.verifiedEffect||
+               !['tab','randomize'].includes(dispatch.effect))
+              throw new Error('unverified_native_java_client_effect');
+            send(ws,{type:'sdk_action_result',actionId,result:{
+              success:true,message:'Native Java 377 client UI effect observed',
+              phase:'completion',data:{verifiedEffect:true,
+                clientOnly:true,evidence:dispatch.effect}}});
+            return;
+          }
+          if(dispatch.status==='client_packet_dispatched_unverified'){
+            // Character design acceptance has two legs: a locally queued
+            // normal 377 packet AND the authoritative engine changing the
+            // saved appearance. Neither leg alone can establish completion.
+            if(action.type!=='acceptCharacterDesign'||dispatch.effect!=='accept_design')
+              throw new Error('unexpected_client_packet_dispatch');
+            let verified=null;
+            const until=Date.now()+actionTimeoutMs;
+            while(Date.now()<until&&!closed&&ws===controller){
+              await sleep(650);
+              let after;
+              try{after=await runtime.observe()}
+              catch(e){
+                if(String(e?.message??'').includes('replayed_native_observation'))continue;
+                throw e;
+              }
+              verified=verifyActionEffect(action,start,after);
+              if(verified)break;
+            }
+            send(ws,{type:'sdk_action_result',actionId,result:verified?{
+              success:true,phase:'completion',
+              message:'Actual native server confirmed character design',
+              data:{verifiedEffect:true,evidence:verified.evidence}
+            }:{
+              success:false,phase:'observation',reason:'observation_timeout',
+              message:'Java client queued design packet; native server effect not observed'
+            }});
+            return;
+          }
           if(!['dispatched_unverified','queued_unverified'].includes(dispatch.status)){
             send(ws,{type:'sdk_action_result',actionId,result:{
               success:false,message:'No normal game packet dispatched',reason:'unsupported',phase:'validation'}});

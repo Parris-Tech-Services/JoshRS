@@ -113,6 +113,21 @@ export function mapSdkAction(action,snapshot) {
       exact(a,['optionIndex','guard']);
       const d=snapshot.dialogue;
       if(!d||!d.isOpen||!d.pageId)reject('no verified active dialogue page');
+      // The original upstream SDK uses index 0 to mean "Continue".
+      // Source: pinned Content scripts/interface_chat/interfaces/chat1.if
+      // buttontype=pause, text=Click here to continue. It must be the
+      // *only* suspended server component on this live native page.
+      // Never use index 0 to choose Yes/No from an actual choice menu.
+      if(a.optionIndex===0&&!a.guard){
+        const ids=d.pendingComponentIds;
+        const opt=d.options?.[0];
+        if(!d.isWaiting||!Array.isArray(ids)||ids.length!==1||
+           !Array.isArray(d.options)||d.options.length!==1||
+           !opt||opt.componentId!==ids[0]||
+           !/^(?:click here to )?continue\.?$/i.test(opt.text?.trim()??''))
+          reject('continue requires a single real native pause-button labelled Continue');
+        return packet({type:'dialog_resume',componentId:ids[0]});
+      }
       if(!a.guard||a.guard.pageId!==d.pageId)reject('stale or unguarded dialogue');
       const opt=d.options.find(o=>o.index===a.optionIndex&&o.componentId===a.guard.componentId);
       if(!opt)reject('dialogue option no longer available');
