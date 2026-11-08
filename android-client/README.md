@@ -1,5 +1,12 @@
 # JoshRS Android — Kotlin foundation (stage 1)
 
+## Stage 2 foundation (8 November 2026) — REAL 377 data, still no playable client
+
+The new phone-local integration work adds `Save377` (real save CRC, skills and private copy vault), `Negotiation377` (actual 377 login negotiation over loopback, no password), `LegacyStore377` (authentic read-only 520-byte legacy disk-cache sectors) and optional private import of your own `main_file_cache.dat` + `.idx0` files. It never commits or distributes a game cache. The `tools/android377-phone/install-phone-server.sh` script attempts a full pinned 377 engine build on a *new* isolated Termux Debian installation and restricts listener bindings to loopback.
+
+**The 3D model/terrain decoder, real rendering, authenticated session, gameplay packets, and one-APK local engine are still missing.** A successful compile or archive import is not a game playthrough. See [Android phone-local engine status and acceptance gates](../tools/android377-phone/README.md).
+
+
 This is a separate Android Studio project for a native Android client. It is an **original, offline-only game window prototype**; it is NOT connected to the JoshRS revision-377 server, does not use a RuneScape cache, and never reads, modifies or migrates Elrothiro/Sylvie saves.
 
 ## Stage 1b — visual revision (1 November 2026)
