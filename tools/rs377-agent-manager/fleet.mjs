@@ -47,7 +47,7 @@ export class AgentFleet{
   async start(name,password){
     const e=this.get(name);
     if(e.phase!=='stopped'&&e.phase!=='error')throw new Error('agent_already_started');
-    if(typeof password!=='string'||password.length<8||password.length>20||!/^\x21-\x7e+$/.test(password))
+    if(typeof password!=='string'||password.length<8||password.length>20||!/^[\x21-\x7e]+$/.test(password))
       throw new Error('native_377_password_must_be_8_to_20_printable_ASCII_characters');
     e.phase='connecting';e.error=null;e.abort=new AbortController();this.onChange();
     const signal=e.abort.signal;
