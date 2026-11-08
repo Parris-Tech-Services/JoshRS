@@ -59,7 +59,7 @@ try{
  }
  assert.ok(second?.tick>startTick,'actual game tick must advance over upstream SDK stream');
  const bot=new BotActions(sdk);
- actionsClass=typeof bot.walkTo==='function'&&typeof bot.talkToNpc==='function'&&
+ actionsClass=typeof bot.walkTo==='function'&&typeof bot.talkTo==='function'&&
    typeof bot.openBank==='function';
  assert.ok(actionsClass,'entire upstream BotActions class must be available');
  const origin={x:second.player.worldX,z:second.player.worldZ};
