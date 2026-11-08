@@ -333,7 +333,23 @@ function writeAtomic(file,data) {
     fs.renameSync(tmp,file);
   } finally {if(exists(tmp))fs.rmSync(tmp,{force:true});}
 }
-function applyAndBuild(plan,{build=true,runBuild}={}) {
+function applyAndBuild(plan, options={}) {
+  // A stale lock always blocks instead of guessing whether a past build finished.
+  const statePath=plan.statePath;
+  fs.mkdirSync(statePath,{recursive:true,mode:0o700});
+  const lock=path.join(statePath,'update.lock');
+  let handle;
+  try { handle=fs.openSync(lock,'wx',0o600); }
+  catch { fail('Another update is active, or a stale update.lock requires investigation: '+lock); }
+  try {
+    fs.writeSync(handle,JSON.stringify({pid:process.pid,started:new Date().toISOString(),world:plan.world.root})+'\n');
+    return applyAndBuildLocked(plan,options);
+  } finally {
+    fs.closeSync(handle);
+    fs.rmSync(lock,{force:true});
+  }
+}
+function applyAndBuildLocked(plan,{build=true,runBuild}={}) {
   const {world,changed,patches,statePath,allManaged}=plan;
   fs.mkdirSync(statePath,{recursive:true,mode:0o700});
   const backup=path.join(statePath,'backups','update-'+new Date().toISOString().replace(/[^0-9]/g,'')+'-'+process.pid);
