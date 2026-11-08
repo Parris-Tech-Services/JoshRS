@@ -1,0 +1,126 @@
+// Fenkenstrain's experimental creatures and mausoleum, original JoshRS scripts.
+// Genuine combat death uses the normal NPC death/hero pipeline: no instant key
+// from chatting to a monster, no privileged setXP/setStage shortcut.
+[ai_queue3,fenk_experiment_1]
+~npc_default_death;
+if (npc_findhero = ^false) {
+    return;
+}
+if (%fenk_quest < ^fenk_hired | %fenk_quest >= ^fenk_complete) {
+    return;
+}
+if (inv_total(inv, fenk_mausoleum_key) > 0 | inv_total(bank, fenk_mausoleum_key) > 0) {
+    return;
+}
+obj_add(npc_coord, fenk_mausoleum_key, 1, ^lootdrop_duration);
+
+// A normal key opens the existing dungeon gate. It is not consumed, to avoid
+// trapping a player on logout or leaving them unable to replace a lost key.
+[oploc1,fenk_mausoleum_door]
+@fenk_open_mausoleum_gate;
+
+[oplocu,fenk_mausoleum_door]
+if (last_useitem = fenk_mausoleum_key) {
+    @fenk_open_mausoleum_gate;
+} else {
+    ~displaymessage(^dm_default);
+}
+
+[label,fenk_open_mausoleum_gate]
+if (%fenk_quest < ^fenk_hired) {
+    mes("You cannot enter the mausoleum yet.");
+    return;
+}
+if (inv_total(inv, fenk_mausoleum_key) = 0 & %fenk_unlocked_cavern = 0) {
+    mes("The gate is locked. One of the creatures nearby has the key.");
+    return;
+}
+%fenk_unlocked_cavern = 1;
+loc_change(fenk_mausoleum_door_open, 100);
+mes("The cavern key unlocks the gate.");
+
+// The old chest can provide a replacement for the return journey.
+[oploc1,fenk_chest_open]
+if (%fenk_unlocked_cavern = 0 | %fenk_quest < ^fenk_hired) {
+    mes("You search the chest, but find nothing useful.");
+    return;
+}
+if (inv_total(inv, fenk_mausoleum_key) > 0 | inv_total(bank, fenk_mausoleum_key) > 0) {
+    mes("You already have a cavern key.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need room to take the key from the chest.");
+    return;
+}
+inv_add(inv, fenk_mausoleum_key, 1);
+mes("You find a spare cavern key in the chest.");
+
+// Three mausoleum memorials; west to east contains torso, arms, legs.
+// Pinned m54_55 loc coordinates were reconstructed from cache/map notes.
+// Keep the dungeon requirement: no skipping the fight to collect parts.
+[oploc2,fenk_grave]
+if (%fenk_quest < ^fenk_hired | %fenk_unlocked_cavern = 0) {
+    mes("You have not yet earned access to these mausoleum graves.");
+    return;
+}
+if (inv_total(inv, spade) < 1) {
+    mes("You need a spade.");
+    return;
+}
+def_namedobj $part = null;
+if (loc_coord = 0_54_55_46_56) {
+    if (%fenk_torso = 1) {
+        mes("You have already delivered the torso.");
+        return;
+    }
+    $part = fenk_torso;
+} else if (loc_coord = 0_54_55_48_57) {
+    if (%fenk_arms = 1) {
+        mes("You have already delivered the arms.");
+        return;
+    }
+    $part = fenk_arms;
+} else if (loc_coord = 0_54_55_50_56) {
+    if (%fenk_legs = 1) {
+        mes("You have already delivered the legs.");
+        return;
+    }
+    $part = fenk_legs;
+} else {
+    mes("This grave appears to have been disturbed already.");
+    return;
+}
+if (inv_total(inv, $part) > 0 | inv_total(bank, $part) > 0) {
+    mes("You have already recovered this part.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("Make room before disturbing the grave.");
+    return;
+}
+inv_add(inv, $part, 1);
+mes("You uncover an old wrapped body part and place it carefully in your pack.");
+
+// Map-confirmed memorial at m55_55 (56,6) is aligned with the
+// excavated underground chamber at m55_155 (56,6). The entrance uses
+// a *normal* item-on-location action with the assembled star amulet.
+// This prevents teleporting a player from any other generic grave.
+[oplocu,fenk_grave]
+if (loc_coord ! 0_55_55_56_6 | last_useitem ! fenk_star_amulet) {
+    ~displaymessage(^dm_default);
+    return;
+}
+if (%fenk_quest < ^fenk_hired | inv_total(inv, fenk_star_amulet) < 1) {
+    mes("You must be helping the doctor and carrying the matching amulet.");
+    return;
+}
+%fenk_coffin = 1;
+mes("The amulet fits a small recess. You push the memorial aside.");
+p_teleport(0_55_155_56_6);
+
+// Both cave exits are already implemented by the upstream generic
+// [oploc1,loc_1757] handler in ladders.rs2, which calls
+// climb_ladder(movecoord(coord(), 0, 0, -6400), true).
+// Do not add a competing trigger: this preserves normal collision/movement
+// and safely returns to the matching overworld tile for each cave exit.

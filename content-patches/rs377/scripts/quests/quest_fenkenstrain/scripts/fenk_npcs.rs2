@@ -1,0 +1,293 @@
+// Creature of Fenkenstrain: NPC handlers.
+// STATUS: UNCOMPILED, UNTESTED. Dialogue is original wording (nothing copied from game transcripts).
+//
+// Script triggers resolve on the spawned NPC's own type (Player.getOpTrigger uses npc.type), and
+// m55_55.jm2 spawns the PARENT multinpc types (1668 fenk_fenkenstrain, 1669 fenk_fenkenstrain_in_tower,
+// 1671 fenk_creature, 1672 fenk_creature_released, 1667 fenk_gardener_multi_2), so handlers bind to those.
+// The visible *_model children are only used by the engine to validate ops.
+
+[proc,fenk_meets_requirements]()(boolean)
+// Priest in Peril permits reaching Canifis. The other 377-era
+// requirements are for later quest actions, not for taking the job.
+if (%priestperil < ^priestperil_complete) {
+    return(false);
+}
+return(true);
+
+// ---------------------------------------------------------------------------
+// Dr Fenkenstrain (castle, stages 0-7)
+// ---------------------------------------------------------------------------
+[opnpc1,fenk_fenkenstrain]
+~chatplayer("<p,quiz>Hello there.");
+switch_int (%fenk_quest) {
+    case ^fenk_not_started : @fenk_doctor_not_started;
+    case ^fenk_hired : @fenk_doctor_hired;
+    case ^fenk_sewn : @fenk_doctor_sewn;
+    case ^fenk_conductor_fixed : @fenk_doctor_conductor_fixed;
+    case ^fenk_tower_key_given : @fenk_doctor_key_given;
+    case default : @fenk_doctor_after_meeting; // stages 5-7 (stage 8 uses fenk_fenkenstrain_in_tower)
+}
+
+[label,fenk_doctor_not_started]
+if (%fenk_read_signpost = 0) {
+    ~chatnpc("<p,angry>I am in the middle of delicate work. Go away.");
+    return;
+}
+~chatnpc("<p,neutral>You have the look of someone who read my notice in the village.");
+if (~fenk_meets_requirements = false) {
+    ~chatnpc("<p,neutral>Before we can work together you must be able to travel safely through Morytania.");
+    ~mesbox("Complete Priest in Peril to begin this quest. The later tasks require 20 Crafting and 25 Thieving, and a ghostspeak amulet is useful.");
+    return;
+}
+~chatnpc("<p,happy>Excellent. I require a helper who is discreet, and who will not ask what the work is for.");
+def_int $option = ~p_choice2("I'll help you.", 1, "No thanks. This sounds unpleasant.", 2);
+if ($option = 2) {
+    ~chatplayer("<p,neutral>No thanks. This sounds unpleasant.");
+    ~chatnpc("<p,sad>Pity. My offer stands, should you find your nerve.");
+    return;
+}
+~chatplayer("<p,happy>I'll help you.");
+~chatnpc("<p,neutral>Splendid. I am building a man. I have the idea, the castle and the lightning. What I lack is the material.");
+~chatnpc("<p,neutral>I need a head with a brain still in it, a torso, a pair of arms and a pair of legs.");
+~chatnpc("<p,neutral>I also need a needle and five spools of strong thread to join them together.");
+~chatnpc("<p,neutral>Bring each part to me, and ask no questions about where you found it.");
+%fenk_quest = ^fenk_hired;
+~chatplayer("<p,shock>Right. Charming.");
+
+[label,fenk_doctor_hired]
+~chatnpc("<p,quiz>Have you brought what I asked for?");
+def_string $missing = "";
+if (%fenk_head = 0) {
+    $missing = append($missing, "a head with a brain|");
+}
+if (%fenk_torso = 0) {
+    $missing = append($missing, "a torso|");
+}
+if (%fenk_arms = 0) {
+    $missing = append($missing, "a pair of arms|");
+}
+if (%fenk_legs = 0) {
+    $missing = append($missing, "a pair of legs|");
+}
+if (%fenk_needle = 0) {
+    $missing = append($missing, "a needle|");
+}
+if (%fenk_threads_given < ^fenk_threads_needed) {
+    $missing = append($missing, "more thread (I have <tostring(%fenk_threads_given)> of <tostring(^fenk_threads_needed)> spools)|");
+}
+~chatplayer("<p,neutral>Not yet. What did you still need?");
+~mesbox("The doctor still needs:|<$missing>");
+~chatnpc("<p,neutral>Hand each item over when you have it.");
+
+// Handing over parts: use the item on the doctor.
+[opnpcu,fenk_fenkenstrain]
+if (%fenk_quest ! ^fenk_hired) {
+    ~displaymessage(^dm_default);
+    return;
+}
+switch_obj (last_useitem) {
+    case fenk_head_full :
+        inv_del(inv, fenk_head_full, 1);
+        %fenk_head = 1;
+        ~chatnpc("<p,happy>A head, and the brain is intact. Very good indeed.");
+    case fenk_torso :
+        inv_del(inv, fenk_torso, 1);
+        %fenk_torso = 1;
+        ~chatnpc("<p,happy>A fine torso. Set it with the others.");
+    case fenk_arms :
+        inv_del(inv, fenk_arms, 1);
+        %fenk_arms = 1;
+        ~chatnpc("<p,happy>Arms. Strong ones too.");
+    case fenk_legs :
+        inv_del(inv, fenk_legs, 1);
+        %fenk_legs = 1;
+        ~chatnpc("<p,happy>Legs. Now he can walk away from his critics.");
+    case needle :
+        if (%fenk_needle = 1) {
+            ~chatnpc("<p,neutral>I already have a needle, thank you.");
+            return;
+        }
+        inv_del(inv, needle, 1);
+        %fenk_needle = 1;
+        ~chatnpc("<p,happy>A needle. Sharp. Just what I need.");
+    case thread :
+        if (%fenk_threads_given >= ^fenk_threads_needed) {
+            ~chatnpc("<p,neutral>I have all the thread I need.");
+            return;
+        }
+        def_int $wanted = sub(^fenk_threads_needed, %fenk_threads_given);
+        def_int $have = inv_total(inv, thread);
+        def_int $give = min($wanted, $have);
+        inv_del(inv, thread, $give);
+        %fenk_threads_given = calc(%fenk_threads_given + $give);
+        if (%fenk_threads_given >= ^fenk_threads_needed) {
+            ~chatnpc("<p,happy>That is enough thread.");
+        } else {
+            ~chatnpc("<p,neutral>Thank you. I still need more thread than that.");
+        }
+    case default :
+        ~displaymessage(^dm_default);
+        return;
+}
+@fenk_check_parts_complete;
+
+[label,fenk_check_parts_complete]
+if (%fenk_head = 0 | %fenk_torso = 0 | %fenk_arms = 0 | %fenk_legs = 0 | %fenk_needle = 0) {
+    return;
+}
+if (%fenk_threads_given < ^fenk_threads_needed) {
+    return;
+}
+~chatnpc("<p,happy>That is everything. Stand back while I work.");
+mes("Dr Fenkenstrain stitches the parts together with quick, careful stitches.");
+p_delay(2);
+%fenk_quest = ^fenk_sewn;
+~chatnpc("<p,neutral>The body is whole. What it needs now is lightning, and my lightning conductor on the roof is broken.");
+~chatnpc("<p,neutral>Repair it. You will need a mould from a garden brush and canes, then a silver bar cast in that mould.");
+~chatnpc("<p,neutral>The gardener left tools in the shed. Be careful in this place, it is not as empty as it looks.");
+
+[label,fenk_doctor_sewn]
+~chatnpc("<p,neutral>The conductor on the roof must be repaired before the storm breaks.");
+~chatplayer("<p,quiz>Remind me what I need?");
+~chatnpc("<p,neutral>A mould, made from a garden brush and three canes. Bind it with bronze wire, cast silver in it, and repair the conductor.");
+
+[label,fenk_doctor_conductor_fixed]
+~chatnpc("<p,shock>You did it! The lightning struck, and the creature moves!");
+~chatnpc("<p,angry>But it turned on me. I have shut it in the tower. Take this key, and see to it that it is calm.");
+if (inv_freespace(inv) < 1) {
+    ~chatnpc("<p,neutral>Your pack is full. Make some room and speak to me again.");
+    return;
+}
+inv_add(inv, fenk_tower_key, 1);
+%fenk_quest = ^fenk_tower_key_given;
+~objbox(fenk_tower_key, "The doctor gives you a key.", 250, 0, 0);
+
+[label,fenk_doctor_key_given]
+~chatnpc("<p,neutral>The creature is in the tower. Go and deal with it.");
+if (inv_total(inv, fenk_tower_key) = 0 & inv_total(bank, fenk_tower_key) = 0) {
+    ~chatplayer("<p,sad>I've lost the key.");
+    if (inv_freespace(inv) < 1) {
+        ~chatnpc("<p,neutral>Make some room in your pack first.");
+        return;
+    }
+    ~chatnpc("<p,angry>Careless. Here is another.");
+    inv_add(inv, fenk_tower_key, 1);
+    ~objbox(fenk_tower_key, "The doctor gives you another key.", 250, 0, 0);
+}
+
+[label,fenk_doctor_after_meeting]
+~chatnpc("<p,quiz>Have you dealt with my creature?");
+~chatplayer("<p,neutral>I've seen it.");
+~chatnpc("<p,neutral>Good. Do not let it out. Now, I must get back to my notes.");
+
+// ---------------------------------------------------------------------------
+// Pickpocketing the doctor finishes the quest. Success odds are a guess (UNVERIFIED).
+// ---------------------------------------------------------------------------
+[opnpc3,fenk_fenkenstrain]
+if (%fenk_quest ! ^fenk_met_creature) {
+    mes("You have no reason to rob Dr Fenkenstrain right now.");
+    return;
+}
+if (stat(thieving) < ^fenk_req_thieving) {
+    mes("You need 25 Thieving to steal the ring.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("You need a free inventory space to hold what you steal.");
+    return;
+}
+if (%stunned > map_clock) {
+    return;
+}
+mes("You attempt to pick the doctor's pocket.");
+p_delay(0);
+if (stat_random(thieving, 80, 220) = false) {
+    ~fail_pick_pocket(2, 8, "doctor's pocket");
+    return;
+}
+anim(human_pickpocket, 0);
+sound_synth(pick, 1, 0);
+mes("You pick the doctor's pocket.");
+queue(fenk_quest_complete, 0, 0);
+
+[queue,fenk_quest_complete]
+if (%fenk_quest ! ^fenk_met_creature) {
+    return;
+}
+%fenk_quest = ^fenk_complete;
+inv_add(inv, ring_of_charos, 1);
+session_log(^log_adventure, "Quest complete: Creature of Fenkenstrain");
+~send_quest_complete(questlist:creatureoffenkenstrain, ring_of_charos, 250, ^fenk_questpoints, "You have completed the\\nCreature of Fenkenstrain Quest!", "2 Quest points|1,000 Thieving XP|A Ring of Charos");
+stat_advance(thieving, ^fenk_thieving_xp);
+
+// ---------------------------------------------------------------------------
+// Dr Fenkenstrain (tower, stage 8 only)
+// ---------------------------------------------------------------------------
+[opnpc1,fenk_fenkenstrain_in_tower]
+~chatplayer("<p,quiz>Doctor?");
+~chatnpc("<p,sad>Leave me be. You have already taken enough from me.");
+
+[opnpc3,fenk_fenkenstrain_in_tower]
+mes("You have already taken everything of value from the doctor.");
+
+// ---------------------------------------------------------------------------
+// The creature (tower)
+// ---------------------------------------------------------------------------
+[opnpc1,fenk_creature]
+if (%fenk_quest < ^fenk_tower_key_given) {
+    mes("The creature growls and ignores you.");
+    return;
+}
+if (%fenk_quest = ^fenk_tower_key_given) {
+    ~chatplayer("<p,neutral>Hello. Are you all right?");
+    ~chatnpc("<p,sad>I am not what he made me to be.");
+    ~chatplayer("<p,quiz>What do you mean?");
+    ~chatnpc("<p,neutral>I am Lord Rologarth. This castle was mine, before the doctor stitched my remains into this shape.");
+    ~chatplayer("<p,shock>Lord Rologarth? He built you from the dead lord of the castle?");
+    ~chatnpc("<p,angry>He did. I only want his experiments stopped, and my home returned.");
+    ~chatnpc("<p,neutral>Take something from him. Something he values. Then I will have my chance.");
+    %fenk_quest = ^fenk_met_creature;
+    return;
+}
+~chatplayer("<p,neutral>How are you holding up?");
+~chatnpc("<p,neutral>Patient. Do what you must to stop him. He keeps a ring on him that he values.");
+
+// After the quest: Lord Rologarth, in the castle hall.
+[opnpc1,fenk_creature_released]
+~chatplayer("<p,happy>You look more at home, Lord Rologarth.");
+~chatnpc("<p,happy>It is good to walk my own halls again. I owe you my thanks.");
+
+// ---------------------------------------------------------------------------
+// Gardener Ghost: only understood while wearing the amulet of ghostspeak.
+// fenk_gardener_multi (1666) and fenk_gardener_multi_2 (1667) differ only by fenk_gardener_directions state.
+// ---------------------------------------------------------------------------
+[opnpc1,fenk_gardener_multi]
+@fenk_gardener_talk;
+
+[opnpc1,fenk_gardener_multi_2]
+@fenk_gardener_talk;
+
+[label,fenk_gardener_talk]
+if (inv_total(worn, amulet_of_ghostspeak) = 0) {
+    mes("The ghost wails and moans, but you cannot understand a word he says.");
+    return;
+}
+~chatplayer("<p,neutral>Hello. Are you the gardener?");
+~chatnpc("<p,sad>I was. Now I only drift about the garden, with nothing left to dig up.");
+~chatplayer("<p,quiz>Do you know anything about the doctor?");
+~chatnpc("<p,neutral>He is not a gentleman. He has been busy in the graveyard beyond the castle, and not with flowers.");
+%fenk_spoken_to_gardener = 1;
+if (%fenk_quest >= ^fenk_sewn & %fenk_unlocked_shed = 0) {
+    if (inv_total(inv, fenk_shed_key) > 0 | inv_total(bank, fenk_shed_key) > 0) {
+        ~chatnpc("<p,neutral>Keep the shed key safe. You will need it for the doctor's repairs.");
+    } else if (inv_freespace(inv) < 1) {
+        ~chatnpc("<p,neutral>Make some room, and I will give you my old shed key.");
+    } else {
+        ~chatnpc("<p,neutral>The garden shed key is mine. Use it to find the tools you need.");
+        inv_add(inv, fenk_shed_key, 1);
+        ~objbox(fenk_shed_key, "The ghost gives you the shed key.", 250, 0, 0);
+    }
+}
+// TODO(unverified): the cache has a fenk_gardener_directions varbit (flags bit 31) that morphs the gardener
+// between fenk_gardener_multi and fenk_gardener_multi_2. What toggles it, and what directions he gives,
+// has not been reconstructed.

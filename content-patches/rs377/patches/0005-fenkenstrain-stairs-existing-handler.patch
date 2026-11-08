@@ -1,0 +1,20 @@
+--- a/scripts/ladders+stairs/scripts/stairs.rs2
++++ b/scripts/ladders+stairs/scripts/stairs.rs2
+@@ -729,6 +729,8 @@
+ [oploc1,fenk_stairs_lv1]
+ // arrive delay?
+ switch_coord (loc_coord) {
++    case 0_55_55_17_31 : p_telejump(1_55_55_17_32);
++    case 0_55_55_39_31 : p_telejump(1_55_55_39_32);
+     case default : @unhandled_stairs(loc_coord);
+ }
+ 
+@@ -735,6 +737,8 @@
+ [oploc1,fenk_stairs_lv1_top]
+ // arrive delay?
+ switch_coord (loc_coord) {
++    case 1_55_55_17_32 : p_telejump(0_55_55_17_31);
++    case 1_55_55_39_32 : p_telejump(0_55_55_39_31);
+     case default : @unhandled_stairs(loc_coord);
+ }
+ 

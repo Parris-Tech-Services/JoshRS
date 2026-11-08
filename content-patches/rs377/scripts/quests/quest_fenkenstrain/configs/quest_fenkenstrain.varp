@@ -1,0 +1,10 @@
+// Moved out of scripts/_unpack/377/all.varp (see 0002-move-fenk-varps-out-of-unpack.patch).
+// transmit=yes is required: the cache's multinpc morphs (and the 17 fenk_* varbits on fenk_flags)
+// are resolved client-side. scope=perm is required to persist: engine default scope is temp.
+[fenk_quest]
+scope=perm
+transmit=yes
+
+[fenk_flags]
+scope=perm
+transmit=yes

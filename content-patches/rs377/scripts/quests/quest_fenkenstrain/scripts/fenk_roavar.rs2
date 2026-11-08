@@ -1,0 +1,25 @@
+// Original quest-specific brain purchase, invoked conditionally by the
+// guarded patch to Roavar's *existing* tavern script. The normal beer/gossip
+// dialogues and NPC trigger are preserved exactly when the quest gate is off.
+[proc,fenk_buy_preserved_brain]
+if (%fenk_quest ! ^fenk_hired | %fenk_head = 1) {
+    ~chatnpc("<p,neutral>I cannot help you with that.");
+    return;
+}
+if (inv_total(inv, fenk_brain) > 0 | inv_total(bank, fenk_brain) > 0 |
+    inv_total(inv, fenk_head_full) > 0 | inv_total(bank, fenk_head_full) > 0) {
+    ~chatnpc("<p,neutral>You already have what you need.");
+    return;
+}
+if (inv_total(inv, coins) < 50) {
+    ~chatnpc("<p,neutral>That will be fifty coins. Come back when you have them.");
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    ~chatnpc("<p,neutral>Make room in your pack, first.");
+    return;
+}
+inv_del(inv, coins, 50);
+inv_add(inv, fenk_brain, 1);
+~chatnpc("<p,neutral>Here is a well-preserved specimen. Handle it carefully.");
+~objbox(fenk_brain, "You purchase the preserved brain for 50 coins.", 250, 0, 0);
