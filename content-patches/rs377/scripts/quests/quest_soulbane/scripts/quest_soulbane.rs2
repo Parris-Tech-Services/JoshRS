@@ -103,7 +103,7 @@ if (npc_findhero = ^true) {
     queue(soulbane_anger_kill, 0, 3);
 }
 
-// Trial 2: fear. Defeat three fear reapers.
+// Historical fear trial requires five fear reaper defeats, not three.
 [ai_queue3,soulbane_fear_reaper]
 gosub(npc_death);
 if (npc_findhero = ^true) {
@@ -119,7 +119,9 @@ if (%soulbane_fear_killedtally >= ^soulbane_fear_needed) {
     mes("The fear lifts, but your thoughts feel muddled.");
 }
 
-// Trial 3: confusion. Only the real creature counts; the fakes just vanish.
+// In the historical confusion room, numerous illusory beasts must disappear
+// before the actual creature/last doorway can be solved. This overlay
+// currently models only the real creature death: HISTORICAL-PARITY-GAP.
 [ai_queue3,soulbane_confu_creeper]
 gosub(npc_death);
 if (npc_findhero = ^true) {
@@ -195,9 +197,9 @@ if (npc_findhero = ^true) {
 def_string $text;
 switch_int (%soulbane_prog) {
     case ^soulbane_not_started : $text = "@dbl@I can start this quest by talking to @dre@Launa@dbl@ at the rift east of @dre@Varrock@dbl@.";
-    case ^soulbane_started : $text = "@str@I spoke to Launa.||@dbl@I must face four trials below the house. First, @dre@anger@dbl@.";
+    case ^soulbane_started : $text = "@str@I spoke to Launa.||@dbl@I must face four trials within the rift. First, @dre@anger@dbl@.";
     case ^soulbane_anger : $text = "@str@I spoke to Launa.||@dbl@I must defeat the four @dre@anger@dbl@ monsters.";
-    case ^soulbane_fear : $text = "@str@I defeated the anger monsters.||@dbl@Next I must defeat three @dre@fear reapers@dbl@.";
+    case ^soulbane_fear : $text = "@str@I defeated the anger monsters.||@dbl@Next I must defeat five @dre@fear reapers@dbl@.";
     case ^soulbane_confusion : $text = "@str@I defeated the fear reapers.||@dbl@Now I must find the real @dre@confusion beast@dbl@.";
     case ^soulbane_hope : $text = "@str@I escaped confusion.||@dbl@I must face the creatures of @dre@hopelessness@dbl@.";
     case ^soulbane_final : $text = "@str@I defeated the hope monsters.||@dbl@Only the three @dre@shades of Tolna@dbl@ remain.";
