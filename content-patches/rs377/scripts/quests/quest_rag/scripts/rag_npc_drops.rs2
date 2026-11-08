@@ -58,6 +58,11 @@ if (%rag_quest = ^rag_started & ~rag_is_required_bone($index) = false) {
 if (%rag_quest = ^rag_complete & ~rag_is_required_bone($index) = true) {
     return;
 }
+// The post-quest 27-bone wish list has the documented 1/4 tertiary drop chance.
+// The initial 8 bones remain guaranteed, matching modern OSRS behaviour.
+if (%rag_quest = ^rag_complete & random(4) ! 0) {
+    return;
+}
 def_namedobj $bone = ~rag_raw_bone($index);
 if ($bone = null) {
     return;

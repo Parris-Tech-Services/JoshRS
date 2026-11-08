@@ -20,6 +20,12 @@ if (inv_freespace(inv) < 1) {
     ~mesbox("You can't carry any more fish.");
     return;
 }
+// The three genuine fishing troll deaths are required before food collection.
+// Each kill is credited by the NPC death queue, never by the fishing click.
+if (%swansong_trolls < 3) {
+    ~swan_spawn_fishing_troll;
+    return;
+}
 if (%action_delay >= map_clock) {
     mes("You are still gathering your net.");
     return;
