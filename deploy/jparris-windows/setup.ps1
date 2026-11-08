@@ -334,7 +334,9 @@ if ($ClientGradleTimeoutMs -gt 0) {
 Write-Host 'Compiling the revision 377 Java client...'
 Run-Native (Join-Path $client 'gradlew.bat') @('--no-daemon','classes') $client
 
-$state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort; webPort=$webPort; portOffset=$offset; source=$(if($UsbPath -or $ResumeSnapshotPath){'usb'}else{'upstream-or-existing'}) }
+# Preserve the recorded world origin across later Update/Repair sessions.
+$sourceKind=if($UsbPath -or $ResumeSnapshotPath){'usb'}elseif($existing -and $existing.source){[string]$existing.source}else{'upstream'}
+$state = @{ engine=$engine; content=$content; client=$client; gamePort=$gamePort; webPort=$webPort; portOffset=$offset; source=$sourceKind }
 $pendingState = $activeFile + '.tmp'
 $state | ConvertTo-Json | Set-Content -LiteralPath $pendingState -Encoding UTF8
 Move-Item -LiteralPath $pendingState -Destination $activeFile -Force
