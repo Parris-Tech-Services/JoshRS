@@ -72,7 +72,11 @@ export function options(argv){
  return data;
 }
 export async function fetchCrc37(host,webPort,{fetchImpl=fetch}={}){
- // Only called after private-target validation. No redirect or external URL.
+ // Defence in depth: reject public hosts and unsupported web ports even if
+ // this helper is invoked outside the validated CLI.
+ checkTarget({host,port:52402,mode:'family',approvedFamily:true});
+ if(!Number.isSafeInteger(webPort)||webPort<1024||webPort>65535)
+  throw new Error('Invalid CRC web port');
  const response=await fetchImpl('http://'+host+':'+webPort+'/crc0',{
   signal:AbortSignal.timeout(4500),redirect:'error',cache:'no-store'});
  if(!response.ok)throw new Error('JoshRS CRC endpoint returned HTTP '+response.status);
