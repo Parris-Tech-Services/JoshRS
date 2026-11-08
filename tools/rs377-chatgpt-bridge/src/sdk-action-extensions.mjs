@@ -68,7 +68,8 @@ function shopItem(s,side,slot){
 function bankItem(s,side,slot){
  const bank=s.sdkDetails?.bank;
  if(bank?.isOpen!==true)fail('real bank UI not open');
- return requiredItem(side==='withdraw'?bank.items:s.inventory,slot,side==='withdraw'?'bank':'player');
+ return requiredItem(side==='withdraw'?bank.items:s.inventory,slot,
+   side==='withdraw'?'bank':'player',side==='withdraw'?65535:27);
 }
 const PRAYER_WIDGETS=Object.freeze([
  5609,5610,5611,5612,5613,5614,5615,5616,
