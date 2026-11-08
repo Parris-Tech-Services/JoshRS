@@ -11,6 +11,7 @@ export const STATUS=Object.freeze({
  EXTERNAL:'BLOCKED_UNRESOLVED_PREREQUISITE',
  TELEMETRY:'BLOCKED_NATIVE_QUEST_STATE_NOT_OBSERVED',
  CLIENT:'BLOCKED_AUTHENTICATED_CLIENT_STATE',
+ REACHABILITY:'BLOCKED_REQUIRED_NPC_OR_UI_NOT_REACHABLE',
  FAILED:'FAILED_NORMAL_GAMEPLAY_ACTION',
  PARTIAL:'PARTIAL_NORMAL_GAMEPLAY_OBSERVED',
  UNTESTED:'RESEARCH_NOT_COMPLETE'
@@ -107,11 +108,16 @@ export async function executeCampaign({
      });
      entry.gameplayActions=calls;
      entry.after=compactSnapshot(sdk.getState(),quest.id);
-     if(!outcome?.observed||calls<1||!entry.after.authenticatedInGame||
-        entry.after.tick<=entry.before.tick)
-       throw new Error('no_independent_post_action_observation');
-     entry.status=STATUS.PARTIAL;
-     entry.reason='one_or_more_actions_observed_but_quest_completion_and_relog_not_verified';
+     if(outcome?.blocked===true&&calls===0) {
+       entry.status=STATUS.REACHABILITY;
+       entry.reason=String(outcome.reason??'target_not_currently_observed').slice(0,140);
+     }else{
+       if(!outcome?.observed||calls<1||!entry.after.authenticatedInGame||
+          entry.after.tick<=entry.before.tick)
+         throw new Error('no_independent_post_action_observation');
+       entry.status=STATUS.PARTIAL;
+       entry.reason='one_or_more_actions_observed_but_quest_completion_and_relog_not_verified';
+     }
     }catch(err){
      entry.gameplayActions=calls;
      entry.after=compactSnapshot(sdk.getState(),quest.id);
