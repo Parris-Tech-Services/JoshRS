@@ -47,11 +47,9 @@ if ($CheckOnly) {
     return
 }
 $stage = Join-Path $runtime ('.rs-sdk-install-' + [guid]::NewGuid().ToString('N'))
-$created = $false
 try {
     & $git.Source clone --no-checkout --filter=blob:none --depth 1 $upstream $stage
     if ($LASTEXITCODE -ne 0) { throw 'Could not clone upstream RS-SDK.' }
-    $created = $true
     & $git.Source -C $stage fetch --depth 1 origin $pin
     if ($LASTEXITCODE -ne 0) { throw 'Could not fetch pinned upstream SDK revision.' }
     & $git.Source -C $stage checkout --detach $pin
@@ -73,13 +71,12 @@ try {
     }
     if (Test-Path -LiteralPath $dest) { throw 'Destination appeared while installing; no overwrite.' }
     Move-Item -LiteralPath $stage -Destination $dest -ErrorAction Stop
-    $created = $false
     Write-Host 'UPSTREAM_RS_SDK_INSTALLED: pinned full SDK source and dependencies.'
     Write-Host ('SDK_DIRECTORY: ' + $dest)
     Write-Host 'The family game and player saves were not read, changed or restarted.'
     Write-Host 'The SDK is not connected to the family world. An isolated gateway is required.'
 } finally {
-    if ($created -and (Test-Path -LiteralPath $stage)) {
+    if (Test-Path -LiteralPath $stage) {
         Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
     }
 }
