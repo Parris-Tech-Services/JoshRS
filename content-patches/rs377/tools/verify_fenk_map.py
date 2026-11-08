@@ -14,14 +14,15 @@ LOCS={
   (1,24,35,5165),(1,28,31,5172),(2,28,16,5176),
   (0,58,7,5167)],
  "maps/m56_54.jm2":[(0,24,35,5169)],
- "maps/m54_155.jm2":[(0,54,37,5170),(0,44,47,5163)],
+ "maps/m54_155.jm2":[(0,54,37,5170),(0,44,47,5163),(0,48,50,1757)],
+ "maps/m55_155.jm2":[(0,58,7,1757)],
  "maps/m54_55.jm2":[(0,49,51,5167),
   (0,46,56,5168),(0,48,57,5168),(0,50,56,5168)]
 }
 OBJS={5164:"fenk_signpost",5166:"fenk_bookcase",5156:"fenk_broomcupboard",
   5174:"fenk_shed_door",5158:"fenk_canepile",5165:"fenk_fireplace",
   5172:"fenk_tower_door",5176:"fenk_conductor_broken",
-  5167:"fenk_coffin",5169:"fenk_grave_poor",
+  5167:"fenk_coffin",5169:"fenk_grave_poor",1757:"loc_1757",
   5170:"fenk_mausoleum_door",5163:"fenk_chest_open",5168:"fenk_grave"}
 
 def check(content,quest):
@@ -63,11 +64,16 @@ def check(content,quest):
         "[oplocu,fenk_coffin]",
         "[oploc1,fenk_mausoleum_door]",
         "[oploc1,fenk_chest_open]",
+        "[oploc1,loc_1757]",
         "[oploc2,fenk_grave]",
         "%fenk_unlocked_cavern = 0",
         "fenk_mausoleum_key",
     ):
         if line not in dungeon:raise ValueError("Missing native combat/dungeon guard "+line)
+    if "p_teleport(0_55_155_57_8)" not in dungeon or \
+       "p_teleport(0_55_55_57_8)" not in dungeon or \
+       "p_teleport(0_54_55_49_52)" not in dungeon:
+        raise ValueError("Actual native cave ladder entrances and exits not implemented")
     if "if (%prieststart < ^priest_started)" not in npc:
         raise ValueError("Quest requirement must not falsely require Restless Ghost completion")
     print(f"FENKENSTRAIN_MAP_SOURCE_VALIDATED {count} exact map objects and combat/gate stage guards")
