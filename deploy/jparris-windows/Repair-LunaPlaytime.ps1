@@ -13,10 +13,10 @@ function Get-SourceState([string]$Text) {
     $end=$Text.IndexOf('this.ensureCompanionSupplies();',$start)
     if($end -le $start){return 'UNKNOWN_LOCAL_SOURCE'}
     $ctor=$Text.Substring($start,$end-$start)
-    if([regex]::IsMatch($ctor,'(?m)^[ \t]*this\.playtime\s*=\s*saved\.playtime;[ \t]*$')){
+    if([regex]::IsMatch($ctor,'(?m)^[ \t]*this\.playtime\s*=\s*saved\.playtime;[ \t]*\r?$')){
         return 'ALREADY_PATCHED'
     }
-    $anchor='(?m)^(?<indent>[ \t]*)if \(saved\) \{\r?\n(?<inner>[ \t]*)this\.stats\.set\(saved\.stats\);[ \t]*$'
+    $anchor='(?m)^(?<indent>[ \t]*)if \(saved\) \{\r?\n(?<inner>[ \t]*)this\.stats\.set\(saved\.stats\);[ \t]*\r?$'
     if([regex]::Matches($ctor,$anchor).Count -eq 1 -and
        [regex]::Matches($Text,$anchor).Count -eq 1) {return 'PATCHABLE'}
     return 'UNKNOWN_LOCAL_SOURCE'
@@ -105,7 +105,7 @@ Assert-Stopped $engine $ports
 if((Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash -ne $oldHash){
     throw 'Bot source changed during backup. Refusing source edit.'
 }
-$pattern='(?m)^(?<indent>[ \t]*)if \(saved\) \{(?<nl>\r?\n)(?<inner>[ \t]*)this\.stats\.set\(saved\.stats\);[ \t]*$'
+$pattern='(?m)^(?<indent>[ \t]*)if \(saved\) \{(?<nl>\r?\n)(?<inner>[ \t]*)this\.stats\.set\(saved\.stats\);[ \t]*\r?$'
 $matches=[regex]::Matches($source.Text,$pattern)
 if($matches.Count -ne 1){throw 'Bot source changed or unexpected saved constructor. Refusing edit.'}
 $match=$matches[0]
