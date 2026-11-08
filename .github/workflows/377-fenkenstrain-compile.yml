@@ -1,0 +1,196 @@
+name: Fenkenstrain quest disposable 377 compile
+on:
+  pull_request:
+    paths:
+      - "content-patches/rs377/**"
+      - ".github/workflows/377-fenkenstrain-compile.yml"
+  push:
+    branches: [main]
+    paths:
+      - "content-patches/rs377/**"
+      - ".github/workflows/377-fenkenstrain-compile.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile-fenkenstrain-disposable-377:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Run Python safety tests
+        run: python -m unittest discover -s content-factory/tests -v
+      - name: Parse Windows installer PowerShell syntax
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'deploy/jparris-windows/install-native377.ps1').Path, [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Host "Line $($_.Extent.StartLineNumber): $($_.Message) Near: $($_.Extent.Text)" }; exit 1 }
+      - name: Parse Yrsa installer PowerShell 5.1 syntax
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'deploy/jparris-windows/install-yrsa377.ps1').Path, [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Host "Line $($_.Extent.StartLineNumber): $($_.Message)" }; exit 1 }
+      - name: Generate and verify immutable original content overlay
+        shell: bash
+        run: |
+          python content-factory/native377.py --output "$RUNNER_TEMP/native377"
+          python -m json.tool "$RUNNER_TEMP/native377/manifest.json" >/dev/null
+      - name: Clone exact pinned Lost City 377 engine/content in disposable runner
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          m=json.loads(Path("deploy/jparris-windows/upstreams.json").read_text())
+          root=Path(os.environ["RUNNER_TEMP"])/"joshrs-377-build"
+          root.mkdir(parents=True,exist_ok=True)
+          for key in ("engine","content"):
+              item=m[key]; directory=root/key
+              subprocess.run(["git","clone","--depth","1","--single-branch","--branch",item["branch"],item["url"],str(directory)],check=True)
+              actual=subprocess.check_output(["git","-C",str(directory),"rev-parse","HEAD"],text=True).strip()
+              if actual!=item["commit"]:
+                  subprocess.run(["git","-C",str(directory),"fetch","--depth","1","origin",item["commit"]],check=True)
+                  subprocess.run(["git","-C",str(directory),"checkout","--detach",item["commit"]],check=True)
+              actual=subprocess.check_output(["git","-C",str(directory),"rev-parse","HEAD"],text=True).strip()
+              if actual!=item["commit"]: raise SystemExit("Upstream pin mismatch")
+              print(key, actual)
+          PY
+      - name: Confirm existing items and mechanics in pinned 377 content
+        shell: bash
+        run: |
+          python content-factory/gap_audit.py --content "$RUNNER_TEMP/joshrs-377-build/content" --manifest "$RUNNER_TEMP/native377/manifest.json" --output "$RUNNER_TEMP/377-feature-gap-evidence.json"
+          python -m json.tool "$RUNNER_TEMP/377-feature-gap-evidence.json" >/dev/null
+      - name: Repair pinned Haunted Manor broken cross-zone bookcase lookup (disposable)
+        shell: bash
+        run: |
+          python content-factory/patch_377_haunted.py --content "$RUNNER_TEMP/joshrs-377-build/content"
+          python content-factory/patch_377_haunted.py --content "$RUNNER_TEMP/joshrs-377-build/content" --apply
+      - name: Apply text-only overlay to disposable upstream content
+        shell: bash
+        run: |
+          python content-factory/prepare_377_overlay.py --source "$RUNNER_TEMP/native377" --dest "$RUNNER_TEMP/joshrs-377-build/content"
+      - name: Install Yrsa 21-item wardrobe into disposable 377 content
+        shell: bash
+        run: |
+          root="$RUNNER_TEMP/joshrs-377-build/content"
+          mkdir -p "$root/scripts/areas/joshrs_custom/configs" "$root/scripts/areas/joshrs_custom/scripts"
+          cp deploy/jparris-windows/yrsa377/yrsa_trade.rs2 "$root/scripts/areas/joshrs_custom/scripts/joshrs_yrsa_trade.rs2"
+          existing="$(grep -rl --include='*.inv' '^\[viking_clothes_shop\]' "$root/scripts" | head -n 1 || true)"
+          if [ -n "$existing" ]; then
+            echo "Reusing existing Yrsa shop inventory at $existing"
+            grep -A 27 '^\[viking_clothes_shop\]' "$existing" | head -n 28
+          else
+            cp deploy/jparris-windows/yrsa377/yrsa_cloaks.inv "$root/scripts/areas/joshrs_custom/configs/joshrs_yrsa_cloaks.inv"
+          fi
+          python - <<'PY'
+          import os,re
+          from pathlib import Path
+          p=Path(os.environ["RUNNER_TEMP"])/"joshrs-377-build/content"
+          matches=[x for x in p.glob("scripts/**/*.inv") if re.search(r"(?m)^\[viking_clothes_shop\]$",x.read_text())]
+          assert len(matches)==1, matches
+          inv=matches[0].read_text().split("[viking_clothes_shop]",1)[1].split("\n[",1)[0]
+          print("Existing inventory:",matches[0],"stock count",len(re.findall(r"(?m)^stock\d+=",inv)))
+          script=(p/"scripts/areas/joshrs_custom/scripts/joshrs_yrsa_trade.rs2").read_text()
+          assert len(re.findall(r"(?m)^stock\d+=",inv))==21
+          assert len(re.findall(r"(?m)^stock\d+=viking_cloak_",inv))==11
+          assert "1301=viking_clothing_shopkeeper" in (p/"pack/npc.pack").read_text()
+          assert "208=viking_clothes_shop" in (p/"pack/inv.pack").read_text()
+          assert "[opnpc3,viking_clothing_shopkeeper]" in script
+          assert "~openshop(viking_clothes_shop, 700, 1300, 30" in script
+          for item in re.findall(r"(?m)^stock\d+=([a-z0-9_]+),",inv):
+              assert re.search(r"(?m)^\d+="+re.escape(item)+r"$",(p/"pack/obj.pack").read_text()),item
+          PY
+      - name: Install proposed Creature of Fenkenstrain scripts into disposable pinned content
+        shell: bash
+        run: |
+          set -euo pipefail
+          target="$RUNNER_TEMP/joshrs-377-build/content"
+          patchdir="$GITHUB_WORKSPACE/content-patches/rs377"
+          git -C "$target" apply --check "$patchdir/patches/0001-register-fenkenstrain-in-quests-rs2.patch"
+          git -C "$target" apply --check "$patchdir/patches/0002-move-fenk-varps-out-of-unpack.patch"
+          git -C "$target" apply "$patchdir/patches/0001-register-fenkenstrain-in-quests-rs2.patch"
+          git -C "$target" apply "$patchdir/patches/0002-move-fenk-varps-out-of-unpack.patch"
+          quest="$target/scripts/quests/quest_fenkenstrain"
+          test ! -e "$quest"
+          mkdir -p "$quest"
+          cp -R "$patchdir/scripts/quests/quest_fenkenstrain/." "$quest/"
+          test -s "$quest/scripts/fenk_npcs.rs2"
+          FENK_CONTENT="$target" python3 -I "$patchdir/tools/check_fenk_symbols.py"
+          python3 "$patchdir/tools/audit_fenk_triggers.py" --content "$target"
+          echo "Exact pinned content prepared with isolated Fenkenstrain patch and duplicate-trigger check."
+      - name: Allow only the intentional NPC cache CRC difference
+        run: python content-factory/patch_377_npc_crc.py --engine "$RUNNER_TEMP/joshrs-377-build/engine"
+      - name: Allow only custom inventory CRC difference for Yrsa
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          file=Path(os.environ["RUNNER_TEMP"])/"joshrs-377-build/engine/tools/pack/config/PackShared.ts"
+          src=file.read_text()
+          needle="!validate(client.dat, server.dat)"
+          assert src.count(needle)==1, "Unexpected pinned 377 checksum logic"
+          src=src.replace(needle,"!(extension === '.inv' && process.env.JOSHRS_CUSTOM_INVS === 'true') && "+needle)
+          file.write_text(src)
+          PY
+      - name: Overlay isolated observer server patch onto disposable pinned engine
+        shell: bash
+        run: cp tools/rs377-bot-bench/engine-patch/src/web.ts "$RUNNER_TEMP/joshrs-377-build/engine/src/web.ts"
+      - name: Install bot-scoped passive event trace only in disposable 377 engine
+        shell: bash
+        run: |
+          python content-factory/patch_377_sdk_trace.py --engine "$RUNNER_TEMP/joshrs-377-build/engine"
+          test -s "$RUNNER_TEMP/joshrs-377-build/engine/src/engine/observer/Native377Trace.ts"
+      - name: Compile with the actual Lost City 377 packer
+        shell: bash
+        env:
+          BUILD_SRC_DIR: ../content
+          BUILD_VERIFY: "true"
+          BUILD_VERIFY_PACK: "true"
+          JOSHRS_CUSTOM_NPCS: "true"
+          JOSHRS_CUSTOM_INVS: "true"
+        run: |
+          cd "$RUNNER_TEMP/joshrs-377-build/engine"
+          npm ci --no-audit --no-fund
+          npm run build
+          test -s data/pack/server/script.dat
+          test -s data/pack/server/script.idx
+          echo "Native 377 RuneScript compiler/packer produced nonempty script files."
+      - name: Install pinned isolated RS-SDK gateway transport for live test
+        shell: bash
+        run: npm --prefix tools/rs377-chatgpt-bridge install --omit=dev --ignore-scripts --no-audit --no-fund
+      - name: Prepare disposable game database and boot compiled world
+        shell: bash
+        env:
+          DB_BACKEND: sqlite
+          EASY_STARTUP: "true"
+          LOGIN_SERVER: "true"
+          FRIEND_SERVER: "true"
+          LOGGER_SERVER: "true"
+          RS377_OBSERVER_PROBE: "true"
+          RS377_LIVE_BOT_PROBE: "true"
+          NODE_PROFILE: joshrs_ci_377
+          NODE_PORT: "15402"
+          WEB_PORT: "18880"
+          WEB_MANAGEMENT_PORT: "18881"
+          BUILD_SRC_DIR: ../content
+        run: |
+          cd "$RUNNER_TEMP/joshrs-377-build/engine"
+          npm run sqlite:migrate
+          cd "$GITHUB_WORKSPACE"
+          python content-factory/smoke_377.py --engine "$RUNNER_TEMP/joshrs-377-build/engine" --game-port 15402 --web-port 18880 --timeout 80
+
