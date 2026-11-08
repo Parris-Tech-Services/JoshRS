@@ -112,3 +112,36 @@ test('invalid active.json fails without echoing private JSON content',async()=>{
     assert.equal(run.stderr.includes('SECRET-PATH-DO-NOT-PRINT'),false);
   } finally {await rm(tmp,{recursive:true,force:true});}
 });
+
+test('inventories .pack/.varp/.constant and detects modified ID maps',async()=>{
+  const tmp=await mkdtemp(join(tmpdir(),'joshrs-idmap-audit-'));
+  try {
+    const root=join(tmp,'launcher'),live=join(tmp,'live'),base=join(tmp,'baseline'),out=join(tmp,'report');
+    await write(join(root,'runtime','jparris-377','active.json'),JSON.stringify({
+      engine:join(live,'engine'),content:join(live,'content'),client:join(live,'client')
+    }));
+    await write(join(live,'content','pack','category.pack'),'category-changed');
+    await write(join(live,'content','pack','script.pack'),'script-changed');
+    await write(join(live,'content','scripts','_unpack','377','all.varp'),'varp-changed');
+    await write(join(live,'content','scripts','general','configs','quest.constant'),'constants');
+    await write(join(base,'content','pack','category.pack'),'category-original');
+    await write(join(base,'content','pack','script.pack'),'script-original');
+    await write(join(base,'content','scripts','_unpack','377','all.varp'),'varp-original');
+    await write(join(base,'content','scripts','general','configs','quest.constant'),'constants');
+    for(const type of ['engine','client']) {
+      await write(join(live,type,'src','app.ts'),'same');
+      await write(join(base,type,'src','app.ts'),'same');
+    }
+    const run=spawnSync(process.execPath,[script,'--root',root,'--output',out,
+      '--baseline-engine',join(base,'engine'),'--baseline-content',join(base,'content'),
+      '--baseline-client',join(base,'client')],{encoding:'utf8'});
+    assert.equal(run.status,0,run.stderr);
+    const report=JSON.parse(await readFile(join(out,'inventory.json'),'utf8'));
+    const content=report.worlds.content;
+    assert.equal(content.comparison.counts.modified,3);
+    assert.equal(content.files.some(x=>x.path==='pack/category.pack'),true);
+    assert.equal(content.files.some(x=>x.path==='pack/script.pack'),true);
+    assert.equal(content.files.some(x=>x.path==='scripts/_unpack/377/all.varp'),true);
+    assert.equal(content.files.some(x=>x.path==='scripts/general/configs/quest.constant'),true);
+  } finally {await rm(tmp,{recursive:true,force:true});}
+});
