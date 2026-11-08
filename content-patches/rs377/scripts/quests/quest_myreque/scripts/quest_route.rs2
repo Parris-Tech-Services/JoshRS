@@ -1,109 +1,210 @@
-// In Search of the Myreque - JoshRS original dialogue/stages on the 377 cache (route_* NPCs, varp routequest).
-// Dialogue, rewards, stage values are original JoshRS content. Persistence: add scope=perm to cache varp routequest.
+// In Search of the Myreque, 10 January 2005, Revision 377.
+// Original JoshRS dialogue; historical mechanics based on public quest facts.
+// No fake item creation, automatic combat completion, or developer quest skip.
+// Travel/bridge interactions live in quest_route_travel.rs2.
+// Boss combat/death callbacks live in quest_route_hound.rs2.
 
-[opnpc1,route_curpile_fyod]
+// The Canifis tavern's sitting Vanstrom is the correct quest entry point.
+[opnpc1,route_vanstrom_klause_sitting]
+@route_vanstrom_start;
+
+[opnpc1,route_vanstrom_klause_normal]
+@route_vanstrom_start;
+
+[label,route_vanstrom_start]
 switch_int (%routequest) {
     case ^route_not_started :
-        ~chatnpc("<p,neutral>Folk say a band of rebels hides in the swamps,|the Myreque. Few return from looking for them.");
-        def_int $o = ~p_choice2("I'll look for them.", 1, "Not for me.", 2);
-        if ($o = 1) {
-            ~chatplayer("<p,neutral>I'll look for them.");
-            ~chatnpc("<p,neutral>Then speak to Cyreg Paddlehorn. He knows the water.");
-            %routequest = ^route_started;
-            ~send_quest_progress(questlist:routequest, %routequest, ^route_complete);
-        } else {
-            ~chatplayer("<p,neutral>Not for me.");
+        ~chatnpc("<p,neutral>Good evening. I am looking for someone who can make a delivery.|It is for a group trying to defend the ordinary people of Morytania.");
+        if (%druidspirit < ^druidspirit_complete) {
+            ~chatnpc("<p,neutral>You should first finish helping the Nature Spirit.|The swamps cannot be crossed safely without that knowledge.");
+            return;
         }
-    case ^route_complete :
-        ~chatnpc("<p,happy>The rebels still speak of what you did.");
+        if (stat_base(agility) < 25) {
+            ~chatnpc("<p,neutral>The route requires 25 Agility.|Return when you can navigate the swamp's narrow crossings.");
+            return;
+        }
+        def_int $yes = ~p_choice2("What do they need?", 1, "I cannot help.", 2);
+        if ($yes ! 1) return;
+        ~chatnpc("<p,neutral>The Myreque need six steel weapons: a dagger, a mace,|two swords, a longsword and a warhammer.");
+        ~chatnpc("<p,neutral>Speak to Cyreg Paddlehorn near Mort'ton.|Bring a charged druid pouch, six planks, a hammer,|225 steel nails and ten coins for the boat.");
+        $yes = ~p_choice2("I will deliver the weapons.", 1, "Not yet.", 2);
+        if ($yes ! 1) return;
+        %routequest = ^route_started;
+        ~send_quest_progress(questlist:routequest, %routequest, ^route_complete);
+    case ^route_started, ^route_boat_ready, ^route_hollows, ^route_bridge_fixed, ^route_guard_passed, ^route_hideout, ^route_members_met :
+        ~chatnpc("<p,neutral>The people waiting for that delivery will not wait forever.|Ask Cyreg about the boat near Mort'ton.");
+    case ^route_hound_fight, ^route_hound_dead, ^route_secret_exit, ^route_return :
+        ~chatnpc("<p,neutral>You have a great deal to learn about Morytania.");
     case default :
-        ~chatnpc("<p,neutral>Cyreg Paddlehorn is your best lead.");
+        ~chatnpc("<p,neutral>Even the bravest adventurers need a quiet evening.");
 }
 
-[opnpc1,route_cyreg_paddlehorn]
-switch_int (%routequest) {
-    case ^route_started :
-        ~chatnpc("<p,neutral>The swamp is no place for a stranger,|but I can tell you where the Myreque scouts are.");
-        %routequest = ^route_boat;
-    case ^route_boat, ^route_veliaf, ^route_scouts, ^route_burgh, ^route_vanstrom, ^route_return :
-        ~chatnpc("<p,neutral>Keep your eyes open. Veliaf Hurtz knows more than he says.");
-    case ^route_not_started : ~chatnpc("<p,neutral>I just row boats.");
-    case default : ~chatnpc("<p,happy>Good to see you alive.");
+// Helpers never change the quest state or create items.
+[proc,route_has_six_weapons]()(boolean)
+if (inv_total(inv, steel_dagger) < 1 | inv_total(inv, steel_mace) < 1 |
+    inv_total(inv, steel_sword) < 2 | inv_total(inv, steel_longsword) < 1 |
+    inv_total(inv, steel_warhammer) < 1) {
+    return(false);
+}
+return(true);
+
+[proc,route_members_count]()(int)
+def_int $count = 0;
+def_int $i = 0;
+while ($i < ^route_member_count) {
+    if (testbit(%route_members_seen, $i) = ^true) $count = calc($count + 1);
+    $i = calc($i + 1);
+}
+return($count);
+
+[proc,route_mark_member](int $bit)
+if (%routequest != ^route_hideout & %routequest != ^route_members_met) return;
+if (testbit(%route_members_seen, $bit) = ^false) {
+    %route_members_seen = setbit(%route_members_seen, $bit);
+}
+if (~route_members_count = ^route_member_count) {
+    %routequest = ^route_members_met;
+    mes("You have now spoken to each member of the Myreque. Return to Veliaf.");
 }
 
+// Curpile protects the hideout; incorrect answers never advance the quest.
+[opnpc1,route_curpile_fyod]
+if (%routequest < ^route_bridge_fixed) {
+    ~chatnpc("<p,neutral>These paths are not for strangers.|You need to reach me across the repaired bridge.");
+    return;
+}
+if (%routequest >= ^route_guard_passed) {
+    ~chatnpc("<p,neutral>You have proved your purpose. Continue carefully.");
+    return;
+}
+~chatnpc("<p,neutral>Anyone could claim to be a friend.|If you have brought steel for our people, answer three questions.");
+def_int $answer = ~p_choice2("Who leads the Myreque? Veliaf Hurtz.", 1, "The boatman Cyreg.", 2);
+if ($answer ! 1) {
+    ~chatnpc("<p,angry>Wrong. Learn who you are dealing with.");
+    return;
+}
+$answer = ~p_choice2("Who is the youngest member? Ivan Strom.", 1, "Polmafi Ferdygris.", 2);
+if ($answer ! 1) {
+    ~chatnpc("<p,angry>That does not inspire confidence.");
+    return;
+}
+$answer = ~p_choice2("Which family rules Morytania? The Drakans.", 1, "The Ardougne royal house.", 2);
+if ($answer ! 1) {
+    ~chatnpc("<p,angry>You have not done your homework.");
+    return;
+}
+%routequest = ^route_guard_passed;
+~chatnpc("<p,neutral>Very well. Find the hidden entrance in the hollow tree.|Speak to Veliaf and be discreet.");
+
+// The Myreque hideout. Progress demands introductions to all five members.
 [opnpc1,route_veliaf_hurtz]
 switch_int (%routequest) {
-    case ^route_boat :
-        ~chatnpc("<p,neutral>You found us. Prove you can be trusted:|speak to Sani and Radigad as well.");
-        %routequest = ^route_veliaf;
-    case ^route_veliaf, ^route_scouts : ~chatnpc("<p,neutral>Talk to the others. Then we shall see.");
-    case ^route_burgh : ~chatnpc("<p,neutral>Ivan Strom is in trouble in Burgh de Rott. Find him.");
-    case ^route_vanstrom :
-        ~chatnpc("<p,neutral>Vanstrom Klause lurks near Canifis. Face him.");
-    case ^route_return :
-        ~chatnpc("<p,happy>You faced Vanstrom and lived. The Myreque owe you much.");
-        queue(route_quest_complete, 0, 0);
-    case ^route_complete : ~chatnpc("<p,happy>Welcome back, friend.");
-    case default : ~chatnpc("<p,neutral>Be careful out here.");
+    case ^route_not_started, ^route_started, ^route_boat_ready, ^route_hollows, ^route_bridge_fixed :
+        ~chatnpc("<p,neutral>These caves are not safe for casual visitors.");
+    case ^route_guard_passed :
+        ~chatnpc("<p,neutral>Curpile let you in? I am Veliaf Hurtz.|Meet my comrades before you offer us anything.");
+        %routequest = ^route_hideout;
+    case ^route_hideout :
+        ~chatnpc("<p,neutral>Speak to everyone. The Myreque are people, not a name.");
+        mes("Introductions: <tostring(~route_members_count)> of five.");
+    case ^route_members_met :
+        if (~route_has_six_weapons = false) {
+            ~chatnpc("<p,neutral>The six steel weapons are missing.|Bring a dagger, mace, two swords, longsword and warhammer.");
+            return;
+        }
+        ~chatnpc("<p,neutral>These are the weapons we were promised.|But who told you we needed a delivery?");
+        def_int $yes = ~p_choice2("Give the six steel weapons.", 1, "Keep them for now.", 2);
+        if ($yes ! 1) return;
+        // All six requirements were checked before removing any item.
+        inv_del(inv, steel_dagger, 1);
+        inv_del(inv, steel_mace, 1);
+        inv_del(inv, steel_sword, 2);
+        inv_del(inv, steel_longsword, 1);
+        inv_del(inv, steel_warhammer, 1);
+        %routequest = ^route_hound_fight;
+        ~chatnpc("<p,angry>Vanstrom Klause? Then he has used you to find us!|His dark magic fills the cave. We must defend ourselves.");
+        ~route_spawn_hound;
+    case ^route_hound_fight :
+        ~chatnpc("<p,angry>The Skeleton Hellhound still threatens us.|Defend yourself. If it has disappeared, I will draw it out again.");
+        ~route_spawn_hound;
+    case ^route_hound_dead :
+        ~chatnpc("<p,sad>We survived, though two friends did not.|A passage through the cavern wall leads towards Canifis.|Search the concealed stonework in the tunnel.");
+        %routequest = ^route_secret_exit;
+    case ^route_secret_exit, ^route_return :
+        ~chatnpc("<p,neutral>Find the hidden wall, climb out behind the Canifis tavern,|then speak to the stranger inside.");
+    case default :
+        ~chatnpc("<p,neutral>The Myreque are still here. We remember what you did.");
 }
 
 [opnpc1,route_sani_piliu]
-~chatnpc("<p,neutral>Radigad and I watch the marsh. Speak to him too.");
-if (%routequest = ^route_veliaf) {
-    %routequest = ^route_scouts;
-}
+~chatnpc("<p,neutral>I keep our supplies in order. Trust is difficult to earn here.");
+~route_mark_member(0);
 
 [opnpc1,route_radigad_ponfit]
-switch_int (%routequest) {
-    case ^route_scouts :
-        ~chatnpc("<p,neutral>You have met Sani and Veliaf. Good. Ivan Strom needs help in Burgh de Rott.");
-        %routequest = ^route_burgh;
-    case default : ~chatnpc("<p,neutral>Stay low in the marsh.");
-}
+~chatnpc("<p,neutral>Our maps may be old, but we know every path through the marsh.");
+~route_mark_member(1);
 
 [opnpc1,route_polmafi_ferdygris]
-~chatnpc("<p,neutral>Keep your voice down. Vampyres have sharp ears.");
+~chatnpc("<p,neutral>I was a scholar before necessity made me a fugitive.");
+~route_mark_member(2);
 
 [opnpc1,route_harold_evans]
-~chatnpc("<p,neutral>I came to Canifis for quiet, and quiet is what I intend to keep.");
+~chatnpc("<p,neutral>There is little safety here. Please be careful.");
+~route_mark_member(3);
 
 [opnpc1,route_ivan_strom]
-switch_int (%routequest) {
-    case ^route_burgh :
-        ~chatnpc("<p,sad>You've come at last. Vanstrom Klause is the one behind this.|He waits near Canifis.");
-        %routequest = ^route_vanstrom;
-    case ^route_vanstrom : ~chatnpc("<p,neutral>Go. End this.");
-    case default : ~chatnpc("<p,neutral>I'm grateful for your help.");
-}
+~chatnpc("<p,neutral>I am Ivan. These people took me in when I had nowhere else.");
+~route_mark_member(4);
 
-[opnpc1,route_vanstrom_klause_normal]
-if (%routequest = ^route_vanstrom) {
-    ~chatnpc("<p,angry>So the rebels sent a champion. How quaint.");
-    ~chatplayer("<p,angry>It's over, Vanstrom.");
-    ~chatnpc("<p,neutral>Perhaps. You have earned your leave, for now.");
-    %routequest = ^route_return;
+// The stranger, not Vanstrom, closes the original 2005 quest on return.
+[opnpc1,canafis_stranger]
+if (%routequest = ^route_return) {
+    ~chatnpc("<p,neutral>I am not the man you knew.|Whatever you saw in that swamp has followed you back.");
+    queue(route_quest_complete, 0, 0);
 } else {
-    ~chatnpc("<p,neutral>Be on your way.");
+    ~chatnpc("<p,neutral>I have nothing to tell you, traveller.");
 }
 
 [queue,route_quest_complete]
+if (%routequest ! ^route_return) return;
+// Native stat_advance units are tenths of XP: 6000 means 600 XP.
 %routequest = ^route_complete;
-stat_advance(agility, 50000);
-stat_advance(slayer, 20000);
+stat_advance(attack, 6000);
+stat_advance(defence, 6000);
+stat_advance(strength, 6000);
+stat_advance(hitpoints, 6000);
+stat_advance(crafting, 6000);
 session_log(^log_adventure, "Quest complete: In Search of the Myreque");
-~send_quest_complete(questlist:routequest, coins, 200, ^route_questpoints, "You have completed In Search of the Myreque!", "5,000 Agility XP|2,000 Slayer XP");
+~send_quest_complete(questlist:routequest, steel_sword, 200, ^route_questpoints,
+    "You have completed In Search of the Myreque!",
+    "600 Attack XP|600 Defence XP|600 Strength XP|600 Hitpoints XP|600 Crafting XP");
 
 [if_button,questlist:routequest]
 def_string $text;
 switch_int (%routequest) {
-    case ^route_not_started : $text = "@dbl@I can start this quest by talking to @dre@Curpile Fyod@dbl@.";
-    case ^route_started : $text = "@str@I spoke to Curpile Fyod.||@dbl@I should talk to @dre@Cyreg Paddlehorn@dbl@.";
-    case ^route_boat : $text = "@str@I spoke to Cyreg.||@dbl@I must find @dre@Veliaf Hurtz@dbl@ in the swamp.";
-    case ^route_veliaf : $text = "@str@I met Veliaf.||@dbl@I should speak to @dre@Sani Piliu@dbl@.";
-    case ^route_scouts : $text = "@str@I met Sani.||@dbl@I should speak to @dre@Radigad Ponfit@dbl@.";
-    case ^route_burgh : $text = "@str@I met the scouts.||@dbl@I must find @dre@Ivan Strom@dbl@ in Burgh de Rott.";
-    case ^route_vanstrom : $text = "@str@I found Ivan Strom.||@dbl@I must face @dre@Vanstrom Klause@dbl@.";
-    case ^route_return : $text = "@str@I faced Vanstrom Klause.||@dbl@I should tell @dre@Veliaf Hurtz@dbl@.";
-    case default : $text = "@str@I found the Myreque and faced Vanstrom Klause.||@red@QUEST COMPLETE!";
+    case ^route_not_started :
+        $text = "@dbl@Speak to @dre@Vanstrom Klause@dbl@ in the Hair of the Dog tavern in Canifis.|@dbl@Requires Nature Spirit and 25 Agility.";
+    case ^route_started :
+        $text = "@str@Vanstrom has asked me to deliver six steel weapons.|@dbl@Find @dre@Cyreg Paddlehorn@dbl@ near Mort'ton; take a druid pouch,|@dbl@six planks, 225 steel nails, hammer and ten coins.";
+    case ^route_boat_ready :
+        $text = "@str@Cyreg agreed to help.||@dbl@Board the boat to the Hollows.";
+    case ^route_hollows :
+        $text = "@str@I reached the Hollows.||@dbl@Repair three spans of the swamp bridge.|@dbl@Repaired: <tostring(%route_bridge_repairs)> of three.";
+    case ^route_bridge_fixed :
+        $text = "@str@I repaired the bridge.||@dbl@Answer Curpile Fyod's questions near the hollow tree.";
+    case ^route_guard_passed :
+        $text = "@str@Curpile let me through.||@dbl@Find the underground Myreque hideout.";
+    case ^route_hideout, ^route_members_met :
+        $text = "@str@I found Veliaf and the Myreque.||@dbl@Speak to all five people, then deliver the six steel weapons.|@dbl@Introductions: <tostring(~route_members_count)> of five.";
+    case ^route_hound_fight :
+        $text = "@str@Vanstrom betrayed the Myreque!||@dbl@Kill the Skeleton Hellhound in real combat.";
+    case ^route_hound_dead :
+        $text = "@str@The Skeleton Hellhound fell.||@dbl@Ask Veliaf about the exit.";
+    case ^route_secret_exit :
+        $text = "@str@Veliaf described a hidden tunnel.||@dbl@Search the secret wall in the cave.";
+    case ^route_return :
+        $text = "@str@I escaped to Canifis.||@dbl@Speak to the stranger at the Hair of the Dog tavern.";
+    case default :
+        $text = "@str@The weapons reached the Myreque, Vanstrom was exposed,|@str@and I survived the Skeleton Hellhound.|@red@QUEST COMPLETE!";
 }
 ~quest_journal("In Search of the Myreque", $text);
