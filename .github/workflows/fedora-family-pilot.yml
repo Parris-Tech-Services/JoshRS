@@ -1,0 +1,38 @@
+name: Fedora same-world companion pilot safety
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-family-pilot/**'
+      - 'tools/rs377-chatgpt-bridge/src/**'
+      - '.github/workflows/fedora-family-pilot.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/rs377-family-pilot/**'
+      - 'tools/rs377-chatgpt-bridge/src/**'
+      - '.github/workflows/fedora-family-pilot.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  no-family-world-access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Parse guarded pilot
+        run: node --check tools/rs377-family-pilot/pilot.mjs
+      - name: Run offline safety tests (never connect to live server)
+        run: node --test tools/rs377-family-pilot/pilot.test.mjs
+      - name: Reject default unattended launch
+        shell: bash
+        run: |
+          set +e
+          node tools/rs377-family-pilot/pilot.mjs --run > /tmp/pilot-output.txt 2>&1
+          code=$?
+          set -e
+          test "$code" -ne 0
+          grep -q 'PILOT_BLOCKED' /tmp/pilot-output.txt
