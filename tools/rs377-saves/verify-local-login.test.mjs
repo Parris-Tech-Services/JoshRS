@@ -29,6 +29,18 @@ test('find exact player account', () => {
   } finally { x.cleanup(); }
 });
 
+test('read Windows PowerShell 5.1 UTF-8 BOM active.json without rewriting it', () => {
+  const x = fixture();
+  try {
+    const statePath = path.join(x.root, 'runtime', 'jparris-377', 'active.json');
+    const original = fs.readFileSync(statePath);
+    const withBom = Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), original]);
+    fs.writeFileSync(statePath, withBom);
+    assert.equal(inspectAccount(x.root).status, 'ACCOUNT_FOUND');
+    assert.ok(fs.readFileSync(statePath).equals(withBom), 'read-only check must not modify active.json');
+  } finally { x.cleanup(); }
+});
+
 test('detect account case mismatch and never prompt', async () => {
   const x = fixture('Elrothiro');
   try {
