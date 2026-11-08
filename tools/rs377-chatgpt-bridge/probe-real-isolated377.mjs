@@ -315,6 +315,96 @@ try {
    sdkSocket.close();
    await webSocketGateway.close();
  }
+
+ // The UNMODIFIED pinned upstream BotSDK + BotActions must now control this
+ // very same authenticated disposable native-377 game session. Earlier
+ // synthetic-state BotSDK tests and hand-written WebSocket clients cannot
+ // replace this real-engine proof.
+ const upstreamHome=process.env.RS377_PINNED_UPSTREAM;
+ if(!upstreamHome)reject('pinned_upstream_sdk_checkout_not_provided');
+ const {spawn}=await import('node:child_process');
+ const upstreamToken=randomBytes(32).toString('hex');
+ const nativeObserver=createEngine377Observer({
+   port:managementPort,token,botName:username,expectedWorld
+ });
+ const nativeRuntime=createSdk377Runtime({
+   session,observer:nativeObserver,botName:username,expectedWorld
+ });
+ const nativeGateway=createSdk377WebSocket({
+   runtime:nativeRuntime,botName:username,token:upstreamToken
+ });
+ let nativeSdkProof=null;
+ const nativeInfo=await nativeGateway.listen(0);
+ try {
+   const start=moved.position;
+   const candidates=[
+     [start.x+1,start.z],[start.x,start.z+1],
+     [start.x-1,start.z],[start.x,start.z-1]
+   ];
+   const script=new URL('../rs377-upstream-sdk/live-botsdk.client.ts',import.meta.url).pathname;
+   const child=spawn('bun',[script,upstreamHome],{
+     cwd:process.cwd(),stdio:['pipe','pipe','pipe'],
+     env:{PATH:process.env.PATH,HOME:process.env.HOME,
+       NODE_ENV:'test',CI:'true',NO_COLOR:'1'}
+   });
+   let stdout='',stderr='';
+   child.stdout.on('data',chunk=>{
+     stdout+=chunk.toString('utf8');
+     if(stdout.length>150000)child.kill('SIGKILL');
+   });
+   child.stderr.on('data',chunk=>{
+     stderr+=chunk.toString('utf8');
+     if(stderr.length>150000)child.kill('SIGKILL');
+   });
+   child.stdin.end(JSON.stringify({
+     gatewayUrl:'ws://127.0.0.1:'+nativeInfo.port+'/gateway',
+     token:upstreamToken,botName:username,worldId:expectedWorld,candidates
+   }));
+   const code=await new Promise((resolve,reject)=>{
+     const timer=setTimeout(()=>{child.kill('SIGKILL');
+       reject(new Error('real_upstream_BotSDK_timeout'))},78000);
+     child.on('error',err=>{clearTimeout(timer);reject(err)});
+     child.on('exit',exit=>{clearTimeout(timer);resolve(exit)});
+   });
+   if(code!==0){
+     // The dynamically supplied private token must never enter logs.
+     const safeDetail=stderr.replaceAll(upstreamToken,'[redacted]').slice(-600);
+     reject('real_upstream_BotSDK_execution_failed_exit_'+code+': '+safeDetail);
+   }
+   const line=stdout.split(/\r?\n/).find(x=>x.startsWith('RS_SDK_REAL_NATIVE_PROOF:'));
+   if(!line)reject('real_upstream_BotSDK_lacked_proof');
+   nativeSdkProof=JSON.parse(line.slice('RS_SDK_REAL_NATIVE_PROOF:'.length));
+   if(nativeSdkProof.sourceSha!=='db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb'||
+      nativeSdkProof.realNative377World!==true||
+      nativeSdkProof.actualUpstreamBotSDK!==true||
+      nativeSdkProof.actualUpstreamBotActions!==true||
+      nativeSdkProof.ordinaryPacketEffectVerified!==true||
+      nativeSdkProof.familyWorldTouched!==false||
+      !Number.isSafeInteger(nativeSdkProof.finalPosition?.x)||
+      !Number.isSafeInteger(nativeSdkProof.finalPosition?.z))
+     reject('real_upstream_BotSDK_proof_invalid');
+   // Verify the claimed location with our independent native engine observer.
+   let nativeAfter=null;
+   for(let attempt=0;attempt<12;attempt++){
+     await delay(650);
+     try {
+       nativeAfter=await reader.observe();
+       if(nativeAfter.position.x===nativeSdkProof.finalPosition.x&&
+          nativeAfter.position.z===nativeSdkProof.finalPosition.z)break;
+     }catch(error){
+       if(error.message.includes('replayed_native_observation'))continue;
+       throw error;
+     }
+   }
+   if(nativeAfter?.position.x!==nativeSdkProof.finalPosition.x||
+      nativeAfter?.position.z!==nativeSdkProof.finalPosition.z)
+     reject('upstream_BotSDK_effect_not_independently_observed');
+   moved=nativeAfter;
+ } finally {
+   await nativeGateway.close();
+ }
+ if(!nativeSdkProof)reject('upstream_BotSDK_not_verified');
+
  const savedPosition={...moved.position};
  // Client close is NOT a verified logout/save. Let the actual 377 idle
  // logout/save flow finish; look for the server-generated CRC save on disk.
@@ -401,6 +491,7 @@ try {
    sdkStateComplete:completeSdkStateVerified,
    genuineSdkGatewayAction:true,walkObserved:true,
    genuineSdkWebSocketAction:websocketVerified,
+   genuineUnmodifiedUpstreamBotSDK:true,genuineUpstreamBotActionsLoaded:true,
    dispatchAttemptCount,saveRelogVerified:true,
    familyWorldTouched:false,
    task26RealBoundaryVerified:true,task26SecurityChecks:task26.checks,
