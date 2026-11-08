@@ -193,10 +193,24 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
     },
     async close(){
       for(const client of wsServer.clients)client.terminate();
-      await new Promise(resolve=>wsServer.close(()=>resolve()));
+      await new Promise((resolve,reject)=>{
+        const timeout=setTimeout(()=>reject(new Error('sdk_ws_server_close_timeout')),3000);
+        wsServer.close(error=>{
+          clearTimeout(timeout);
+          if(error)reject(error);else resolve();
+        });
+      });
       await new Promise((resolve,reject)=>{
         if(!server.listening){resolve();return}
-        server.close(err=>err?reject(err):resolve());
+        // Short-lived upstream SDK HTTP health-check connections must not
+        // keep the bridge's local listener alive after shutdown.
+        server.closeIdleConnections?.();
+        server.closeAllConnections?.();
+        const timeout=setTimeout(()=>reject(new Error('sdk_http_server_close_timeout')),3000);
+        server.close(err=>{
+          clearTimeout(timeout);
+          if(err)reject(err);else resolve();
+        });
       });
     }
   });
