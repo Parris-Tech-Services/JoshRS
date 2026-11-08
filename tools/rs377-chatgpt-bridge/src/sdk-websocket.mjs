@@ -60,9 +60,16 @@ export function createSdk377WebSocket({runtime,botName,token,host='127.0.0.1',
           const observed=await runtime.getSdkState();
           if(closed||controller!==ws)return;
           const state=observed?.state;
+          const required=['player','skills','inventory','equipment','nearbyNpcs',
+            'nearbyPlayers','nearbyLocs','groundItems','gameMessages','recentDialogs',
+            'dialog','interface','shop','bank','modalOpen','modalInterface',
+            'combatEvents','prayers'];
           if(!state||state.inGame!==true||!Number.isSafeInteger(state.tick)||
-             state.tick<0||observed?.source?.tick!==state.tick)
-            throw new Error('sdk_state_requires_grounded_tick');
+             state.tick<0||observed?.source?.tick!==state.tick||
+             observed?.source?.contract!=='MaxBittker/rs-sdk@db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb'||
+             state.player?.name!==botName||!Array.isArray(state.skills)||
+             state.skills.length!==21||required.some(key=>state[key]===null||state[key]===undefined))
+            throw new Error('sdk_state_requires_grounded_tick_and_complete_contract');
           if(state.tick<=lastSentTick)return;
           const response={type:'sdk_state',state,stateReceivedAt:Date.now()};
           // Bounded output. No unverified or enormous state published to SDK.
