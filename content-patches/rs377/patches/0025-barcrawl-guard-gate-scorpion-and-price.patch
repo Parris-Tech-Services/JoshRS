@@ -77,3 +77,15 @@ diff --git a/scripts/areas/area_port_sarim/scripts/bartender.rs2 b/scripts/areas
      ~chatplayer("<p,sad>I don't have 8 coins with me.");
      return;
  }
+diff --git a/scripts/areas/area_karamja/scripts/zambo.rs2 b/scripts/areas/area_karamja/scripts/zambo.rs2
+--- a/scripts/areas/area_karamja/scripts/zambo.rs2
++++ b/scripts/areas/area_karamja/scripts/zambo.rs2
+@@ -31,6 +31,8 @@
+ p_delay(2);
+ mes("You swirl it around and swallow it.");
+ p_delay(2);
++stat_sub(attack, 5, 5);
++stat_sub(defence, 5, 5);
+ mes("Zambo signs your card.");
+ p_delay(2);
+ %barcrawl = setbit(%barcrawl, ^karamjaspirits_index);
