@@ -35,6 +35,7 @@ jobs:
         shell: bash
         run: |
           node --check tools/rs377-agent-manager/fleet.mjs
+          node --check tools/rs377-agent-manager/barcrawl-acceptance.mjs
           node --check tools/rs377-agent-manager/native377.mjs
           node --check tools/rs377-agent-manager/serve.mjs
           node --check tools/rs377-agent-manager/public/app.js

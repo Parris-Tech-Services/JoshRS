@@ -86,6 +86,10 @@ try {
    reject('real native skill arrays missing or inconsistent');
  if(!Array.isArray(first.inventory)||!Array.isArray(first.equipment))
    reject('real inventory/equipment arrays not exposed');
+ // Read-only, *actual native varp* from fresh disposable HarnessProbe.
+ // This must not be manufactured by the RS-SDK adapter or a unit fixture.
+ if(first.questStages?.barcrawl!==0)
+   reject('fresh disposable Barcrawl varp is not source-grounded or starts progressed');
  if(!Array.isArray(first.nearbyNpcs)||
    !first.nearbyNpcs.every(n=>Number.isInteger(n.index)&&Number.isInteger(n.id)&&
      Number.isInteger(n.x)&&Number.isInteger(n.z)))
@@ -363,6 +367,8 @@ try {
    for(let attempt=0;attempt<12;attempt++){
      await delay(670);
      try {const snap=await reloggedObserver.observe();
+       if(snap.questStages?.barcrawl!==0)
+         reject('fresh Barcrawl state changed or disappeared across genuine relog');
        reloggedPosition=snap.position;break;
      }catch(error){
        if(error.message.includes('native_observer_http_409')||
@@ -390,6 +396,8 @@ try {
    playerBaseObserved:true,prayersObserved:true,
    nearbyPlayersObserved:true,bankClosedObserved:true,shopClosedObserved:true,
    dialogueFlagsObserved:true,
+   barcrawlNativeFreshVarpObserved:true,barcrawlUnmodifiedOnRelog:true,
+   barcrawlTenPubPlaythroughVerified:false,
    sdkStateComplete:completeSdkStateVerified,
    genuineSdkGatewayAction:true,walkObserved:true,
    genuineSdkWebSocketAction:websocketVerified,
