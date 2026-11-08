@@ -3,10 +3,10 @@
 // Dron's interview is shortened and the final museum scenery isn't rebuilt.
 // Every quest branch requires real inventory, quest or location evidence; no free completion.
 [proc,mh_progress]()(int)
-if (testbit(%makinghistory, ^mh_finished_bit) = true) {
+if (testbit(%makinghistory, ^mh_finished_bit) = ^true) {
     return(2);
 }
-if (testbit(%makinghistory, ^mh_started_bit) = true) {
+if (testbit(%makinghistory, ^mh_started_bit) = ^true) {
     return(1);
 }
 return(0);
@@ -14,7 +14,7 @@ return(0);
 // The existing silver merchant talk-to invokes this proc AFTER its anti-theft check.
 // Return false when ordinary trading dialogue must continue untouched.
 [proc,mh_erin_interaction]()(boolean)
-if (~mh_progress = 0 | testbit(%makinghistory, ^mh_journal_bit) = true) {
+if (~mh_progress = 0 | testbit(%makinghistory, ^mh_journal_bit) = ^true) {
     return(false);
 }
 ~chatplayer("<p,quiz>Do you know anything about the old Ardougne outpost?");
@@ -33,10 +33,10 @@ return(true);
 
 // The existing King Lathas dialogue invokes this before any existing biohazard branch.
 [proc,mh_king_interaction]()(boolean)
-if (~mh_progress ! 1 | testbit(%makinghistory, ^mh_jorral_letter_bit) = false) {
+if (~mh_progress ! 1 | testbit(%makinghistory, ^mh_jorral_letter_bit) = ^false) {
     return(false);
 }
-if (testbit(%makinghistory, ^mh_king_reply_bit) = true) {
+if (testbit(%makinghistory, ^mh_king_reply_bit) = ^true) {
     return(false);
 }
 if (inv_total(inv, makinghistory_letter1) < 1) {
@@ -73,7 +73,7 @@ if (~mh_progress = 2) {
     ~chatnpc("<p,happy>Thank you for helping preserve this place.");
     return;
 }
-if (testbit(%makinghistory, ^mh_king_reply_bit) = true) {
+if (testbit(%makinghistory, ^mh_king_reply_bit) = ^true) {
     if (inv_total(inv, makinghistory_letter2) < 1) {
         ~chatnpc("<p,neutral>I still need the king's signed reply. Please bring it from your bank.");
         return;
@@ -84,7 +84,7 @@ if (testbit(%makinghistory, ^mh_king_reply_bit) = true) {
     ~chatnpc("<p,happy>Then the outpost can become a place of remembrance!");
     return;
 }
-if (testbit(%makinghistory, ^mh_jorral_letter_bit) = true) {
+if (testbit(%makinghistory, ^mh_jorral_letter_bit) = ^true) {
     if (inv_total(inv, makinghistory_letter1) = 0 & inv_total(bank, makinghistory_letter1) = 0) {
         if (inv_freespace(inv) < 1) {
             ~chatnpc("<p,neutral>Make room and I can replace my letter.");
@@ -95,9 +95,9 @@ if (testbit(%makinghistory, ^mh_jorral_letter_bit) = true) {
     ~chatnpc("<p,neutral>Please show my letter to King Lathas in Ardougne.");
     return;
 }
-if (testbit(%makinghistory, ^mh_journal_bit) = true &
-    testbit(%makinghistory, ^mh_scroll_bit) = true &
-    testbit(%makinghistory, ^mh_dron_bit) = true) {
+if (testbit(%makinghistory, ^mh_journal_bit) = ^true &
+    testbit(%makinghistory, ^mh_scroll_bit) = ^true &
+    testbit(%makinghistory, ^mh_dron_bit) = ^true) {
     if (inv_total(inv, makinghistory_journal) < 1 | inv_total(inv, makinghistory_scroll1) < 1) {
         ~chatnpc("<p,neutral>Bring the journal and the ghost's scroll from your bank.");
         return;
@@ -124,11 +124,11 @@ if (~mh_progress = 0) {
     ~chatnpc("<p,neutral>I have no business with you.");
     return;
 }
-if (testbit(%makinghistory, ^mh_dron_bit) = true) {
+if (testbit(%makinghistory, ^mh_dron_bit) = ^true) {
     ~chatnpc("<p,neutral>You already have my account of the old outpost.");
     return;
 }
-if (testbit(%makinghistory, ^mh_blanin_bit) = false) {
+if (testbit(%makinghistory, ^mh_blanin_bit) = ^false) {
     ~chatnpc("<p,neutral>If you want my stories, ask my brother Blanin about me first.");
     return;
 }
@@ -154,7 +154,7 @@ if (~mh_progress = 0) {
     ~chatnpc("<p,sad>I am waiting for news of someone I once knew.");
     return;
 }
-if (testbit(%makinghistory, ^mh_melina_bit) = true) {
+if (testbit(%makinghistory, ^mh_melina_bit) = ^true) {
     ~chatnpc("<p,happy>Thank you. I can remember him with kindness again.");
     return;
 }
@@ -184,11 +184,11 @@ if (~mh_progress = 0) {
     ~chatnpc("<p,neutral>I once lived near an old outpost in Ardougne.");
     return;
 }
-if (testbit(%makinghistory, ^mh_melina_bit) = false) {
+if (testbit(%makinghistory, ^mh_melina_bit) = ^false) {
     ~chatnpc("<p,sad>Before I share my account, please help me make peace with Melina.");
     return;
 }
-if (testbit(%makinghistory, ^mh_scroll_bit) = true) {
+if (testbit(%makinghistory, ^mh_scroll_bit) = ^true) {
     ~chatnpc("<p,happy>I gave you my account. May it help preserve that old place.");
     return;
 }
@@ -207,7 +207,7 @@ if (~mh_progress = 0) {
     mes("The key feels ordinary.");
     return;
 }
-if (testbit(%makinghistory, ^mh_journal_bit) = true) {
+if (testbit(%makinghistory, ^mh_journal_bit) = ^true) {
     mes("The key has already revealed its first secret.");
     return;
 }
@@ -247,7 +247,7 @@ if (last_useitem ! makinghistory_chest) {
 [label,mh_open_chest]
 if (~mh_progress ! 1 | inv_total(inv, makinghistory_chest) < 1 |
     inv_total(inv, makinghistory_key) < 1 |
-    testbit(%makinghistory, ^mh_journal_bit) = true) {
+    testbit(%makinghistory, ^mh_journal_bit) = ^true) {
     ~displaymessage(^dm_default);
     return;
 }
@@ -257,7 +257,7 @@ inv_add(inv, makinghistory_journal, 1);
 mes("The key opens the chest. Inside is an old journal.");
 
 [queue,mh_complete]
-if (testbit(%makinghistory, ^mh_finished_bit) = false) {
+if (testbit(%makinghistory, ^mh_finished_bit) = ^false) {
     return;
 }
 session_log(^log_adventure, "Quest complete: Making History");
