@@ -26,7 +26,7 @@ if [[ "$MODE" == '--check' ]]; then
   echo "Next: bash '$ROOT/tools/rs377-fedora-quests/sandbox-fedora.sh' --run"
   exit 0
 fi
-[[ "$JOSHRS_QUEST_CAMPAIGN_APPROVED" == 'DISPOSABLE_ONLY' ]] || {
+[[ "${JOSHRS_QUEST_CAMPAIGN_APPROVED:-}" == 'DISPOSABLE_ONLY' ]] || {
   echo 'Set JOSHRS_QUEST_CAMPAIGN_APPROVED=DISPOSABLE_ONLY first (new isolated world only)' >&2
   exit 2
 }
@@ -84,7 +84,7 @@ python3 "$ROOT/content-factory/patch_377_sdk_trace.py" --engine "$WORK/engine"
 )
 # SDK gateway uses local ws package from JoshRS test harness. It is distinct
 # from the game's normal TCP/Web endpoints and is never publicly exposed.
-npm --prefix "$ROOT/tools/rs377-chatgpt-bridge" install --omit=dev --ignore-scripts --no-audit --no-fund
+npm --prefix "$ROOT/tools/rs377-chatgpt-bridge" install --omit=dev --ignore-scripts --no-audit --no-fund --no-package-lock
 (
  cd "$ROOT"
  RS377_OBSERVER_PROBE=true RS377_LIVE_BOT_PROBE=true \
