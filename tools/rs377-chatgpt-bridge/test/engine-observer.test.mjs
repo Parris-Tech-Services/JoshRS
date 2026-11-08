@@ -7,7 +7,7 @@ test('reads engine-originated HTTP payload via native callback',async()=>{
  let requested='';
  const fetchImpl=async(url,options)=>{requested=url;assert.equal(options.headers.authorization,'Bearer '+token);return {ok:true,text:async()=>JSON.stringify({token,sequence:10,observation})}};
  const o=createEngine377Observer({port:8989,token,botName:'HarnessBot',expectedWorld:'isolated-test-world',fetchImpl});
- const s=await o.observe();assert.equal(s.inventory[0].id,1925);assert.equal(requested,'http://127.0.0.1:8989/dev/rs377-observe');
+ const s=await o.observe();assert.equal(s.inventory[0].id,1925);assert.equal(requested,'http://127.0.0.1:8989/dev/rs377-observe?bot=HarnessBot');
 });
 test('refuses production management ports and non-200 engine responses',async()=>{
  assert.throws(()=>createEngine377Observer({port:8888,token,botName:'HarnessBot',expectedWorld:'isolated-test-world'}),/port/);
