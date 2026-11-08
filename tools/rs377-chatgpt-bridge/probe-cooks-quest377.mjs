@@ -25,7 +25,7 @@ export async function runCookQuestStart377({session,reader}={}){
  const actions=[];
  const snapshot=async()=>fresh(reader);
  let visible=(s)=>s.nearbyNpcs?.find(n=>n.id===278&&
-   Array.isArray(n.options)&&n.options.some(o=>o.opIndex===1));
+   Array.isArray(n.optionsWithIndex)&&n.optionsWithIndex.some(o=>o.opIndex===1));
  let cook=visible(start);
  if(!cook){
    // Ordinary game packet movement; long journeys must be split into
