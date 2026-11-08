@@ -156,8 +156,17 @@ p_delay(2);
 
 [label,fenk_doctor_sewn]
 ~chatnpc("<p,neutral>The conductor on the roof must be repaired before the storm breaks.");
+if (%fenk_unlocked_shed = 0 & inv_total(inv, fenk_shed_key) = 0 &
+    inv_total(bank, fenk_shed_key) = 0) {
+    if (inv_freespace(inv) < 1) {
+        ~chatnpc("<p,neutral>Make room in your pack so I can give you the garden shed key.");
+        return;
+    }
+    inv_add(inv, fenk_shed_key, 1);
+    ~objbox(fenk_shed_key, "The doctor gives you the shed key.", 250, 0, 0);
+}
 ~chatplayer("<p,quiz>Remind me what I need?");
-~chatnpc("<p,neutral>A mould, made from a garden brush and three canes. Cast a silver bar in it, and fix the conductor.");
+~chatnpc("<p,neutral>A mould, made from a garden brush and three canes. Bind it with bronze wire, cast silver in it, and repair the conductor.");
 
 [label,fenk_doctor_conductor_fixed]
 ~chatnpc("<p,shock>You did it! The lightning struck, and the creature moves!");
