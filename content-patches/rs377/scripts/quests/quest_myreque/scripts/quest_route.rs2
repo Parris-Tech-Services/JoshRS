@@ -80,34 +80,61 @@ if (~route_members_count = ^route_member_count) {
     mes("You have spoken to all five members. Return to Veliaf.");
 }
 
-// Curpile protects the hideout; incorrect answers never advance the quest.
+// Curpile asks three distinct random questions out of the original seven topics.
+// Dedicated client varbits routequestionscorrect/routequestionsanswered are already
+// packed into routequestmulti. A wrong answer cannot unlock the hidden entrance.
 [opnpc1,route_curpile_fyod]
 if (%routequest < ^route_bridge_fixed) {
-    ~chatnpc("<p,neutral>These paths are not for strangers.|You need to reach me across the repaired bridge.");
+    ~chatnpc("<p,neutral>The bridge isn't ready. I have been told not to trust visitors.");
     return;
 }
 if (%routequest >= ^route_guard_passed) {
-    ~chatnpc("<p,neutral>You have proved your purpose. Continue carefully.");
+    ~chatnpc("<p,neutral>You proved your purpose earlier. You may pass.");
     return;
 }
-~chatnpc("<p,neutral>Anyone could claim to be a friend.|If you have brought steel for our people, answer three questions.");
-def_int $answer = ~p_choice2("Who leads the Myreque? Veliaf Hurtz.", 1, "The boatman Cyreg.", 2);
-if ($answer ! 1) {
-    ~chatnpc("<p,angry>Wrong. Learn who you are dealing with.");
-    return;
+~chatnpc("<p,neutral>We have seen too many spies.|Answer three questions about the people you claim to help.");
+%routequestionscorrect = 0;
+%routequestionsanswered = 0;
+def_int $asked = 0;
+while (%routequestionsanswered < 3) {
+    def_int $question = random(7);
+    if (testbit($asked, $question) = ^false) {
+        $asked = setbit($asked, $question);
+        def_int $answer = 0;
+        def_int $correct = 1;
+        switch_int ($question) {
+            case 0 :
+                $answer = ~p_choice2("Who leads the Myreque? Veliaf Hurtz.", 1, "Cyreg Paddlehorn.", 2);
+            case 1 :
+                $answer = ~p_choice2("Which member is the only woman? Sani Piliu.", 1, "Harold Evans.", 2);
+            case 2 :
+                $answer = ~p_choice2("Which member is the youngest? Polmafi Ferdygris.", 1, "Ivan Strom.", 2);
+                $correct = 2;
+            case 3 :
+                $answer = ~p_choice2("Which family rules this land? The Drakans.", 1, "The White Knights.", 2);
+            case 4 :
+                $answer = ~p_choice2("Which member is the scholar? Radigad Ponfit.", 1, "Polmafi Ferdygris.", 2);
+                $correct = 2;
+            case 5 :
+                $answer = ~p_choice2("What does Myreque mean? Hidden in the Myre.", 1, "People of the Sun.", 2);
+            case 6 :
+                $answer = ~p_choice2("Who sails the swamp boat? Curpile Fyod.", 1, "Cyreg Paddlehorn.", 2);
+                $correct = 2;
+        }
+        if ($answer ! $correct) {
+            %routequestionscorrect = 0;
+            %routequestionsanswered = 0;
+            ~chatnpc("<p,angry>That is incorrect. Return when you know the people you serve.");
+            return;
+        }
+        %routequestionsanswered = calc(%routequestionsanswered + 1);
+        %routequestionscorrect = calc(%routequestionscorrect + 1);
+    }
 }
-$answer = ~p_choice2("Who is the youngest member? Ivan Strom.", 1, "Polmafi Ferdygris.", 2);
-if ($answer ! 1) {
-    ~chatnpc("<p,angry>That does not inspire confidence.");
-    return;
+if (%routequestionscorrect = 3) {
+    %routequest = ^route_guard_passed;
+    ~chatnpc("<p,neutral>You do know something of the Myreque.|Find the old underground doors by the tree and ask for Veliaf.");
 }
-$answer = ~p_choice2("Which family rules Morytania? The Drakans.", 1, "The Ardougne royal house.", 2);
-if ($answer ! 1) {
-    ~chatnpc("<p,angry>You have not done your homework.");
-    return;
-}
-%routequest = ^route_guard_passed;
-~chatnpc("<p,neutral>Very well. Find the hidden entrance in the hollow tree.|Speak to Veliaf and be discreet.");
 
 // The Myreque hideout. Progress demands introductions to all five members.
 [opnpc1,route_veliaf_hurtz]
