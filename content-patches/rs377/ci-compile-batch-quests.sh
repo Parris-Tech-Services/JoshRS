@@ -2,7 +2,7 @@
 # Only for a disposable GitHub Actions runner. NEVER apply to a live JoshRS install.
 # Overlays the Fenkenstrain quest, the batch-2 quest bundles, the Morytania
 # addendum, the batch-3/4 quests and Cook range helpers onto the pinned 377
-# content, applying patches 0001-0027 in numeric order.
+# content, applying patches 0001-0029 in numeric order.
 set -euo pipefail
 : "${RUNNER_TEMP:?missing runner temp}"
 : "${GITHUB_WORKSPACE:?missing checkout}"
@@ -17,7 +17,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 28 ]] || { echo "BLOCKED: expected 27 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 29 ]] || { echo "BLOCKED: expected 29 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -85,7 +85,7 @@ for folder, names in owned.items():
 
 # The all.varp blocks promoted to permanent by 0006 must be unique and permanent.
 allvarp = (scripts / '_unpack/377/all.varp').read_text(errors='replace')
-for name in ('hauntedmine', 'routequest', 'mdaughter_var', 'lost_tribe', 'soulbane', 'swansong_quest', 'makinghistory', 'handsand', 'main_feud_var', 'feud_var_multi', 'elid_main', 'rag_bone_2', 'onesmallfavour', 'dwarfrock_main', 'tog_minigame', 'zombie_ogre', 'giantdwarf_main', 'forget_main_var', 'garden_varp_1', 'twocats_varbit', 'quest_wanted', 'deal_quest', 'agrith_quest_varp'):
+for name in ('hauntedmine', 'routequest', 'mdaughter_var', 'lost_tribe', 'soulbane', 'swansong_quest', 'makinghistory', 'handsand', 'main_feud_var', 'feud_var_multi', 'elid_main', 'rag_bone_2', 'onesmallfavour', 'dwarfrock_main', 'tog_minigame', 'zombie_ogre', 'giantdwarf_main', 'forget_main_var', 'garden_varp_1', 'twocats_varbit', 'quest_wanted', 'deal_quest', 'agrith_quest_varp', 'regicide_quest', 'viking', 'mm_main', 'recruitmentdrive', 'deserttreasuremain'):
     blocks = re.findall(r'(?m)^\[' + name + r'\]\s*\n[^\[]*', allvarp)
     if len(blocks) != 1 or 'scope=perm' not in blocks[0]:
         raise SystemExit(f'BLOCKED: {name} not a single permanent block in all.varp')
@@ -103,7 +103,8 @@ src = (scripts / 'general/scripts/quests.rs2').read_text()
 for key in ('creatureoffenkenstrain', 'rag', 'soulbane', 'swansong', 'routequest',
             'ics_little', 'mdaughter', 'hauntedmine', 'lost_tribe', 'makinghistory', 'handsand', 'feud', 'elid',
             'onesmallfavour', 'dwarfrock', 'tog', 'zogre', 'giantdwarf',
-            'forget', 'garden', 'twocats', 'wanted', 'deal', 'agrith'):
+            'forget', 'garden', 'twocats', 'wanted', 'deal', 'agrith',
+            'regicide', 'viking', 'mm', 'rd', 'deserttreasure'):
     assert src.count(f'send_quest_progress_colour(questlist:{key}') == 1, key
 shop = (scripts / 'areas/area_draynor/scripts/fortunato.rs2').read_text()
 assert 'openshop(wine_vinegar_merchant' in shop

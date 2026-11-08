@@ -1,0 +1,98 @@
+diff --git a/scripts/_unpack/377/all.varp b/scripts/_unpack/377/all.varp
+index 46f7f9ec..ea41e73d 100644
+--- a/scripts/_unpack/377/all.varp
++++ b/scripts/_unpack/377/all.varp
+@@ -503,6 +503,7 @@ transmit=yes
+ [varp_327]
+ 
+ [regicide_quest]
++scope=perm
+ 
+ [regicide_bits]
+ 
+@@ -540,6 +541,7 @@ transmit=yes
+ transmit=yes
+ 
+ [viking]
++scope=perm
+ 
+ [viking_bits]
+ 
+@@ -588,6 +590,7 @@ transmit=yes
+ [varp_364]
+ 
+ [mm_main]
++scope=perm
+ 
+ [mm_cutscene_part]
+ 
+@@ -751,6 +754,7 @@ scope=perm
+ [alternate_spells]
+ 
+ [deserttreasuremain]
++scope=perm
+ transmit=yes
+ 
+ [deserttreasurevarbit]
+@@ -885,6 +889,7 @@ transmit=yes
+ [varp_495]
+ 
+ [recruitmentdrive]
++scope=perm
+ transmit=yes
+ 
+ [rd_rooms_tempvar]
+diff --git a/scripts/general/configs/quest.constant b/scripts/general/configs/quest.constant
+index e5703ee9..3bca08e2 100644
+--- a/scripts/general/configs/quest.constant
++++ b/scripts/general/configs/quest.constant
+@@ -120,6 +120,11 @@
+ ^priestperil_questpoints = 1
+ ^troll_questpoints = 1
+ ^itexam_questpoints = 2
++^regicide_questpoints = 3
++^viking_questpoints = 3
++^mm_questpoints = 3
++^recruitmentdrive_questpoints = 1
++^deserttreasure_questpoints = 3
+ 
+ ^death_questpoints = 1
+ ^troll_love_questpoints = 2
+diff --git a/scripts/general/scripts/quests.rs2 b/scripts/general/scripts/quests.rs2
+index 96e491ba..7f83266a 100644
+--- a/scripts/general/scripts/quests.rs2
++++ b/scripts/general/scripts/quests.rs2
+@@ -321,6 +321,21 @@ if (%deal_quest = ^dl_complete) {
+ if (%agrith_quest_varp = ^as_complete) {
+     $questpoints = add($questpoints, ^as_questpoints);
+ }
++if (%regicide_quest = ^regicide_complete) {
++    $questpoints = add($questpoints, ^regicide_questpoints);
++}
++if (%viking = ^viking_complete) {
++    $questpoints = add($questpoints, ^viking_questpoints);
++}
++if (%mm_main = ^mm_complete) {
++    $questpoints = add($questpoints, ^mm_questpoints);
++}
++if (%rd_main = ^recruitmentdrive_complete) {
++    $questpoints = add($questpoints, ^recruitmentdrive_questpoints);
++}
++if (%deserttreasure = ^deserttreasure_complete) {
++    $questpoints = add($questpoints, ^deserttreasure_questpoints);
++}
+ return ($questpoints);
+ 
+ [proc,update_questlist]
+@@ -417,6 +432,11 @@ if (testbit(%ibanmulti, ^upass_started_bit) = ^true & %upass ! ^upass_complete)
+ ~send_quest_progress_colour(questlist:wanted, %quest_wanted, ^w_complete);
+ ~send_quest_progress_colour(questlist:deal, %deal_quest, ^dl_complete);
+ ~send_quest_progress_colour(questlist:agrith, %agrith_quest_varp, ^as_complete);
++~send_quest_progress_colour(questlist:regicide, %regicide_quest, ^regicide_complete);
++~send_quest_progress_colour(questlist:viking, %viking, ^viking_complete);
++~send_quest_progress_colour(questlist:mm, %mm_main, ^mm_complete);
++~send_quest_progress_colour(questlist:rd, %rd_main, ^recruitmentdrive_complete);
++~send_quest_progress_colour(questlist:deserttreasure, %deserttreasure, ^deserttreasure_complete);
+ ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
+ if_settab(questlist, ^tab_quest_journal);
+ 

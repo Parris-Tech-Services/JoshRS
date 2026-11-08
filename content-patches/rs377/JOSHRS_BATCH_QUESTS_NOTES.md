@@ -166,3 +166,29 @@ Verification: patches 0001-0011 applied in order on a pristine pin clone + all 1
 folders -> BUILD_VERIFY compile exit 0 (full 18.6s pack, all CRC checks pass) and
 smoke_377.py green. CI script updated to 11 patches / 15 folders / 15 quest-list keys /
 12 permanent varp blocks.
+
+## Patch 0029 — journal slots for five existing 377 quests (2026-11-08)
+
+The pinned 377 quest-list interface has 104 named slots; after 0001-0028, 21 were still
+unwired. `0029-register-regicide-fremennik-mm-rd-dt-journal.patch` wires the five whose
+completion value is already defined in the pinned `quest.constant`:
+
+| Slot | Quest | Progress var | Complete | QP |
+|---|---|---|---|---|
+| regicide | Regicide | `%regicide_quest` | 15 | 3 |
+| viking | The Fremennik Trials | `%viking` | 10 | 3 |
+| mm | Monkey Madness | `%mm_main` | 10 | 3 |
+| rd | Recruitment Drive | `%rd_main` (varbit) | 2 | 1 |
+| deserttreasure | Desert Treasure | `%deserttreasure` (varbit) | 15 | 3 |
+
+It also makes the backing varps permanent (`scope=perm`), adds the QP constants to
+`scripts/general/configs/quest.constant`, and the QP and journal-colour lines to
+`quests.rs2`. QP values come from the quest spreadsheet.
+
+This is registration only: no quest scripts were added, so these quests stay red until a
+script (or an existing save) sets the varp. Source-only; not compiled or played in-game.
+
+Still unwired (slot exists, completion value not defined in the pinned content, so not
+guessed): `tbwt`, `mourning`, `mourning2`, `misc`, `fairy_farmers`, `eadgar`, `mortton`,
+`horror`, `roving_elves`, `ahoy`, `ratcatch`, `devious`, `enakh`, `fever`,
+`hundred_main`, `myreque_2`.
