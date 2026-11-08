@@ -28,17 +28,38 @@ export async function runCookQuestStart377({session,reader}={}){
    Array.isArray(n.options)&&n.options.some(o=>o.opIndex===1));
  let cook=visible(start);
  if(!cook){
-   // Normal game-world walking, not a privileged teleport or varp grant.
-   // Cook is the *real* NPC 278 in Lumbridge Castle kitchen.
-   const targets=[[3213,3218],[3210,3216]];
-   for(const [x,z] of targets){
-     const position=await snapshot();
-     if(Math.max(Math.abs(x-position.position.x),Math.abs(z-position.position.z))>104)
-       refuse('cook_out_of_normal_click_range');
-     session.send({type:'walk',x,z,running:false});actions.push('walk_to_lumbridge_kitchen');
-     for(let tick=0;tick<14;tick++){
-       const now=await snapshot();cook=visible(now);
+   // Ordinary game packet movement; long journeys must be split into
+   // legitimate <104-tile clicks. No teleport, database write or coordinates
+   // injected into the server. Every progress claim uses fresh native state.
+   const destinations=[[3213,3218],[3210,3216]];
+   for(const [tx,tz] of destinations){
+     for(let leg=0;leg<16;leg++){
+       const before=await snapshot();
+       cook=visible(before);
        if(cook)break;
+       const dx=tx-before.position.x,dz=tz-before.position.z;
+       const distance=Math.max(Math.abs(dx),Math.abs(dz));
+       if(distance<=8)break;
+       const fraction=Math.min(1,80/distance);
+       const x=Math.round(before.position.x+dx*fraction);
+       const z=Math.round(before.position.z+dz*fraction);
+       if(Math.max(Math.abs(x-before.position.x),Math.abs(z-before.position.z))>104)
+         refuse('unsafe_normal_click_distance');
+       session.send({type:'walk',x,z,running:false});
+       actions.push('normal_377_world_map_walk');
+       let advanced=false;
+       for(let tick=0;tick<28;tick++){
+         const now=await snapshot();
+         cook=visible(now);
+         if(cook)break;
+         if(Math.max(Math.abs(now.position.x-before.position.x),
+                     Math.abs(now.position.z-before.position.z))>=4){
+           advanced=true;break;
+         }
+       }
+       if(cook)break;
+       if(!advanced)refuse('no_normal_route_progress_from_'+
+         before.position.x+'_'+before.position.z+'_to_'+x+'_'+z);
      }
      if(cook)break;
    }
