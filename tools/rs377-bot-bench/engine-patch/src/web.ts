@@ -236,7 +236,13 @@ management.register(FastifyView, {
  */
 management.get('/dev/rs377-observe', async (req, reply) => {
     const token = process.env.RS377_OBSERVER_TOKEN;
-    const botName = process.env.RS377_OBSERVER_BOT;
+    // Two or more independently authenticated disposable network clients
+    // may be observed, but ONLY explicit isolated Harness allowlist members.
+    const configuredBot = process.env.RS377_OBSERVER_BOT;
+    const allowlist = (process.env.RS377_OBSERVER_BOTS ?? configuredBot ?? '')
+        .split(',').map(name => name.trim()).filter(Boolean);
+    const requested = (req.query as { bot?: unknown }).bot;
+    const botName = requested === undefined ? configuredBot : requested;
     const instanceId = process.env.RS377_OBSERVER_WORLD;
     const sourceSha = process.env.RS377_OBSERVER_SOURCE_SHA;
     const supplied = req.headers.authorization ?? '';
@@ -245,7 +251,11 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         process.env.RS377_OBSERVER_ISOLATED !== 'true' ||
         process.env.NODE_XPRATE !== '1' ||
         !token || Buffer.byteLength(token) < 32 ||
-        !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName ?? '') ||
+        typeof botName !== 'string' || !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName) ||
+        allowlist.length < 1 || allowlist.length > 4 ||
+        allowlist.some(name => !/^Harness[A-Za-z0-9_-]{1,10}$/.test(name)) ||
+        new Set(allowlist.map(name => name.toLowerCase())).size !== allowlist.length ||
+        !allowlist.includes(botName) ||
         !/^isolated-[a-z0-9_-]{4,64}$/i.test(instanceId ?? '') ||
         !/^[a-f0-9]{40}$/i.test(sourceSha ?? '') ||
         !['127.0.0.1', '::1'].includes(req.ip) ||
