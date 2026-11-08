@@ -3,7 +3,8 @@ on:
   workflow_dispatch:
 jobs:
   probe:
-    runs-on: ubuntu-latest
+    # Playwright 1.57 is not compatible with the rolling ubuntu-26.04 image.
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
