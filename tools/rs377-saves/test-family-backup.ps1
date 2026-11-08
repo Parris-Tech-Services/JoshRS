@@ -36,5 +36,19 @@ try {
     function Get-JoshRSStatus { [pscustomobject]@{Configured=$true;GamePortOpen=$true;WebPortOpen=$false;Engine=$engine;BackupRoot=(Join-Path $root 'blocked')} }
     Assert-Throws { New-JoshRSLocalBackup -RepoRoot $root } 'running game refuses backup'
     if (Test-Path -LiteralPath (Join-Path $root 'blocked')) { throw 'Server-active test created backup directory' }
+    # Simulate an offline configured world. All paths remain inside temp fixtures.
+    function Get-JoshRSStatus { [pscustomobject]@{Configured=$true;GamePortOpen=$false;WebPortOpen=$false;Engine=$engine;BackupRoot=(Join-Path $root 'safe');SaveCount=2;DatabasePresent=$true} }
+    $safe=New-JoshRSLocalBackup -RepoRoot $root
+    $safeReport=Test-JoshRSBackupIntegrity -BackupPath $safe
+    if (-not $safeReport.Verified -or -not $safeReport.ContainsSylvie -or -not $safeReport.ContainsElrothiro) { throw 'Offline backup missing player' }
+    if (@(Get-ChildItem -LiteralPath (Join-Path $root 'safe') -Directory -Filter '*.incomplete').Count) { throw 'Incomplete snapshot was published' }
+    $saveHash=(Get-FileHash -LiteralPath (Join-Path $engine 'data/players/main/elrothiro.sav') -Algorithm SHA256).Hash
+    $restore=Join-Path $root 'disposable-restore'
+    New-Item -ItemType Directory -Path $restore -Force | Out-Null
+    Copy-Item -LiteralPath $safe -Destination (Join-Path $restore 'snapshot') -Recurse
+    $clone=Join-Path $restore 'snapshot'
+    $cloneReport=Test-JoshRSBackupIntegrity -BackupPath $clone
+    if (-not $cloneReport.Verified -or -not $cloneReport.ContainsSylvie) { throw 'Isolated recovery drill failed' }
+    if ((Get-FileHash -LiteralPath (Join-Path $engine 'data/players/main/elrothiro.sav') -Algorithm SHA256).Hash -ne $saveHash) { throw 'Recovery drill modified original save' }
     Write-Host 'PASS: both players, SHA-256, tamper, extra file, manifest non-overwrite, changed source, server-active refusal'
 } finally { Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue }
