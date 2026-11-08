@@ -124,6 +124,15 @@ try {
  if(!details?.prayers||details.prayers.activePrayers?.length!==15 ||
     !details.prayers.activePrayers.every(p=>typeof p==='boolean')||
     !Number.isInteger(details.prayers.prayerLevel))gaps.push('prayers');
+ if(!details?.appearance || ![0,1].includes(details.appearance.gender) ||
+    !Array.isArray(details.appearance.body) ||
+    details.appearance.body.length!==7 ||
+    !details.appearance.body.every(Number.isSafeInteger) ||
+    !Array.isArray(details.appearance.colours) ||
+    details.appearance.colours.length!==5 ||
+    !details.appearance.colours.every(Number.isSafeInteger) ||
+    typeof details.appearance.designModalOpen!=='boolean')
+    gaps.push('actual_native_player_appearance');
  if(details?.bank?.isOpen!==false)gaps.push('closed_bank');
  if(details?.shop?.isOpen!==false)gaps.push('closed_shop');
  if(details?.interface!==null && (
