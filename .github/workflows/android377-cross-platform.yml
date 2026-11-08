@@ -157,6 +157,8 @@ jobs:
               raise SystemExit('Cannot locate disposable Windows 377 content')
           count = 0
           for p in root.rglob('*'):
+              if '.git' in p.relative_to(root).parts:
+                  continue  # never read/write Git's binary .git/objects/*.pack
               if p.is_file() and p.suffix.lower() in {'.rs2', '.pack', '.varp', '.constant'}:
                   data = p.read_bytes()
                   if b'\r\n' in data:
