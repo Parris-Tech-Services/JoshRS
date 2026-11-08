@@ -13,6 +13,8 @@ import OnDemand from '#/engine/OnDemand.js';
 import World from '#/engine/World.js';
 import InvType from '#/cache/config/InvType.js';
 import NpcType from '#/cache/config/NpcType.js';
+import LocType from '#/cache/config/LocType.js';
+import ObjType from '#/cache/config/ObjType.js';
 import { PlayerStatNameMap } from '#/engine/entity/PlayerStat.js';
 import { isClientConnected } from '#/engine/entity/NetworkPlayer.js';
 import ScriptState from '#/engine/script/ScriptState.js';
@@ -234,7 +236,13 @@ management.register(FastifyView, {
  */
 management.get('/dev/rs377-observe', async (req, reply) => {
     const token = process.env.RS377_OBSERVER_TOKEN;
-    const botName = process.env.RS377_OBSERVER_BOT;
+    // Two or more independently authenticated disposable network clients
+    // may be observed, but ONLY explicit isolated Harness allowlist members.
+    const configuredBot = process.env.RS377_OBSERVER_BOT;
+    const allowlist = (process.env.RS377_OBSERVER_BOTS ?? configuredBot ?? '')
+        .split(',').map(name => name.trim()).filter(Boolean);
+    const requested = (req.query as { bot?: unknown }).bot;
+    const botName = requested === undefined ? configuredBot : requested;
     const instanceId = process.env.RS377_OBSERVER_WORLD;
     const sourceSha = process.env.RS377_OBSERVER_SOURCE_SHA;
     const supplied = req.headers.authorization ?? '';
@@ -243,7 +251,11 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         process.env.RS377_OBSERVER_ISOLATED !== 'true' ||
         process.env.NODE_XPRATE !== '1' ||
         !token || Buffer.byteLength(token) < 32 ||
-        !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName ?? '') ||
+        typeof botName !== 'string' || !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName) ||
+        allowlist.length < 1 || allowlist.length > 4 ||
+        allowlist.some(name => !/^Harness[A-Za-z0-9_-]{1,10}$/.test(name)) ||
+        new Set(allowlist.map(name => name.toLowerCase())).size !== allowlist.length ||
+        !allowlist.includes(botName) ||
         !/^isolated-[a-z0-9_-]{4,64}$/i.test(instanceId ?? '') ||
         !/^[a-f0-9]{40}$/i.test(sourceSha ?? '') ||
         !['127.0.0.1', '::1'].includes(req.ip) ||
@@ -305,6 +317,71 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         });
     }
 
+    // The pinned 377 ZoneMap.zone/getZone methods CREATE empty zones on read.
+    // Never call those in an observer: take an existing-map-only view and
+    // fail closed if the upstream private ZoneMap layout changes.
+    // This is an isolated-CI-only seam, not permission for a family-world API.
+    type NativeZoneSnapshot = {
+        getAllLocsSafe: () => Iterable<{ x: number; z: number; type: number; level: number }>;
+        getAllObjsSafe: () => Iterable<{ x: number; z: number; type: number; count: number;
+            level: number; receiver64: bigint; isActive: boolean }>;
+    };
+    const zonemap = (World.gameMap as unknown as {
+        zonemap?: { zones?: Map<number, NativeZoneSnapshot> }
+    }).zonemap;
+    if (!(zonemap?.zones instanceof Map)) {
+        return reply.code(409).send({ error: 'native_zone_snapshot_unavailable' });
+    }
+    // Bounded read-only native zone scan. Static and dynamic Locs/Objs are
+    // verified in the actual packed world, not fabricated from SDK examples.
+    const nearbyLocs: Array<{
+        id: number; x: number; z: number; name: string | null;
+        optionsWithIndex: Array<{ text: string; opIndex: number }>;
+    }> = [];
+    const groundItems: Array<{ id: number; x: number; z: number;
+        name: string | null; count: number }> = [];
+    for (let zx = Math.max(0, (bot.x >> 3) - 2); zx <= Math.min(2047, (bot.x >> 3) + 2); zx++) {
+        for (let zz = Math.max(0, (bot.z >> 3) - 2); zz <= Math.min(2047, (bot.z >> 3) + 2); zz++) {
+            const index = zx | (zz << 11) | (bot.level << 22);
+            const zone = zonemap.zones.get(index);
+            if (!zone) continue;
+            for (const loc of zone.getAllLocsSafe()) {
+                if (nearbyLocs.length >= 128) break;
+                if (loc.level !== bot.level ||
+                    Math.max(Math.abs(loc.x - bot.x), Math.abs(loc.z - bot.z)) > 16) continue;
+                const type = LocType.get(loc.type);
+                nearbyLocs.push({
+                    id: loc.type, x: loc.x, z: loc.z, name: type?.name ?? null,
+                    optionsWithIndex: (type?.op ?? []).flatMap((label, opIndex) =>
+                        label && label !== 'hidden' ? [{ text: label, opIndex: opIndex + 1 }] : [])
+                });
+            }
+            for (const obj of zone.getAllObjsSafe()) {
+                if (groundItems.length >= 128) break;
+                if (obj.level !== bot.level || !obj.isActive ||
+                    Math.max(Math.abs(obj.x - bot.x), Math.abs(obj.z - bot.z)) > 16 ||
+                    (obj.receiver64 !== -1n && obj.receiver64 !== bot.hash64)) continue;
+                const type = ObjType.get(obj.type);
+                groundItems.push({ id: obj.type, x: obj.x, z: obj.z,
+                    name: type?.name ?? null, count: obj.count });
+            }
+        }
+    }
+    // Same player visibility bitmap that the REAL 377 client renderer uses;
+    // don't enumerate hidden, distant, or unrelated players in the world.
+    const nearbyPlayers: Array<{
+        index: number; name: string; combatLevel: number; x: number; z: number
+    }> = [];
+    for (const other of World.players) {
+        if (nearbyPlayers.length >= 64) break;
+        if (!other || other.slot === bot.slot || other.level !== bot.level ||
+            !other.isActive || !other.isValid() ||
+            Math.max(Math.abs(other.x - bot.x), Math.abs(other.z - bot.z)) > 16 ||
+            !rsbuf.hasPlayer(bot.slot, other.slot)) continue;
+        nearbyPlayers.push({ index: other.slot, name: other.displayName,
+            combatLevel: other.combatLevel, x: other.x, z: other.z });
+    }
+
     // Dialogue is genuinely observable at the SERVER script layer, but
     // display text and option labels are client-side UI data. Do NOT invent
     // those labels; expose only actual pending component IDs and wait state.
@@ -318,9 +395,9 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         optionTextAvailable: false
     };
 
-    // Strictly expose only the selected bot's live fields. Quest stages,
-    // nearby objects, ground items and full RS-SDK UI state are NOT currently
-    // known at this source boundary: use null, never zero/default guesses.
+    // Strictly expose only the selected disposable bot and what its ordinary
+    // native client is entitled to see. Dialogue text, quest stages, full
+    // interface/bank/shop/combat state are not observable here; use null.
     const observation = {
         world: { mode: 'isolated', revision: 377, tickMs: 600,
             xpMultiplier: 1, instanceId: instanceId!, sourceSha: sourceSha! },
@@ -330,8 +407,7 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         skills,
         inventory: projectItems(inventory),
         equipment: projectItems(worn),
-        nearbyNpcs,
-        nearbyLocs: null, groundItems: null,
+        nearbyNpcs, nearbyLocs, groundItems, nearbyPlayers,
         dialogue, questStages: null, sdkDetails: null
     };
     reply.header('Cache-Control', 'no-store');
