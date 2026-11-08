@@ -47,7 +47,7 @@ class SwanSongFishingContract(unittest.TestCase):
     def test_quest_rewards_and_kill_transitions_are_stage_guarded(self):
         for queue, expected in (
             ("swan_troll_kill", "swansong_trolls"),
-            ("swan_queen_kill", "swansong_queen"),
+            ("swan_queen_kill", "swansong_army_deployed"),
             ("swansong_quest_complete", "swansong_return"),
         ):
             match = re.search(r"\[queue," + queue + r"\]([\s\S]*?)(?=\n\[|\Z)", MAIN)
