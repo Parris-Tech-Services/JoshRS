@@ -1,5 +1,15 @@
 # JoshRS 377 on Android: phone-local server foundation (8 Nov 2026)
 
+## 9 November 2026 — real model geometry and emulator integration
+
+- `Model377Codec.kt` independently reads the authentic classic 18-byte model footer, signed-smart delta vertices, triangle strips (1..4), and on-demand GZIP model archives. Invalid sizes, offsets, indices and excessive decompression are rejected.
+- A new privately imported `main_file_cache.idx1` pair can supply **real** model geometry. `Model377Viewer.kt` gives a perspective, draggable, untextured 3D mesh inspector (not the historical full renderer).
+- Android instrumentation runs on a genuine Android emulator and negotiates with a **real pinned revision-377 server** over `adb reverse`. It tests the app's actual response instead of a fake success page.
+- A separate genuine Windows GitHub runner compiles the same pinned 377 engine and tests the raw 17-byte login negotiation. These are two isolated runners, **not** an end-to-end direct Android-to-Windows network session.
+- The emulator drawing test uses a tiny original synthetic triangle solely to verify the graphics code. No upstream game cache/model is included in the APK.
+- Authenticated game login, full terrain/models/textures/animations, inventory/quests/combat visible in the client, one-APK embedded engine, and real phone play remain **OPEN**. Do not describe this as the finished JoshRS 377 Android app.
+
+
 ## Status: PARTIALLY COMPLETE — not a playable native 377 app yet
 
 The existing `android-client/` Kotlin project now has:
