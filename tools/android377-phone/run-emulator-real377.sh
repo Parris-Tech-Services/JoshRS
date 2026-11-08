@@ -76,6 +76,9 @@ gradle -p "$GITHUB_WORKSPACE/android-client" --no-daemon :app:connectedDebugAndr
 
 # Capture evidence of the actual APK opening on an emulator. A static UI
 # screenshot does NOT demonstrate authenticated game rendering.
+# Gradle connectedAndroidTest can uninstall the target app on completion.
+# Install the exact just-built debug APK before taking a screenshot.
+adb install -r "$GITHUB_WORKSPACE/android-client/app/build/outputs/apk/debug/app-debug.apk"
 adb shell am start -W -n au.com.parristech.joshrs.android/.MainActivity
 sleep 2
 adb exec-out screencap -p > "$status_dir/android-emulator-377-diagnostics.png"
