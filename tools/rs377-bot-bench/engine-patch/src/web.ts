@@ -11,12 +11,14 @@ import { CrcBuffer, CrcTable } from '#/cache/CrcTable.js';
 
 import OnDemand from '#/engine/OnDemand.js';
 import World from '#/engine/World.js';
+import Component from '#/cache/config/Component.js';
 import InvType from '#/cache/config/InvType.js';
+import VarPlayerType from '#/cache/config/VarPlayerType.js';
 import LocType from '#/cache/config/LocType.js';
 import NpcType from '#/cache/config/NpcType.js';
 import ObjType from '#/cache/config/ObjType.js';
 import Obj from '#/engine/entity/Obj.js';
-import { PlayerStatNameMap } from '#/engine/entity/PlayerStat.js';
+import { PlayerStat, PlayerStatNameMap } from '#/engine/entity/PlayerStat.js';
 import { isClientConnected } from '#/engine/entity/NetworkPlayer.js';
 import ScriptState from '#/engine/script/ScriptState.js';
 import * as rsbuf from '#/network/rsbuf/index.js';
@@ -290,6 +292,22 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         inv.items.flatMap((item, slot) =>
             item ? [{ slot, id: item.id, count: item.count }] : []) : [];
 
+    // The SDK's display names and item actions are part of the actual packed
+    // item config, not guessed from IDs. Fail closed if a config is unavailable.
+    const projectNamedItems = (inv: typeof inventory) => inv ?
+        inv.items.flatMap((item, slot) => {
+            if (!item) return [];
+            const config = ObjType.get(item.id);
+            if (!config || !config.name) return [];
+            const optionsWithIndex = (config.iop ?? []).flatMap((text, index) =>
+                text && text !== 'hidden' ? [{ text, opIndex: index + 1 }] : []);
+            return [{ slot, id: item.id, name: config.name,
+                count: item.count, optionsWithIndex }];
+        }) : [];
+    const namesKnown = (inv: typeof inventory) =>
+        !inv || inv.items.every(item => !item || !!ObjType.get(item.id)?.name);
+
+
     // Same visibility predicate as OpNpcHandler. Never list distant or
     // invisible NPCs or any other human player's state.
     const nearbyNpcs = [];
@@ -308,6 +326,68 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         });
     }
 
+    // Task 28: nearby human players are visible only when the same native
+    // rsbuf player-build predicate says this authenticated bot can see them.
+    // No bank, inventory, save data or hidden players leave the observer.
+    const nearbyPlayers: Array<Record<string, unknown>> = [];
+    for (const person of World.playerLoop.all()) {
+        if (nearbyPlayers.length >= 64) break;
+        if (person === bot || !person.isActive || person.level !== bot.level ||
+            !person.isValid() || !rsbuf.hasPlayer(bot.slot, person.slot)) continue;
+        const distance = Math.max(Math.abs(person.x - bot.x), Math.abs(person.z - bot.z));
+        if (distance > 16) continue;
+        nearbyPlayers.push({
+            kind: 'player', index: person.slot, name: person.username,
+            combatLevel: person.combatLevel, x: person.x, z: person.z, distance
+        });
+    }
+
+    // Prayer flags are 15 real native server varps, whose names and order
+    // match pinned Content scripts/skill_prayer/scripts/prayer.rs2 and
+    // upstream SDK sdk/types.ts PRAYER_NAMES. Missing config => unknown.
+    const prayerIds = Array.from({ length: 15 }, (_, index) =>
+        VarPlayerType.getId('prayer' + index));
+    const prayers = prayerIds.every(id => id >= 0) ? {
+        activePrayers: prayerIds.map(id => bot.vars[id] !== 0),
+        prayerPoints: bot.levels[PlayerStat.PRAYER],
+        prayerLevel: bot.baseLevels[PlayerStat.PRAYER]
+    } : null;
+
+    // The native server owns the modal identity and per-player bank items.
+    // Bank/shop are never read from another player's inventories. When an
+    // interface is open but pricing/text is not known, return NULL: never
+    // fabricate a trade price, client title or clickable dialogue option.
+    const bankRoot = Component.getId('bank_main');
+    const shopRoot = Component.getId('shop_template');
+    const mainModal = bot.modalMain;
+    const bankOpen = bankRoot >= 0 && mainModal === bankRoot;
+    const shopOpen = shopRoot >= 0 && mainModal === shopRoot;
+    const bankType = InvType.getId('bank');
+    const certVar = VarPlayerType.getId('bankcert');
+    const bankInventory = bankType < 0 ? undefined : bot.invs.get(bankType);
+    const bank = !bankOpen ? { isOpen: false, items: [], noteMode: false } :
+        bankType >= 0 && certVar >= 0 && bankInventory && namesKnown(bankInventory) ?
+        { isOpen: true, items: projectNamedItems(bankInventory)
+            .map(({ slot, id, name, count }) => ({ slot, id, name, count })),
+            noteMode: bot.vars[certVar] !== 0 } : null;
+    const shop = !shopOpen ? { isOpen: false, title: '',
+        shopItems: [], playerItems: [] } : null;
+    const interfaceState = mainModal === -1 ?
+        { isOpen: false, interfaceId: -1, options: [] } : null;
+
+    // Native PlayerState values we DO know, kept separate from still-unknown
+    // client-observed death lifecycle and combat target events. We deliberately
+    // do not populate SDK PlayerState until those required signals are proven.
+    const playerBase = {
+        name: botName!, combatLevel: bot.combatLevel,
+        hp: bot.levels[PlayerStat.HITPOINTS],
+        maxHp: bot.baseLevels[PlayerStat.HITPOINTS],
+        x: bot.x, z: bot.z, worldX: bot.x, worldZ: bot.z,
+        level: bot.level, runEnergy: bot.runenergy / 100,
+        runWeight: bot.runweight / 1000, animId: bot.animId,
+        spotanimId: bot.spotanimId,
+        isDead: bot.levels[PlayerStat.HITPOINTS] === 0
+    };
     // Task 27: native 377 *observed* locs and ground items. We use the
     // existing pinned ZoneMap.zones Map, rather than gameMap.getZone() which
     // silently allocates missing zones during an otherwise read-only request.
@@ -379,6 +459,18 @@ management.get('/dev/rs377-observe', async (req, reply) => {
     // Strictly expose only the selected bot's live fields. Quest stages
     // and full client-side RS-SDK UI remain unknown (null), never guessed.
     // Nearby objects/drops are grounded in the exact pinned native ZoneMap.
+    const sdkDetails = {
+        // Native values are always projected only from the authenticated bot.
+        // An incomplete required client-side signal is explicitly null.
+        player: null, playerBase, nearbyPlayers,
+        gameMessages: null, recentDialogs: null,
+        interface: interfaceState, shop, bank,
+        modalOpen: bot.modalMain !== -1 || bot.modalChat !== -1 || bot.modalSide !== -1,
+        modalInterface: mainModal !== -1 ? mainModal :
+            bot.modalChat !== -1 ? bot.modalChat : bot.modalSide,
+        combatEvents: null, prayers
+    };
+
     const observation = {
         world: { mode: 'isolated', revision: 377, tickMs: 600,
             xpMultiplier: 1, instanceId: instanceId!, sourceSha: sourceSha! },
@@ -390,7 +482,7 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         equipment: projectItems(worn),
         nearbyNpcs,
         nearbyLocs, groundItems,
-        dialogue, questStages: null, sdkDetails: null
+        dialogue, questStages: null, sdkDetails
     };
     reply.header('Cache-Control', 'no-store');
     return { token, sequence: World.currentTick, observation };
