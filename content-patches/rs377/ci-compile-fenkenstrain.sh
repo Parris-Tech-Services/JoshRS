@@ -20,6 +20,29 @@ done
 dest="$content/scripts/quests/quest_fenkenstrain"
 [[ ! -e "$dest" ]] || { echo "BLOCKED: pinned content already has a Fenkenstrain folder" >&2; exit 2; }
 cp -R "$quest/scripts/quests/quest_fenkenstrain" "$dest"
+# Only the reviewed, explicitly-allowlisted new dialogue files are installed
+# into this throwaway content checkout. Refuse duplicate scripts or existing
+# direct NPC handlers. The live Windows content directory is never accessed.
+ghost_rel="scripts/areas/area_ahoy/scripts/ahoy_ghost_dialogue_377.rs2"
+ghost_src="$quest/$ghost_rel"
+ghost_dst="$content/$ghost_rel"
+[[ -f "$ghost_src" && ! -e "$ghost_dst" ]] || { echo "BLOCKED: unexpected ghost dialogue overlay" >&2; exit 2; }
+python3 - "$content" "$ghost_src" <<'PY'
+import pathlib, re, sys
+root, overlay = map(pathlib.Path, sys.argv[1:])
+text = overlay.read_text()
+keys = re.findall(r"(?m)^\[opnpc1,([a-z0-9_]+)\]$", text)
+if len(keys) != 17 or len(set(keys)) != 17 or not all(x.startswith("ahoy_") for x in keys):
+    raise SystemExit(f"BLOCKED: expected 17 distinct ahoy NPC triggers, found {len(keys)}")
+for p in (root/"scripts").rglob("*.rs2"):
+    source = p.read_text(errors="replace")
+    for key in keys:
+        if re.search(r"(?m)^\[opnpc1,"+re.escape(key)+r"\]", source) or re.search(r"(?m)^\[apnpc1,"+re.escape(key)+r"\]", source):
+            raise SystemExit(f"BLOCKED: {key} already implemented in {p}")
+print("NPC_OVERLAY_CLEAN: 17 exact unhandled Port Phasmatys NPCs")
+PY
+mkdir -p "$(dirname "$ghost_dst")"
+cp "$ghost_src" "$ghost_dst"
 python - "$content" <<'PY'
 import pathlib, sys, re
 root=pathlib.Path(sys.argv[1])
