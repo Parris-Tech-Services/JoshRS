@@ -64,31 +64,6 @@ const readNext=async entry=>{
  throw new Error('bot_not_observed_'+entry.name);
 };
 const wireMessages=new WeakMap();
-async function connectController(entry){
- const runtime=createSdk377Runtime({
-  session:entry.session,
-  observer:createEngine377Observer({port:managementPort,token,botName:entry.name,expectedWorld}),
-  botName:entry.name,expectedWorld
- });
- entry.gateway=createSdk377WebSocket({
-  runtime,botName:entry.name,
-  token:randomBytes(32).toString('hex'),
-  stateIntervalMs:650
- });
- await entry.gateway.listen(entry.port);
- const ws=new WebSocket('ws://127.0.0.1:'+entry.port+'/gateway');
- entry.socket=ws;
- const messages=[];
- wireMessages.set(ws,messages);
- ws.addEventListener('message',event=>{try{messages.push(JSON.parse(event.data))}catch{}});
- await new Promise((resolve,reject)=>{
-  const timer=setTimeout(()=>reject(new Error('ws_open_timeout')),3000);
-  ws.addEventListener('open',()=>{clearTimeout(timer);resolve()},{once:true});
-  ws.addEventListener('error',()=>{clearTimeout(timer);reject(new Error('ws_transport_error'))},{once:true});
- });
- ws.send(JSON.stringify({type:'sdk_connect',username:entry.name,
-   password:entry.gatewayToken ?? '', clientId:'ci-dual-'+entry.name,mode:'control'}));
-}
 async function nextReply(entry,pred,timeout=8000) {
  const deadline=Date.now()+timeout;
  while(Date.now()<deadline){
