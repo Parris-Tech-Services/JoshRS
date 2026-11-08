@@ -119,6 +119,42 @@ quest folders + the Morytania addendum files: BUILD_VERIFY compile exit 0 and
 smoke_377.py green. CI script updated to 22 patches / 18 folders / 18 quest-list
 keys / 17 permanent varp blocks.
 
+## Batch 4 - next-oldest not-started quests (2026-11-08, quest audit round 2 continued)
+
+Six more quests, all JoshRS-original reconstructions in the established pattern. The parallel
+session's open PR #148 covers the STUB quests (RFD intro, Cabin Fever, Recruitment Drive,
+Mourning's End II, Monkey Madness), so this batch took the next not-started quests that
+nobody had claimed:
+
+| Folder | Quest | Released | Varp | Start NPC |
+|---|---|---|---|---|
+| quest_forget | Forgettable Tale of a Drunken Dwarf | 2005-07-04 | forget_main_var | Black Guard officer (dwarf_city_black_guard1; Veldaban has no cache NPC) |
+| quest_garden | Garden of Tranquillity | 2005-07-18 | garden_varp_1 | Queen Ellamaria (queen_ellamaria) |
+| quest_twocats | A Tail of Two Cats | 2005-07-25 | twocats_varbit (varp id 568, despite the name) | Unferth (twocats_unferth) |
+| quest_wanted | Wanted! | 2005-08-08 | quest_wanted | the Savant (wanted_savant; Sir Tiffy Cashien has no cache NPC) |
+| quest_deal | Rum Deal | 2005-08-30 | deal_quest | Pirate Pete (deal_pete) |
+| quest_agrith | Shadow of the Storm | 2005-09-05 | agrith_quest_varp | Father Reen (agrith_reen_alkharid) |
+
+New patches (anchored on the post-0022 state):
+- `0023-batch4-quest-varps-permanent.patch` - scope=perm on the six quest varps in all.varp.
+- `0024-register-batch4-quests.patch` - 6 QP blocks + 6 quest-list colour lines in quests.rs2.
+- No handler-extension patch this time: every start NPC was a fresh cache NPC with no
+  existing opnpc1 (checked against the whole scripts tree first). stanford_the_gardener is
+  owned by quest_murder, so quest_garden uses misc_gardener for the seed-giver.
+
+New engine facts: `&&` does not appear in any real script - compound conditions must be
+nested ifs. No `return;` inside switch cases in existing quests either; use if/else chains
+inside the case instead. Combat quests follow the Feud pattern: [opnpc1,boss] spawns the
+attackable via npc_add(movecoord(npc_coord, 1, 0, 0), name, 1000) + npc_setmode(opplayer2),
+death is detected in [ai_queue3,name] with ~npc_default_death and an npc_findhero guard,
+and the varp advance happens in a [queue,...] script. quest_wanted uses this pattern for
+Solus Dellagar (wanted_solus_attackable).
+
+Verification: full chain 0001-0024 applied in order on a pristine pin clone + all 24 quest
+folders + the Morytania addendum files -> BUILD_VERIFY compile exit 0 (12.7s pack) and
+smoke_377.py green. CI script updated to 24 patches / 24 folders / 24 quest-list keys /
+23 permanent varp blocks.
+
 New engine facts: NPC trigger names resolve via npc.pack names (`[opnpc1,<name>]`); cache
 quest NPCs exist with quest prefixes (favour_*, dwarfrock_*, feud_*, zogre_*, dwarf_city_*,
 tog_*) and quest items in obj.pack - checked all referenced names against both packs and

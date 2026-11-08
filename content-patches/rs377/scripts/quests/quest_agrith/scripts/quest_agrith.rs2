@@ -1,0 +1,95 @@
+// Shadow of the Storm - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp agrith_quest_varp (batch-4 patch).
+// NOT IMPLEMENTED: the demon-summoning ritual fight and the clay golem; the chain here
+// is a condensed reconstruction. Rewards: 1 quest point and Silverlight (dyed black).
+// Father Reen recruits you to investigate a demon cult at the Uzer dig site.
+
+// Father Reen - outside the Al Kharid gates.
+[opnpc1,agrith_reen_alkharid]
+switch_int (%agrith_quest_varp) {
+    case ^as_not_started :
+        ~chatnpc("<p,neutral>You there! You look like you can handle yourself.|A colleague of mine, Father Badden, has gone to|the dig site at Uzer, east of the desert. There are|whispers of a cult summoning something that should|stay un-summoned. Go and help him. Saradomin be with you.");
+        %agrith_quest_varp = ^as_uzer;
+        ~send_quest_progress(questlist:agrith, %agrith_quest_varp, ^as_complete);
+    case ^as_uzer :
+        ~chatnpc("<p,neutral>Father Badden is at the Uzer dig site, east of|the desert. Follow the road past the Shantay Pass.");
+    case default :
+        ~chatnpc("<p,neutral>The Lord Saradomin protects those who|face the darkness. Even in the desert.");
+}
+
+// Father Badden - Uzer dig site.
+[opnpc1,agrith_reen_uzer]
+switch_int (%agrith_quest_varp) {
+    case ^as_uzer :
+        ~chatnpc("<p,neutral>Thank Saradomin - Father Reen sent you?|The cultists gather in the ruins at night.|They mean to summon a demon - Agrith-Naar, the|storm-shadow. There is an old blade that can|harm him: Silverlight. Bring it to me and|I'll see it dyed black for the ritual.");
+        %agrith_quest_varp = ^as_silverlight;
+        ~send_quest_progress(questlist:agrith, %agrith_quest_varp, ^as_complete);
+    case ^as_silverlight :
+        if (inv_total(inv, silverlight) > 0) {
+            ~chatnpc("<p,neutral>Silverlight itself! Give it here.|(Father Badden paints the blade with ash and|grave-soil until it drinks the light.)|There - black as the thing it must bite.|Now, the summoning needs a sigil. Take this|mould and a silver bar, and carve it.");
+            inv_del(inv, silverlight, 1);
+            inv_add(inv, agrith_silverlight_dyed, 1);
+            inv_add(inv, agrith_sigil_mould, 1);
+            %agrith_quest_varp = ^as_sigil;
+            ~send_quest_progress(questlist:agrith, %agrith_quest_varp, ^as_complete);
+            mes("Father Badden returns Silverlight, dyed black, and gives you a sigil mould.");
+        } else {
+            ~chatnpc("<p,neutral>Without Silverlight, the demon cannot be hurt.|The sword of legend - a hero should know where|to find one.");
+        }
+    case ^as_sigil :
+        if (inv_total(inv, agrith_sigil) > 0) {
+            ~chatnpc("<p,neutral>The sigil, carved true. Good.|One thing more: the cult's book of rites.|Read it - know what they intend - and bring|the dyed blade and the sigil back to me.");
+            inv_del(inv, agrith_sigil, 1);
+            inv_add(inv, agrith_book, 1);
+            %agrith_quest_varp = ^as_book;
+            ~send_quest_progress(questlist:agrith, %agrith_quest_varp, ^as_complete);
+            mes("Father Badden takes the sigil and gives you the cult's book of rites.");
+        } else {
+            ~chatnpc("<p,neutral>Use the mould on a silver bar, and carve|the sigil. The cult's own symbols are on|the mould - copy them true.");
+        }
+    case ^as_book :
+        if (inv_total(inv, agrith_book) > 0) {
+            if (inv_total(inv, agrith_silverlight_dyed) > 0) {
+                ~chatnpc("<p,neutral>You've read it, then. 'In the storm's shadow,|the dark blade drinks'... it is enough.|(Father Badden speaks a word of sealing over|the sigil and the book, and the night grows|suddenly quiet.)|The ritual is broken. Agrith-Naar stays|un-summoned, and the storm passes over Uzer.|The black blade is yours - it has earned a|better master than the cult.");
+                queue(as_complete, 0, 0);
+            } else {
+                ~chatnpc("<p,neutral>Keep the black blade with you when you|finish this. The rite binds them together.");
+            }
+        } else {
+            ~chatnpc("<p,neutral>Read the book, then return. Knowledge is|Saradomin's shield here.");
+        }
+    case default :
+        ~chatnpc("<p,neutral>The storm has passed over Uzer, and the desert|is quiet. For now.");
+}
+
+// Read the cult's book of rites.
+[opheld1,agrith_book]
+mes("The book of rites reads: 'In the storm's shadow the dark blade drinks,|and the sigil of the storm names him. Agrith-Naar,|shadow of the storm, come when the sigil is shown.'|The rest of the pages are scorched blank.");
+
+// Carve the sigil from the mould and a silver bar.
+[opheld1,agrith_sigil_mould]
+if (inv_total(inv, silver_bar) > 0) {
+    inv_del(inv, silver_bar, 1);
+    inv_del(inv, agrith_sigil_mould, 1);
+    inv_add(inv, agrith_sigil, 1);
+    mes("You press the mould into the silver bar and carve the cult's sigil.");
+} else {
+    mes("I need a silver bar to carve the sigil.");
+}
+
+[queue,as_complete]
+%agrith_quest_varp = ^as_complete;
+session_log(^log_adventure, "Quest complete: Shadow of the Storm");
+~send_quest_complete(questlist:agrith, agrith_silverlight_dyed, 200, ^as_questpoints, "You have completed Shadow of the Storm!", "1 quest point and black Silverlight");
+
+[if_button,questlist:agrith]
+def_string $text;
+switch_int (%agrith_quest_varp) {
+    case ^as_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Father Reen@dbl@ outside the Al Kharid gates.";
+    case ^as_uzer : $text = "@str@Father Reen sent me to help Father Badden.||@dbl@I should find @dre@Father Badden@dbl@ at the Uzer dig site.";
+    case ^as_silverlight : $text = "@str@A cult means to summon the demon Agrith-Naar.||@dbl@I should bring @dre@Silverlight@dbl@ to @dre@Father Badden@dbl@.";
+    case ^as_sigil : $text = "@str@Father Badden dyed Silverlight black.||@dbl@I should carve a @dre@sigil@dbl@ using the mould and a @dre@silver bar@dbl@.";
+    case ^as_book : $text = "@str@The sigil is carved and Badden gave me the cult's book.||@dbl@I should read the @dre@book of rites@dbl@ and return with the black blade.";
+    case default : $text = "@str@The summoning ritual is broken.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Shadow of the Storm", $text);

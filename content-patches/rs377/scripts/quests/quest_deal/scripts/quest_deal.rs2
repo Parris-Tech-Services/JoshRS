@@ -1,0 +1,116 @@
+// Rum Deal - JoshRS original chain on 377 cache items/NPCs.
+// Original JoshRS content. Persistence: add scope=perm to cache varp deal_quest (batch-4 patch).
+// NOT IMPLEMENTED: the zombie pirate siege and the fever spider fight; the chain here
+// is a condensed reconstruction. Rewards: 2 quest points.
+// Pirate Pete ferries you to Braindeath Island, where Captain Braindeath brews 'rum'.
+
+// Pirate Pete - Port Phasmatys dock.
+[opnpc1,deal_pete]
+switch_int (%deal_quest) {
+    case ^dl_not_started :
+        ~chatnpc("<p,neutral>Arr, looking for passage, are ye? Captain Braindeath|needs a helper on his island - pays in 'rum'.|Fair warning: the stuff he brews there could strip|paint off a hull. Hop in the boat.");
+        %deal_quest = ^dl_island;
+        ~send_quest_progress(questlist:deal, %deal_quest, ^dl_complete);
+    case ^dl_island :
+        ~chatnpc("<p,neutral>Off to Braindeath Island with ye. The Captain's|in the brewery at the top o' the hill.");
+    case default :
+        ~chatnpc("<p,neutral>Arr. Best of luck with that 'rum'. If ye survive|the tasting, that is.");
+}
+
+// Captain Braindeath - the brewer.
+[opnpc1,deal_captian_braindeath]
+switch_int (%deal_quest) {
+    case ^dl_island :
+        ~chatnpc("<p,angry>Arrr! A new hand! Listen close, shipmate.|Me 'rum' needs three things before it'll brew proper:|a fresh blindweed, a bucket o' stagnant water,|and me wrench - blessed, mind, or the brewing|won't work. 50% Luke keeps the blindweed seeds.|Off with ye!");
+        %deal_quest = ^dl_blindweed;
+        ~send_quest_progress(questlist:deal, %deal_quest, ^dl_complete);
+    case ^dl_blindweed :
+        if (inv_total(inv, deal_blindweed) > 0) {
+            ~chatnpc("<p,angry>Blindweed! Fresh as a dead man's promise.|Chuck it in the hopper. Now - stagnant water.|There's a swampy patch by the still, fill a bucket.");
+            inv_del(inv, deal_blindweed, 1);
+            inv_add(inv, deal_stagnant_bucket, 1);
+            %deal_quest = ^dl_stagnant;
+            ~send_quest_progress(questlist:deal, %deal_quest, ^dl_complete);
+            mes("Captain Braindeath tosses the blindweed in the hopper and hands you an empty bucket.");
+        } else {
+            ~chatnpc("<p,angry>Where's me blindweed? Talk to 50% Luke -|he's got the seeds. He's the fella what's|half on fire.");
+        }
+    case ^dl_stagnant :
+        if (inv_total(inv, deal_stagnant_bucket) > 0) {
+            ~chatnpc("<p,angry>That's the stuff - proper stagnant, that is.|Smells like home. Now the last bit: me wrench|needs blessing. Davey's the man - he owes me|a favour or twelve.");
+            inv_del(inv, deal_stagnant_bucket, 1);
+            inv_add(inv, deal_wrench, 1);
+            %deal_quest = ^dl_blessed;
+            ~send_quest_progress(questlist:deal, %deal_quest, ^dl_complete);
+            mes("Captain Braindeath pours the stagnant water in and hands you his wrench.");
+        } else {
+            ~chatnpc("<p,angry>Ye poured it out?! Fill the bucket again at|the swampy patch by the still!");
+        }
+    case ^dl_blessed :
+        ~chatnpc("<p,angry>Where's me blessed wrench? Davey!|He's the holy fella by the pen.");
+    case ^dl_brew :
+        if (inv_total(inv, deal_wrench_blessed) > 0) {
+            ~chatnpc("<p,angry>Blessed wrench! That'll do it.|(The Captain wrenches the still one last time, and|the 'rum' begins to bubble and churn.)|ARRR! It lives! 'Tis done, shipmate - the finest|'rum' ever brewed, near enough. Have yerself|a bottle on me.");
+            inv_del(inv, deal_wrench_blessed, 1);
+            queue(dl_complete, 0, 0);
+        } else {
+            ~chatnpc("<p,angry>Where's me blessed wrench? Davey!|He's the holy fella by the pen.");
+        }
+    case default :
+        ~chatnpc("<p,neutral>Arrr, the 'rum' is flowing and the crew is happy.|Best not ask what's in it.");
+}
+
+// 50% Luke - half on fire, keeper of the blindweed seeds.
+[opnpc1,deal_50luke]
+if (%deal_quest = ^dl_blindweed) {
+    if (inv_total(inv, deal_blindweed_seed) > 0) {
+        ~chatnpc("<p,neutral>Ye've got the seed already, matey.|Plant it in the farming patch and bring the|Captain what grows.");
+    } else {
+        ~chatnpc("<p,neutral>Blindweed seed, is it? Aye, I've got one.|Mind ye plant it proper - the stuff only grows|on this island. Don't ask how I know.");
+        inv_add(inv, deal_blindweed_seed, 1);
+        mes("50% Luke gives you a blindweed seed.");
+    }
+} else {
+    ~chatnpc("<p,neutral>(Half of Luke nods at you. The other half smoulders.)");
+}
+
+// Plant the blindweed seed.
+[opheld1,deal_blindweed_seed]
+inv_del(inv, deal_blindweed_seed, 1);
+inv_add(inv, deal_blindweed, 1);
+mes("You plant the blindweed seed in the island's farming patch. It grows with unnatural speed, and you pick the herb.");
+
+// Davey - blesses the Captain's wrench.
+[opnpc1,deal_davey]
+if (%deal_quest = ^dl_blessed) {
+    if (inv_total(inv, deal_wrench) > 0) {
+        ~chatnpc("<p,neutral>A blessing, on a wrench? I've blessed boats,|boots and one very confused seagull, so why not.|(Davey murmurs a prayer over the wrench.)|There. Holy as a hammer gets.");
+        inv_del(inv, deal_wrench, 1);
+        inv_add(inv, deal_wrench_blessed, 1);
+        %deal_quest = ^dl_brew;
+        ~send_quest_progress(questlist:deal, %deal_quest, ^dl_complete);
+        mes("Davey blesses Captain Braindeath's wrench.");
+    } else {
+        ~chatnpc("<p,neutral>Bring me the wrench itself, and I'll bless it.|The Captain's always losing the thing.");
+    }
+} else {
+    ~chatnpc("<p,neutral>The Lord's blessing on ye, stranger. And on|whatever it is the Captain's brewing.");
+}
+
+[queue,dl_complete]
+%deal_quest = ^dl_complete;
+session_log(^log_adventure, "Quest complete: Rum Deal");
+~send_quest_complete(questlist:deal, deal_wrench_blessed, 200, ^dl_questpoints, "You have completed Rum Deal!", "2 quest points");
+
+[if_button,questlist:deal]
+def_string $text;
+switch_int (%deal_quest) {
+    case ^dl_not_started : $text = "@dbl@I can start this quest by speaking to @dre@Pirate Pete@dbl@ at the Port Phasmatys dock.";
+    case ^dl_island : $text = "@str@Pirate Pete ferried me to Braindeath Island.||@dbl@I should speak to @dre@Captain Braindeath@dbl@ in the brewery.";
+    case ^dl_blindweed : $text = "@str@The Captain needs blindweed, stagnant water and a blessed wrench.||@dbl@I should get a @dre@blindweed seed@dbl@ from @dre@50% Luke@dbl@ and plant it.";
+    case ^dl_stagnant : $text = "@str@The blindweed is in the hopper.||@dbl@I should fill the bucket with @dre@stagnant water@dbl@ and bring it to the Captain.";
+    case ^dl_blessed : $text = "@str@The still is filled.||@dbl@I should have @dre@Davey@dbl@ bless the @dre@Captain's wrench@dbl@.";
+    case ^dl_brew : $text = "@str@The wrench is blessed.||@dbl@I should bring the @dre@blessed wrench@dbl@ back to @dre@Captain Braindeath@dbl@.";
+    case default : $text = "@str@The 'rum' is brewed.||@red@QUEST COMPLETE!";
+}
+~quest_journal("Rum Deal", $text);

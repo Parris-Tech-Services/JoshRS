@@ -1,0 +1,48 @@
+--- a/scripts/_unpack/377/all.varp
++++ b/scripts/_unpack/377/all.varp
+@@ -969,6 +969,7 @@
+ transmit=yes
+ 
+ [forget_main_var]
++scope=perm
+ transmit=yes
+ 
+ [varp_522]
+@@ -1048,6 +1049,7 @@
+ protect=no
+ 
+ [garden_varp_1]
++scope=perm
+ transmit=yes
+ 
+ [garden_varp_2]
+@@ -1082,6 +1084,7 @@
+ [varp_567]
+ 
+ [twocats_varbit]
++scope=perm
+ transmit=yes
+ 
+ [varp_569]
+@@ -1089,6 +1092,7 @@
+ [varp_570]
+ 
+ [quest_wanted]
++scope=perm
+ transmit=yes
+ 
+ [quest_wanted2]
+@@ -1164,11 +1168,13 @@
+ transmit=yes
+ 
+ [deal_quest]
++scope=perm
+ 
+ [deal_var]
+ transmit=yes
+ 
+ [agrith_quest_varp]
++scope=perm
+ transmit=yes
+ 
+ [varp_603]
