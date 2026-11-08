@@ -29,6 +29,7 @@ export function createSdk377Runtime({session,observer,botName,expectedWorld,clie
    if(actionInFlight)throw new Error('concurrent_sdk_action_refused');
    actionInFlight=true;
    try {
+    if(typeof session.refresh==='function')await session.refresh();
     if(session.status().authenticated!==true)throw new Error('native_session_not_authenticated');
     const snapshot=await observe();
     const mapped=mapSdkAction(action,snapshot);
