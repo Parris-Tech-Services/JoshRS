@@ -59,8 +59,9 @@ if (%quest_wanted = ^w_fight) {
     %quest_wanted = ^w_complete;
     inv_add(inv, wanted_solus_trophy, 1);
     mes("Solus Dellagar falls. You take a trophy for the Temple Knight armoury.");
+    stat_advance(slayer, 50000);
     session_log(^log_adventure, "Quest complete: Wanted!");
-    ~send_quest_complete(questlist:wanted, wanted_solus_trophy, 200, ^w_questpoints, "You have completed Wanted!", "1 quest point");
+    ~send_quest_complete(questlist:wanted, wanted_solus_trophy, 200, ^w_questpoints, "You have completed Wanted!", "1 Quest Point|5,000 Slayer XP");
 }
 
 [if_button,questlist:wanted]
