@@ -1,0 +1,98 @@
+diff --git a/scripts/areas/area_varrock/scripts/captain_rovin.rs2 b/scripts/areas/area_varrock/scripts/captain_rovin.rs2
+--- a/scripts/areas/area_varrock/scripts/captain_rovin.rs2
++++ b/scripts/areas/area_varrock/scripts/captain_rovin.rs2
+@@ -38,7 +38,15 @@
+         ~chatnpc("<p,shock>What, all by yourself? How are you going to do that?");
+         ~chatplayer("<p,neutral>I'm going to use the powerful sword Silverlight, which I believe you have one of the keys for?");
+         // RSC let you repeat this OSRS is what added blocks
+-        ~chatnpc("<p,quiz>Yes you are right. Here you go.");
++        if (inv_total(inv, silverlight_key_2) > 0 | inv_total(bank, silverlight_key_2) > 0) {
++            ~chatnpc("<p,neutral>I've already entrusted you with my key. Check your belongings before asking again.");
++            return;
++        }
++        if (inv_freespace(inv) < 1) {
++            ~chatnpc("<p,neutral>Make some room in your pack before I give you the key.");
++            return;
++        }
++        ~chatnpc("<p,quiz>Yes you are right. Here you go.");
+         if_close();
+         p_delay(2);
+         mes("Captain Rovin hands you a key.");
+diff --git a/scripts/quests/quest_demon/scripts/demon_slayer.rs2 b/scripts/quests/quest_demon/scripts/demon_slayer.rs2
+--- a/scripts/quests/quest_demon/scripts/demon_slayer.rs2
++++ b/scripts/quests/quest_demon/scripts/demon_slayer.rs2
+@@ -25,7 +25,11 @@
+     ~displaymessage(^dm_default);
+     return;
+ }
+-mes("You pour the liquid down the drain.");
++if (%demonstart < ^demon_key_hunt) {
++    mes("I should speak to Sir Prysin about the missing key before doing this.");
++    return;
++}
++mes("You pour the liquid down the drain.");
+ inv_del(inv, bucket_water, 1);
+ inv_add(inv, bucket_empty, 1);
+ if ((%demonstart > ^demon_silverlight) | inv_total(inv, silverlight_key_3) > 0 | inv_total(bank, silverlight_key_3) > 0) {
+diff --git a/scripts/areas/area_varrock/scripts/sir_prysin.rs2 b/scripts/areas/area_varrock/scripts/sir_prysin.rs2
+--- a/scripts/areas/area_varrock/scripts/sir_prysin.rs2
++++ b/scripts/areas/area_varrock/scripts/sir_prysin.rs2
+@@ -203,7 +203,11 @@
+     else if ($option = 2){
+         ~chatplayer("<p,sad>No, I'm afraid I've lost Silverlight.");
+         // osrs dialogue
+-        ~chatnpc("<p,neutral>Yes, I know, someone returned it to me. |Take better care of it this time.");
++        if (inv_freespace(inv) < 1) {
++            ~chatnpc("<p,neutral>Make room in your pack and ask me again for Silverlight.");
++            return;
++        }
++        ~chatnpc("<p,neutral>Yes, I know, someone returned it to me. |Take better care of it this time.");
+         inv_add(inv, silverlight, 1);
+     }
+ }
+@@ -253,7 +257,11 @@
+ 
+ [label,demon_slayer_buy_silverlight]
+ ~chatplayer("<p,neutral>Okay, I'll pay.");
+-if (inv_total(inv, coins) >= 500){
++if (inv_total(inv, coins) >= 500){
++    if (inv_freespace(inv) < 1 & inv_total(inv, coins) > 500) {
++        ~chatnpc("<p,neutral>Make room in your pack before paying for another Silverlight.");
++        return;
++    }
+     inv_del(inv, coins, 500);
+     inv_add(inv, silverlight, 1);
+     ~chatnpc("May you make good use of it.");
+diff --git a/scripts/skill_combat/scripts/npc/npc_combat.rs2 b/scripts/skill_combat/scripts/npc/npc_combat.rs2
+--- a/scripts/skill_combat/scripts/npc/npc_combat.rs2
++++ b/scripts/skill_combat/scripts/npc/npc_combat.rs2
+@@ -156,8 +156,12 @@
+     return (false);
+ }
+ 
+-if (npc_type = delrith) {
+-    if (%demonstart >= ^demon_complete) {
++if (npc_type = delrith) {
++    if (%demonstart < ^demon_silverlight) {
++        mes("I should recover Silverlight and prepare for Delrith before fighting him.");
++        return(false);
++    }
++    if (%demonstart >= ^demon_complete) {
+         mes("You've already done that quest.");
+         return(false);
+     }
+@@ -240,8 +244,12 @@
+     mes("You've done enough vampire slaying.");
+     return(false);
+ }
+-if (npc_type = delrith) {
+-    if (%demonstart >= ^demon_complete) {
++if (npc_type = delrith) {
++    if (%demonstart < ^demon_silverlight) {
++        mes("I should recover Silverlight and prepare for Delrith before fighting him.");
++        return(false);
++    }
++    if (%demonstart >= ^demon_complete) {
+         mes("You've already done that quest.");
+         return(false);
+     }
