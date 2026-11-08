@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Static symbol check for the six-quest rs2 drafts (swansong, 100/RFD, fever, rd, mourning2, mm).
+"""Static symbol check for the five-quest rs2 drafts (100/RFD, fever, rd, mourning2, mm).
 Reads files as data only; executes nothing external. Same rules as check_fenk_symbols.py,
-extended to cover the six quest overlays plus the three patched dialogue scripts."""
+extended to cover the five quest overlays plus the three patched dialogue scripts."""
 import os, re, sys, glob
 
 C = os.environ.get("SIXQUEST_CONTENT", "/tmp/pinned/lc-content")  # pinned LostCityRS/Content checkout
 BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-QUESTS = ["quest_swansong", "quest_100", "quest_fever", "quest_rd", "quest_mourning2", "quest_mm"]
+QUESTS = ["quest_100", "quest_fever", "quest_rd", "quest_mourning2", "quest_mm"]
 
 def pack_names(name):
     out = set()

@@ -1,14 +1,11 @@
 diff --git a/scripts/general/scripts/quests.rs2 b/scripts/general/scripts/quests.rs2
-index 68f76e19..222e4002 100644
+index 68f76e19..cf735da6 100644
 --- a/scripts/general/scripts/quests.rs2
 +++ b/scripts/general/scripts/quests.rs2
-@@ -246,6 +246,21 @@ if (%troll_love = ^troll_love_complete) {
+@@ -246,6 +246,18 @@ if (%troll_love = ^troll_love_complete) {
  if (%golem_a = ^golem_complete) {
      $questpoints = add($questpoints, ^golem_questpoints);
  }
-+if (%swansong = ^swansong_complete) {
-+    $questpoints = add($questpoints, ^swansong_questpoints);
-+}
 +if (%fever_quest = ^fever_complete) {
 +    $questpoints = add($questpoints, ^fever_questpoints);
 +}
@@ -24,11 +21,12 @@ index 68f76e19..222e4002 100644
  return ($questpoints);
  
  [proc,update_questlist]
-@@ -318,6 +333,14 @@ if (testbit(%ibanmulti, ^upass_started_bit) = ^true & %upass ! ^upass_complete)
+@@ -318,6 +330,15 @@ if (testbit(%ibanmulti, ^upass_started_bit) = ^true & %upass ! ^upass_complete)
  ~send_quest_progress_colour(questlist:troll, %troll_quest, ^troll_complete);
  ~send_quest_progress_colour(questlist:troll_love, %troll_love, ^troll_love_complete);
  ~send_quest_progress_colour(questlist:golem, %golem_a, ^golem_complete);
-+~send_quest_progress_colour(questlist:swansong, %swansong, ^swansong_complete);
++// Swan Song is registered by the batch-quests bundle (JOSHRS_BATCH_QUESTS_NOTES.md); this
++// bundle covers RFD intro, Cabin Fever, Recruitment Drive, Mourning's End II, Monkey Madness.
 +// RFD intro scaffold: colour only turns green at ^rfd_full_complete (unreachable while the
 +// eight chapters remain unimplemented); no QP awarded for the intro chapter.
 +~send_quest_progress_colour(questlist:hundred_main, %rfd_quest, ^rfd_full_complete);

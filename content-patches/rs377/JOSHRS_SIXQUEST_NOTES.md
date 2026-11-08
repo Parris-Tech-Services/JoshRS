@@ -1,19 +1,28 @@
-# Six quests — disposable revision-377 build handoff
+# Five quests — disposable revision-377 build handoff
 Updated 8 November 2026
 
-**State: COMPILED NATIVELY (local disposable build against both pins).**
-This bundle ports the quest scaffolding for the six newest un-implemented quests
-in the JoshRS 377 world — **Swan Song, Recipe for Disaster (intro chapter),
-Cabin Fever, Recruitment Drive, Mourning's End Part II, and Monkey Madness** —
-following the Fenkenstrain overlay pipeline (PR #136). **Not yet verified by an
-ordinary end-to-end player quest playthrough. Not installed in the live JoshRS
-family world.**
+**State: COMPILED NATIVELY (local disposable build and GitHub Actions against both pins).**
+This bundle ports the quest scaffolding for five of the six newest un-implemented quests
+in the JoshRS 377 world — **Recipe for Disaster (intro chapter), Cabin Fever, Recruitment
+Drive, Mourning's End Part II, and Monkey Madness** — following the Fenkenstrain overlay
+pipeline (PR #136). **Not yet verified by an ordinary end-to-end player quest playthrough.
+Not installed in the live JoshRS family world.**
 
-## Why these six
+## Why these quests
 
-- **Swan Song** (May 2006) had no presence at all: no quest folder, no journal.
-- The other five existed in the pinned content only as config-only stubs
-  (a `configs/*.loc` file each, no scripts, no journal, no registration).
+- Each existed in the pinned content only as a config-only stub (a `configs/*.loc`
+  file, no scripts, no journal, no registration).
+
+## Swan Song is not in this bundle
+
+Swan Song (the sixth of the six originally identified) is now owned by the
+batch-quests bundle merged to main (PR #147, `quest_swansong/` with its own
+stage scale 10-100, fresh-monkfish fishing/cooking slice, and registration in
+patch 0007). Registering it here as well would double-award its quest points,
+so this bundle deliberately excludes it: no swansong QP/colour lines, no
+`quest_swansong` folder, and `swansong_quest` stays in `all.varp` for the batch
+bundle to own. Known gap in the batch bundle that this PR does not fill: it
+ships no quest journal script (`[if_button,questlist:swansong]`).
 
 ## Reproducible source and build
 
@@ -21,27 +30,28 @@ family world.**
 - Pinned Engine: `LostCityRS/Engine-TS@b5ac859b47915afb545e60e4c1208f25d43cb3fb`.
 - `.github/workflows/sixquests-disposable-377.yml` clones both immutable pins
   to a disposable Actions runner and runs the real `npm ci && npm run build`
-  with `BUILD_VERIFY=true` and `BUILD_VERIFY_PACK=true`.
-- `ci-compile-sixquests.sh` applies five guarded text-only patches on that
-  disposable content copy only, merges the six quest folders into the five
-  existing stubs (Swan Song is new), verifies unique permanent transmitted
-  varps, surviving upstream `.loc` stubs, single quest-list registrations, and
-  runs the static symbol checker over all six overlays plus the three patched
-  dialogue scripts.
+  with `BUILD_VERIFY=true` and `BUILD_VERIFY_PACK=true`. It triggers on
+  pull requests and branch pushes touching `content-patches/rs377/**`.
+- `ci-compile-sixquests.sh` applies six guarded text-only patches on that
+  disposable content copy only, merges the five quest folders into the four
+  existing stubs, verifies unique permanent transmitted varps, surviving
+  upstream `.loc` stubs, single quest-list registrations, no swansong
+  re-registration, and runs the static symbol checker over all five overlays
+  plus the three patched dialogue scripts.
 
 ## Patches
 
-- **1001** — registers the six quests in `scripts/general/scripts/quests.rs2`:
-  quest points for Swan Song (2), Cabin Fever (2), Recruitment Drive (1),
-  Mourning's End Part II (2), Monkey Madness (3), and quest-list colour lines
-  for all six. RFD gets a colour line but **no quest points yet**: the colour
-  only turns green at `^rfd_full_complete = 255`, which no script sets until
-  the eight chapters and the Culinaromancer are implemented.
-- **1002** — moves the five cache varps (`swansong_quest`, `fever_quest`,
-  `recruitmentdrive`, `mourning_quest_part2`, `mm_main`) out of
-  `scripts/_unpack/377/all.varp` into their quest configs with `scope=perm`
-  and `transmit=yes`, so the cache's client-side varbits on them keep
-  resolving while the definitions become quest-owned.
+- **1001** — registers the five quests in `scripts/general/scripts/quests.rs2`:
+  quest points for Cabin Fever (2), Recruitment Drive (1), Mourning's End
+  Part II (2), Monkey Madness (3), and quest-list colour lines for all five.
+  RFD gets a colour line but **no quest points yet**: the colour only turns
+  green at `^rfd_full_complete = 255`, which no script sets until the eight
+  chapters and the Culinaromancer are implemented.
+- **1002** — moves the four cache varps (`fever_quest`, `recruitmentdrive`,
+  `mourning_quest_part2`, `mm_main`) out of `scripts/_unpack/377/all.varp`
+  into their quest configs with `scope=perm` and `transmit=yes`, so the
+  cache's client-side varbits on them keep resolving while the definitions
+  become quest-owned.
 - **1006** — claims the cache's real RFD main var (id 678, upstream
   placeholder name `100intro`, which RuneScript cannot reference because it
   begins with a digit) for the quest: renamed to `rfd_quest` in
@@ -56,8 +66,8 @@ family world.**
   chat** (`area_falador/sir_amik_varze.rs2`), gated on Black Knights' Fortress
   (guaranteed in that branch) and Druidic Ritual. Sir Tiffy Cashien has **no
   NPC definition in the pinned 377 cache**, so the Temple Knights' recruitment
-  starts from Amik instead; the Falador Park portal handler records the
-  testing stage and states the grounds are not yet open.
+  starts from Amik instead; the Falador Park portal handler states the
+  grounds are not yet open.
 - **1005** — Monkey Madness start in **King Narnode's existing post-quest
   branch** (`quest_grandtree/king_narnode.rs2`), gated on The Grand Tree
   (guaranteed in that case) and Tree Gnome Village, invoking the overlay's
@@ -68,10 +78,9 @@ family world.**
 
 | Quest | Implemented (playable) | Not implemented (journal/notes only) |
 | --- | --- | --- |
-| Swan Song | Herman start with 100-QP gate; Wise Old Man 10-blood-rune hand-in (substituted — see below); Arnold 5-monkfish hand-in; Franklin 5-iron-sheet hand-in | Sea troll battles, wall repair objects, Frumscone, Malignius, the Sea Troll Queen, rewards |
 | Recipe for Disaster | Intro chapter: Cook's offer, ingredient hand-in | Culinaromancer cutscene mechanics, the eight council-member chapters, final battle, rewards |
 | Cabin Fever | Bill Teach start with 50 Smithing / 40 Ranged gates | Boarding The Adventurous, the sea battle, repair/plunder mechanics, rewards |
-| Recruitment Drive | Amik start with prerequisite gates; portal stage marker | Sir Tiffy (no NPC in cache), the seven test rooms, rewards |
+| Recruitment Drive | Amik start with prerequisite gates; portal message | Sir Tiffy (no NPC in cache), the seven test rooms, rewards |
 | Mourning's End Part II | Arianwyn start (gated on ME1 var, which is itself unimplemented) | Essyllt, mourner tunnels, Temple of Light light-puzzle, Eluned, Thorgel, Death Altar, rewards |
 | Monkey Madness | Narnode start + report-back stages with Grand Tree / Tree Gnome Village gates | Shipyard, Daero, hangar puzzle, Crash Island, Ape Atoll stealth, Zooknock, greegree, Jungle Demon, rewards |
 
@@ -79,10 +88,6 @@ family world.**
 
 - **Sir Tiffy Cashien does not exist** as an NPC in the pinned 377 cache;
   Recruitment Drive is routed through Sir Amik Varze instead.
-- **Lava runes and mist runes do not exist** in the 377 item list, so the Wise
-  Old Man's rune payment is substituted with **10 blood runes** (the closest
-  377-era high-tier rune). Historically the request was lava/mist runes; this
-  is a documented gameplay deviation.
 - **RFD's main cache varp** was named `100intro` — a digit-leading name that
   RuneScript identifiers cannot reference. Patch 1006 renames it (pack id 678)
   to `rfd_quest`; the other RFD cache varps (`100council`, `hundred_dave`, …)
@@ -92,9 +97,14 @@ family world.**
 - **Mourning's End Part I is not implemented** in this world either, so the
   ME2 start gate on `%mourning_quest` can never pass yet. The branch is
   written so it lights up once ME1 lands.
-- Stage values on all six state vars are **JoshRS reconstructions** (the cache
-  does not ship quest scripts); quest-point values are wiki-sourced and
-  unverified for 377.
+- **Completion values are pinned to upstream constants**: `mm_complete = 10`
+  is owned by upstream `quest.constant` (the MM armour level requirement
+  reads it; redefining it is a build error), and RD's `rd_complete = 2`
+  mirrors upstream's `recruitmentdrive_complete` (Temple Knight armour
+  requirement). Discovered from upstream's `levelrequire.rs2`.
+- Stage values on the state vars are otherwise **JoshRS reconstructions**
+  (the cache does not ship quest scripts); quest-point values are wiki-sourced
+  and unverified for 377.
 
 ## Provenance and licensing
 
@@ -109,19 +119,16 @@ OpenRSC) were **not** used — clean-room only per the porting roadmap
 
 ## Verification status
 
-- `tools/check_sixquest_symbols.py` passes against the pinned content with all
-  six patches applied plus the three patched dialogue scripts (891 symbols, no
-  unknowns, brackets balanced).
-- **Local native compile PASSED**: the full pinned content (all six patches +
+- `tools/check_fivequest_symbols.py` passes against the pinned content with all
+  patches applied plus the three patched dialogue scripts (no unknowns,
+  brackets balanced).
+- **Local native compile PASSED**: the full pinned content (all patches +
   quest folders merged) built with Engine-TS@b5ac859b, `BUILD_VERIFY=true`,
-  `BUILD_VERIFY_PACK=true` — `pack: 18.8s`, `data/pack/server/script.dat`
-  (5.4 MB) and `script.idx` produced. Two build-time discoveries are baked
-  into the bundle: RuneScript forbids `@label` jumps from inside a proc (the
-  Narnode branch uses nested procs), and the script compiler resolves
-  `../content/scripts` relative to the engine cwd (CI keeps the engine and
-  content side-by-side, as this build did).
-- CI verdict on every commit will be recorded in this bundle's PR.
+  `BUILD_VERIFY_PACK=true` — `data/pack/server/script.dat` and `script.idx`
+  produced. Build-time discoveries baked into the bundle: RuneScript forbids
+  `@label` jumps from inside a proc (the Narnode branch uses nested procs),
+  and the script compiler resolves `../content/scripts` relative to the engine
+  cwd (CI keeps engine and content side-by-side).
+- CI verdict on every commit is recorded in this bundle's PR.
 - **A successful compile is not gameplay.** Player-verified playthroughs in
-  the live 377 world are required before any of the six is called playable.
-
-<!-- ci retrigger: pull_request event did not dispatch on PR open -->
+  the live 377 world are required before any of the five is called playable.
