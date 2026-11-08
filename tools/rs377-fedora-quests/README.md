@@ -47,6 +47,26 @@ The port, username and world ID above are **example configuration**, not evidenc
 
 That folder and its files are user-private. Reports contain no passwords, raw inventory, account names, private cache or save DB. Each row says whether a native game action was corroborated; there is no fabricated "quest completed" flag.
 
+### One-command real disposable Fedora 377 smoke
+
+After installing the pinned SDK, the optional sandbox clones the exact
+377 engine and content into a **new** directory under
+`~/.cache/joshrs-disposable-quests/`, packs the temporary game and runs the
+existing real-engine SDK smoke including the 111 quest classifications.
+
+```bash
+bash tools/rs377-fedora-quests/sandbox-fedora.sh --check
+export JOSHRS_QUEST_CAMPAIGN_APPROVED=DISPOSABLE_ONLY
+bash tools/rs377-fedora-quests/sandbox-fedora.sh --run
+```
+
+Only free isolated loopback ports 15402/18880/18881 are used, never the
+family port 52402. No existing game, save, login or older revision-225 SDK
+is read or changed. This command needs Fedora, Node, npm, Bun, Git, Python,
+network and disk for pinned upstream clones. It launches and stops a real
+throwaway server; it does not demonstrate completed quests. Actual execution
+on the physical Fedora workstation remains unverified until run there.
+
 ## 3. Coverage, exact limits and proof
 
 | Feature | Current support |
