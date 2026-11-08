@@ -383,6 +383,8 @@ try {
       nativeSdkProof.actualUpstreamBotSDK!==true||
       nativeSdkProof.actualUpstreamBotActions!==true||
       nativeSdkProof.ordinaryPacketEffectVerified!==true||
+      nativeSdkProof.realNativeScanVerified!==true||
+      nativeSdkProof.realNativeWaitVerified!==true||
       nativeSdkProof.familyWorldTouched!==false||
       !Number.isSafeInteger(nativeSdkProof.finalPosition?.x)||
       !Number.isSafeInteger(nativeSdkProof.finalPosition?.z))
