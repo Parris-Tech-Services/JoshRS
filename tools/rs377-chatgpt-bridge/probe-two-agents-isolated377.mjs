@@ -4,6 +4,7 @@
  * Never contact JParrisDesktop, Fedora, a public endpoint or a family account.
  * Normal native auth, two distinct network player sessions and ISAAC actions.
  * Assertions are grounded in native world snapshots and native save/relogin.
+ * Run as an opt-in separate runner, never against the family's local game.
  */
 import {readFile,stat} from 'node:fs/promises';
 import {createPublicKey,randomBytes} from 'node:crypto';
