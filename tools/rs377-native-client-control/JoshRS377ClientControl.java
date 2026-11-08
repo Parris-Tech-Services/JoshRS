@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
  *      JOSHRS_377_CLIENT_CONTROL_WORLD=isolated-...
  *      JOSHRS_377_CLIENT_CONTROL_BOT=Harness...
  *      JOSHRS_377_CLIENT_CONTROL_PORT=19083 (loopback only)
+ *      JOSHRS_377_CLIENT_GAME_PORT=15402 (isolated world, NOT 52402)
  *      JOSHRS_377_CLIENT_CONTROL_TOKEN=<32+ ASCII chars>
  *
  * One authenticated request per TCP connection:
@@ -41,6 +42,7 @@ public final class JoshRS377ClientControl {
     private final ArrayBlockingQueue<Request> queue = new ArrayBlockingQueue<Request>(8);
     private final String token;
     private final String bot;
+    private final int gamePort;
     private final ServerSocket server;
 
     private static final class Request {
@@ -57,18 +59,26 @@ public final class JoshRS377ClientControl {
         String username = System.getenv("JOSHRS_377_CLIENT_CONTROL_BOT");
         String secret = System.getenv("JOSHRS_377_CLIENT_CONTROL_TOKEN");
         String portText = System.getenv("JOSHRS_377_CLIENT_CONTROL_PORT");
+        String gamePortText = System.getenv("JOSHRS_377_CLIENT_GAME_PORT");
         if (!"true".equals(enabled)) {
-            token = null; bot = null; server = null;
+            token = null; bot = null; server = null; gamePort = -1;
             return;
         }
         if (world == null || !world.matches("isolated-[a-zA-Z0-9_-]{4,64}") ||
             username == null || !username.matches("Harness[A-Za-z0-9_-]{1,10}") ||
             secret == null || secret.length() < 32 || secret.length() > 128 ||
             !secret.matches("[A-Za-z0-9_-]+") ||
-            portText == null || !portText.matches("[0-9]{4,5}")) {
+            portText == null || !portText.matches("[0-9]{4,5}") ||
+            gamePortText == null || !gamePortText.matches("[0-9]{4,5}")) {
             throw new IllegalArgumentException("Invalid isolated JoshRS client control configuration");
         }
         int port = Integer.parseInt(portText);
+        int targetGamePort = Integer.parseInt(gamePortText);
+        if (targetGamePort < 1024 || targetGamePort > 65535 ||
+            targetGamePort == 52402 || targetGamePort == 8888 ||
+            targetGamePort == port) {
+            throw new IllegalArgumentException("Never attach client controls to a family game port");
+        }
         if (port < 1024 || port > 65535 || port == 52402 || port == 8888 ||
             port == 15402 || port == 18880 || port == 18881) {
             throw new IllegalArgumentException("Dedicated non-family loopback client-control port required");
@@ -81,6 +91,7 @@ public final class JoshRS377ClientControl {
         }
         token = secret;
         bot = username;
+        gamePort = targetGamePort;
         Thread thread = new Thread(new Runnable() {
             public void run() { listen(); }
         }, "JoshRS377-isolated-client-control");
@@ -185,7 +196,8 @@ public final class JoshRS377ClientControl {
         // The controller must never select a family user, login screen or
         // disconnected client. Separate isolated bot identity is mandatory.
         if (!client.ingame || client.username == null ||
-            !client.username.equalsIgnoreCase(bot)) return "ERR|isolated_bot_not_authenticated";
+            !client.username.equalsIgnoreCase(bot) ||
+            Client.portOffset + 43594 != gamePort) return "ERR|isolated_bot_or_world_port_not_authenticated";
         if ("status".equals(action)) return status(client);
         if ("setTab".equals(action)) {
             if (arg < 0 || arg > 13 || client.tabInterfaceId[arg] == -1)
