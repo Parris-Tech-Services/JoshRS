@@ -96,13 +96,22 @@ function compare(local,baseline) {
   return {status:'compared-to-local-baseline-not-proven-pinned',counts,changes};
 }
 async function run() {
+  console.log('JoshRS portable inventory: BOM-safe revision 3 (read-only)');
   const opts=parseArgs(process.argv.slice(2));
   const root=path.resolve(opts.root||DEFAULT_ROOT);
   const activeFile=path.resolve(opts['active-file']||path.join(root,'runtime','jparris-377','active.json'));
   const output=path.resolve(opts.output||path.join(os.homedir(),'Documents','JoshRS-Exports',new Date().toISOString().replace(/[:.]/g,'-')));
   if(!existsSync(activeFile)) throw new Error('No active.json found. Run this inside your INSTALLED JParrisDesktop launcher; no files changed.');
-  // Windows PowerShell 5.1 may write UTF-8 JSON with a BOM (U+FEFF). Strip only that marker.
-  const active=JSON.parse((await readFile(activeFile,'utf8')).replace(/^\uFEFF/,''));
+  // PowerShell-generated UTF-8 JSON can begin with repeated U+FEFF BOMs and whitespace.
+  // String.trimStart() strips *all* leading BOM/whitespace without editing the real file.
+  const activeRaw = await readFile(activeFile, 'utf8');
+  let active;
+  try {
+    active = JSON.parse(activeRaw.trimStart());
+  } catch {
+    // Never echo JSON.parse's input excerpt: active.json can contain private local paths.
+    throw new Error('Cannot parse active.json as UTF-8 JSON after stripping leading BOM/whitespace. File unchanged. Check encoding with a read-only diagnostic.');
+  }
   if(!active.engine || !active.content || !active.client) throw new Error('Incomplete active.json; no files changed.');
   const game={engine:active.engine,content:active.content,client:active.client};
   const baselineRoot=path.join(root,'runtime','jparris-377','upstream');
