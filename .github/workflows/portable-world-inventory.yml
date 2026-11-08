@@ -1,0 +1,34 @@
+name: JoshRS portable world inventory safety
+
+on:
+  pull_request:
+    paths:
+      - 'tools/portable-world/**'
+      - 'JoshRS-Check-My-World.cmd'
+      - '.github/workflows/portable-world-inventory.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/portable-world/**'
+      - 'JoshRS-Check-My-World.cmd'
+      - '.github/workflows/portable-world-inventory.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  privacy-and-delta-tests:
+    name: Source inventory safety on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run privacy, consistency and fail-closed tests
+        run: node --test tools/portable-world/audit.test.mjs
