@@ -1,23 +1,25 @@
-// In Search of the Myreque (10 January 2005): native revision-377 cache quest.
-// routequest is the existing cache varp and must remain permanent.
-// Existing completed saves are retained: route_complete = 100.
+// In Search of the Myreque (10 January 2005): revision-377 cache-compatible stages.
+// All progress is encoded in the existing permanent routequest varp (no new varp IDs).
+// Completed saves remain routequest=100; no changes to the 377 client varp CRC.
+// Bridge repair count = routequest - 3 for stages 3..6.
+// Hideout member bitmask = routequest - 20 for stages 20..51.
 ^route_not_started = 0
 ^route_started = 1
 ^route_boat_ready = 2
 ^route_hollows = 3
-^route_bridge_fixed = 4
-^route_guard_passed = 5
-^route_hideout = 6
-^route_members_met = 7
-^route_hound_fight = 8
-^route_hound_dead = 9
-^route_secret_exit = 10
-^route_tunnel_open = 11
-^route_return = 12
+^route_bridge_one = 4
+^route_bridge_two = 5
+^route_bridge_fixed = 6
+^route_guard_passed = 7
+^route_hideout = 20
+^route_members_met = 51
+^route_hound_fight = 60
+^route_hound_dead = 61
+^route_secret_exit = 62
+^route_tunnel_open = 63
+^route_return = 64
 ^route_complete = 100
 ^route_questpoints = 2
-
-// Authentic 2005-era item costs: later RS3 revisions lowered the nail count.
 ^route_steel_nails_per_span = 75
 ^route_bridge_spans = 3
 ^route_woodplanks_to_boatman = 3
