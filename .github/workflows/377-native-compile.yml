@@ -99,6 +99,10 @@ jobs:
               if actual!=item["commit"]: raise SystemExit("Upstream pin mismatch")
               print(key, actual)
           PY
+      - name: Audit pinned Legends Quest source on disposable cloud runner
+        shell: bash
+        run: |
+          python tools/rs377-legends/ci_audit.py --content "$RUNNER_TEMP/joshrs-377-build/content" --report "$RUNNER_TEMP/legends-quest-evidence.json"
       - name: Confirm existing items and mechanics in pinned 377 content
         shell: bash
         run: |
@@ -205,4 +209,17 @@ jobs:
           npm run sqlite:migrate
           cd "$GITHUB_WORKSPACE"
           python content-factory/smoke_377.py --engine "$RUNNER_TEMP/joshrs-377-build/engine" --game-port 15402 --web-port 18880 --timeout 80
+      - name: Mark genuine disposable 377 boot as separate from Legends playthrough
+        if: success()
+        shell: bash
+        run: |
+          python tools/rs377-legends/ci_audit.py --mark-server-smoke-passed --report "$RUNNER_TEMP/legends-quest-evidence.json"
+      - name: Upload Legends quest verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legends-quest-377-cloud-evidence
+          path: ${{ runner.temp }}/legends-quest-evidence.json
+          if-no-files-found: warn
+          retention-days: 14
 
