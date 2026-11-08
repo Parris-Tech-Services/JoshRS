@@ -253,6 +253,7 @@ try {
  const webSocketGateway=createSdk377WebSocket({runtime:wsRuntime,botName:username,
    token:websocketToken});
  let websocketVerified=false;
+ let previousVerifiedPosition=null;
  await webSocketGateway.listen(18883);
  const sdkSocket=new WebSocket('ws://127.0.0.1:18883/gateway');
  const sdkReplies=[];
@@ -291,6 +292,7 @@ try {
    if(nextState.state.tick<=firstState.state.tick)
      reject('real upstream SDK stream did not advance engine tick');
    const before=moved.position;
+   previousVerifiedPosition={...before};
    const trials=[[before.x+1,before.z],[before.x,before.z+1],
      [before.x-1,before.z],[before.x,before.z-1]];
    for(let trial=0;trial<trials.length;trial++){
@@ -337,7 +339,9 @@ try {
  const nativeInfo=await nativeGateway.listen(0);
  try {
    const start=moved.position;
+   if(!previousVerifiedPosition)reject('prior_known_reachable_tile_missing');
    const candidates=[
+     [previousVerifiedPosition.x,previousVerifiedPosition.z],
      [start.x+1,start.z],[start.x,start.z+1],
      [start.x-1,start.z],[start.x,start.z-1]
    ];
