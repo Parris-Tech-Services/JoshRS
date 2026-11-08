@@ -9,15 +9,15 @@
     "total_377_quests": 104,
     "total_377_miniquests": 7,
     "status_counts": {
-      "COMPLETE-VERIFIED": 69,
+      "COMPLETE-VERIFIED": 72,
       "COMPLETE-UNVERIFIED": 0,
       "PARTIAL": 0,
       "STUB": 4,
-      "NOT STARTED": 31
+      "NOT STARTED": 28
     },
-    "unhandled_talk_to_npcs_total": 817,
-    "unhandled_quest_npcs": 364,
-    "unhandled_ambient_npcs": 453
+    "unhandled_talk_to_npcs_total": 756,
+    "unhandled_quest_npcs": 315,
+    "unhandled_ambient_npcs": 441
   },
   "quests": [
     {
@@ -3643,9 +3643,9 @@
         "rs2_file_count": 0,
         "rs2_lines": 0,
         "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "journal_button_script": "quests/quest_myreque/scripts/myreque_journal.rs2",
+        "quest_complete_script": "quests/quest_myreque/scripts/quest_myreque.rs2",
+        "in_update_questlist": true
       },
       "linked_unhandled_npcs": []
     },
@@ -3668,29 +3668,40 @@
       "start_npc": "canifis_signpost / dr_fenkenstrain",
       "start_location": "Canifis signpost / Fenkenstrain's Castle",
       "varp_or_varbit": "fenk_quest",
-      "stages": [],
+      "stages": [
+        "^fenk_not_started = 0",
+        "^fenk_hired = 1",
+        "^fenk_sewn = 2",
+        "^fenk_conductor_fixed = 3",
+        "^fenk_tower_key_given = 4",
+        "^fenk_met_creature = 5",
+        "^fenk_complete = 8",
+        "^fenk_questpoints = 2",
+        "^fenk_thieving_xp = 10000",
+        "^fenk_threads_needed = 5",
+        "^fenk_req_crafting = 20",
+        "^fenk_req_thieving = 25"
+      ],
       "rewards": [
         "2 Quest Points",
         "1,000 Thieving XP",
         "Ring of charos"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_fenk",
+        "rs2_file_count": 5,
+        "rs2_lines": 833,
+        "config_files": [
+          "quests/quest_fenk/configs/quest_fenken.npc",
+          "quests/quest_fenk/configs/quest_fenkenstrain.constant"
+        ],
+        "journal_button_script": "quests/quest_fenk/scripts/fenk_journal.rs2",
+        "quest_complete_script": "quests/quest_fenk/scripts/fenk_npcs.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "fenk_creature_model",
-        "fenk_creature_model_2",
-        "fenk_fenkenstrain_model",
-        "fenk_gardener"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 70,
@@ -3765,7 +3776,16 @@
       "start_npc": "velorina",
       "start_location": "Port Phasmatys",
       "varp_or_varbit": "ahoy_varbits_1",
-      "stages": [],
+      "stages": [
+        "^ahoy_not_started = 0",
+        "^ahoy_started = 1",
+        "^ahoy_spoken_necrovarus = 2",
+        "^ahoy_spoken_crone = 3",
+        "^ahoy_gathering_items = 4",
+        "^ahoy_enchanted_amulet = 5",
+        "^ahoy_ordered_necrovarus = 7",
+        "^ahoy_complete = 8"
+      ],
       "rewards": [
         "2 Quest Points",
         "2,400 Prayer XP",
@@ -3773,35 +3793,19 @@
         "Free entry to Port Phasmatys"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_ahoy",
+        "rs2_file_count": 2,
+        "rs2_lines": 458,
+        "config_files": [
+          "quests/quest_ahoy/configs/quest_ahoy.constant"
+        ],
+        "journal_button_script": "quests/quest_ahoy/scripts/ahoy_journal.rs2",
+        "quest_complete_script": "quests/quest_ahoy/scripts/quest_ahoy.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "ahoy_akharanu",
-        "ahoy_crone",
-        "ahoy_disciple",
-        "ahoy_ghost_banker",
-        "ahoy_ghost_captain_1",
-        "ahoy_ghost_captain_2",
-        "ahoy_ghost_farmer",
-        "ahoy_ghost_guard",
-        "ahoy_ghost_innkeeper",
-        "ahoy_ghost_protestor",
-        "ahoy_ghost_sailor",
-        "ahoy_ghost_shopkeeper",
-        "ahoy_ghost_villager",
-        "ahoy_necrovarus",
-        "ahoy_oldman",
-        "ahoy_robin",
-        "ahoy_velorina"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 72,
@@ -3837,27 +3841,11 @@
         "rs2_file_count": 0,
         "rs2_lines": 0,
         "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "journal_button_script": "quests/quest_osf/scripts/osf_journal.rs2",
+        "quest_complete_script": "quests/quest_osf/scripts/quest_osf.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "favour_female_ham_civilian",
-        "favour_gangster_dwarf",
-        "favour_gangster_dwarf_2",
-        "favour_gangster_dwarf_3",
-        "favour_guard_long_beard",
-        "favour_guard_male_bearded",
-        "favour_guard_male_no_beard",
-        "favour_hammerspike_stoutbeard",
-        "favour_jimmy",
-        "favour_johanhus_ulsbrecht",
-        "favour_male_ham_civilian",
-        "favour_npc_chair",
-        "favour_npc_floor",
-        "favour_petra",
-        "favour_phantuwti_farsight"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 73,
@@ -3874,7 +3862,14 @@
       "start_npc": "hamal_the_chieftain",
       "start_location": "Mountain Camp east of Rellekka",
       "varp_or_varbit": "mdaughter_var",
-      "stages": [],
+      "stages": [
+        "^mdaughter_not_started = 0",
+        "^mdaughter_started = 10",
+        "^mdaughter_solved_camp = 20",
+        "^mdaughter_confronted_kendal = 30",
+        "^mdaughter_buried_daughter = 40",
+        "^mdaughter_complete = 70"
+      ],
       "rewards": [
         "2 Quest Points",
         "1,000 Attack XP",
@@ -3882,31 +3877,19 @@
         "Bearhead"
       ],
       "released_by_377_cutoff": true,
-      "status": "NOT STARTED",
+      "status": "COMPLETE-VERIFIED",
       "evidence": {
-        "quest_dir": null,
-        "rs2_file_count": 0,
-        "rs2_lines": 0,
-        "config_files": [],
-        "journal_button_script": null,
-        "quest_complete_script": null,
-        "in_update_questlist": false
+        "quest_dir": "quests/quest_mdaughter",
+        "rs2_file_count": 2,
+        "rs2_lines": 280,
+        "config_files": [
+          "quests/quest_mdaughter/configs/quest_mdaughter.constant"
+        ],
+        "journal_button_script": "quests/quest_mdaughter/scripts/mdaughter_journal.rs2",
+        "quest_complete_script": "quests/quest_mdaughter/scripts/quest_mdaughter.rs2",
+        "in_update_questlist": true
       },
-      "linked_unhandled_npcs": [
-        "mdaughter_ancientrock_guard",
-        "mdaughter_bearman",
-        "mdaughter_camp_female1",
-        "mdaughter_camp_female2",
-        "mdaughter_camp_female3",
-        "mdaughter_camp_male1",
-        "mdaughter_camp_male2",
-        "mdaughter_hamal",
-        "mdaughter_jokul",
-        "mdaughter_multi_bear",
-        "mdaughter_ragnar",
-        "mdaughter_rockslide_guard",
-        "mdaughter_svidi"
-      ]
+      "linked_unhandled_npcs": []
     },
     {
       "release_order": 74,
@@ -5840,176 +5823,6 @@
       "classification": "quest_npc",
       "quest_id": "agrith",
       "quest_name": "Shadow of the Storm",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1688,
-      "debugname": "ahoy_akharanu",
-      "name": "Ak-Haranu",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1695,
-      "debugname": "ahoy_crone",
-      "name": "Old crone",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1686,
-      "debugname": "ahoy_disciple",
-      "name": "Ghost Disciple",
-      "spawn_count": 3,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1702,
-      "debugname": "ahoy_ghost_banker",
-      "name": "Ghost Banker",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1704,
-      "debugname": "ahoy_ghost_captain_1",
-      "name": "Ghost Captain",
-      "spawn_count": 2,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1705,
-      "debugname": "ahoy_ghost_captain_2",
-      "name": "Ghost Captain",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1701,
-      "debugname": "ahoy_ghost_farmer",
-      "name": "Ghost Farmer",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1706,
-      "debugname": "ahoy_ghost_guard",
-      "name": "Ghost Guard",
-      "spawn_count": 4,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1700,
-      "debugname": "ahoy_ghost_innkeeper",
-      "name": "Ghost Innkeeper",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1685,
-      "debugname": "ahoy_ghost_protestor",
-      "name": "Gravingas",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1703,
-      "debugname": "ahoy_ghost_sailor",
-      "name": "Ghost Sailor",
-      "spawn_count": 8,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1699,
-      "debugname": "ahoy_ghost_shopkeeper",
-      "name": "Ghost Shopkeeper",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1697,
-      "debugname": "ahoy_ghost_villager",
-      "name": "Ghost Villager",
-      "spawn_count": 12,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1684,
-      "debugname": "ahoy_necrovarus",
-      "name": "Necrovarus",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1696,
-      "debugname": "ahoy_oldman",
-      "name": "Old man",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1694,
-      "debugname": "ahoy_robin",
-      "name": "Robin",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1683,
-      "debugname": "ahoy_velorina",
-      "name": "Velorina",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "ahoy",
-      "quest_name": "Ghosts Ahoy",
       "role": "quest_npc"
     },
     {
@@ -9083,156 +8896,6 @@
       "role": "ambient_npc"
     },
     {
-      "id": 1715,
-      "debugname": "favour_female_ham_civilian",
-      "name": "H.A.M. Member",
-      "spawn_count": 10,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1795,
-      "debugname": "favour_gangster_dwarf",
-      "name": "Dwarf gang member",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1796,
-      "debugname": "favour_gangster_dwarf_2",
-      "name": "Dwarf gang member",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1797,
-      "debugname": "favour_gangster_dwarf_3",
-      "name": "Dwarf gang member",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1712,
-      "debugname": "favour_guard_long_beard",
-      "name": "H.A.M. Guard",
-      "spawn_count": 6,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1711,
-      "debugname": "favour_guard_male_bearded",
-      "name": "H.A.M. Guard",
-      "spawn_count": 9,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1710,
-      "debugname": "favour_guard_male_no_beard",
-      "name": "H.A.M. Guard",
-      "spawn_count": 7,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1794,
-      "debugname": "favour_hammerspike_stoutbeard",
-      "name": "Hammerspike Stoutbeard",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1718,
-      "debugname": "favour_jimmy",
-      "name": "Jimmy the Chisel",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1709,
-      "debugname": "favour_johanhus_ulsbrecht",
-      "name": "Johanhus Ulsbrecht",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1714,
-      "debugname": "favour_male_ham_civilian",
-      "name": "H.A.M. Member",
-      "spawn_count": 16,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1717,
-      "debugname": "favour_npc_chair",
-      "name": "H.A.M. Member",
-      "spawn_count": 6,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1716,
-      "debugname": "favour_npc_floor",
-      "name": "H.A.M. Member",
-      "spawn_count": 5,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1801,
-      "debugname": "favour_petra",
-      "name": "Petra Fiyed",
-      "spawn_count": 0,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1798,
-      "debugname": "favour_phantuwti_farsight",
-      "name": "Phantuwti Fanstuwi Farsight",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "onesmallfavour",
-      "quest_name": "One Small Favour",
-      "role": "quest_npc"
-    },
-    {
       "id": 1925,
       "debugname": "fd_elder_by_mirrors",
       "name": "Eblis",
@@ -9291,46 +8954,6 @@
       "quest_id": null,
       "quest_name": null,
       "role": "ambient_npc"
-    },
-    {
-      "id": 1673,
-      "debugname": "fenk_creature_model",
-      "name": "Fenkenstrain's Monster",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "creatureoffenkenstrain",
-      "quest_name": "Creature of Fenkenstrain",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1674,
-      "debugname": "fenk_creature_model_2",
-      "name": "Lord Rologarth",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "creatureoffenkenstrain",
-      "quest_name": "Creature of Fenkenstrain",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1670,
-      "debugname": "fenk_fenkenstrain_model",
-      "name": "Dr Fenkenstrain",
-      "spawn_count": 2,
-      "classification": "quest_npc",
-      "quest_id": "creatureoffenkenstrain",
-      "quest_name": "Creature of Fenkenstrain",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1675,
-      "debugname": "fenk_gardener",
-      "name": "Gardener Ghost",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "creatureoffenkenstrain",
-      "quest_name": "Creature of Fenkenstrain",
-      "role": "quest_npc"
     },
     {
       "id": 1864,
@@ -11343,136 +10966,6 @@
       "role": "ambient_npc"
     },
     {
-      "id": 1806,
-      "debugname": "mdaughter_ancientrock_guard",
-      "name": "Guard",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1812,
-      "debugname": "mdaughter_bearman",
-      "name": "The Kendal",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1816,
-      "debugname": "mdaughter_camp_female1",
-      "name": "Camp dweller",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1817,
-      "debugname": "mdaughter_camp_female2",
-      "name": "Camp dweller",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1818,
-      "debugname": "mdaughter_camp_female3",
-      "name": "Camp dweller",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1814,
-      "debugname": "mdaughter_camp_male1",
-      "name": "Camp dweller",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1815,
-      "debugname": "mdaughter_camp_male2",
-      "name": "Camp dweller",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1807,
-      "debugname": "mdaughter_hamal",
-      "name": "Hamal the Chieftain",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1810,
-      "debugname": "mdaughter_jokul",
-      "name": "Jokul",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1811,
-      "debugname": "mdaughter_multi_bear",
-      "name": "mdaughter_multi_bear",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1808,
-      "debugname": "mdaughter_ragnar",
-      "name": "Ragnar",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1805,
-      "debugname": "mdaughter_rockslide_guard",
-      "name": "Guard",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
-      "id": 1809,
-      "debugname": "mdaughter_svidi",
-      "name": "Svidi",
-      "spawn_count": 1,
-      "classification": "quest_npc",
-      "quest_id": "mdaughter",
-      "quest_name": "Mountain Daughter",
-      "role": "quest_npc"
-    },
-    {
       "id": 2322,
       "debugname": "metarialus",
       "name": "Metarialus",
@@ -12107,126 +11600,6 @@
       "debugname": "roguesden_trader",
       "name": "Martin Thwait",
       "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1568,
-      "debugname": "route_curpile_fyod",
-      "name": "Curpile Fyod",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1567,
-      "debugname": "route_cyreg_paddlehorn",
-      "name": "Cyreg Paddlehorn",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1571,
-      "debugname": "route_harold_evans",
-      "name": "Harold Evans",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1574,
-      "debugname": "route_ivan_strom",
-      "name": "Ivan Strom",
-      "spawn_count": 2,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1573,
-      "debugname": "route_polmafi_ferdygris",
-      "name": "Polmafi Ferdygris",
-      "spawn_count": 2,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1572,
-      "debugname": "route_radigad_ponfit",
-      "name": "Radigad Ponfit",
-      "spawn_count": 2,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1570,
-      "debugname": "route_sani_piliu",
-      "name": "Sani Piliu",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1579,
-      "debugname": "route_vanstrom_klause_normal",
-      "name": "Vanstrom Klause",
-      "spawn_count": 0,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1577,
-      "debugname": "route_vanstrom_klause_sitting",
-      "name": "Vanstrom Klause",
-      "spawn_count": 1,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1581,
-      "debugname": "route_vanstrom_klause_vamp",
-      "name": "Vanstrom Klause",
-      "spawn_count": 0,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1580,
-      "debugname": "route_vanstrom_klause_vamp_wingsgrow",
-      "name": "Vanstrom Klause",
-      "spawn_count": 0,
-      "classification": "ambient_npc",
-      "quest_id": null,
-      "quest_name": null,
-      "role": "ambient_npc"
-    },
-    {
-      "id": 1569,
-      "debugname": "route_veliaf_hurtz",
-      "name": "Veliaf Hurtz",
-      "spawn_count": 2,
       "classification": "ambient_npc",
       "quest_id": null,
       "quest_name": null,

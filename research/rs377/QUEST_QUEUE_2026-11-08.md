@@ -8,12 +8,12 @@
 ## Summary Metrics
 - **Total 377 Quests on `questlist.if`:** `104`
 - **Total 377 Miniquests / Adjacent Flows:** `7`
-- **COMPLETE-VERIFIED:** `69`
+- **COMPLETE-VERIFIED:** `72`
 - **COMPLETE-UNVERIFIED:** `0`
 - **PARTIAL:** `0`
 - **STUB (config only):** `4`
-- **NOT STARTED:** `31`
-- **Unhandled `Talk-to` NPCs Cross-Referenced:** `817` (`364` quest-linked, `453` ambient)
+- **NOT STARTED:** `28`
+- **Unhandled `Talk-to` NPCs Cross-Referenced:** `756` (`315` quest-linked, `441` ambient)
 
 ## Chronological Quest Queue (Oldest to Newest, F2P First on Ties)
 
@@ -87,11 +87,11 @@
 | 66 | `2004-12-20` | **Haunted Mine** | `questlist:hauntedmine` | Members | Batch C | 2 | `hauntedmine` | `zealot` (Outside the Abandoned Mine in southern Morytania) | `COMPLETE-VERIFIED` | 545 | 0 |
 | 67 | `2005-01-11` | **Troll Romance** | `questlist:troll_love` | Members | Batch D | 2 | `troll_love` | `ug` (Troll Stronghold) | `COMPLETE-VERIFIED` | 555 | 0 |
 | 68 | `2005-01-17` | **In Search of the Myreque** | `questlist:routequest` | Members | Batch D | 2 | `routequest` | `vanstrom_klause` (Hair of the Dog tavern in Canifis) | `NOT STARTED` | 0 | 0 |
-| 69 | `2005-01-24` | **Creature of Fenkenstrain** | `questlist:creatureoffenkenstrain` | Members | Batch D | 2 | `fenk_quest` | `canifis_signpost / dr_fenkenstrain` (Canifis signpost / Fenkenstrain's Castle) | `NOT STARTED` | 0 | 4 |
+| 69 | `2005-01-24` | **Creature of Fenkenstrain** | `questlist:creatureoffenkenstrain` | Members | Batch D | 2 | `fenk_quest` | `canifis_signpost / dr_fenkenstrain` (Canifis signpost / Fenkenstrain's Castle) | `COMPLETE-VERIFIED` | 833 | 0 |
 | 70 | `2005-02-01` | **Roving Elves** | `questlist:roving_elves` | Members | Batch D | 1 | `roving_elves_quest` | `islwyn` (Isafdar) | `COMPLETE-VERIFIED` | 248 | 2 |
-| 71 | `2005-02-15` | **Ghosts Ahoy** | `questlist:ahoy` | Members | Batch D | 2 | `ahoy_varbits_1` | `velorina` (Port Phasmatys) | `NOT STARTED` | 0 | 17 |
-| 72 | `2005-02-21` | **One Small Favour** | `questlist:onesmallfavour` | Members | Batch D | 2 | `onesmallfavour` | `yanni_salika` (Shilo Village) | `NOT STARTED` | 0 | 15 |
-| 73 | `2005-02-28` | **Mountain Daughter** | `questlist:mdaughter` | Members | Batch D | 2 | `mdaughter_var` | `hamal_the_chieftain` (Mountain Camp east of Rellekka) | `NOT STARTED` | 0 | 13 |
+| 71 | `2005-02-15` | **Ghosts Ahoy** | `questlist:ahoy` | Members | Batch D | 2 | `ahoy_varbits_1` | `velorina` (Port Phasmatys) | `COMPLETE-VERIFIED` | 458 | 0 |
+| 72 | `2005-02-21` | **One Small Favour** | `questlist:onesmallfavour` | Members | Batch D | 2 | `onesmallfavour` | `yanni_salika` (Shilo Village) | `NOT STARTED` | 0 | 0 |
+| 73 | `2005-02-28` | **Mountain Daughter** | `questlist:mdaughter` | Members | Batch D | 2 | `mdaughter_var` | `hamal_the_chieftain` (Mountain Camp east of Rellekka) | `COMPLETE-VERIFIED` | 280 | 0 |
 | 74 | `2005-03-14` | **Between a Rock...** | `questlist:dwarfrock` | Members | Batch D | 2 | `dwarfrock_main` | `dondakan_the_dwarf` (Keldagrim south-east mine) | `NOT STARTED` | 0 | 10 |
 | 75 | `2005-04-04` | **The Feud** | `questlist:feud` | Members | Batch D | 1 | `main_feud_var` | `feud_ali_m` (Al Kharid north of the palace) | `NOT STARTED` | 0 | 30 |
 | 76 | `2005-04-11` | **The Golem** | `questlist:golem` | Members | Batch D | 1 | `golem_a` | `golem_golem` (Ruins of Uzer) | `COMPLETE-VERIFIED` | 627 | 0 |

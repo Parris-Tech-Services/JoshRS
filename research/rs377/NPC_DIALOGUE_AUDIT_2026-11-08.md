@@ -10,18 +10,18 @@
 |---|---:|
 | Total NPC definitions (`all.npc` + local overrides) | 3850 |
 | Total `Talk-to` (`op1=Talk-to`) NPC definitions | 1799 |
-| `Talk-to` NPC definitions with `[opnpc1]` / `[apnpc1]` / `_category` trigger | 982 |
-| `Talk-to` NPC definitions missing `[opnpc1]` dialogue trigger | 817 |
-| — Spawned on map (`maps/*.jm2`, direct or via `multinpc` parent) | 626 |
-| — Dynamic / cutscene / unspawned definitions | 191 |
+| `Talk-to` NPC definitions with `[opnpc1]` / `[apnpc1]` / `_category` trigger | 1043 |
+| `Talk-to` NPC definitions missing `[opnpc1]` dialogue trigger | 756 |
+| — Spawned on map (`maps/*.jm2`, direct or via `multinpc` parent) | 569 |
+| — Dynamic / cutscene / unspawned definitions | 187 |
 
 ## 2. Breakdown by Area / Quest / Feature Group
 
 | Area / Quest Group | Missing `Talk-to` Definitions |
 |---|---:|
-| Members Surface & Underground Regions (Other) | 254 |
+| Members Surface & Underground Regions (Other) | 228 |
 | Keldagrim & The Giant Dwarf | 111 |
-| Unspawned / Dynamic / Cutscene / Morph Variants | 111 |
+| Unspawned / Dynamic / Cutscene / Morph Variants | 108 |
 | Al Kharid & Kharidian Desert | 79 |
 | Morytania, Canifis & Burgh de Rott | 50 |
 | Random Events & Macro Guardians | 27 |
@@ -30,9 +30,7 @@
 | Recipe for Disaster (100th Quest) | 20 |
 | The Lost Tribe & Dorgeshuun Mines | 19 |
 | F2P Surface & Underground Regions (Other) | 18 |
-| Ghosts Ahoy & Port Phasmatys | 17 |
 | Tirannwn, Lletya & Mourning's End | 17 |
-| One Small Favour & H.A.M. Hideout | 15 |
 | Mage Training Arena | 12 |
 | Farming Gardeners, Shops & Leprechauns | 11 |
 | Draynor Village & Market | 7 |
@@ -196,23 +194,6 @@
 | 2902 | `agrith_badden` | Father Badden | Al Kharid & Kharidian Desert | `(0, 3483, 3090, m54_48)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Father_Badden) |
 | 2910 | `agrith_dave` | Evil Dave | Al Kharid & Kharidian Desert | `(0, 2721, 4910, m42_76)` | 2 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Evil_Dave) |
 | 2899 | `agrith_reen` | Father Reen | Al Kharid & Kharidian Desert | `(0, 3271, 3158, m51_49)` | 2 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Father_Reen) |
-| 1688 | `ahoy_akharanu` | Ak-Haranu | Ghosts Ahoy & Port Phasmatys | `(0, 3689, 3495, m57_54)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Ak-Haranu) |
-| 1695 | `ahoy_crone` | Old crone | Ghosts Ahoy & Port Phasmatys | `(0, 3461, 3558, m54_55)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Old_crone) |
-| 1686 | `ahoy_disciple` | Ghost Disciple | Ghosts Ahoy & Port Phasmatys | `(0, 3655, 3516, m57_54)` | 3 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ghost_Disciple) |
-| 1702 | `ahoy_ghost_banker` | Ghost Banker | Ghosts Ahoy & Port Phasmatys | `(0, 3687, 3464, m57_54)` | 4 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ghost_Banker) |
-| 1704 | `ahoy_ghost_captain_1` | Ghost Captain | Ghosts Ahoy & Port Phasmatys | `(0, 3703, 3487, m57_54)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ghost_Captain) |
-| 1705 | `ahoy_ghost_captain_2` | Ghost Captain | Ghosts Ahoy & Port Phasmatys | `(0, 3691, 3513, m57_54)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ghost_Captain) |
-| 1701 | `ahoy_ghost_farmer` | Ghost Farmer | Ghosts Ahoy & Port Phasmatys | `(0, 3617, 3528, m56_55)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ghost_Farmer) |
-| 1706 | `ahoy_ghost_guard` | Ghost Guard | Ghosts Ahoy & Port Phasmatys | `(0, 3652, 3484, m57_54)` | 4 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ghost_Guard) |
-| 1700 | `ahoy_ghost_innkeeper` | Ghost Innkeeper | Ghosts Ahoy & Port Phasmatys | `(0, 3681, 3496, m57_54)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ghost_Innkeeper) |
-| 1685 | `ahoy_ghost_protestor` | Gravingas | Ghosts Ahoy & Port Phasmatys | `(0, 3660, 3499, m57_54)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Gravingas) |
-| 1703 | `ahoy_ghost_sailor` | Ghost Sailor | Ghosts Ahoy & Port Phasmatys | `(0, 3686, 3503, m57_54)` | 8 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ghost_Sailor) |
-| 1699 | `ahoy_ghost_shopkeeper` | Ghost Shopkeeper | Ghosts Ahoy & Port Phasmatys | `(0, 3658, 3477, m57_54)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Ghost_Shopkeeper) |
-| 1697 | `ahoy_ghost_villager` | Ghost Villager | Ghosts Ahoy & Port Phasmatys | `(0, 3658, 3465, m57_54)` | 12 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ghost_Villager) |
-| 1684 | `ahoy_necrovarus` | Necrovarus | Ghosts Ahoy & Port Phasmatys | `(0, 3660, 3516, m57_54)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Necrovarus) |
-| 1696 | `ahoy_oldman` | Old man | Ghosts Ahoy & Port Phasmatys | `(1, 3617, 3544, m56_55)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Old_man) |
-| 1694 | `ahoy_robin` | Robin | Ghosts Ahoy & Port Phasmatys | `(0, 3672, 3491, m57_54)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Robin) |
-| 1683 | `ahoy_velorina` | Velorina | Ghosts Ahoy & Port Phasmatys | `(0, 3678, 3510, m57_54)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Velorina) |
 | 3030 | `ali_the_carter` | Ali the Carter | Al Kharid & Kharidian Desert | `(0, 3421, 2914, m53_45)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ali_the_Carter) |
 | 1971 | `azzanadra_real` | Azzanadra | Members Surface & Underground Regions (Other) | `(0, 3233, 9317, m50_145)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Azzanadra) |
 | 2024 | `barrows_oldman` | Strange Old Man | Members Surface & Underground Regions (Other) | `(0, 3565, 3288, m55_51)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Strange_Old_Man) |
@@ -450,30 +431,12 @@
 | 2305 | `farming_shopkeeper_2` | Vanessa | Farming Gardeners, Shops & Leprechauns | `(0, 2820, 3463, m44_54)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Vanessa) |
 | 2306 | `farming_shopkeeper_3` | Richard | Farming Gardeners, Shops & Leprechauns | `(0, 2646, 3364, m41_52)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Richard) |
 | 2307 | `farming_shopkeeper_4` | Alice | Farming Gardeners, Shops & Leprechauns | `(0, 3627, 3526, m56_55)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Alice) |
-| 1715 | `favour_female_ham_civilian` | H.A.M. Member | One Small Favour & H.A.M. Hideout | `(0, 3150, 9624, m49_150)` | 10 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/H.A.M._Member) |
-| 1795 | `favour_gangster_dwarf` | Dwarf gang member | One Small Favour & H.A.M. Hideout | `(0, 2966, 9813, m46_153)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Dwarf_gang_member) |
-| 1796 | `favour_gangster_dwarf_2` | Dwarf gang member | One Small Favour & H.A.M. Hideout | `(0, 2967, 9813, m46_153)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Dwarf_gang_member) |
-| 1797 | `favour_gangster_dwarf_3` | Dwarf gang member | One Small Favour & H.A.M. Hideout | `(0, 2968, 9813, m46_153)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Dwarf_gang_member) |
-| 1712 | `favour_guard_long_beard` | H.A.M. Guard | One Small Favour & H.A.M. Hideout | `(0, 3150, 9650, m49_150)` | 6 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/H.A.M._Guard) |
-| 1711 | `favour_guard_male_bearded` | H.A.M. Guard | One Small Favour & H.A.M. Hideout | `(0, 3147, 9620, m49_150)` | 9 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/H.A.M._Guard) |
-| 1710 | `favour_guard_male_no_beard` | H.A.M. Guard | One Small Favour & H.A.M. Hideout | `(0, 3159, 9613, m49_150)` | 7 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/H.A.M._Guard) |
-| 1794 | `favour_hammerspike_stoutbeard` | Hammerspike Stoutbeard | One Small Favour & H.A.M. Hideout | `(0, 2965, 9811, m46_153)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Hammerspike_Stoutbeard) |
-| 1718 | `favour_jimmy` | Jimmy the Chisel | One Small Favour & H.A.M. Hideout | `(0, 3184, 9610, m49_150)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Jimmy_the_Chisel) |
-| 1709 | `favour_johanhus_ulsbrecht` | Johanhus Ulsbrecht | One Small Favour & H.A.M. Hideout | `(0, 3171, 9620, m49_150)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Johanhus_Ulsbrecht) |
-| 1714 | `favour_male_ham_civilian` | H.A.M. Member | One Small Favour & H.A.M. Hideout | `(0, 3144, 9619, m49_150)` | 16 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/H.A.M._Member) |
-| 1717 | `favour_npc_chair` | H.A.M. Member | One Small Favour & H.A.M. Hideout | `(0, 3162, 9633, m49_150)` | 6 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/H.A.M._Member) |
-| 1716 | `favour_npc_floor` | H.A.M. Member | One Small Favour & H.A.M. Hideout | `(0, 3151, 9625, m49_150)` | 5 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/H.A.M._Member) |
-| 1798 | `favour_phantuwti_farsight` | Phantuwti Fanstuwi Farsight | One Small Favour & H.A.M. Hideout | `(0, 2705, 3474, m42_54)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Phantuwti_Fanstuwi_Farsight) |
 | 1925 | `fd_elder_by_mirrors` | Eblis | Members Surface & Underground Regions (Other) | `(0, 3213, 2956, m50_46)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Eblis) |
 | 1923 | `fd_elder_village` | Eblis | Members Surface & Underground Regions (Other) | `(0, 3185, 2983, m49_46)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Eblis) |
 | 1948 | `fd_troll_dad` | Troll father | Members Surface & Underground Regions (Other) | `(2, 2825, 3807, m44_59)` | 2 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Troll_father) |
 | 1950 | `fd_troll_mum` | Troll mother | Members Surface & Underground Regions (Other) | `(2, 2825, 3811, m44_59)` | 2 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Troll_mother) |
 | 1944 | `fd_trollblock1` | Ice block | Members Surface & Underground Regions (Other) | `(2, 2825, 3807, m44_59)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Ice_block) |
 | 1946 | `fd_trollblock2` | Ice block | Members Surface & Underground Regions (Other) | `(2, 2825, 3811, m44_59)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Ice_block) |
-| 1673 | `fenk_creature_model` | Fenkenstrain's Monster | Members Surface & Underground Regions (Other) | `(2, 3547, 3555, m55_55)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Fenkenstrain%27s_Monster) |
-| 1674 | `fenk_creature_model_2` | Lord Rologarth | Members Surface & Underground Regions (Other) | `(0, 3552, 3550, m55_55)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Lord_Rologarth) |
-| 1670 | `fenk_fenkenstrain_model` | Dr Fenkenstrain | Members Surface & Underground Regions (Other) | `(0, 3551, 3550, m55_55)` | 2 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Dr_Fenkenstrain) |
-| 1675 | `fenk_gardener` | Gardener Ghost | Members Surface & Underground Regions (Other) | `(0, 3551, 3561, m55_55)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Gardener_Ghost) |
 | 1864 | `feud_ali_the_barman` | Ali The barman | Al Kharid & Kharidian Desert | `(0, 3361, 2955, m52_46)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ali_The_barman) |
 | 1867 | `feud_ali_the_discount_camel_seller` | Ali the Camel Man | Al Kharid & Kharidian Desert | `(0, 3350, 2967, m52_46)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Ali_the_Camel_Man) |
 | 1880 | `feud_arabian_guard1_1` | Bandit | Al Kharid & Kharidian Desert | `(0, 3354, 3000, m52_46)` | 5 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Bandit) |
@@ -638,19 +601,6 @@
 | 2932 | `makinghistory_jorral` | Jorral | Members Surface & Underground Regions (Other) | `(0, 2437, 3347, m38_52)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Jorral) |
 | 2935 | `makinghistory_melina` | Melina | Members Surface & Underground Regions (Other) | `(0, 3674, 3484, m57_54)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Melina) |
 | 2675 | `man4_for_musa_point` | Man | F2P Surface & Underground Regions (Other) | `(0, 2889, 3173, m45_49)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Man) |
-| 1806 | `mdaughter_ancientrock_guard` | Guard | Members Surface & Underground Regions (Other) | `(0, 2798, 3667, m43_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Guard) |
-| 1812 | `mdaughter_bearman` | The Kendal | Members Surface & Underground Regions (Other) | `(0, 2786, 10081, m43_157)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/The_Kendal) |
-| 1816 | `mdaughter_camp_female1` | Camp dweller | Members Surface & Underground Regions (Other) | `(0, 2803, 3668, m43_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Camp_dweller) |
-| 1817 | `mdaughter_camp_female2` | Camp dweller | Members Surface & Underground Regions (Other) | `(0, 2797, 3672, m43_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Camp_dweller) |
-| 1818 | `mdaughter_camp_female3` | Camp dweller | Members Surface & Underground Regions (Other) | `(0, 2802, 3674, m43_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Camp_dweller) |
-| 1814 | `mdaughter_camp_male1` | Camp dweller | Members Surface & Underground Regions (Other) | `(0, 2794, 3668, m43_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Camp_dweller) |
-| 1815 | `mdaughter_camp_male2` | Camp dweller | Members Surface & Underground Regions (Other) | `(0, 2801, 3669, m43_57)` | 1 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Camp_dweller) |
-| 1807 | `mdaughter_hamal` | Hamal the Chieftain | Members Surface & Underground Regions (Other) | `(0, 2811, 3673, m43_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Hamal_the_Chieftain) |
-| 1810 | `mdaughter_jokul` | Jokul | Members Surface & Underground Regions (Other) | `(0, 2811, 3681, m43_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Jokul) |
-| 1811 | `mdaughter_multi_bear` | mdaughter_multi_bear | Members Surface & Underground Regions (Other) | `(0, 2786, 10081, m43_157)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Mdaughter_Multi_Bear) |
-| 1808 | `mdaughter_ragnar` | Ragnar | Members Surface & Underground Regions (Other) | `(0, 2765, 3676, m43_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ragnar) |
-| 1805 | `mdaughter_rockslide_guard` | Guard | Members Surface & Underground Regions (Other) | `(0, 2760, 3660, m43_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Guard) |
-| 1809 | `mdaughter_svidi` | Svidi | Members Surface & Underground Regions (Other) | `(0, 2714, 3672, m42_57)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Svidi) |
 | 2322 | `metarialus` | Metarialus | Members Surface & Underground Regions (Other) | `(0, 3680, 9958, m57_155)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Metarialus) |
 | 1257 | `mort_afflicted_man` | Afflicted | Morytania, Canifis & Burgh de Rott | `(0, 3466, 3306, m54_51)` | 7 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Afflicted) |
 | 1261 | `mort_afflicted_man2` | Afflicted | Morytania, Canifis & Burgh de Rott | `(0, 3469, 3308, m54_51)` | 5 | `interactive_citizen_or_guard_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Afflicted) |
@@ -704,15 +654,6 @@
 | 2289 | `rd_observer_room_7` | Ms. Hynn Terprett | Members Surface & Underground Regions (Other) | `(0, 2451, 4939, m38_77)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ms._Hynn_Terprett) |
 | 2266 | `roguesden_mazemaster` | Brian O'Richard | Members Surface & Underground Regions (Other) | `(1, 3049, 4977, m47_77)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Brian_O%27Richard) |
 | 2270 | `roguesden_trader` | Martin Thwait | Members Surface & Underground Regions (Other) | `(1, 3048, 4975, m47_77)` | 1 | `shopkeeper_greeting_and_openshop` | [Wiki](https://oldschool.runescape.wiki/w/Martin_Thwait) |
-| 1568 | `route_curpile_fyod` | Curpile Fyod | Members Surface & Underground Regions (Other) | `(0, 3508, 3440, m54_53)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Curpile_Fyod) |
-| 1567 | `route_cyreg_paddlehorn` | Cyreg Paddlehorn | Members Surface & Underground Regions (Other) | `(0, 3522, 3284, m55_51)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Cyreg_Paddlehorn) |
-| 1571 | `route_harold_evans` | Harold Evans | Members Surface & Underground Regions (Other) | `(3, 3504, 9837, m54_153)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Harold_Evans) |
-| 1574 | `route_ivan_strom` | Ivan Strom | Members Surface & Underground Regions (Other) | `(0, 3513, 9843, m54_153)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ivan_Strom) |
-| 1573 | `route_polmafi_ferdygris` | Polmafi Ferdygris | Members Surface & Underground Regions (Other) | `(0, 3514, 9838, m54_153)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Polmafi_Ferdygris) |
-| 1572 | `route_radigad_ponfit` | Radigad Ponfit | Members Surface & Underground Regions (Other) | `(0, 3509, 9831, m54_153)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Radigad_Ponfit) |
-| 1570 | `route_sani_piliu` | Sani Piliu | Members Surface & Underground Regions (Other) | `(3, 3508, 9837, m54_153)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Sani_Piliu) |
-| 1577 | `route_vanstrom_klause_sitting` | Vanstrom Klause | Members Surface & Underground Regions (Other) | `(0, 3503, 3477, m54_54)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Vanstrom_Klause) |
-| 1569 | `route_veliaf_hurtz` | Veliaf Hurtz | Members Surface & Underground Regions (Other) | `(0, 3506, 9838, m54_153)` | 2 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Veliaf_Hurtz) |
 | 2376 | `roving_female_woodelf_temp_1` | Eluned | Tirannwn, Lletya & Mourning's End | `(0, 2352, 3171, m36_49)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Eluned) |
 | 1777 | `roving_update_female_woodelf` | Ilfeen | Tirannwn, Lletya & Mourning's End | `(0, 2260, 3213, m35_50)` | 1 | `npc_conversation_or_quest_branch` | [Wiki](https://oldschool.runescape.wiki/w/Ilfeen) |
 | 2399 | `secret_ghost_explorer` | Mysterious ghost | Members Surface & Underground Regions (Other) | `(0, 2555, 3444, m39_53)` | 1 | `quest_or_varbit_morph_stage_dialogue` | [Wiki](https://oldschool.runescape.wiki/w/Mysterious_ghost) |
