@@ -24,12 +24,16 @@ try {
         'DEV_LUNA_BOT=true'
     ) -join [Environment]::NewLine
     Set-Content -LiteralPath (Join-Path $engine '.env') -Value $envText -Encoding UTF8
-    @{engine=$engine;gamePort=52402;webPort=8888} | ConvertTo-Json -Compress | Set-Content -LiteralPath (Join-Path $runtime 'active.json') -Encoding UTF8
+    # Synthetic loopback listener makes the fresh report genuinely reachable.
+    $listener = New-Object Net.Sockets.TcpListener([Net.IPAddress]::Loopback, 0)
+    $listener.Start()
+    $port = [int]$listener.LocalEndpoint.Port
+    @{engine=$engine;gamePort=$port;webPort=8888} | ConvertTo-Json -Compress | Set-Content -LiteralPath (Join-Path $runtime 'active.json') -Encoding UTF8
     $livePath = Join-Path $stateDir 'live-bot-state.json'
     @{
         schema='joshrs-fred-george-live-state-v1'
         updated_utc=[DateTimeOffset]::UtcNow.ToString('o')
-        game_port=52402
+        game_port=$port
         bots=@{
             Fred=@{online=$true;current_task='gather safely'}
             George=@{online=$true;current_task='quest safely'}
@@ -53,6 +57,15 @@ try {
     Assert-JoshRS ((Get-FileHash (Join-Path $engine '.env') -Algorithm SHA256).Hash -eq $originalEnvHash) 'Env mutated'
     Assert-JoshRS ((Get-FileHash (Join-Path $runtime 'active.json') -Algorithm SHA256).Hash -eq $originalStateHash) 'Active world mutated'
 
+    # A recent report from a STOPPED server must be marked stale and bots unknown.
+    $listener.Stop()
+    $stoppedReport = (& $tool -RepoRoot $root | Out-String) | ConvertFrom-Json
+    Assert-JoshRS ($stoppedReport.gameListening -eq $false) 'Stopped fixture port incorrectly listening'
+    Assert-JoshRS ($stoppedReport.fredGeorge.live.reportPresent -eq $true) 'Recent stopped report missing'
+    Assert-JoshRS ($stoppedReport.fredGeorge.live.reportFresh -eq $false) 'Fresh stopped-server file incorrectly treated as live'
+    Assert-JoshRS ($null -eq $stoppedReport.fredGeorge.live.fredOnline) 'Stopped server Fred must be unknown'
+    Assert-JoshRS ($null -eq $stoppedReport.fredGeorge.live.georgeOnline) 'Stopped server George must be unknown'
+
     # A previously written but stale file must NOT be treated as live bots.
     $stale = Get-Content $livePath -Raw | ConvertFrom-Json
     $stale.updated_utc = [DateTimeOffset]::UtcNow.AddMinutes(-10).ToString('o')
@@ -70,6 +83,7 @@ try {
     Assert-JoshRS ($report.fredGeorge.moduleInstalled -eq $false) 'Missing bot module incorrectly marked installed'
     Write-Host 'PASS: Windows agent inspector is read-only and distinguishes enabled, installed, live and stale.'
 } finally {
+    if ($listener) { $listener.Stop() }
     if (Test-Path -LiteralPath $root) {
         Remove-Item -LiteralPath $root -Force -Recurse -ErrorAction SilentlyContinue
     }
