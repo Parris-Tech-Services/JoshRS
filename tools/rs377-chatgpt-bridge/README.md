@@ -49,6 +49,26 @@ The path to full Windows integration is:
    world, never modifying Elrothiro or Sylvie accounts or replacing the
    customised Fred/George/Luna game engine.
 
+## 8 November 2026: real native nearby loc/ground-item observation
+
+The isolated rev-377 server observer now reads up to 48 nearby active locations and
+48 ground items from **existing native ZoneMap entries**. It does not allocate
+empty zones, create game objects, bypass visibility, or read other players'
+inventory. Ground drops are exposed only if valid for the authenticated bot
+and unowned or assigned to that bot; both collections are restricted to the
+same plane and within 16 tiles. Actual native loc/obj config names and
+options are retained when known; unknown names remain `null` rather than
+being invented. An unsupported ZoneMap layout leaves both fields `null`,
+not fabricated empty arrays.
+
+The native isolated boot probe requires these two grounded collections,
+checks their spatial bounds, and reports the observed counts. A full pinned
+upstream `BotWorldState` remains **unsupported**, because real client UI,
+dialogue text, shop/bank, combat events and required full metadata are
+still missing. The gateway must continue returning
+`authoritative_sdk_state_incomplete` until these are genuinely observed.
+No production/family-world engine is modified by this repository change.
+
 ## What is NOT done yet
 
 Agy's draft harness, actual 377 server-side observer, 377 inbound game packet decoder, native client world-state parser, live account authentication, multi-client visibility, Friends presence, genuine dialogue, real gathering/XP, save/relog and WebSocket RS-SDK gateway are all **unimplemented / unverified here**. This module must not be described as a playable bot or connected to Elrothiro without explicit permission and proper isolated acceptance.
