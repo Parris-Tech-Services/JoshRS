@@ -1,0 +1,38 @@
+// 2005 Myreque Skeleton Hellhound: real NPC, real combat, native death callback.
+// No dialogue/cheat branch can grant this kill. Stage advancement is from an NPC death.
+
+[proc,route_spawn_hound]
+if (%routequest ! ^route_hound_fight) return;
+if (npc_find(coord, skeleton_hellhound, 16, 0) = true) {
+    mes("The Skeleton Hellhound is still here. Defeat it before leaving.");
+    return;
+}
+def_coord $spawn = map_findsquare(coord, 3, 8, ^map_findsquare_lineofwalk);
+if ($spawn = null) {
+    mes("There is no safe place for the hound here. Return to the hideout.");
+    return;
+}
+npc_add($spawn, skeleton_hellhound, 800);
+%npc_aggressive_player = uid;
+npc_setmode(opplayer2);
+mes("A skeletal hound rises from the darkness and attacks!");
+
+[opnpc2,skeleton_hellhound]
+@player_combat_start;
+[apnpc2,skeleton_hellhound]
+@player_combat_start_ap;
+
+[ai_queue3,skeleton_hellhound]
+gosub(npc_death);
+// Never award victory to a character who did not land the killing blow.
+// NPC death callback runs in NPC context; only the queue writes player's varps.
+if (npc_findhero = ^true) {
+    obj_add(npc_coord, uncut_ruby, 2, ^lootdrop_duration);
+    obj_add(npc_coord, big_bones, 4, ^lootdrop_duration);
+    queue(route_hound_defeated, 0, 0);
+}
+
+[queue,route_hound_defeated]
+if (%routequest ! ^route_hound_fight) return;
+%routequest = ^route_hound_dead;
+mes("The Skeleton Hellhound collapses. Speak to Veliaf to learn the secret exit.");
