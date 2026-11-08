@@ -165,7 +165,7 @@ def analyze_quest(q: dict, script_index: dict[str, list[dict]],
                   spawns: dict[str,list], morphs: dict[str,set],
                   full_paths: list[str], global_npc_index: dict,
                   loc_symbols: dict[str,int], obj_symbols: dict[str,int],
-                  upstream_sha: str) -> dict[str,Any]:
+                  upstream_sha: str, shared_by_var: dict | None = None) -> dict[str,Any]:
     key = q["quest_id"]
     hint = q.get("evidence",{}).get("quest_dir") or ""
     roots = [r for r in (hint, "quests/"+OVERLAYS[key] if key in OVERLAYS else None) if r]
@@ -201,6 +201,24 @@ def analyze_quest(q: dict, script_index: dict[str, list[dict]],
     for a in sorted(start_aliases):
         start_placements.extend(spawns.get(a, []))
     start_placements = start_placements[:4]
+    # Area and shared-script interactions can advance a quest outside its
+    # quest-owned folder. Only exact %quest-var references count as candidates;
+    # generic/morph handlers are still not proven reachable without a client.
+    related: dict[tuple[str,int,str],dict[str,Any]] = {}
+    for progress_var in re.findall(r"[A-Za-z_][A-Za-z0-9_]*",
+                                   q.get("varp_or_varbit") or ""):
+        for event in (shared_by_var or {}).get(progress_var, []):
+            if event["path"].startswith("scripts/quests/"):
+                continue
+            identity = (event["path"], event["line"], event["op"])
+            if identity not in related:
+                related[identity] = {**event, "matched_quest_variables":[]}
+            if progress_var not in related[identity]["matched_quest_variables"]:
+                related[identity]["matched_quest_variables"].append(progress_var)
+    area_handlers = sorted(related.values(),
+                           key=lambda e:(e["path"],e["line"],e["op"]))
+    for event in area_handlers:
+        event["matched_quest_variables"].sort()
     # Item symbol availability checks must be conservative: pack symbols can be
     # defined in handwritten local .obj configs before the build generates ids.
     item_ops = sorted(set(INVENTORY.findall(combined)))
@@ -300,6 +318,10 @@ def analyze_quest(q: dict, script_index: dict[str, list[dict]],
         "inventory_symbol_not_in_obj_pack":missing_items,
         "item_use_interactions":obj_targets,
         "interaction_handlers":events,
+        "shared_area_or_general_event_candidates":area_handlers,
+        "shared_area_event_candidate_count":len(area_handlers),
+        "shared_area_npc_dialogue_event_candidates":[e for e in area_handlers
+              if e["op"].startswith(("opnpc","apnpc"))],
         "interaction_handler_counts":event_counts,
         "dialogue_structure":{
             "chatnpc_or_chatplayer_calls":dialogues,
@@ -353,18 +375,27 @@ def assemble(content: Path, source_catalogue: Path=QUEUE) -> dict:
     code_by_file = {}
     script_index = {}
     npc_idx = defaultdict(list)
+    # Index exact variable mentions within each shared event body. A quest can
+    # have many legitimate handlers in areas/area_... rather than quest_... .
+    # Do not infer a match merely because an NPC has a similar English name.
+    related_idx = defaultdict(list)
     for path in sorted(sdir.rglob("*.rs2")):
         rel = path.relative_to(content).as_posix()
         code = path.read_text(encoding="utf-8", errors="replace")
         code_by_file[rel] = code
         script_index[rel] = get_script_sections(code)
         for event in script_index[rel]:
+            if (rel.startswith("scripts/areas/") or
+                rel.startswith("scripts/general/")) and rel != "scripts/general/scripts/quests.rs2":
+                for var in set(re.findall(r"%([A-Za-z_][A-Za-z0-9_]*)\b",event["body"])):
+                    related_idx[var].append(concise_event(
+                        event["kind"],event["target"],rel,event["line"]))
             if event["kind"] in {"opnpc1","apnpc1"}:
                 npc_idx[event["target"]].append(
                     concise_event(event["kind"],event["target"],rel,event["line"]))
     all_paths = sorted(code_by_file)
     rows = [analyze_quest(q,script_index,code_by_file,npc_symbols,spawn_lookup,morphs,
-                          all_paths,npc_idx,loc_symbols,obj_symbols,PIN)
+                          all_paths,npc_idx,loc_symbols,obj_symbols,PIN,related_idx)
             for q in quests]
     if len(rows)!=104:
         raise ValueError("Deep audit did not visit all historical quest slots")
@@ -377,6 +408,10 @@ def assemble(content: Path, source_catalogue: Path=QUEUE) -> dict:
         "release_cutoff":"2006-05-02",
         "total_quests":104,
         "num_quest_script_files":sum(r["quest_script_count"] for r in rows),
+        "shared_area_quest_variable_event_candidates":sum(
+             r["shared_area_event_candidate_count"] for r in rows),
+        "quest_slots_with_shared_area_event_candidates":sum(
+             bool(r["shared_area_event_candidate_count"]) for r in rows),
         "all_source_stages_and_interaction_handlers_indexed":True,
         "period_primary_source_authenticated_for_all_104":False,
         "npc_dialogue_2006_wording_parity_verified":False,
@@ -399,18 +434,20 @@ def render_md(data: dict) -> str:
         f"Content pin: `{data['content_sha_pin']}`.",
         f"Quest slots examined: **{data['total_quests']}**.",
         f"Quest-owned source script files: **{data['num_quest_script_files']}**.",
+        f"Shared area/general event candidates linked by exact quest variable: **{data['shared_area_quest_variable_event_candidates']}** "
+        f"across **{data['quest_slots_with_shared_area_event_candidates']}** quests.",
         "",
         "## Structural findings by quest",
         "",
-        "| # | Quest | Script files | Talk NPCs | Object interactions | Item actions | Dialogue calls / choices | Stage writes | Review flags |",
-        "|---:|---|---:|---:|---:|---:|---|---:|---:|",
+        "| # | Quest | Script files | Talk NPCs | Shared area events | Object interactions | Item actions | Dialogue calls / choices | Stage writes | Review flags |",
+        "|---:|---|---:|---:|---:|---:|---:|---|---:|---:|",
     ]
     for index,r in enumerate(data["quests"],1):
         d=r["dialogue_structure"]
         calls=r["interaction_handler_counts"]
         lines.append(
             f"| {index} | {r['quest_name'].replace('|','/')} | {r['quest_script_count']} | "
-            f"{len(r['npc_interactions'])} | {len(r['location_interactions'])} | "
+            f"{len(r['npc_interactions'])} | {r['shared_area_event_candidate_count']} | {len(r['location_interactions'])} | "
             f"{len(r['item_use_interactions'])} | {d['chatnpc_or_chatplayer_calls']} / {d['player_choice_menus']} | "
             f"{len(r['stage_structure']['stage_writes'])} | {len(r['open_acceptance_checks'])} |"
         )
@@ -448,7 +485,7 @@ def persist(data: dict, out: Path) -> None:
     with (out/"deep-104-summary.csv").open("w",newline="",encoding="utf-8") as stream:
         fields=["number","id","quest","source_verdict","script_files","npc_start_handler",
                 "npc_spawn","npc_ops","loc_ops","item_ops","menu_choices","stage_writes",
-                "open_checks","period_primary_verified","real_client_complete"]
+                "shared_area_events","open_checks","period_primary_verified","real_client_complete"]
         writer=csv.DictWriter(stream,fieldnames=fields)
         writer.writeheader()
         for index,r in enumerate(data["quests"],1):
@@ -464,6 +501,7 @@ def persist(data: dict, out: Path) -> None:
                 "item_ops":len(r["item_use_interactions"]),
                 "menu_choices":d["player_choice_menus"],
                 "stage_writes":len(r["stage_structure"]["stage_writes"]),
+                "shared_area_events":r["shared_area_event_candidate_count"],
                 "open_checks":";".join(r["open_acceptance_checks"]),
                 "period_primary_verified":False,"real_client_complete":False,
             })
@@ -479,6 +517,8 @@ def main() -> None:
     persist(result,args.output)
     print(json.dumps({"quest_slots":result["total_quests"],
                       "quest_source_scripts":result["num_quest_script_files"],
+                      "shared_area_event_candidates":result["shared_area_quest_variable_event_candidates"],
+                      "quests_with_shared_area_candidates":result["quest_slots_with_shared_area_event_candidates"],
                       "source_verdicts":result["verdict_counts"],
                       "review_flag_counts":result["open_check_counts"],
                       "period_primary_parity_verified":False,
