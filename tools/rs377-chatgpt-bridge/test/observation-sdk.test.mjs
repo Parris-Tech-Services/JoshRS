@@ -34,7 +34,7 @@ test('read-only snapshots are detached and frozen, no mutable server reference l
 });
 test('observer denies accidental cross-player or private data fields',()=>{
   const other=raw();other.nearbyPlayers=[{username:'Sylvie',bank:[]}];
-  assert.throws(()=>validateObservation(other,opts),/unexpected top-level/);
+  assert.throws(()=>validateObservation(other,opts),/nearbyPlayers/);
   const world=raw();world.world.privateKey='secret';assert.throws(()=>validateObservation(world,opts),/unexpected world/);
   const player=raw();player.player.email='secret';assert.throws(()=>validateObservation(player,opts),/private fields/);
 });
@@ -88,4 +88,11 @@ test('can translate a complete *supplied* SDK-compatible observation but not syn
   assert.equal(out.state.inGame,true);assert.equal(out.state.tick,100);
   const broken=raw();broken.sdkDetails=x.sdkDetails;delete broken.sdkDetails.bank;
   assert.throws(()=>toBotWorldState(broken,opts),/bank/);
+});
+
+test('native visible-player field is bounded and cannot carry private bank or account data',()=>{
+  const data=raw();data.nearbyPlayers=[{index:8,name:'HarnessScout',combatLevel:3,x:3201,z:3200}];
+  assert.equal(validateObservation(data,opts).nearbyPlayers[0].name,'HarnessScout');
+  const leak=raw();leak.nearbyPlayers=[{index:8,name:'HarnessScout',combatLevel:3,x:3201,z:3200,bank:[]}];
+  assert.throws(()=>validateObservation(leak,opts),/private fields/);
 });
