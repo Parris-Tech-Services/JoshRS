@@ -50,8 +50,17 @@ if($Apply) {
 function Invoke-GuardedPatch([string]$Name,[string]$Script,[string[]]$Arguments=@()){
     # Dedicated process: existing Friends installer intentionally calls exit 0.
     $args=@('-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',$Script) + $Arguments
-    $output=@(& powershell.exe @args 2>&1)
-    $code=$LASTEXITCODE
+    # PowerShell 5.1 may surface a child process' stderr as an ErrorRecord.
+    # A preflight refusal must be captured as BLOCKED, not abort the whole
+    # update pipeline before we inspect its non-zero exit code.
+    $priorErrorAction=$ErrorActionPreference
+    try {
+        $ErrorActionPreference='Continue'
+        $output=@(& powershell.exe @args 2>&1)
+        $code=$LASTEXITCODE
+    } finally {
+        $ErrorActionPreference=$priorErrorAction
+    }
     return [pscustomobject]@{
         Name=$Name; ExitCode=$code; Text=($output -join [Environment]::NewLine)
     }
