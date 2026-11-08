@@ -58,6 +58,10 @@ function Invoke-GuardedPatch([string]$Name,[string]$Script,[string[]]$Arguments=
         $ErrorActionPreference='Continue'
         $output=@(& powershell.exe @args 2>&1)
         $code=$LASTEXITCODE
+        # A skipped unsupported child exits 1, but the parent successfully
+        # handled that refusal. Do not leak stale LASTEXITCODE into the GUI
+        # or CI host. A genuine apply error is thrown separately below.
+        $global:LASTEXITCODE=0
     } finally {
         $ErrorActionPreference=$priorErrorAction
     }
