@@ -64,6 +64,9 @@ stat_advance(cooking, 3000);
         self.assertEqual(result["source_verdict"],
                          "PINNED_SOURCE_NEEDS_GAMEPLAY_AND_PERIOD_PARITY")
         self.assertTrue(result["npc_start"]["map_spawn_evidence"])
+        self.assertNotIn("QUEST_JOURNAL_HANDLER_NOT_IN_OWNED_RS2",
+                         result["open_acceptance_checks"])
+        self.assertIn("if_button",result["interaction_handler_counts"])
         self.assertFalse(result["period_primary_source_verified"])
         self.assertFalse(result["full_live_player_quest_completion_verified"])
         self.assertFalse(result["save_and_relogin_verified"])
