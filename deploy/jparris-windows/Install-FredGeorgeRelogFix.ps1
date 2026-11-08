@@ -55,14 +55,33 @@ if (-not $engine.StartsWith($runtime + [IO.Path]::DirectorySeparatorChar,[String
 $target = Join-Path $engine 'src\engine\bot\FredGeorgeBot.ts'
 if (-not (Test-Path -LiteralPath $target -PathType Leaf)) { throw 'FredGeorgeBot.ts is missing from the selected game. No changes.' }
 $blob = Get-GitBlob $target
-$stateLabel = if ($blob -eq $newBlob) { 'ALREADY_UPDATED' } elseif ($blob -eq $oldBlob) { 'SUPPORTED_OLD_VERSION' } else { 'UNKNOWN_LOCAL_CUSTOMISATIONS' }
+# The earlier local repair patches ONE relog guard while intentionally preserving
+# the rest of this private USB engine. A changed whole-file blob is expected.
+# Recognise that specific safe guard only; do not mark arbitrary customisations
+# reviewed or install a different complete bot implementation over them.
+$src = [IO.File]::ReadAllText($target)
+$fixedGuard = '(?m)^\s*if\s*\(\s*!stillInWorld\s*&&\s*!world\.logoutRequests\.has\(\s*player\?\.username\s*\?\?\s*name\.toLowerCase\(\)\s*\)\s*\)\s*\{'
+$unsafeGuard = '(?m)^\s*if\s*\(\s*!stillInWorld\s*&&\s*!world\.logoutRequests\.has\(\s*name\s*\)\s*\)\s*\{'
+$targetedGuardPresent = ([regex]::Matches($src, $fixedGuard).Count -eq 1) -and ([regex]::Matches($src, $unsafeGuard).Count -eq 0)
+$stateLabel = if ($blob -eq $newBlob) {
+    'ALREADY_UPDATED'
+} elseif ($targetedGuardPresent) {
+    'TARGETED_FIX_PRESENT_CUSTOM_SOURCE'
+} elseif ($blob -eq $oldBlob) {
+    'SUPPORTED_OLD_VERSION'
+} else {
+    'UNKNOWN_LOCAL_CUSTOMISATIONS'
+}
 Write-Host "Fred/George active engine source: $target"
 Write-Host "Git blob SHA: $blob"
 Write-Host "Status: $stateLabel"
 if (-not $Apply) {
     Write-Host 'READ-ONLY preflight complete. No server, saves, accounts or source changed.'
-    if ($stateLabel -eq 'UNKNOWN_LOCAL_CUSTOMISATIONS') {
-        Write-Warning 'This USB copy differs from both reviewed versions. DO NOT overwrite it. A targeted merge is needed.'
+    if ($stateLabel -eq 'TARGETED_FIX_PRESENT_CUSTOM_SOURCE') {
+        Write-Host 'The previously applied lower-case relog guard is present. Other local customisations are preserved.'
+        Write-Host 'No full-source replacement needed. In-game status still requires separate verification.'
+    } elseif ($stateLabel -eq 'UNKNOWN_LOCAL_CUSTOMISATIONS') {
+        Write-Warning 'This USB copy differs from both reviewed versions and has no recognised targeted relog guard. DO NOT overwrite it.'
     } elseif ($stateLabel -eq 'SUPPORTED_OLD_VERSION') {
         Write-Host 'Eligible for guarded update only AFTER all players log out and the game server stops.'
     }
@@ -70,6 +89,11 @@ if (-not $Apply) {
 }
 if ($blob -eq $newBlob) {
     Write-Host 'Already has the reviewed fix. No changes or restart required.'
+    return
+}
+if ($stateLabel -eq 'TARGETED_FIX_PRESENT_CUSTOM_SOURCE') {
+    Write-Host 'NO_CHANGE: Targeted relog guard is already present in customised local source.'
+    Write-Host 'Preserving all other customisations. No backup, restart or rewrite required.'
     return
 }
 if ($blob -ne $oldBlob) {
