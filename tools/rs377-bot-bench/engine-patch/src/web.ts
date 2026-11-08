@@ -628,14 +628,21 @@ management.get('/dev/rs377-observe', async (req, reply) => {
         nearbyNpcs,
         nearbyLocs, groundItems,
         dialogue,
-        // Read the native player's own persistent Barcrawl varp, only on the
-        // authenticated disposable world/observer route. Do not read or
-        // modify any other player's quest data. Null means not observable.
+        // Read ONLY the authenticated disposable bot's own native quest
+        // varps. This is read-only; never inject stages or fake completions.
+        // Cook's Assistant is the first full normal-player quest test target.
+        // soulbane is a packed raw varp, NOT an invented decoded quest stage.
         questStages: (() => {
             const barcrawlId = VarPlayerType.getId('barcrawl');
-            if (barcrawlId < 0) return null;
-            const raw = bot.getVar(barcrawlId);
-            return Number.isSafeInteger(raw) && raw >= 0 ? { barcrawl: raw } : null;
+            const cookId = VarPlayerType.getId('cookquest');
+            const soulbaneId = VarPlayerType.getId('soulbane');
+            if (barcrawlId < 0 || cookId < 0 || soulbaneId < 0) return null;
+            const barcrawl = bot.getVar(barcrawlId);
+            const cook = bot.getVar(cookId);
+            const soulbaneRaw = bot.getVar(soulbaneId);
+            if (![barcrawl, cook, soulbaneRaw].every(Number.isSafeInteger)) return null;
+            if (barcrawl < 0 || cook < 0 || cook > 2) return null;
+            return { barcrawl, cook, soulbaneRaw };
         })(),
         sdkDetails
     };
