@@ -20,6 +20,40 @@ import org.junit.runner.RunWith
  */
 @RunWith(AndroidJUnit4::class)
 class Real377EmulatorTest {
+    @Test fun threeDimensionalRendererActuallyDrawsTriangleOnEmulatorCanvas() {
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                val mesh = Geometry377(
+                    listOf(
+                        Vertex377(-64, -64, 0),
+                        Vertex377(64, -64, 0),
+                        Vertex377(0, 64, 0)
+                    ),
+                    listOf(Triangle377(0, 1, 2, 300)),
+                    0
+                )
+                val viewer = Model377Viewer(activity, PrivateModel377.Loaded(999, mesh))
+                viewer.layout(0, 0, 600, 600)
+                val bitmap = android.graphics.Bitmap.createBitmap(
+                    600, 600, android.graphics.Bitmap.Config.ARGB_8888
+                )
+                viewer.draw(android.graphics.Canvas(bitmap))
+                var triangleVisible = false
+                for (y in 100..500 step 12) {
+                    for (x in 100..500 step 12) {
+                        val pixel = bitmap.getPixel(x, y)
+                        if (pixel != android.graphics.Color.rgb(35, 41, 44) &&
+                            pixel != android.graphics.Color.WHITE) {
+                            triangleVisible = true
+                        }
+                    }
+                }
+                assertTrue("3D perspective triangle failed to rasterise", triangleVisible)
+                bitmap.recycle()
+            }
+        }
+    }
+
     @Test fun emulatorNegotiatesWithActualPinned377Engine() {
         val result = Negotiation377.probe()
         assertTrue("Actual 377 server negotiation failed: ${result.message}", result.negotiated)
