@@ -1,0 +1,1750 @@
+{
+  "schema": "joshrs-parity-roadmap-dependency-graph-v1",
+  "cutoff": "2026-11-08",
+  "nodes": [
+    {
+      "id": "JR-001",
+      "label": "Capture exact default-branch and open PR baseline",
+      "phase": "P0",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-002",
+      "label": "Read-only inventory of actual Windows 377 installation",
+      "phase": "P0",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-003",
+      "label": "Verify all installed 377 engine/content/client pins",
+      "phase": "P0",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-004",
+      "label": "Locate every production character/save and database file",
+      "phase": "P0",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-005",
+      "label": "Implement verified immutable snapshot process",
+      "phase": "P0",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-006",
+      "label": "Restore backups into a disposable isolated location",
+      "phase": "P0",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-007",
+      "label": "Reconcile PRs #145/#148 with historical 104-quest audit",
+      "phase": "P0",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-008",
+      "label": "Investigate Party Drop Chest item disappearance issue #52",
+      "phase": "P0",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-009",
+      "label": "Prove real 377 offline solo session",
+      "phase": "P0",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-010",
+      "label": "Add no-disruption production deployment gate",
+      "phase": "P0",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-011",
+      "label": "Define local household and child profile identity",
+      "phase": "P1",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-012",
+      "label": "Implement parent-controlled local profile enrolment",
+      "phase": "P1",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-013",
+      "label": "Enforce loopback-only default game listeners",
+      "phase": "P1",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-014",
+      "label": "Build optional LAN household pairing",
+      "phase": "P1",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-015",
+      "label": "Restrict LAN with host firewall and no router exposure",
+      "phase": "P1",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-016",
+      "label": "Verify two authentic simultaneously logged-in clients",
+      "phase": "P1",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-017",
+      "label": "Make inventory/bank/XP state server-authoritative",
+      "phase": "P1",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-018",
+      "label": "Make trade, chest and bank writes atomic",
+      "phase": "P1",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-019",
+      "label": "Recover sessions safely after disconnect and server restart",
+      "phase": "P1",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-020",
+      "label": "Perform WAN-disconnected cold-boot and full family safety audit",
+      "phase": "P1",
+      "priority": "P0"
+    },
+    {
+      "id": "JR-021",
+      "label": "Specify immutable per-game profile identity",
+      "phase": "P2",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-022",
+      "label": "Define modern client/server capability-negotiation schema",
+      "phase": "P2",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-023",
+      "label": "Create version-scoped item and object ID registry",
+      "phase": "P2",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-024",
+      "label": "Create version-scoped quest and skill variable registry",
+      "phase": "P2",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-025",
+      "label": "Specify forward-only compatible save migrations and rollback",
+      "phase": "P2",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-026",
+      "label": "Create separate per-profile save, cache and world stores",
+      "phase": "P2",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-027",
+      "label": "Define authoritative deterministic tick and action ordering",
+      "phase": "P2",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-028",
+      "label": "Implement world graph, collision and reachability contract",
+      "phase": "P2",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-029",
+      "label": "Define idempotent action and gameplay event bus",
+      "phase": "P2",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-030",
+      "label": "Build real-game evidence capture with privacy redaction",
+      "phase": "P2",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-031",
+      "label": "Reconcile historical quest list against latest main and PRs",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-032",
+      "label": "Validate every historical quest's required prerequisites",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-033",
+      "label": "Complete a real historical quest end-to-end in fresh world",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-034",
+      "label": "Audit stage transitions across all 104 historical quests",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-035",
+      "label": "Rebuild four known quest source stubs without damaging originals",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-036",
+      "label": "Sequence remaining 23 quest source-gap candidates newest-first",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-037",
+      "label": "Classify 673 NPC Talk-to handler candidates",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-038",
+      "label": "Verify 487 statically spawned NPC dialogue candidates",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-039",
+      "label": "Audit authentic 377 banking and merchant UI",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-040",
+      "label": "Test 377 ground item and object interactions",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-041",
+      "label": "Verify all 21 377 skill loops and XP semantics",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-042",
+      "label": "Verify 377 combat/death/loot cycle",
+      "phase": "P3",
+      "priority": "P1"
+    },
+    {
+      "id": "JR-043",
+      "label": "Prototype modern independent client and local game loop",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-044",
+      "label": "Design scalable region streaming and spatial indices",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-045",
+      "label": "Implement interior/exterior visibility and precise collisions",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-046",
+      "label": "Build skeletal animation and interactable entity states",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-047",
+      "label": "Add independent effect/audio pipeline with licence manifests",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-048",
+      "label": "Implement accessible desktop/mobile camera and input",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-049",
+      "label": "Build scalable minimap, world map and path previews",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-050",
+      "label": "Develop versioned UI component/interface description layer",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-051",
+      "label": "Implement action bars, cooldown and hotkey presentation",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-052",
+      "label": "Implement branch-aware quest journal and dialogue presentation",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-053",
+      "label": "Build skills UI for 30-concept reference taxonomy",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-054",
+      "label": "Build transactional modern inventory/equipment/bank interface",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-055",
+      "label": "Prototype rendered moving boat connected to sea navigation",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-056",
+      "label": "Implement instance and player-owned home framework",
+      "phase": "P4",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-057",
+      "label": "Implement independent OSRS-style historical tick combat rules",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-058",
+      "label": "Create OSRS-style resource, recipe and equipment registries",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-059",
+      "label": "Implement Hunter and creature tracking loops",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-060",
+      "label": "Implement Construction and household building",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-061",
+      "label": "Implement Sailing water navigation and hazard graph",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-062",
+      "label": "Implement boat construction, hull and facility components",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-063",
+      "label": "Implement ship crew and companion operator roles",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-064",
+      "label": "Implement ports, embark/disembark and docking transitions",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-065",
+      "label": "Implement sea charting, navigation discoveries and logs",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-066",
+      "label": "Implement salvage, shipwreck and maritime resources",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-067",
+      "label": "Implement Sailing XP and port contract progression",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-068",
+      "label": "Implement OSRS-style spellbooks, runes and prayer gating",
+      "phase": "P5",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-069",
+      "label": "Build full OSRS quest prerequisite semantic graph",
+      "phase": "P6",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-070",
+      "label": "Create original quest content pipeline with stage replay proof",
+      "phase": "P6",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-071",
+      "label": "Plan and implement modern OSRS-style regions incrementally",
+      "phase": "P6",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-072",
+      "label": "Audit and implement modern NPC services and monster behaviours",
+      "phase": "P6",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-073",
+      "label": "Implement modular boss and encounter state machines",
+      "phase": "P6",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-074",
+      "label": "Implement family-scaled co-op raid instances",
+      "phase": "P6",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-075",
+      "label": "Implement modern OSRS-style skilling/minigame rotation",
+      "phase": "P6",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-076",
+      "label": "Implement achievement diaries, clue and collection logs",
+      "phase": "P6",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-077",
+      "label": "Implement offline merchant economy and safe market substitutes",
+      "phase": "P6",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-078",
+      "label": "Automate modern quest/region/boss playthrough evidence",
+      "phase": "P6",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-079",
+      "label": "Create isolated RS3-style combat and progression profile",
+      "phase": "P7",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-080",
+      "label": "Implement action ability engine with server tick validation",
+      "phase": "P7",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-081",
+      "label": "Implement adrenaline, cooldowns and defensive statuses",
+      "phase": "P7",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-082",
+      "label": "Implement RS3-style combat styles and switching",
+      "phase": "P7",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-083",
+      "label": "Implement original Necromancy ritual and progression loop",
+      "phase": "P7",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-084",
+      "label": "Implement Necromancy conjures and incantation combat",
+      "phase": "P7",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-085",
+      "label": "Implement Summoning familiars and pouch progression",
+      "phase": "P7",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-086",
+      "label": "Implement procedural Dungeoneering floors and group scaling",
+      "phase": "P7",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-087",
+      "label": "Implement Divination gathering and energy conversion",
+      "phase": "P7",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-088",
+      "label": "Implement Invention disassembly, augmentations and perks",
+      "phase": "P7",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-089",
+      "label": "Implement Archaeology dig sites, excavation and restoration",
+      "phase": "P8",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-090",
+      "label": "Implement archaeology mystery and relic-effect framework",
+      "phase": "P8",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-091",
+      "label": "Implement RS3-style modern region content packs",
+      "phase": "P8",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-092",
+      "label": "Implement RS3-style branching story and quest systems",
+      "phase": "P8",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-093",
+      "label": "Implement RS3-style boss hub, encounters and elite dungeons",
+      "phase": "P8",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-094",
+      "label": "Implement modern skill cap upgrades and advanced progression",
+      "phase": "P8",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-095",
+      "label": "Implement personal ports, farms and long-running activities",
+      "phase": "P8",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-096",
+      "label": "Implement RS3 achievements, boss logs and completion trackers",
+      "phase": "P8",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-097",
+      "label": "Add parent safety controls and child-accessibility acceptance",
+      "phase": "P9",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-098",
+      "label": "Finish exhaustive modern reference enumerator and gap reconciliation",
+      "phase": "P9",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-099",
+      "label": "Enforce file-level licences and public repo privacy gates",
+      "phase": "P9",
+      "priority": "P2"
+    },
+    {
+      "id": "JR-100",
+      "label": "Run whole-program regression, performance and recoverability acceptance",
+      "phase": "P9",
+      "priority": "P2"
+    }
+  ],
+  "edges": [
+    {
+      "from": "JR-001",
+      "to": "JR-002",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-002",
+      "to": "JR-003",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-002",
+      "to": "JR-004",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-004",
+      "to": "JR-005",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-005",
+      "to": "JR-006",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-001",
+      "to": "JR-007",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-003",
+      "to": "JR-007",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-006",
+      "to": "JR-008",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-003",
+      "to": "JR-009",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-006",
+      "to": "JR-009",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-003",
+      "to": "JR-010",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-006",
+      "to": "JR-010",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-009",
+      "to": "JR-010",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-004",
+      "to": "JR-011",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-011",
+      "to": "JR-012",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-009",
+      "to": "JR-013",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-012",
+      "to": "JR-014",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-013",
+      "to": "JR-014",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-014",
+      "to": "JR-015",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-012",
+      "to": "JR-016",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-014",
+      "to": "JR-016",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-015",
+      "to": "JR-016",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-016",
+      "to": "JR-017",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-008",
+      "to": "JR-018",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-017",
+      "to": "JR-018",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-016",
+      "to": "JR-019",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-018",
+      "to": "JR-019",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-013",
+      "to": "JR-020",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-015",
+      "to": "JR-020",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-016",
+      "to": "JR-020",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-019",
+      "to": "JR-020",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-003",
+      "to": "JR-021",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-021",
+      "to": "JR-022",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-021",
+      "to": "JR-023",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-021",
+      "to": "JR-024",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-023",
+      "to": "JR-024",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-005",
+      "to": "JR-025",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-021",
+      "to": "JR-025",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-006",
+      "to": "JR-026",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-025",
+      "to": "JR-026",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-009",
+      "to": "JR-027",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-021",
+      "to": "JR-027",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-027",
+      "to": "JR-028",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-017",
+      "to": "JR-029",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-025",
+      "to": "JR-029",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-027",
+      "to": "JR-029",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-010",
+      "to": "JR-030",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-029",
+      "to": "JR-030",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-007",
+      "to": "JR-031",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-031",
+      "to": "JR-032",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-009",
+      "to": "JR-033",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-029",
+      "to": "JR-033",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-032",
+      "to": "JR-033",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-031",
+      "to": "JR-034",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-033",
+      "to": "JR-034",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-034",
+      "to": "JR-035",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-007",
+      "to": "JR-036",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-032",
+      "to": "JR-036",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-034",
+      "to": "JR-036",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-031",
+      "to": "JR-037",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-037",
+      "to": "JR-038",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-033",
+      "to": "JR-038",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-009",
+      "to": "JR-039",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-018",
+      "to": "JR-039",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-017",
+      "to": "JR-040",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-028",
+      "to": "JR-040",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-029",
+      "to": "JR-040",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-017",
+      "to": "JR-041",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-033",
+      "to": "JR-041",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-017",
+      "to": "JR-042",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-029",
+      "to": "JR-042",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-021",
+      "to": "JR-043",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-026",
+      "to": "JR-043",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-028",
+      "to": "JR-044",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-043",
+      "to": "JR-044",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-028",
+      "to": "JR-045",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-044",
+      "to": "JR-045",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-043",
+      "to": "JR-046",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-044",
+      "to": "JR-046",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-043",
+      "to": "JR-047",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-043",
+      "to": "JR-048",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-028",
+      "to": "JR-049",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-043",
+      "to": "JR-049",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-022",
+      "to": "JR-050",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-043",
+      "to": "JR-050",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-027",
+      "to": "JR-051",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-050",
+      "to": "JR-051",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-024",
+      "to": "JR-052",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-050",
+      "to": "JR-052",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-023",
+      "to": "JR-053",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-050",
+      "to": "JR-053",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-018",
+      "to": "JR-054",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-023",
+      "to": "JR-054",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-050",
+      "to": "JR-054",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-044",
+      "to": "JR-055",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-046",
+      "to": "JR-055",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-048",
+      "to": "JR-055",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-026",
+      "to": "JR-056",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-028",
+      "to": "JR-056",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-050",
+      "to": "JR-056",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-021",
+      "to": "JR-057",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-027",
+      "to": "JR-057",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-042",
+      "to": "JR-057",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-023",
+      "to": "JR-058",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-029",
+      "to": "JR-058",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-028",
+      "to": "JR-059",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-058",
+      "to": "JR-059",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-023",
+      "to": "JR-060",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-056",
+      "to": "JR-060",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-058",
+      "to": "JR-060",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-028",
+      "to": "JR-061",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-044",
+      "to": "JR-061",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-055",
+      "to": "JR-062",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-058",
+      "to": "JR-062",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-061",
+      "to": "JR-062",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-062",
+      "to": "JR-063",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-061",
+      "to": "JR-064",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-062",
+      "to": "JR-064",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-061",
+      "to": "JR-065",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-064",
+      "to": "JR-065",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-062",
+      "to": "JR-066",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-065",
+      "to": "JR-066",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-057",
+      "to": "JR-067",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-065",
+      "to": "JR-067",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-066",
+      "to": "JR-067",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-057",
+      "to": "JR-068",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-058",
+      "to": "JR-068",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-050",
+      "to": "JR-068",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-024",
+      "to": "JR-069",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-031",
+      "to": "JR-069",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-029",
+      "to": "JR-070",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-052",
+      "to": "JR-070",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-069",
+      "to": "JR-070",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-044",
+      "to": "JR-071",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-049",
+      "to": "JR-071",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-061",
+      "to": "JR-071",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-046",
+      "to": "JR-072",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-071",
+      "to": "JR-072",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-042",
+      "to": "JR-073",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-057",
+      "to": "JR-073",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-072",
+      "to": "JR-073",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-056",
+      "to": "JR-074",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-073",
+      "to": "JR-074",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-053",
+      "to": "JR-075",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-058",
+      "to": "JR-075",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-057",
+      "to": "JR-075",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-029",
+      "to": "JR-076",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-069",
+      "to": "JR-076",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-075",
+      "to": "JR-076",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-018",
+      "to": "JR-077",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-058",
+      "to": "JR-077",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-030",
+      "to": "JR-078",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-069",
+      "to": "JR-078",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-070",
+      "to": "JR-078",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-074",
+      "to": "JR-078",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-076",
+      "to": "JR-078",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-021",
+      "to": "JR-079",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-024",
+      "to": "JR-079",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-027",
+      "to": "JR-079",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-051",
+      "to": "JR-080",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-080",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-080",
+      "to": "JR-081",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-082",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-080",
+      "to": "JR-082",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-029",
+      "to": "JR-083",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-053",
+      "to": "JR-083",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-083",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-080",
+      "to": "JR-084",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-081",
+      "to": "JR-084",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-083",
+      "to": "JR-084",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-028",
+      "to": "JR-085",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-085",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-082",
+      "to": "JR-085",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-056",
+      "to": "JR-086",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-086",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-081",
+      "to": "JR-086",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-058",
+      "to": "JR-087",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-087",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-023",
+      "to": "JR-088",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-029",
+      "to": "JR-088",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-088",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-044",
+      "to": "JR-089",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-058",
+      "to": "JR-089",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-089",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-024",
+      "to": "JR-090",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-089",
+      "to": "JR-090",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-044",
+      "to": "JR-091",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-049",
+      "to": "JR-091",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-091",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-052",
+      "to": "JR-092",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-090",
+      "to": "JR-092",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-091",
+      "to": "JR-092",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-056",
+      "to": "JR-093",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-081",
+      "to": "JR-093",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-091",
+      "to": "JR-093",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-053",
+      "to": "JR-094",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-094",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-026",
+      "to": "JR-095",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-095",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-091",
+      "to": "JR-095",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-029",
+      "to": "JR-096",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-096",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-094",
+      "to": "JR-096",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-012",
+      "to": "JR-097",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-015",
+      "to": "JR-097",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-020",
+      "to": "JR-097",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-050",
+      "to": "JR-097",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-054",
+      "to": "JR-097",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-030",
+      "to": "JR-098",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-031",
+      "to": "JR-098",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-037",
+      "to": "JR-098",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-058",
+      "to": "JR-098",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-069",
+      "to": "JR-098",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-079",
+      "to": "JR-098",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-001",
+      "to": "JR-099",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-023",
+      "to": "JR-099",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-043",
+      "to": "JR-099",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-070",
+      "to": "JR-099",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-098",
+      "to": "JR-099",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-006",
+      "to": "JR-100",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-016",
+      "to": "JR-100",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-020",
+      "to": "JR-100",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-030",
+      "to": "JR-100",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-078",
+      "to": "JR-100",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-096",
+      "to": "JR-100",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-097",
+      "to": "JR-100",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-098",
+      "to": "JR-100",
+      "type": "blocks"
+    },
+    {
+      "from": "JR-099",
+      "to": "JR-100",
+      "type": "blocks"
+    }
+  ],
+  "evidence": "Dependency proposal inferred from audited architecture and work orders; not a measured critical path",
+  "status": "PROPOSED"
+}
