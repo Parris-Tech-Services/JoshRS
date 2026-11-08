@@ -42,7 +42,7 @@ switch_obj ($bone) {
 }
 return(-1);
 
-[proc,rag_raw_bone](int $i)(obj)
+[proc,rag_raw_bone](int $i)(namedobj)
 switch_int ($i) {
     case 0 : return(rag_goblin_bone);
     case 1 : return(rag_bear_bone);

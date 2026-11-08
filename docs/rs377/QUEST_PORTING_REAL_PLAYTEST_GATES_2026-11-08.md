@@ -1,35 +1,20 @@
-# JoshRS native quest port — genuine gameplay acceptance gates
+# Quest ports: what native 377 CI proves and what still needs real-client evidence
 
-Date: 8 November 2026. Reference: May 2006 revision 377, pinned Engine-TS / Content; **not** RS3 or current OSRS.
+Date: 8 November 2026. Target: May 2006 rev-377. Family local game and saves remain separate.
 
-## What the 377 source validation proves
+## Build evidence
+`content-patches/rs377/ci-compile-batch-quests.sh` checks clean pinned Content+Engine SHAs, applies reviewed patches `0001–0024`, copies scoped scripts, validates five actual Piscatoris map LOC tiles and 35 bone mappings to pinned real NPC definitions, compiles RuneScript/packs and boots a disposable world. GitHub checks when green prove source compatibility and socket listeners, **not a complete client quest, shared player world or durable save**.
 
-`content-patches/rs377/ci-compile-batch-quests.sh` pins the source and verifies patch ordering, RuneScript compilation, pack CRC, and disposable server listener startup. This is *source-backed compatibility*, not an authenticated player, NPC click, combat, quest completion or persistent game session.
+## Required in-game verification before claiming full 2006 quest completion
 
-Both Swan Song and Rag and Bone Man have source implementations of their basic state machines and some of their 2006 mechanics. Each still has material gaps listed in its local README. Do **not** mark either fully playable, and never mutate the owner's saves or merge proprietary game resources as a shortcut.
+**Swan Song:** On a truly isolated save and normal rev-377 client, verify Herman 100-QP and Wise Old Man hand-in; all repaired walls (5 unique clickable positions), all five repaired visuals persisting per player; metal press, 3 sea troll fishing combat deaths, fresh fish catch/cook/Arnold; 8 hostile troll deaths, Frumscone→Malignius and bone seeds; native skeleton allied combat with the queen and boss defeat; Herman one-time reward with the historical 10k Fishing XP; normal postquest monkfish. Record every item debit/credit, quest varbit, questpoints, level/XP, real combat event, logout, and map location. The current stage order differs from the original 2006 quest and skeleton AI does not yet fight; fix fidelity before final certification.
 
-## Essential live test sequence before claiming finished
+**Rag and Bone Man:** Test each of the 35 named NPCs for reachable spawns and real kills, source-specific chance (guaranteed initial 8 / 1:4 extra 27), special bone ground item/ownership, vinegar purchase, pot-boiler with process restart, every hand-in, initial 500+500 XP and extra 5k Prayer XP, original-era QP and helmet/bonesack exchange without duplication. Test bank/equipment, dropped items, inventory full, tick delay, latency, simultaneous clicks and disconnect/relog. Source mapping alone cannot prove any of these.
 
-**Isolation:** Clone only cleared source into a fresh test directory. Run a disposable game/database on independent ports. Never use Elrothiro's or Sylvie's saved characters, accounts, database, assets or client caches. Prove independent rollback first.
+**Safety and multiplayer:** Two genuine isolated account logins, two native Java clients in the same world, measured NPC visibility and combat, persistent stages after relog, snapshots/hashes and fully verified backup/restore. Do not touch Elrothiro or Sylvie saves or family production. Do not claim "VERIFIED COMPLETE" without saved screenshots, packet traces and session results.
 
-**Swan Song:** Fresh test login; 100 QP eligibility; Draynor Wise Old Man three-rune collection; Franklin's 5 iron-sheet press; 5 *distinct* repaired wall locations; Arnold fishing net and 5 cooked fish; actual sea-troll ambush and fishing trolls; Wizard Frumscone's 7 bones/pot/lid; visibly spawned skeleton defenders; queen genuine combat and death; Herman reward. Record stage, XP, bank, coins, inv and QP before/after every step and across relog. Reject any scripted completion without battle or repeated repairs on the same wall.
+## 2026+ RS3 and OSRS content
+The present 377 client cannot represent modern animated NPCs, later-era map squares, quest interfaces, new skills, scene/texture packs, collision, animation formats or network protocols by simply copying database names. Post-2006 modern content still needs independent rights-cleared map/asset authoring, scene packers, client/UI or separate client architecture, terrain navigation, NPC shops/banks/transport, dialogue scripts, skill mechanics and actual normal-client verification. See `research/rs377/MAP_EXPANSION_2006_TO_2026_2026-10-30.md`. **No full 2026 RS3/OSRS port has been built.** Do not mislabel research/specification as runtime content.
 
-**Rag and Bone Man:** Each of the eight first-quest bones and all 27 extra bones must be obtained from authorised real in-game NPCs, prepared using vinegar and the pot-boiler, handed over once with drop conservation, and survive logout. Test 5,000 Prayer XP, original-era extra QP, reward selection, reward exchange, empty inventory, bank/equipment ownership, lag/disconnection, and no duplicate items.
-
-**Area and bot verification:** Authenticate two separate normal-377 accounts, show both players in the same map region via actual client/network evidence, and replay at least one quest step on each without using admin/debug shortcuts. Record screenshots and exact build/source IDs; reject blank region/collision failures and NPC dialogue fallback. Protect against children encountering unintended online players or public chat.
-
-## Modern RS3 / OSRS scope boundary
-
-The 377 Java client cannot render post-2006 modern NPCs, animations, item models, interfaces or map squares just because a historical name appears in a script. Later areas require independently authorised **original** 377-compatible terrain/models, world coordinates/scene handling, server pack generation, collisions, transports, minimap, quests, NPC/loc data and functional live client proof. `research/rs377/MAP_EXPANSION_2006_TO_2026_2026-10-30.md` remains a build specification, not proof of any ported map.
-
-Modern quests/NPCs/areas are therefore **BLOCKED for truthful complete-parity claims**, not counted as installed or functional. A later game-era project may need a new client/protocol rather than attempting to bolt a full 2026 world onto a 2006 client.
-
-## Release decision
-
-Source compile + boot: recorded by CI when green.
-
-Complete real-player quest & family save verification: **NOT VERIFIED**.
-
-Full modern world parity: **NOT IMPLEMENTED**.
-
-Do not deploy to the family's live save-bearing world until the above checks and authorised backup/rollback have been satisfied.
+## Release gate
+Pinned source compile+boot may pass CI. Authenticated real-player end-to-end quests, persistent family saves and modern world parity **remain unverified/unimplemented**. Preserve all local-world data until fully backed-up proof and user-authorised deployment.

@@ -2,7 +2,7 @@
 # Only for a disposable GitHub Actions runner. NEVER apply to a live JoshRS install.
 # Overlays the Fenkenstrain quest, the batch-2 quest bundles, the Morytania
 # addendum, the batch-3 and batch-4 quest bundles onto the immutable pinned 377
-# content, applying patches 0001-0024 in numeric order.
+# content, applying patches 0001-0027 in numeric order.
 set -euo pipefail
 : "${RUNNER_TEMP:?missing runner temp}"
 : "${GITHUB_WORKSPACE:?missing checkout}"
@@ -17,7 +17,7 @@ quest="$GITHUB_WORKSPACE/content-patches/rs377"
 
 # Apply every patch in strict numeric order (0007 anchors on post-0001 state).
 mapfile -t patches < <(ls "$quest"/patches/[0-9][0-9][0-9][0-9]-*.patch | sort)
-[[ "${#patches[@]}" -eq 25 ]] || { echo "BLOCKED: expected 25 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
+[[ "${#patches[@]}" -eq 27 ]] || { echo "BLOCKED: expected 27 reviewed patches, found ${#patches[@]}" >&2; exit 2; }
 # Check-and-apply per patch: later patches anchor on earlier patches' state
 # (0007 anchors on the post-0001 quests.rs2), so a single upfront --check pass
 # against the pristine tree would wrongly reject them.
@@ -117,4 +117,6 @@ PY
 FENK_CONTENT="$content" FENK_QUEST_DIR="$content/scripts/quests/quest_fenkenstrain" python3 -I "$quest/tools/check_fenk_symbols.py"
 python3 -I "$quest/tools/check_fenk_map.py" --content "$content"
 python3 -I "$quest/tools/check_morytania_batch.py" --content "$content"
+python3 -I "$quest/tools/check_swansong_wall_map.py" --content "$content"
+python3 -I "$quest/tools/check_rag_npc_drops.py" --content "$content"
 echo "DISPOSABLE_BATCH_QUESTS_OVERLAY_READY"

@@ -19,8 +19,9 @@ class SwanSongFishingContract(unittest.TestCase):
     def test_fishing_uses_quest_specific_npc_and_fish(self):
         self.assertIn("[opnpc1,swan_fishingspot]", FISHING)
         self.assertIn("inv_add(inv, swan_raw_monkfish, 1)", FISHING)
-        self.assertNotIn("inv_add(inv, raw_monkfish, 1)", FISHING)
-        self.assertIn("%swansong ! ^swansong_fish", FISHING)
+        self.assertRegex(FISHING, r"if \(%swansong = \^swansong_fish\) \{\s*inv_add\(inv, swan_raw_monkfish, 1\)")
+        self.assertRegex(FISHING, r"\} else \{\s*inv_add\(inv, raw_monkfish, 1\)")
+        self.assertIn("%swansong ! ^swansong_fish & %swansong ! ^swansong_complete", FISHING)
         self.assertIn("stat(fishing) < 62", FISHING)
         self.assertIn("~check_fish_equipment(net)", FISHING)
 
@@ -46,13 +47,15 @@ class SwanSongFishingContract(unittest.TestCase):
 
     def test_quest_rewards_and_kill_transitions_are_stage_guarded(self):
         for queue, expected in (
-            ("swan_troll_kill", "swansong_trolls"),
             ("swan_queen_kill", "swansong_army_deployed"),
             ("swansong_quest_complete", "swansong_return"),
         ):
             match = re.search(r"\[queue," + queue + r"\]([\s\S]*?)(?=\n\[|\Z)", MAIN)
             self.assertIsNotNone(match, queue)
             self.assertIn(f"if (%swansong ! ^{expected})", match.group(1))
+        match = re.search(r"\[queue,swan_troll_kill\]([\s\S]*?)(?=\n\[|\Z)", MAIN)
+        self.assertIsNotNone(match)
+        self.assertIn("if (%swansong < ^swansong_trolls | %swansong >= ^swansong_troll_wave_complete)", match.group(1))
 
 
 if __name__ == "__main__":

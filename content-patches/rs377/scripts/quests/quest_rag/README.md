@@ -1,23 +1,20 @@
-# Rag and Bone Man (10 April 2006) — 377-native original-dialogue port
+# Rag and Bone Man (10 April 2006) — pinned rev-377 native RuneScript
 
-**Status: source compile and disposable server boot PASS; real client quest and wish-list playthrough NOT VERIFIED.**
+**State: source-implemented, compiler and disposable-server smoke when CI passes; no real-client complete playthrough or family save validation.**
 
-## Native implementation
+## Source present
+- First eight required species (goblin, bear, ram, unicorn, giant rat, giant bat, monkey, big frog) remain distinct from the additional 27-bone postquest wish-list. All 35 raw/in-vinegar/polished cache items map to two permanent delivered-bitmask varps.
+- New `rag_npc_drops.rs2` maps the 35 special bones to **51 actual NPC names already defined in pinned rev-377 source**. Scoped patch `0024` adds one extra drop check from the existing native `npc_death` procedure **after actual NPC kill/hero attribution**. It does not register competing death queues or replace ordinary loot; 35/35 mappings and NPC existence are checked via `check_rag_npc_drops.py`.
+- Each first-quest bone drops guaranteed from an eligible NPC while the initial quest is open, except types already handed in; postquest uncollected extra bones have a 1-in-4 tertiary chance, based on the OSRS reference. Stage restrictions mean the 27 extra bones cannot complete the first eight-bone quest.
+- Odd Old Man consumes eight required polished bones before awarding one quest point plus 500 Cooking and 500 Prayer XP **once**. After all 27 extras he records the historical-era additional quest point, 5,000 Prayer XP and a choice of one bonesack or ram skull helm. Reward exchange consumes the currently carried reward before giving the alternative.
+- Fortunato's existing vinegar shop unlocks after quest introduction; the pot-boiler states and merchant/reward flags live in permanent varps. Delayed boiling now has a `rag_potboiler_onfire` tinderbox recovery handler for reconnects (it does not spawn items). Need actual player relog test.
+- All extra source names and dialogue in this overlay are newly authored; no external copyrighted assets were imported.
 
-- Eight-bone initial quest (goblin, bear, ram, unicorn, giant rat, giant bat, monkey and medium frog). Rewards and quest-point flags cannot be duplicated through stale queues.
-- The additional **27** cache-defined bone types are now handled as a separate **post-quest** wish list, not an extra prerequisite for the first eight. The existing 35-entry `rag_bone_tables.rs2` and two permanent bitmasks record which polished bones were actually handed over; turn-ins can be partial and are reflected in the list/journal.
-- On all 27 extra bones, the Odd Old Man offers a bonesack or ram skull helm, awards one original-era quest point and 5,000 Prayer XP exactly once. Players may exchange only while physically carrying their currently owned reward, so duplicate items are not created. (The additional quest point was removed in later official versions.)
-- Fortunato's pinned vinegar shop unlocks when the 377 quest is started and the merchant conversation sets `rag_wine`. The existing `rag_bone_2` varp, covering boiler state and merchant/reward flags, is now permanent.
-- Boiler validates item indices, fuel/step state, delayed activity and inventory space before releasing cleaned bones.
-- No new proprietary models, NPC IDs, dialogue transcripts, map data or cache files were imported.
+## Still incomplete / unverified
+- All 35 **actual monster spawn locations, successful attacks/deaths, raw special bone drops, collection, boiling, deliveries and reward reclaims have not been exercised in a real 377 Java client**. The source maps species names and hooks loot, not a guarantee that all 35 NPCs are reachable on existing maps; some quest-locked monsters may need new access or appropriate variants.
+- The pot-boiler recovery after process restart, cooking/polishing state consistency, saved bitmasks, simulated packet loss/duplicate click prevention, inventory/bank/equipment reward swap and world state visuals need authentic tests.
+- Monster death ownership and item visibility to the correct killer need real-world verification; the original game's rare-drop and XP details may differ. The code uses a best-evidence 1-in-4 extra chance.
+- 377 maps, quest entries, spawn/merchant interactions, account privacy, adult/child multiplayer and backup/rollback are **not verified** by native compilation.
 
-## Not yet complete or proven
-
-- **Bone drops:** the original 27 NPC drop sources, real monster defeat/drop odds, NPC spawns and access to required zones have **not** been independently wired or checked against actual 377 gameplay. The 27 bone records and turn-in code are present; gathering them legitimately is still unverified.
-- Persistent pot-boiler object visual state and anti-race behaviour under simultaneous clicks/relogs need real-world tests. Historical stages, text, rewards and difficulty need client validation.
-- Some 2006 quest prerequisites may not yet be implemented in JoshRS. The post-quest skull helmet/bonesack swap path requires the item to be carried, not equipped or banked; recover/drop/reclaim policies need verification.
-- Family save/SQLite preservation, all 35 genuine bone kills/boil/turn-ins, Prayer XP, QP, reward swap, purchase, disconnect/relog, and dual-client gameplay remain unverified.
-
-## Test
-
-Native patches 0001–0019 are compiled with the pinned content and engine in the isolated `.github/workflows/batch-quests-disposable-377.yml` job. The source regressions live in `content-factory/tests/test_ragbone_eight_and_vinegar_contract.py` and `test_rag_extra_wishlist_contract.py`. Passing CI proves the native pack compiles and a separate test server boots; **it does not prove a real full quest was completed**.
+## Tests
+Native patches `0001–0024` compile the pinned content and boot a fresh isolated server through `.github/workflows/batch-quests-disposable-377.yml`. Source regressions include `test_ragbone_eight_and_vinegar_contract.py`, `test_rag_extra_wishlist_contract.py`, `test_rag_npc_drops_contract.py`, `test_rag_recovery_and_postquest_monkfish.py`. Passing source CI does not establish completion by an authenticated player.
