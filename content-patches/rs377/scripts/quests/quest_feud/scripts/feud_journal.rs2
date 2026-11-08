@@ -4,7 +4,7 @@ if (%main_feud_var = ^feud_none) {
     $text = "@dbl@Ali Morrisane in Al Kharid needs help locating his nephew.||@dbl@I need at least 30 Thieving.";
 } else if (%main_feud_var = ^feud_complete) {
     $text = "@str@I sought Ali's nephew, dealt with both rival gangs and|@str@returned safely to Ali Morrisane.||@red@QUEST COMPLETE!";
-} else if (%main_feud_var < ^feud_camels) {
+} else if (%main_feud_var < ^feud_camel_receipts) {
     $text = "@dbl@Find the drunk at the Pollnivneach tavern with three beers.|@dbl@Then speak with the camel dealer about the missing animals.";
 } else if (%main_feud_var < ^feud_joined_gang) {
     $text = "@dbl@Deliver a camel receipt to each gang, then wear|@dbl@a desert disguise when meeting the Menaphite organiser.";
