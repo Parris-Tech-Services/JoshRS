@@ -20,6 +20,7 @@ import {
     buildTenMinuteSnapshot,
     computeStartingSignature,
     formatBotWhereabouts,
+    fredGeorgeLogoutAccountKey,
     handleBotPrivateMessage,
     spawnFredAndGeorgeBots,
     tickFredAndGeorgeBots
@@ -39,6 +40,20 @@ async function ensureWorld(): Promise<void> {
         worldInitialized = true;
     }
 }
+
+test('0. Relog acknowledgement tracks the actual lower-case login identity', () => {
+    // Actual native PlayerLoading (not a mocked display name) lowercases account keys.
+    const fred = PlayerLoading.load('Fred', new Packet(new Uint8Array(0)), null);
+    const george = PlayerLoading.load('George', new Packet(new Uint8Array(0)), null);
+    assert.equal(fred.username, 'fred');
+    assert.equal(george.username, 'george');
+    assert.equal(fredGeorgeLogoutAccountKey('Fred', fred), 'fred');
+    assert.equal(fredGeorgeLogoutAccountKey('George', george), 'george');
+    assert.equal(fredGeorgeLogoutAccountKey('Fred', null), 'fred');
+    const awaiting = new Map<string, { save: Uint8Array; lastAttempt: number }>([['fred', { save: new Uint8Array(0), lastAttempt: 0 }]]);
+    assert.equal(awaiting.has('Fred'), false, 'Old capitalised key falsely signalled save complete');
+    assert.equal(awaiting.has(fredGeorgeLogoutAccountKey('Fred', fred)), true, 'Must wait for real login thread acknowledgement');
+});
 
 test('1. BotPlayer/Player circular import regression: Player and BotPlayer initialize without TDZ ReferenceError', async () => {
     await ensureWorld();

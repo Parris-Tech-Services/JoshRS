@@ -1839,6 +1839,11 @@ function flushLiveStateFile(world: WorldRuntime): void {
                 current_task: b.currentTask,
                 starting_signature: b.startingSignature,
                 relog_verified: b.relogVerified,
+                relog_pending: b.relogPending,
+                normalised_logout_key: fredGeorgeLogoutAccountKey(name, p),
+                logout_ack_pending: world.logoutRequests.has(fredGeorgeLogoutAccountKey(name, p)),
+                logging_out: Boolean(p && p.loggingOut),
+                player_slot_assigned: Boolean(p && p.slot >= 0),
                 phase: b.phase,
                 cooperation_events: b.cooperationEvents,
                 xp_before_tenths: b.xpBeforeTenths,
@@ -1993,6 +1998,16 @@ function flushTenMinuteWindowIfDue(world: WorldRuntime): void {
     currentWindowStart = latestFloor;
 }
 
+/**
+ * PlayerLoading.load normalises display names (Fred/George) to lower-case
+ * account keys (fred/george). World.flushPlayer and onLoginMessage use the
+ * normalised player.username in logoutRequests. Never gate a relog using
+ * the display name: that can enqueue an early login and lose the bot session.
+ */
+export function fredGeorgeLogoutAccountKey(name: BotName, player?: Pick<Player, 'username'> | null): string {
+    return player?.username ?? name.toLowerCase();
+}
+
 export function tickFredAndGeorgeBots(world: WorldRuntime): void {
     if (process.env.JOSHRS_FRED_GEORGE !== '1') {
         return;
@@ -2006,7 +2021,7 @@ export function tickFredAndGeorgeBots(world: WorldRuntime): void {
         // Handle relog persistence verification when player logged out cleanly
         if (state.relogPending) {
             const stillInWorld = player && player.slot >= 0 && player.isActive;
-            if (!stillInWorld && !world.logoutRequests.has(name)) {
+            if (!stillInWorld && !world.logoutRequests.has(fredGeorgeLogoutAccountKey(name, player))) {
                 const savePath = getSavePath(name);
                 if (fs.existsSync(savePath) && PlayerLoading.verify(new Packet(fs.readFileSync(savePath)))) {
                     state.relogPending = false;
