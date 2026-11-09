@@ -118,7 +118,7 @@ try {
    throw new Error('native_authenticated_game_state_missing');
  const bot=new BotActions(sdk);
  const result=await executeCampaign({catalogue,plan:queue,sdk,bot,username,worldId,
-   playbooks,onCheckpoint:save});
+   playbooks,onCheckpoint:save,maxActionsPerQuest:50});
  save(result);
  const counts={};
  for(const row of result.records)counts[row.status]=(counts[row.status]||0)+1;
