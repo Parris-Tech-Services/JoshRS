@@ -36,7 +36,7 @@ object Compression377 {
 
     /** 377 idx4 ondemand files use GZIP, with the cache's version suffix ignored by GZIP. */
     fun gunzip(bytes: ByteArray): ByteArray {
-        require(bytes.size >= 4 && bytes[0] == 31.toByte() && bytes[1] == -117.toByte()) {
+        require(bytes.size >= 4 && bytes[0] == 31.toByte() && bytes[1] == (-117).toByte()) {
             "377 landscape is not GZIP-compressed"
         }
         return limited(GZIPInputStream(ByteArrayInputStream(bytes)))
