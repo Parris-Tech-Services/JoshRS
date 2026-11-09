@@ -1,5 +1,62 @@
 # JoshRS Android — Kotlin foundation (stage 1)
 
+## Authentic Lumbridge map decoding (9 November 2026)
+
+**Status: real private-cache terrain and object-position viewer, NOT yet a playable world.**
+
+This stage independently implements the revision-377 layout described by the
+original 377 Java client: Jagfile/OnDemand map_index, GZIP map land files,
+World.method31 tile opcodes, packed loc-ID/position deltas, and the original flo.dat RGB/texture-ID definitions from config Jagfile #2.
+
+- On Fedora, run a read-only cache check: bash tools/android377-phone/copy-private-lumbridge-cache.sh --check.
+  Once your phone is connected over USB and adb is authorised, use --copy to
+  put only these three cache files under Android Downloads/JoshRS377Cache.
+  The export deliberately excludes uid.dat, player saves and account files.
+  Downloads is a shared location until the app imports its own private copy.
+- Select YOUR matching **main_file_cache.dat + idx0 + idx4** files together in
+  Android's private cache importer. This produces an atomic private snapshot.
+  It never downloads or ships a Jagex game cache or copied models.
+- Tap **Explore REAL Lumbridge terrain (region 50,50)**. The app reads the
+  actual 377 versionlist (#5 in idx0), resolves the two region 50,50 file IDs,
+  decompresses the land and location archives in idx4, and decodes real
+  four-plane 64x64 tile heights, overlay/underlay IDs, flags, location types,
+  orientations and world coordinates. Where the original config cache exists,
+  base floor RGB values also come from its real flo.dat definitions.
+- Touch drag and pinch zoom inspect the decoded region. The coloured ground
+  uses **original floor RGB** where cached, or a visibly labelled fallback
+  tint otherwise. Texture images, lighting and shading remain incomplete. Dots mark actual object positions, not 3D models or
+  collision. The orange 3233,3218 marker is a coordinate, **not an avatar**.
+- Missing/corrupt cache data causes an explicit failure, never a silently
+  invented Lumbridge. No account logs in or changes a server/saved character.
+- Apache Commons Compress **1.28.0** (Apache-2.0 licensed) provides
+  headerless classic BZip2 support, avoiding reimplementing a decompressor.
+  Kotlin tests generate all map data themselves; no original game assets
+  are committed.
+
+**Next:** genuine floor texture/colour and 3D location model binding,
+camera/occlusion, animations, NPCs/player, RSA/ISAAC authenticated game
+session and gameplay/quest packets. The full one-APK offline game and
+Galaxy A55 playthrough remain unverified.
+
+### Existing open-source clients
+
+Meteor MP's **377** branch has a Kotlin/Android frontend, but its checked
+repository root does not provide a LICENSE and its GitHub licence is
+unspecified. Do not vendor/copy it until its per-module source rights and
+compatibility are verified. The LostCity 377 Java client is the correct
+protocol and map reference, but is an AWT desktop client, not an Android
+library. Modern BSD-2-Clause RuneLite targets a different OSRS revision;
+it is not a rev377 drop-in replacement. The permissive LostCity server
+engine licence does not automatically cover the client or Jagex artwork.
+
+**Verification:** synthetic unit tests exercise idx0 versionlist Jagfile
+(whole archive and individual entry BZip2 modes), map_index, four planes,
+height/attributes, location ID/coordinate deltas and negative cases. The
+Android build and emulator tests are CI-level acceptance only: NO real
+private Lumbridge cache or live phone gameplay has yet been observed.
+
+
+
 ## 9 November 2026 — real model geometry and emulator integration
 
 - `Model377Codec.kt` independently reads the authentic classic 18-byte model footer, signed-smart delta vertices, triangle strips (1..4), and on-demand GZIP model archives. Invalid sizes, offsets, indices and excessive decompression are rejected.
