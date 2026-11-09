@@ -111,7 +111,7 @@ class GameFrameCodecTest {
         // 0x3f (63) is a real server opcode; 0x3e is not in the 377 table.
         val acc = accumulator(null)
         assertThrows(ProtocolViolation::class.java) {
-            acc.feed(byteArrayOf(0x3e))
+            acc.feed(byteArrayOf(0x3e.toByte()))
         }
     }
 
@@ -119,7 +119,7 @@ class GameFrameCodecTest {
     fun `oversized two byte length is rejected`() {
         val frame = byteArrayOf(
             ServerProt.IF_SETTEXT.id.toByte(),
-            0x0a, 0x00 // 2560 > 1600
+            0x0a.toByte(), 0x00.toByte() // 2560 > 1600
         )
         val acc = accumulator(null)
         assertThrows(ProtocolViolation::class.java) {
