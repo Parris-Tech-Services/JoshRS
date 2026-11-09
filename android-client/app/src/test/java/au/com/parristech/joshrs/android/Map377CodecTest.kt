@@ -128,6 +128,24 @@ class Map377CodecTest {
         }
     }
 
+    @Test fun original377FloorRgbComesFromPrivateFloDatNotInventedPalette() {
+        val raw = byteArrayOf(
+            0, 2, // two floor definitions
+            1, 0x12, 0x78, 0x34, 0, // first floor RGB #127834
+            2, 7, 5, 7, 0, 0, 0, 0 // texture 7, opcode 5, secondary RGB
+        )
+        val floors = Floor377Codec.decode(raw)
+        assertEquals(2, floors.size)
+        assertEquals(0x127834, floors[0].rgb)
+        assertEquals(null, floors[0].textureId)
+        assertEquals(null, floors[1].rgb)
+        assertEquals(7, floors[1].textureId)
+        assertTrue(floors[1].hasSecondaryColour)
+        assertThrows(IllegalArgumentException::class.java) {
+            Floor377Codec.decode(byteArrayOf(0, 1, 99, 0))
+        }
+    }
+
     @Test fun lumbridgeEndToEndUsesPrivateIndexedLandAndLocations() {
         val region = Map377Codec.lumbridge(versionlist(), gz(land()), gz(locs()))
         assertEquals(50, region.x)
