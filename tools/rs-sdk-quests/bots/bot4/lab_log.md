@@ -634,3 +634,21 @@
 - `(2967, 3205, L0)` **Cauldron** (id `2024`) [`Drink From`] -> OK: Interacted with Cauldron
 - `(2965, 3208, L0)` **Wardrobe** (id `389`) [`Search`] -> OK: Interacted with Wardrobe
 - `(2965, 3208, L0)` **Wardrobe** (id `389`) [`Close`] -> OK: Interacted with Wardrobe
+
+### Region Completed: South Falador Farm & Falador Town (m46_51 & m46_52) — 2026-11-09T06:32:07.843Z
+- **Total Interactions Audited**: 5 (3 verified working, 2 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(2962, 3373, L0)` — South Falador Farm & Falador Town (m46_51 & m46_52)
+  - **Object & Action**: `Bookcase` (id `381`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Bookcase at (2962, 3373). Actual: success=true (Interacted with Bookcase), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3011, 3354, L0)` — South Falador Farm & Falador Town (m46_51 & m46_52)
+  - **Object & Action**: `Bank booth` (id `2213`) — action `Use`
+  - **Expected vs Actual**: Expected: Interact "Use" with Bank booth at (3011, 3354). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(2962, 3350, L0)` **Boxes** (id `359`) [`Search`] -> OK: Timed out after 4500ms (loc state changed)
+- `(2963, 3350, L0)` **Boxes** (id `361`) [`Search`] -> OK: Interacted with Boxes (loc state changed)
+- `(3011, 3354, L0)` **Bank booth** (id `2213`) [`Use-quickly`] -> OK: Interacted with Bank booth
