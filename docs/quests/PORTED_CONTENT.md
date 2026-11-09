@@ -87,43 +87,57 @@ Four edits carried in the world, all captured as patches in `content-patches/rs2
 Player saves are **not** content: `~/lc274/engine/data/players/main/elrothiro.sav` (858 bytes) is
 untouched, and a dated copy is kept in `~/saves-backup/`.
 
-## The one remaining structural gap: journals for 9 ported quests
+## The real remaining gap: 377-only stage variables (corrected)
 
-Nine ported quests fail the structural audit, and **all nine fail on the same single flag** —
-`JOURNAL`. They have stage varps, rewards and reachable logic:
+> **Correction.** An earlier version of this section said nine ported quests failed on `JOURNAL`
+> and blamed a missing component in `questlist.if`. **That was wrong.** My parser of the audit
+> table mis-aligned the columns. The actual flags are `VARP` and `WIRED`, and the journal
+> components were never the problem.
+
+Nine ported quests fail the structural audit:
 
 ```
 quest_elid  quest_feud  quest_handsand  quest_ics  quest_losttribe
 quest_makinghistory  quest_rag  quest_soulbane  quest_troll_love
 ```
 
-### Cause, confirmed
+### `WIRED` is a false negative
 
-A quest journal needs a button component in the quest list interface. That file is
-`scripts/player/interfaces/questlist.if`, and it contains a component for existing quests:
+My wiring heuristic looks for references to a quest's varp or labels **outside the quest's own
+directory**. These quests keep their NPC scripts inside their own directory, so nothing external
+references them and the check reports "not wired" even though the content is self-contained.
+
+Confirmed for `quest_feud`: it has `feud_journal.rs2` and two `questlist:` references, and its
+journal handlers exist. The flag is a limitation of the audit, not a defect in the content.
+
+### `VARP` is real, and it is the blocker
+
+`quest_feud` uses `%main_feud_var` and `%feud_var_multi`. Both are defined in
+`js377/content/scripts/_unpack/377/all.varp` and **not** in the 274 registry:
 
 ```
-[cook]     present
-[feud]     absent
-[rag]      absent
+main_feud_var    in 377 registry: yes    in 274: no
+feud_var_multi   in 377 registry: yes    in 274: no
 ```
 
-So the ported scripts contain `[if_button,questlist:feud]` handlers that **no interface button can
-ever trigger**. The quest is playable but its journal entry is unreachable.
+Without those definitions the quest's stage cannot persist — it would run and forget itself.
 
-### Why this was not fixed
+### Why appending them is not a one-line fix
 
-Adding nine components means editing a UI layout: positions, sizes, text, and which sprite or line
-each entry uses. This project has **no renderer and no client running the 274 interface**, so the
-result cannot be checked visually — a misplaced component could overlap or break the quest list for
-every other quest.
+The obvious fix is to append the missing definitions to `scripts/_unpack/274/all.varp`. That file is
+**not the registry**: it contains only **5 entries**, and it is an override layer. The real varp
+definitions live in the packed 274 cache (`main_file_cache.idx0`).
 
-Editing an interface blind is exactly the class of change that produces something which passes
-packing and looks broken in play. It needs a client to look at.
+So adding a varp means allocating a **numeric id inside a packed config**, not appending a name to a
+list. Varp ids are positional, so a careless insert would silently renumber every varp after it and
+corrupt existing player saves — the exact class of change this project forbids.
 
-### Cheapest way to close it
+That is why this is left open rather than guessed at. The work needs the packing toolchain
+(`tools/pack`), a confirmed free id range, and a save-migration check.
 
-Add one component at a time and open the quest journal in the browser client after each. Nine small
-verified edits beat one large unverified one. The file and the required component name are known, so
-this is mechanical work with a visual check at each step.
+## What this means for the nine quests
+
+They **pack and load**, and their journals may well display, but their progress cannot be trusted to
+persist until their varps exist. They should be treated as **demonstration content, not playable
+quests**, until the varp work is done.
 
