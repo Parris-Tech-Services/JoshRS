@@ -1,0 +1,35 @@
+diff --git a/scripts/quests/quest_sheep/configs/sheepspun.varp b/scripts/quests/quest_sheep/configs/sheepspun.varp
+new file mode 100644
+index 0000000..3ed5031
+--- /dev/null
++++ b/scripts/quests/quest_sheep/configs/sheepspun.varp
+@@ -0,0 +1,2 @@
++[sheepspun]
++scope=perm
+diff --git a/scripts/quests/quest_sheep/scripts/quest_sheep.rs2 b/scripts/quests/quest_sheep/scripts/quest_sheep.rs2
+index 704b592..64c5bc6 100644
+--- a/scripts/quests/quest_sheep/scripts/quest_sheep.rs2
++++ b/scripts/quests/quest_sheep/scripts/quest_sheep.rs2
+@@ -3,5 +3,8 @@
+ inv_del(inv, ball_of_wool, 1);
+ inv_add(inv, coins, 60);
+ stat_advance(crafting, 1500);
++// Wiki: an additional 50 experience if you spun the wool yourself rather than buying it.
++// Interpreted as "spun at least one ball", since the quest only tracks the 20 delivered.
++if (%sheepspun = 1) stat_advance(crafting, 500);
+ session_log(^log_adventure, "Quest complete: Sheep Shearer");
+ ~send_quest_complete(questlist:sheep, coins, 250, ^sheep_questpoints, "You have completed the\\nSheep Shearer Quest!");
+diff --git a/scripts/skill_crafting/scripts/spinning/spinning.rs2 b/scripts/skill_crafting/scripts/spinning/spinning.rs2
+index a3c46a5..78e465e 100644
+--- a/scripts/skill_crafting/scripts/spinning/spinning.rs2
++++ b/scripts/skill_crafting/scripts/spinning/spinning.rs2
+@@ -7,7 +7,8 @@ if(loc_type = viking_spinningwheel) {
+ }
+ switch_obj (last_useitem) 
+ {
+-    case wool : @craft_spinning(last_useitem);
++    case wool : %sheepspun = 1; // Sheep Shearer +50 bonus is earned by spinning your own wool
++        @craft_spinning(last_useitem);
+     case flax :
+         if (map_members = ^false) {
+             mes(^mes_members_feature);

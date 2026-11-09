@@ -14,6 +14,7 @@ world unable to start, so apply one at a time and watch for `World ready`.
 |---|---|---|
 | `quest_seaslug_fishing_xp.patch` | Sea Slug awards 7,175 Fishing XP (was missing entirely) | engine repacked and reached `World ready` |
 | `quest_legends_reward.patch` | Legends' Quest gives four 7,650 XP lamps (was awarding none) | engine repacked and reached `World ready` |
+| `quest_sheep_spin_bonus.patch` | Sheep Shearer pays the extra 50 XP when you spin your own wool | engine repacked and reached `World ready` |
 
 **Not playtested.** Both were verified only to the point of the engine packing and booting.
 Nobody has completed either quest since the change.
