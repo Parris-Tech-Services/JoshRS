@@ -1,5 +1,16 @@
 # JoshRS Android — Kotlin foundation (stage 1)
 
+## Side-by-side Android playtests (9 November 2026)
+
+An operator's Galaxy A55 displayed **Google Play Protect: unknown developer**, then Android's **Update this app?**, then **Something went wrong. App not installed** for an earlier debug APK. Those are distinct events. The second is consistent with Android rejecting a different debug signing certificate or attempted version downgrade for the *same package*, not evidence that the 377 game itself failed.
+
+**Fix:** every GitHub CI debug APK now uses a unique application ID `au.com.parristech.joshrs.android.playtest<GITHUB_RUN_ID>` and Android launcher label **JoshRS Kotlin Playtest**. Therefore it installs alongside any old `au.com.parristech.joshrs.android` preview and **cannot replace/delete its imported saves/cache**. CI checks the built APK package ID with `aapt` and uploads its SHA256SUMS alongside it. Locally built debug versions use `.playtestlocal`. Future CI builds have distinct IDs because GitHub generates independent debug signing certificates; these development builds may accumulate separate app icons, which can be individually uninstalled after confirming their *own* local data is not needed.
+
+The Google Play Protect warning may still appear for an unknown independently signed build. Never disable Play Protect globally. Only proceed with the on-screen install override if you have independently confirmed the download came from this project's successful official GitHub Actions build and are comfortable running an unreviewed test build. Do not install an unexpected APK from a third-party source.
+
+**This preserves existing app data but does not migrate it.** To inspect *real* Lumbridge on the side-by-side app, import your own `main_file_cache.dat`, `idx0` and `idx4` again; the old prototype's Android-private cache is deliberately inaccessible to the new app. No authentic avatar login/quests yet.
+
+
 ## Authentic Lumbridge map decoding (9 November 2026)
 
 **Status: real private-cache terrain and object-position viewer, NOT yet a playable world.**
