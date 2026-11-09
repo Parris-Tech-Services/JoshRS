@@ -5,11 +5,29 @@ on:
     branches: [main]
     paths:
       - 'research/parity/roadmap/**'
+      - 'docs/decisions/**'
+      - 'README.md'
+      - 'AGENTS.md'
+      - 'docs/REFERENCE_VERSION_274.md'
+      - 'docs/FULL_CLASSIC_MMO_CHECKLIST.md'
+      - 'docs/JOSHRS_PROJECT_WIDE_MASTER_BACKLOG_2026-11-02.md'
+      - 'docs/377_CONTENT_FACTORY.md'
+      - 'research/parity/RESEARCH_FINDINGS_2026-11-08.md'
+      - 'tools/parity-inventory/owner-decision.test.mjs'
       - 'tools/parity-inventory/validate-roadmap*.mjs'
       - '.github/workflows/parity-roadmap-check.yml'
   pull_request:
     paths:
       - 'research/parity/roadmap/**'
+      - 'docs/decisions/**'
+      - 'README.md'
+      - 'AGENTS.md'
+      - 'docs/REFERENCE_VERSION_274.md'
+      - 'docs/FULL_CLASSIC_MMO_CHECKLIST.md'
+      - 'docs/JOSHRS_PROJECT_WIDE_MASTER_BACKLOG_2026-11-02.md'
+      - 'docs/377_CONTENT_FACTORY.md'
+      - 'research/parity/RESEARCH_FINDINGS_2026-11-08.md'
+      - 'tools/parity-inventory/owner-decision.test.mjs'
       - 'tools/parity-inventory/validate-roadmap*.mjs'
       - '.github/workflows/parity-roadmap-check.yml'
   workflow_dispatch:
@@ -30,3 +48,5 @@ jobs:
         run: node tools/parity-inventory/validate-roadmap.mjs
       - name: Negative tests and current corpus regression
         run: node --test tools/parity-inventory/validate-roadmap.test.mjs
+      - name: Protect exact-fidelity owner decision and legal-risk distinction
+        run: node --test tools/parity-inventory/owner-decision.test.mjs
