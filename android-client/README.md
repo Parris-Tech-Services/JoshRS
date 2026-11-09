@@ -1,5 +1,44 @@
 # JoshRS Android — Kotlin foundation (stage 1)
 
+## 9 Nov 2026 — FIRST SELF-CONTAINED OFFLINE GAMEPLAY SLICE
+
+The new **PLAY Cook's Assistant — offline Lumbridge quest slice** button
+launches a **genuinely interactive offline Kotlin game**, not a connection
+checker or passive terrain inspector. It works without Fedora, a Windows PC,
+Termux, Internet, imported caches or a game server. It stores progress
+only in the APK's private preferences, not in a real JoshRS/RS3/OSRS account.
+
+- Original, explicitly **RECONSTRUCTED** schematic map. The Cook, egg,
+  dairy cow, wheat and windmill use historical quest landmarks; the map art,
+  collision and scene representation are not original RuneScape 377 models
+  or terrain. It is NOT authentic 377 gameplay or a port of the old client.
+- Tap the map to walk; **Travel** automatically walks a 4-way BFS route
+  between landmarks without teleporting (two defined bridge crossings).
+- **Interact** with the Cook to begin Cook's Assistant; collect kitchen
+  supplies, egg, milk the cow with the bucket, pick grain and complete
+  all three windmill steps before handing the ingredients back to Cook.
+- **Bag** shows real local item state; **Quest journal** shows the stage
+  and checklist. The quest awards exactly 300 local Cooking XP and
+  1 local quest point ONCE, with consumed ingredients.
+- Position, items, stage, XP and points are checksummed, saved privately
+  on device during travel/on pause/after every interaction, and restored on
+  relaunch. The app never reads or overwrites a native .sav, account DB,
+  Elrothiro, Sylvie or other world. A new uniquely signed CI APK is an
+  independent Android application and does not share the previous APK's
+  private save.
+- First acceptance: Android unit tests verify a full start-to-finish
+  Cook's Assistant simulation and reward-once/persistence/river-path
+  invariants. CI compiles a standalone APK. **An actual Galaxy A55 gameplay
+  playthrough is still required before claiming phone-tested completion.**
+
+**Not yet present:** the genuine 377 3D renderer/models/animations,
+historical floor/loc collision data, the full world, combat, native character
+login or authentic 377 save compatibility. Importing historical caches in
+the separate read-only inspector still cannot provide these. Do NOT label
+this slice a fully playable original RuneScape 377 client; it is the
+first playable *original-graphics offline quest reconstruction*.
+
+
 ## Actual Lumbridge vs fictional preview (phone report, 9 Nov 2026)
 
 The user's Galaxy A55 screenshot showed **FICTIONAL OFFLINE DRAWING**, the
