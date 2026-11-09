@@ -1,0 +1,17 @@
+import { cooks } from './cooks-assistant';
+import { sheep } from './sheep-shearer';
+import { runemysteries } from './rune-mysteries';
+import { romeojuliet } from './romeo-and-juliet';
+import { priest } from './restless-ghost';
+import { prince } from './prince-ali-rescue';
+import { vampire } from './vampyre-slayer';
+import { doric } from './dorics-quest';
+import { hetty } from './witchs-potion';
+import { gobdip } from './goblin-diplomacy';
+import { haunted } from './ernest-the-chicken';
+import { hunt } from './pirates-treasure';
+import { squire } from './the-knights-sword';
+import { blackknight } from './black-knights-fortress';
+import { demon } from './demon-slayer';
+import { imp } from './imp-catcher';
+export const ALL = { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp };
