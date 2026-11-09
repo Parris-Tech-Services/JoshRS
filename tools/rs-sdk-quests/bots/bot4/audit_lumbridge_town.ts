@@ -109,7 +109,19 @@ await runScript(async ({ bot, sdk }) => {
       }
     };
 
+    const ensureGroundLevel = async () => {
+      for (let i = 0; i < 4 && (sdk.getState()?.player?.level ?? 0) > 0; i++) {
+        const downLoc = (sdk.getState()?.nearbyLocs ?? []).find(
+          (l: any) => /ladder|staircase/i.test(l.name) && (l.options ?? []).some((o: string) => /climb-?down/i.test(o))
+        );
+        if (!downLoc) break;
+        await bot.interactLoc(downLoc, /climb-?down/i);
+        await sleep(1200);
+      }
+    };
+
     for (const [wx, wz, label] of waypoints) {
+      await ensureGroundLevel();
       const w = await bot.walkTo(wx, wz, 3);
       if (!w.success) {
         logFinding({
@@ -127,12 +139,14 @@ await runScript(async ({ bot, sdk }) => {
 
       const locs = await sdk.scanNearbyLocs(12);
       for (const loc of locs) {
+        if ((sdk.getState()?.player?.level ?? 0) > 0) await ensureGroundLevel();
         if (loc.x < bounds.minX || loc.x > bounds.maxX || loc.z < bounds.minZ || loc.z > bounds.maxZ) continue;
-        // Skip trees & rocks except at most 1 per region to avoid filling inventory with logs
-        if (/tree|plant/i.test(loc.name)) continue;
+        // Skip trees, plants, and vertical transitions during the horizontal sweep
+        if (/tree|plant|ladder|staircase|trapdoor/i.test(loc.name)) continue;
         for (const opt of loc.options ?? []) {
           if (!opt || /^examine$/i.test(opt)) continue;
           if (/^close$/i.test(opt) && /door|gate/i.test(loc.name)) continue;
+          if (/climb/i.test(opt)) continue;
           await testLocOption(loc, opt, `Interact "${opt}" with ${loc.name} at (${loc.x}, ${loc.z})`);
         }
       }
@@ -171,6 +185,16 @@ await runScript(async ({ bot, sdk }) => {
     appendFileSync('bots/bot4/lab_log.md', lines.join('\n'));
     console.log(`[AUDIT] Appended ${findings.length} findings for ${regionName} to bots/bot4/lab_log.md`);
   };
+
+  // If starting on L1+, climb down first
+  for (let i = 0; i < 4 && (sdk.getState()?.player?.level ?? 0) > 0; i++) {
+    const downLoc = (sdk.getState()?.nearbyLocs ?? []).find(
+      (l: any) => /ladder|staircase/i.test(l.name) && (l.options ?? []).some((o: string) => /climb-?down/i.test(o))
+    );
+    if (!downLoc) break;
+    await bot.interactLoc(downLoc, /climb-?down/i);
+    await sleep(1200);
+  }
 
   // Region 1b: Lumbridge Castle Cellar / Basement (m50_150) via Kitchen Trapdoor (3209, 3216)
   await bot.walkTo(3209, 3215, 2);

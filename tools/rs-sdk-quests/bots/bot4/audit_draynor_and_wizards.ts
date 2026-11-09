@@ -136,10 +136,11 @@ await runScript(async ({ bot, sdk }) => {
       const locs = await sdk.scanNearbyLocs(12);
       for (const loc of locs) {
         if (loc.x < bounds.minX || loc.x > bounds.maxX || loc.z < bounds.minZ || loc.z > bounds.maxZ) continue;
-        if (/tree|plant/i.test(loc.name)) continue;
+        if (/tree|plant|ladder|staircase|trapdoor/i.test(loc.name)) continue;
         for (const opt of loc.options ?? []) {
           if (!opt || /^examine$/i.test(opt)) continue;
           if (/^close$/i.test(opt) && /door|gate/i.test(loc.name)) continue;
+          if (/climb/i.test(opt)) continue;
           await testLocOption(loc, opt, `Interact "${opt}" with ${loc.name} at (${loc.x}, ${loc.z})`);
         }
       }
