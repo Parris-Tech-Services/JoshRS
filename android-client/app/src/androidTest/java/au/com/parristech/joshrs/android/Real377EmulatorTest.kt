@@ -36,9 +36,9 @@ class Real377EmulatorTest {
                             android.view.WindowInsets.Type.systemBars() or
                                 android.view.WindowInsets.Type.displayCutout()
                         )
-                        assertTrue("Top heading overlaps Android status bar",
+                        assertTrue("Top inset missing: padding=${frame.paddingTop}, required=${bars.top}",
                             frame.paddingTop >= bars.top)
-                        assertTrue("Bottom controls overlap navigation bar",
+                        assertTrue("Bottom inset missing: padding=${frame.paddingBottom}, required=${bars.bottom}",
                             frame.paddingBottom >= bars.bottom)
                     }
                 }
