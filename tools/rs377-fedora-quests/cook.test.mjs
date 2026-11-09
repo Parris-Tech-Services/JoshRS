@@ -80,6 +80,7 @@ test('synthetic Cook sequence exercises ordinary SDK interactions; NOT real-game
   },
   async useItemOnLoc(){actions.push('hopper');s.inventory=s.inventory.filter(i=>i.name!=='Grain');return {success:true}},
   async interactLoc(loc,option){
+   if(loc instanceof RegExp && /^ladder$/i.test('Ladder') && loc.test('Ladder')) loc={name:'Ladder'};
    if(/^wheat$/i.test(loc.name)){actions.push('wheat');s.inventory.push({name:'Grain'})}
    else if(/^ladder$/i.test(loc.name)){
     const dir=String(option).includes('up')?1:-1;
