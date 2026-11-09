@@ -52,13 +52,20 @@ class OfflineLumbridgeQuest private constructor() {
         }
     }
 
-    var x=START_X; private set
-    var z=START_Z; private set
-    var stage=0; private set
-    var cookingXp=0; private set
-    var questPoints=0; private set
-    var hopperStep=0; private set
-    var walkedTiles=0; private set
+    var x=START_X
+        private set
+    var z=START_Z
+        private set
+    var stage=0
+        private set
+    var cookingXp=0
+        private set
+    var questPoints=0
+        private set
+    var hopperStep=0
+        private set
+    var walkedTiles=0
+        private set
     var lastMessage="Speak to the Cook in Lumbridge Castle to begin."; private set
     private val items=linkedMapOf<String,Int>().apply{ITEMS.forEach{put(it,0)}}
     private val route=ArrayDeque<Pair<Int,Int>>()
