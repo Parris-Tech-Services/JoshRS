@@ -198,3 +198,38 @@
 | 847 | Head chef (Cooking Guild 3143,3444) | OK | Talk: Cannot reach Head chef: No path to (3143, 3444) from (3149, 3441): no waypoints / Trade:  | - |
 | 644 | Straven (Varrock Phoenix Gang Basement 3245,9781) | OK | Talk: Dialog: "" / Trade:  | - |
 | 458 | Father Urhney (Lumbridge Swamp Urhney 3232,3155) | OK | Talk: Dialog: "" / Trade:  | - |
+| 884 | Captain Rovin (Varrock Palace Tower L2 3204,3494) | OK | Talk: Dialog: "" / Trade:  | - |
+| 745 | Wormbrain (Port Sarim Jail 3014,3186) | OK | Talk: Wormbrain is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 649 | Archer (Lumbridge Adventurer Camp 3143,3203) | OK | Talk: Dialog: "" / Trade:  | - |
+| 652 | Wizard (Lumbridge Adventurer Camp 3147,3198) | OK | Talk: Dialog: "" / Trade:  | - |
+| 650 | Warrior (Lumbridge Adventurer Camp 3150,3201) | OK | Talk: Dialog: "" / Trade:  | - |
+| 651 | Monk (Lumbridge Adventurer Camp 3147,3202) | OK | Talk: Dialog: "" / Trade:  | - |
+| 209 | Nulodion (Ice Mountain Nulodion 3013,3454) | OK | Talk: Nulodion is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade: Nothing happened interacting with Nulodion | - |
+| 199 | Gunthor the brave (Barbarian Village North 3081,3443) | OK | Talk: Dialog: "" / Trade:  | - |
+| 782 | Philop (Gertrude House 3150,3407) | OK | Talk: Philop is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 784 | Kanel (Gertrude House 3155,3406) | OK | Talk: Dialog did not open / Trade:  | - |
+| 523 | Shop assistant (Varrock General Store 3217,3412) | OK | Talk: Dialog: "" / Trade: Shop "Varrock General Store" (0 items) | - |
+| 639 | Romeo (Varrock General Store 3210,3425) | OK | Talk: Dialog: "" / Trade:  | - |
+| 548 | Thessalia (Varrock General Store 3204,3417) | OK | Talk: Cannot reach Thessalia / Trade: Shop "Thessalia Fine Clothes." (0 items) | - |
+| 835 | Irena (Shantay Pass South Irena 3303,3115) | OK | Talk: Cannot reach Irena / Trade:  | - |
+| 838 | Shantay Guard (Shantay Pass South Irena 3303,3118) | OK | Talk: Cannot reach Shantay Guard: Path to (3303, 3118) stops 3 tiles short at (3303, 3115) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
+| 837 | Shantay Guard (Shantay Pass South Irena 3301,3124) | OK | Talk: Cannot reach Shantay Guard: Path to (3301, 3124) stops 7 tiles short at (3306, 3117) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
+| 1152 | Weird Old Man (Kalphite Lair Outside 3227,3104) | OK | Talk: Dialog: "" / Trade:  | - |
+| 833 | Bedabin Nomad (Bedabin Camp 3173,3036) | OK | Talk: Dialog: "" / Trade: Shop "Bedabin Village Bartering" (0 items) | - |
+| 834 | Bedabin Nomad Guard (Bedabin Camp 3170,3045) | OK | Talk: Dialog: "" / Trade:  | - |
+- **OK** | `637` (Juliet) @ (3156, 3427, L1) — Talk-to -> "Click here to continue"
+- **OK** | `780` (Gertrude) @ (3151, 3410, L0) — Talk-to -> "Click here to continue"
+- **OK** | `528` (Shop keeper) @ (3077, 3508, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `529` (Shop assistant) @ (3081, 3511, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `747` (Oziach) @ (3069, 3519, L0) — Talk-to -> "Click here to continue"
+- **OK** | `609` (Fortress Guard) @ (3018, 3511, L0) — Talk-to -> "Click here to continue"
+- **OK** | `746` (Oracle) @ (3018, 3503, L0) — Talk-to -> "Click here to continue"
+- **OK** | `285` (Veronica) @ (3109, 3332, L0) — Talk-to -> "Click here to continue"
+- **OK** | `922` (Aggie) @ (3085, 3258, L0) — Talk-to -> "Click here to continue"
+- **OK** | `918` (Ned) @ (3104, 3262, L0) — Talk-to -> "Click here to continue"
+- **OK** | `755` (Morgan) @ (3096, 3269, L0) — Talk-to -> "Click here to continue"
+- **OK** | `559` (Brian) @ (3030, 3247, L0) — Talk-to ("So, are you selling something? 'Ello.") + Trade (shopOpen=true)
+- **OK** | `583` (Betty) @ (3012, 3259, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `375` (Redbeard Frank) @ (3053, 3250, L0) — Talk-to -> "Click here to continue"
+- **OK** | `657` (Monk of Entrana) @ (3046, 3237, L0) — Talk-to -> "Click here to continue"
+- **OK** | `744` (Klarense) @ (3047, 3204, L0) — Talk-to -> "Click here to continue"
