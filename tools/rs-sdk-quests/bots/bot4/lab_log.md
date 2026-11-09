@@ -778,3 +778,61 @@
   - **Impact**: **Cosmetic**
 
 #### Verified Working Interactions (Summary)
+
+### Region Completed: Varrock & South Varrock Object Interactions (m49_51, m49_52, m50_51, m50_52, m50_53, m51_52) — 2026-11-09T06:45:42.057Z
+- **Total Interactions Audited**: 20 (12 verified working, 8 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3185, 3436, L0)` — Varrock & South Varrock Object Interactions (m49_51, m49_52, m50_51, m50_52, m50_53, m51_52)
+  - **Object & Action**: `Waypoint: Varrock West Bank & Anvil House` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Varrock West Bank & Anvil House at (3185, 3436). Actual: walkTo failed: Walk timed out after 45000ms to (3185, 3436)
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3212, 3472, L0)` — Varrock & South Varrock Object Interactions (m49_51, m49_52, m50_51, m50_52, m50_53, m51_52)
+  - **Object & Action**: `Waypoint: Varrock Palace Courtyard & Ground Floor` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Varrock Palace Courtyard & Ground Floor at (3212, 3472). Actual: walkTo failed: Stuck at (3212, 3438)
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3258, 3484, L0)` — Varrock & South Varrock Object Interactions (m49_51, m49_52, m50_51, m50_52, m50_53, m51_52)
+  - **Object & Action**: `Door` (id `1536`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3258, 3484). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3256, 3488, L0)` — Varrock & South Varrock Object Interactions (m49_51, m49_52, m50_51, m50_52, m50_53, m51_52)
+  - **Object & Action**: `Closed chest` (id `375`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Closed chest at (3256, 3488). Actual: success=true (Interacted with Closed chest), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3229, 3395, L0)` — Varrock & South Varrock Object Interactions (m49_51, m49_52, m50_51, m50_52, m50_53, m51_52)
+  - **Object & Action**: `Bookcase` (id `381`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Bookcase at (3229, 3395). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3237, 3394, L0)` — Varrock & South Varrock Object Interactions (m49_51, m49_52, m50_51, m50_52, m50_53, m51_52)
+  - **Object & Action**: `Drawers` (id `350`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Drawers at (3237, 3394). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3286, 3365, L0)` — Varrock & South Varrock Object Interactions (m49_51, m49_52, m50_51, m50_52, m50_53, m51_52)
+  - **Object & Action**: `Waypoint: South-East Varrock Mine` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to South-East Varrock Mine at (3286, 3365). Actual: walkTo failed: Walk timed out after 45000ms to (3286, 3365)
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3192, 3354, L0)` — Varrock & South Varrock Object Interactions (m49_51, m49_52, m50_51, m50_52, m50_53, m51_52)
+  - **Object & Action**: `Door` (id `1533`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3192, 3354). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Blocks progress**
+
+#### Verified Working Interactions (Summary)
+- `(3204, 3434, L0)` **Crate** (id `355`) [`Search`] -> OK: Interacted with Crate
+- `(3204, 3435, L0)` **Crate** (id `354`) [`Search`] -> OK: Interacted with Crate
+- `(3243, 3450, L0)` **Door** (id `1530`) [`Open`] -> OK: Timed out after 4500ms (loc state changed)
+- `(3253, 3486, L0)` **Altar** (id `409`) [`Pray-at`] -> OK: Interacted with Altar | "You already have full prayer points."
+- `(3256, 3487, L0)` **Closed chest** (id `375`) [`Open`] -> OK: Timed out after 4500ms | "The chest is locked. | The chest is locked."
+- `(3252, 3419, L0)` **Bank booth** (id `2213`) [`Use`] -> OK: Interacted with Bank booth
+- `(3252, 3419, L0)` **Bank booth** (id `2213`) [`Use-quickly`] -> OK: Interacted with Bank booth
+- `(3239, 3392, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door (loc state changed)
+- `(3225, 3388, L0)` **Sacks** (id `365`) [`Search`] -> OK: Interacted with Sacks
+- `(3227, 3388, L0)` **cabbage** (id `1161`) [`Pick`] -> OK: Interacted with cabbage
+- `(3191, 3363, L0)` **Door** (id `1805`) [`Open`] -> OK: Interacted with Door | "The door won't open - you need at least 32 Quest Points."
+- `(3194, 3357, L0)` **Door** (id `1533`) [`Open`] -> OK: Timed out after 4500ms (loc state changed) | "The door won't open - you need at least 32 Quest Points."
+
+### Region Spot-Check: White Wolf Mountain Summit (m44_54) — 2026-11-09T06:49:16.842Z
+- **Coordinates & Region**: `(2850, 3495, L0)` — White Wolf Mountain Summit (m44_54)
+  - **Object & Action**: `gnomeglider_icon1` — action `Inspect / Visible Loc Name`
+  - **Expected vs Actual**: Expected: Map icon loc or scenery object to either have a proper display name or be hidden from object interaction lists. Actual: Exposes raw internal identifier `gnomeglider_icon1` at `(2850, 3495, L0)` next to `Gnome glider` and `Gnome pilot`.
+  - **Impact**: **Cosmetic**
+
