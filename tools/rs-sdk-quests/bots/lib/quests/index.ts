@@ -21,5 +21,6 @@ import { hazeelcult } from './hazeel-cult';
 import { sheepherder } from './sheep-herder';
 import { mcannon } from './dwarf-cannon';
 import { elena } from './plague-city';
-export { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp, druid, fluffs, drunkmonk, hazeelcult, sheepherder, mcannon, elena };
-export const ALL = { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp, druid, fluffs, drunkmonk, hazeelcult, sheepherder, mcannon, elena };
+import { murder } from './murder-mystery';
+export { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp, druid, fluffs, drunkmonk, hazeelcult, sheepherder, mcannon, elena, murder };
+export const ALL = { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp, druid, fluffs, drunkmonk, hazeelcult, sheepherder, mcannon, elena, murder };

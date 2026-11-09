@@ -327,7 +327,7 @@ export async function runQuests(dir: string, quests: Quest[]) {
         await bot.dismissBlockingUI();
       }
     }
-  }, { timeout: 45 * 60_000 });
+  }, { timeout: 8 * 60 * 60_000 });
 }
 
 // Empty the inventory into the Draynor bank, keeping only items matching `keep`. Equipment stays on.

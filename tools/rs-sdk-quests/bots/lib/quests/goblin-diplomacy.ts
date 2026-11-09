@@ -192,7 +192,7 @@ export const gobdip: Quest = {
           const px = p?.worldX ?? 2956;
           const pz = p?.worldZ ?? 3500;
           const gob = (sdk.getState()?.nearbyNpcs ?? [])
-            .filter((n: any) => /^goblin$/i.test(n.name) && n.combatLevel <= 5 && n.x >= 2953 && n.x <= 2962 && n.z >= 3495 && n.z <= 3504)
+            .filter((n: any) => /^goblin$/i.test(n.name) && n.combatLevel <= 5 && !n.inCombat && n.x >= 2950 && n.x <= 2966 && n.z >= 3490 && n.z <= 3511)
             .sort((a: any, b: any) => Math.hypot(a.x - px, a.z - pz) - Math.hypot(b.x - px, b.z - pz))[0];
           if (gob && !sdk.getState()?.player?.combat?.inCombat) {
             await bot.attack(gob);

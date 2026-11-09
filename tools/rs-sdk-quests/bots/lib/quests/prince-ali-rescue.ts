@@ -108,7 +108,7 @@ export const prince: Quest = {
     };
 
     const start = () => step(c, N, 'start-hassan-osman', async () => {
-      if (started || has(sdk, /^key print|bronze key|paste|wig$/i) || osmanKeyGiven || princeSaved || questComplete) return true;
+      if (started || has(sdk, /^key print|bronze key|paste|wig$/i) || (has(sdk, /^soft clay$/i) && has(sdk, /^pink skirt$/i)) || osmanKeyGiven || princeSaved || questComplete) return true;
       await exitWizardsTowerGround(c);
       if ((sdk.getState()?.player?.worldX ?? 0) < 3268) {
         await bankJunk(c, KEEP_RE);
@@ -116,7 +116,7 @@ export const prince: Quest = {
           /^coins$/i, /^bronze pickaxe$/i, /^bronze axe$/i, /^tinderbox$/i, /^bucket$/i, /^pot$/i, /^shears$/i,
           /^soft clay$/i, /^key print$/i, /^bronze bar$/i, /^bronze key$/i, /^pink skirt$/i, /^beer$/i, /^redberries$/i, /^paste$/i, /^yellow dye$/i, /^wig$/i, /^rope$/i,
         ]);
-        if (has(sdk, /^key print|bronze key|paste|wig$/i)) return true;
+        if (has(sdk, /^key print|bronze key|paste|wig$/i) || (has(sdk, /^soft clay$/i) && has(sdk, /^pink skirt$/i))) return true;
         await ensureCoins(70, 3100, 3250);
       }
       await walkToAlKharid(3298, 3163);
@@ -124,6 +124,7 @@ export const prince: Quest = {
       const recent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
       if (/friend of the town of al-kharid|eternal gratitude of the emir/i.test(recent)) { questComplete = true; return true; }
       if (/getting on well with the rescue/i.test(recent)) { started = true; osmanKeyGiven = true; return true; }
+      if (/spymaster has hired you/i.test(recent)) { started = true; return true; }
       await bot.walkTo(3286, 3180, 2);
       if (!(await talk(c, /^osman$/i, [/okay, i better go/i, /second thing you need/i, /what i still need/i]))) return false;
       const osmanRecent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');

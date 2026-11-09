@@ -193,3 +193,87 @@
   - Fixed Luthas house entry (`tol = 1` at `(2938, 3154)`) and dialogue options (`/no, the crate isn't full yet/i`) and prevented re-buying Karamjan rum if rum was already shipped to Wydin's store.
 - 2026-11-09T06:47:42.028Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
 - 2026-11-09T06:48:06.359Z STEP dyes
+- 2026-11-09T06:55:25.363Z STEP goblin-mails
+- 2026-11-09T07:03:47.928Z STEP FAILED goblin-mails
+- 2026-11-09T07:03:47.934Z START Goblin Diplomacy (attempt 2)
+- 2026-11-09T07:03:47.934Z STEP start-port-sarim
+- 2026-11-09T07:05:24.428Z STEP dyes
+- 2026-11-09T07:05:24.429Z STEP goblin-mails
+- 2026-11-09T07:07:44.252Z STEP hand-in
+- 2026-11-09T07:08:11.069Z DONE Goblin Diplomacy
+
+### Quest 12: Goblin Diplomacy (`gobdip`) — COMPLETED
+- **Quest Points Gained**: +5 QP (Total: **26 QP**)
+- **Rewards**: +5,000 Crafting XP (Level 25 -> 33), 1 Gold bar.
+- **Notes / Lessons**:
+  - Gathered 3 `Redberries` (`3267, 3371`), 2 `Onion`s (`3188, 3266`), and 2 `Woad leaf`s from Wyson (`3027, 3379`), made `Red dye`, `Yellow dye`, `Blue dye`, and combined `Red dye` + `Yellow dye` -> `Orange dye` at Aggie (`3086, 3259`).
+  - Filtered Goblin Village target selection (`!n.inCombat`) so `Elrothiro` did not compete with `Bot3` for the same goblins; farmed 3 `Goblin mail`s (training Strength 39 -> 56 and HP 29 -> 42), dyed them Orange and Blue, and handed all 3 to General Wartface (`2957, 3511`).
+- 2026-11-09T07:08:11.069Z START Prince Ali Rescue (attempt 1)
+- 2026-11-09T07:08:11.070Z STEP start-hassan-osman
+- 2026-11-09T07:09:38.023Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T07:11:14.435Z STEP varrock-items
+- 2026-11-09T07:18:13.329Z STEP aggie-paste-and-dye
+- 2026-11-09T07:20:38.024Z lit fire at (3163,3290)
+- 2026-11-09T07:23:06.437Z STEP FAILED aggie-paste-and-dye
+- 2026-11-09T07:23:06.437Z START Prince Ali Rescue (attempt 2)
+- 2026-11-09T07:23:06.437Z STEP start-hassan-osman
+- 2026-11-09T07:23:06.438Z STEP FAILED start-hassan-osman
+- 2026-11-09T07:23:06.438Z START Imp Catcher (attempt 1)
+- 2026-11-09T07:23:06.439Z STEP start-mizgog
+- 2026-11-09T07:23:06.439Z STEP FAILED start-mizgog
+- 2026-11-09T07:23:06.440Z START Imp Catcher (attempt 2)
+- 2026-11-09T07:23:06.440Z STEP start-mizgog
+- 2026-11-09T07:23:06.440Z STEP FAILED start-mizgog
+- 2026-11-09T07:23:06.440Z START Demon Slayer (attempt 1)
+- 2026-11-09T07:23:06.441Z STEP start-aris-and-prysin
+- 2026-11-09T07:23:06.442Z STEP FAILED start-aris-and-prysin
+- 2026-11-09T07:23:06.442Z START Demon Slayer (attempt 2)
+- 2026-11-09T07:23:06.442Z STEP start-aris-and-prysin
+- 2026-11-09T07:23:06.442Z STEP FAILED start-aris-and-prysin
+- 2026-11-09T07:23:06.443Z START Black Knights' Fortress (attempt 1)
+- 2026-11-09T07:23:06.443Z STEP prep-and-start
+- 2026-11-09T07:23:06.445Z STEP FAILED prep-and-start
+- 2026-11-09T07:23:06.445Z START Black Knights' Fortress (attempt 2)
+- 2026-11-09T07:23:06.445Z STEP prep-and-start
+- 2026-11-09T07:23:06.445Z STEP FAILED prep-and-start
+- 2026-11-09T07:23:06.445Z START Druidic Ritual (attempt 1)
+- 2026-11-09T07:23:06.446Z STEP gather-meats-and-start
+- 2026-11-09T07:23:06.447Z STEP FAILED gather-meats-and-start
+- 2026-11-09T07:23:06.447Z START Druidic Ritual (attempt 2)
+- 2026-11-09T07:23:06.447Z STEP gather-meats-and-start
+- 2026-11-09T07:23:06.447Z STEP FAILED gather-meats-and-start
+- 2026-11-09T07:23:06.448Z START Gertrude's Cat (attempt 1)
+- 2026-11-09T07:23:06.448Z STEP prep-items-and-start
+- 2026-11-09T07:23:06.449Z STEP FAILED prep-items-and-start
+- 2026-11-09T07:23:06.449Z START Gertrude's Cat (attempt 2)
+- 2026-11-09T07:23:06.449Z STEP prep-items-and-start
+- 2026-11-09T07:23:06.449Z STEP FAILED prep-items-and-start
+- 2026-11-09T07:23:06.450Z START Monk's Friend (attempt 1)
+- 2026-11-09T07:23:06.450Z STEP prep-and-start-omad
+- 2026-11-09T07:23:06.451Z STEP FAILED prep-and-start-omad
+- 2026-11-09T07:23:06.451Z START Monk's Friend (attempt 2)
+- 2026-11-09T07:23:06.451Z STEP prep-and-start-omad
+- 2026-11-09T07:23:06.452Z STEP FAILED prep-and-start-omad
+- 2026-11-09T07:23:06.452Z START Hazeel Cult (attempt 1)
+- 2026-11-09T07:23:06.452Z STEP start-ceril-and-clivet
+- 2026-11-09T07:23:06.453Z STEP FAILED start-ceril-and-clivet
+- 2026-11-09T07:23:06.453Z START Hazeel Cult (attempt 2)
+- 2026-11-09T07:23:06.453Z STEP start-ceril-and-clivet
+- 2026-11-09T07:23:06.453Z STEP FAILED start-ceril-and-clivet
+- 2026-11-09T07:23:06.453Z START Sheep Herder (attempt 1)
+- 2026-11-09T07:23:06.453Z STEP start-and-gear
+- 2026-11-09T07:23:06.454Z STEP FAILED start-and-gear
+- 2026-11-09T07:23:06.454Z START Sheep Herder (attempt 2)
+- 2026-11-09T07:23:06.454Z STEP start-and-gear
+- 2026-11-09T07:23:06.454Z STEP FAILED start-and-gear
+- 2026-11-09T07:23:06.454Z START Dwarf Cannon (attempt 1)
+- 2026-11-09T07:23:06.455Z STEP start-and-fix-railings
+- 2026-11-09T07:23:06.456Z STEP FAILED start-and-fix-railings
+- 2026-11-09T07:23:06.456Z START Dwarf Cannon (attempt 2)
+- 2026-11-09T07:23:06.456Z STEP start-and-fix-railings
+- 2026-11-09T07:23:06.456Z STEP FAILED start-and-fix-railings
+- 2026-11-09T08:49:38.031Z START Prince Ali Rescue (attempt 1)
+- 2026-11-09T08:49:38.031Z STEP start-hassan-osman
+- 2026-11-09T08:49:38.032Z STEP varrock-items
+- 2026-11-09T08:49:38.033Z STEP aggie-paste-and-dye
+- 2026-11-09T08:50:10.428Z lit fire at (3163,3290)
