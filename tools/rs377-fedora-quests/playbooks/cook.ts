@@ -61,13 +61,37 @@ function live(sdk,name){
   throw new Error('authenticated_quest_bot_state_lost');
  return s;
 }
+/** Follow only observed, guarded Continue options. Never guess component ids. */
 async function choose(sdk,recordAction,re){
- if(!await wait(sdk,s=>s?.dialog?.isOpen&&s.dialog.options?.some(o=>re.test(o.text)),10000))
-  return false;
- const result=await sdk.clickDialogByText(re);
- // This is the native 377 gateway effect receipt, not a claimed dispatch.
- recordAction(result);
- return true;
+ for(let i=0;i<25;i++){
+  const dialog=sdk.getState()?.dialog;
+  const options=dialog?.isOpen&&Array.isArray(dialog.options)?dialog.options:[];
+  if(options.some(o=>typeof o.text==='string'&&re.test(o.text))){
+   const result=await sdk.clickDialogByText(re);
+   recordAction(result);return true;
+  }
+  const continuation=options.length===1&&/^(?:click here to )?continue\b/i.test(options[0].text??'');
+  if(continuation){
+   const result=await sdk.clickDialogByText(/^(?:click here to )?continue\b/i);
+   recordAction(result);
+  }else{
+   try{await sdk.waitForStateChange(1000)}catch{await sleep(150)}
+  }
+ }
+ return false;
+}
+async function finishDialog(sdk,recordAction,expectedStage){
+ for(let i=0;i<35;i++){
+  if(stage(sdk.getState())===expectedStage)return true;
+  const options=sdk.getState()?.dialog?.options??[];
+  if(options.length===1&&/^(?:click here to )?continue\b/i.test(options[0]?.text??'')){
+   const result=await sdk.clickDialogByText(/^(?:click here to )?continue\b/i);
+   recordAction(result);
+  }else{
+   try{await sdk.waitForStateChange(1000)}catch{await sleep(150)}
+  }
+ }
+ return stage(sdk.getState())===expectedStage;
 }
 async function start(sdk,bot,name,recordAction){
  if(stage(live(sdk,name))!==0)return stage(live(sdk,name))===1;
@@ -78,7 +102,7 @@ async function start(sdk,bot,name,recordAction){
  recordAction(talk);
  if(!await choose(sdk,recordAction,/what.s wrong/i))return false;
  if(!await choose(sdk,recordAction,/yes,? i.ll help you/i))return false;
- return wait(sdk,s=>stage(s)===1,12000);
+ return finishDialog(sdk,recordAction,1);
 }
 async function milk(sdk,bot){
  if(item(sdk.getState(),/^bucket of milk$/i))return true;
@@ -158,7 +182,7 @@ export async function run({sdk,bot,quest,recordAction}){
  if(chefs.length!==1)return outcome('cook_not_uniquely_visible_at_handin');
  const response=await sdk.sendTalkToNpc(chefs[0].index);
  recordAction(response);
- if(!await wait(sdk,s=>stage(s)===2,20000))
+ if(!await finishDialog(sdk,recordAction,2))
   return outcome('cook_handin_did_not_complete_native_quest');
  const result=live(sdk,name),xpAfter=cookingXp(result);
  if(xpBefore===null||xpAfter===null||xpAfter-xpBefore<300)
