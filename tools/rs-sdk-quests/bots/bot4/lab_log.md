@@ -1001,3 +1001,95 @@
 #### Verified Working Interactions (Summary)
 - `(3268, 3435, L0)` **Door** (id `1591`) [`Open`] -> OK: Timed out after 4500ms | "You try and open the door... | The door is locked tight, I can't open it. | You try and open the door... | The door is locked tight, I can't open it."
 - `(3275, 3420, L0)` **Crate** (id `355`) [`Search`] -> OK: Interacted with Crate | "You search the crate but find nothing."
+
+### Region Completed: Paterdomus Temple & River Salve Border (m53_54) — 2026-11-09T09:46:22.461Z
+- **Total Interactions Audited**: 6 (3 verified working, 3 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3408, 3489, L0)` — Paterdomus Temple & River Salve Border (m53_54)
+  - **Object & Action**: `Large door` (id `3489`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Large door at (3408, 3489). Actual: success=true (Interacted with Large door), opRejectedDelta=1, messages="This door is securely locked from inside.", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3409, 3483, L0)` — Paterdomus Temple & River Salve Border (m53_54)
+  - **Object & Action**: `Church organ` (id `3500`) — action `Play`
+  - **Expected vs Actual**: Expected: Interact "Play" with Church organ at (3409, 3483). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="This door is securely locked from inside.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3412, 3488, L0)` — Paterdomus Temple & River Salve Border (m53_54)
+  - **Object & Action**: `Waypoint: Paterdomus Temple Nave & Altar` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Paterdomus Temple Nave & Altar at (3412, 3488). Actual: walkTo failed: No path to (3412, 3488) from (3408, 3488): no waypoints
+  - **Impact**: **Blocks progress**
+
+#### Verified Working Interactions (Summary)
+- `(3408, 3488, L0)` **Large door** (id `3490`) [`Open`] -> OK: Interacted with Large door | "This door is securely locked from inside. | This door is securely locked from inside."
+- `(3408, 3488, L0)` **Large door** (id `3490`) [`Knock-at`] -> OK: Interacted with Large door
+- `(3408, 3489, L0)` **Large door** (id `3489`) [`Knock-at`] -> OK: Interacted with Large door
+
+### Region Completed: The Digsite & Exam Centre (m52_52 & m52_53) — 2026-11-09T09:48:22.645Z
+- **Total Interactions Audited**: 19 (12 verified working, 7 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3356, 3417, L0)` — The Digsite & Exam Centre (m52_52 & m52_53)
+  - **Object & Action**: `Signpost` (id `2368`) — action `Read`
+  - **Expected vs Actual**: Expected: Interact "Read" with Signpost at (3356, 3417). Actual: success=false (Nothing happened interacting with Signpost), opRejectedDelta=1, messages="Level 2 digs only.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3352, 3417, L0)` — The Digsite & Exam Centre (m52_52 & m52_53)
+  - **Object & Action**: `Winch` (id `2350`) — action `Operate`
+  - **Expected vs Actual**: Expected: Interact "Operate" with Winch at (3352, 3417). Actual: success=true (Interacted with Winch), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3384, 3392, L0)` — The Digsite & Exam Centre (m52_52 & m52_53)
+  - **Object & Action**: `Waypoint: Digsite Panning Point` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Digsite Panning Point at (3384, 3392). Actual: walkTo failed: Path to (3384, 3392) stops 4 tiles short at (3380, 3391) - the rest is unroutable from here (locked door or separate room?)
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3355, 3337, L0)` — The Digsite & Exam Centre (m52_52 & m52_53)
+  - **Object & Action**: `Cupboard` (id `2373`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Cupboard at (3355, 3337). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3352, 3351, L0)` — The Digsite & Exam Centre (m52_52 & m52_53)
+  - **Object & Action**: `Bush` (id `2357`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Bush at (3352, 3351). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3367, 3336, L0)` — The Digsite & Exam Centre (m52_52 & m52_53)
+  - **Object & Action**: `Bookcase` (id `381`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Bookcase at (3367, 3336). Actual: success=true (Interacted with Bookcase), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3367, 3338, L0)` — The Digsite & Exam Centre (m52_52 & m52_53)
+  - **Object & Action**: `Closed chest` (id `375`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Closed chest at (3367, 3338). Actual: success=true (Interacted with Closed chest), opRejectedDelta=2, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(3358, 3418, L0)` **Sacks** (id `2356`) [`Search`] -> OK: Interacted with Sacks
+- `(3359, 3418, L0)` **Sacks** (id `2354`) [`Search`] -> OK: Interacted with Sacks | "You search the sacks... | You find nothing of interest."
+- `(3362, 3415, L0)` **Signpost** (id `2367`) [`Read`] -> OK: Interacted with Signpost | "Level 1 digs only."
+- `(3358, 3409, L0)` **Signpost** (id `2369`) [`Read`] -> OK: Interacted with Signpost | "Level 3 digs only."
+- `(3363, 3379, L0)` **Barrel** (id `2359`) [`Open`] -> OK: Interacted with Barrel
+- `(3363, 3379, L0)` **Barrel** (id `2359`) [`Search`] -> OK: Interacted with Barrel
+- `(3367, 3387, L0)` **Specimen tray** (id `2375`) [`Search`] -> OK: Interacted with Specimen tray
+- `(3374, 3378, L0)` **Chest** (id `2361`) [`Open`] -> OK: Interacted with Chest | "The chest is locked."
+- `(3352, 3337, L0)` **Door** (id `1533`) [`Open`] -> OK: Interacted with Door (loc state changed)
+- `(3364, 3335, L0)` **Bookcase** (id `380`) [`Search`] -> OK: Interacted with Bookcase
+- `(3367, 3337, L0)` **Closed chest** (id `375`) [`Open`] -> OK: Interacted with Closed chest
+- `(3366, 3334, L0)` **Bookcase** (id `2372`) [`Search`] -> OK: Interacted with Bookcase
+
+### Region Completed: Duel Arena Entrance, Hospital & Spectators (m52_50 & m51_50) — 2026-11-09T09:50:30.273Z
+- **Total Interactions Audited**: 10 (8 verified working, 2 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3362, 3272, L0)` — Duel Arena Entrance, Hospital & Spectators (m52_50 & m51_50)
+  - **Object & Action**: `Drawers` (id `3190`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Drawers at (3362, 3272). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3356, 3260, L0)` — Duel Arena Entrance, Hospital & Spectators (m52_50 & m51_50)
+  - **Object & Action**: `Wall` (id `3083`) — action `Lean against`
+  - **Expected vs Actual**: Expected: Interact "Lean against" with Wall at (3356, 3260). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(3317, 3243, L0)` **Crate** (id `356`) [`Search`] -> OK: Interacted with Crate | "You search the crate but find nothing."
+- `(3319, 3227, L0)` **Scoreboard** (id `3192`) [`View`] -> OK: Interacted with Scoreboard
+- `(3317, 3244, L0)` **Crate** (id `358`) [`Search`] -> OK: Interacted with Crate
+- `(3318, 3244, L0)` **Crate** (id `357`) [`Search`] -> OK: Interacted with Crate | "You search the crate but find nothing."
+- `(3362, 3272, L0)` **Drawers** (id `3191`) [`Search`] -> OK: Interacted with Drawers
+- `(3362, 3272, L0)` **Drawers** (id `3191`) [`Shut`] -> OK: Interacted with Drawers
+- `(3357, 3260, L0)` **Wall** (id `3082`) [`Lean against`] -> OK: Timed out after 4500ms (loc state changed)
+- `(3358, 3260, L0)` **Wall** (id `3077`) [`Lean against`] -> OK: Interacted with Wall
