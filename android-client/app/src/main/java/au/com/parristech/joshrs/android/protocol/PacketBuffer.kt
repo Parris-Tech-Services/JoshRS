@@ -134,15 +134,21 @@ class PacketBuffer(val data: ByteArray) {
         return this
     }
 
-    /** Writes a 1-byte length immediately *before* the current position. */
+    /**
+     * Writes a 1-byte payload length into the slot reserved immediately *before*
+     * the payload. Matches `Packet.psize1`: `pos - size - 1`.
+     */
     fun psize1(size: Int) {
-        data[pos - 1] = size.toByte()
+        data[pos - size - 1] = size.toByte()
     }
 
-    /** Writes a 2-byte length immediately *before* the current position. */
+    /**
+     * Writes a 2-byte payload length into the slot reserved immediately *before*
+     * the payload. Matches `Packet.psize2`: `pos - size - 2`.
+     */
     fun psize2(size: Int) {
-        data[pos - 2] = (size ushr 8).toByte()
-        data[pos - 1] = size.toByte()
+        data[pos - size - 2] = (size ushr 8).toByte()
+        data[pos - size - 1] = size.toByte()
     }
 
     companion object {
