@@ -1,5 +1,9 @@
 package au.com.parristech.joshrs.android.protocol
 
+import au.com.parristech.joshrs.android.Floor377
+import au.com.parristech.joshrs.android.Region377
+import au.com.parristech.joshrs.android.Tile377
+
 /**
  * Top-down terrain rasteriser: turns a decoded [Region377] into ARGB pixels.
  *
