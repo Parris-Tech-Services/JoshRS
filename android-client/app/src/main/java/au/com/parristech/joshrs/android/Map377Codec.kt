@@ -170,7 +170,8 @@ data class Tile377(
 data class LocPlacement377(val id: Int, val x: Int, val z: Int, val level: Int, val type: Int, val orientation: Int)
 data class Region377(
     val x: Int, val z: Int, val landFile: Int, val locFile: Int,
-    val tiles: List<Tile377>, val locs: List<LocPlacement377>
+    val tiles: List<Tile377>, val locs: List<LocPlacement377>,
+    val floors: List<Floor377> = emptyList()
 ) {
     fun tile(level: Int, x: Int, z: Int): Tile377 {
         require(level in 0..3 && x in 0..63 && z in 0..63)
@@ -297,13 +298,18 @@ object Map377Codec {
     }
 
     /** Both IDs are read from actual user-provided versionlist map_index. */
-    fun lumbridge(versionlist: ByteArray, landCompressed: ByteArray, locCompressed: ByteArray): Region377 {
+    fun lumbridge(
+        versionlist: ByteArray, landCompressed: ByteArray, locCompressed: ByteArray,
+        configJagfile: ByteArray? = null
+    ): Region377 {
         val index = Jagfile377.readFile(versionlist, "map_index")
         val mapped = MapIndex377.region(index, 50, 50)
         return Region377(
             50, 50, mapped.landId, mapped.locId,
             terrain(Compression377.gunzip(landCompressed), 50, 50),
-            locations(Compression377.gunzip(locCompressed), 50, 50)
+            locations(Compression377.gunzip(locCompressed), 50, 50),
+            configJagfile?.let { Floor377Codec.decode(Jagfile377.readFile(it, "flo.dat")) }
+                ?: emptyList()
         )
     }
 }
