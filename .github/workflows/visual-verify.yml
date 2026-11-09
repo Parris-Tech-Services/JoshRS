@@ -63,34 +63,14 @@ jobs:
           npm install --no-save --no-audit --no-fund playwright
           npx playwright install --with-deps chromium
 
-      - name: Capture the login screen
+      - name: Capture until the login form appears (OCR in the loop)
         shell: bash
         run: |
           set -euo pipefail
-          node tools/visual/visual-capture.mjs http://127.0.0.1:8888/rs2.cgi "$RUNNER_TEMP/login.png"
-
-      - name: OCR the capture into text evidence
-        shell: bash
-        run: |
-          set -euo pipefail
-          out="$RUNNER_TEMP/login-ocr.txt"
-          # The game UI is painted on the canvas, so OCR that, upscaled for small bitmap fonts.
-          src="$RUNNER_TEMP/login-canvas.png"
-          [ -f "$src" ] || src="$RUNNER_TEMP/login.png"
-          python3 -c "import sys;from PIL import Image;img=Image.open(sys.argv[1]).convert('L');img.resize((img.width*2,img.height*2),Image.LANCZOS).save(sys.argv[2])" "$src" "$RUNNER_TEMP/ocr-input.png"
-          if ! tesseract "$RUNNER_TEMP/ocr-input.png" stdout --psm 6 2>"$RUNNER_TEMP/tess.err" > "$out"; then
-            echo "::warning::tesseract exited non-zero"
-            cat "$RUNNER_TEMP/tess.err" || true
-          fi
-          echo "--- OCR text (this is the evidence) ---"
-          cat "$out"
-          echo "--- end OCR ---"
-          echo "OCR bytes: $(wc -c < "$out")"
-          if ! grep -qiE "runescape|username|password|click to play|world|login|new user" "$out"; then
-            echo "::error::OCR found none of the expected client strings on screen."
-            exit 1
-          fi
-          echo "OCR matched expected client text."
+          node tools/visual/visual-capture.mjs \
+            http://127.0.0.1:8888/rs2.cgi "$RUNNER_TEMP/login.png" \
+            --wait-for "username|password|new user|existing user" \
+            --max-seconds 480
 
       - name: Summarise pixels (no image viewing needed)
         shell: bash

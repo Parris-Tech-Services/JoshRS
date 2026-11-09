@@ -1,90 +1,103 @@
-// Headless capture of the rev-274 browser client, for text-based visual verification.
+// Closed-loop visual capture of the rev-274 browser client.
 //
-// Why: this project has no working screenshot path on the phone (`screencap` is denied, the image
-// viewer cannot open any path, and no browser is packaged for Termux). Rather than ask for a human
-// to look, the client is captured in CI and the capture is converted to TEXT with OCR, which the
-// agent can read and assert on.
+// The agent on this project cannot see images: `screencap` is denied on the phone, the image
+// viewer fails on every path, and no browser ships for Termux. So capture happens in CI and the
+// screen is converted to TEXT with OCR. This script closes the loop: it OCRs inside its own
+// decision loop, so it can wait for a specific screen instead of guessing a fixed delay.
 //
-// Usage: node visual-capture.mjs <url> <outPng>
-// Prints what it saw and exits non-zero only on a hard failure (page never loaded).
+// Usage:
+//   node visual-capture.mjs <url> <outPng> [--wait-for <regex>] [--max-seconds N]
+//
+// Prints one OCR line per poll so the CI log is a readable transcript of what the client did.
+
+import { execFileSync } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
-const url = process.argv[2] ?? 'http://127.0.0.1:8888/rs2.cgi';
-const out = process.argv[3] ?? 'login.png';
+const args = process.argv.slice(2);
+const url = args[0] ?? 'http://127.0.0.1:8888/rs2.cgi';
+const out = args[1] ?? 'login.png';
+const waitForIdx = args.indexOf('--wait-for');
+const waitFor = waitForIdx >= 0 ? new RegExp(args[waitForIdx + 1], 'i') : /username|password|new user|existing user/i;
+const maxIdx = args.indexOf('--max-seconds');
+const maxSeconds = maxIdx >= 0 ? Number(args[maxIdx + 1]) : 420;
+
+const canvasPath = out.replace(/\.png$/, '-canvas.png');
+const ocrInput = out.replace(/\.png$/, '-ocr-input.png');
+
+/** OCR a PNG via tesseract; returns trimmed text (empty string on failure). */
+function ocr(pngPath) {
+    try {
+        // 2x upscale: the client uses small bitmap fonts that tesseract misses at native size.
+        execFileSync('python3', ['-c',
+            "import sys;from PIL import Image;img=Image.open(sys.argv[1]).convert('L');" +
+            "img.resize((img.width*2,img.height*2),Image.LANCZOS).save(sys.argv[2])",
+            pngPath, ocrInput], { stdio: 'pipe' });
+        return execFileSync('tesseract', [ocrInput, 'stdout', '--psm', '6'],
+            { stdio: ['ignore', 'pipe', 'pipe'] }).toString('utf8').trim();
+    } catch (e) {
+        return `OCR_FAILED: ${String(e).slice(0, 120)}`;
+    }
+}
 
 const browser = await chromium.launch({
     args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader', '--no-sandbox']
 });
 const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
-
 const consoleLines = [];
-page.on('console', (m) => consoleLines.push(`${m.type()}: ${m.text()}`.slice(0, 200)));
-page.on('pageerror', (e) => consoleLines.push(`pageerror: ${String(e).slice(0, 200)}`));
+page.on('console', (m) => consoleLines.push(`${m.type()}: ${m.text()}`.slice(0, 160)));
+page.on('pageerror', (e) => consoleLines.push(`pageerror: ${String(e).slice(0, 160)}`));
 
-let ok = false;
-try {
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+await page.waitForSelector('canvas', { timeout: 30000 });
+await page.waitForTimeout(2000);
 
-    // The 274 web client paints into an existing canvas; a click is required to start loading.
-    await page.waitForSelector('canvas', { timeout: 30000 });
-    await page.waitForTimeout(3000);
-    const box = await page.locator('canvas').first().boundingBox();
-    if (box) {
-        await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-        await page.waitForTimeout(2000);
-        await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-    }
+// A click starts the cache download; the client otherwise waits on its title screen.
+const box = await page.locator('canvas').first().boundingBox();
+if (box) {
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    await page.waitForTimeout(1500);
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+}
 
-    // Poll the canvas itself until it stops being a flat colour (or time out).
-    const stats = await page.evaluate(async () => {
+async function snapshot() {
+    const dataUrl = await page.evaluate(() => {
         const c = document.querySelector('canvas');
-        if (!c) return { error: 'no canvas' };
-        const ctx = c.getContext('2d');
-        const deadline = Date.now() + 90000;
-        let last = null;
-        while (Date.now() < deadline) {
-            const data = ctx.getImageData(0, 0, c.width, c.height).data;
-            const seen = new Set();
-            for (let i = 0; i < data.length; i += 4 * 97) {
-                seen.add((data[i] << 16) | (data[i + 1] << 8) | data[i + 2]);
-            }
-            last = { shades: seen.size, w: c.width, h: c.height };
-            if (seen.size > 20) return last;
-            await new Promise((r) => setTimeout(r, 5000));
-        }
-        return { ...last, timedOut: true };
+        return c ? c.toDataURL('image/png') : null;
     });
-    console.log(`canvas stats: ${JSON.stringify(stats)}`);
-    ok = true;
-} catch (e) {
-    console.log(`NAVIGATION FAILED: ${String(e).slice(0, 300)}`);
+    if (!dataUrl) throw new Error('canvas disappeared');
+    writeFileSync(canvasPath, Buffer.from(dataUrl.split(',')[1], 'base64'));
+    await page.screenshot({ path: out });
+    return ocr(canvasPath);
 }
 
-await page.screenshot({ path: out, fullPage: false });
-
-// Save the canvas alone: the game UI lives there, not in the page DOM.
-const canvasPng = await page.evaluate(() => {
-    const c = document.querySelector('canvas');
-    return c ? c.toDataURL('image/png') : null;
-});
-if (canvasPng) {
-    const { writeFileSync } = await import('node:fs');
-    writeFileSync(out.replace(/\.png$/, '-canvas.png'), Buffer.from(canvasPng.split(',')[1], 'base64'));
-    console.log(`canvas png: ${out.replace(/\.png$/, '-canvas.png')}`);
+let matched = false;
+let lastText = '';
+const start = Date.now();
+for (let poll = 1; Date.now() - start < maxSeconds * 1000; poll++) {
+    lastText = await snapshot();
+    const flat = lastText.replace(/\s+/g, ' ').slice(0, 220);
+    console.log(`poll ${poll} t=${Math.round((Date.now() - start) / 1000)}s: ${JSON.stringify(flat)}`);
+    if (waitFor.test(lastText)) {
+        console.log(`MATCHED after ${Math.round((Date.now() - start) / 1000)}s on ${waitFor}`);
+        matched = true;
+        break;
+    }
+    await page.waitForTimeout(10000);
 }
 
-// Report what the page contained, as text.
-const canvases = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('canvas')).map((c) => ({ w: c.width, h: c.height }))
-);
-const bodyText = (await page.evaluate(() => document.body?.innerText ?? '')).slice(0, 500);
-
-console.log(`url: ${url}`);
-console.log(`screenshot: ${out}`);
-console.log(`canvases: ${JSON.stringify(canvases)}`);
-console.log(`body text: ${JSON.stringify(bodyText)}`);
-console.log(`console lines: ${consoleLines.length}`);
-for (const line of consoleLines.slice(0, 15)) console.log(`  ${line}`);
-
+// One extra capture at rest, so the saved PNG matches the text that was reported.
+const finalText = await snapshot();
+console.log('--- final OCR ---');
+console.log(finalText || '(empty)');
+console.log('--- end OCR ---');
+if (consoleLines.length) {
+    console.log(`console lines: ${consoleLines.length}`);
+    for (const l of consoleLines.slice(0, 8)) console.log(`  ${l}`);
+}
 await browser.close();
-process.exit(ok ? 0 : 1);
+
+if (!matched) {
+    console.log(`NO MATCH for ${waitFor} within ${maxSeconds}s`);
+    process.exit(2);
+}
