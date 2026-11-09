@@ -4,7 +4,7 @@ import {
 } from '../quest-kit';
 
 const N = 'Druidic Ritual';
-const KEEP_RE = /^(coins|silverlight|bronze sword|iron|steel|mithril|adamant|rune|wooden shield|raw beef|raw chicken|raw rat meat|raw bear meat|enchanted beef|enchanted chicken|enchanted rat meat|enchanted bear meat|shrimps|bread|cabbage|trout|salmon|lobster)$/i;
+const KEEP_RE = /^(coins|silverlight|bronze sword|iron|steel|mithril|adamant|rune|wooden shield|raw beef|raw chicken|raw rat meat|raw bear meat|enchanted beef|enchanted chicken|enchanted rat( meat)?|enchanted bear( meat)?|shrimps|bread|cabbage|trout|salmon|lobster)$/i;
 
 export const druid: Quest = {
   name: N,
@@ -19,8 +19,8 @@ export const druid: Quest = {
     const hasAllEnchanted = () =>
       has(sdk, /^enchanted beef$/i) &&
       has(sdk, /^enchanted chicken$/i) &&
-      has(sdk, /^enchanted rat meat$/i) &&
-      has(sdk, /^enchanted bear meat$/i);
+      has(sdk, /^enchanted rat( meat)?$/i) &&
+      has(sdk, /^enchanted bear( meat)?$/i);
 
     const climbSanfew = async (targetLvl: 0 | 1) => {
       for (let i = 0; i < 4 && lvl(sdk) !== targetLvl; i++) {
@@ -111,16 +111,16 @@ export const druid: Quest = {
       }
 
       // 3. Raw rat meat from Giant rat in Lumbridge Swamp (3206, 3178)
-      if (!has(sdk, /^(raw|enchanted) rat meat$/i)) {
+      if (!has(sdk, /^(raw rat meat|enchanted rat( meat)?)$/i)) {
         await bot.walkTo(3206, 3178, 3);
         if (!(await killAndLootMeat(3206, 3178, /^giant rat$/i, /^raw rat meat$/i))) return false;
       }
 
-      // 4. Raw bear meat from Black bear north of Falador (2966, 3474)
-      if (!has(sdk, /^(raw|enchanted) bear meat$/i)) {
+      // 4. Raw bear meat from Bear north of Falador (2966, 3474)
+      if (!has(sdk, /^(raw bear meat|enchanted bear( meat)?)$/i)) {
         await bot.walkTo(2965, 3385, 3);
         await bot.walkTo(2966, 3474, 3);
-        if (!(await killAndLootMeat(2966, 3474, /^(black|brown) bear$/i, /^raw bear meat$/i, true))) return false;
+        if (!(await killAndLootMeat(2966, 3474, /^(?:(?:black|brown) )?bear$/i, /^raw bear meat$/i, true))) return false;
       }
 
       // 5. Talk to Kaqemeex at Druids' Circle (2925, 3486)
@@ -185,8 +185,8 @@ export const druid: Quest = {
       const pairs: [RegExp, RegExp][] = [
         [/^raw beef$/i, /^enchanted beef$/i],
         [/^raw chicken$/i, /^enchanted chicken$/i],
-        [/^raw rat meat$/i, /^enchanted rat meat$/i],
-        [/^raw bear meat$/i, /^enchanted bear meat$/i],
+        [/^raw rat meat$/i, /^enchanted rat( meat)?$/i],
+        [/^raw bear meat$/i, /^enchanted bear( meat)?$/i],
       ];
       for (const [rawRe, enchRe] of pairs) {
         if (has(sdk, enchRe)) continue;

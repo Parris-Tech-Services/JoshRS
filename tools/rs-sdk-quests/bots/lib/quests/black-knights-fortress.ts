@@ -68,9 +68,25 @@ export const blackknight: Quest = {
     const prepAndStart = () => step(c, N, 'prep-and-start', async () => {
       if (started || questComplete) return true;
       const pInit = sdk.getState()?.player;
+      const wearingHelmNow = (sdk.getState()?.equipment ?? []).some((e: any) => /^bronze med helm$/i.test(e.name));
+      const wearingChainNow = (sdk.getState()?.equipment ?? []).some((e: any) => /^iron chainbody$/i.test(e.name));
+      if (lvl(sdk) === 0 && (sdk.getState()?.player?.worldZ ?? 0) >= 3515 && (sdk.getState()?.player?.worldX ?? 0) <= 3019) {
+        for (let i = 0; i < 6 && (sdk.getState()?.player?.worldZ ?? 9999) >= 3515; i++) {
+          await walkInRoom(3016, 3515, 0, 4000);
+          const d = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2337);
+          if (d) await sdk.sendInteractLoc(d.x, d.z, d.id, 1);
+          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 9999) <= 3514, 3000, 250);
+        }
+      }
       if (pInit && pInit.worldZ >= 3505 && pInit.worldX >= 3010 && pInit.worldX <= 3035 && (sdk.getInventory() ?? []).some((i: any) => i.id === 1965)) {
         started = true;
         listened = true;
+        return true;
+      }
+      if (wearingHelmNow && wearingChainNow && pInit && pInit.worldZ >= 3505 && !(sdk.getInventory() ?? []).some((i: any) => i.id === 1965)) {
+        started = true;
+        listened = true;
+        sabotaged = true;
         return true;
       }
       await exitWizardsTowerGround(c);
@@ -345,12 +361,20 @@ export const blackknight: Quest = {
       await walkInRoom(3028, 3516, 1, 5000);
       await climbFortressLadder(1749, 3022, 3517, 'down', 0);
       await passFortressDoor(2338, 3020, 3515, () => (sdk.getState()?.player?.worldX ?? 9999) <= 3019);
-      await passFortressDoor(2337, 3016, 3514, () => (sdk.getState()?.player?.worldZ ?? 9999) <= 3513);
+      await passFortressDoor(2337, 3016, 3515, () => (sdk.getState()?.player?.worldZ ?? 9999) <= 3514);
       return true;
     });
 
     const handIn = () => step(c, N, 'hand-in', async () => {
       if (questComplete) return true;
+      if (lvl(sdk) === 0 && (sdk.getState()?.player?.worldZ ?? 0) >= 3515 && (sdk.getState()?.player?.worldX ?? 0) <= 3019) {
+        for (let i = 0; i < 6 && (sdk.getState()?.player?.worldZ ?? 9999) >= 3515; i++) {
+          await walkInRoom(3016, 3515, 0, 4000);
+          const d = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2337);
+          if (d) await sdk.sendInteractLoc(d.x, d.z, d.id, 1);
+          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 9999) <= 3514, 3000, 250);
+        }
+      }
       if ((sdk.getState()?.player?.worldZ ?? 0) > 3400) {
         await bot.walkTo(2995, 3440, 3);
         await bot.walkTo(2965, 3385, 3);

@@ -404,3 +404,40 @@
 - 2026-11-09T09:59:41.233Z STEP prep-and-start
 - 2026-11-09T09:59:49.621Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
 - 2026-11-09T10:01:25.630Z STEP spy-and-sabotage
+- 2026-11-09T10:03:50.729Z STEP hand-in
+- 2026-11-09T10:07:07.627Z DONE Black Knights' Fortress
+- 2026-11-09T10:07:07.632Z START Druidic Ritual (attempt 1)
+- 2026-11-09T10:07:07.633Z STEP gather-meats-and-start
+
+### Quest 14: Black Knights' Fortress (`blackknight`) — COMPLETED
+- **Quest Points Gained**: +3 QP (Total: **32 QP**)
+- **Rewards**: +2,500 Coins.
+- **Notes / Lessons**:
+  - Sabotaged the Black Knights' Invincibility Potion using a normal Cabbage (`1965`) through the hole (`2336`) at `L1 (3031, 3507)`.
+  - Fixed exit door `2337` at `(3016, 3514)` `angle=1` to stand at `(3016, 3515)` inside the entrance hall when exiting south to `(3016, 3514)`.
+  - Reaching **32 Quest Points** unlocks the Champions' Guild and **Dragon Slayer**!
+- 2026-11-09T10:12:56.497Z STEP FAILED gather-meats-and-start
+- 2026-11-09T10:12:56.498Z START Druidic Ritual (attempt 2)
+- 2026-11-09T10:12:56.498Z STEP gather-meats-and-start
+- 2026-11-09T10:13:48.443Z START Druidic Ritual (attempt 1)
+- 2026-11-09T10:13:48.443Z STEP gather-meats-and-start
+- 2026-11-09T10:16:20.432Z STEP cauldron-of-thunder
+- 2026-11-09T10:17:28.623Z STEP FAILED cauldron-of-thunder
+- 2026-11-09T10:17:28.624Z START Druidic Ritual (attempt 2)
+- 2026-11-09T10:17:28.624Z STEP gather-meats-and-start
+- 2026-11-09T10:18:29.623Z START Druidic Ritual (attempt 1)
+- 2026-11-09T10:18:29.624Z STEP gather-meats-and-start
+- 2026-11-09T10:18:29.625Z STEP cauldron-of-thunder
+- 2026-11-09T10:18:29.626Z STEP sanfew-and-kaqemeex-finish
+- 2026-11-09T10:20:15.322Z DONE Druidic Ritual
+- 2026-11-09T10:20:15.322Z START Imp Catcher (attempt 1)
+- 2026-11-09T10:20:15.323Z STEP start-mizgog
+
+### Quest 15: Druidic Ritual (`druid`) — COMPLETED (First P2P Quest!)
+- **Quest Points Gained**: +4 QP (Total: **36 QP**)
+- **Rewards**: Unlocks the **Herblore** skill, +6,250 Herblore XP (Level 1 -> **30 Herblore**!).
+- **Notes / Lessons**:
+  - Gathered Raw chicken (`3017, 3290`), Raw beef (`3032, 3305`), Raw rat meat from a Giant rat in Lumbridge Swamp (`3206, 3178`), and Raw bear meat from a `Bear` (`id: 106`) north of Falador (`2966, 3474`).
+  - Note: in revision 377, the enchanted rat and bear meats are named `"Enchanted rat"` and `"Enchanted bear"` (without `" meat"`), whereas the raw versions are `"Raw rat meat"` and `"Raw bear meat"`. Updated `druidic-ritual.ts` to match `/^enchanted rat( meat)?$/i` and `/^enchanted bear( meat)?$/i`.
+- 2026-11-09T10:21:31.232Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T10:22:34.645Z STEP collect-beads
