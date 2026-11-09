@@ -129,6 +129,13 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Android 15+ enforces edge-to-edge. Explicitly disable decor fitting
+        // so our root FrameLayout receives the *unconsumed* system-bar insets.
+        // Without this, the top bar may be consumed by the decor while
+        // rootWindowInsets still reports it, letting text overlap the clock.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+        }
         window.statusBarColor = Color.rgb(49, 45, 39)
         window.navigationBarColor = Color.rgb(49, 45, 39)
         showHome()
