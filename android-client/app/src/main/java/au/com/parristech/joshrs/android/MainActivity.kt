@@ -78,6 +78,15 @@ class MainActivity : Activity() {
         }
         setContentView(scroll)
         root.addView(label("JoshRS 377 — Android", 24f))
+        root.addView(label("PLAYABLE OFFLINE QUEST (no computer or imported files)", 19f))
+        action("PLAY Cook's Assistant — offline Lumbridge quest slice") {
+            startActivity(Intent(this, OfflineLumbridgeActivity::class.java))
+        }
+        root.addView(label(
+            "A small, playable reconstruction with original graphics: walk, collect an egg, " +
+                "milk a cow, operate the windmill, complete Cook's Assistant and save locally. " +
+                "NOT the full original 377 client, world or your server character."
+        ))
         root.addView(label(
             "Native development tools for the real revision-377 game. " +
                 "A playable 377 Kotlin renderer, login and game session are NOT implemented."
