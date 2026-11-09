@@ -1264,3 +1264,89 @@
 - 2026-11-09T18:47:08.030Z START Merlin's Crystal (attempt 1)
 - 2026-11-09T18:47:08.031Z STEP prep-supplies
 - 2026-11-09T18:47:08.032Z STEP start-camelot
+- 2026-11-09T18:50:02.462Z STEP keep-lefaye-mordred
+- 2026-11-09T18:50:37.672Z STEP FAILED keep-lefaye-mordred
+- 2026-11-09T18:50:37.673Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T18:50:37.673Z STEP prep-supplies
+- 2026-11-09T18:50:37.674Z STEP keep-lefaye-mordred
+- 2026-11-09T18:50:43.076Z STEP FAILED keep-lefaye-mordred
+- 2026-11-09T18:50:43.077Z START Clock Tower (attempt 1)
+- 2026-11-09T18:50:43.078Z STEP start-and-bucket
+- 2026-11-09T18:52:13.032Z STEP white-cog
+- 2026-11-09T18:52:13.033Z STEP red-and-black-cogs
+- 2026-11-09T19:02:45.632Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T19:02:45.633Z STEP prep-supplies
+- 2026-11-09T19:02:54.256Z STEP keep-lefaye-mordred
+- 2026-11-09T19:05:27.914Z STEP FAILED keep-lefaye-mordred
+- 2026-11-09T19:05:28.050Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T19:05:28.050Z STEP prep-supplies
+- 2026-11-09T19:07:29.451Z STEP keep-lefaye-mordred
+- 2026-11-09T19:10:00.325Z STEP FAILED keep-lefaye-mordred
+- 2026-11-09T19:10:00.464Z START Clock Tower (attempt 1)
+- 2026-11-09T19:10:00.465Z STEP start-and-bucket
+- 2026-11-09T19:10:00.466Z STEP white-cog
+- 2026-11-09T19:10:00.467Z STEP red-and-black-cogs
+- 2026-11-09T19:14:08.824Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T19:14:08.825Z STEP prep-supplies
+- 2026-11-09T19:14:10.024Z STEP keep-lefaye-mordred
+- 2026-11-09T19:16:11.204Z STEP FAILED keep-lefaye-mordred
+- 2026-11-09T19:16:11.205Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T19:16:11.205Z STEP prep-supplies
+- 2026-11-09T19:16:11.206Z STEP keep-lefaye-mordred
+- 2026-11-09T19:18:30.443Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T19:18:30.443Z STEP prep-supplies
+- 2026-11-09T19:18:30.444Z STEP keep-lefaye-mordred
+- 2026-11-09T19:21:11.546Z STEP gather-bat-bones-and-black-candle
+- 2026-11-09T19:21:26.430Z STEP FAILED gather-bat-bones-and-black-candle
+- 2026-11-09T19:21:26.431Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T19:21:26.431Z STEP gather-bat-bones-and-black-candle
+- 2026-11-09T19:21:40.028Z STEP FAILED gather-bat-bones-and-black-candle
+- 2026-11-09T19:21:40.029Z START Clock Tower (attempt 1)
+- 2026-11-09T19:21:40.030Z STEP start-and-bucket
+- 2026-11-09T19:21:40.031Z STEP white-cog
+- 2026-11-09T19:21:40.032Z STEP red-and-black-cogs
+- 2026-11-09T19:22:08.230Z STEP FAILED red-and-black-cogs
+- 2026-11-09T19:22:08.231Z START Clock Tower (attempt 2)
+- 2026-11-09T19:22:08.231Z STEP start-and-bucket
+- 2026-11-09T19:22:08.231Z STEP white-cog
+- 2026-11-09T19:22:08.231Z STEP red-and-black-cogs
+- 2026-11-09T19:22:37.633Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T19:22:37.633Z STEP gather-bat-bones-and-black-candle
+- 2026-11-09T19:22:46.426Z STEP FAILED gather-bat-bones-and-black-candle
+- 2026-11-09T19:22:46.427Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T19:22:46.427Z STEP gather-bat-bones-and-black-candle
+- 2026-11-09T19:22:47.220Z STEP FAILED gather-bat-bones-and-black-candle
+- 2026-11-09T19:22:47.221Z START Clock Tower (attempt 1)
+- 2026-11-09T19:22:47.221Z STEP start-and-bucket
+- 2026-11-09T19:22:47.222Z STEP white-cog
+- 2026-11-09T19:22:47.223Z STEP red-and-black-cogs
+- 2026-11-09T19:26:40.833Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T19:26:40.833Z STEP gather-bat-bones-and-black-candle
+- 2026-11-09T19:30:25.114Z STEP FAILED gather-bat-bones-and-black-candle
+- 2026-11-09T19:30:25.115Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T19:30:25.115Z STEP gather-bat-bones-and-black-candle
+- 2026-11-09T19:31:34.246Z STEP FAILED gather-bat-bones-and-black-candle
+- 2026-11-09T19:31:34.246Z START Clock Tower (attempt 1)
+- 2026-11-09T19:31:34.247Z STEP start-and-bucket
+- 2026-11-09T19:31:34.248Z STEP white-cog
+- 2026-11-09T19:31:34.249Z STEP red-and-black-cogs
+- 2026-11-09T19:33:50.040Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T19:33:50.040Z STEP prep-supplies
+- 2026-11-09T19:33:50.426Z STEP keep-lefaye-mordred
+- 2026-11-09T19:38:04.211Z STEP FAILED keep-lefaye-mordred
+- 2026-11-09T19:38:04.217Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T19:38:04.217Z STEP prep-supplies
+- 2026-11-09T19:40:20.835Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T19:40:20.835Z STEP keep-lefaye-mordred
+- 2026-11-09T19:44:54.071Z STEP gather-bat-bones-and-black-candle
+- 2026-11-09T19:45:58.958Z STEP obtain-excalibur-and-inspect-altar
+- 2026-11-09T19:48:15.454Z STEP FAILED obtain-excalibur-and-inspect-altar
+- 2026-11-09T19:48:15.455Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T19:48:15.455Z STEP obtain-excalibur-and-inspect-altar
+- 2026-11-09T19:49:55.218Z STEP FAILED obtain-excalibur-and-inspect-altar
+- 2026-11-09T19:49:55.218Z START Clock Tower (attempt 1)
+- 2026-11-09T19:49:55.219Z STEP start-and-bucket
+- 2026-11-09T19:49:55.220Z STEP white-cog
+- 2026-11-09T19:49:55.221Z STEP red-and-black-cogs
+- 2026-11-09T19:57:39.228Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T19:57:39.228Z STEP obtain-excalibur-and-inspect-altar

@@ -12,6 +12,7 @@ import {
     advanceDialogs,
     walkTo,
     eatIfLow,
+    rechargePrayer,
 } from '../quest-kit';
 import { walkToKandarin } from './monks-friend';
 
@@ -29,13 +30,51 @@ const KEEP_RE = [
     /lobster|trout|salmon|meat|bread/i,
 ];
 
-let stage = 2; // 0=unstarted, 1=arthur, 2=gawain, 3=lancelot, 4=mordred/morgan, 5=thrantax, 6=freed, 7=complete
-let spokenLady = false;
+let stage = 4; // 0=unstarted, 1=arthur, 2=gawain, 3=lancelot, 4=mordred/morgan, 5=thrantax, 6=freed, 7=complete
+let spokenLady = true;
 let inspectedAltar = false;
+
+async function exitKeepLeFaye(c: QuestContext): Promise<void> {
+    for (let i = 0; i < 4 && (c.sdk.getState().player?.level ?? 0) === 2; i++) {
+        const p = c.sdk.getState().player;
+        if (!p || p.worldX < 2760 || p.worldX > 2782 || p.worldZ < 3394 || p.worldZ > 3410) break;
+        await c.sdk.sendWalk(2769, 3401, true);
+        await c.sleep(1000);
+        const s2 = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 1723);
+        if (s2) await c.sdk.sendInteractLoc(s2.x, s2.z, s2.id, 1);
+        await c.sleep(1800);
+    }
+    for (let i = 0; i < 4 && (c.sdk.getState().player?.level ?? 0) === 1; i++) {
+        const p = c.sdk.getState().player;
+        if (!p || p.worldX < 2760 || p.worldX > 2782 || p.worldZ < 3394 || p.worldZ > 3410) break;
+        await c.sdk.sendWalk(2769, 3407, true);
+        await c.sleep(1500);
+        const s1 = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 1723);
+        if (s1) await c.sdk.sendInteractLoc(s1.x, s1.z, s1.id, 1);
+        await c.sleep(1800);
+    }
+    for (let i = 0; i < 4; i++) {
+        const p0 = c.sdk.getState().player;
+        if (!p0 || p0.level !== 0 || p0.worldX < 2764 || p0.worldX > 2782 || p0.worldZ < 3395 || p0.worldZ > 3410) break;
+        await c.sdk.sendWalk(2764, 3402, true);
+        await c.sleep(1500);
+        const door = c.sdk.getState().nearbyLocs.find(
+            (l: any) => (l.id === 71 || l.id === 72) || (l.x === 2763 && (l.z === 3401 || l.z === 3402))
+        );
+        if (door) {
+            await c.sdk.sendInteractLoc(door.x, door.z, door.id, 1);
+            await c.sleep(1500);
+        }
+    }
+}
 
 async function prepSupplies(c: QuestContext): Promise<boolean> {
     if (stage >= 7) return true;
-    await ensureEquipped(c, /rune scimitar|silverlight/i, 'wield');
+    await c.bot.deactivateAllPrayers();
+    if (hasInv(c, /rune scimitar|silverlight|longsword|sword/i)) {
+        await c.bot.equipItem(/rune scimitar|silverlight|longsword|sword/i);
+        await c.sleep(400);
+    }
     if (hasInv(c, /tinderbox/i) && (hasInv(c, /^bread$/i) || hasInv(c, /^excalibur$/i))) {
         return true;
     }
@@ -127,15 +166,41 @@ async function startCamelot(c: QuestContext): Promise<boolean> {
 async function keepLeFayeMordred(c: QuestContext): Promise<boolean> {
     if (stage >= 4) return true;
 
-    await walkToKandarin(c, 2801, 3443);
+    const pStart = c.sdk.getState().player;
+    if (!pStart || pStart.worldX > 2785 || pStart.worldZ > 3415) {
+        await walkToKandarin(c, 2798, 3440);
+        await rechargePrayer(c, 25);
+        await walkToKandarin(c, 2798, 3440);
+        await c.bot.walkTo(2801, 3441, 0);
 
-    // Search shipping crate (id: 63 at 2801, 3442)
-    await interactLocNear(c, 63, /search/i, 2801, 3442, 8);
-    await advanceDialogs(c, [
-        /yes/i,
-        /yes/i,
-    ], 55);
-    await c.sleep(1200);
+        // Hide in shipping crate (id: 63 at 2801, 3442; op2=Hide-in)
+        for (let attempt = 0; attempt < 3; attempt++) {
+            const p = c.sdk.getState().player;
+            if (p && p.worldX <= 2785 && p.worldZ <= 3415 && !c.sdk.getState().dialog.isOpen) break;
+            if (!c.sdk.getState().dialog.isOpen) {
+                await c.bot.walkTo(2801, 3441, 0);
+                const crate = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 63);
+                if (crate) {
+                    await c.sdk.sendInteractLoc(crate.x, crate.z, crate.id, 2);
+                }
+                for (let w = 0; w < 15 && !c.sdk.getState().dialog.isOpen; w++) {
+                    await c.sleep(300);
+                }
+            }
+            for (let step = 0; step < 80; step++) {
+                const s = c.sdk.getState();
+                if (s.player && s.player.worldX <= 2785 && s.player.worldZ <= 3415 && !s.dialog.isOpen) {
+                    break;
+                }
+                if (s.dialog.isOpen) {
+                    const yesOpt = s.dialog.options.find((o: any) => /yes/i.test(o.text));
+                    await c.sdk.sendClickDialog(yesOpt ? yesOpt.index : 0);
+                }
+                await c.sleep(350);
+            }
+        }
+        await c.sleep(1000);
+    }
 
     // Verify we are inside Keep Le Faye around (2778, 3401)
     const pos = c.sdk.getState().player;
@@ -143,66 +208,68 @@ async function keepLeFayeMordred(c: QuestContext): Promise<boolean> {
         return false;
     }
 
-    // Climb staircase 1722 at L0 (2769, 3404) -> L1
-    if ((c.sdk.getState().player?.level ?? 0) === 0) {
-        await interactLocNear(c, 1722, /climb-up/i, 2769, 3404, 12);
-        await c.sleep(1500);
+    // Climb staircase 1722 at L0 (2769, 3404; forceapproach=south -> 2769, 3403) -> L1
+    for (let i = 0; i < 4 && (c.sdk.getState().player?.level ?? 0) === 0; i++) {
+        if ((c.sdk.getState().player?.worldX ?? 0) >= 2776) {
+            const jettyDoor = c.sdk.getState().nearbyLocs.find(
+                (l: any) => (l.id === 1516 || l.id === 1519) && l.x === 2776 && (l.z === 3400 || l.z === 3401)
+            );
+            if (jettyDoor) {
+                await c.sdk.sendInteractLoc(jettyDoor.x, jettyDoor.z, jettyDoor.id, 1);
+                await c.sleep(1000);
+            }
+        }
+        await walkTo(c, 2769, 3403, 1);
+        await c.sdk.sendWalk(2769, 3403, true);
+        await c.sleep(1200);
+        const s0 = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 1722);
+        if (s0) await c.sdk.sendInteractLoc(s0.x, s0.z, s0.id, 1);
+        await c.sleep(1800);
     }
-    // Climb staircase 1722 at L1 (2769, 3398) -> L2
-    if ((c.sdk.getState().player?.level ?? 0) === 1) {
-        await interactLocNear(c, 1722, /climb-up/i, 2769, 3398, 12);
-        await c.sleep(1500);
+    // Climb staircase 1722 at L1 (2769, 3398; forceapproach=south -> 2769, 3397) -> L2
+    for (let i = 0; i < 4 && (c.sdk.getState().player?.level ?? 0) === 1; i++) {
+        await c.sdk.sendWalk(2769, 3397, true);
+        await c.sleep(1800);
+        const s1 = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 1722);
+        if (s1) await c.sdk.sendInteractLoc(s1.x, s1.z, s1.id, 1);
+        await c.sleep(1800);
+    }
+    if ((c.sdk.getState().player?.level ?? 0) !== 2) {
+        return false;
     }
 
-    // Attack Sir Mordred on L2 until Morgan Le Faye spawns and opens dialog
+    // Attack Sir Mordred on L2 with Protect from Melee until Morgan Le Faye spawns and opens dialog
+    if ((c.sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+        await c.bot.activatePrayer('protect_from_melee');
+    }
     let morganSpoke = false;
     for (let tick = 0; tick < 80; tick++) {
         const s = c.sdk.getState();
-        if (s.dialog.isOpen) {
+        if ((s.player?.level ?? 0) !== 2) break;
+        const hasMorgan = s.nearbyNpcs.some((n: any) => /morgan le faye/i.test(n.name));
+        const dialogText = (s.dialog.allComponents ?? []).map((comp: any) => comp.text ?? '').join(' ');
+        if (s.dialog.isOpen && (hasMorgan || /spare my son|untrap merlin|magic symbol|excalibur/i.test(dialogText))) {
             await advanceDialogs(c, [
                 /tell me how to untrap merlin/i,
                 /ok,? i will go do all that/i,
             ], 35);
             morganSpoke = true;
             break;
+        } else if (s.dialog.isOpen) {
+            await c.sdk.sendClickDialog(0);
+            await c.sleep(400);
+            continue;
         }
         const mordred = s.nearbyNpcs.find((n: any) => /sir mordred/i.test(n.name));
-        if (mordred) {
+        if (mordred && !s.player?.combat?.inCombat && !mordred.inCombat) {
             await c.sdk.sendInteractNpc(mordred.index, 2); // Attack
         }
-        await c.sleep(1000);
+        await c.sleep(800);
     }
+    await c.bot.deactivateAllPrayers();
 
-    if (c.sdk.getState().dialog.isOpen) {
-        await advanceDialogs(c, [
-            /tell me how to untrap merlin/i,
-            /ok,? i will go do all that/i,
-        ], 30);
-        morganSpoke = true;
-    }
-
-    // Climb down L2 -> L1 -> L0 and exit Keep Le Faye
-    if ((c.sdk.getState().player?.level ?? 0) === 2) {
-        await interactLocNear(c, 1723, /climb-down/i, 2769, 3399, 12);
-        await c.sleep(1500);
-    }
-    if ((c.sdk.getState().player?.level ?? 0) === 1) {
-        await interactLocNear(c, 1723, /climb-down/i, 2769, 3405, 12);
-        await c.sleep(1500);
-    }
-    // Open front door of Keep Le Faye from inside (2769, 3402)
-    const p0 = c.sdk.getState().player;
-    if (p0 && p0.worldX >= 2768 && p0.worldX <= 2782 && p0.worldZ >= 3395 && p0.worldZ <= 3410) {
-        await walkTo(c, 2769, 3402);
-        const door = c.sdk.getState().nearbyLocs.find(
-            (l: any) => (l.x === 2768 || l.x === 2769) && (l.z === 3401 || l.z === 3402) && /open/i.test(l.optionsWithIndex.map((o: any) => o.text).join(' '))
-        );
-        if (door) {
-            const op = door.optionsWithIndex.find((o: any) => /open/i.test(o.text))?.opIndex ?? 1;
-            await c.sdk.sendInteractLoc(door.x, door.z, door.id, op);
-            await c.sleep(1200);
-        }
-    }
+    // Climb down L2 -> L1 -> L0 and exit Keep Le Faye via front Large door (id 71/72 at 2763, 3401..3402)
+    await exitKeepLeFaye(c);
 
     if (morganSpoke) stage = 4;
     return stage >= 4;
@@ -211,9 +278,15 @@ async function keepLeFayeMordred(c: QuestContext): Promise<boolean> {
 async function gatherBatBonesAndBlackCandle(c: QuestContext): Promise<boolean> {
     if (stage >= 5) return true;
 
+    await exitKeepLeFaye(c);
+
     // 1. Bat bones from Giant bat outside Keep Le Faye (2756, 3400)
     if (!hasInv(c, /^bat bones$/i)) {
+        await rechargePrayer(c, 30);
         await walkToKandarin(c, 2756, 3400);
+        if ((c.sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+            await c.bot.activatePrayer('protect_from_melee');
+        }
         for (let attempt = 0; attempt < 8 && !hasInv(c, /^bat bones$/i); attempt++) {
             const g = c.sdk.getState().groundItems.find((i: any) => /^bat bones$/i.test(i.name));
             if (g) {
@@ -234,22 +307,15 @@ async function gatherBatBonesAndBlackCandle(c: QuestContext): Promise<boolean> {
                 await c.sleep(1500);
             }
         }
+        await c.bot.deactivateAllPrayers();
     }
     if (!hasInv(c, /^bat bones$/i)) return false;
 
     // 2. Black candle / Lit black candle
     if (!hasInv(c, /black candle/i)) {
-        // Get Bucket from Catherby crate (id: 67 at 2798, 3439)
-        if (!hasInv(c, /^bucket$/i) && !hasInv(c, /bucket of wax/i)) {
-            await walkToKandarin(c, 2798, 3440);
-            await interactLocNear(c, 67, /search/i, 2798, 3439, 8);
-            await advanceDialogs(c, [/yes/i]);
-            await c.sleep(600);
-        }
-
-        // Get Insect repellent at (2807, 3450) in Catherby
+        // Get Insect repellent at (2807, 3450) on table in Catherby house (walkable tile 2808, 3450)
         if (!hasInv(c, /insect repellent/i) && !hasInv(c, /bucket of wax/i)) {
-            await walkToKandarin(c, 2807, 3450);
+            await walkToKandarin(c, 2808, 3450);
             for (let w = 0; w < 10 && !hasInv(c, /insect repellent/i); w++) {
                 const rep = c.sdk.getState().groundItems.find((i: any) => /insect repellent/i.test(i.name));
                 if (rep) {
@@ -261,29 +327,53 @@ async function gatherBatBonesAndBlackCandle(c: QuestContext): Promise<boolean> {
             }
         }
 
-        // Get Bucket of wax from Beehive (id: 68 at 2762, 3443)
-        if (!hasInv(c, /bucket of wax/i)) {
-            await walkToKandarin(c, 2762, 3443);
-            const rep = findInv(c, /insect repellent/i);
-            const bucket = findInv(c, /^bucket$/i);
-            const hive = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 68);
-            if (rep && bucket && hive) {
-                await c.sdk.sendUseItemOnLoc(rep.slot, hive.x, hive.z, hive.id);
-                await advanceDialogs(c);
-                await c.sleep(800);
-                await c.sdk.sendUseItemOnLoc(bucket.slot, hive.x, hive.z, hive.id);
-                await advanceDialogs(c);
-                await c.sleep(800);
+        // Get Bucket from static ground spawn at (2766, 3441) right outside the Beehive gate
+        if (!hasInv(c, /^bucket$/i) && !hasInv(c, /bucket of wax/i)) {
+            if (hasInv(c, /^bucket of water$/i)) {
+                const bw = findInv(c, /^bucket of water$/i);
+                if (bw) {
+                    await c.bot.interactInventoryItem(bw, /empty/i);
+                    await c.sleep(600);
+                }
+            }
+            if (!hasInv(c, /^bucket$/i)) {
+                await walkToKandarin(c, 2766, 3441);
+                for (let w = 0; w < 12 && !hasInv(c, /^bucket$/i); w++) {
+                    const b = c.sdk.getState().groundItems.find((i: any) => /^bucket$/i.test(i.name));
+                    if (b) {
+                        await c.sdk.sendPickup(b.x, b.z, b.id);
+                        await c.sleep(900);
+                    } else {
+                        await c.sleep(1000);
+                    }
+                }
             }
         }
 
-        // Talk to Candle-maker in Catherby (2797, 3440) to get Black candle
+        // Get Bucket of wax from Beehive (id: 68 at 2762, 3443; walkable tile 2763, 3443)
+        if (!hasInv(c, /bucket of wax/i)) {
+            await walkToKandarin(c, 2763, 3443);
+            const rep = findInv(c, /insect repellent/i);
+            const hive = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 68);
+            if (rep && hive) {
+                await c.bot.useItemOnLoc(rep, hive);
+                await advanceDialogs(c);
+                await c.bot.dismissBlockingUI();
+                await c.sleep(600);
+                await c.bot.interactLoc(hive, /take-from/i);
+                await advanceDialogs(c);
+                await c.bot.dismissBlockingUI();
+                await c.sleep(600);
+            }
+        }
+
+        // Talk to Candle maker in Catherby (2799, 3439) to get Black candle
         if (hasInv(c, /bucket of wax/i)) {
-            await walkToKandarin(c, 2797, 3440);
-            await interactNpcNear(c, /candle-maker/i, /talk/i, 2797, 3440, 10);
+            await walkToKandarin(c, 2799, 3439);
+            await interactNpcNear(c, /candle[- ]?maker/i, /talk/i, 2799, 3439, 10);
             await advanceDialogs(c, [/have you got any black candles/i]);
             if (!hasInv(c, /black candle/i)) {
-                await interactNpcNear(c, /candle-maker/i, /talk/i, 2797, 3440, 10);
+                await interactNpcNear(c, /candle[- ]?maker/i, /talk/i, 2799, 3439, 10);
                 await advanceDialogs(c, [/have you got any black candles/i]);
             }
         }
@@ -291,6 +381,25 @@ async function gatherBatBonesAndBlackCandle(c: QuestContext): Promise<boolean> {
 
     // Light Black candle with Tinderbox if unlit
     if (!hasInv(c, /^lit black candle$/i) && hasInv(c, /^black candle$/i)) {
+        if (!hasInv(c, /tinderbox/i)) {
+            if (count(c.sdk, /^coins$/i) < 5) {
+                await ensureCoins(c, 10);
+            }
+            await walkToKandarin(c, 2803, 3430);
+            const arhein = c.sdk.getState().nearbyNpcs.find((n: any) => /arhein/i.test(n.name));
+            if (arhein) {
+                const tradeOp = arhein.optionsWithIndex?.find((o: any) => /trade/i.test(o.text))?.opIndex ?? 3;
+                await c.sdk.sendInteractNpc(arhein.index, tradeOp);
+                for (let i = 0; i < 15; i++) {
+                    await c.sleep(300);
+                    if (c.sdk.getState().shop.isOpen) break;
+                }
+                if (c.sdk.getState().shop.isOpen) {
+                    await c.bot.buyFromShop(/tinderbox/i, 1);
+                    await c.bot.closeShop();
+                }
+            }
+        }
         const tinderbox = findInv(c, /tinderbox/i);
         const candle = findInv(c, /^black candle$/i);
         if (tinderbox && candle) {
@@ -349,13 +458,25 @@ async function obtainExcaliburAndInspectAltar(c: QuestContext): Promise<boolean>
     }
     if (!hasInv(c, /^excalibur$/i)) return false;
 
-    // 2. Inspect SE Varrock Chaos Altar (id: 61 at 3259, 3381) to learn magic words
+    // 2. Inspect Wilderness Chaos Temple Altar (thrantaxaltar id: 61 at 3239, 3608) to learn magic words
     if (!inspectedAltar) {
-        await walkTo(c, 3259, 3382);
-        const ok = await interactLocNear(c, 61, /inspect|check|search/i, 3259, 3381, 8);
-        if (!ok) return false;
-        await advanceDialogs(c);
+        await walkTo(c, 3240, 3520);
+        if ((c.sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+            await c.bot.activatePrayer('protect_from_melee');
+        }
+        await walkTo(c, 3239, 3616, 2);
+        await c.bot.walkTo(3239, 3611, 1);
+        await c.bot.walkTo(3239, 3609, 1);
+        const ok = await interactLocNear(c, 61, /inspect|check|search/i, 3239, 3608, 8);
+        if (!ok) {
+            await c.bot.deactivateAllPrayers();
+            return false;
+        }
+        await advanceDialogs(c, [], 15);
         inspectedAltar = true;
+        await c.bot.walkTo(3239, 3615, 2);
+        await walkTo(c, 3240, 3520, 3);
+        await c.bot.deactivateAllPrayers();
     }
 
     return hasInv(c, /^excalibur$/i) && inspectedAltar;
@@ -367,35 +488,63 @@ async function summonThrantaxAndFreeMerlin(c: QuestContext): Promise<boolean> {
     // 1. Summon Thrantax at Camelot magic symbol (2780, 3515)
     if (stage === 4) {
         await walkToKandarin(c, 2780, 3515);
-        await c.sdk.sendWalk(2780, 3515, false);
-        await c.sleep(1200);
+        for (let i = 0; i < 4; i++) {
+            const p = c.sdk.getState().player;
+            if (p && Math.abs(p.worldX - 2780) <= 1 && Math.abs(p.worldZ - 3515) <= 1) break;
+            await c.sdk.sendWalk(2780, 3515, false);
+            await c.sleep(1000);
+        }
         const bones = findInv(c, /^bat bones$/i);
         if (!bones) return false;
         await c.sdk.sendDropItem(bones.slot);
-        await c.sleep(1500);
+        for (let w = 0; w < 12; w++) {
+            await c.sleep(500);
+            if (c.sdk.getState().dialog.isOpen) break;
+        }
         await advanceDialogs(c, [
             /snarthon candtrick termanto/i,
-        ], 30);
+        ], 35);
         stage = 5;
     }
     if (stage < 5) return false;
 
     // 2. Climb Camelot SE tower ladders and smash Giant crystal with Excalibur (5 -> 6)
     if (stage === 5) {
-        await walkTo(c, 2769, 3493);
         if ((c.sdk.getState().player?.level ?? 0) === 0) {
-            await interactLocNear(c, 1747, /climb-up/i, 2769, 3493, 8);
-            await c.sleep(1200);
+            await walkTo(c, 2758, 3486, 2);
+            await walkTo(c, 2758, 3504, 2);
+            await c.bot.walkTo(2765, 3504, 1);
+            const dNorth = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 1533 && l.x === 2766 && l.z === 3504);
+            if (dNorth) {
+                await c.sdk.sendInteractLoc(dNorth.x, dNorth.z, dNorth.id, 1);
+                await c.sleep(1000);
+            }
+            await c.bot.walkTo(2766, 3496, 1);
+            const dSouth = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 1533 && l.x === 2766 && l.z === 3495);
+            if (dSouth) {
+                await c.sdk.sendInteractLoc(dSouth.x, dSouth.z, dSouth.id, 1);
+                await c.sleep(1000);
+            }
+            await c.bot.walkTo(2768, 3493, 1);
+            await interactLocNear(c, 1747, /climb-up/i, 2769, 3493, 6);
+            await c.sleep(1500);
         }
         if ((c.sdk.getState().player?.level ?? 0) === 1) {
             await interactLocNear(c, 1747, /climb-up/i, 2767, 3491, 8);
-            await c.sleep(1200);
+            await c.sleep(1500);
+        }
+        if (!findInv(c, /^excalibur$/i)) {
+            const eq = c.sdk.getState().equipment.find((e: any) => /excalibur/i.test(e.name));
+            if (eq) {
+                await c.sdk.sendUnequip(eq.slot);
+                await c.sleep(600);
+            }
         }
         const excalibur = findInv(c, /^excalibur$/i);
         const crystal = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 62 || /giant crystal/i.test(l.name));
         if (excalibur && crystal) {
             await c.sdk.sendUseItemOnLoc(excalibur.slot, crystal.x, crystal.z, crystal.id);
-            await advanceDialogs(c, [], 25);
+            await advanceDialogs(c, [], 30);
             stage = 6;
         }
     }
@@ -403,19 +552,36 @@ async function summonThrantaxAndFreeMerlin(c: QuestContext): Promise<boolean> {
     // Climb back down L2 -> L1 -> L0
     if ((c.sdk.getState().player?.level ?? 0) === 2) {
         await interactLocNear(c, 1746, /climb-down/i, 2767, 3491, 8);
-        await c.sleep(1200);
+        await c.sleep(1500);
     }
     if ((c.sdk.getState().player?.level ?? 0) === 1) {
         await interactLocNear(c, 1746, /climb-down/i, 2769, 3493, 8);
-        await c.sleep(1200);
+        await c.sleep(1500);
     }
     if (stage < 6) return false;
 
     // 3. Report to King Arthur (6 -> 7)
+    const p0 = c.sdk.getState().player;
+    if (p0 && p0.worldX >= 2764 && p0.worldZ <= 3496) {
+        const dSouth = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 1533 && l.x === 2766 && l.z === 3495);
+        if (dSouth) {
+            await c.sdk.sendInteractLoc(dSouth.x, dSouth.z, dSouth.id, 1);
+            await c.sleep(1000);
+        }
+        await c.bot.walkTo(2766, 3503, 1);
+    }
+    if (c.sdk.getState().player && c.sdk.getState().player!.worldX >= 2764 && c.sdk.getState().player!.worldZ <= 3505) {
+        const dNorth = c.sdk.getState().nearbyLocs.find((l: any) => l.id === 1533 && l.x === 2766 && l.z === 3504);
+        if (dNorth) {
+            await c.sdk.sendInteractLoc(dNorth.x, dNorth.z, dNorth.id, 1);
+            await c.sleep(1000);
+        }
+        await c.bot.walkTo(2763, 3506, 2);
+    }
     await walkTo(c, 2763, 3513);
     const ok = await interactNpcNear(c, /king arthur/i, /talk/i, 2763, 3513, 12);
     if (!ok) return false;
-    await advanceDialogs(c);
+    await advanceDialogs(c, [], 25);
     await c.sleep(1200);
     stage = 7;
     return true;
@@ -426,7 +592,7 @@ export const merlinsCrystal: QuestModule = {
     name: "Merlin's Crystal",
     isComplete: () => stage >= 7,
     steps: [
-        { name: 'prep-supplies', isDone: () => stage >= 4, run: prepSupplies },
+        { name: 'prep-supplies', isDone: (c) => stage >= 3 && (hasInv(c, /^bread$/i) || hasInv(c, /^excalibur$/i)), run: prepSupplies },
         { name: 'start-camelot', isDone: () => stage >= 3, run: startCamelot },
         { name: 'keep-lefaye-mordred', isDone: () => stage >= 4, run: keepLeFayeMordred },
         {

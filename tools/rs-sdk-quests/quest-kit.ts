@@ -422,6 +422,33 @@ export async function ensureCoins(c: Ctx, minCoins = 30): Promise<boolean> {
 export async function runQuests(dir: string, quests: any[]) {
   await runScript(async ({ bot, sdk }: any) => {
     if (!bot.attack && bot.attackNpc) bot.attack = bot.attackNpc.bind(bot);
+    if (!bot.attackNpc && bot.attack) {
+      bot.attackNpc = async (npc: any, timeoutMs = 20000) => {
+        const r = await bot.attack(npc, 5000);
+        if (!r?.success) return r;
+        const idx = typeof npc === 'object' && npc ? npc.index : undefined;
+        const end = Date.now() + timeoutMs;
+        while (Date.now() < end) {
+          await sleep(500);
+          const s = sdk.getState();
+          if (idx !== undefined) {
+            const cur = (s?.nearbyNpcs ?? []).find((n: any) => n.index === idx);
+            if (!cur || (cur.hp !== undefined && cur.maxHp !== undefined && cur.maxHp > 0 && cur.hp <= 0)) break;
+          } else if (!s?.player?.combat?.inCombat) {
+            break;
+          }
+        }
+        return r;
+      };
+    }
+    if (!bot.interactInventoryItem) {
+      bot.interactInventoryItem = async (it: any, opRe: RegExp) => {
+        const item = typeof it === 'object' && it && 'slot' in it ? it : sdk.findInventoryItem(it);
+        if (!item) return { success: false, message: 'Item not found' };
+        const op = item.optionsWithIndex?.find((o: any) => opRe.test(o.text))?.opIndex ?? 1;
+        return await sdk.sendUseItem(item.slot, op);
+      };
+    }
     if (!bot.buyItem && bot.buyFromShop) bot.buyItem = bot.buyFromShop.bind(bot);
     if (!sdk.sendTakeGroundItem && sdk.sendPickup) sdk.sendTakeGroundItem = sdk.sendPickup.bind(sdk);
     if (!bot.useItemOp1) {

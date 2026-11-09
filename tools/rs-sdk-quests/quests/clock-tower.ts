@@ -78,11 +78,20 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
     if ((sdk.getState()?.player?.worldZ ?? 0) > 9000 && (sdk.getState()?.player?.worldX ?? 0) <= 2850) {
       await climb(2824, 9907, 2824, 9908, 1755, false);
     }
+    await bot.deactivateAllPrayers();
     if ((sdk.getState()?.player?.worldZ ?? 0) < 9000) {
       if (!(await climb(2827, 3510, 2827, 3511, 1759, true))) return false;
     }
+    if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+      await bot.activatePrayer('protect_from_melee');
+    }
     if (!(await climb(2857, 9917, 2857, 9918, 1755, false))) return false;
+    await bot.deactivateAllPrayers();
     if (!(await climb(2859, 3519, 2859, 3520, 1759, true))) return false;
+  }
+
+  if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+    await bot.activatePrayer('protect_from_melee');
   }
 
   // Walk to Ice Queen (795 at 2866, 9956) and defeat her for Ice gloves (1580)
@@ -94,6 +103,10 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
 
   const deadline = Date.now() + 90_000;
   while (Date.now() < deadline && !hasGloves()) {
+    if ((sdk.getState()?.player?.worldZ ?? 0) < 9000) {
+      await bot.deactivateAllPrayers();
+      return false;
+    }
     if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
       if (!sdk.getState()?.prayers?.protect_from_melee) {
         await bot.activatePrayer('protect_from_melee');
@@ -106,9 +119,9 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
     }
     const queen = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => n.id === 795 || /ice queen/i.test(n.name));
     if (queen && !sdk.getState()?.player?.combat?.inCombat) {
-      await bot.attack(queen);
+      await sdk.sendInteractNpc(queen.index, 2);
     }
-    await sleep(600);
+    await sleep(300);
   }
 
   if (has(sdk, /^ice gloves$/i)) {
