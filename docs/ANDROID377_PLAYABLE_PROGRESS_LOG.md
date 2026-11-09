@@ -90,3 +90,49 @@ accurate, Android-ready and permissively licensed. See
 3. Loc definitions + collision + full-plane terrain, then a z-buffered rasteriser.
 4. Sequences/animations, then textures, then audio.
 5. Entities and interface system, then skills/inventory/chat from live varps.
+
+## 6. Round 2 — Kotlin protocol layer (source-only until CI runs)
+
+New package `au.com.parristech.joshrs.android.protocol`, all derived from the
+**MIT** `Engine-TS@377-wip` sources, with the MIT notice retained in every file:
+
+| File | Origin | Purpose |
+|---|---|---|
+| `IsaacCipher.kt` | `src/io/Isaac.ts` | opcode obfuscation, plus `copy()` so a partial frame can be peeked without consuming stream output |
+| `PacketBuffer.kt` | `src/io/Packet.ts` | big-endian accessors, `gjstr`/`pjstr`, standard CRC-32 |
+| `ClientProt.kt` / `ServerProt.kt` | `ClientGameProt.ts` / `ServerGameProt.ts` | 80 client-bound + 64 server-bound opcodes, generated |
+| `GameFrameCodec.kt` | `NetworkPlayer.ts` `read`/`writeInner` | `opcode [len] payload` framing, `-1`/`-2` prefixes, 1600-byte cap |
+
+Reproducible generator: `tools/android377-phone/generate-prot-tables.mjs`.
+
+**Why `copy()` matters:** the ISAAC stream advances once per opcode. A naive
+reader that peeks the opcode before the payload arrives desynchronises the whole
+session. `FrameAccumulator` peeks on a clone and commits only on a complete frame.
+
+**Status: PARTIALLY COMPLETE — compiler- and test-verified, not yet on the wire.**
+
+No JDK, Gradle or Android SDK exists on this host, so CI is the only compiler.
+Evidence (CI run 42608264846, branch `android377/protocol-layer`):
+
+```
+BUILD SUCCESSFUL in 25s
+Verified isolated APK identity — existing JoshRS installation cannot be replaced.
+```
+
+`:app:testDebugUnitTest` fails the build on any failing test, so a successful
+build means every protocol test passed. The three defect cycles that got here are
+recorded in git history rather than hidden:
+
+| CI run | Result | Cause |
+|---|---|---|
+| 42607618881 | compile error | `byteArrayOf` literals were `Int`, not `Byte` |
+| 42607809847 | 7/61 failed | `psize1`/`psize2` wrote at `pos-1` instead of `pos-size-1` |
+| 42608049762 | 1/61 failed | wrong expected value in my own buffering test |
+
+ISAAC matches reference vectors produced by running the server's own `Isaac.ts`
+(seeds `[0,0,0,0]`, `[1,2,3,4]`, `[-1,0,0,0]`, 16 outputs each) and survives the
+256-output refill boundary.
+
+**Still absent in this package:** RSA login-block encryption, the credential
+payload, socket I/O, reconnection. No frame has yet been exchanged with the live
+engine — the next gate is a real opcode-14 probe plus login from Kotlin.
