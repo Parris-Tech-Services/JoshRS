@@ -3,10 +3,12 @@ package au.com.parristech.joshrs.android
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -20,6 +22,41 @@ import org.junit.runner.RunWith
  */
 @RunWith(AndroidJUnit4::class)
 class Real377EmulatorTest {
+    @Test fun androidSystemBarsDoNotCoverHomeOrDrawingScreen() {
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                fun checkSafeFrame() {
+                    val content = activity.findViewById<ViewGroup>(android.R.id.content)
+                    val frame = content.getChildAt(0) as FrameLayout
+                    assertEquals("JoshRS safe content container", frame.contentDescription)
+                    val insets = frame.rootWindowInsets
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R &&
+                        insets != null) {
+                        val bars = insets.getInsets(
+                            android.view.WindowInsets.Type.systemBars() or
+                                android.view.WindowInsets.Type.displayCutout()
+                        )
+                        assertTrue("Top heading overlaps Android status bar",
+                            frame.paddingTop >= bars.top)
+                        assertTrue("Bottom controls overlap navigation bar",
+                            frame.paddingBottom >= bars.bottom)
+                    }
+                }
+                checkSafeFrame()
+                var foundPreview = false
+                descend(activity.window.decorView) { view ->
+                    if (!foundPreview && view is Button &&
+                        view.text.toString().contains("fictional offline art preview")) {
+                        foundPreview = true
+                        view.performClick()
+                    }
+                }
+                assertTrue("Original drawing preview was not available", foundPreview)
+                checkSafeFrame()
+            }
+        }
+    }
+
     @Test fun threeDimensionalRendererActuallyDrawsTriangleOnEmulatorCanvas() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             scenario.onActivity { activity ->
