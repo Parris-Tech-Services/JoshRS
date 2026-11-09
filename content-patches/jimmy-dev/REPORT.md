@@ -9,3 +9,14 @@
 - `OK` | `1091` (`death_growncat_black`, "Bob") @ `(2924, 3565, L0)` — Walked to Burthorpe `(2935, 3564, L0)` and found `Bob (id=1091)` in-game; has no `Talk-to` option in rev 274 (`quest_death.npc`, pre-Tail of Two Cats).
 - `OK` | `372` (`mournerwatchtower`, "Mourner") @ `(2559, 3303, L0)` — Walked to `(2559, 3303, L0)` south of East Ardougne; the 4 Mourners stand inside the fenced watchtower (`biowatchtower`) and are spoken to via `[oploc1,biowatchtower]` in `quest_biohazard.rs2` (`"Keep away civilian."`).
 - `OK` | `636` (`gnomecheerleader`, "Cheerleader") @ `(2395, 3495, L0)` — Walked to Gnomeball pitch `(2393, 3494, L0)`; the 2 Cheerleaders stand inside the fenced sideline box (`reachable=false`) and only shout overhead messages (`"Goal!"`, `"You Win!"`) during Gnomeball.
+- `OK` | `1367` (`etc_guard1`, "Skraeling") @ `(2605, 3877, L0)` — Tested `Talk-to` in-game at Etceteria; opens dialogue (`"Hello."`) normally.
+- `OK` | `1368` (`etc_guard2`, "Skraeling") @ `(2603, 3877, L0)` — Tested `Talk-to` in-game at Etceteria; opens dialogue (`"Hello."`) normally.
+- `OK` | `1369` (`etc_fish_monger`, "Fishmonger") @ `(2605, 3876, L0)` — Tested `Talk-to` and `Trade` in-game at Etceteria; opens dialogue (`"Welcome Raklak. My fish is fresher than any in Miscellania!"`) and shop normally.
+- `OK` | `1370` (`etc_veg_monger`, "Greengrocer") @ `(2602, 3877, L0)` — Tested `Talk-to` and `Trade` in-game at Etceteria; opens dialogue (`"Hello Raklak. You've come to the right place for your greens!"`) and shop (`Island Greengrocer`) normally.
+- `OK` | `1257` (`mort_afflicted_man`, "Afflicted") @ `(3466, 3306, L0)` — Tested `Talk-to` in-game at Mort'ton; opens dialogue (`"zurgle"`) normally.
+- `OK` | `1258` (`mort_afflicted_woman`, "Afflicted") @ `(3466, 3309, L0)` — Tested `Talk-to` in-game at Mort'ton; opens dialogue (`"wot's sfriess gurghl"`) normally.
+- `OK` | `1261` (`mort_afflicted_man2`, "Afflicted") @ `(3469, 3308, L0)` — Tested `Talk-to` in-game at Mort'ton; opens dialogue (`"wot's wot's"`) normally.
+- `OK` | `1262` (`mort_afflicted_woman2`, "Afflicted") @ `(3472, 3304, L0)` — Shares `[opnpc1,_afflicted]` in `shades_of_mortton.rs2` with `1257`, `1258`, and `1261` in Mort'ton.
+- `OK` | `1576` (`canafis_stranger`, "Stranger") @ `(3503, 3477, L0)` — Visited `(3503, 3477, L0)` in Canifis; the static spawn in the tavern is `Vanstrom Klause (1577)` (`canafis_stranger` `1576` is a dynamic follower/event NPC).
+- `OK` | `57` (`fairy`, "Fairy") @ `(2373, 4447, L0)` — Checked `[fairy]` (`57`) in `lostcity.npc`; has no `Talk-to` option in rev 274 (ambient wandering Fairy in Zanaris `0_50_149`).
+- `OK` | `466` (`murphy_sunk`, "Murphy") @ `(1947, 4827, L0)` — Visited Sunken Fishing Trawler `(1946, 4828, L0)`; floats on water tile `(1946, 4827)` (`reachable=false`) shouting overhead messages via `[ai_timer,murphy_sunk]` while players click `[oploc1,sinkingbarrel1]` to swim to shore.
