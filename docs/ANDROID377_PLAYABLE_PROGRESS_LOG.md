@@ -265,3 +265,28 @@ layer, private experimental APK, verified login) all still stands.
 `server.log` yet, so "playable" rests on the served client, the 200 responses and the
 WebSocket handshake — not on a captured gameplay session.
 
+## 10. Round 6 — Kotlin login block is byte-exact with the accepted block
+
+`protocol/LoginBlock377.kt` now builds the credentialed login in Kotlin:
+
+- plaintext `[10][seed0..3][uid][username 0x0A][password 0x0A]`
+- raw RSA `m^e mod n` (no padding, so it is deterministic and byte-comparable)
+- the opcode-16 frame with the `0xFF` revision escape
+- the `seed + 50` decrypt cipher
+- the `[status][2 bytes][ISAAC frames]` response split
+
+**Verification (CI run 42612729520, `BUILD SUCCESSFUL`):** the Kotlin plaintext and the
+64-byte ciphertext are asserted against vectors produced by the Python probe that the live
+engine accepted with status 2:
+
+```
+plaintext  0a112233445566778831415926271828180000303970726f6265757365720a70726f6265706173730a
+ciphertext 59f8ffa8a99236bf5bf9b02b5e76799034aa3def6f3900042e8fe1719d87d89f...
+```
+
+Because 377 RSA has no padding, a mismatch could not be a rounding difference — it would be
+a different login block. So the Kotlin path is now byte-identical to one the server accepted.
+
+**Still absent:** socket I/O, the read loop, reconnect, and the cache. The Kotlin client has
+not itself logged in — only the block it would send is proven correct.
+

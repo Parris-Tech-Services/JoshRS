@@ -119,12 +119,15 @@ class PacketBuffer(val data: ByteArray) {
     }
 
     /** NUL-terminated string, as used for player names in the login block. */
-    fun pjstr(value: String): PacketBuffer {
+    fun pjstr(value: String): PacketBuffer = pjstrAs(value, 0)
+
+    /** Single-byte string with an explicit terminator (login credentials use `0x0A`). */
+    fun pjstrAs(value: String, terminator: Int): PacketBuffer {
         for (ch in value) {
             if (ch.code > 0xff) throw IllegalArgumentException("pjstr is single-byte only: $ch")
             data[pos++] = ch.code.toByte()
         }
-        data[pos++] = 0
+        data[pos++] = terminator.toByte()
         return this
     }
 
