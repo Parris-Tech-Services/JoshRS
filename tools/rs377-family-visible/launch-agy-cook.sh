@@ -101,7 +101,10 @@ main() {
     printf 'HANDOFF_BLOCKED: interactive Terminal required for bot-only password.\n' >&2
     return 1
   fi
-  printf 'The former patrol is offline. Start the Agy Cook\x27s Assistant task.\n'
+  printf 'The former patrol is offline. Opening the visible Agy interactive interface.\n'
+  printf 'Agy prompt preview (first 12 lines):\n'
+  sed -n '1,12p' "$prompt_path"
+  printf 'Full task file: %s\n' "$prompt_path"
   IFS= read -r -s -p 'HarnessView1 bot-only password (hidden): ' password
   printf '\n'
   if [[ -z "$password" || "${#password}" -gt 20 ]]; then
@@ -110,11 +113,11 @@ main() {
   fi
   # The secret is supplied only in this foreground child process's environment.
   # It must never be included in the prompt text, logs or shell arguments.
-  printf 'Launching Agy in %s.\n' "$root"
+  printf 'Launching Agy interactive (-i) in %s.\n' "$root"
   printf 'Agy may ask for ordinary tool permissions. Do not approve destructive world changes.\n'
   (
     cd -- "$root" || return 2
-    JOSHRS_HARNESSVIEW1_PASSWORD="$password" "$agy_bin" -p "$(cat "$prompt_path")" --output-format text
+    JOSHRS_HARNESSVIEW1_PASSWORD="$password" "$agy_bin" -i "$(cat "$prompt_path")"
   )
   status=$?
   unset password
