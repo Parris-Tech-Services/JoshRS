@@ -15,9 +15,9 @@ export const gobdip: Quest = {
       if (started || has(sdk, /^gold bar$/i)) return true;
       await exitWizardsTowerGround(c);
       if (lvl(sdk) > 0) await lumbridgeStairs(c, 0);
-      await bankJunk(c, /^(coins|bronze sword|wooden shield|goblin mail|orange goblin mail|blue goblin mail|redberries|onion|woad leaf|red dye|yellow dye|orange dye|blue dye|gold bar|cabbage)$/i);
-      await withdrawFromDraynorBank(c, [/^coins$/i, /^bronze sword$/i, /^wooden shield$/i]);
-      if (has(sdk, /^bronze sword$/i)) await bot.equipItem(/^bronze sword$/i);
+      await bankJunk(c, /^(coins|iron scimitar|bronze sword|wooden shield|goblin mail|orange goblin mail|blue goblin mail|redberries|onion|woad leaf|red dye|yellow dye|orange dye|blue dye|gold bar|cabbage)$/i);
+      await withdrawFromDraynorBank(c, [/^coins$/i, /^iron scimitar$/i, /^wooden shield$/i]);
+      if (has(sdk, /^iron scimitar$/i)) await bot.equipItem(/^iron scimitar$/i);
       if (has(sdk, /^wooden shield$/i)) await bot.equipItem(/^wooden shield$/i);
 
       const w = await bot.walkTo(3045, 3257, 2);

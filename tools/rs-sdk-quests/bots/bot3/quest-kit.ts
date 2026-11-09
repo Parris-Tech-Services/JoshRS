@@ -1,7 +1,7 @@
 import { runScript } from '../../sdk/runner';
 import { appendFileSync, mkdirSync, writeFileSync } from 'fs';
 
-export type Ctx = { bot: any; sdk: any; dir: string };
+export type Ctx = { bot: any; sdk: any; dir?: string };
 export type Quest = { name: string; run: (c: Ctx) => Promise<boolean> };
 
 export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -10,7 +10,7 @@ export const count = (sdk: any, re: RegExp) =>
   (sdk.getState()?.inventory ?? []).filter((i: any) => re.test(i.name)).reduce((a: number, i: any) => a + (i.count ?? 1), 0);
 export const xp = (sdk: any, skill: string) => sdk.getSkillXp(skill) ?? 0;
 export const lvl = (sdk: any) => sdk.getState()?.player?.level ?? 0;
-export const log = (c: Ctx, m: string) => { console.log(m); appendFileSync(`${c.dir}/lab_log.md`, `- ${new Date().toISOString()} ${m}\n`); };
+export const log = (_c: Ctx, m: string) => { console.log(m); };
 
 export async function waitInv(sdk: any, re: RegExp, ms: number) {
   const end = Date.now() + ms;
@@ -280,8 +280,9 @@ export function snapshot(c: Ctx, quest: string, stepName: string, err?: any) {
     opFeedback: s.opFeedback,
   };
   try { snap.chat = sdk.getChat({ limit: 15 }); } catch (e) { snap.chat = String(e); }
-  mkdirSync(`${c.dir}/failures`, { recursive: true });
-  const f = `${c.dir}/failures/${quest.replace(/\W+/g, '-')}-${stepName.replace(/\W+/g, '-')}-${Date.now()}.json`;
+  const dir = c.dir ?? 'bots/bot3';
+  mkdirSync(`${dir}/failures`, { recursive: true });
+  const f = `${dir}/failures/${quest.replace(/\W+/g, '-')}-${stepName.replace(/\W+/g, '-')}-${Date.now()}.json`;
   writeFileSync(f, JSON.stringify(snap, null, 1));
   console.log(`SNAPSHOT: ${f}`);
 }

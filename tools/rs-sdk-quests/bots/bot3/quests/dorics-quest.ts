@@ -5,7 +5,7 @@ export const doric: Quest = {
   name: N,
   async run(c: Ctx) {
     const { bot, sdk } = c;
-    if (xp(sdk, 'Mining') >= 13000) return true;
+    if (xp(sdk, 'Mining') >= 32500) return true;
 
     const mineCount = async (x: number, z: number, rockIds: number[], itemRe: RegExp, target: number) => {
       if (count(sdk, itemRe) >= target) return true;
@@ -23,7 +23,7 @@ export const doric: Quest = {
     };
 
     const prep = () => step(c, N, 'prep', async () => {
-      if (xp(sdk, 'Mining') >= 13000) return true;
+      if (xp(sdk, 'Mining') >= 32500) return true;
       if (count(sdk, /^clay$/i) >= 6 && count(sdk, /^copper ore$/i) >= 4 && count(sdk, /^iron ore$/i) >= 2) return true;
       await exitWizardsTowerGround(c);
       if (lvl(sdk) > 0) await lumbridgeStairs(c, 0);
@@ -35,7 +35,7 @@ export const doric: Quest = {
     });
 
     const mineOres = () => step(c, N, 'mine-ores', async () => {
-      if (xp(sdk, 'Mining') >= 13000) return true;
+      if (xp(sdk, 'Mining') >= 32500) return true;
       if ((sdk.getState()?.player?.worldX ?? 0) > 3040) {
         await bot.walkTo(3035, 3236, 3);
       }
@@ -52,7 +52,7 @@ export const doric: Quest = {
     });
 
     const handIn = () => step(c, N, 'hand-in', async () => {
-      if (xp(sdk, 'Mining') >= 13000) return true;
+      if (xp(sdk, 'Mining') >= 32500) return true;
       if ((sdk.getState()?.player?.worldZ ?? 0) < 3320) {
         await bot.walkTo(3007, 3280, 3);
         await bot.walkTo(3007, 3330, 3);
@@ -62,10 +62,10 @@ export const doric: Quest = {
       const w = await bot.walkTo(2951, 3451, 2);
       if (!w?.success) { await openNearbyDoors(c, 2950, 3450, 2); await bot.walkTo(2951, 3451, 2); }
       await talk(c, /^doric$/i, [/wanted to use your anvils/i, /will get you materials/i]);
-      if (xp(sdk, 'Mining') < 13000 && count(sdk, /^clay$/i) >= 6) {
+      if (xp(sdk, 'Mining') < 32500 && count(sdk, /^clay$/i) >= 6) {
         await talk(c, /^doric$/i);
       }
-      const done = await waitCond(() => xp(sdk, 'Mining') >= 13000, 6000);
+      const done = await waitCond(() => xp(sdk, 'Mining') >= 32500, 6000);
       await bot.closeInterface();
       return done;
     });

@@ -172,6 +172,129 @@
 - **Progression stalls / friction points**:
   - **NPC Naming on Revision 377 (`Tanner` vs `Ellis`, `Kebab seller` vs `Karim`)**: Searching for `/^ellis$/i` at the Al Kharid Tannery `(3276, 3193)` and `/^karim$/i` at the Kebab Shop `(3273, 3180)` returned `NPC not found` because in revision 377 their display names are generic: **`Tanner`** and **`Kebab seller`**.
 
+### Milestone 8: Kebab Seller Survey, Crafting Method 2 (Gem Cutting & Gem Trader Arbitrage: +450 GP in 11.6s!) & Mid-Level Gear Upgrades (Iron Scimitar + Iron Platelegs)
+- **What we did & duration** (`05:49:09Z` → `05:51:00Z`, **1m 47s / 107s** total):
+  - **Kebab Seller** (`(3273, 3180)`): Purchased `3 Kebab` via dialogue (`1 GP` each = `3 GP`, `17 GP` → `14 GP`).
+  - **Dommik's Crafting Store** (`(3320, 3194)`): Purchased `1 Chisel` (`1 GP`, `14 GP` → `13 GP`).
+  - **Thieving in Al Kharid** (`(3294, 3204)`): Pickpocketed a `Man` 3 times (`+800` Thieving XP, Level 21 → 22, `+12 GP`) to reach the `25 GP` starting capital needed for the Gem Trader arbitrage.
+  - **Crafting Method 2 + High-Profit Money Maker — Gem Cutting & Gem Trader Arbitrage** (`(3286, 3211)`, **11.6s**):
+    1. Bought `1 Uncut sapphire` for **`25 GP`** (`25 GP` → `0 GP`).
+    2. Used `Chisel` on `Uncut sapphire` to cut `Sapphire` (`+1,250` Crafting XP, advancing Crafting from **Level 25 → 28**!).
+    3. Sold cut `Sapphire` back to `Gem trader` for **`175 GP`** (**`+150 GP` net profit**!).
+    4. Now at Crafting Level 28 (`>= 27` required for Emerald!) and `175 GP`, immediately bought `1 Uncut emerald` for **`50 GP`** (`175 GP` → `125 GP`).
+    5. Used `Chisel` on `Uncut emerald` to cut `Emerald` (`+1,687.5` Crafting XP, advancing Crafting from **Level 28 → 30**!).
+    6. Sold cut `Emerald` back to `Gem trader` for **`350 GP`** (**`+300 GP` net profit**!).
+    - **Total Arbitrage Outcome**: Turned **`25 GP` into `475 GP` (`+450 GP` net profit)** and gained **`+2,937.5` Crafting XP** (`Lv 25 -> 30`) in **11.6 seconds**!
+  - **Mid-Level Gear Upgrades Purchased & Equipped**:
+    1. **Zeke's Superior Scimitars** (`(3287, 3187)`): Purchased **`Iron scimitar`** for **`112 GP`** (`475 GP` → `363 GP`) and equipped it (replacing `Bronze sword`).
+    2. **Louie's Armoured Legs** (`(3315, 3175)`): Purchased **`Iron platelegs`** for **`280 GP`** (`363 GP` → `83 GP`) and equipped them.
+  - **Safe Spot**: Returned to **Al Kharid Bank** (`(3271, 3167)`) with `83 GP` remaining and full HP (`19/19`).
+- **Approximate XP/hour & GP/hour**:
+  - **Crafting Method 2 (Gem Cutting via Gem Trader Arbitrage, Lv 25–30)**: `+2,937.5` Crafting XP and `+450 GP` in `11.6s` = **~909,210 Crafting XP/hr** and **~139,307 GP/hr** during active cutting/trading (capped in sustained play by the Gem Trader's 1-stock uncut gem restock timer, which still makes checking the Gem Trader on every pass through Al Kharid an effortless `+450 GP` + `+2,937` XP windfall!).
+- **Shop prices paid & items needed but couldn't buy**:
+  - **Kebab seller** (`(3273, 3180)`): Paid **3 GP** for `3 Kebab` (`1 GP` each).
+  - **Dommik's Crafting Store** (`(3320, 3194)`): Paid **1 GP** for `Chisel`.
+  - **Gem Trader** (`(3286, 3211)`): Paid **25 GP** for `Uncut sapphire` (sold cut `Sapphire` for **175 GP**); paid **50 GP** for `Uncut emerald` (sold cut `Emerald` for **350 GP**).
+  - **Zeke's Superior Scimitars** (`(3287, 3187)`): Paid **112 GP** for `Iron scimitar`.
+  - **Louie's Armoured Legs** (`(3315, 3175)`): Paid **280 GP** for `Iron platelegs`.
+- **Progression stalls / friction points**:
+  - **Tanner Interface (`679`) Component IDs**: Opening `Trade` on `Tanner` opens interface `679` (`tanner`), where the Soft Leather buttons are component `8686` (`tanner:com_93`, Tan All), `8688` (`tanner:com_95`, Tan 5), and `8689` (`tanner:com_96`, Tan 1), rather than `14809`. We will use `8686` in Milestone 9 to tan our 5 `Cowhide` and benchmark Leather Crafting (`Crafting Method 3`).
+
+### Milestone 9: Crafting Method 3 (Leather Cowl Crafting via Tanner Interface 679), Al Kharid Banking, Lowe's Archery Emporium Survey & Smithing Method 2b (Iron Dagger Smithing)
+- **What we did & duration** (`05:53:57Z` → `05:58:34Z`, **3m 37s / 217s** total across `task-224` and `task-234`):
+  - **Tanning 5 Cowhides at Tanner** (`(3276, 3193)`): Opened `Trade` (`interface 679`) on `Tanner` and clicked component `8686` (`tanner:com_93` = Tan All Soft Leather, `1 GP` each = `5 GP`, `83 GP` → `78 GP`), converting all `5 Cowhide` into `5 Leather` in 1 click!
+  - **Crafting Method 3 — Leather Cowl Crafting** (`14.8s`): Stitched `5 Leather cowl` using `Needle` and `Thread` (`+2,313` Crafting XP, advancing Crafting from **Level 30 → 34**). Used up 1 reel of `Thread` (`5` → `4`).
+  - **Gem Trader Restock Check** (`(3286, 3211)`): Checked stock ~4 minutes after Milestone 8; both `Uncut sapphire` (`0`) and `Uncut emerald` (`0`) were still at 0 stock, confirming a multi-minute restock timer that prevents infinite zero-cooldown arbitrage loops.
+  - **Banking at Al Kharid Bank** (`(3269, 3167)`): Opened bank (`interface 5292`) and deposited `5 Leather cowl`, `Bronze sword`, `Needle`, `4 Thread`, `Tinderbox`, `Chisel`, `Bronze axe`, and `Bronze pickaxe`.
+  - **Al Kharid Toll Gate & Aubury's Rune Shop** (`(3253, 3401)`): Paid `10 GP` gate toll (`78 GP` → `68 GP`) and purchased `17 Air rune` (`4 GP` each = `68 GP`, `68 GP` → `0 GP`).
+  - **Lowe's Archery Emporium Survey** (`(3233, 3423)`): Surveyed full ranged weapon and ammunition stock and pricing.
+  - **Smithing Method 2b — Smithing Iron Daggers at Varrock West Anvil** (`(3188, 3426)`, **8.2s**): Smithed `1 Iron bar` into `1 Iron dagger` (`+625` Smithing XP, advancing Smithing from **Level 22 → 23**).
+  - **Safe Spot**: Parked at **Varrock West Bank** (`(3184, 3436)`).
+- **Approximate XP/hour & GP/hour**:
+  - **Crafting Method 3 (Leather Cowl Crafting, Lv 30–34)**: `+2,313` Crafting XP in `14.8s` (stitching phase) = **~562,660 Crafting XP/hr** (**11.9x faster** than Spinning Wool's `47,368` XP/hr!).
+  - **Smithing Method 2b (Anvil Smithing Iron Daggers, Lv 22–23)**: `+625` Smithing XP in `8.2s` = **~273,490 Smithing XP/hr** (**1.72x faster** than Bronze daggers' `159,176` XP/hr; `625` XP per Iron bar vs `312.5` XP per Bronze bar!).
+- **Shop prices paid & items needed but couldn't buy**:
+  - **Tanner** (`(3276, 3193)`): Paid **5 GP** to tan `5 Cowhide` (`1 GP` each).
+  - **Al Kharid Gate**: Paid **10 GP** toll.
+  - **Aubury's Rune Shop** (`(3253, 3401)`): Paid **68 GP** for `17 Air rune` (`4 GP` each).
+  - **Lowe's Archery Emporium** (`(3233, 3423)`):
+    - `Bronze arrow` (stock 2000, buy **1 GP**, sell 0 GP), `Iron arrow` (stock 1500, buy **3 GP**, sell 1 GP), `Steel arrow` (stock 1000, buy **12 GP**, sell 6 GP), `Bolts` (stock 1500, buy **3 GP**, sell 1 GP).
+    - `Shortbow` (stock 4, buy **50 GP**, sell 27 GP), `Longbow` (stock 4, buy **80 GP**, sell 44 GP), `Oak shortbow` (stock 2, buy **100 GP**, sell 55 GP), `Oak longbow` (stock 2, buy **160 GP**, sell 88 GP), `Crossbow` (stock 2, buy **70 GP**, sell 38 GP).
+- **Progression stalls / friction points**:
+  - `bot.depositItem(pat, 10)` returns `success: false` with message `"Deposited X of 10 requested"` when the player holds fewer than 10 of that item, even though the items were successfully deposited into the bank!
+  - When smithing the first `Iron dagger` triggered a Smithing level-up (`22 -> 23`), the level-up dialog interrupted the second `smithAtAnvil('dagger')` call (`Smithing interface did not open`).
+
+### Milestone 10: Iron Dagger Smithing & Sale, Quest #3 Completed (Romeo & Juliet, 5 QP) & Rune Mysteries Started (Research Package Obtained)
+- **What we did & duration** (`06:01:13Z` → `06:10:48Z`, **9m 35s / 575s** total across `task-252` and `task-262`):
+  - **Smithing Method 2b — Finishing 2 Iron Daggers at Varrock West Anvil** (`(3188, 3426)`, **6.6s**): Smithed the remaining `2 Iron bar` into `2 Iron dagger` (`+1,250` Smithing XP, advancing Smithing from **Level 23 → 26**).
+  - **Varrock Swordshop Sale** (`(3206, 3398)`): Sold all `3 Iron dagger` for **`60 GP`** (`20 GP` each — **3.87x higher sell value** than `Bronze dagger`'s `5.17 GP` each!).
+  - **Aubury's Rune Shop** (`(3253, 3401)`): Purchased `17 Mind rune` (`3 GP` each = `51 GP`, `60 GP` → `9 GP`) to pair with our `17 Air rune`.
+  - **Quest #3 Completed — Romeo & Juliet** (**269s / 4m 29s**, **+5 Quest Points**, total **7 QP**):
+    - Picked `Cadava berries` in SE Varrock `(3266, 3361)`, spoke to `Juliet` upstairs at `(3158, 3426)` to receive the `Message`, delivered it to `Romeo` in Varrock Square `(3213, 3428)`, spoke to `Father Lawrence` at NE Varrock Church `(3254, 3483)`, brought `Cadava berries` to the `Apothecary` `(3195, 3404)` to brew the `Cadava potion`, gave the potion to `Juliet`, and finished the quest with `Romeo`! Verified in-game (`> Congratulations! Quest complete!`).
+  - **Quest #4 Started — Rune Mysteries** (`151s`): Spoke to `Duke Horacio` on Lumbridge Castle 2nd floor `(3210, 3220)` to obtain the `Air talisman`, then walked to the Wizards' Tower basement `(3100, 9570)` and gave the `Air talisman` to `Sedridor` to receive the `Research package` right as the 420s script timer concluded.
+- **Approximate XP/hour & GP/hour**:
+  - **Smithing Method 2b (Anvil Smithing Iron Daggers, Lv 23–26)**: `2 Iron dagger` in `6.6s` (`+1,250` XP) = **~681,818 Smithing XP/hr** (active anvil phase) and **`20 GP` per dagger** at Varrock Swordshop (**~21,800 GP/hr** gross anvil output).
+- **Shop prices paid & items needed but couldn't buy**:
+  - **Varrock Swordshop** (`(3206, 3398)`): Sold `3 Iron dagger` for **60 GP** (`20 GP` each).
+  - **Aubury's Rune Shop** (`(3253, 3401)`): Paid **51 GP** for `17 Mind rune` (`3 GP` each).
+- **Progression stalls / friction points**:
+  - Combined `Romeo & Juliet` (`269s`) + `Rune Mysteries` (`~200s`) exceeded the single-script `420s` timeout right after receiving the `Research package` from `Sedridor`. Splitting quests or giving multi-quest runs a higher timeout avoids mid-dialogue cutoffs.
+
+### Milestone 11: Magic Method 1 Started (Wind Strike), Quest #4 Completed (Rune Mysteries, 1 QP + Runecrafting Unlocked) & The Restless Ghost Started
+- **What we did & duration** (`06:13:43Z` → `06:21:46Z`, **8m 00s / 480s** total):
+  - **Magic Method 1 — Wind Strike (`Spells.WIND_STRIKE`)**: Cast `Wind Strike` on a `Chicken` in the Wizards' Tower basement (`+187` Magic XP + `+98` Hitpoints XP, advancing Magic from **Level 1 → 3** and killing the chicken in 1 hit).
+  - **Quest #4 Completed — Rune Mysteries** (**283s / 4m 43s**, **+1 Quest Point**, total **8 QP** + **Runecrafting Skill Unlocked**):
+    - Climbed out of the Wizards' Tower basement, walked to `Aubury` in SE Varrock `(3253, 3401)` to deliver the `Research package`, waited for Aubury to hand back his `Notes`, walked back to the Wizards' Tower basement `(3104, 9570)`, and delivered the `Notes` to `Sedridor` (`> Congratulations! Quest complete!`). Received the `Air talisman`.
+  - **Quest #5 Started — The Restless Ghost** (`184s`): Spoke to `Father Aereck` in Lumbridge Church `(3243, 3206)`, walked to `Father Urhney` in Lumbridge Swamp `(3147, 3175)` to obtain and equip the `Ghostspeak amulet`, and walked to the Lumbridge graveyard mausoleum `(3246, 3193)` when the 480s script timer ended.
+- **Approximate XP/hour & GP/hour**:
+  - **Magic Method 1 (Wind Strike on Chickens, Lv 1–3)**: `+187` Magic XP on 1 hit (`137.5` base splash XP + `50` damage XP per damage dealt) = **~224,400 Magic XP/hr** during active combat casting (`3s` / 5-tick spell cooldown) at a cost of `1 Air rune` (`4 GP`) + `1 Mind rune` (`3 GP`) = `7 GP` per cast (~8,400 GP/hr rune cost without an Air staff, or `3 GP` per cast / ~3,600 GP/hr with a `Staff of air`).
+- **Shop prices paid & items needed but couldn't buy**:
+  - None in this milestone (used runes purchased in Milestone 9/10).
+- **Progression stalls / friction points**:
+  - In the Wizards' Tower basement `(3100, 9570)`, there is only 1 `Chicken` spawn inside the fenced room, so after killing it in 1 `Wind Strike` hit, the second cast returned `unreachable target` while waiting for respawn. Multi-spawn areas (Lumbridge Chicken Pen `(3231, 3297)` or Goblin Village/Lumbridge Goblins) are needed for continuous Magic casting.
+
+### Milestone 12: Quest #5 Completed (The Restless Ghost, 1 QP + Prayer Lv 10 → 48!), Magic Method 1 Sustained Benchmark (Wind Strike, Lv 3 → 14) & Witch's Potion Started
+- **What we did & duration** (`06:24:07Z` → `06:32:11Z`, **8m 00s / 480s** total):
+  - **Quest #5 Completed — The Restless Ghost** (**248s / 4m 08s**, **+1 Quest Point**, total **9 QP** + **`+28,125` Prayer XP**):
+    - Opened the `Coffin` at Lumbridge Graveyard `(3249, 3193)` and spoke to the `Restless ghost` with the `Ghostspeak amulet` equipped, walked to the Wizards' Tower basement `(3119, 9566)` to take the `Skull` from the altar (escaping the Level 13 `Skeleton`), returned to the graveyard `(3249, 3193)`, and placed the `Skull` into the open `Coffin`!
+    - **Massive Progression Milestone**: The `+28,125` Prayer XP reward (`1,125 * 25`) rocketed Prayer from **Level 10 → 48** (`29,249` total XP), unlocking **Protect from Magic (Lv 37)**, **Protect from Missiles (Lv 40)**, and **Protect from Melee (Lv 43)**! Combat Level rose from **19 → 26**!
+  - **Magic Method 1 — Sustained Wind Strike Benchmark at Lumbridge Chicken Pen** (`(3231, 3297)`, **61.6s**):
+    - Unequipped `Iron platelegs` and cast `Wind Strike` (`Spells.WIND_STRIKE = 1152`) 9 times on `Chicken`s (`100%` hit rate: `+138`, `+237`, `+138`, `+137`, `+188`, `+137`, `+238`, `+187`, `+188` Magic XP = **`+1,588` Magic XP**), advancing Magic from **Level 3 → 14** (`1,775` total XP).
+  - **Quest #6 Started — Witch's Potion** (`140s`): Banked extra items at Draynor Bank `(3092, 3243)`, spoke to `Hetty` in Rimmington `(2968, 3205)`, killed a `Rat` (`+1,200` Strength XP, Lv 13 → 17) to loot `Rat's tail`, and picked an `Onion` north of Rimmington `(2952, 3251)`.
+- **Approximate XP/hour & GP/hour**:
+  - **The Restless Ghost Quest (`1 QP`)**: `+28,125` Prayer XP in ~432s total (`184s` + `248s`) = **~234,375 Prayer XP/hr** (and instantly unlocks all three overheads at Level 43+!).
+  - **Magic Method 1 (Sustained Wind Strike at Lumbridge Chicken Pen, Lv 3–14)**: `+1,588` Magic XP across 9 successful casts in `61.6s` = **~92,811 Magic XP/hr** (`~176.4` XP per cast) at a rune cost of `7 GP` per cast (`1 Air` + `1 Mind` = `-3,680 GP/hr`).
+- **Shop prices paid & items needed but couldn't buy**:
+  - None in this milestone.
+- **Progression stalls / friction points**:
+  - When a `Chicken` survived a 1-damage `Wind Strike` hit and attacked back in melee, subsequent `bot.castSpell(otherChicken, Spells.WIND_STRIKE)` calls on a different chicken failed with `"Cannot cast on Chicken: I'm already under attack!"` (single-way combat zone restriction). Re-casting on the *same* chicken that is attacking the player (or waiting until out of combat) avoids this rejection.
+
+### Milestone 13: Port Sarim & Falador Shop Surveys (Betty, Wydin, Flynn, Wayne), Quest #6 Completed (Witch's Potion, 1 QP + Magic Lv 14 → 33) & Quest #7 Completed (Doric's Quest, 1 QP + Mining Lv 33 → 54)
+- **What we did & duration** (`06:37:38Z` → `06:43:49Z`, **6m 09s / 369s** total):
+  - **Port Sarim Shop Surveys**:
+    1. **Betty's Magic Emporium** (`(3014, 3259)`): Inspected rune, `Eye of newt`, and `Wizards hat` prices and stock.
+    2. **Wydin's Food Store** (`(3014, 3204)`): Inspected food and cooking ingredient prices and stock.
+  - **Quest #6 Completed — Witch's Potion** (**65s**, **+1 Quest Point**, total **10 QP** + **`+8,125` Magic XP**):
+    - Purchased `Eye of newt` (`3 GP`) from `Betty` and `Raw beef` (`1 GP`) from `Wydin`, cooked and intentionally burned the meat on the Rimmington range `(2969, 3210)` (`+750` Cooking XP) to obtain `Burnt meat`, handed all 4 ingredients (`Rat's tail`, `Onion`, `Eye of newt`, `Burnt meat`) to `Hetty` `(2968, 3205)`, and drank from the `Cauldron`!
+    - **Progression Milestone**: The `+8,125` Magic XP reward (`325 * 25`) boosted Magic from **Level 14 → 33** (`9,900` total XP), unlocking **Varrock Teleport (Lv 25)**, **Lumbridge Teleport (Lv 31)**, and **Telekinetic Grab (Lv 33)**!
+  - **Quest #7 Completed — Doric's Quest** (**213s / 3m 33s**, **+1 Quest Point**, total **11 QP** + **`+32,500` Mining XP** + **`180 GP`**):
+    - Banked extra items at Draynor Bank `(3092, 3243)`, mined `6 Clay` (`(2986, 3239)`), `4 Copper ore` (`(2977, 3247)`), and `2 Iron ore` (`(2969, 3240)`) at Rimmington Mine (`+4,250` Mining XP), walked north past Falador to `Doric`'s anvil hut `(2951, 3451)`, and handed in all 12 ores (`> Doric hands you 180 coins. Congratulations! Quest complete!`).
+    - **Progression Milestone**: Mining + quest reward (`+36,750` Mining XP total) propelled Mining from **Level 33 → 54** (`46,375` total XP) and added **`+180 GP`** (`5 GP` → `185 GP`)!
+  - **Falador Shop Surveys & Safe Spot**:
+    1. **Flynn's Mace Market** (`(2950, 3387)`): Recorded Bronze through Adamant mace prices.
+    2. **Wayne's Chains** (`(2972, 3312)`): Recorded Bronze through Adamant chainbody prices.
+    3. Parked safely at **Falador West Bank** (`(2945, 3370)`), Combat Level **30**.
+- **Approximate XP/hour & GP/hour**:
+  - **Witch's Potion Quest (`1 QP`)**: `+8,125` Magic XP in `205s` total (`140s` + `65s`) = **~142,682 Magic XP/hr**.
+  - **Doric's Quest + Rimmington Mining (`1 QP`, Mining Method 3: Clay/Copper/Iron)**: `+36,750` Mining XP and `+180 GP` in `213s` = **~621,126 Mining XP/hr** and **~3,042 GP/hr** (plus permanent access to Doric's two anvils at `(2951, 3451)`!).
+- **Shop prices paid & items needed but couldn't buy**:
+  - **Betty's Magic Emporium** (`(3014, 3259)`): Paid **3 GP** for `Eye of newt`. Full stock: `Fire/Water/Air/Earth rune` x1000 (buy 4 GP, sell 2 GP), `Mind/Body rune` x1000 (buy 3 GP, sell 1 GP), `Chaos rune` x1000 (buy 15 GP, sell 9 GP), `Death rune` x1000 (buy 30 GP, sell 18 GP), `Eye of newt` x300 (buy **3 GP**, sell 1 GP), `Wizards hat` x1 (buy **2 GP**, sell 1 GP).
+  - **Wydin's Food Store** (`(3014, 3204)`): Paid **1 GP** for `Raw beef`. Full stock: `Pot of flour` x3 (buy 10 GP), `Raw beef` x1 (buy 1 GP), `Raw chicken` x1 (buy 1 GP), `Cabbage` x3 (buy 1 GP), `Banana` x3 (buy 2 GP), `Redberries` x1 (buy 3 GP), `Bread` x0 (buy 12 GP), `Chocolate bar` x1 (buy 10 GP), `Cheese` x3 (buy 4 GP), `Tomato` x3 (buy 4 GP), `Potato` x1 (buy 1 GP).
+  - **Flynn's Mace Market** (`(2950, 3387)`): `Bronze mace` x5 (buy 18 GP, sell 10 GP), `Iron mace` x4 (buy 63 GP, sell 37 GP), `Steel mace` x4 (buy 225 GP, sell 135 GP), `Mithril mace` x3 (buy 585 GP, sell 351 GP), `Adamant mace` x2 (buy 1,440 GP, sell 864 GP).
+  - **Wayne's Chains** (`(2972, 3312)`): `Bronze chainbody` x3 (buy 60 GP, sell 39 GP), `Iron chainbody` x2 (buy 210 GP, sell 136 GP), `Steel chainbody` x1 (buy 750 GP, sell 487 GP), `Black chainbody` x1 (buy 1,440 GP, sell 936 GP), `Mithril chainbody` x1 (buy 1,950 GP, sell 1,267 GP), `Adamant chainbody` x1 (buy 4,800 GP, sell 3,120 GP).
+- **Progression stalls / friction points**:
+  - None! Both `Witch's Potion` and `Doric's Quest` completed on the first pass.
+
 ---
 
 ## Summary Dataset: Skills, Methods, XP/hr, GP/hr & Balancing Findings
@@ -190,23 +313,30 @@
 | **Fishing** | 2 | Bait Fishing Sardines (Draynor `(3087, 3227)`) | 14 → 22 | **~184,885 XP/hr** | -1,500 GP/hr | **2.52x faster** than Net Fishing; requires `Fishing rod` (5 GP) + `Fishing bait` (3 GP ea) from Port Sarim. |
 | **Cooking** | 1 | Cook's Assistant Quest + Cooking Shrimps | 1 → 31 | **~1,345,962 XP/hr** | ~0 GP/hr | Quest takes 168s (`+7,500` XP, Lv 1 → 30) and unlocks Castle Range. |
 | **Cooking** | 2 | Cooking Raw Chicken (Lumbridge Castle Range) | 31 → 35 | **~1,185,250 XP/hr** | ~0 GP/hr | Zero burns at Lv 31+; heals 3 HP per chicken. |
-| **Thieving** | 1 | Pickpocketing Men (Lumbridge `(3222, 3218)`) | 5 → 20 | **~120,599 XP/hr** | **~1,809 GP/hr** | Must wait ~4.5s after stun or server discards op (`opRejectedCount`). |
+| **Thieving** | 1 | Pickpocketing Men (Lumbridge/Al Kharid) | 5 → 22 | **~120,599 XP/hr** | **~1,809 GP/hr** | Must wait ~4.5s after stun or server discards op (`opRejectedCount`). |
 | **Thieving** | 2 | East Varrock Tea Stall (`(3268, 3410)`) | 20 → 21 | **~180,000 XP/hr** | ~0 GP/hr | `400` XP/steal (~7.5s respawn), zero stun damage, free 3 HP heal (`Cup of tea`). |
 | **Melee Combat** | 1 | Killing Chickens (`(3231, 3297)`) | 1 → 7 | **~62,585 XP/hr** | ~0 GP/hr | Safe (max hit 0), drops `Raw chicken`, `Bones`, `Feather`. |
 | **Melee Combat** | 2 | Killing Lumbridge Cows (`(3255, 3278)`) | 6 → 13 | **~114,813 XP/hr** | ~2,600 GP/hr (hides) | **1.83x faster** than Chickens; drops `Cowhide` + `Bones` + `Raw beef`. |
+| **Magic** | 1 | Wind Strike (`Spells.WIND_STRIKE` at Chickens) | 1 → 14 | **~92,811 XP/hr** | -3,680 GP/hr | `~176.4` XP/cast (`7 GP`/cast in runes; `3 GP`/cast with Staff of air). |
+| **Magic** | 2 | Witch's Potion Quest (`1 QP`) | 14 → 33 | **~142,682 XP/hr** | -4 GP | `+8,125` XP in 205s — unlocks Varrock/Lumbridge Teleports & Telegrab! |
 | **Prayer** | 1 | Burying Chicken Bones (`(3231, 3297)`) | 1 → 5 | **~17,600 XP/hr** | 0 GP/hr | `112.5` XP per bone buried alongside Melee Method 1. |
-| **Prayer** | 2 | Burying Cow Bones (`(3255, 3278)`) | 5 → 9 | **~15,009 XP/hr** | 0 GP/hr | `112.5` XP per bone buried alongside higher-HP Cows. |
+| **Prayer** | 2 | Burying Cow Bones (`(3255, 3278)`) | 5 → 10 | **~15,009 XP/hr** | 0 GP/hr | `112.5` XP per bone buried alongside higher-HP Cows. |
+| **Prayer** | 3 | The Restless Ghost Quest (`1 QP`) | 10 → 48 | **~234,375 XP/hr** | 0 GP/hr | `+28,125` XP in 432s — unlocks Protect from Magic/Missiles/Melee! |
 | **Mining** | 1 | Copper & Tin Ore (SE Varrock `(3286, 3365)`) | 1 → 25 | **~221,821 XP/hr** | ~0 GP/hr | 1-tick rock extraction at Lv 15+; `437.5` XP/ore. |
 | **Mining** | 2 | Iron Ore (SE Varrock `(3286, 3368)`) | 25 → 33 | **~447,265 XP/hr** | ~0 GP/hr | **2.02x faster** than Copper/Tin (`875` XP/ore + fast respawn). |
+| **Mining** | 3 | Doric's Quest + Rimmington Clay/Copper/Iron | 33 → 54 | **~621,126 XP/hr** | **~3,042 GP/hr** | `+36,750` XP & `+180 GP` in 213s; unlocks Doric's anvils. |
 | **Smithing** | 1a | Smelting Bronze Bars (Lumbridge Furnace) | 1 → 9 | **~202,321 XP/hr** | ~0 GP/hr | 100% success (`155` XP/bar), furnace phase only (~35k XP/hr w/ walk). |
 | **Smithing** | 1b | Smelting Iron Bars (Al Kharid Furnace) | 18 → 22 | **~49,329 XP/hr** | ~0 GP/hr | ~53–60% base success rate (`312.5` XP/bar). |
-| **Smithing** | 2 | Smithing Bronze Daggers (Varrock West Anvil) | 9 → 18 | **~159,176 XP/hr** | **~2,630 GP/hr** | `312.5` XP/bar; sells to Varrock Swordshop for ~5.17 GP each. |
+| **Smithing** | 2a | Smithing Bronze Daggers (Varrock West Anvil) | 9 → 18 | **~159,176 XP/hr** | **~2,630 GP/hr** | `312.5` XP/bar; sells to Varrock Swordshop for ~5.17 GP each. |
+| **Smithing** | 2b | Smithing Iron Daggers (Varrock West Anvil) | 22 → 26 | **~681,818 XP/hr** | **~21,800 GP/hr** | `625` XP/bar; sells to Varrock Swordshop for **20 GP each** (`3.87x` Bronze!). |
 | **Crafting** | 1 | Sheep Shearer + Spinning 20 Balls of Wool | 1 → 25 | **~47,368 XP/hr** | +60 GP (quest) | Spinning phase (`62.5` XP/ball); Quest adds `+4,375` XP (Lv 1 → 25). |
+| **Crafting** | 2 | Gem Cutting via Gem Trader Arbitrage | 25 → 30 | **~909,210 XP/hr** | **~139,307 GP/hr** | `+450 GP` & `+2,937.5` XP in 11.6s (`Uncut sapphire` 25→175 GP, `Uncut emerald` 50→350 GP). |
+| **Crafting** | 3 | Leather Cowl Crafting (Al Kharid Tanner `679`) | 30 → 34 | **~562,660 XP/hr** | -1 GP/hide | **11.9x faster** than Spinning Wool (`462.5` XP/cowl). |
 
 ### 2. Key Economy & Progression Balancing Findings
-1. **Al Kharid Gem Trader Arbitrage**: The Gem Trader `(3286, 3211)` sells `Uncut sapphire` for `25 GP` (stock 1) and `Uncut emerald` for `50 GP` (stock 1), while buying cut `Sapphire` for `175 GP` and cut `Emerald` for `350 GP`. A player with Level 20/27 Crafting and a `1 GP Chisel` earns **+150 GP** (Sapphire) and **+300 GP** (Emerald) instant profit plus massive Crafting XP!
+1. **Al Kharid Gem Trader Arbitrage (Verified Live: +450 GP in 11.6s, Multi-Minute Restock)**: The Gem Trader `(3286, 3211)` sells `Uncut sapphire` for `25 GP` (stock 1) and `Uncut emerald` for `50 GP` (stock 1), while buying cut `Sapphire` for `175 GP` and cut `Emerald` for `350 GP`. Starting with `25 GP` and a `1 GP Chisel` at Level 25 Crafting, cutting the Sapphire raised Crafting to Level 28 (`>= 27` needed for Emerald) and gave `175 GP`, which immediately funded buying & cutting the Emerald for `350 GP` (`475 GP` total = **+450 GP profit** in 11.6s), financing our `Iron scimitar` (`112 GP`) and `Iron platelegs` (`280 GP`). Re-checking 4 minutes later showed both uncut gems still at `0` stock, confirming a multi-minute restock timer.
 2. **Pickaxe Progression Gap**: Bob's Brilliant Axes in Lumbridge only stocks `Bronze pickaxe` (`1 GP`). New players in Lumbridge/Varrock cannot upgrade to Iron/Steel/Mithril pickaxes locally without traveling to Dwarven Mine (Nurmof).
 3. **Furnace vs. Anvil Separation**: Varrock has mines and anvils (`(3188, 3426)`) while Lumbridge and Al Kharid have furnaces (and Al Kharid lacks an anvil), creating a heavy walking bottleneck for early Smithing unless players mine at Al Kharid/SE Varrock, smelt in Al Kharid/Lumbridge, bank, and smith at Varrock West.
 4. **Draynor Fishing Spot Death Trap**: Level 7 Dark Wizards `(3084, 3236)` aggro onto low-level players clicking the northern fishing spots (`z >= 3231`) at Draynor `(3087, 3230)`. Staying on the southern spot `(3087, 3227)` avoids aggro.
-5. **Current Character State (`bot3`)**: Combat Level 13 (`HP 14/19`), safely parked at Al Kharid Bank `(3271, 3167)`, Total Skill Level **266** across 14 trained skills (`Woodcutting 38`, `Firemaking 39`, `Cooking 35`, `Mining 33`, `Crafting 25`, `Fishing 22`, `Smithing 22`, `Thieving 21`, `Hitpoints 16`, `Attack 13`, `Strength 13`, `Fletching 11`, `Defence 10`, `Prayer 9`), 2 Quests Complete (`2 QP`).
+5. **Current Character State (`bot3`)**: Combat Level 30 (`HP 21/21`), Falador West Bank `(2945, 3370)`, Total Skill Level **376** across 15 trained skills (`Mining 54`, `Prayer 48`, `Firemaking 39`, `Woodcutting 38`, `Cooking 35`, `Crafting 34`, `Magic 33`, `Smithing 26`, `Fishing 22`, `Thieving 22`, `Hitpoints 17`, `Strength 17`, `Attack 13`, `Fletching 11`, `Defence 10`), **7 Quests Complete (`11 QP`)**: `Cook's Assistant`, `Sheep Shearer`, `Romeo & Juliet`, `Rune Mysteries`, `The Restless Ghost`, `Witch's Potion`, `Doric's Quest`.
 

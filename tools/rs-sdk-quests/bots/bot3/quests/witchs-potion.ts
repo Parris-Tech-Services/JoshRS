@@ -5,10 +5,10 @@ export const hetty: Quest = {
   name: N,
   async run(c: Ctx) {
     const { bot, sdk } = c;
-    if (xp(sdk, 'Magic') >= 3250) return true;
+    if (xp(sdk, 'Magic') >= 8125) return true;
 
     const startAndRat = () => step(c, N, 'start-and-rat', async () => {
-      if (xp(sdk, 'Magic') >= 3250 || has(sdk, /^rat's tail$/i)) return true;
+      if (xp(sdk, 'Magic') >= 8125 || has(sdk, /^rat's tail$/i)) return true;
       await exitWizardsTowerGround(c);
       if (lvl(sdk) > 0) await lumbridgeStairs(c, 0);
       await bankJunk(c, /^(coins|bronze sword|wooden shield|rat's tail|eye of newt|onion|burnt meat|cooked meat|raw beef)$/i);
@@ -22,7 +22,7 @@ export const hetty: Quest = {
       const wh = await bot.walkTo(2968, 3205, 2);
       if (!wh?.success) { await openNearbyDoors(c, 2965, 3206, 2); await bot.walkTo(2968, 3205, 2); }
       await talk(c, /^hetty$/i, [/in search of a quest/i, /become one with my darker side/i]);
-      if (xp(sdk, 'Magic') >= 3250) return true;
+      if (xp(sdk, 'Magic') >= 8125) return true;
 
       const wr = await bot.walkTo(2956, 3203, 2);
       if (!wr?.success) { await openNearbyDoors(c, 2958, 3203, 2); await bot.walkTo(2956, 3203, 2); }
@@ -43,7 +43,7 @@ export const hetty: Quest = {
     });
 
     const ingredients = () => step(c, N, 'ingredients', async () => {
-      if (xp(sdk, 'Magic') >= 3250) return true;
+      if (xp(sdk, 'Magic') >= 8125) return true;
 
       if (!has(sdk, /^onion$/i)) {
         const wo = await bot.walkTo(2952, 3251, 2);
@@ -100,20 +100,20 @@ export const hetty: Quest = {
     });
 
     const handIn = () => step(c, N, 'hand-in', async () => {
-      if (xp(sdk, 'Magic') >= 3250) return true;
+      if (xp(sdk, 'Magic') >= 8125) return true;
       const wh = await bot.walkTo(2968, 3205, 2);
       if (!wh?.success) { await openNearbyDoors(c, 2965, 3206, 2); await bot.walkTo(2968, 3205, 2); }
       if (has(sdk, /^rat's tail$/i)) {
         await talk(c, /^hetty$/i);
         if (!(await waitCond(() => !has(sdk, /^rat's tail$/i), 4000))) return false;
       }
-      for (let i = 0; i < 3 && xp(sdk, 'Magic') < 3250; i++) {
+      for (let i = 0; i < 3 && xp(sdk, 'Magic') < 8125; i++) {
         await bot.interactLoc(/^cauldron$/i, /drink/i);
         await sleep(900);
         if (sdk.getState()?.dialog?.isOpen) await chat(c);
-        if (await waitCond(() => xp(sdk, 'Magic') >= 3250, 4000)) break;
+        if (await waitCond(() => xp(sdk, 'Magic') >= 8125, 4000)) break;
       }
-      const done = xp(sdk, 'Magic') >= 3250;
+      const done = xp(sdk, 'Magic') >= 8125;
       await bot.closeInterface();
       return done;
     });

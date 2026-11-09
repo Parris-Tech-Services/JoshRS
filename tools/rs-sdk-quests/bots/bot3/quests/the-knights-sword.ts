@@ -4,7 +4,7 @@ import { doric } from './dorics-quest';
 
 const N = "The Knight's Sword";
 
-const KEEP_RE = /^(coins|bronze pickaxe|bronze sword|wooden shield|hammer|bucket|bucket of water|pot|pot of flour|pastry dough|pie dish|pie shell|redberries|uncooked redberry pie|redberry pie|burnt pie|copper ore|tin ore|bronze bar|iron ore|iron bar|blurite ore|portrait|blurite sword)$/i;
+const KEEP_RE = /^(coins|bronze pickaxe|iron scimitar|bronze sword|wooden shield|hammer|bucket|bucket of water|pot|pot of flour|pastry dough|pie dish|pie shell|redberries|uncooked redberry pie|redberry pie|burnt pie|copper ore|tin ore|bronze bar|iron ore|iron bar|blurite ore|portrait|blurite sword)$/i;
 
 export const squire: Quest = {
   name: N,
@@ -55,8 +55,8 @@ export const squire: Quest = {
       }
 
       await bankJunk(c, KEEP_RE);
-      await withdrawFromDraynorBank(c, [/^coins$/i, /^bronze pickaxe$/i, /^bronze sword$/i, /^wooden shield$/i, /^hammer$/i, /^bucket$/i, /^pot$/i, /^iron bar$/i]);
-      if (has(sdk, /^bronze sword$/i)) await bot.equipItem(/^bronze sword$/i);
+      await withdrawFromDraynorBank(c, [/^coins$/i, /^bronze pickaxe$/i, /^iron scimitar$/i, /^wooden shield$/i, /^hammer$/i, /^bucket$/i, /^pot$/i, /^iron bar$/i]);
+      if (has(sdk, /^iron scimitar$/i)) await bot.equipItem(/^iron scimitar$/i);
       if (has(sdk, /^wooden shield$/i)) await bot.equipItem(/^wooden shield$/i);
 
       if (!squireStarted) {
