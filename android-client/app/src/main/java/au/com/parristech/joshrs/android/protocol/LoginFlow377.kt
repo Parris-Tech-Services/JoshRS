@@ -128,6 +128,30 @@ class LoginFlow377(
         return transport.readExact(1)[0].toInt() and 0xff
     }
 
+    /**
+     * Login response: `[status][2 unencrypted bytes][ISAAC frames]`.
+     *
+     * Those two bytes must be consumed before the frame loop starts. Starting the loop at
+     * status+1 desynchronises after two frames; reading them explicitly is the fix.
+     */
+    fun readPreamble(): ByteArray = transport.readExact(2)
+
+    /** [status] plus the two preamble bytes that precede the ISAAC frames. */
+    data class LoginOutcome(val status: Int, val preamble: ByteArray)
+
+    /** Logs in and consumes the preamble, leaving the stream at the first ISAAC frame. */
+    fun loginAndOpenSession(
+        crcs: ByteArray,
+        username: String,
+        password: String,
+        uid: Int,
+        seeds: IntArray
+    ): LoginOutcome {
+        val status = login(crcs, username, password, uid, seeds)
+        val preamble = if (status == STATUS_OK) readPreamble() else ByteArray(0)
+        return LoginOutcome(status, preamble)
+    }
+
     fun close() = transport.close()
 
     companion object {

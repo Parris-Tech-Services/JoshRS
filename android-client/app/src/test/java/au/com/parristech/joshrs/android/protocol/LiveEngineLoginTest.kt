@@ -86,12 +86,13 @@ class LiveEngineLoginTest {
             val reply = flow.negotiate()
             assertEquals(17, reply.size)
 
-            val status = flow.login(crcs, user, "testpass123", 12345, seeds)
+            val outcome = flow.loginAndOpenSession(crcs, user, "testpass123", 12345, seeds)
             assertEquals(
                 "expected status 2 (authenticated); status 6 means out-of-date revision/CRC/RSA",
                 LoginFlow377.STATUS_OK,
-                status
+                outcome.status
             )
+            assertEquals("login response preamble must be 2 bytes", 2, outcome.preamble.size)
 
             // 4. A real session: the server should immediately send live state.
             val session = GameSession377({ transport.readAtMost(it) }, seeds)
@@ -122,9 +123,12 @@ class LiveEngineLoginTest {
             "\n-----END PUBLIC KEY-----\n"
         val (modulus, exponent) = parsePublicKey(pem)
 
-        val spec = RSAPublicKeySpec(BigInteger(1, modulus), BigInteger(1, exponent))
-        val rebuilt = KeyFactory.getInstance("RSA").generatePublic(spec)
-        // A successfully rebuilt key with the right bit length proves ordering, not string luck.
-        assertEquals(1024, (rebuilt as java.security.interfaces.RSAPublicKey).modulus.bitLength())
+        // Direct equality: the parser must return exactly the key's own two integers.
+        assertEquals(pub.modulus, BigInteger(1, modulus))
+        assertEquals(pub.publicExponent, BigInteger(1, exponent))
+        val rebuilt = KeyFactory.getInstance("RSA").generatePublic(
+            RSAPublicKeySpec(BigInteger(1, modulus), BigInteger(1, exponent))
+        ) as java.security.interfaces.RSAPublicKey
+        assertEquals(pub.modulus, rebuilt.modulus)
     }
 }
