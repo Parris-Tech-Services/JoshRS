@@ -36,9 +36,10 @@ export function parseArgs(argv) {
 }
 
 export function patrolProcessSignature(argv) {
-  if(!Array.isArray(argv)||!argv.some(arg=>/^(?:.*\\/)?node(?:js)?$/.test(arg)))
-    return false;
-  const pilot=argv.some(arg=>/(^|\\/)tools\\/rs377-family-visible\\/join\\.mjs$/.test(arg));
+  if(!Array.isArray(argv)||
+      !argv.some(arg=>['node','nodejs'].includes(path.basename(arg))))return false;
+  const pilot=argv.some(arg=>arg==='tools/rs377-family-visible/join.mjs'||
+    arg.endsWith('/tools/rs377-family-visible/join.mjs'));
   const target=argv.indexOf('--bot');
   return pilot && target!==-1 && argv[target+1]===BOT &&
     argv.includes('--patrol') && argv.includes('--allow-family') &&
@@ -86,7 +87,7 @@ export function inspectProcess(pid){
   try{
     const s=fs.readFileSync('/proc/'+pid+'/cmdline');
     if(!s.length)return false;
-    return patrolProcessSignature(s.toString('utf8').split('\\0').filter(Boolean));
+    return patrolProcessSignature(s.toString('utf8').split(String.fromCharCode(0)).filter(Boolean));
   }catch(error){
     if(error?.code==='ENOENT'||error?.code==='ESRCH')return false;
     throw error;
