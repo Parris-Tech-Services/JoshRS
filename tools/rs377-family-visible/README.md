@@ -4,6 +4,50 @@
 
 This is **not** the Fedora sandbox. Players in an isolated Fedora disposable world can never appear in JParrisDesktop's already-running game.
 
+## Handoff to local Antigravity (Agy): HarnessView1 attempts Cook's Assistant
+
+The operator has authorised **Agy to play the dedicated HarnessView1 account
+in the already running AVANCE-WS7 Fedora rev377 world**. This is not a
+claim that the current patrol, SDK observer or original `rs-jimmy` rev225
+integration has completed the quest. The 120-second native patrol cannot
+be recontrolled after launch; its TCP session must disconnect first.
+
+Agy needs the installed, authenticated `agy` CLI on Fedora; this GitHub
+connector cannot itself operate the local desktop or start that process.
+
+To protect the uncommitted changes in the main JoshRS-quest-runner checkout,
+use a **fresh Git worktree** and a foreground handoff:
+
+```bash
+repo="$HOME/dev/JoshRS-quest-runner"
+work="$(mktemp -d "$HOME/dev/JoshRS-agy-cook-XXXXXXXX")"
+git -C "$repo" fetch origin main && git -C "$repo" worktree add --detach "$work" origin/main && bash "$work/tools/rs377-family-visible/launch-agy-cook.sh"
+```
+
+This child script does not close the parent Terminal, edit saves, restart
+the game or change engine files. It checks local JoshRS TCP/web listeners,
+the dedicated bot save and Agy installation. It waits for an existing
+HarnessView1 **native join.mjs** controller to disconnect normally
+(never kills it), then prompts privately for the **bot-only** password.
+The password is provided to this one Agy child process via
+`JOSHRS_HARNESSVIEW1_PASSWORD` and must never be printed or stored.
+
+The work instructions are
+[AGY_HARNESSVIEW1_COOKS_ASSISTANT_LIVE_2026-11-09.md](../../docs/rs377/AGY_HARNESSVIEW1_COOKS_ASSISTANT_LIVE_2026-11-09.md).
+Agy must implement an actual native rev377 observation/control path,
+run the quest via ordinary NPC/item/dialogue interactions, and verify
+its actual quest stage and saved account. If the only installed observer
+requires a restart of the live family world, **do not restart it**:
+report the exact blocker rather than falsely declaring quest success.
+If Agy has no authenticated CLI, or relevant tools are unavailable,
+the script fails clearly. It does not secretly run in the background.
+
+Read-only preflight, without a password or AI action:
+
+```bash
+bash tools/rs377-family-visible/launch-agy-cook.sh --check
+```
+
 ## Fedora: safe one-command bot patrol (does not close Terminal)
 
 If a previous command closed your interactive Terminal, the shell command
