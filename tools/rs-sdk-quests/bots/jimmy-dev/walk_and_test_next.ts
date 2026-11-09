@@ -2,34 +2,40 @@ import { runScript } from '../../sdk/runner';
 
 await runScript(async (ctx) => {
   const { bot, sdk } = ctx;
-  console.log('Starting walk from Lumbridge toward Falador / Burthorpe / Catherby...');
-  const waypoints: [number, number][] = [
-    [3180, 3240],
-    [3110, 3250],
-    [3070, 3275],
-    [3007, 3325],
-    [2965, 3380],
-    [2945, 3440],
-    [2918, 3550],
-  ];
-  for (const [wx, wz] of waypoints) {
-    const st = sdk.getState();
-    console.log(`Pos (${st?.player?.worldX}, ${st?.player?.worldZ}) -> walking to (${wx}, ${wz})`);
-    await bot.walkTo(wx, wz);
-  }
-  const st = sdk.getState();
-  console.log(`Arrived at Burthorpe: (${st?.player?.worldX}, ${st?.player?.worldZ})`);
-  // Test death_man_indoors1 (1086) at (2918, 3558)
-  await bot.walkTo(2918, 3558, 3);
-  const npc = sdk.findNearbyNpc(n => n.id === 1086 || /man/i.test(n.name));
-  console.log('Nearby NPC at (2918, 3558):', npc ? `${npc.name} (id=${npc.id}, options=${npc.optionsWithIndex.map(o => o.text).join(',')})` : 'none');
-  if (npc) {
-    const r = await bot.talkTo(npc);
-    console.log('Talk-to result:', r);
+  const unferth = sdk.findNearbyNpc(/^Unferth$/i);
+  console.log('Unferth:', unferth ? `${unferth.name} (id=${unferth.id}, ops=${unferth.optionsWithIndex.map(o => o.text).join(',')})` : 'not found');
+  if (unferth) {
+    const r = await bot.talkTo(unferth);
+    console.log('Talk-to Unferth:', r);
     await sdk.waitForTicks(3);
-    console.log('Dialog:', sdk.getDialog());
+    console.log('Unferth dialog:', sdk.getDialog());
     await bot.closeInterface();
   }
+
+  // Also test Ocga, Breoca, Hild, Wistan right here in Burthorpe!
+  for (const name of ['Ocga', 'Breoca', 'Hild', 'Wistan']) {
+    const npc = sdk.findNearbyNpc(new RegExp(`^${name}$`, 'i'));
+    if (npc) {
+      const r = await bot.talkTo(npc);
+      await sdk.waitForTicks(2);
+      console.log(`Talk-to ${name} (id=${npc.id}):`, r.message, '| dialog:', sdk.getDialog()?.text);
+      await bot.closeInterface();
+    }
+  }
+
+  // Now walk across White Wolf Mountain to Witchaven (2719, 3304)
+  const waypoints: [number, number][] = [
+    [2895, 3430],
+    [2845, 3432],
+    [2815, 3440],
+    [2755, 3425],
+    [2719, 3304],
+  ];
+  for (const [wx, wz] of waypoints) {
+    console.log(`Walking to (${wx}, ${wz}) from (${sdk.getState()?.player?.worldX}, ${sdk.getState()?.player?.worldZ})...`);
+    await bot.walkTo(wx, wz, 4);
+  }
+  console.log(`Arrived at Witchaven shore: (${sdk.getState()?.player?.worldX}, ${sdk.getState()?.player?.worldZ})`);
 }, {
   bot: 'jimmy-dev',
   gatewayUrl: 'ws://localhost:7781',
