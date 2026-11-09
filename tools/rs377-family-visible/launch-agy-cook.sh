@@ -39,15 +39,47 @@ is_port_listening() {
 
 main() {
   local root prompt_path game agy_bin pids elapsed=0 password status
+  local skip_permissions=0 resume_id='' workspace='' check=0 launch_dir
+  local -a agy_args=()
   root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)" || {
     printf 'HANDOFF_BLOCKED: cannot locate source worktree.\n' >&2
     return 2
   }
   prompt_path="$root/docs/rs377/AGY_HARNESSVIEW1_COOKS_ASSISTANT_LIVE_2026-11-09.md"
   game="$HOME/dev/JoshRS/lostcity377"
-  if [[ $# -gt 1 || ( $# -eq 1 && "$1" != '--check' ) ]]; then
-    printf 'Usage: bash tools/rs377-family-visible/launch-agy-cook.sh [--check]\n' >&2
-    return 2
+  while (( $# > 0 )); do
+    case "$1" in
+      --check) check=1; shift ;;
+      --dangerously-skip-permissions) skip_permissions=1; shift ;;
+      --resume-conversation)
+        if (( $# < 2 )); then printf 'HANDOFF_BLOCKED: --resume-conversation needs a UUID.\n' >&2; return 2; fi
+        resume_id="$2"; shift 2 ;;
+      --workspace)
+        if (( $# < 2 )); then printf 'HANDOFF_BLOCKED: --workspace needs an existing directory.\n' >&2; return 2; fi
+        workspace="$2"; shift 2 ;;
+      *)
+        printf 'Usage: bash launch-agy-cook.sh [--check] [--dangerously-skip-permissions] [--resume-conversation UUID --workspace EXISTING_WORKTREE]\n' >&2
+        return 2 ;;
+    esac
+  done
+  if [[ -n "$resume_id" || -n "$workspace" ]]; then
+    if [[ ! "$resume_id" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ || -z "$workspace" ]]; then
+      printf 'HANDOFF_BLOCKED: resume requires a valid conversation UUID and an existing worktree.\n' >&2
+      return 2
+    fi
+    case "$workspace" in
+      "$HOME"/dev/JoshRS-agy-cook-*) ;;
+      *) printf 'HANDOFF_BLOCKED: resume workspace must be a JoshRS-agy-cook-* worktree under ~/dev.\n' >&2; return 2 ;;
+    esac
+    launch_dir="$(cd -- "$workspace" 2>/dev/null && pwd -P)" || {
+      printf 'HANDOFF_BLOCKED: saved Agy worktree not found.\n' >&2; return 2;
+    }
+    if [[ ! -e "$launch_dir/.git" || ! -f "$launch_dir/docs/rs377/AGY_HARNESSVIEW1_COOKS_ASSISTANT_LIVE_2026-11-09.md" ]]; then
+      printf 'HANDOFF_BLOCKED: resume location is not a recognised JoshRS Agy worktree.\n' >&2
+      return 2
+    fi
+  else
+    launch_dir="$root"
   fi
   printf 'Agy Cook\x27s Assistant handoff — JoshRS rev377, HarnessView1 only.\n'
   if [[ ! -r "$prompt_path" ]]; then
@@ -72,7 +104,7 @@ main() {
     printf 'HANDOFF_BLOCKED: agy CLI not found. Use the installed Antigravity CLI.\n' >&2
     return 1
   fi
-  if [[ "${1:-}" == '--check' ]]; then
+  if (( check )); then
     pids="$(find_controllers)"
     printf 'HANDOFF_PREFLIGHT_OK: Agy CLI found, JoshRS ports listening; '
     if [[ -n "$pids" ]]; then
@@ -102,9 +134,13 @@ main() {
     return 1
   fi
   printf 'The former patrol is offline. Opening the visible Agy interactive interface.\n'
-  printf 'Agy prompt preview (first 12 lines):\n'
-  sed -n '1,12p' "$prompt_path"
-  printf 'Full task file: %s\n' "$prompt_path"
+  if [[ -n "$resume_id" ]]; then
+    printf 'Resuming existing Agy conversation %s with its prior worktree: %s\n' "$resume_id" "$launch_dir"
+  else
+    printf 'Agy prompt preview (first 12 lines):\n'
+    sed -n '1,12p' "$prompt_path"
+    printf 'Full task file: %s\n' "$prompt_path"
+  fi
   IFS= read -r -s -p 'HarnessView1 bot-only password (hidden): ' password
   printf '\n'
   if [[ -z "$password" || "${#password}" -gt 20 ]]; then
@@ -113,11 +149,22 @@ main() {
   fi
   # The secret is supplied only in this foreground child process's environment.
   # It must never be included in the prompt text, logs or shell arguments.
-  printf 'Launching Agy interactive (-i) in %s.\n' "$root"
-  printf 'Agy may ask for ordinary tool permissions. Do not approve destructive world changes.\n'
+  if [[ -n "$resume_id" ]]; then
+    agy_args=("--conversation=$resume_id")
+  else
+    agy_args=(-i "$(cat "$prompt_path")")
+  fi
+  if ((skip_permissions)); then
+    agy_args+=(--dangerously-skip-permissions)
+    printf 'WARNING: Agy permission bypass enabled for this session. Most commands/file writes will not ask.\n'
+    printf 'Prompt instructions do not enforce save protection; do not use this on an untrusted workspace.\n'
+  else
+    printf 'Standard Agy permission prompts remain enabled.\n'
+  fi
+  printf 'Launching Agy interactive in %s.\n' "$launch_dir"
   (
-    cd -- "$root" || return 2
-    JOSHRS_HARNESSVIEW1_PASSWORD="$password" "$agy_bin" -i "$(cat "$prompt_path")"
+    cd -- "$launch_dir" || return 2
+    JOSHRS_HARNESSVIEW1_PASSWORD="$password" "$agy_bin" "${agy_args[@]}"
   )
   status=$?
   unset password
