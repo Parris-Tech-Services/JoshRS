@@ -1,7 +1,6 @@
 # Legends' Quest reward — implementation spec
 
-Status: **SPECIFIED, NOT IMPLEMENTED.** Written so the next attempt is mechanical rather than
-exploratory.
+Status: **IMPLEMENTED, NOT PLAYTESTED.** See "What was built" at the end.
 
 ---
 
@@ -77,3 +76,41 @@ screen that never existed or silently drop skills from the allowed list.
 
 The reward is the **largest in the content** and the number I would have used was wrong by 4×.
 That is precisely why this stays unimplemented rather than approximated.
+
+
+---
+
+## What was built
+
+Rather than parameterising the shared genie-lamp code, the reward got its **own** interface and
+script, so nothing existing can break:
+
+| File | Purpose |
+|---|---|
+| `interfaces/legends_lamp.if` | copy of `xplamp.if`; own interface id, retitled |
+| `scripts/legends_lamp.rs2` | rub → choose → confirm; grants `stat_advance($stat, 76500)` |
+| `configs/legends_lamp.obj` | the lamp item, `tradeable=no` |
+| `configs/legendslamp.varp` | UI selection state |
+| completion path | `inv_add(inv, legends_lamp, 4)` |
+
+Design decisions worth recording:
+
+- **76500, not 7650.** `stat_advance` takes tenths, so 7,650 XP is `76500`. Writing `7650`
+  would have paid 765 XP — the same class of error that produced the Priest in Peril defect.
+- **Repeats are free.** Each lamp is consumed on use, so choosing the same skill four times
+  works without a guard.
+- **The seven disallowed skills refuse explicitly** with a message, instead of silently doing
+  nothing. The copied interface still shows all 19 buttons; changing the interface layout to
+  hide seven would be a visual change I cannot verify without a client.
+- **No new shared code.** `xplamp.rs2` and every genie lamp are untouched.
+
+## Verification
+
+The engine repacked all content and reached `World ready` with the new interface, object, varp
+and script present, and `rs2.cgi` served 200. That proves the interface file parses and the
+script compiles.
+
+It does **not** prove the reward works in play: nobody has completed Legends' Quest since the
+change, and no one has rubbed a lamp.
+
+Patch: `content-patches/rs274/patches/quest_legends_reward.patch`.

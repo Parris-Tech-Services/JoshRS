@@ -1,0 +1,566 @@
+diff --git a/scripts/quests/quest_legends/configs/legends_lamp.obj b/scripts/quests/quest_legends/configs/legends_lamp.obj
+new file mode 100644
+index 0000000..0d161e7
+--- /dev/null
++++ b/scripts/quests/quest_legends/configs/legends_lamp.obj
+@@ -0,0 +1,13 @@
++[legends_lamp]
++name=Legends' lamp
++desc=Rub this lamp to gain experience.
++model=inv_genilamp
++2dxof=2
++2dyof=-2
++2dzoom=840
++2dyan=228
++2dxan=28
++weight=100g
++iop1=Rub
++tradeable=no
++stackable=no
+diff --git a/scripts/quests/quest_legends/configs/legendslamp.varp b/scripts/quests/quest_legends/configs/legendslamp.varp
+new file mode 100644
+index 0000000..9f9e068
+--- /dev/null
++++ b/scripts/quests/quest_legends/configs/legendslamp.varp
+@@ -0,0 +1,2 @@
++[legendslamp]
++scope=perm
+diff --git a/scripts/quests/quest_legends/interfaces/legends_lamp.if b/scripts/quests/quest_legends/interfaces/legends_lamp.if
+new file mode 100644
+index 0000000..c31b59c
+--- /dev/null
++++ b/scripts/quests/quest_legends/interfaces/legends_lamp.if
+@@ -0,0 +1,446 @@
++[com_0]
++type=model
++x=244
++y=152
++width=35
++height=35
++model=if_messagescroll2
++zoom=651
++xan=2041
++yan=6
++
++[title]
++type=text
++x=120
++y=110
++width=276
++height=17
++center=yes
++font=q8_full
++shadowed=yes
++text=Choose a skill to advance by 7,650 experience.
++colour=0xFFFF00
++
++[close]
++type=text
++x=433
++y=12
++buttontype=close
++width=68
++height=11
++font=p11_full
++shadowed=yes
++text=Close Window
++colour=0x808080
++overcolour=0xFFFFFF
++
++[attack]
++type=graphic
++x=148
++y=140
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,1
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Attack
++
++[strength]
++type=graphic
++x=180
++y=140
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,2
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Strength
++
++[ranged]
++type=graphic
++x=212
++y=140
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,3
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Ranged
++
++[magic]
++type=graphic
++x=244
++y=140
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,4
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Magic
++
++[defence]
++type=graphic
++x=276
++y=140
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,5
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Defence
++
++[hitpoints]
++type=graphic
++x=308
++y=140
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,6
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Hitpoints
++
++[prayer]
++type=graphic
++x=340
++y=140
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,7
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Prayer
++
++[agility]
++type=graphic
++x=180
++y=176
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,8
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Agility
++
++[herblore]
++type=graphic
++x=212
++y=176
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,9
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Herblore
++
++[thieving]
++type=graphic
++x=244
++y=176
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,10
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Thieving
++
++[crafting]
++type=graphic
++x=276
++y=176
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,11
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Crafting
++
++[runecraft]
++type=graphic
++x=308
++y=176
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,12
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Runecraft
++
++[mining]
++type=graphic
++x=148
++y=212
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,13
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Mining
++
++[smithing]
++type=graphic
++x=180
++y=212
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,14
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Smithing
++
++[fishing]
++type=graphic
++x=212
++y=212
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,15
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Fishing
++
++[cooking]
++type=graphic
++x=244
++y=212
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,16
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Cooking
++
++[firemaking]
++type=graphic
++x=276
++y=212
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,17
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Firemaking
++
++[woodcutting]
++type=graphic
++x=308
++y=212
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,18
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Woodcutting
++
++[fletching]
++type=graphic
++x=340
++y=212
++buttontype=normal
++width=25
++height=25
++script1op1=pushvar,xplamp
++script1=eq,19
++graphic=miscgraphics3,0
++activegraphic=miscgraphics3,1
++option=Advance Fletching
++
++[confirm]
++type=text
++x=232
++y=244
++buttontype=normal
++width=44
++height=14
++font=p12_full
++shadowed=yes
++text=Confirm
++colour=0x00C000
++
++[com_23]
++type=graphic
++x=148
++y=140
++width=25
++height=25
++graphic=staticons,0
++
++[com_24]
++type=graphic
++x=180
++y=140
++width=25
++height=25
++graphic=staticons,1
++
++[com_25]
++type=graphic
++x=212
++y=140
++width=25
++height=25
++graphic=staticons,3
++
++[com_26]
++type=graphic
++x=244
++y=140
++width=25
++height=25
++graphic=staticons,5
++
++[com_27]
++type=graphic
++x=276
++y=140
++width=25
++height=25
++graphic=staticons,2
++
++[com_28]
++type=graphic
++x=308
++y=140
++width=25
++height=25
++graphic=staticons,6
++
++[com_29]
++type=graphic
++x=340
++y=140
++width=25
++height=25
++graphic=staticons,4
++
++[com_30]
++type=graphic
++x=180
++y=176
++width=25
++height=25
++graphic=staticons,7
++
++[com_31]
++type=graphic
++x=212
++y=176
++width=25
++height=25
++graphic=staticons,8
++
++[com_32]
++type=graphic
++x=244
++y=176
++width=25
++height=25
++graphic=staticons,9
++
++[com_33]
++type=graphic
++x=276
++y=176
++width=25
++height=25
++graphic=staticons,10
++
++[com_34]
++type=graphic
++x=308
++y=176
++width=25
++height=25
++graphic=staticons2,0
++
++[com_35]
++type=graphic
++x=148
++y=212
++width=25
++height=25
++graphic=staticons,12
++
++[com_36]
++type=graphic
++x=180
++y=212
++width=25
++height=25
++graphic=staticons,13
++
++[com_37]
++type=graphic
++x=212
++y=212
++width=25
++height=25
++graphic=staticons,14
++
++[com_38]
++type=graphic
++x=244
++y=212
++width=25
++height=25
++graphic=staticons,15
++
++[com_39]
++type=graphic
++x=276
++y=212
++width=25
++height=25
++graphic=staticons,16
++
++[com_40]
++type=graphic
++x=308
++y=212
++width=25
++height=25
++graphic=staticons,17
++
++[com_41]
++type=graphic
++x=340
++y=212
++width=25
++height=25
++graphic=staticons,11
+diff --git a/scripts/quests/quest_legends/scripts/legends_lamp.rs2 b/scripts/quests/quest_legends/scripts/legends_lamp.rs2
+new file mode 100644
+index 0000000..3e262f1
+--- /dev/null
++++ b/scripts/quests/quest_legends/scripts/legends_lamp.rs2
+@@ -0,0 +1,71 @@
++// Legends' Quest reward lamps.
++//
++// The reward is 7,650 experience in each of four skills of the player's choice, and the same
++// skill may be chosen more than once. The 7,650 figure comes from the wiki's change history:
++// the reward was raised to 30,000 only on 30 November 2022, so any pre-2022 reconstruction
++// must use 7,650. stat_advance takes tenths, so 7,650 XP is written 76500.
++//
++// The allowed skills are exactly these twelve. Ranged, Fishing, Cooking, Firemaking, Fletching,
++// Runecraft, Slayer, Farming, Construction, Hunter and Summoning are refused.
++
++[opheld1,legends_lamp]
++%legendslamp = 0;
++if_openmain(legends_lamp);
++
++[if_button,legends_lamp:close] if_close;
++
++[if_button,legends_lamp:confirm]
++if (%legendslamp = 0) {
++    mes("You need to choose which skill you wish to be advanced.");
++    return;
++}
++switch_int (%legendslamp) {
++    case 1  : @legends_lamp_grant(attack);
++    case 2  : @legends_lamp_grant(defence);
++    case 3  : @legends_lamp_grant(strength);
++    case 4  : @legends_lamp_grant(hitpoints);
++    case 5  : @legends_lamp_grant(prayer);
++    case 6  : @legends_lamp_grant(magic);
++    case 7  : @legends_lamp_grant(woodcutting);
++    case 8  : @legends_lamp_grant(crafting);
++    case 9  : @legends_lamp_grant(smithing);
++    case 10 : @legends_lamp_grant(herblore);
++    case 11 : @legends_lamp_grant(agility);
++    case 12 : @legends_lamp_grant(thieving);
++    case default : mes("You need to choose which skill you wish to be advanced.");
++}
++
++[if_button,legends_lamp:attack] %legendslamp = 1;
++[if_button,legends_lamp:defence] %legendslamp = 2;
++[if_button,legends_lamp:strength] %legendslamp = 3;
++[if_button,legends_lamp:hitpoints] %legendslamp = 4;
++[if_button,legends_lamp:prayer] %legendslamp = 5;
++[if_button,legends_lamp:magic] %legendslamp = 6;
++[if_button,legends_lamp:woodcutting] %legendslamp = 7;
++[if_button,legends_lamp:crafting] %legendslamp = 8;
++[if_button,legends_lamp:smithing] %legendslamp = 9;
++[if_button,legends_lamp:herblore] %legendslamp = 10;
++[if_button,legends_lamp:agility] %legendslamp = 11;
++[if_button,legends_lamp:thieving] %legendslamp = 12;
++
++// Skills the original reward does not allow. Selecting one refuses rather than silently doing
++// nothing, so the player is never left guessing why the confirm button had no effect.
++[if_button,legends_lamp:ranged]     @legends_lamp_refuse;
++[if_button,legends_lamp:fishing]    @legends_lamp_refuse;
++[if_button,legends_lamp:cooking]    @legends_lamp_refuse;
++[if_button,legends_lamp:firemaking] @legends_lamp_refuse;
++[if_button,legends_lamp:fletching]  @legends_lamp_refuse;
++[if_button,legends_lamp:runecraft]  @legends_lamp_refuse;
++[if_button,legends_lamp:mining]     @legends_lamp_refuse;
++
++[label,legends_lamp_refuse]
++%legendslamp = 0;
++mes("That is not one of the skills the Legends' lamp can advance.");
++
++[label,legends_lamp_grant](stat $stat)
++if_close;
++inv_del(inv, legends_lamp, 1);
++%legendslamp = 0;
++stat_advance($stat, 76500); // 7,650 experience in tenths
++sound_synth(found_gem, 1, 0);
++~mesbox("You rub the lamp.|You gain 7,650 <enum(stat, string, stat_names, $stat)> experience.");
+diff --git a/scripts/quests/quest_legends/scripts/quest_legends.rs2 b/scripts/quests/quest_legends/scripts/quest_legends.rs2
+index e499817..e16d4ff 100644
+--- a/scripts/quests/quest_legends/scripts/quest_legends.rs2
++++ b/scripts/quests/quest_legends/scripts/quest_legends.rs2
+@@ -2099,4 +2099,5 @@ session_log(^log_adventure, "Quest complete: Legends Quest");
+ %legendsquest = ^legends_complete;
+ // todo: older ref image?
+ // https://storage.googleapis.com/tannerdino/images/legendscomplt.png
++inv_add(inv, legends_lamp, 4); // 7,650 XP each; four choices, repeats allowed
+ ~send_quest_complete(questlist:legends, thtotempolegift, 250, ^legends_questpoints, "You have completed the\\nLegends Guild Quest!");
