@@ -93,11 +93,16 @@ test('failed compile restores sources, config pack, script pack and account/save
   const f=fixture(t);
   const first=plan(f);
   const oldIndex=fs.readFileSync(path.join(f.world.engine,'data/pack/server/script.idx'),'utf8');
-  assert.throws(()=>applyAndBuild(first,{runBuild:()=>{
+  const failure=assert.throws(()=>applyAndBuild(first,{runBuild:()=>{
     write(f.world.engine,'data/pack/server/script.idx','bad compiled index');
     write(f.world.content,'pack/data.bin','corrupt content pack');
     return {status:1,stdout:'failure simulated',stderr:''};
   }}),/Native 377 build failed/);
+  assert.match(failure.message,/Compiler log: .*build\\.log/);
+  const backups=fs.readdirSync(path.join(f.statePath,'backups'));
+  assert.equal(backups.length,1);
+  const logFile=path.join(f.statePath,'backups',backups[0],'build.log');
+  assert.match(fs.readFileSync(logFile,'utf8'),/failure simulated/);
   assert.equal(fs.readFileSync(path.join(f.world.content,rel),'utf8'),f.original);
   assert.equal(fs.readFileSync(path.join(f.world.engine,'data/pack/server/script.idx'),'utf8'),oldIndex);
   assert.equal(fs.readFileSync(path.join(f.world.content,'pack/data.bin'),'utf8'),'original pack');
