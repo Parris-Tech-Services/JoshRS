@@ -1,10 +1,12 @@
 # JoshRS modern parity: committed research and execution package
 
+**Authoritative owner direction:** [8 November private exact-content parity and maximal-risk decision](../../../docs/decisions/2026-11-08-private-rune-parity-and-risk.md). The owner rejected merely OSRS-/RS3-*inspired* replacement content as fulfilling their private family game; the selected multi-profile architecture is a technical means to pursue **faithful original-game content and mechanics**, subject to independently tracked content rights. An explicit willingness to bear personal legal risk does not license assets or authorise redistribution. Do not alter older audit counts or claim completed implementation because this decision is recorded.
+
 **Prepared 8 November 2026 (Australia/Sydney). Status: PARTIALLY COMPLETE RESEARCH; live desktop/world and modern full-feature enumeration are NOT VERIFIED.**
 
 ## Start here
 
-1. [Executive assessment and decision](EXECUTIVE_ASSESSMENT.md): preserve 274/377 and build separate OSRS-like and RS3-like profiles with common offline family infrastructure.
+1. [Executive assessment and decision](EXECUTIVE_ASSESSMENT.md): preserve 274/377 and use technically separate OSRS/RS3 **exact-fidelity target profiles**, with shared offline family infrastructure; source/rights status remains distinct.
 2. [Recommended architecture with four alternatives](ARCHITECTURE_OPTIONS.md) and [technical reuse matrix](TECHNICAL_COMPATIBILITY_MATRIX.md).
 3. [Master release roadmap P0–P12](MASTER_ROADMAP.md), with actual source/quest/asset technical prerequisites.
 4. [100 detailed actionable tasks](FIRST_100_ENGINEERING_TASKS.md) and [100-task/228-edge dependency graph](DEPENDENCY_GRAPH.md).
@@ -19,7 +21,7 @@
 
 **First:** protect the active historical save and investigate [Party Drop Chest data loss #52](https://github.com/Parris-Tech-Services/JoshRS/issues/52). **Second:** prove normal offline login, two-player approved LAN and restart-safe inventory/quest/bank via a *restored isolated copy*. **Third:** merge/reconcile existing open quest branches only after verified version/quest-varp conflicts and real stage playthroughs. **Fourth:** prototype the original modern client and moving ship while retaining the legacy runtime unchanged.
 
-An independently created family mode can implement the *functionality* of skills, world systems and co-op. Exact Jagex artistic/literary/binary material requires a separate rights/permissions decision; being offline or noncommercial is not automatic authorisation.
+Independent family-mode mechanics may still be prototyped, but **new original quests/NPCs are not equivalent to the owner's Jagex-content parity target**. Exact Jagex artistic, literary and binary material requires separate rights/permission clearance; being offline or noncommercial, or accepting legal risk, does not automatically authorise copying or distribution.
 
 ## Validation (offline, no private saves)
 
