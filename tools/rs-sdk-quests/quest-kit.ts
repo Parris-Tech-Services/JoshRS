@@ -379,7 +379,16 @@ export async function runQuests(dir: string, quests: any[]) {
         const ia = typeof a === 'object' && a && 'slot' in a ? a : sdk.findInventoryItem(a);
         const ib = typeof b === 'object' && b && 'slot' in b ? b : sdk.findInventoryItem(b);
         if (!ia || !ib) return { success: false, message: 'Item not found' };
-        return await sdk.sendUseItemOnItem(ia.slot, ib.slot);
+        const beforeSig = JSON.stringify((sdk.getState()?.inventory ?? []).map((i: any) => [i.id, i.count]));
+        const r = await sdk.sendUseItemOnItem(ia.slot, ib.slot);
+        await sleep(600);
+        const afterSig = JSON.stringify((sdk.getState()?.inventory ?? []).map((i: any) => [i.id, i.count]));
+        if (afterSig === beforeSig && !sdk.getState()?.dialog?.isOpen) {
+          const ia2 = typeof a === 'object' && a && 'slot' in a ? a : sdk.findInventoryItem(a);
+          const ib2 = typeof b === 'object' && b && 'slot' in b ? b : sdk.findInventoryItem(b);
+          if (ia2 && ib2) return await sdk.sendUseItemOnItem(ib2.slot, ia2.slot);
+        }
+        return r;
       };
     }
     const c: Ctx = { bot, sdk, dir, sleep };

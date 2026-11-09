@@ -15,6 +15,8 @@ export const elena: Quest = {
 
     const gatherAndStart = () => step(c, N, 'gather-and-start', async () => {
       if (xp(sdk, 'Mining') > startXp + 1000) return true;
+      const pStart = sdk.getState()?.player;
+      if (pStart && (pStart.worldZ > 9000 || (pStart.worldX < 2558 && pStart.worldZ < 3380))) return true;
 
       // Drop leftover quest items from completed quests to ensure plenty of inventory space
       for (const dropRe of [/^mark of hazeel$/i, /^child's blanket$/i, /^feed$/i, /^key$/i]) {
@@ -184,7 +186,9 @@ export const elena: Quest = {
           }
           if (!has(sdk, /^bucket of water$/i)) break;
           if ((sdk.getState()?.player?.worldX ?? 0) > 2600) {
+            await bot.walkTo(2611, 3324, 1);
             await openNearbyDoors(c, 2610, 3324, 2);
+            await bot.walkTo(2609, 3324, 1);
             await bot.walkTo(2602, 3336, 3);
           }
           await bot.walkTo(2566, 3333, 1);
@@ -209,29 +213,29 @@ export const elena: Quest = {
       }
 
       if ((sdk.getState()?.player?.worldZ ?? 0) > 9000) {
-        await bot.walkTo(2514, 9763, 2);
-        const pipe = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2541);
+        await bot.walkTo(2530, 9703, 2);
+        const pipe = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2541 || /^sewer pipe$/i.test(l.name));
         if (pipe) {
           await sdk.sendInteractLoc(pipe.x, pipe.z, pipe.id, 1);
           await sleep(1500);
           if (sdk.getState()?.dialog?.isOpen) await chat(c);
         }
-        await bot.walkTo(2517, 9758, 3);
+        await bot.walkTo(2534, 9717, 2);
         await talk(c, /^edmond$/i);
         if (has(sdk, /^rope$/i)) {
-          await bot.walkTo(2514, 9763, 2);
-          await bot.useItemOnLoc(/^rope$/i, /^pipe$/i);
+          await bot.walkTo(2530, 9703, 2);
+          await bot.useItemOnLoc(/^rope$/i, /^sewer pipe$/i);
           await sleep(2000);
           if (sdk.getState()?.dialog?.isOpen) await chat(c);
         }
-        await bot.walkTo(2517, 9758, 3);
+        await bot.walkTo(2534, 9717, 2);
         await talk(c, /^edmond$/i);
         if (has(sdk, /^gas mask$/i)) {
           await bot.equipItem(/^gas mask$/i);
           await sleep(500);
         }
-        await bot.walkTo(2514, 9763, 2);
-        const pipe2 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2541);
+        await bot.walkTo(2530, 9703, 2);
+        const pipe2 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2541 || /^sewer pipe$/i.test(l.name));
         if (pipe2) {
           await sdk.sendInteractLoc(pipe2.x, pipe2.z, pipe2.id, 1);
           await waitCond(() => (sdk.getState()?.player?.worldZ ?? 9999) < 4000, 8000, 300);
@@ -252,10 +256,10 @@ export const elena: Quest = {
       }
 
       // 2. Rehnison house door (2537) at (2531, 3328)
-      if (has(sdk, /^book$/i)) {
+      if (!has(sdk, /^warrant$/i) && !has(sdk, /^a small key$/i)) {
         await bot.walkTo(2531, 3327, 1);
         const rDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2537);
-        if (rDoor) {
+        if (rDoor && (sdk.getState()?.player?.worldZ ?? 0) <= 3328) {
           await sdk.sendInteractLoc(rDoor.x, rDoor.z, rDoor.id, 1);
           await sleep(2000);
           if (sdk.getState()?.dialog?.isOpen) await chat(c);
@@ -266,12 +270,15 @@ export const elena: Quest = {
         if (up) {
           await sdk.sendInteractLoc(up.x, up.z, up.id, 1);
           await waitCond(() => lvl(sdk) === 1, 5000, 300);
+          await waitCond(() => !!sdk.findNearbyNpc(/^milli/i), 3000, 200);
+          await sleep(500);
         }
-        await talk(c, /^milli$/i);
+        await talk(c, /^milli/i);
         const down = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2540);
         if (down) {
           await sdk.sendInteractLoc(down.x, down.z, down.id, 1);
           await waitCond(() => lvl(sdk) === 0, 5000, 300);
+          await sleep(500);
         }
         const rDoorOut = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2537);
         if (rDoorOut && (sdk.getState()?.player?.worldZ ?? 0) >= 3329) {
@@ -283,26 +290,28 @@ export const elena: Quest = {
       // 3. Try Plague house door (2535) at (2533, 3272)
       if (!has(sdk, /^warrant$/i) && !has(sdk, /^a small key$/i)) {
         await bot.walkTo(2533, 3273, 1);
-        const pDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2535 && l.x === 2533 && l.z === 3272);
+        const pDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2535);
         if (pDoor) {
+          await bot.walkTo(pDoor.x, pDoor.z, 1);
           await sdk.sendInteractLoc(pDoor.x, pDoor.z, pDoor.id, 1);
           await sleep(1500);
           if (sdk.getState()?.dialog?.isOpen) await chat(c, [/kidnap victim/i, /check anyway/i]);
         }
 
         // 4. Civic Office — Clerk (2528, 3317) & Bravek (2536, 3314)
-        const wc = await bot.walkTo(2530, 3315, 1);
-        if (!wc?.success) { await openNearbyDoors(c, 2524, 3316, 3); await bot.walkTo(2530, 3315, 1); }
+        await bot.walkTo(2525, 3311, 1);
+        await openNearbyDoors(c, 2525, 3312, 2);
+        await bot.walkTo(2527, 3315, 1);
         await talk(c, /^clerk$/i, [/need permission to enter a plague house/i, /who is through that door/i, /urgent though/i]);
 
-        await bot.walkTo(2530, 3314, 1);
+        await bot.walkTo(2529, 3314, 1);
         const bDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2528);
         if (bDoor) {
           await sdk.sendInteractLoc(bDoor.x, bDoor.z, bDoor.id, 1);
           await sleep(1500);
           if (sdk.getState()?.dialog?.isOpen) await chat(c);
         }
-        await bot.walkTo(2535, 3314, 2);
+        await bot.walkTo(2534, 3314, 2);
         await talk(c, /^bravek$/i, [/really important though/i, /what is in the cure/i]);
         await talk(c, /^bravek$/i, [/they won't listen to me/i]);
         await sleep(2500);
@@ -319,67 +328,107 @@ export const elena: Quest = {
       }
 
       // 5. Enter Plague house at (2533, 3272) with Warrant
-      await openNearbyDoors(c, 2524, 3316, 3);
-      await bot.walkTo(2533, 3273, 1);
-      const pDoor2 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2535 && l.x === 2533 && l.z === 3272);
-      if (pDoor2 && (sdk.getState()?.player?.worldZ ?? 3273) >= 3272) {
-        await sdk.sendInteractLoc(pDoor2.x, pDoor2.z, pDoor2.id, 1);
-        await sleep(3000);
-        if (sdk.getState()?.dialog?.isOpen) await chat(c);
-      }
+      if ((sdk.getState()?.player?.worldZ ?? 0) < 9000) {
+        if ((sdk.getState()?.player?.worldZ ?? 3273) >= 3272) {
+          if ((sdk.getState()?.player?.worldZ ?? 0) >= 3312) {
+            await openNearbyDoors(c, 2525, 3312, 3);
+            await bot.walkTo(2525, 3310, 2);
+          }
+          await bot.walkTo(2533, 3272, 1);
+          const pDoor2 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2535);
+          if (pDoor2) {
+            await sdk.sendInteractLoc(pDoor2.x, pDoor2.z, pDoor2.id, 1);
+            await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 4000, 200);
+            await chat(c);
+            await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3272) <= 3271, 4000, 200);
+            await sleep(1200);
+            if (sdk.getState()?.dialog?.isOpen) await chat(c);
+          }
+        }
 
-      if (!has(sdk, /^a small key$/i)) {
-        await bot.walkTo(2534, 3269, 1);
-        const barrel = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2530);
-        if (barrel) {
-          await sdk.sendInteractLoc(barrel.x, barrel.z, barrel.id, 1);
-          await waitInv(sdk, /^a small key$/i, 4000);
-          if (sdk.getState()?.dialog?.isOpen) await chat(c);
+        if (!has(sdk, /^a small key$/i)) {
+          await sdk.sendWalk(2533, 3269, true);
+          await sleep(1500);
+          const barrel = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2530);
+          if (barrel) {
+            await sdk.sendInteractLoc(barrel.x, barrel.z, barrel.id, 1);
+            await waitInv(sdk, /^a small key$/i, 4000);
+            if (sdk.getState()?.dialog?.isOpen) await chat(c);
+          }
+        }
+
+        await sdk.sendWalk(2535, 3269, true);
+        await sleep(1500);
+        const sStairs = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2522);
+        if (sStairs) {
+          await sdk.sendInteractLoc(sStairs.x, sStairs.z, sStairs.id, 1);
+          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) > 9000, 6000, 300);
         }
       }
 
-      await bot.walkTo(2536, 3269, 1);
-      const sStairs = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2522);
-      if (sStairs) {
-        await sdk.sendInteractLoc(sStairs.x, sStairs.z, sStairs.id, 1);
-        await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) > 9000, 6000, 300);
+      if ((sdk.getState()?.player?.worldZ ?? 0) > 9000 && (sdk.getState()?.player?.worldZ ?? 0) < 9690) {
+        await bot.walkTo(2539, 9672, 1);
+        const cellGate = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2526);
+        if (cellGate) {
+          const keyItem = sdk.findInventoryItem(/^a small key$/i);
+          if (keyItem) {
+            await sdk.sendUseItemOnLoc(keyItem.slot, cellGate.x, cellGate.z, cellGate.id);
+            await sleep(2000);
+            if (sdk.getState()?.dialog?.isOpen) await chat(c);
+          }
+          if ((sdk.getState()?.player?.worldX ?? 0) < 2540) {
+            await sdk.sendInteractLoc(cellGate.x, cellGate.z, cellGate.id, 1);
+            await sleep(2000);
+            if (sdk.getState()?.dialog?.isOpen) await chat(c);
+          }
+        }
+        await talk(c, /^elena$/i);
+        if ((sdk.getState()?.player?.worldX ?? 0) >= 2540) {
+          const cellGateOut = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2526);
+          if (cellGateOut) {
+            await sdk.sendInteractLoc(cellGateOut.x, cellGateOut.z, cellGateOut.id, 1);
+            await sleep(1500);
+            if (sdk.getState()?.dialog?.isOpen) await chat(c);
+          }
+        }
+
+        // Exit basement & plague house
+        await bot.walkTo(2537, 9671, 2);
+        const upSpooky = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2523);
+        if (upSpooky) {
+          await sdk.sendInteractLoc(upSpooky.x, upSpooky.z, upSpooky.id, 1);
+          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 9999) < 4000, 6000, 300);
+        }
       }
 
-      await bot.walkTo(2539, 9672, 1);
-      const cellGate = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2526);
-      if (cellGate) {
-        await sdk.sendInteractLoc(cellGate.x, cellGate.z, cellGate.id, 1);
-        await sleep(1500);
-        if (sdk.getState()?.dialog?.isOpen) await chat(c);
-      }
-      await talk(c, /^elena$/i);
-
-      // Exit basement & plague house
-      await bot.walkTo(2538, 9671, 2);
-      const upSpooky = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2523);
-      if (upSpooky) {
-        await sdk.sendInteractLoc(upSpooky.x, upSpooky.z, upSpooky.id, 1);
-        await waitCond(() => (sdk.getState()?.player?.worldZ ?? 9999) < 4000, 6000, 300);
-      }
-      await bot.walkTo(2533, 3271, 1);
-      const pDoorOut = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2535);
-      if (pDoorOut && (sdk.getState()?.player?.worldZ ?? 0) < 3272) {
-        await sdk.sendInteractLoc(pDoorOut.x, pDoorOut.z, pDoorOut.id, 1);
-        await sleep(2000);
+      if ((sdk.getState()?.player?.worldZ ?? 0) <= 3271 && (sdk.getState()?.player?.worldX ?? 0) <= 2541) {
+        await sdk.sendWalk(2533, 3271, true);
+        await sleep(1800);
+        const pDoorOut = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2535);
+        if (pDoorOut && (sdk.getState()?.player?.worldZ ?? 0) < 3272) {
+          await sdk.sendInteractLoc(pDoorOut.x, pDoorOut.z, pDoorOut.id, 1);
+          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) >= 3272, 4000, 200);
+        }
       }
 
-      // Exit West Ardougne via Manhole (2542) at (2529, 3303)
-      await bot.walkTo(2529, 3303, 1);
-      const manhole = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2542);
-      if (manhole) {
-        await sdk.sendInteractLoc(manhole.x, manhole.z, manhole.id, 1);
-        await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) > 9000, 6000, 300);
+      // Exit West Ardougne via Manhole (2543=closed, 2544=open) at (2529, 3303)
+      if ((sdk.getState()?.player?.worldX ?? 0) < 2557 && (sdk.getState()?.player?.worldZ ?? 0) < 9000) {
+        await bot.walkTo(2529, 3302, 1);
+        for (let attempt = 0; attempt < 2 && (sdk.getState()?.player?.worldZ ?? 0) < 9000; attempt++) {
+          const manhole = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2543 || l.id === 2544 || /^manhole$/i.test(l.name));
+          if (manhole) {
+            await sdk.sendInteractLoc(manhole.x, manhole.z, manhole.id, 1);
+            await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) > 9000, 3500, 300);
+          }
+        }
       }
-      await bot.walkTo(2565, 9733, 2);
-      const mudPile = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2533);
-      if (mudPile) {
-        await sdk.sendInteractLoc(mudPile.x, mudPile.z, mudPile.id, 1);
-        await waitCond(() => (sdk.getState()?.player?.worldZ ?? 9999) < 4000, 6000, 300);
+      if ((sdk.getState()?.player?.worldZ ?? 0) >= 9690) {
+        await bot.walkTo(2561, 9736, 2);
+        const mudPile = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2533 || /mud pile/i.test(l.name));
+        if (mudPile) {
+          await sdk.sendInteractLoc(mudPile.x, mudPile.z, mudPile.id, 1);
+          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 9999) < 4000, 6000, 300);
+        }
       }
 
       await bot.walkTo(2568, 3334, 2);

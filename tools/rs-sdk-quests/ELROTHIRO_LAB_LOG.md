@@ -1,8 +1,8 @@
 # elrothiro Lab Log
 
-## Session 1 — Hour 8.5 Status Summary (2026-11-09T14:30Z)
+## Session 1 — Hour 10.5 Status Summary (2026-11-09T16:40Z)
 
-### Quests Completed (19 Quests, 44 Quest Points Verified In-Game)
+### Quests Completed (21 Quests, 48 Quest Points Verified In-Game)
 1. **Cook's Assistant** (`cooks`) — +1 QP (Total: 1 QP), +7,500 Cooking XP (Level 1 -> 30)
 2. **Sheep Shearer** (`sheep`) — +1 QP (Total: 2 QP), +5,000 Crafting XP (Level 1 -> 25), +60 Coins
 3. **The Restless Ghost** (`priest`) — +1 QP (Total: 3 QP), +28,125 Prayer XP (Level 1 -> 47, **Protect from Melee** unlocked!), Ghostspeak amulet
@@ -22,17 +22,18 @@
 17. **Monk's Friend** (`drunkmonk`) — +1 QP (Total: 39 QP, Third P2P Quest!), +50,000 Woodcutting XP (`Woodcutting: 56`), +8 Law runes
 18. **Hazeel Cult** (`hazeelcult`) — +1 QP (Total: 40 QP, Fourth P2P Quest!), +37,500 Thieving XP (`Thieving: 57 -> 64`, 92,275 XP!), +2,000 Coins
 19. **Sheep Herder** (`sheepherder`) — +4 QP (Total: 44 QP, Fifth P2P Quest!), +3,100 Coins (`Coins: 2,899 -> 5,999`)
+20. **Plague City** (`elena`) — +1 QP (Total: 45 QP, Sixth P2P Quest!), +60,625 Mining XP (`Mining: 56 -> 67`, 111,937 XP!), `A magic scroll` (Ardougne teleport scroll)
+21. **Murder Mystery** (`murder`) — +3 QP (Total: 48 QP, Seventh P2P Quest!), +35,150 Crafting XP (`Crafting: 34 -> 54`, 45,837 XP!), +2,000 Coins (`Coins: 5,963 -> 7,963`)
 
-### Active Quests In Progress (Hour 8.5)
-- **Plague City** (`elena`): Gathering dwellberries, rope, bucket of milk, chocolate dust, and snape grass to rescue Elena in West Ardougne.
+### Active Quests In Progress (Hour 10.5)
+- **Biohazard** (`biohazard`): Talking to Elena (`2592, 3336`), Jerico (`2612, 3324`), and Omart (`2559, 3266`) to distract the watchtower guards with messenger pigeons and retrieve Elena's Distillator.
 - **Clock Tower** (`cog`): Started with Brother Kojo, poisoned the rat trough, placed the **White Cog** (`id: 20`) on `L2` (`id: 31`) and the **Red Cog** (`id: 23`) on `L0` (`id: 29`).
-- **Murder Mystery** (`murder`): Gathered `Pungent pot`, `Criminals' thread`, `Flypaper` x4, and `Silver cup` at Sinclair Mansion.
 
-### Current Skill Levels (Combat Level 72, Total Level 645)
+### Current Skill Levels (Combat Level 72, Total Level 676)
 - Attack: 86 (426,500 xp) | Strength: 69 (126,150 xp) | Defence: 13 (1,600 xp) | HP: 54 (43,435 xp)
 - Prayer: 47 (28,125 xp) | Magic: 31 (8,125 xp) | Ranged: 1 (0 xp)
-- Smithing: 82 (320,930 xp) | Thieving: 64 (92,275 xp) | Woodcutting: 56 (51,875 xp) | Mining: 56 (51,312 xp)
-- Crafting: 34 (10,687 xp) | Cooking: 34 (10,200 xp) | Herblore: 28 (6,250 xp) | Firemaking: 15 (2,000 xp)
+- Smithing: 82 (320,930 xp) | Mining: 67 (111,937 xp) | Thieving: 64 (92,275 xp) | Woodcutting: 56 (51,875 xp)
+- Crafting: 54 (45,837 xp) | Cooking: 34 (10,200 xp) | Herblore: 28 (6,250 xp) | Firemaking: 15 (2,000 xp)
 - Agility: 1 | Fishing: 1 | Fletching: 1 | Runecraft: 1
 
 ### Possible SDK Bugs or Improvements
@@ -896,3 +897,272 @@
 - 2026-11-09T15:08:32.893Z STEP solve-murder
 - 2026-11-09T15:11:50.427Z START Murder Mystery (attempt 1)
 - 2026-11-09T15:11:50.427Z STEP solve-murder
+- 2026-11-09T15:15:16.825Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:15:16.826Z STEP solve-murder
+- 2026-11-09T15:18:32.653Z talkTo /^carol$/i failed: NPC not found
+- 2026-11-09T15:19:02.040Z STEP FAILED solve-murder
+- 2026-11-09T15:19:02.041Z START Murder Mystery (attempt 2)
+- 2026-11-09T15:19:02.041Z STEP solve-murder
+- 2026-11-09T15:20:30.437Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:20:30.437Z STEP solve-murder
+- 2026-11-09T15:23:57.630Z talkTo /^carol$/i failed: Cannot reach Carol: Stuck at (2744, 3578)
+- 2026-11-09T15:24:43.224Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T15:24:51.332Z STEP FAILED solve-murder
+- 2026-11-09T15:24:51.333Z START Murder Mystery (attempt 2)
+- 2026-11-09T15:24:51.333Z STEP solve-murder
+- 2026-11-09T15:24:52.038Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T15:26:46.428Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:26:46.428Z STEP solve-murder
+- 2026-11-09T15:28:00.831Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T15:30:15.628Z talkTo /^poison salesman$/i failed: NPC not found
+- 2026-11-09T15:31:06.835Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:31:06.835Z STEP solve-murder
+- 2026-11-09T15:34:23.229Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:34:23.229Z STEP solve-murder
+- 2026-11-09T15:37:47.045Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T15:38:34.431Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:38:34.431Z STEP solve-murder
+- 2026-11-09T15:40:30.222Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T15:42:32.031Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:42:32.032Z STEP solve-murder
+- 2026-11-09T15:43:06.426Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T15:45:41.225Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:45:41.225Z STEP solve-murder
+- 2026-11-09T15:48:51.662Z STEP FAILED solve-murder
+- 2026-11-09T15:48:51.663Z START Murder Mystery (attempt 2)
+- 2026-11-09T15:48:51.663Z STEP solve-murder
+- 2026-11-09T15:51:12.027Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:51:12.028Z STEP solve-murder
+- 2026-11-09T15:54:13.622Z STEP FAILED solve-murder
+- 2026-11-09T15:54:13.623Z START Murder Mystery (attempt 2)
+- 2026-11-09T15:54:13.624Z STEP solve-murder
+- 2026-11-09T15:57:03.239Z STEP FAILED solve-murder
+- 2026-11-09T15:57:03.240Z START Plague City (attempt 1)
+- 2026-11-09T15:57:03.241Z STEP gather-and-start
+- 2026-11-09T15:58:30.063Z STEP enter-west-ardougne
+- 2026-11-09T16:06:00.041Z START Plague City (attempt 1)
+- 2026-11-09T16:06:00.042Z STEP gather-and-start
+- 2026-11-09T16:06:04.877Z STEP enter-west-ardougne
+- 2026-11-09T16:06:36.840Z STEP FAILED enter-west-ardougne
+- 2026-11-09T16:06:36.841Z START Plague City (attempt 2)
+- 2026-11-09T16:06:36.841Z STEP gather-and-start
+- 2026-11-09T16:06:49.271Z STEP enter-west-ardougne
+- 2026-11-09T16:07:12.025Z STEP FAILED enter-west-ardougne
+- 2026-11-09T16:07:12.026Z START Murder Mystery (attempt 1)
+- 2026-11-09T16:07:12.026Z STEP solve-murder
+- 2026-11-09T16:07:24.019Z talkTo /^poison salesman$/i failed: NPC not found
+- 2026-11-09T16:07:24.827Z talkTo /^anna$/i failed: NPC not found
+- 2026-11-09T16:07:26.033Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T16:07:34.143Z STEP FAILED solve-murder
+- 2026-11-09T16:07:34.143Z START Murder Mystery (attempt 2)
+- 2026-11-09T16:07:34.143Z STEP solve-murder
+- 2026-11-09T16:07:36.033Z talkTo /^poison salesman$/i failed: NPC not found
+- 2026-11-09T16:07:36.828Z talkTo /^anna$/i failed: NPC not found
+- 2026-11-09T16:07:38.031Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T16:07:46.138Z STEP FAILED solve-murder
+- 2026-11-09T16:07:46.138Z START Biohazard (attempt 1)
+- 2026-11-09T16:07:46.139Z STEP start-and-distract-watchtower
+- 2026-11-09T16:07:46.140Z STEP retrieve-distillator
+- 2026-11-09T16:08:03.648Z talkTo /^kilron$/i failed: NPC not found
+- 2026-11-09T16:08:13.230Z talkTo /^elena$/i failed: NPC not found
+- 2026-11-09T16:08:13.230Z STEP FAILED retrieve-distillator
+- 2026-11-09T16:08:13.230Z START Biohazard (attempt 2)
+- 2026-11-09T16:08:13.230Z STEP start-and-distract-watchtower
+- 2026-11-09T16:08:13.230Z STEP retrieve-distillator
+- 2026-11-09T16:08:30.833Z talkTo /^kilron$/i failed: NPC not found
+- 2026-11-09T16:08:39.631Z talkTo /^elena$/i failed: NPC not found
+- 2026-11-09T16:08:39.631Z STEP FAILED retrieve-distillator
+- 2026-11-09T16:08:39.632Z START Clock Tower (attempt 1)
+- 2026-11-09T16:08:39.633Z STEP start-and-bucket
+- 2026-11-09T16:08:51.540Z STEP white-cog
+- 2026-11-09T16:08:51.541Z STEP red-and-black-cogs
+- 2026-11-09T16:10:41.621Z START Plague City (attempt 1)
+- 2026-11-09T16:10:41.621Z STEP gather-and-start
+- 2026-11-09T16:10:41.624Z STEP enter-west-ardougne
+- 2026-11-09T16:11:18.547Z STEP rescue-elena
+- 2026-11-09T16:11:45.363Z talkTo /^milli$/i failed: NPC not found
+- 2026-11-09T16:13:40.037Z START Plague City (attempt 1)
+- 2026-11-09T16:13:40.037Z STEP gather-and-start
+- 2026-11-09T16:13:40.039Z STEP enter-west-ardougne
+- 2026-11-09T16:13:40.039Z STEP rescue-elena
+- 2026-11-09T16:14:03.044Z talkTo /^milli/i failed: NPC not found
+- 2026-11-09T16:18:03.652Z talkTo /^bravek$/i failed: NPC not found
+- 2026-11-09T16:18:09.235Z START Plague City (attempt 1)
+- 2026-11-09T16:18:09.235Z STEP gather-and-start
+- 2026-11-09T16:18:09.237Z STEP enter-west-ardougne
+- 2026-11-09T16:18:09.238Z STEP rescue-elena
+- 2026-11-09T16:21:14.855Z STEP FAILED rescue-elena
+- 2026-11-09T16:21:14.862Z START Plague City (attempt 2)
+- 2026-11-09T16:21:14.862Z STEP gather-and-start
+- 2026-11-09T16:21:14.862Z STEP enter-west-ardougne
+- 2026-11-09T16:21:14.862Z STEP rescue-elena
+- 2026-11-09T16:21:14.862Z STEP FAILED rescue-elena
+- 2026-11-09T16:21:14.863Z START Murder Mystery (attempt 1)
+- 2026-11-09T16:21:14.863Z STEP solve-murder
+- 2026-11-09T16:21:14.866Z STEP FAILED solve-murder
+- 2026-11-09T16:21:14.867Z START Murder Mystery (attempt 2)
+- 2026-11-09T16:21:14.867Z STEP solve-murder
+- 2026-11-09T16:21:14.867Z STEP FAILED solve-murder
+- 2026-11-09T16:21:14.867Z START Biohazard (attempt 1)
+- 2026-11-09T16:21:14.868Z STEP start-and-distract-watchtower
+- 2026-11-09T16:21:14.868Z STEP retrieve-distillator
+- 2026-11-09T16:21:14.870Z STEP FAILED retrieve-distillator
+- 2026-11-09T16:21:14.870Z START Biohazard (attempt 2)
+- 2026-11-09T16:21:14.870Z STEP start-and-distract-watchtower
+- 2026-11-09T16:21:14.870Z STEP retrieve-distillator
+- 2026-11-09T16:21:14.870Z STEP FAILED retrieve-distillator
+- 2026-11-09T16:21:14.871Z START Clock Tower (attempt 1)
+- 2026-11-09T16:21:14.872Z STEP start-and-bucket
+- 2026-11-09T16:21:14.873Z STEP FAILED start-and-bucket
+- 2026-11-09T16:21:14.873Z START Clock Tower (attempt 2)
+- 2026-11-09T16:21:14.873Z STEP start-and-bucket
+- 2026-11-09T16:21:14.873Z STEP FAILED start-and-bucket
+- 2026-11-09T16:21:14.874Z START Fishing Contest (attempt 1)
+- 2026-11-09T16:21:14.874Z STEP start-and-prep
+- 2026-11-09T16:21:14.875Z STEP FAILED start-and-prep
+- 2026-11-09T16:21:14.875Z START Fishing Contest (attempt 2)
+- 2026-11-09T16:21:14.875Z STEP start-and-prep
+- 2026-11-09T16:21:14.875Z STEP FAILED start-and-prep
+- 2026-11-09T16:21:14.875Z START Dwarf Cannon (attempt 1)
+- 2026-11-09T16:21:14.876Z STEP start-and-fix-railings
+- 2026-11-09T16:21:14.876Z STEP FAILED start-and-fix-railings
+- 2026-11-09T16:21:14.877Z START Dwarf Cannon (attempt 2)
+- 2026-11-09T16:21:14.877Z STEP start-and-fix-railings
+- 2026-11-09T16:21:14.877Z STEP FAILED start-and-fix-railings
+- 2026-11-09T16:21:14.877Z START Tree Gnome Village (attempt 1)
+- 2026-11-09T16:21:14.877Z STEP start-bolren
+- 2026-11-09T16:21:14.878Z STEP FAILED start-bolren
+- 2026-11-09T16:21:14.878Z START Tree Gnome Village (attempt 2)
+- 2026-11-09T16:21:14.878Z STEP start-bolren
+- 2026-11-09T16:21:14.878Z STEP FAILED start-bolren
+- 2026-11-09T16:21:14.878Z START Waterfall Quest (attempt 1)
+- 2026-11-09T16:21:14.879Z STEP almera-hudon-and-book
+- 2026-11-09T16:21:14.880Z STEP FAILED almera-hudon-and-book
+- 2026-11-09T16:21:14.881Z START Waterfall Quest (attempt 2)
+- 2026-11-09T16:21:14.881Z STEP almera-hudon-and-book
+- 2026-11-09T16:21:14.881Z STEP FAILED almera-hudon-and-book
+- 2026-11-09T16:21:14.881Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T16:21:14.881Z STEP prep-supplies
+- 2026-11-09T16:21:14.882Z STEP FAILED prep-supplies
+- 2026-11-09T16:21:14.882Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T16:21:14.882Z STEP prep-supplies
+- 2026-11-09T16:21:14.883Z STEP FAILED prep-supplies
+- 2026-11-09T16:21:14.883Z START Holy Grail (attempt 1)
+- 2026-11-09T16:21:14.883Z STEP start-camelot-and-merlin
+- 2026-11-09T16:21:14.883Z STEP FAILED start-camelot-and-merlin
+- 2026-11-09T16:21:14.884Z START Holy Grail (attempt 2)
+- 2026-11-09T16:21:14.884Z STEP start-camelot-and-merlin
+- 2026-11-09T16:21:14.884Z STEP FAILED start-camelot-and-merlin
+- 2026-11-09T16:21:14.884Z START Witch's House (attempt 1)
+- 2026-11-09T16:21:14.885Z STEP start-and-prep
+- 2026-11-09T16:21:14.886Z STEP FAILED start-and-prep
+- 2026-11-09T16:21:14.886Z START Witch's House (attempt 2)
+- 2026-11-09T16:21:14.886Z STEP start-and-prep
+- 2026-11-09T16:21:14.886Z STEP FAILED start-and-prep
+- 2026-11-09T16:21:14.887Z START Gertrude's Cat (attempt 1)
+- 2026-11-09T16:21:14.887Z STEP prep-items-and-start
+- 2026-11-09T16:21:14.888Z STEP FAILED prep-items-and-start
+- 2026-11-09T16:21:14.888Z START Gertrude's Cat (attempt 2)
+- 2026-11-09T16:21:14.888Z STEP prep-items-and-start
+- 2026-11-09T16:21:14.889Z STEP FAILED prep-items-and-start
+- 2026-11-09T16:21:14.889Z START Jungle Potion (attempt 1)
+- 2026-11-09T16:21:14.889Z STEP start-and-first-three-herbs
+- 2026-11-09T16:21:14.890Z STEP FAILED start-and-first-three-herbs
+- 2026-11-09T16:21:14.890Z START Jungle Potion (attempt 2)
+- 2026-11-09T16:21:14.890Z STEP start-and-first-three-herbs
+- 2026-11-09T16:21:14.890Z STEP FAILED start-and-first-three-herbs
+- 2026-11-09T16:21:14.891Z START Dragon Slayer (attempt 1)
+- 2026-11-09T16:21:14.892Z STEP start-guildmaster-and-oziach
+- 2026-11-09T16:21:14.892Z STEP FAILED start-guildmaster-and-oziach
+- 2026-11-09T16:21:14.893Z START Dragon Slayer (attempt 2)
+- 2026-11-09T16:21:14.893Z STEP start-guildmaster-and-oziach
+- 2026-11-09T16:21:14.893Z STEP FAILED start-guildmaster-and-oziach
+- 2026-11-09T16:21:14.893Z START Demon Slayer (attempt 1)
+- 2026-11-09T16:21:14.894Z STEP start-aris-and-prysin
+- 2026-11-09T16:21:14.895Z STEP FAILED start-aris-and-prysin
+- 2026-11-09T16:21:14.895Z START Demon Slayer (attempt 2)
+- 2026-11-09T16:21:14.895Z STEP start-aris-and-prysin
+- 2026-11-09T16:21:14.895Z STEP FAILED start-aris-and-prysin
+- 2026-11-09T16:21:14.895Z START Imp Catcher (attempt 1)
+- 2026-11-09T16:21:14.896Z STEP start-mizgog
+- 2026-11-09T16:21:14.896Z STEP FAILED start-mizgog
+- 2026-11-09T16:21:14.897Z START Imp Catcher (attempt 2)
+- 2026-11-09T16:21:14.897Z STEP start-mizgog
+- 2026-11-09T16:21:14.897Z STEP FAILED start-mizgog
+- 2026-11-09T16:26:53.228Z START Plague City (attempt 1)
+- 2026-11-09T16:26:53.229Z STEP gather-and-start
+- 2026-11-09T16:26:53.231Z STEP enter-west-ardougne
+- 2026-11-09T16:26:53.231Z STEP rescue-elena
+- 2026-11-09T16:28:52.853Z talkTo /^edmond$/i failed: NPC not found
+- 2026-11-09T16:29:00.961Z STEP FAILED rescue-elena
+- 2026-11-09T16:29:00.962Z START Plague City (attempt 2)
+- 2026-11-09T16:29:00.962Z STEP gather-and-start
+- 2026-11-09T16:29:00.962Z STEP enter-west-ardougne
+- 2026-11-09T16:29:00.962Z STEP rescue-elena
+- 2026-11-09T16:31:12.511Z DONE Plague City
+- 2026-11-09T16:31:12.511Z START Murder Mystery (attempt 1)
+- 2026-11-09T16:31:12.511Z STEP solve-murder
+- 2026-11-09T16:31:18.026Z talkTo /^poison salesman$/i failed: NPC not found
+- 2026-11-09T16:31:18.835Z talkTo /^anna$/i failed: NPC not found
+- 2026-11-09T16:31:20.028Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T16:31:28.135Z STEP FAILED solve-murder
+- 2026-11-09T16:31:28.136Z START Murder Mystery (attempt 2)
+- 2026-11-09T16:31:28.136Z STEP solve-murder
+- 2026-11-09T16:31:30.027Z talkTo /^poison salesman$/i failed: NPC not found
+- 2026-11-09T16:31:30.831Z talkTo /^anna$/i failed: NPC not found
+- 2026-11-09T16:31:32.028Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T16:31:40.136Z STEP FAILED solve-murder
+- 2026-11-09T16:31:40.137Z START Biohazard (attempt 1)
+- 2026-11-09T16:31:40.138Z STEP start-and-distract-watchtower
+- 2026-11-09T16:31:40.145Z STEP retrieve-distillator
+- 2026-11-09T16:31:57.627Z talkTo /^kilron$/i failed: NPC not found
+- 2026-11-09T16:34:37.229Z START Murder Mystery (attempt 1)
+- 2026-11-09T16:34:37.229Z STEP solve-murder
+- 2026-11-09T16:34:50.424Z talkTo /^poison salesman$/i failed: NPC not found
+- 2026-11-09T16:34:51.220Z talkTo /^anna$/i failed: NPC not found
+- 2026-11-09T16:34:52.435Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T16:35:00.547Z STEP FAILED solve-murder
+- 2026-11-09T16:35:00.548Z START Murder Mystery (attempt 2)
+- 2026-11-09T16:35:00.548Z STEP solve-murder
+- 2026-11-09T16:35:13.625Z talkTo /^poison salesman$/i failed: NPC not found
+- 2026-11-09T16:37:23.626Z START Murder Mystery (attempt 1)
+- 2026-11-09T16:37:23.627Z STEP solve-murder
+- 2026-11-09T16:39:59.517Z DONE Murder Mystery
+
+### Quest 20: Plague City (`elena`) — COMPLETED
+- **Quest Points Gained**: +1 QP (Total: **45 QP**, Sixth P2P Quest!)
+- **Rewards**: +60,625 Mining XP (`Mining: 56 -> 67`, `111,937 xp`), `A magic scroll` (Ardougne teleport scroll).
+- **Notes / Lessons**:
+  - Picked `Dwellberries` in McGrubor's Wood (`2658, 3470`), spoke to `Edmond` (`2568, 3334`) and `Alrena` (`2573, 3333`) to receive the `Gas mask`, poured 4 buckets of water on the `Mud patch` (`2566, 3332`), dug into the Ardougne Sewer (`2561, 9736`), tied a `Rope` to the `Sewer pipe` (`2530, 9701`), and pulled the grill off with Edmond (`2534, 9717`).
+  - Entered West Ardougne wearing the `Gas mask`, got `A book` from `Jethick` (`2540, 3305`), returned it to `Ted Rehnison` & `Martha Rehnison` (`2531, 3328`), spoke to `Milli Rehnison` upstairs (`/^milli/i`), spoke to the Mourner at the Plague House west door (`id: 2535` at `2533, 3272`), spoke to the `Clerk` and `Bravek` in the Civic Office (`2527, 3315` -> `2534, 3314`), mixed `Bucket of milk` + `Chocolate dust` + `Snape grass` into `Hangover cure`, cured Bravek to obtain the `Warrant`, snuck into the Plague House (`id: 2535` at `2533, 3272`), took `A small key` from the `Barrel` (`id: 2530` at `2534, 3268`), unlocked the basement cell (`id: 2526` at `2540, 9672`), freed `Elena`, exited via the `Manhole` (`id: 2543`/`2544` at `2529, 3303`), and reported to `Edmond`.
+
+### Quest 21: Murder Mystery (`murder`) — COMPLETED
+- **Quest Points Gained**: +3 QP (Total: **48 QP**, Seventh P2P Quest!)
+- **Rewards**: +35,150 Crafting XP (`Crafting: 34 -> 54`, `45,837 xp`), +2,000 Coins (`Coins: 5,963 -> 7,963`).
+- **Notes / Lessons**:
+  - Fixed pathfinding door-segment check in `sdk/actions.ts` (`_walkToRoute`) so doors are only opened when crossed by the active waypoint segment `[pos, prevWp, wp]` rather than anywhere within 6 tiles across partition walls.
+  - Matched `Unknown print` (from `Criminals' dagger`) with `Annas' print` (from `Silver necklace`) -> `Killers' print`, questioned the `Poison Salesman` at Seers' Village pub (`2695, 3495`) and `Anna` (`2734, 3575`), investigated the `Sinclair family compost heap` (`id: 2650` from walkable tile `2730, 3574`), and reported to the `Guard` (`2741, 3561`).
+
+- 2026-11-09T16:39:59.518Z START Biohazard (attempt 1)
+- 2026-11-09T16:39:59.518Z STEP start-and-distract-watchtower
+- 2026-11-09T16:42:39.641Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T16:42:39.642Z START Biohazard (attempt 2)
+- 2026-11-09T16:42:39.642Z STEP start-and-distract-watchtower
+- 2026-11-09T16:44:10.446Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T16:44:10.447Z START Clock Tower (attempt 1)
+- 2026-11-09T16:44:10.448Z STEP start-and-bucket
+- 2026-11-09T16:44:37.828Z STEP white-cog
+- 2026-11-09T16:44:37.829Z STEP red-and-black-cogs
+- 2026-11-09T16:47:14.422Z STEP FAILED red-and-black-cogs
+- 2026-11-09T16:47:14.423Z START Clock Tower (attempt 2)
+- 2026-11-09T16:47:14.423Z STEP start-and-bucket
+- 2026-11-09T16:47:14.423Z STEP white-cog
+- 2026-11-09T16:47:14.423Z STEP red-and-black-cogs
+- 2026-11-09T16:47:39.619Z STEP FAILED red-and-black-cogs
+- 2026-11-09T16:47:39.620Z START Fishing Contest (attempt 1)
+- 2026-11-09T16:47:39.620Z STEP start-and-prep
+- 2026-11-09T16:47:45.234Z talkTo /^(vestri|austri)$/i failed: NPC not found
+- 2026-11-09T17:05:46.823Z START Clock Tower (attempt 1)
+- 2026-11-09T17:05:46.831Z STEP start-and-bucket
+- 2026-11-09T17:05:46.832Z STEP white-cog
+- 2026-11-09T17:05:46.833Z STEP red-and-black-cogs

@@ -32,40 +32,55 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
   }
   if (!hasPick()) return false;
 
-  await rechargePrayer(c, 35);
-
-  // Walk to White Wolf Mountain rockslide at (2838, 3517) from the West side (2837, 3517) and mine East to (2840, 3516)
-  await bot.walkTo(2845, 3505, 3);
-  await bot.walkTo(2837, 3517, 1);
-  for (let i = 0; i < 5 && (sdk.getState()?.player?.worldX ?? 0) < 2839; i++) {
-    const rock = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2634);
-    if (rock) {
-      await sdk.sendInteractLoc(rock.x, rock.z, rock.id, 2);
-      await waitCond(() => (sdk.getState()?.player?.worldX ?? 0) >= 2839, 6000, 250);
-    }
-    await sleep(400);
-  }
-
-  const climb = async (x: number, z: number, id: number, toUnderground: boolean) => {
+  const climb = async (lx: number, lz: number, wx: number, wz: number, id: number, toUnderground: boolean) => {
     for (let i = 0; i < 4 && ((sdk.getState()?.player?.worldZ ?? 0) > 9000) !== toUnderground; i++) {
-      await bot.walkTo(x, z, 1);
-      const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === id && Math.hypot(l.x - x, l.z - z) <= 2);
+      await bot.walkTo(wx, wz, 1);
+      const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === id && Math.hypot(l.x - lx, l.z - lz) <= 2);
       if (lad) await sdk.sendInteractLoc(lad.x, lad.z, lad.id, 1);
       await waitCond(() => ((sdk.getState()?.player?.worldZ ?? 0) > 9000) === toUnderground, 5000, 250);
     }
     return ((sdk.getState()?.player?.worldZ ?? 0) > 9000) === toUnderground;
   };
 
+  if ((sdk.getState()?.player?.worldZ ?? 0) < 9880) {
+    await rechargePrayer(c, 35);
+
+    // Walk to White Wolf Mountain rockslide at (2838, 3517) from the West side (2837, 3517) and mine East to (2840, 3516)
+    if ((sdk.getState()?.player?.worldX ?? 0) < 2839 || (sdk.getState()?.player?.worldZ ?? 0) < 3508) {
+      await bot.walkTo(2845, 3505, 3);
+      await bot.walkTo(2837, 3517, 1);
+      for (let i = 0; i < 5 && (sdk.getState()?.player?.worldX ?? 0) < 2839; i++) {
+        const rock = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2634);
+        if (rock) {
+          await sdk.sendInteractLoc(rock.x, rock.z, rock.id, 2);
+          await waitCond(() => (sdk.getState()?.player?.worldX ?? 0) >= 2839, 6000, 250);
+        }
+        await sleep(400);
+      }
+    }
+
+    if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+      await bot.activatePrayer('protect_from_melee');
+    }
+
+    if (!(await climb(2848, 3513, 2848, 3512, 1759, true))) return false;
+  }
+
   if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
     await bot.activatePrayer('protect_from_melee');
   }
 
-  // Ladder chain into Ice Queen's lair (verified via findLongPath)
-  if (!(await climb(2848, 3513, 1759, true))) return false;
-  if (!(await climb(2823, 9913, 1755, false))) return false;
-  if (!(await climb(2827, 3510, 1759, true))) return false;
-  if (!(await climb(2857, 9917, 1755, false))) return false;
-  if (!(await climb(2859, 3519, 1759, true))) return false;
+  // Ladder chain into Ice Queen's lair (verified via exact collision-data BFS)
+  if ((sdk.getState()?.player?.worldX ?? 0) < 2855) {
+    if ((sdk.getState()?.player?.worldZ ?? 0) > 9000 && (sdk.getState()?.player?.worldX ?? 0) <= 2850) {
+      await climb(2824, 9907, 2824, 9908, 1755, false);
+    }
+    if ((sdk.getState()?.player?.worldZ ?? 0) < 9000) {
+      if (!(await climb(2827, 3510, 2827, 3511, 1759, true))) return false;
+    }
+    if (!(await climb(2857, 9917, 2857, 9918, 1755, false))) return false;
+    if (!(await climb(2859, 3519, 2859, 3520, 1759, true))) return false;
+  }
 
   // Walk to Ice Queen (795 at 2866, 9956) and defeat her for Ice gloves (1580)
   for (const w of [/^silverlight$/i, /^bronze sword$/i, /^iron chainbody$/i, /^bronze med helm$/i, /^wooden shield$/i]) {
@@ -99,11 +114,11 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
   }
 
   // Exit Ice Queen's lair via reverse ladder chain
-  await climb(2859, 9919, 1755, false);
-  await climb(2857, 3517, 1759, true);
-  await climb(2827, 9910, 1755, false);
-  await climb(2823, 3513, 1759, true);
-  await climb(2848, 9913, 1755, false);
+  await climb(2859, 9919, 2859, 9920, 1755, false);
+  await climb(2857, 3517, 2857, 3518, 1759, true);
+  await climb(2827, 9910, 2827, 9911, 1755, false);
+  await climb(2824, 3507, 2824, 3508, 1759, true);
+  await climb(2848, 9913, 2848, 9912, 1755, false);
 
   await bot.deactivateAllPrayers();
 
@@ -132,7 +147,10 @@ export const cog: Quest = {
     let blackPlaced = false;
     let bluePlaced = false;
 
-    const inDungeon = () => (sdk.getState()?.player?.worldZ ?? 0) > 9000;
+    const inDungeon = () => {
+      const z = sdk.getState()?.player?.worldZ ?? 0;
+      return z >= 9600 && z <= 9700;
+    };
     const findCog = (id: number) => (sdk.getState()?.inventory ?? []).find((i: any) => i.id === id);
     const hasCog = (id: number) => !!findCog(id);
     const hasAnyCog = () => (sdk.getState()?.inventory ?? []).some((i: any) => [20, 21, 22, 23].includes(i.id));

@@ -42,6 +42,13 @@ export const biohazard: Quest = {
         if (!(await walkToKandarin(c, 2592, 3336))) return false;
       }
 
+      const scroll = sdk.findInventoryItem(/^a magic scroll$/i);
+      if (scroll) {
+        await sdk.sendUseItem(scroll.slot, 1);
+        await sleep(1000);
+        if (sdk.getState()?.dialog?.isOpen) await chat(c);
+      }
+
       for (const dropRe of [/^bucket$/i, /^picture$/i, /^warrant$/i, /^a small key$/i, /^a magic scroll$/i, /^mark of hazeel$/i, /^child's blanket$/i, /^feed$/i, /^key$/i, /^spade$/i]) {
         for (const it of (sdk.getInventory() ?? []).filter((i: any) => dropRe.test(i.name))) {
           await sdk.sendDropItem(it.slot);
@@ -77,14 +84,14 @@ export const biohazard: Quest = {
       await talk(c, /^jerico$/i, [/messenger pigeons to distract them/i]);
 
       // 3. Get Birdfeed (422) from Jerico's cupboard (2612, 3326)
-      if (!has(sdk, /^birdfeed$/i) && !pigeonsReleased) {
+      if (!has(sdk, /^bird ?feed$/i) && !pigeonsReleased) {
         await bot.walkTo(2612, 3326, 2);
-        for (let i = 0; i < 4 && !has(sdk, /^birdfeed$/i); i++) {
+        for (let i = 0; i < 4 && !has(sdk, /^bird ?feed$/i); i++) {
           const cb = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^cupboard$/i.test(l.name) && Math.hypot(l.x - 2612, l.z - 3326) <= 3);
           if (cb) {
             const opt = (cb.options ?? []).find((o: string) => /^(open|search)$/i.test(o)) ?? 'Open';
             await bot.interactLoc(cb, new RegExp(`^${opt}$`, 'i'));
-            if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || has(sdk, /^birdfeed$/i), 3500, 250)) {
+            if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || has(sdk, /^bird ?feed$/i), 3500, 250)) {
               if (sdk.getState()?.dialog?.isOpen) await chat(c);
             }
           }
@@ -107,18 +114,19 @@ export const biohazard: Quest = {
       await talk(c, /^omart$/i, [/ok, lets do it/i]);
       if (inWestArdougne()) return true;
 
-      // 6. Use Birdfeed on Watchtower (loc_2067 at 2562, 3301) and release Pigeons (424) at (2563, 3301)
-      await bot.walkTo(2563, 3301, 1);
-      const feed = (sdk.getInventory() ?? []).find((i: any) => i.id === 422 || /^birdfeed$/i.test(i.name));
-      const tower = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2067 || /^watchtower$/i.test(l.name));
+      // 6. Use Birdfeed on Watchtower (loc_2067 at 2563, 3302) and release Pigeons (424) at (2563, 3302)
+      await bot.walkTo(2563, 3302, 1);
+      const feed = (sdk.getInventory() ?? []).find((i: any) => i.id === 422 || /^bird ?feed$/i.test(i.name));
+      const tower = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => (l.id === 2067 || /^watchtower$/i.test(l.name)) && l.x === 2563 && l.z === 3302)
+        ?? (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2067 || /^watchtower$/i.test(l.name));
       if (feed && tower) {
         await sdk.sendUseItemOnLoc(feed.slot, tower.x, tower.z, tower.id);
-        await waitCond(() => !has(sdk, /^birdfeed$/i), 5000, 300);
+        await waitCond(() => !has(sdk, /^bird ?feed$/i), 5000, 300);
       }
-      const cage = (sdk.getInventory() ?? []).find((i: any) => i.id === 424);
+      const cage = (sdk.getInventory() ?? []).find((i: any) => i.id === 424 || (/^pigeon cage$/i.test(i.name) && (i.options ?? []).some((o: string) => /open/i.test(o))));
       if (cage) {
-        await bot.useItemOp1(cage);
-        await waitCond(() => !(sdk.getInventory() ?? []).some((i: any) => i.id === 424), 6000, 300);
+        await sdk.sendUseItem(cage.slot, 1);
+        await waitCond(() => !(sdk.getInventory() ?? []).some((i: any) => i.id === 424 || (/^pigeon cage$/i.test(i.name) && (i.options ?? []).some((o: string) => /open/i.test(o)))), 6000, 300);
         pigeonsReleased = true;
       }
 
@@ -214,6 +222,11 @@ export const biohazard: Quest = {
             await openNearbyDoors(c, 2549, 3325, 4);
             const mourner = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /^mourner$/i.test(n.name));
             if (mourner) {
+              const wep = sdk.findInventoryItem(/sword|scimitar|axe|mace|dagger/i);
+              if (wep) {
+                await bot.equipItem(wep);
+                await sleep(400);
+              }
               if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
                 await bot.activatePrayer('protect_from_melee');
               }
