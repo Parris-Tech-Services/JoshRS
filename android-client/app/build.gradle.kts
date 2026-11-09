@@ -26,6 +26,19 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            // GitHub builds have independently generated debug signing keys.
+            // A shared applicationId would trigger Android's signature/update
+            // conflict (and can accidentally target a prior private cache vault).
+            // Every CI run therefore installs a SIDE-BY-SIDE, disposable app.
+            // Locally built previews use their own .playtestlocal identity.
+            val playtestId = providers.gradleProperty("joshrsPlaytestBuildId").orNull ?: "local"
+            require(playtestId.matches(Regex("[A-Za-z0-9]{1,32}"))) {
+                "Playtest build ID must be a short alphanumeric token"
+            }
+            applicationIdSuffix = ".playtest$playtestId"
+            versionNameSuffix = "-playtest"
+        }
         release {
             isMinifyEnabled = false
         }
