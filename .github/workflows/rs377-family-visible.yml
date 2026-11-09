@@ -33,5 +33,16 @@ jobs:
         run: |
           node --check tools/rs377-family-visible/verify-patrol.mjs
           node --test tools/rs377-family-visible/verify-patrol.test.mjs
+      - name: Fedora wrapper cannot terminate caller or launch in CI
+        shell: bash
+        run: |
+          bash -n tools/rs377-family-visible/run-fedora-patrol.sh
+          set +e
+          bash tools/rs377-family-visible/run-fedora-patrol.sh --check > /tmp/fedora-safe.log 2>&1
+          status=$?
+          set -e
+          test "$status" -ne 0
+          grep -q 'PREFLIGHT_BLOCKED' /tmp/fedora-safe.log
+          grep -q 'Terminal remains open' /tmp/fedora-safe.log
       - name: Safe no-login help
         run: node tools/rs377-family-visible/join.mjs --help
