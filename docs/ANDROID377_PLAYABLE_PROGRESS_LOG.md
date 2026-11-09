@@ -290,3 +290,36 @@ a different login block. So the Kotlin path is now byte-identical to one the ser
 **Still absent:** socket I/O, the read loop, reconnect, and the cache. The Kotlin client has
 not itself logged in — only the block it would send is proven correct.
 
+## 11. Round 7 — staying logged in when the tab is backgrounded
+
+Symptom: switching Android Chrome tabs logged the player out of the 274 world.
+
+Cause is server-side, not Chrome. The engine force-logs after `TIMEOUT_NO_CONNECTION`
+(50 ticks = 30s with no connection) and `TIMEOUT_NO_RESPONSE` (100 ticks = 60s).
+Android throttles a backgrounded tab to roughly one timer per minute, so the client
+legitimately misses the window while the player is still present.
+
+Fix: both constants now read an env var, defaulting to upstream values, so a private world
+can raise them without changing public behaviour:
+
+```ts
+Number(process.env.JOSHRS_IDLE_LOGOUT_TICKS ?? 50)
+Number(process.env.JOSHRS_FORCE_LOGOUT_TICKS ?? 100)
+```
+
+`tools/play274/start-playable-274.sh` applies this patch idempotently (it refuses to guess if
+the upstream text does not match) and launches with **7200 / 14400 ticks = 72 min / 144 min**.
+
+Verified in the running process:
+
+```
+$ tr '\0' '\n' < /proc/<pid>/environ | grep JOSHRS
+JOSHRS_IDLE_LOGOUT_TICKS=7200
+JOSHRS_FORCE_LOGOUT_TICKS=14400
+```
+
+and the patch applies cleanly to the pristine upstream file (`PATCH_APPLIED_CLEANLY`).
+
+**Not verified:** that a real tab switch now survives. That needs a human to switch tabs for
+longer than the old 30s window and confirm the session persists.
+
