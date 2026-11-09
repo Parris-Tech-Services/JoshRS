@@ -103,7 +103,8 @@ class GameFrameCodecTest {
         val frames = acc.feed(frame.copyOfRange(3, frame.size))
         assertEquals(1, frames.size)
         assertEquals(ServerProt.UPDATE_STAT, frames[0].prot)
-        assertEquals(3, PacketBuffer(frames[0].payload).g2())
+        assertEquals(1, PacketBuffer(frames[0].payload).g2()) // p2(1)
+        assertEquals(2, PacketBuffer(frames[0].payload).let { it.g2(); it.g4() })
     }
 
     @Test
