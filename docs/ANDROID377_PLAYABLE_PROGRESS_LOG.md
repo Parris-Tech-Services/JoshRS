@@ -136,3 +136,34 @@ ISAAC matches reference vectors produced by running the server's own `Isaac.ts`
 **Still absent in this package:** RSA login-block encryption, the credential
 payload, socket I/O, reconnection. No frame has yet been exchanged with the live
 engine — the next gate is a real opcode-14 probe plus login from Kotlin.
+
+## 7. Round 3 — private experimental build produced an APK (VERIFIED)
+
+A separate **private** repository (`Parris-Tech-Services/JoshRS-Android-Experimental`) now
+vendors `zeruth/meteor-mp` branch `377` — the only Android-ready 377 client in existence.
+It is **not** part of this public repo and must never be merged into it: upstream ships no
+LICENSE on any branch, so the code is all rights reserved, and its `rs/` module is a
+decompiled Jagex client. The owner accepted that risk for private family-only use; it does
+not extend to publication.
+
+Evidence (private CI run 42609710370, `BUILD SUCCESSFUL in 3m 40s`):
+
+```
+client-android-debug.apk   31 MB
+sha256 4476e20bdc1549e287e0b8eefbc6715a024040f12f046ff027c09f4363ac6cf6
+```
+
+- Built with JDK 21 / Android SDK 36 / Gradle 9.3.0 via `.github/workflows/android-build.yml`,
+  which refuses to run unless the repository is private.
+- Actions **artifact** storage is exhausted account-wide, so the APK is published as a
+  **release asset** instead; the checksum verified locally with `sha256sum -c`.
+- Published as `applicationId com.meteor.android`, so it installs side by side with
+  `au.com.parristech.joshrs.android` and cannot touch its data.
+
+**Still unverified:** the app has not launched, logged in, or rendered anything on the
+Galaxy A55. A successful compile is not a playable client, and this log does not claim one.
+The next gate is: launch, supply a user-owned 377 cache, and log in against the pinned
+engine on `127.0.0.1:43594`.
+
+**Not claimed:** gameplay, authentication, multiplayer, audio, persistence.
+
