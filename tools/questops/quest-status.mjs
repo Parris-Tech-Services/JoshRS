@@ -58,7 +58,9 @@ const TARGETS = [
 // quest_zanaris = Lost City, quest_fluffs = Gertrude's Cat, quest_desertrescue = Prince Ali
 // Rescue, quest_drunkmonk = Monk's Friend, quest_troll = Troll Romance, quest_cog = Clock Tower,
 // quest_druidspirit = Nature Spirit, quest_viking = The Fremennik Trials, quest_upass =
-// Underground Pass, quest_mortton = Shades of Mort'ton, quest_tbwt = Tai Bwo Wannai Trio.
+// Underground Pass, quest_mortton = Shades of Mort'ton, quest_tbwt = Tai Bwo Wannai Trio,
+// quest_itgronigen = Observatory Quest, quest_desertrescue = The Tourist Trap (NOT Prince
+// Ali Rescue, which is quest_prince).
 const ALIAS = {
     "cook's assistant": 'quest_cook',
     'demon slayer': 'quest_demon',
@@ -69,7 +71,7 @@ const ALIAS = {
     'ernest the chicken': 'quest_haunted',
     'vampyre slayer': 'quest_vampire',
     'imp catcher': 'quest_imp',
-    'prince ali rescue': 'quest_desertrescue',
+    'prince ali rescue': 'quest_prince',
     "black knights' fortress": 'quest_blackknight',
     "doric's quest": 'quest_doric',
     "the knight's sword": 'quest_squire',
@@ -103,8 +105,8 @@ const ALIAS = {
     'the grand tree': 'quest_grandtree',
     'shilo village': 'quest_shilo',
     'underground pass': 'quest_upass',
-    'observatory quest': 'quest_observatory',
-    'the tourist trap': 'quest_tourist',
+    'observatory quest': 'quest_itgronigen',
+    'the tourist trap': 'quest_desertrescue',
     watchtower: 'quest_itwatchtower',
     'dwarf cannon': 'quest_mcannon',
     'murder mystery': 'quest_murder',
@@ -212,10 +214,10 @@ for (const r of absent) lines.push(`- #${r.n} ${r.name} (QP ${r.qp})`);
 
 // Quests released well before the 274 era (roughly May 2004) that are missing from the
 // content pack. Their absence is a content gap, not an era boundary.
-const PRE_ERA = new Set([
-    'Shilo Village', 'Observatory Quest', 'The Tourist Trap', 'Mage Arena I',
-    'Temple of Ikov', 'Holy Grail', 'Tree Gnome Village'
-]);
+// Only quests CONFIRMED absent despite predating the revision. Observatory Quest and The
+// Tourist Trap were removed from this list after finding them under unrelated directory
+// names (quest_itgronigen and inside quest_desertrescue respectively).
+const PRE_ERA = new Set(['Shilo Village']);
 const anomalies = rows.filter((r) => !r.inContent && PRE_ERA.has(r.name));
 if (anomalies.length) {
     lines.push('');

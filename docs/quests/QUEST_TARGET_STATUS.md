@@ -10,9 +10,9 @@ Three separate facts per quest, never merged into one "done" flag:
 
 ```
 target quests : 88
-present in 274: 60
+present in 274: 62
 bot-verified  : 22  (377 world)
-absent        : 28
+absent        : 26
 ```
 
 | # | Quest | QP | Content | Bot | Content dir |
@@ -26,7 +26,7 @@ absent        : 28
 | 7 | Ernest the Chicken | 4 | yes | yes | `quest_haunted` |
 | 8 | Vampyre Slayer | 3 | yes | yes | `quest_vampire` |
 | 9 | Imp Catcher | 1 | yes | — | `quest_imp` |
-| 10 | Prince Ali Rescue | 3 | yes | yes | `quest_desertrescue` |
+| 10 | Prince Ali Rescue | 3 | yes | yes | `quest_prince` |
 | 11 | Black Knights' Fortress | 3 | yes | yes | `quest_blackknight` |
 | 12 | Doric's Quest | 1 | yes | yes | `quest_doric` |
 | 13 | The Knight's Sword | 1 | yes | yes | `quest_squire` |
@@ -60,8 +60,8 @@ absent        : 28
 | 41 | The Grand Tree | 5 | yes | — | `quest_grandtree` |
 | 42 | Shilo Village | 2 | **no** | — | — |
 | 43 | Underground Pass | 5 | yes | — | `quest_upass` |
-| 44 | Observatory Quest | 2 | **no** | — | — |
-| 45 | The Tourist Trap | 2 | **no** | — | — |
+| 44 | Observatory Quest | 2 | yes | — | `quest_itgronigen` |
+| 45 | The Tourist Trap | 2 | yes | — | `quest_desertrescue` |
 | 46 | Watchtower | 4 | yes | — | `quest_itwatchtower` |
 | 47 | Dwarf Cannon | 1 | yes | — | `quest_mcannon` |
 | 48 | Murder Mystery | 3 | yes | yes | `quest_murder` |
@@ -109,8 +109,6 @@ absent        : 28
 ## Absent from the 274 content
 
 - #42 Shilo Village (QP 2)
-- #44 Observatory Quest (QP 2)
-- #45 The Tourist Trap (QP 2)
 - #52 Mage Arena I (QP 0)
 - #59 Troll Stronghold (QP 1)
 - #63 Shades of Mort'ton (QP 3)
@@ -143,9 +141,6 @@ These quests were released before the revision-274 era, so they *should* exist. 
 absence is a gap in the content pack rather than an era boundary:
 
 - #42 Shilo Village (QP 2)
-- #44 Observatory Quest (QP 2)
-- #45 The Tourist Trap (QP 2)
-- #52 Mage Arena I (QP 0)
 
 ## Present but never bot-verified
 
@@ -171,6 +166,8 @@ absence is a gap in the content pack rather than an era boundary:
 - #40 Jungle Potion
 - #41 The Grand Tree
 - #43 Underground Pass
+- #44 Observatory Quest
+- #45 The Tourist Trap
 - #46 Watchtower
 - #47 Dwarf Cannon
 - #49 The Dig Site
