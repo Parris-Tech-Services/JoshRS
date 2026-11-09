@@ -1,6 +1,6 @@
 import {createNative377Observer} from './native-observer.mjs';
 /** Loopback-only reader for the opt-in engine-patch /dev/rs377-observe route. */
-export function createEngine377Observer({port,token,botName,expectedWorld,fetchImpl=fetch}={}){
+export function createEngine377Observer({port,token,botName,expectedWorld,approvedFamily=false,fetchImpl=fetch}={}){
  if(!Number.isInteger(port)||port<1024||port>65535||[8888,52402,45099,43500].includes(port))throw new Error('isolated_management_port_required');
  if(typeof fetchImpl!=='function')throw new Error('fetch_required');
  const url='http://127.0.0.1:'+port+'/dev/rs377-observe';
@@ -11,5 +11,5 @@ export function createEngine377Observer({port,token,botName,expectedWorld,fetchI
   if(Buffer.byteLength(raw)>65536)throw new Error('oversized_native_response');
   return JSON.parse(raw);
  }};
- return createNative377Observer(source,{botName,expectedWorld,token,maxBytes:32768});
+ return createNative377Observer(source,{botName,expectedWorld,token,maxBytes:32768,approvedFamily});
 }
