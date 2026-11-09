@@ -17,7 +17,7 @@ await runScript(async ({ bot, sdk }) => {
   const testedKeys = new Set<string>();
 
   const clearAllUI = async () => {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 8; i++) {
       const st = sdk.getState();
       if (st?.interface?.isOpen) {
         await bot.closeInterface();
@@ -25,10 +25,10 @@ await runScript(async ({ bot, sdk }) => {
       }
       if (st?.dialog?.isOpen) {
         const opts = st.dialog.options ?? [];
-        const cancelOpt = opts.find((o: any) => /cancel|nevermind|no|nothing/i.test(o.text));
+        const cancelOpt = opts.find((o: any) => /cancel|nevermind|no|nothing|continue/i.test(o.text));
         const idx = cancelOpt ? cancelOpt.index : (opts[0]?.index ?? 0);
         await sdk.sendClickDialog(idx);
-        await sleep(300);
+        await sleep(350);
       } else {
         break;
       }
@@ -218,63 +218,31 @@ await runScript(async ({ bot, sdk }) => {
     console.log(`[AUDIT] Appended ${findings.length} findings for ${regionName} to bots/bot4/lab_log.md`);
   };
 
-  // Step 1: Walk to Al Kharid Bank (3269, 3167) to withdraw Coins for toll gate & ship fares
-  await bot.walkTo(3269, 3167, 2);
-  await bot.openBank();
-  await sleep(600);
-  const bankItems = sdk.getState()?.bank?.items ?? [];
-  const coinsInBank = bankItems.find((i: any) => /coins/i.test(i.name));
-  if (coinsInBank) {
-    await bot.withdrawItem(coinsInBank.slot, 400);
-    await sleep(500);
-  }
-  await bot.closeBank();
+  // Step 1: Dismiss any open dialog (such as Border Guard at 3268, 3227)
   await clearAllUI();
 
-  // If still no coins in inventory, check if we can pay toll or route north
-  const hasCoins = Boolean(sdk.findInventoryItem(/coins/i));
-  console.log(`[AUDIT] Coins in inventory: ${hasCoins ? sdk.findInventoryItem(/coins/i)?.count : 0}`);
-
-  if (hasCoins) {
-    // Walk to Al Kharid Toll Gate (3268, 3227) and pay 10gp toll
-    await bot.walkTo(3268, 3227, 2);
-    const tollGate = (await sdk.scanNearbyLocs(6)).find((l: any) => /gate/i.test(l.name) && Math.abs(l.x - 3268) <= 2);
-    if (tollGate) {
-      const payOpt = (tollGate.options ?? []).find((o: string) => /pay-toll/i.test(o));
-      if (payOpt) {
-        await interactFast(tollGate, new RegExp('^Pay-toll', 'i'), 5000);
-        await sleep(1200);
-        for (let i = 0; i < 5; i++) {
-          if (!sdk.getState()?.dialog?.isOpen) break;
-          await sdk.clickDialogByText(/yes|continue/i).catch(() => sdk.sendClickDialog(0));
-          await sleep(400);
-        }
+  // Step 2: Ensure we have at least 60 coins by pickpocketing Men/Women in Lumbridge if needed
+  if ((sdk.findInventoryItem(/coins/i)?.count ?? 0) < 60) {
+    await bot.walkTo(3222, 3218, 4);
+    for (let attempt = 0; attempt < 35; attempt++) {
+      const coinsCount = sdk.findInventoryItem(/coins/i)?.count ?? 0;
+      if (coinsCount >= 65) break;
+      if ((sdk.getState()?.player?.hp ?? 10) <= 3) break;
+      const citizen = sdk.findNearbyNpc(/^(man|woman)$/i);
+      if (citizen) {
+        await bot.pickpocketNpc(citizen);
+        await sleep(600);
+      } else {
+        await bot.walkTo(3222, 3218, 3);
+        await sleep(600);
       }
     }
-  } else {
-    // Exit Al Kharid via the north pass (3282, 3318)
-    await bot.walkTo(3282, 3318, 3);
   }
+  console.log(`[AUDIT] Coins before Port Sarim ship: ${sdk.findInventoryItem(/coins/i)?.count ?? 0}`);
 
-  // Step 2: Walk to Port Sarim Docks (3029, 3217) and check if we have >= 60gp for Karamja + Brimhaven ships
+  // Step 3: Walk to Port Sarim Docks (3029, 3217) and board ship to Karamja (30 gp)
+  await clearAllUI();
   await bot.walkTo(3029, 3217, 2);
-  if ((sdk.findInventoryItem(/coins/i)?.count ?? 0) < 60) {
-    // Stop at Draynor Bank (3092, 3243) to withdraw coins if Al Kharid bank didn't open
-    await bot.walkTo(3092, 3243, 2);
-    await bot.openBank();
-    await sleep(600);
-    const bItems = sdk.getState()?.bank?.items ?? [];
-    const cItem = bItems.find((i: any) => /coins/i.test(i.name));
-    if (cItem) {
-      await bot.withdrawItem(cItem.slot, 400);
-      await sleep(500);
-    }
-    await bot.closeBank();
-    await clearAllUI();
-    await bot.walkTo(3029, 3217, 2);
-  }
-
-  // Board ship to Karamja (Pay-fare or Talk-to Captain Tobias / Seaman Lorris / Seaman Thresnor)
   const seaman = sdk.findNearbyNpc(/captain tobias|seaman lorris|seaman thresnor/i);
   if (seaman) {
     const hasPayFare = (seaman.options ?? []).some((o: string) => /pay-fare/i.test(o));
@@ -283,8 +251,8 @@ await runScript(async ({ bot, sdk }) => {
     } else {
       await bot.talkTo(seaman);
     }
-    for (let i = 0; i < 12; i++) {
-      await sleep(500);
+    for (let i = 0; i < 15; i++) {
+      await sleep(600);
       const d = sdk.getDialog();
       if (!d?.isOpen) {
         if ((sdk.getState()?.player?.worldX ?? 3029) < 2970) break;
@@ -297,12 +265,12 @@ await runScript(async ({ bot, sdk }) => {
         await sdk.sendClickDialog(0);
       }
     }
-    await sleep(2500);
-    // Cross gangplank off the ship at Musa Point (2956, 3143)
+    await sleep(3000);
+    await clearAllUI();
     const plank = (await sdk.scanNearbyLocs(8)).find((l: any) => /gangplank/i.test(l.name));
     if (plank) {
       await interactFast(plank, /cross/i, 5000);
-      await sleep(1000);
+      await sleep(1200);
     }
   }
 
@@ -333,7 +301,8 @@ await runScript(async ({ bot, sdk }) => {
       false
     );
 
-    // Sail from Brimhaven (2772, 3227) to East Ardougne (2683, 3271) via Captain Barnaby
+    // Sail from Brimhaven (2772, 3227) to East Ardougne (2683, 3271) via Captain Barnaby / Customs Officer
+    await clearAllUI();
     await bot.walkTo(2772, 3227, 2);
     const barnaby = sdk.findNearbyNpc(/captain barnaby|customs officer/i);
     if (barnaby) {
@@ -343,25 +312,26 @@ await runScript(async ({ bot, sdk }) => {
       } else {
         await bot.talkTo(barnaby);
       }
-      for (let i = 0; i < 12; i++) {
-        await sleep(500);
+      for (let i = 0; i < 16; i++) {
+        await sleep(600);
         const d = sdk.getDialog();
         if (!d?.isOpen) {
           if ((sdk.getState()?.player?.worldZ ?? 3227) > 3260) break;
           continue;
         }
-        const yesOpt = (d.options ?? []).find((o: any) => /yes|pay|please|search|ok/i.test(o.text));
+        const yesOpt = (d.options ?? []).find((o: any) => /journey|search away|ok|yes|pay|please/i.test(o.text));
         if (yesOpt) {
           await sdk.sendClickDialog(yesOpt.index);
         } else {
           await sdk.sendClickDialog(0);
         }
       }
-      await sleep(2500);
+      await sleep(3000);
+      await clearAllUI();
       const ardyPlank = (await sdk.scanNearbyLocs(8)).find((l: any) => /gangplank/i.test(l.name));
       if (ardyPlank) {
         await interactFast(ardyPlank, /cross/i, 5000);
-        await sleep(1000);
+        await sleep(1200);
       }
     }
   }
