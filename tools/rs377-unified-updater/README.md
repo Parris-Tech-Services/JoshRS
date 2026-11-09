@@ -89,3 +89,13 @@ bash -n tools/rs377-unified-updater/update-fedora.sh
 ```
 
 `.github/workflows/rs377-unified-updater.yml` runs both Linux and Windows unit tests and a disposable pinned source apply/build/boot. Every test must pass before merging changes to the updater.
+
+### Legacy 377-wip SQLite default
+
+The pinned 377-wip Engine-TS tree uses `src/util/Environment.ts` and
+`src/db/query.ts`, not `WorldConfig.ts`. When the engine's `.env`
+omits `DB_BACKEND`, the updater now accepts its explicitly source-proven
+`sqlite` default only if the installed engine's query selects a local
+`db.sqlite`. It still refuses empty, invalid, symlinked or non-SQLite
+account databases before applying patches. Do not create an empty SQLite
+database to clear the safeguard; use the separate verified account recovery.
