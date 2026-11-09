@@ -96,6 +96,7 @@ class MainActivity : Activity() {
         }
         setContentView(frame)
         frame.requestApplyInsets()
+        frame.post { frame.rootWindowInsets?.let { applySafeInsets(frame, it) } }
     }
 
     private fun showDiagnostic(message: String, title: String = "JoshRS result") {
