@@ -4,7 +4,7 @@ import { doric } from './dorics-quest';
 
 const N = "The Knight's Sword";
 
-const KEEP_RE = /^(coins|bronze pickaxe|iron scimitar|bronze sword|wooden shield|hammer|bucket|bucket of water|pot|pot of flour|pastry dough|pie dish|pie shell|redberries|uncooked redberry pie|redberry pie|burnt pie|copper ore|tin ore|bronze bar|iron ore|iron bar|blurite ore|portrait|blurite sword)$/i;
+const KEEP_RE = /^(coins|bronze pickaxe|iron scimitar|bronze sword|wooden shield|hammer|bucket|bucket of water|pot|pot of flour|pastry dough|pie dish|pie shell|redberries|uncooked (red)?berry pie|redberry pie|burnt pie|copper ore|tin ore|bronze bar|iron ore|iron bar|blurite ore|portrait|blurite sword)$/i;
 
 export const squire: Quest = {
   name: N,
@@ -42,7 +42,7 @@ export const squire: Quest = {
     };
 
     const startAndReldo = () => step(c, N, 'start-squire-and-reldo', async () => {
-      if (reldoSpoken || thurgoPieGiven || squirePortraitAsked || thurgoPortraitGiven || has(sdk, /^portrait|blurite sword$/i)) return true;
+      if (reldoSpoken || thurgoPieGiven || squirePortraitAsked || thurgoPortraitGiven || has(sdk, /^portrait|blurite sword|uncooked (red)?berry pie|redberry pie$/i)) return true;
       await exitWizardsTowerGround(c);
       if (lvl(sdk) > 0) await lumbridgeStairs(c, 0);
 
@@ -63,12 +63,14 @@ export const squire: Quest = {
         await bot.walkTo(3007, 3330, 3);
         await bot.walkTo(2965, 3365, 3);
         await bot.walkTo(2977, 3342, 2);
-        if (!(await talk(c, /^squire$/i, [
+        await talk(c, /^squire$/i, [
           /how is life as a squire/i,
           /make a new sword if you like/i,
           /would these dwarves make another one/i,
           /give it a go/i,
-        ]))) return false;
+        ]);
+        const recentSq = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
+        if (!/give it a go|how are you doing finding a sword/i.test(recentSq)) return false;
         squireStarted = true;
       }
 
@@ -91,7 +93,7 @@ export const squire: Quest = {
       if (thurgoPieGiven || squirePortraitAsked || thurgoPortraitGiven || has(sdk, /^portrait|blurite sword$/i)) return true;
 
       // 1. In Varrock Palace Kitchen (3222, 3494), grab Pie dish and fill Bucket at Sink (3224, 3494)
-      if (!has(sdk, /^redberry pie|uncooked redberry pie|pie shell$/i) && !has(sdk, /^pie dish$/i)) {
+      if (!has(sdk, /^redberry pie|uncooked (red)?berry pie|pie shell$/i) && !has(sdk, /^pie dish$/i)) {
         const wk = await bot.walkTo(3222, 3494, 2);
         if (!wk?.success) {
           await openNearbyDoors(c, 3209, 3490, 3);
@@ -102,7 +104,7 @@ export const squire: Quest = {
         if (!(await pickupWithWait(c, 3222, 3494, /^pie dish$/i, 15))) return false;
       }
 
-      if (!has(sdk, /^redberry pie|uncooked redberry pie|pie shell|pastry dough$/i) && !has(sdk, /^bucket of water$/i)) {
+      if (!has(sdk, /^redberry pie|uncooked (red)?berry pie|pie shell|pastry dough$/i) && !has(sdk, /^bucket of water$/i)) {
         if (!has(sdk, /^bucket$/i)) {
           await walkFromVarrockToLumbridge(c, 3216, 3291);
           await pickupWithWait(c, 3216, 3291, /^bucket$/i, 15);
@@ -119,7 +121,7 @@ export const squire: Quest = {
       }
 
       // 2. Pick 2 Redberries at SE Varrock (3267, 3371) in case the first pie burns
-      if (!has(sdk, /^redberry pie|uncooked redberry pie$/i) && count(sdk, /^redberries$/i) < 2) {
+      if (!has(sdk, /^redberry pie|uncooked (red)?berry pie$/i) && count(sdk, /^redberries$/i) < 2) {
         if (!(await walkToVarrock(c, 3267, 3371))) return false;
         const deadline = Date.now() + 60_000;
         while (Date.now() < deadline && count(sdk, /^redberries$/i) < 2) {
@@ -165,7 +167,7 @@ export const squire: Quest = {
 
       // 4. Buy 2 Pot of flour from Wydin in Port Sarim (3014, 3204) and make/cook Redberry pie
       if (!has(sdk, /^redberry pie$/i)) {
-        if (!has(sdk, /^uncooked redberry pie$/i) && count(sdk, /^pot of flour$/i) < 2) {
+        if (!has(sdk, /^uncooked (red)?berry pie$/i) && count(sdk, /^pot of flour$/i) < 2) {
           const ww = await bot.walkTo(3014, 3204, 2);
           if (!ww?.success) { await openNearbyDoors(c, 3017, 3206, 2); await bot.walkTo(3014, 3204, 2); }
           const o = await bot.openShop(/^wydin$/i);
@@ -181,13 +183,10 @@ export const squire: Quest = {
             const bp = sdk.findInventoryItem(/^burnt pie$/i);
             if (bp) { await sdk.sendUseItem(bp.slot); await sleep(800); }
           }
-          if (!has(sdk, /^uncooked redberry pie$/i)) {
+          if (!has(sdk, /^uncooked (red)?berry pie$/i)) {
             if (!has(sdk, /^pie shell$/i)) {
               if (!has(sdk, /^pastry dough$/i)) {
                 if (!has(sdk, /^bucket of water$/i)) {
-                  await bot.walkTo(3121, 3243, 2); // sink/water or Lumbridge sink (3207, 3213)
-                  const ws = await bot.walkTo(3014, 3233, 2);
-                  // Port Sarim / Rimmington well or Falador waterpump (2968, 3364)
                   await bot.walkTo(3207, 3213, 2);
                   await bot.useItemOnLoc(/^bucket$/i, /^sink$/i);
                   await waitInv(sdk, /^bucket of water$/i, 5000);
@@ -204,14 +203,14 @@ export const squire: Quest = {
               }
               await combineItems(c, /^pastry dough$/i, /^pie dish$/i, /^pie shell$/i);
             }
-            await combineItems(c, /^pie shell$/i, /^redberries$/i, /^uncooked redberry pie$/i);
+            await combineItems(c, /^pie shell$/i, /^redberries$/i, /^uncooked (red)?berry pie$/i);
           }
 
           // Cook on Port Sarim range at (3016, 3238)
           const wr = await bot.walkTo(3016, 3238, 2);
           if (!wr?.success) { await openNearbyDoors(c, 3016, 3238, 3); await bot.walkTo(3016, 3238, 2); }
-          await bot.useItemOnLoc(/^uncooked redberry pie$/i, /^range$/i);
-          await waitCond(() => !has(sdk, /^uncooked redberry pie$/i), 6000, 300);
+          await bot.useItemOnLoc(/^uncooked (red)?berry pie$/i, /^range$/i);
+          await waitCond(() => !has(sdk, /^uncooked (red)?berry pie$/i), 6000, 300);
         }
         if (!has(sdk, /^redberry pie$/i)) return false;
       }

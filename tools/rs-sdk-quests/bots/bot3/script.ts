@@ -1,35 +1,39 @@
 import { runScript } from '../../sdk/runner';
 import { gobdip } from './quests/goblin-diplomacy';
-import { squire } from './quests/the-knights-sword';
+import { vampire } from './quests/vampyre-slayer';
+import { haunted } from './quests/ernest-the-chicken';
 
-await runScript(async ({ bot, sdk }) => {
-    const startTime = Date.now();
-    await bot.dismissBlockingUI();
-    await bot.closeInterface();
+await runScript(
+  async ({ bot, sdk }) => {
+    const c = { bot, sdk, dir: 'bots/bot3' };
 
-    const pos = sdk.getState()?.player;
-    console.log(`[Start] Pos: (${pos?.worldX}, ${pos?.worldZ}), Coins: ${sdk.findInventoryItem(/^coins$/i)?.count ?? 0}, HP: ${pos?.hp}/${pos?.maxHp}`);
+    const t1 = Date.now();
+    const startCraftXp = sdk.getSkill('Crafting')?.experience ?? 0;
+    const startDefXp = sdk.getSkill('Defence')?.experience ?? 0;
+    const startDefLvl = sdk.getSkill('Defence')?.baseLevel ?? 1;
+    console.log(`[M16] Starting Goblin Diplomacy finish... Defence Lv ${startDefLvl} (${startDefXp} XP)`);
+    const ok1 = await gobdip.run(c);
+    const dt1 = ((Date.now() - t1) / 1000).toFixed(1);
+    const endCraftXp = sdk.getSkill('Crafting')?.experience ?? 0;
+    const endDefXp = sdk.getSkill('Defence')?.experience ?? 0;
+    const endDefLvl = sdk.getSkill('Defence')?.baseLevel ?? 1;
+    console.log(`[M16] Goblin Diplomacy result=${ok1} in ${dt1}s | Crafting +${endCraftXp - startCraftXp} XP | Defence Lv ${startDefLvl} -> ${endDefLvl} (+${endDefXp - startDefXp} XP)`);
 
-    // 1. Finish Quest #8: Goblin Diplomacy (5 QP, +5,000 Crafting XP + Gold bar)
-    console.log('\n--- 1. Finishing Quest #8: Goblin Diplomacy (5 QP) ---');
-    const gdStartMs = Date.now();
-    const gdOk = await gobdip.run({ bot, sdk, dir: 'bots/bot3' });
-    const gdSec = Math.round((Date.now() - gdStartMs) / 1000);
-    console.log(`[Quest Result] Goblin Diplomacy: ${gdOk} in ${gdSec}s | Crafting Lv: ${sdk.getSkill('Crafting')?.baseLevel} | Attack Lv: ${sdk.getSkill('Attack')?.baseLevel}`);
+    const t2 = Date.now();
+    const startAtkXp = sdk.getSkill('Attack')?.experience ?? 0;
+    const startAtkLvl = sdk.getSkill('Attack')?.baseLevel ?? 1;
+    console.log(`[M17] Starting Vampyre Slayer... Attack Lv ${startAtkLvl} (${startAtkXp} XP)`);
+    const ok2 = await vampire.run(c);
+    const dt2 = ((Date.now() - t2) / 1000).toFixed(1);
+    const endAtkXp = sdk.getSkill('Attack')?.experience ?? 0;
+    const endAtkLvl = sdk.getSkill('Attack')?.baseLevel ?? 1;
+    console.log(`[M17] Vampyre Slayer result=${ok2} in ${dt2}s | Attack Lv ${startAtkLvl} -> ${endAtkLvl} (+${endAtkXp - startAtkXp} XP)`);
 
-    // 2. Complete Quest #9: The Knight's Sword (1 QP, +318,125 Smithing XP -> Smithing Lv 61!)
-    console.log('\n--- 2. Completing Quest #9: The Knights Sword (1 QP) ---');
-    const ksStartMs = Date.now();
-    const ksOk = await squire.run({ bot, sdk, dir: 'bots/bot3' });
-    const ksSec = Math.round((Date.now() - ksStartMs) / 1000);
-    console.log(`[Quest Result] The Knight's Sword: ${ksOk} in ${ksSec}s | Smithing Lv: ${sdk.getSkill('Smithing')?.baseLevel}`);
-
-    const totalSec = Math.round((Date.now() - startTime) / 1000);
-    const endPos = sdk.getState()?.player;
-    console.log(`[Done] Total time: ${totalSec}s | Pos: (${endPos?.worldX}, ${endPos?.worldZ}) | Combat Lv: ${endPos?.combatLevel} | HP: ${endPos?.hp}/${endPos?.maxHp} | Coins: ${sdk.findInventoryItem(/^coins$/i)?.count ?? 0}`);
-    console.log(`[Final Inv]`, sdk.getInventory().map(i => `${i.name} x${i.count}`).join(', '));
-}, {
-    bot: 'bot3',
-    disconnectAfter: true,
-    timeout: 600_000,
-});
+    const t3 = Date.now();
+    console.log(`[M18] Starting Ernest the Chicken...`);
+    const ok3 = await haunted.run(c);
+    const dt3 = ((Date.now() - t3) / 1000).toFixed(1);
+    console.log(`[M18] Ernest the Chicken result=${ok3} in ${dt3}s`);
+  },
+  { bot: 'bot3', timeout: 780_000, disconnectAfter: true }
+);

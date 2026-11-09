@@ -325,7 +325,16 @@ export async function bankJunk(c: Ctx, keep: RegExp = /^(coins|shears|wool|ball 
   if (p && p.worldZ > 3350 && p.worldZ < 9000 && p.worldX > 3130) {
     await walkFromVarrockToLumbridge(c, 3092, 3243);
   }
-  await bot.walkTo(3092, 3243);
+  const px = sdk.getState()?.player?.worldX ?? 3092;
+  const pz = sdk.getState()?.player?.worldZ ?? 3243;
+  const nearBank = (sdk.getState()?.nearbyLocs ?? []).some((l: any) => /bank booth/i.test(l.name) && l.distance <= 8);
+  if (!nearBank) {
+    if (px < 3025 && pz > 3320) {
+      await bot.walkTo(2946, 3369, 2);
+    } else {
+      await bot.walkTo(3092, 3243, 2);
+    }
+  }
   for (let round = 0; round < 6 && junk().length > 0; round++) {
     if (!sdk.isBankOpen()) {
       const r = await bot.openBank();
@@ -355,7 +364,16 @@ export async function withdrawFromDraynorBank(c: Ctx, patterns: RegExp[]) {
   if (p && p.worldZ > 3350 && p.worldZ < 9000 && p.worldX > 3130) {
     await walkFromVarrockToLumbridge(c, 3092, 3243);
   }
-  await bot.walkTo(3092, 3243, 2);
+  const px = sdk.getState()?.player?.worldX ?? 3092;
+  const pz = sdk.getState()?.player?.worldZ ?? 3243;
+  const nearBank = (sdk.getState()?.nearbyLocs ?? []).some((l: any) => /bank booth/i.test(l.name) && l.distance <= 8);
+  if (!nearBank) {
+    if (px < 3025 && pz > 3320) {
+      await bot.walkTo(2946, 3369, 2);
+    } else {
+      await bot.walkTo(3092, 3243, 2);
+    }
+  }
   for (let round = 0; round < 3 && missing().length > 0; round++) {
     if (!sdk.isBankOpen()) {
       const r = await bot.openBank();

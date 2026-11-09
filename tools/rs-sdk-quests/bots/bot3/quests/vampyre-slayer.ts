@@ -6,7 +6,8 @@ export const vampire: Quest = {
   name: N,
   async run(c: Ctx) {
     const { bot, sdk } = c;
-    let alreadyComplete = xp(sdk, 'Attack') >= 48250;
+    const startAttackXp = xp(sdk, 'Attack');
+    let alreadyComplete = startAttackXp >= 200_000;
 
     const morgan = () => step(c, N, 'morgan-and-garlic', async () => {
       if (alreadyComplete) return true;
@@ -129,7 +130,7 @@ export const vampire: Quest = {
       if (!(await draynorManorCrypt(c, true))) return false;
       await bot.walkTo(3078, 9775, 2);
       const deadline = Date.now() + 120_000;
-      while (Date.now() < deadline && xp(sdk, 'Attack') < 48250) {
+      while (Date.now() < deadline && xp(sdk, 'Attack') < startAttackXp + 48250) {
         await bot.dismissBlockingUI();
         const p = sdk.getState()?.player;
         if (p && p.hp <= 7) {
@@ -150,7 +151,7 @@ export const vampire: Quest = {
         }
         await sleep(800);
       }
-      const done = await waitCond(() => xp(sdk, 'Attack') >= 48250, 6000);
+      const done = await waitCond(() => xp(sdk, 'Attack') >= startAttackXp + 48250, 6000);
       await bot.closeInterface();
       await draynorManorCrypt(c, false);
       return done;

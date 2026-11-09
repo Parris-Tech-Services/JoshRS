@@ -310,6 +310,40 @@
 - **Progression stalls / friction points**:
   - `Goblin mail` drop rate from Level 5 Goblins in Goblin Village has RNG variance (yielded 1 `Goblin mail` in ~60 kills over 502s). Switching combat style to Attack (`0`) for the remaining 2 `Goblin mail` drops balances melee stats while finishing the quest.
 
+### Milestone 14b: Goblin Village Melee Attack Benchmark (Lv 13 → 53) & Drop Table Discovery (471s)
+- **What we did & how long it took**:
+  1. Switched combat style to **Accurate (`0`, Attack XP)** and trained on Level 5 Red and Green Goblins (`id 298`, `299`) at Goblin Village `(2956, 3500)` for **471 seconds (~7.85 minutes)** before starting **The Knight's Sword** at the Squire in Falador Castle `(2977, 3342)`.
+  2. Raised **Attack from Level 13 (`2,300` XP) to Level 53 (`41,100` XP)** (`+38,800` Attack XP) and **Hitpoints from Level 30 (`14,355` XP) to Level 47 (`27,117` XP)** (`+12,762` HP XP), pushing **Combat Level from 40 to 54** and **Total Skill Level from 411 to 479**.
+- **Approximate XP/hour and GP/hour**:
+  - **Melee Combat (Attack Style on Level 5 Goblins, 471s)**:
+    - **Attack XP**: `+38,800` XP in 471s = **`~296,560 Attack XP/hr`** (+ **`~97,544 Hitpoints XP/hr`** = **`~394,104 combined combat XP/hr`**!).
+    - **GP/hour**: **`~900 GP/hr`** in coin drops (banked `Orange dye`, `Blue dye`, and `Goblin mail x1` at Falador West Bank before starting `The Knight's Sword`).
+- **Shop prices paid & items needed**:
+  - None (zero food consumed at Defence 12 + Iron Platelegs + HP 47).
+- **Progression stalls / friction points (Critical Mechanic Discovery)**:
+  - **Why Goblin Village Goblins Rarely Drop `Goblin mail`**: Inspecting `server/content/scripts/drop tables/scripts/goblin.rs2` revealed `if (npc_findhero = ^false) return;` on Goblin death. Because Red Goblins (`id 299`) and Green Goblins (`id 298`) constantly fight each other in Goblin Village, any Goblin that has already taken >50% damage from another Goblin has no player hero credit (`npc_findhero = ^false`) and drops **nothing** (not even `Bones`)!
+  - **Solution**: Either filter Goblin Village targets to full-HP Goblins (`n.hp === n.maxHp` or `!n.inCombat`) OR farm the remaining 2 `Goblin mail` from **Lumbridge Level 2 Goblins `(3248, 3238)`**, which never fight each other, die in 1 hit at Strength 51, and roll the `5/128` (`~1/25.6`) `goblin_armour` drop table on 100% of kills!
+
+### Milestone 15: The Knight's Sword Quest (`1 QP`, Smithing Lv 26 → 82, `+318,750` XP)
+- **What we did & how long it took**:
+  1. Completed **The Knight's Sword (`1 QP`)** end-to-end across `task-418` and `task-427` (**484s** completion run):
+     - Spoke to the **Squire** in Falador Castle courtyard `(2977, 3342)` and **Reldo** in Varrock Palace Library `(3211, 3494)` about the Imcando dwarves.
+     - Collected a `Pie dish` and `Bucket of water` in Varrock Palace Kitchen `(3222, 3494)`, picked `Redberries` at SE Varrock `(3267, 3371)`, and mined 5 `Iron ore` at SE Varrock `(3285, 3368)` (`+4,812` Mining XP, Mining Lv 54 → **55**).
+     - Bought 2 `Pot of flour` from **Wydin's Food Store** `(3014, 3204)`, mixed `Pastry dough` → `Pie shell` → `Uncooked berry pie`, and baked `Redberry pie` on the Port Sarim Range `(3016, 3238)` (`+1,950` Cooking XP, Cooking Lv 36 → **37**).
+     - Smelted 2 `Iron bar` at the Falador Furnace `(2974, 3369)` (`+625` Smithing XP) and gave the `Redberry pie` to **Thurgo** at Mudskipper Point `(3001, 3144)`.
+     - Returned to the Squire, climbed to Level 2 of Falador Castle East Wing `(2984, 3338)`, waited for **Sir Vyvin** to step away from the cupboard `(2984, 3336)`, and searched it for the `Portrait`.
+     - Delivered the `Portrait` to Thurgo, climbed down into the Asgarnian Ice Dungeon `(3008, 3150)` → `(3049, 9566)`, mined 1 `Blurite ore` past Level 53 Ice Warriors and Level 57 Ice Giants, had Thurgo forge the `Blurite sword`, and handed it to the Squire (`+318,125` Smithing XP quest reward!).
+  2. Raised **Smithing from Level 26 (`5,617` XP) to Level 82 (`324,367` XP)** (`+56` Smithing levels in one quest!), unlocking **Bronze, Iron, Steel, Mithril, and Adamantite smelting & full-armour smithing**, and pushing **Total Skill Level from 479 to 537** and **Quest Points to `12 QP`** (unlocking **Black Knights' Fortress**!).
+- **Approximate XP/hour and GP/hour**:
+  - **The Knight's Sword (484s completion run)**:
+    - **Smithing XP**: `+318,750` XP in 484s = **`~2,370,867 Smithing XP/hr`**!
+    - **Mining XP**: `+4,812` XP (`5 Iron ore` + `1 Blurite ore`).
+    - **Cooking XP**: `+1,950` XP (`Redberry pie` on Port Sarim range).
+- **Shop prices paid & items needed**:
+  - **Wydin's Food Store `(3014, 3204)`**: Bought `2x Pot of flour` (`20 GP`).
+- **Progression stalls / friction points**:
+  - **Item Naming Subtlety (`Uncooked berry pie`)**: Combining `Pie shell` (`2315`) + `Redberries` (`1951`) produces item ID `2321`, whose in-game display name in Lost City 377 is **`Uncooked berry pie`** (not `Uncooked redberry pie`), whereas cooking it produces **`Redberry pie`** (`2325`). Updated regex to `/^uncooked (red)?berry pie$/i`.
+
 ---
 
 ## Summary Dataset: Skills, Methods, XP/hr, GP/hr & Balancing Findings
@@ -319,7 +353,7 @@
 | Skill | Method # | Training Method & Location | Level Range | Measured XP/hr | Measured GP/hr | Notes / Bottlenecks |
 | :--- | :---: | :--- | :---: | :---: | :---: | :--- |
 | **Woodcutting** | 1 | Regular Trees (Lumbridge `(3205, 3228)`) | 1 → 22 | **~281,203 XP/hr** | ~0 GP/hr | Bronze axe (free spawn). Fast early levels. |
-| **Woodcutting** | 2 | Oak Trees (Lumbridge `(3205, 3228)`) | 22 → 33 | **~270,726 XP/hr** | ~0 GP/hr | Slightly slower chop rate with Bronze axe; multi-log yield per tree. |
+| **Woodcutting** | 2 | Oak Trees (Lumbridge `(3205, 3228)`) | 22 → 38 | **~270,726 XP/hr** | ~0 GP/hr | Slightly slower chop rate with Bronze axe; multi-log yield per tree. |
 | **Firemaking** | 1 | Burning Regular Logs (`Tinderbox` 1 GP) | 1 → 27 | **~1,173,148 XP/hr** | -1 GP (tool) | Extremely fast (`1,000` XP/log, ~3s per burn). |
 | **Firemaking** | 2 | Burning Oak Logs (`Tinderbox` 1 GP) | 27 → 39 | **~1,762,786 XP/hr** | -1 GP (tool) | Highest raw XP/hr tested (`1,500` XP/log). |
 | **Fletching** | 1 | Arrow Shafts (Regular Logs + free `Knife`) | 1 → 8 | **~241,179 XP/hr** | ~0 GP/hr | `125` XP/log (fletching phase; ~65k XP/hr w/ chopping). |
@@ -327,12 +361,12 @@
 | **Fishing** | 1 | Small Net Shrimp (Draynor `(3087, 3230)`) | 3 → 14 | **~73,322 XP/hr** | ~0 GP/hr | **Hazard**: Lv 7 Dark Wizards aggro at `z >= 3231`. Don't spam-click spot! |
 | **Fishing** | 2 | Bait Fishing Sardines (Draynor `(3087, 3227)`) | 14 → 22 | **~184,885 XP/hr** | -1,500 GP/hr | **2.52x faster** than Net Fishing; requires `Fishing rod` (5 GP) + `Fishing bait` (3 GP ea) from Port Sarim. |
 | **Cooking** | 1 | Cook's Assistant Quest + Cooking Shrimps | 1 → 31 | **~1,345,962 XP/hr** | ~0 GP/hr | Quest takes 168s (`+7,500` XP, Lv 1 → 30) and unlocks Castle Range. |
-| **Cooking** | 2 | Cooking Raw Chicken (Lumbridge Castle Range) | 31 → 35 | **~1,185,250 XP/hr** | ~0 GP/hr | Zero burns at Lv 31+; heals 3 HP per chicken. |
+| **Cooking** | 2 | Cooking Raw Chicken (Lumbridge Castle Range) | 31 → 37 | **~1,185,250 XP/hr** | ~0 GP/hr | Zero burns at Lv 31+; heals 3 HP per chicken. |
 | **Thieving** | 1 | Pickpocketing Men (Lumbridge/Al Kharid) | 5 → 22 | **~120,599 XP/hr** | **~1,809 GP/hr** | Must wait ~4.5s after stun or server discards op (`opRejectedCount`). |
-| **Thieving** | 2 | East Varrock Tea Stall (`(3268, 3410)`) | 20 → 21 | **~180,000 XP/hr** | ~0 GP/hr | `400` XP/steal (~7.5s respawn), zero stun damage, free 3 HP heal (`Cup of tea`). |
+| **Thieving** | 2 | East Varrock Tea Stall (`(3268, 3410)`) | 20 → 23 | **~180,000 XP/hr** | ~0 GP/hr | `400` XP/steal (~7.5s respawn), zero stun damage, free 3 HP heal (`Cup of tea`). |
 | **Melee Combat** | 1 | Killing Chickens (`(3231, 3297)`) | 1 → 7 | **~62,585 XP/hr** | ~0 GP/hr | Safe (max hit 0), drops `Raw chicken`, `Bones`, `Feather`. |
 | **Melee Combat** | 2 | Killing Lumbridge Cows (`(3255, 3278)`) | 6 → 13 | **~114,813 XP/hr** | ~2,600 GP/hr (hides) | **1.83x faster** than Chickens; drops `Cowhide` + `Bones` + `Raw beef`. |
-| **Melee Combat** | 3 | Killing Goblin Village Goblins (`(2956, 3500)`) | 17 → 39 | **~227,330 XP/hr** | ~1,200 GP/hr | **1.98x faster** than Cows (`+74,674` HP XP/hr); drops `Goblin mail`, `Bones`, `Coins`. |
+| **Melee Combat** | 3 | Killing Goblin Village Goblins (`(2956, 3500)`) | 13 → 53 | **~296,560 XP/hr** | ~1,200 GP/hr | **2.58x faster** than Cows (`+97,544` HP XP/hr); drops `Goblin mail` only if player is top damager (`npc_findhero`). |
 | **Magic** | 1 | Wind Strike (`Spells.WIND_STRIKE` at Chickens) | 1 → 14 | **~92,811 XP/hr** | -3,680 GP/hr | `~176.4` XP/cast (`7 GP`/cast in runes; `3 GP`/cast with Staff of air). |
 | **Magic** | 2 | Witch's Potion Quest (`1 QP`) | 14 → 33 | **~142,682 XP/hr** | -4 GP | `+8,125` XP in 205s — unlocks Varrock/Lumbridge Teleports & Telegrab! |
 | **Prayer** | 1 | Burying Chicken Bones (`(3231, 3297)`) | 1 → 5 | **~17,600 XP/hr** | 0 GP/hr | `112.5` XP per bone buried alongside Melee Method 1. |
@@ -340,11 +374,12 @@
 | **Prayer** | 3 | The Restless Ghost Quest (`1 QP`) | 10 → 48 | **~234,375 XP/hr** | 0 GP/hr | `+28,125` XP in 432s — unlocks Protect from Magic/Missiles/Melee! |
 | **Mining** | 1 | Copper & Tin Ore (SE Varrock `(3286, 3365)`) | 1 → 25 | **~221,821 XP/hr** | ~0 GP/hr | 1-tick rock extraction at Lv 15+; `437.5` XP/ore. |
 | **Mining** | 2 | Iron Ore (SE Varrock `(3286, 3368)`) | 25 → 33 | **~447,265 XP/hr** | ~0 GP/hr | **2.02x faster** than Copper/Tin (`875` XP/ore + fast respawn). |
-| **Mining** | 3 | Doric's Quest + Rimmington Clay/Copper/Iron | 33 → 54 | **~621,126 XP/hr** | **~3,042 GP/hr** | `+36,750` XP & `+180 GP` in 213s; unlocks Doric's anvils. |
+| **Mining** | 3 | Doric's Quest + Rimmington Clay/Copper/Iron | 33 → 55 | **~621,126 XP/hr** | **~3,042 GP/hr** | `+36,750` XP & `+180 GP` in 213s; unlocks Doric's anvils. |
 | **Smithing** | 1a | Smelting Bronze Bars (Lumbridge Furnace) | 1 → 9 | **~202,321 XP/hr** | ~0 GP/hr | 100% success (`155` XP/bar), furnace phase only (~35k XP/hr w/ walk). |
 | **Smithing** | 1b | Smelting Iron Bars (Al Kharid Furnace) | 18 → 22 | **~49,329 XP/hr** | ~0 GP/hr | ~53–60% base success rate (`312.5` XP/bar). |
 | **Smithing** | 2a | Smithing Bronze Daggers (Varrock West Anvil) | 9 → 18 | **~159,176 XP/hr** | **~2,630 GP/hr** | `312.5` XP/bar; sells to Varrock Swordshop for ~5.17 GP each. |
 | **Smithing** | 2b | Smithing Iron Daggers (Varrock West Anvil) | 22 → 26 | **~681,818 XP/hr** | **~21,800 GP/hr** | `625` XP/bar; sells to Varrock Swordshop for **20 GP each** (`3.87x` Bronze!). |
+| **Smithing** | 3 | The Knight's Sword Quest (`1 QP`) | 26 → 82 | **~2,370,867 XP/hr** | -20 GP | `+318,750` XP in 484s — jumps straight to Level 82 Smithing (Adamantite)! |
 | **Crafting** | 1 | Sheep Shearer + Spinning 20 Balls of Wool | 1 → 25 | **~47,368 XP/hr** | +60 GP (quest) | Spinning phase (`62.5` XP/ball); Quest adds `+4,375` XP (Lv 1 → 25). |
 | **Crafting** | 2 | Gem Cutting via Gem Trader Arbitrage | 25 → 30 | **~909,210 XP/hr** | **~139,307 GP/hr** | `+450 GP` & `+2,937.5` XP in 11.6s (`Uncut sapphire` 25→175 GP, `Uncut emerald` 50→350 GP). |
 | **Crafting** | 3 | Leather Cowl Crafting (Al Kharid Tanner `679`) | 30 → 34 | **~562,660 XP/hr** | -1 GP/hide | **11.9x faster** than Spinning Wool (`462.5` XP/cowl). |
@@ -354,5 +389,6 @@
 2. **Pickaxe Progression Gap**: Bob's Brilliant Axes in Lumbridge only stocks `Bronze pickaxe` (`1 GP`). New players in Lumbridge/Varrock cannot upgrade to Iron/Steel/Mithril pickaxes locally without traveling to Dwarven Mine (Nurmof).
 3. **Furnace vs. Anvil Separation**: Varrock has mines and anvils (`(3188, 3426)`) while Lumbridge and Al Kharid have furnaces (and Al Kharid lacks an anvil), creating a heavy walking bottleneck for early Smithing unless players mine at Al Kharid/SE Varrock, smelt in Al Kharid/Lumbridge, bank, and smith at Varrock West.
 4. **Draynor Fishing Spot Death Trap**: Level 7 Dark Wizards `(3084, 3236)` aggro onto low-level players clicking the northern fishing spots (`z >= 3231`) at Draynor `(3087, 3230)`. Staying on the southern spot `(3087, 3227)` avoids aggro.
-5. **Current Character State (`bot3`)**: Combat Level 40 (`HP 35/38`), Goblin Village `(2957, 3497)`, Total Skill Level **411** across 15 trained skills (`Mining 54`, `Prayer 48`, `Firemaking 39`, `Strength 39`, `Woodcutting 38`, `Cooking 35`, `Crafting 34`, `Magic 33`, `Hitpoints 30`, `Smithing 26`, `Fishing 22`, `Thieving 22`, `Attack 13`, `Fletching 11`, `Defence 10`), **7 Quests Complete (`11 QP`)**: `Cook's Assistant`, `Sheep Shearer`, `Romeo & Juliet`, `Rune Mysteries`, `The Restless Ghost`, `Witch's Potion`, `Doric's Quest` (with `Goblin Diplomacy` on final step holding `Orange dye`, `Blue dye`, and `1/3 Goblin mail`).
+5. **Goblin Village `npc_findhero` Drop Table Mechanic**: Because Red and Green Goblins in Goblin Village `(2956, 3500)` fight each other, any Goblin that took >=50% of its damage from another Goblin fails `npc_findhero` on death and drops nothing. Farming `Goblin mail` for *Goblin Diplomacy* is far faster on Lumbridge Level 2 Goblins `(3248, 3238)` or full-HP Goblins.
+6. **Current Character State (`bot3`)**: Combat Level 54 (`HP 41/47`), Lumbridge `(3238, 3262)`, Total Skill Level **537** across 15 trained skills (`Smithing 82`, `Mining 55`, `Attack 53`, `Strength 51`, `Prayer 48`, `Hitpoints 47`, `Firemaking 39`, `Woodcutting 38`, `Cooking 37`, `Crafting 34`, `Magic 33`, `Thieving 23`, `Fishing 22`, `Defence 12`, `Fletching 11`), **8 Quests Complete (`12 QP`)**: `Cook's Assistant`, `Sheep Shearer`, `Romeo & Juliet`, `Rune Mysteries`, `The Restless Ghost`, `Witch's Potion`, `Doric's Quest`, `The Knight's Sword`.
 

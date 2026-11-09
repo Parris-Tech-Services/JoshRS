@@ -12,13 +12,17 @@ export const gobdip: Quest = {
       count(sdk, /^goblin mail$/i) + count(sdk, /^orange goblin mail$/i) + count(sdk, /^blue goblin mail$/i);
 
     const startPortSarim = () => step(c, N, 'start-port-sarim', async () => {
-      if (started || has(sdk, /^gold bar|orange dye|blue dye|goblin mail|orange goblin mail|blue goblin mail$/i)) return true;
+      if (started || has(sdk, /^gold bar|orange dye|blue dye|goblin mail|orange goblin mail|blue goblin mail|redberries$/i)) return true;
       await exitWizardsTowerGround(c);
       if (lvl(sdk) > 0) await lumbridgeStairs(c, 0);
       await bankJunk(c, /^(coins|iron scimitar|bronze sword|wooden shield|goblin mail|orange goblin mail|blue goblin mail|redberries|onion|woad leaf|red dye|yellow dye|orange dye|blue dye|gold bar|cabbage)$/i);
-      await withdrawFromDraynorBank(c, [/^coins$/i, /^iron scimitar$/i, /^wooden shield$/i]);
+      await withdrawFromDraynorBank(c, [/^coins$/i, /^iron scimitar$/i, /^wooden shield$/i, /^orange dye$/i, /^blue dye$/i, /^goblin mail$/i, /^orange goblin mail$/i, /^blue goblin mail$/i]);
       if (has(sdk, /^iron scimitar$/i)) await bot.equipItem(/^iron scimitar$/i);
       if (has(sdk, /^wooden shield$/i)) await bot.equipItem(/^wooden shield$/i);
+      if (has(sdk, /^orange dye|blue dye|goblin mail|orange goblin mail|blue goblin mail$/i)) {
+        started = true;
+        return true;
+      }
 
       const w = await bot.walkTo(3045, 3257, 2);
       if (!w?.success) { await openNearbyDoors(c, 3044, 3259, 2); await bot.walkTo(3045, 3257, 2); }
@@ -29,6 +33,10 @@ export const gobdip: Quest = {
 
     const dyes = () => step(c, N, 'dyes', async () => {
       if (has(sdk, /^gold bar$/i)) return true;
+      if (!has(sdk, /^orange dye|orange goblin mail$/i) || !has(sdk, /^blue dye|blue goblin mail$/i)) {
+        await withdrawFromDraynorBank(c, [/^orange dye$/i, /^blue dye$/i, /^goblin mail$/i, /^orange goblin mail$/i, /^blue goblin mail$/i, /^iron scimitar$/i]);
+        if (has(sdk, /^iron scimitar$/i)) await bot.equipItem(/^iron scimitar$/i);
+      }
       const haveOrange = has(sdk, /^orange dye|orange goblin mail$/i);
       const haveBlue = has(sdk, /^blue dye|blue goblin mail$/i);
       if (haveOrange && haveBlue) return true;
@@ -161,25 +169,24 @@ export const gobdip: Quest = {
     const mails = () => step(c, N, 'goblin-mails', async () => {
       if (has(sdk, /^gold bar$/i)) return true;
       if (totalMails() < 3) {
-        if ((sdk.getState()?.player?.worldZ ?? 0) < 3320) {
-          await bot.walkTo(3050, 3275, 3);
-          await bot.walkTo(3007, 3330, 3);
+        await withdrawFromDraynorBank(c, [/^goblin mail$/i, /^orange goblin mail$/i, /^blue goblin mail$/i, /^orange dye$/i, /^blue dye$/i, /^iron scimitar$/i]);
+        if (has(sdk, /^iron scimitar$/i)) await bot.equipItem(/^iron scimitar$/i);
+      }
+      if (totalMails() < 3) {
+        if ((sdk.getState()?.player?.worldZ ?? 0) > 3350) {
+          await walkFromVarrockToLumbridge(c, 3248, 3238);
+        } else {
+          if ((sdk.getState()?.player?.worldX ?? 3092) < 3120) await bot.walkTo(3110, 3250, 3);
+          if ((sdk.getState()?.player?.worldX ?? 3110) < 3200) await bot.walkTo(3185, 3245, 3);
+          await bot.walkTo(3248, 3238, 3);
         }
-        await bot.walkTo(2965, 3385, 3);
-        await bot.walkTo(2956, 3450, 3);
-        await bot.walkTo(2956, 3500, 2);
-        await sdk.sendSetCombatStyle(0);
-        const deadline = Date.now() + 420_000;
+        await sdk.sendSetCombatStyle(3);
+        const deadline = Date.now() + 360_000;
         while (Date.now() < deadline && totalMails() < 3) {
           await bot.dismissBlockingUI();
           const p = sdk.getState()?.player;
-          if (p && p.hp <= 7) {
-            const food = sdk.findInventoryItem(/^(cabbage|shrimps|bread|beer)$/i);
-            if (food) await bot.eatFood(food);
-          }
-          if (p && (p.worldZ > 3504 || p.worldX < 2953 || p.worldX > 2962)) {
-            await openNearbyDoors(c, p.worldX, p.worldZ, 4);
-            await bot.walkTo(2956, 3500, 2);
+          if (p && Math.hypot(p.worldX - 3248, p.worldZ - 3238) > 18) {
+            await bot.walkTo(3248, 3238, 3);
           }
           const mail = sdk.findGroundItem(/^goblin mail$/i);
           if (mail) {
@@ -189,15 +196,15 @@ export const gobdip: Quest = {
             await waitCond(() => totalMails() > before, 4000, 300);
             continue;
           }
-          const px = p?.worldX ?? 2956;
-          const pz = p?.worldZ ?? 3500;
+          const px = p?.worldX ?? 3248;
+          const pz = p?.worldZ ?? 3238;
           const gob = (sdk.getState()?.nearbyNpcs ?? [])
-            .filter((n: any) => /^goblin$/i.test(n.name) && n.combatLevel <= 5 && n.x >= 2953 && n.x <= 2962 && n.z >= 3495 && n.z <= 3504)
+            .filter((n: any) => /^goblin$/i.test(n.name) && n.combatLevel <= 5 && !n.inCombat && n.x >= 3240 && n.x <= 3264 && n.z >= 3224 && n.z <= 3254)
             .sort((a: any, b: any) => Math.hypot(a.x - px, a.z - pz) - Math.hypot(b.x - px, b.z - pz))[0];
           if (gob && !sdk.getState()?.player?.combat?.inCombat) {
             await bot.attack(gob);
           }
-          await sleep(700);
+          await sleep(600);
         }
         if (totalMails() < 3) return false;
       }
@@ -214,6 +221,10 @@ export const gobdip: Quest = {
     const handIn = () => step(c, N, 'hand-in', async () => {
       if (has(sdk, /^gold bar$/i)) return true;
       if ((sdk.getState()?.player?.worldZ ?? 0) < 3320) {
+        if ((sdk.getState()?.player?.worldX ?? 0) > 3120) {
+          await bot.walkTo(3185, 3245, 3);
+          await bot.walkTo(3110, 3250, 3);
+        }
         await bot.walkTo(3050, 3275, 3);
         await bot.walkTo(3007, 3330, 3);
       }
