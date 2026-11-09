@@ -40,11 +40,14 @@ const packet=(a)=>Object.freeze({kind:'packet',packet:buildAction(a),result:'dis
  * Intentionally no arbitrary SDK action pass-through. An action can only
  * target already-observed entities, a known inventory slot, or a guarded dialog.
  */
-export function mapSdkAction(action,snapshot) {
-  if(!snapshot||snapshot.world?.revision!==377||snapshot.world?.mode!=='isolated')
-    reject('validated isolated-377 bot snapshot required');
+export function mapSdkAction(action,snapshot,{approvedFamily=false}={}) {
+  if(!snapshot||snapshot.world?.revision!==377||
+    !(snapshot.world.mode==='isolated'||(approvedFamily===true&&
+      snapshot.world.mode==='family'&&snapshot.world.instanceId==='family-joshrs-377'&&
+      snapshot.player?.username==='HarnessView1')))
+    reject('validated isolated or approved family-377 bot snapshot required');
   try{validateObservation(snapshot,{botName:snapshot.player?.username,
-    expectedWorld:snapshot.world.instanceId})}catch{reject('unverified bot/world observation')}
+    expectedWorld:snapshot.world.instanceId,approvedFamily})}catch{reject('unverified bot/world observation')}
   const a=action;
   switch(a?.type) {
     case 'none':exact(a,[]);return Object.freeze({kind:'no_action'});
@@ -180,8 +183,8 @@ const combatEvent=e=>present(e,{tick:isNum,type:x=>['damage_taken','damage_dealt
   targetType:x=>['player','npc','other_player'].includes(x),targetIndex:isInteger});
 const metadata={contract:'MaxBittker/rs-sdk@db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb',
   semantics:'source-only typed conversion; no actual SDK gateway/real observer wired'};
-export function toBotWorldState(raw,{botName,expectedWorld}={}) {
-  const s=validateObservation(raw,{botName,expectedWorld});
+export function toBotWorldState(raw,{botName,expectedWorld,approvedFamily=false}={}) {
+  const s=validateObservation(raw,{botName,expectedWorld,approvedFamily});
   // Quest-stage varps are useful optional rev377 telemetry, NOT a required
   // BotWorldState field in the pinned upstream SDK types.ts contract. Do not
   // invent them; allowing the explicit native null does not omit a SDK field.
