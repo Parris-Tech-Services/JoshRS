@@ -104,3 +104,148 @@
 - **Verification**:
   - `DONE Ernest the Chicken`
   - Reward: `+300 Coins`, `+4 Quest Points` (Total QP: `15`)
+
+## World Interaction Audit — Session 1
+### Region Completed: Lumbridge Castle (m50_50 L0, L1, L2 & Cellar m50_150) — 2026-11-09T05:51:20.131Z
+- **Total Interactions Audited**: 52 (30 verified working, 22 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3215, 3211, L0)` — Lumbridge Castle - Ground Floor & Courtyard (m50_50 L0)
+  - **Object & Action**: `Door` (id `1536`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3215, 3211). Actual: success=false (Can't reach Door), opRejectedDelta=2, messages="I can't reach that! | I can't reach that! | I can't reach that! | I can't reach that! | I can't reach that! | I can't reach that! | I can't reach that! | I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3215, 3225, L0)` — Lumbridge Castle - Ground Floor & Courtyard (m50_50 L0)
+  - **Object & Action**: `Door` (id `1536`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3215, 3225). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3212, 3220, L0)` — Lumbridge Castle - Ground Floor & Courtyard (m50_50 L0)
+  - **Object & Action**: `Large door` (id `1517`) — action `Close`
+  - **Expected vs Actual**: Expected: Interact "Close" with Large door at (3212, 3220). Actual: success=false (Nothing happened interacting with Large door), opRejectedDelta=0, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3233, 3207, L0)` — Lumbridge Castle - Ground Floor & Courtyard (m50_50 L0)
+  - **Object & Action**: `Door` (id `1531`) — action `Close`
+  - **Expected vs Actual**: Expected: Interact "Close" with Door at (3233, 3207). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3232, 3206, L0)` — Lumbridge Castle - Ground Floor & Courtyard (m50_50 L0)
+  - **Object & Action**: `Bookcase` (id `380`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Bookcase at (3232, 3206). Actual: success=false (Can't reach Bookcase), opRejectedDelta=0, messages="I can't reach that! | I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3225, 3232, L0)` — Lumbridge Castle - Ground Floor & Courtyard (m50_50 L0)
+  - **Object & Action**: `Tree` (id `1278`) — action `Chop down`
+  - **Expected vs Actual**: Expected: Interact "Chop down" with Tree at (3225, 3232). Actual: success=true (Interacted with Tree), opRejectedDelta=1, messages="You do not have an axe which you have the level to use.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3215, 3226, L0)` — Lumbridge Castle - Ground Floor & Courtyard (m50_50 L0)
+  - **Object & Action**: `Door` (id `1537`) — action `Close`
+  - **Expected vs Actual**: Expected: Interact "Close" with Door at (3215, 3226). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3205, 3212, L0)` — Lumbridge Castle - Ground Floor & Courtyard (m50_50 L0)
+  - **Object & Action**: `Crate` (id `354`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3205, 3212). Actual: success=false (Can't reach Crate), opRejectedDelta=0, messages="I can't reach that! | I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3207, 3226, L0)` — Lumbridge Castle - Ground Floor & Courtyard (m50_50 L0)
+  - **Object & Action**: `Door` (id `1537`) — action `Close`
+  - **Expected vs Actual**: Expected: Interact "Close" with Door at (3207, 3226). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3207, 3210, L1)` — Lumbridge Castle - First Floor (m50_50 L1)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door on Castle L1. Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3209, 3212, L1)` — Lumbridge Castle - First Floor (m50_50 L1)
+  - **Object & Action**: `Spinning wheel` (id `2644`) — action `Spin`
+  - **Expected vs Actual**: Expected: Interact "Spin" with Spinning wheel on Castle L1. Actual: success=true (Interacted with Spinning wheel), opRejectedDelta=2, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3209, 3218, L1)` — Lumbridge Castle - First Floor (m50_50 L1)
+  - **Object & Action**: `Closed chest` (id `375`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Closed chest on Castle L1. Actual: success=true (Interacted with Closed chest), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3210, 3218, L1)` — Lumbridge Castle - First Floor (m50_50 L1)
+  - **Object & Action**: `Crate` (id `366`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate on Castle L1. Actual: success=false (Can't reach Crate), opRejectedDelta=0, messages="I can't reach that! | I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3208, 3210, L1)` — Lumbridge Castle - First Floor (m50_50 L1)
+  - **Object & Action**: `Door` (id `1531`) — action `Close`
+  - **Expected vs Actual**: Expected: Interact "Close" with Door on Castle L1. Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3207, 3222, L1)` — Lumbridge Castle - First Floor (m50_50 L1)
+  - **Object & Action**: `Door` (id `1536`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door on Castle L1. Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3208, 3227, L1)` — Lumbridge Castle - First Floor (m50_50 L1)
+  - **Object & Action**: `Door` (id `1531`) — action `Close`
+  - **Expected vs Actual**: Expected: Interact "Close" with Door on Castle L1. Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3208, 3228, L1)` — Lumbridge Castle - First Floor (m50_50 L1)
+  - **Object & Action**: `Crate` (id `357`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate on Castle L1. Actual: success=false (Can't reach Crate), opRejectedDelta=0, messages="I can't reach that! | I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3207, 3227, L1)` — Lumbridge Castle - First Floor (m50_50 L1)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door on Castle L1. Actual: success=false (Nothing happened interacting with Door), opRejectedDelta=0, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3204, 3229, L1)` — Lumbridge Castle - First Floor (m50_50 L1)
+  - **Object & Action**: `Staircase` (id `1739`) — action `Climb-up`
+  - **Expected vs Actual**: Expected: Climb north staircase from L1 to L2. Actual: success=true (Interacted with Staircase), opRejectedDelta=2, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3205, 3222, L2)` — Lumbridge Castle - Second Floor / Roof (m50_50 L2)
+  - **Object & Action**: `Sacks` (id `365`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Sacks on Castle L2. Actual: success=false (Nothing happened interacting with Sacks), opRejectedDelta=0, messages="There's nothing interesting in these sacks.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3205, 3218, L2)` — Lumbridge Castle - Second Floor / Roof (m50_50 L2)
+  - **Object & Action**: `Sacks` (id `365`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Sacks on Castle L2. Actual: success=true (Interacted with Sacks), opRejectedDelta=1, messages="There's nothing interesting in these sacks.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3205, 3208, L2)` — Lumbridge Castle - Second Floor / Roof (m50_50 L2)
+  - **Object & Action**: `Staircase` (id `1740`) — action `Climb-down`
+  - **Expected vs Actual**: Expected: Climb south staircase from L2 to L1. Actual: success=true (Interacted with Staircase), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(3226, 3223, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door
+- `(3226, 3214, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door
+- `(3217, 3218, L0)` **Large door** (id `1516`) [`Open`] -> OK: Interacted with Large door
+- `(3217, 3219, L0)` **Large door** (id `1519`) [`Open`] -> OK: Interacted with Large door
+- `(3216, 3218, L0)` **Large door** (id `1517`) [`Close`] -> OK: Interacted with Large door
+- `(3216, 3219, L0)` **Large door** (id `1520`) [`Close`] -> OK: Interacted with Large door
+- `(3227, 3214, L0)` **Door** (id `1531`) [`Close`] -> OK: Interacted with Door
+- `(3212, 3221, L0)` **Large door** (id `1520`) [`Close`] -> OK: Interacted with Large door
+- `(3218, 3205, L0)` **Oak** (id `1281`) [`Chop down`] -> OK: Interacted with Oak | "You need a Woodcutting level of 15 to chop down this tree."
+- `(3227, 3223, L0)` **Door** (id `1531`) [`Close`] -> OK: Interacted with Door
+- `(3208, 3211, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door
+- `(3207, 3217, L0)` **Door** (id `1536`) [`Open`] -> OK: Interacted with Door
+- `(3235, 3230, L0)` **Tree** (id `1278`) [`Chop down`] -> OK: Interacted with Tree | "You do not have an axe which you have the level to use."
+- `(3230, 3235, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door
+- `(3217, 3231, L0)` **Tree** (id `1278`) [`Chop down`] -> OK: Interacted with Tree | "You do not have an axe which you have the level to use."
+- `(3212, 3232, L0)` **Tree** (id `1278`) [`Chop down`] -> OK: Interacted with Tree | "You do not have an axe which you have the level to use."
+- `(3208, 3212, L0)` **Door** (id `1531`) [`Close`] -> OK: Interacted with Door
+- `(3215, 3212, L0)` **Door** (id `1537`) [`Close`] -> OK: Interacted with Door
+- `(3207, 3218, L0)` **Door** (id `1537`) [`Close`] -> OK: Interacted with Door
+- `(3207, 3225, L0)` **Door** (id `1536`) [`Open`] -> OK: Interacted with Door
+- `(3206, 3212, L0)` **Crate** (id `366`) [`Search`] -> OK: Interacted with Crate | "You search the crate but find nothing."
+- `(3205, 3217, L0)` **Crate** (id `355`) [`Search`] -> OK: Interacted with Crate | "You search the crates but find nothing of value."
+- `(3209, 3216, L0)` **Trapdoor** (id `1568`) [`Open`] -> OK: Interacted with Trapdoor | "The trapdoor opens..."
+- `(3204, 3207, L0)` **Staircase** (id `1738`) [`Climb-up`] -> OK: Interacted with Staircase | moved to (3205, 3209, L1)
+- `(3207, 3214, L1)` **Door** (id `1536`) [`Open`] -> OK: Interacted with Door
+- `(3211, 3209, L1)` **Crate** (id `357`) [`Search`] -> OK: Interacted with Crate | "You search the crate but find nothing."
+- `(3213, 3216, L1)` **Drawers** (id `352`) [`Open`] -> OK: Interacted with Drawers
+- `(3208, 3214, L1)` **Door** (id `1537`) [`Close`] -> OK: Interacted with Door
+- `(3208, 3222, L1)` **Door** (id `1537`) [`Close`] -> OK: Interacted with Door
+- `(3204, 3207, L1)` **Staircase** (id `1739`) [`Climb-down`] -> OK: Interacted with Staircase | moved to (3205, 3209, L0)
+
+### Region Completed: Lumbridge Castle Cellar / Basement (m50_150) — 2026-11-09T05:52:31.269Z
+- **Total Interactions Audited**: 6 (4 verified working, 2 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3214, 9620, L0)` — Lumbridge Castle Cellar / Basement (m50_150)
+  - **Object & Action**: `Waypoint: Cellar Center` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Cellar Center at (3214, 9620). Actual: walkTo failed: No path to (3214, 9620) from (3214, 3225): Destination (3214, 9620) is unreachable — path ends 5673 tiles away at (3195, 3966). The target may be underground or on a different plane that requires a ladder/stairs to access.
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3218, 9618, L0)` — Lumbridge Castle Cellar / Basement (m50_150)
+  - **Object & Action**: `Waypoint: Cellar East Wall` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Cellar East Wall at (3218, 9618). Actual: walkTo failed: No path to (3218, 9618) from (3214, 3225): Destination (3218, 9618) is unreachable — path ends 5675 tiles away at (3195, 3966). The target may be underground or on a different plane that requires a ladder/stairs to access.
+  - **Impact**: **Blocks progress**
+
+#### Verified Working Interactions (Summary)
+- `(3209, 9616, L0)` **Ladder** (id `1755`) [`Climb-up`] -> OK: Interacted with Ladder (loc state changed) | moved to (3209, 3215, L0)
+- `(3216, 9618, L0)` **Sacks** (id `365`) [`Search`] -> OK: Cannot reach Sacks: No path to (3216, 9618) from (3214, 3225): Destination (3216, 9618) is unreachable — path ends 5673 tiles away at (3195, 3966). The target may be underground or on a different plane that requires a ladder/stairs to access. (loc state changed)
+- `(3218, 9619, L0)` **Crate** (id `358`) [`Search`] -> OK: Cannot reach Crate: No path to (3218, 9619) from (3214, 3225): Destination (3218, 9619) is unreachable — path ends 5676 tiles away at (3195, 3966). The target may be underground or on a different plane that requires a ladder/stairs to access. (loc state changed)
+- `(3219, 9617, L0)` **Crate** (id `357`) [`Search`] -> OK: Cannot reach Crate: No path to (3219, 9617) from (3214, 3225): Destination (3219, 9617) is unreachable — path ends 5675 tiles away at (3195, 3966). The target may be underground or on a different plane that requires a ladder/stairs to access. (loc state changed)
