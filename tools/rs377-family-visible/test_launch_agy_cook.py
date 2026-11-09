@@ -28,10 +28,9 @@ class AgyHandoffTests(unittest.TestCase):
         self.bin.mkdir()
         self.make_exe("ss", "#!/bin/sh\nprintf 'LISTEN\\n'\n")
         self.make_exe("agy", """#!/bin/sh
-[ "$1" = "-p" ] || exit 10
+[ "$1" = "-i" ] || exit 10
 case "$2" in *"Cook's Assistant"*"HarnessView1"*) ;; *) exit 11 ;; esac
-[ "$3" = "--output-format" ] || exit 12
-[ "$4" = "text" ] || exit 13
+[ "$#" = "2" ] || exit 12
 [ "$JOSHRS_HARNESSVIEW1_PASSWORD" = "onlybot123" ] || exit 14
 printf 'FAKE_AGY_ACCEPTED_TASK\\n'
 """)
@@ -85,6 +84,8 @@ printf 'FAKE_AGY_ACCEPTED_TASK\\n'
             self.assertTrue(sent, output.decode("utf8", "replace"))
             self.assertEqual(child.wait(timeout=5), 0, output.decode("utf8", "replace"))
             self.assertIn(b"FAKE_AGY_ACCEPTED_TASK", output)
+            self.assertIn(b"Agy prompt preview (first 12 lines)", output)
+            self.assertIn(b"Launching Agy interactive (-i)", output)
             self.assertIn(b"AGY_HANDOFF_FINISHED: CLI exit 0", output)
             self.assertNotIn(b"onlybot123", output)
         finally:
