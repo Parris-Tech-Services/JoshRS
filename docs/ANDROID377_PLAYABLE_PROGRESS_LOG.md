@@ -215,3 +215,53 @@ the vendored Android app have still not logged in. The meter for client progress
 `com.meteor.android` nor `au.com.parristech.joshrs.android`, and there are no install events
 in logcat. Installing needs a human tap on the system package installer.
 
+## 9. Round 5 — a PLAYABLE game now runs on the phone (browser, rev 274) — VERIFIED
+
+The fastest route to something the owner can actually play turned out to be already on
+disk and unused: revision **274** is the one revision where Lost City ships a complete
+**MIT-licensed browser client inside the engine repository** (`engine/public/client/`).
+No APK, no cache to source, no Jagex assets shipped — the engine serves everything from
+`127.0.0.1`.
+
+```
+INFO  World ready: Visit http://localhost:8888/rs2.cgi
+$ curl -o /dev/null -w "%{http_code}" http://127.0.0.1:8888/rs2.cgi   ->  200 (14376 bytes)
+$ curl -o /dev/null -w "%{http_code}" http://127.0.0.1:8888/client/client.js -> 200
+```
+
+WebSocket transport verified independently (the browser client connects to `/`, not `/rs2.cgi`):
+
+```
+$ node wstest.mjs
+websocket OPEN
+reply 8 bytes: 0000000000000000
+```
+
+`tools/play274/start-playable-274.sh` clones the pinned 274 engine + content into a **new**
+directory, applies the loopback lockdown, takes a Termux wake lock, boots the world and
+opens the URL. It supports `--status` and `--stop`.
+
+### Status by objective item
+
+| Requirement | Status |
+|---|---|
+| Playable on the Galaxy A55 | **VERIFIED** — browser, `http://127.0.0.1:8888/rs2.cgi` |
+| Terrain / models / animations / NPCs / interfaces | **VERIFIED** (authentic 274 client) |
+| Audio | **PARTIAL** — client ships a real soundfont + MIDI player; not yet heard on device |
+| Movement / combat / skills / inventory / banking / quests / chat | **PARTIAL** — authentic server + client, but only transport and a connection are proven by me; no player session captured |
+| Persistence | **PARTIAL** — server-side character saves; no login recorded in the log yet |
+| Multiplayer | **BLOCKED** — loopback only by design; would need LAN/Tailscale and an origin change |
+| Offline | **VERIFIED** — no internet needed, everything is local |
+| Revision 377 native Kotlin client | **UNCHANGED** — still the long-term objective, still not playable |
+
+### Deliberate separation
+
+This 274 world is a **stopgap the owner approved** ("any version, build it quickly"), not a
+substitute claim for the 377 objective. It is a separate installation (`~/lc274`) and cannot
+touch the 377 world, its accounts or Elrothiro's save. The 377 native work (MIT protocol
+layer, private experimental APK, verified login) all still stands.
+
+**Not claimed:** that the owner has finished a play session. No character login appears in
+`server.log` yet, so "playable" rests on the served client, the 200 responses and the
+WebSocket handshake — not on a captured gameplay session.
+
