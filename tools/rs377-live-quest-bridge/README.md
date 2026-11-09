@@ -11,6 +11,89 @@ terminal/shell connection to AVANCE-WS7. A source push does not start a
 server or prove an in-world quest. The locally running Agy/Fedora agent
 must install and genuinely verify the integration.
 
+## Native MCP integration for Agy (9 November 2026)
+
+Agy can use the original pinned upstream RS-SDK MCP tools to control one
+actual networked HarnessView1. The new local MCP subprocess owns the
+single normal 377 TCP login, authenticated observer and WebSocket
+controller. **Do not run the separate standalone --run quest process
+simultaneously**, as that would compete for the same bot account.
+
+This is merged-source work until the local Fedora observer is deployed.
+The MCP does NOT restart or modify the existing world or touch saves.
+
+### Fedora setup using a clean worktree
+
+Do not force-pull the user's dirty JoshRS-quest-runner checkout.
+
+~~~bash
+git -C ~/dev/JoshRS-quest-runner fetch origin main
+git -C ~/dev/JoshRS-quest-runner worktree add --detach ~/dev/JoshRS-agy-mcp-20261109 origin/main
+cd ~/dev/JoshRS-agy-mcp-20261109
+bash tools/rs377-fedora-quests/setup-fedora.sh --install
+(cd tools/rs377-chatgpt-bridge && npm install --ignore-scripts --no-audit --no-fund)
+bun tools/rs377-live-quest-bridge/mcp-server.mjs --check
+~~~
+
+Only after Agy installs and verifies the real native observer, set up
+private local bot credentials. The observer token and HarnessView1's
+password must never appear in chat, source control or shell history:
+
+~~~bash
+cd ~/dev/JoshRS-agy-mcp-20261109
+export JOSHRS_FAMILY_SDK_APPROVED=HarnessView1
+bun tools/rs377-live-quest-bridge/mcp-server.mjs --init
+bun tools/rs377-live-quest-bridge/mcp-server.mjs --check
+bun tools/rs377-live-quest-bridge/mcp-server.mjs --print-config
+~~~
+
+The private interactive --init prompts without echo and writes the
+restricted ~/.config/joshrs/family-quest-mcp.json file, mode 0600,
+under a mode-0700 directory. It refuses overwriting existing credentials.
+
+The nonsecret --print-config JSON is the full **Agy MCP configuration**:
+it uses the actual Fedora Bun executable, the checked-out script's absolute
+path, approved bot scope and only three tools. Import it into Agy's local MCP
+settings. The previous rs-jimmy setting under
+tools/rs-sdk-quests/.agents/mcp_config.json is for a different original
+SDK checkout, not verified against the current family world.
+
+### Agy MCP tools
+
+- list_bots: read-only. A blank list means no live HarnessView1 session
+  is connected yet; it does not automatically login or restart the game.
+- execute_code: original upstream TypeScript executor, with real bot and
+  sdk objects. Requires bot_name HarnessView1. Any other name is refused
+  before starting a bot network connection.
+- disconnect_bot: closes only HarnessView1's normal game connection and
+  SDK gateway, leaving Elrothiro, Sylvie and the server untouched.
+
+A harmless first call to execute_code on the **verified installed**
+observer, with bot_name HarnessView1 and world brief:
+
+~~~typescript
+const state = sdk.getState();
+return {name:state?.player?.name,tick:state?.tick,
+  inGame:state?.inGame,inventoryCount:state?.inventory?.length};
+~~~
+
+Then complete Cook's Assistant with the existing playbook and genuine
+BotActions, checking the native quest stage, 300 Cooking XP, 1 QP,
+inventory, logout/relogin and no duplicate rewards. If an observed action
+is absent, refuse and fix its root cause rather than inventing state.
+
+**Trust warning:** the original execute_code runs TypeScript with the
+Fedora user's Bun permissions, not inside a sandbox. Only configure a
+trusted Agy agent; never run in-game chat or untrusted text as executable
+code. The bot's automatic browser launch, reconnection and chat display
+are disabled. Do not forward this stdio MCP over the network.
+
+MCP source/CI status is independent of live deployment. GitHub tests
+verify protocol/tool registration without game access, restricted secret
+permissions, scope boundaries and single-controller behaviour. Only
+Agy on Fedora can perform real world observations and a complete
+quest playthrough after the authorised backup-first server restart.
+
 ## Components
 
 - The family-capable observer/SDK bridge is opt-in and restricted to
