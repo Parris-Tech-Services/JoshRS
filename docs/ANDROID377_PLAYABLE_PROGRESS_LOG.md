@@ -404,3 +404,29 @@ re-verify. This is exactly the class of bug the roadmap's §status vocabulary ex
 **Not verified:** a second physical device actually joining — that needs a second device on
 the same network, which cannot be tested from this phone alone.
 
+## 14. Round 10 — native client transport and login flow (loopback-verified)
+
+`protocol/LoginFlow377.kt` + `Transport`/`TcpTransport` implement the real login sequence:
+negotiation (opcode 14), the 17-byte reply and its seed, the credential block, and the
+status byte.
+
+The test is a genuine socket round trip, not a mock: an in-process `ServerSocket`
+generates its **own RSA key pair**, and after the client submits credentials the server
+**decrypts the block with its private key** and must recover the exact plaintext.
+
+```
+client -> [14][0]                      server -> 8 zeros + server byte + 8-byte seed
+client -> [16][len][FF][377][info][36 CRCs][encLen][RSA]
+server -> [2]                          (asserted, and private-key decryption matches)
+```
+
+That one test covers the frame layout, the `0xFF` revision escape, the CRC placement and
+raw RSA together — a mocked cipher would miss a mismatch between any two of them.
+
+Also asserted: status 6 is surfaced rather than swallowed, and a malformed negotiation
+reply is refused instead of being mis-sliced.
+
+**Still absent:** the post-login ISAAC read loop over a socket (framing and the cipher
+exist and are tested separately), reconnect, and cache loading. The native client has not
+yet logged in to the live engine — only to a loopback test server.
+
