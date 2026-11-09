@@ -44,5 +44,16 @@ jobs:
           test "$status" -ne 0
           grep -q 'PREFLIGHT_BLOCKED' /tmp/fedora-safe.log
           grep -q 'Terminal remains open' /tmp/fedora-safe.log
+      - name: Agy live-377 handoff syntax and fail-closed offline smoke
+        shell: bash
+        run: |
+          bash -n tools/rs377-family-visible/launch-agy-cook.sh
+          set +e
+          bash tools/rs377-family-visible/launch-agy-cook.sh --check >/tmp/agy-cook-safety.log 2>&1
+          status=$?
+          set -e
+          test "$status" -ne 0
+          grep -q 'HANDOFF_BLOCKED' /tmp/agy-cook-safety.log
+          ! grep -q 'AGY_HANDOFF_FINISHED' /tmp/agy-cook-safety.log
       - name: Safe no-login help
         run: node tools/rs377-family-visible/join.mjs --help
