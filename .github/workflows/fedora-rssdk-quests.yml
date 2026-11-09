@@ -43,15 +43,17 @@ jobs:
           node --check tools/rs377-fedora-quests/catalog.mjs
           node --check tools/rs377-fedora-quests/campaign.mjs
           node --check tools/rs377-fedora-quests/campaign.test.mjs
+          node --check tools/rs377-fedora-quests/cook.test.mjs
           node --check tools/rs377-chatgpt-bridge/src/sdk-runtime.mjs
       - name: Guard pinned trace injection against real family worlds
         run: python3 -m unittest discover -s tests -p 'test_377_fedora_trace_scope.py' -v
-      - name: Run exact 104 plus seven metadata/false-success tests
-        run: node --test tools/rs377-fedora-quests/campaign.test.mjs
+      - name: Run 104+7 classification and Cook full-sequence fixture tests
+        run: node --test tools/rs377-fedora-quests/campaign.test.mjs tools/rs377-fedora-quests/cook.test.mjs
       - name: Compile and execute actual Bun campaign planner without a game login
         shell: bash
         run: |
           bun build tools/rs377-fedora-quests/run.ts --target=bun --outfile="$RUNNER_TEMP/quest-runner-bundle.js"
+          bun build tools/rs377-fedora-quests/playbooks/cook.ts --target=bun --outfile="$RUNNER_TEMP/cook-quest-playbook.js"
           bun tools/rs377-fedora-quests/run.ts --plan > "$RUNNER_TEMP/quest-plan.json"
           node -e "const a=require(process.argv[1]); if(a.total!==111||a.livePlayableVerified!==0||a.mode!=='READ_ONLY_SOURCE_PLAN') process.exit(1)" "$RUNNER_TEMP/quest-plan.json"
       - name: Verify no default game access
