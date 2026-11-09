@@ -27,7 +27,7 @@ class CacheOnDemand377Test {
     @Test
     fun `crc route is appended with no separator and in decimal`() {
         // Real value from a live 377 cache: versionlist CRC word is 0x2ae9b164 = 719958372.
-        val url = CacheOnDemand377.urlFor(Jagfile377.VERSIONLIST, 0x2ae9b164)
+        val url = CacheOnDemand377.urlFor(CacheJagfile377.VERSIONLIST, 0x2ae9b164)
         assertEquals("/versionlist719958372", url)
         assertTrue("must not contain a separator", !url.contains(":"))
         assertTrue("must be decimal, not hex", !url.contains("b164"))
@@ -38,7 +38,7 @@ class CacheOnDemand377Test {
         // 0x9509ece5 is the title CRC word; as a signed Int it is negative.
         val signed = 0x9509ece5.toInt()
         assertTrue(signed < 0)
-        assertEquals("/title2500455653", CacheOnDemand377.urlFor(Jagfile377.TITLE, signed))
+        assertEquals("/title2500455653", CacheOnDemand377.urlFor(CacheJagfile377.TITLE, signed))
     }
 
     @Test
@@ -46,11 +46,11 @@ class CacheOnDemand377Test {
         val signed = 0x12cafec1.toInt()
         assertEquals(
             "http://127.0.0.1:8888/config315293377",
-            CacheOnDemand377.absoluteUrl("http://127.0.0.1:8888", Jagfile377.CONFIG, signed)
+            CacheOnDemand377.absoluteUrl("http://127.0.0.1:8888", CacheJagfile377.CONFIG, signed)
         )
         assertEquals(
             "http://127.0.0.1:8888/config315293377",
-            CacheOnDemand377.absoluteUrl("http://127.0.0.1:8888/", Jagfile377.CONFIG, signed)
+            CacheOnDemand377.absoluteUrl("http://127.0.0.1:8888/", CacheJagfile377.CONFIG, signed)
         )
     }
 
@@ -98,7 +98,7 @@ class CacheOnDemand377Test {
         }
         val all = cache.downloadAll()
         assertEquals(
-            setOf(Jagfile377.CONFIG, Jagfile377.INTERFACE, Jagfile377.VERSIONLIST, Jagfile377.SOUNDS),
+            setOf(CacheJagfile377.CONFIG, CacheJagfile377.INTERFACE, CacheJagfile377.VERSIONLIST, CacheJagfile377.SOUNDS),
             all.keys
         )
     }
@@ -112,15 +112,15 @@ class CacheOnDemand377Test {
                 else -> null
             }
         }
-        assertEquals(3, cache.jagfile(Jagfile377.CONFIG)?.size)
-        assertNull(cache.jagfile(Jagfile377.TEXTURES))
+        assertEquals(3, cache.jagfile(CacheJagfile377.CONFIG)?.size)
+        assertNull(cache.jagfile(CacheJagfile377.TEXTURES))
     }
 
     @Test
     fun `known absent routes are recorded so a probe is not mistaken for breakage`() {
         assertEquals(
-            setOf(Jagfile377.TITLE, Jagfile377.MEDIA, Jagfile377.TEXTURES, Jagfile377.WORDENC),
-            Jagfile377.KNOWN_ABSENT
+            setOf(CacheJagfile377.TITLE, CacheJagfile377.MEDIA, CacheJagfile377.TEXTURES, CacheJagfile377.WORDENC),
+            CacheJagfile377.KNOWN_ABSENT
         )
     }
 }

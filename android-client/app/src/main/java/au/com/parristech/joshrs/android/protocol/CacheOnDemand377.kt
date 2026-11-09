@@ -50,16 +50,16 @@ class CacheOnDemand377(
     }
 
     /** Fetches one jagfile, or null when this cache does not expose it. */
-    fun jagfile(type: Jagfile377): ByteArray? {
+    fun jagfile(type: CacheJagfile377): ByteArray? {
         val crc = crcWords()[type.routeIndex]
         return fetch(absoluteUrl(baseUrl, type, crc))
     }
 
     /** Fetches everything available; absent files are simply omitted. */
-    fun downloadAll(): Map<Jagfile377, ByteArray> {
+    fun downloadAll(): Map<CacheJagfile377, ByteArray> {
         val crcs = crcWords()
-        val out = LinkedHashMap<Jagfile377, ByteArray>()
-        for (type in Jagfile377.entries) {
+        val out = LinkedHashMap<CacheJagfile377, ByteArray>()
+        for (type in CacheJagfile377.entries) {
             val body = fetch(absoluteUrl(baseUrl, type, crcs[type.routeIndex])) ?: continue
             out[type] = body
         }
@@ -75,7 +75,7 @@ class CacheOnDemand377(
          * The CRC is rendered as an **unsigned** decimal value: the engine parses it with a
          * decimal parser, so a signed representation of a CRC above 0x7FFFFFFF would not match.
          */
-        fun urlFor(type: Jagfile377, crc: Int): String {
+        fun urlFor(type: CacheJagfile377, crc: Int): String {
             val unsigned = crc.toLong() and 0xffffffffL
             return "/${type.routeName}$unsigned"
         }
@@ -105,7 +105,7 @@ class CacheOnDemand377(
          * Convenience for a real deployment: joins the base URL and a route, applying the
          * decimal/unsigned rule used by [urlFor].
          */
-        fun absoluteUrl(baseUrl: String, type: Jagfile377, crc: Int): String =
+        fun absoluteUrl(baseUrl: String, type: CacheJagfile377, crc: Int): String =
             baseUrl.trimEnd('/') + urlFor(type, crc)
     }
 }
@@ -115,7 +115,7 @@ class CacheOnDemand377(
  *
  * Index 0 is not a route. The order matches `makeCrcs()` in the engine's `CrcTable.ts`.
  */
-enum class Jagfile377(val routeIndex: Int, val routeName: String) {
+enum class CacheJagfile377(val routeIndex: Int, val routeName: String) {
     TITLE(1, "title"),
     CONFIG(2, "config"),
     INTERFACE(3, "interface"),
@@ -127,6 +127,6 @@ enum class Jagfile377(val routeIndex: Int, val routeName: String) {
 
     companion object {
         /** Routes known to return 404 on a stock 377 cache, kept for reporting rather than probing. */
-        val KNOWN_ABSENT: Set<Jagfile377> = setOf(TITLE, MEDIA, TEXTURES, WORDENC)
+        val KNOWN_ABSENT: Set<CacheJagfile377> = setOf(TITLE, MEDIA, TEXTURES, WORDENC)
     }
 }
