@@ -127,11 +127,16 @@ class CacheToDefinitionsPipelineTest {
     @Test
     fun `a missing entry is reported rather than returning another entry's bytes`() {
         val archive = jag(listOf("obj.dat" to objDat()))
+        // Jagfile377 reports a missing entry with error(...), i.e. IllegalStateException.
         val error = try {
             Jagfile377.readFile(archive, "npc.dat"); null
-        } catch (e: IllegalArgumentException) {
+        } catch (e: RuntimeException) {
             e
         }
         assertTrue("absent entry must throw", error != null)
+        assertTrue(
+            "message should name the missing entry",
+            error!!.message!!.contains("npc.dat")
+        )
     }
 }
