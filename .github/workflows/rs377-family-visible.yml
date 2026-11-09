@@ -55,5 +55,7 @@ jobs:
           test "$status" -ne 0
           grep -q 'HANDOFF_BLOCKED' /tmp/agy-cook-safety.log
           ! grep -q 'AGY_HANDOFF_FINISHED' /tmp/agy-cook-safety.log
+      - name: Simulate Agy handoff with private TTY and fake game (no live access)
+        run: python3 -m unittest discover -s tools/rs377-family-visible -p 'test_launch_agy_cook.py' -v
       - name: Safe no-login help
         run: node tools/rs377-family-visible/join.mjs --help
