@@ -45,6 +45,7 @@ Supporting analysis:
 - [QUEST_AUDIT.md](QUEST_AUDIT.md) — structural audit of all 64 quest directories
 - [QUEST_TARGET_STATUS.md](QUEST_TARGET_STATUS.md) — the 88-quest target list against reality
 - [QUEST_RECONCILIATION.md](QUEST_RECONCILIATION.md) — bot playtests vs structure vs targets
+- [QUEST_COMPLETION_PATHS.md](QUEST_COMPLETION_PATHS.md) — every quest has a completion path
 - [LEGENDS_REWARD_SPEC.md](LEGENDS_REWARD_SPEC.md) — exact values and implementation plan for the
   Legends' Quest reward
 - [../ANDROID377_PLAYABLE_PROGRESS_LOG.md](../ANDROID377_PLAYABLE_PROGRESS_LOG.md) — the wider
