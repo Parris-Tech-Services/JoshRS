@@ -323,3 +323,46 @@ and the patch applies cleanly to the pristine upstream file (`PATCH_APPLIED_CLEA
 **Not verified:** that a real tab switch now survives. That needs a human to switch tabs for
 longer than the old 30s window and confirm the session persists.
 
+## 12. Round 8 — the native client does NOT need a user-supplied cache (VERIFIED)
+
+The biggest assumed blocker for a native Android client was "the player must supply
+`main_file_cache.*`". That is **false for the files that matter** on 377: the engine serves
+the cache on demand over HTTP.
+
+Probed against a live `Engine-TS@377-wip` (`tools/android377-phone/probe-ondemand-cache.py`):
+
+```
+/crc ok: 40 bytes
+  config       200     533716 bytes
+  interface    200     185731 bytes
+  versionlist  200      87951 bytes
+  sounds       200     223704 bytes
+  title        404     absent from this cache
+  media        404     absent from this cache
+  textures     404     absent from this cache
+  wordenc      404     absent from this cache
+4/8 jagfiles downloadable
+```
+
+### Three wire details that each look like a server fault when wrong
+
+1. `/crc` returns a 40-byte buffer: nine big-endian CRC-32 words **plus a 4-byte hash**.
+   Only the first 36 bytes belong in the login block.
+2. The cache routes take the CRC **appended with no separator**:
+   `/versionlist719958372`, not `/versionlist:719958372` (the colon form 404s).
+3. The CRC is **decimal**. The route parses it as a decimal integer, so passing the hex
+   value silently 404s and reads as "cache missing" when it is present.
+
+### What this changes
+
+- `config` (item/NPC/object definitions), `interface`, `versionlist` and `sounds` can be
+  bootstrapped from the server the client is already connecting to. No redistribution —
+  the owner's own server serves its own cache.
+- **Textures and media are not exposed.** A textured renderer will still need those, so
+  this does not remove the cache problem entirely; it removes it for definitions, UI and audio.
+- Loading the 2.4 MB of model/land archives should go through the same `OnDemand` mechanism
+  (`idx1`/`idx4`), which was **not** exercised here — that is the next probe.
+
+**Verified:** the four routes and their byte counts. **Not verified:** that these jagfiles
+parse into usable definitions in Kotlin, and no model/land archive download has been tested.
+
