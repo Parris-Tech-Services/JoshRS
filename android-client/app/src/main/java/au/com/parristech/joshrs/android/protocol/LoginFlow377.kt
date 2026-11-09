@@ -57,6 +57,16 @@ class TcpTransport(
     override fun close() {
         runCatching { socket.close() }
     }
+
+    /**
+     * Reads whatever is available up to [max]. Returns an empty array at end of stream.
+     * Used by the post-login loop, which must not demand an exact byte count.
+     */
+    fun readAtMost(max: Int): ByteArray {
+        val buffer = ByteArray(max)
+        val read = input.read(buffer)
+        return if (read <= 0) ByteArray(0) else buffer.copyOf(read)
+    }
 }
 
 /**
