@@ -4,6 +4,48 @@
 
 This is **not** the Fedora sandbox. Players in an isolated Fedora disposable world can never appear in JParrisDesktop's already-running game.
 
+## Make HarnessView1 add Elrothiro as a friend
+
+The normal 377 client opcode is `FRIENDLIST_ADD=120` with exactly eight
+big-endian bytes of the recipient's canonical base-37 name. The pinned engine
+decodes it with `g8()` and routes the authenticated bot's normal add-friend
+request through its Friends worker. No edits to any player save or account
+database are made by this script.
+
+**From AVANCE-WS7 Fedora** with your normal JoshRS server already running,
+the bot logged out from its previous timed session, and the bot save now in
+Lumbridge:
+
+~~~bash
+cd ~/dev/JoshRS-quest-runner || exit 1
+git pull --ff-only || exit 1
+node tools/rs377-family-visible/join.mjs --connect --allow-family --host 127.0.0.1 --bot HarnessView1 --add-friend Elrothiro --seconds 30
+~~~
+
+Enter the separate bot's password privately at the terminal prompt.
+This starts one ordinary `HarnessView1` session and dispatches the friends
+packet **once**, after the game login. Look for:
+
+`FRIEND_ADD_DISPATCHED: HarnessView1 -> Elrothiro`
+
+**Not a completion receipt:** `Session377` does not decode incoming social
+response packets, and the game may have its Friends service disabled.
+The line above means the request was dispatched on the authenticated TCP
+session, not that the relationship is persisted or Elrothiro shows Online.
+
+To check backend readiness without modifying data, on Fedora:
+`ss -ltn '( sport = :45099 )'` shows if the default Friends listener exists.
+This listener check does not verify that the game process is registered with
+it. If the listener is missing, **do not restart the current live game** to
+fix it: preserve Elrothiro's session and inspect the existing server's
+FRIEND_SERVER/EASY_STARTUP settings after players log out.
+
+Adding Elrothiro as a friend **from HarnessView1** is directional. The user
+has already added HarnessView1 in Elrothiro's client. Friends-only private
+chat status additionally requires the friend backend to be active and both
+players' chat/privacy settings to allow presence. Never report success from
+packet dispatch alone.
+
 ## Fix confirmed on 9 November: HarnessView1 was on Tutorial Island
 
 The real user-provided revision-377 save reports **3094,3106,level 0**.

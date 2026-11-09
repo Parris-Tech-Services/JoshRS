@@ -44,7 +44,7 @@ const tile=(v,name)=>uint(v,16383,name);
 export const EXTRA_PACKET_TYPES=Object.freeze([
   'player','if_button','close_modal','item_on_item','item_on_npc',
   'spell_on_npc','spell_on_player','spell_on_item','spell_on_ground',
-  'resume_count','chat_plain','private_chat'
+  'resume_count','chat_plain','private_chat','friend_add'
 ]);
 const EXTRA=new Set(EXTRA_PACKET_TYPES);
 function buildExtendedPacket(a){
@@ -57,7 +57,8 @@ function buildExtendedPacket(a){
   spell_on_player:['playerSlot','spellComponent'],
   spell_on_item:['itemId','slot','componentId','spellComponent'],
   spell_on_ground:['x','z','itemId','spellComponent'],
-  resume_count:['value'],chat_plain:['message'],private_chat:['targetName','message']
+  resume_count:['value'],chat_plain:['message'],private_chat:['targetName','message'],
+  friend_add:['targetName']
  }[a.type];
  if(!names||Object.keys(a).some(k=>k!=='type'&&!names.includes(k)))
   throw new Error('Unexpected or unverified extended 377 action fields');
@@ -118,6 +119,14 @@ function buildExtendedPacket(a){
    const out=Buffer.alloc(8+packed.length);
    out.writeBigUInt64BE(name,0);packed.copy(out,8);
    return payload(227,out,true);
+  }
+  case 'friend_add':{
+   // Native CLIENT FRIENDLIST_ADD (120, fixed 8), decoder buf.g8().
+   // Only a normal authenticated session may send this packet; dispatch
+   // alone does NOT prove the Friends worker persisted the relationship.
+   const target=nameToBase37(a.targetName);
+   const body=Buffer.alloc(8);body.writeBigUInt64BE(target,0);
+   return payload(120,body);
   }
  }
  throw new Error('Unsupported native extended packet');
