@@ -75,7 +75,7 @@ absent        : 26
 | 56 | Priest in Peril | 1 | yes | — | `quest_priestperil` |
 | 57 | Nature Spirit | 2 | yes | — | `quest_druidspirit` |
 | 58 | Death Plateau | 1 | yes | — | `quest_death` |
-| 59 | Troll Stronghold | 1 | **no** | — | — |
+| 59 | Troll Stronghold | 1 | yes | — | `quest_troll` |
 | 60 | Tai Bwo Wannai Trio | 2 | yes | — | `quest_tbwt` |
 | 61 | Regicide | 3 | yes | — | `quest_regicide` |
 | 62 | Eadgar's Ruse | 1 | yes | — | `quest_eadgar` |
@@ -85,7 +85,7 @@ absent        : 26
 | 66 | Throne of Miscellania | 1 | **no** | — | — |
 | 67 | Monkey Madness I | 3 | **no** | — | — |
 | 68 | Haunted Mine | 2 | **no** | — | — |
-| 69 | Troll Romance | 2 | yes | — | `quest_troll` |
+| 69 | Troll Romance | 2 | **no** | — | — |
 | 70 | In Search of the Myreque | 2 | **no** | — | — |
 | 71 | Creature of Fenkenstrain | 2 | **no** | — | — |
 | 72 | Roving Elves | 1 | **no** | — | — |
@@ -110,11 +110,11 @@ absent        : 26
 
 - #42 Shilo Village (QP 2)
 - #52 Mage Arena I (QP 0)
-- #59 Troll Stronghold (QP 1)
 - #63 Shades of Mort'ton (QP 3)
 - #66 Throne of Miscellania (QP 1)
 - #67 Monkey Madness I (QP 3)
 - #68 Haunted Mine (QP 2)
+- #69 Troll Romance (QP 2)
 - #70 In Search of the Myreque (QP 2)
 - #71 Creature of Fenkenstrain (QP 2)
 - #72 Roving Elves (QP 1)
@@ -178,9 +178,9 @@ absence is a gap in the content pack rather than an era boundary:
 - #56 Priest in Peril
 - #57 Nature Spirit
 - #58 Death Plateau
+- #59 Troll Stronghold
 - #60 Tai Bwo Wannai Trio
 - #61 Regicide
 - #62 Eadgar's Ruse
 - #64 The Fremennik Trials
 - #65 Horror from the Deep
-- #69 Troll Romance
