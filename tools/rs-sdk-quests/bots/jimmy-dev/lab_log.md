@@ -42,3 +42,7 @@
 - `284` (`Doric`), `746` (`Oracle`), `609` (`Fortress Guard`), `528` (`Shop keeper`), `529` (`Shop assistant`) @ `(2952, 3452, L0)`, `(3012, 3503, L0)`, `(3077, 3511, L0)`: Tested `Talk-to` and `Trade` in-game at Doric's house, Ice Mountain, Black Knights' Fortress, and Edgeville -> **OK**.
 - `747` (`Oziach`), `538` (`Peksa`) @ `(3070, 3517, L0)` & `(3077, 3427, L0)`: Tested `Talk-to` and `Trade` in-game in Edgeville and Barbarian Village -> **OK**.
 - `582` (`Dwarf` shopkeeper), `594` (`Nurmof`) @ `(2997, 9818, L0)` & `(2996, 9847, L0)`: Tested `Talk-to` and `Trade` in-game in the Dwarven Mine -> **OK**.
+- `382` (`Dwarf` Mining Guild), `583` (`Betty`), `559` (`Brian`), `734` (`Bartender`), `375` (`Redbeard Frank`), `744` (`Klarense`) @ `(3047, 9757, L0)` & `(3025, 3250, L0)`: Tested `Talk-to` and `Trade` in-game at the Mining Guild and Port Sarim -> **OK**.
+- `557` (`Wydin`), `307` (`Hetty`), `367` (`Chemist`), `338` (`Chancy`), `336` (`DeVinci`), `340` (`Hops`) @ `(3014, 3206, L0)` & `(2937, 3209, L0)`: Tested `Talk-to` and `Trade` in-game in Port Sarim and Rimmington -> **OK**.
+- `918` (`Ned`), `755` (`Morgan`), `915` (`Leela`), `519` (`Bob`), `456` (`Father Aereck`) @ `(3101, 3258, L0)` & `(3232, 3203, L0)`: Tested `Talk-to` and `Trade` in-game in Draynor Village and Lumbridge -> **OK**.
+- `758` (`Fred the Farmer`), `604` (`Thurgo`) @ `(3188, 3273, L0)` & `(3002, 3144, L0)`: Tested `Talk-to` in-game north of Lumbridge and at Mudskipper Point -> **OK**.
