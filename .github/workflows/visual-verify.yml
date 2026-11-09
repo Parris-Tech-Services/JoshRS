@@ -1,0 +1,113 @@
+name: Visual verification (274 client, OCR)
+
+# Gives the agent "sight" without a screen.
+#
+# On the phone there is no working screenshot path: screencap is permission-DENIED, the image
+# viewer cannot open any path on this host, and neither Chromium nor Firefox is packaged for
+# Termux. Rather than asking a human to look at the client, this job boots a real 274 world,
+# loads the actual browser client in headless Chromium, screenshots it, and OCRs the screenshot
+# to text. The text is the evidence.
+#
+# Passing this job means: the client booted, painted a canvas, and the expected UI text was
+# present on screen. It does not mean gameplay works.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "tools/visual/**"
+      - ".github/workflows/visual-verify.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    name: Capture and OCR the 274 client
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Boot a real revision-274 world
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/w274"
+          mkdir -p "$root"
+          git clone --depth 1 --branch 274 https://github.com/LostCityRS/Engine-TS.git "$root/engine"
+          git clone --depth 1 --branch 274 https://github.com/LostCityRS/Content.git "$root/content"
+          python3 tools/android377-phone/loopback_bind.py "$root/engine"
+          cd "$root/engine"
+          npm ci --no-audit --no-fund
+          nohup npx tsx src/app.ts > "$root/engine.log" 2>&1 &
+          for _ in $(seq 1 120); do
+            grep -q "World ready" "$root/engine.log" && break
+            sleep 5
+          done
+          grep -q "World ready" "$root/engine.log" || { tail -40 "$root/engine.log"; exit 1; }
+          tail -3 "$root/engine.log"
+          curl -sf -o /dev/null http://127.0.0.1:8888/rs2.cgi && echo "client page served"
+
+      - name: Install capture and OCR tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq tesseract-ocr >/dev/null
+          python3 -m pip install --quiet --disable-pip-version-check pillow
+          npm install --no-save --no-audit --no-fund playwright
+          npx playwright install --with-deps chromium
+
+      - name: Capture the login screen
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/visual/visual-capture.mjs http://127.0.0.1:8888/rs2.cgi "$RUNNER_TEMP/login.png"
+
+      - name: OCR the capture into text evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/login-ocr.txt"
+          # The game UI is painted on the canvas, so OCR that, upscaled for small bitmap fonts.
+          src="$RUNNER_TEMP/login-canvas.png"
+          [ -f "$src" ] || src="$RUNNER_TEMP/login.png"
+          python3 -c "import sys;from PIL import Image;img=Image.open(sys.argv[1]).convert('L');img.resize((img.width*2,img.height*2),Image.LANCZOS).save(sys.argv[2])" "$src" "$RUNNER_TEMP/ocr-input.png"
+          if ! tesseract "$RUNNER_TEMP/ocr-input.png" stdout --psm 6 2>"$RUNNER_TEMP/tess.err" > "$out"; then
+            echo "::warning::tesseract exited non-zero"
+            cat "$RUNNER_TEMP/tess.err" || true
+          fi
+          echo "--- OCR text (this is the evidence) ---"
+          cat "$out"
+          echo "--- end OCR ---"
+          echo "OCR bytes: $(wc -c < "$out")"
+          if ! grep -qiE "runescape|username|password|click to play|world|login|new user" "$out"; then
+            echo "::error::OCR found none of the expected client strings on screen."
+            exit 1
+          fi
+          echo "OCR matched expected client text."
+
+      - name: Summarise pixels (no image viewing needed)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from PIL import Image
+          img = Image.open(__import__('os').environ['RUNNER_TEMP'] + '/login.png').convert('RGB')
+          small = img.resize((64, 40))
+          colours = small.getcolors(64 * 40) or []
+          colours.sort(reverse=True)
+          total = sum(c for c, _ in colours)
+          print(f"size={img.size} distinct_shades={len(colours)}")
+          for count, rgb in colours[:6]:
+              print(f"  {rgb}  {count * 100 // total}%")
+          # A blank/failed canvas is usually one flat colour.
+          if colours and colours[0][0] * 100 // total > 92:
+              raise SystemExit("screen is almost a single colour - canvas likely did not render")
+          print("pixel spread looks like rendered content")
+          PY
