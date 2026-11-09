@@ -577,3 +577,60 @@
 - **Objects/Interactions Audited**: 6 (6 working normally, 0 anomalies/findings)
 - Audited Barbarian Village mine, longhall, pottery oven/wheel, Edgeville bank, ruined houses, and Monastery exterior.
 - **Findings**: No broken interactions found in this region.
+
+### Region Completed: Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50) — 2026-11-09T06:30:24.846Z
+- **Total Interactions Audited**: 20 (10 verified working, 10 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3011, 3221, L0)` — Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50)
+  - **Object & Action**: `Crate` (id `358`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3011, 3221). Actual: success=true (Interacted with Crate), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3012, 3204, L0)` — Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50)
+  - **Object & Action**: `Door` (id `2069`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3012, 3204). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3015, 3203, L0)` — Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50)
+  - **Object & Action**: `Crate` (id `354`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3015, 3203). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3016, 3203, L0)` — Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50)
+  - **Object & Action**: `Crate` (id `355`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3016, 3203). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3011, 3203, L0)` — Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50)
+  - **Object & Action**: `Crate` (id `366`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3011, 3203). Actual: success=true (Interacted with Crate), opRejectedDelta=1, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3009, 3205, L0)` — Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50)
+  - **Object & Action**: `Sacks` (id `365`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Sacks at (3009, 3205). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3011, 3197, L0)` — Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3011, 3197). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3030, 3217, L0)` — Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50)
+  - **Object & Action**: `Gangplank` (id `2083`) — action `Cross`
+  - **Expected vs Actual**: Expected: Interact "Cross" with Gangplank at (3030, 3217). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2964, 3209, L0)` — Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50)
+  - **Object & Action**: `Closed chest` (id `375`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Closed chest at (2964, 3209). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2956, 3205, L0)` — Port Sarim Docks, Shops & Rimmington (m46_50 & m47_50)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2956, 3205). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+
+#### Verified Working Interactions (Summary)
+- `(3015, 3261, L0)` **Wardrobe** (id `388`) [`Open`] -> OK: Interacted with Wardrobe
+- `(3023, 3259, L0)` **Drawers** (id `348`) [`Open`] -> OK: Interacted with Drawers
+- `(3012, 3221, L0)` **Crate** (id `357`) [`Search`] -> OK: Interacted with Crate
+- `(3012, 3222, L0)` **Crate** (id `356`) [`Search`] -> OK: Interacted with Crate | "You search the crate but find nothing."
+- `(3016, 3207, L0)` **Closed chest** (id `375`) [`Open`] -> OK: Interacted with Closed chest
+- `(3019, 3209, L0)` **Boxes** (id `360`) [`Search`] -> OK: Interacted with Boxes | "There is nothing interesting in these boxes."
+- `(3009, 3207, L0)` **Crate** (id `2071`) [`Search`] -> OK: Timed out after 4500ms | "You search the crates..."
+- `(2967, 3205, L0)` **Cauldron** (id `2024`) [`Drink From`] -> OK: Interacted with Cauldron
+- `(2965, 3208, L0)` **Wardrobe** (id `389`) [`Search`] -> OK: Interacted with Wardrobe
+- `(2965, 3208, L0)` **Wardrobe** (id `389`) [`Close`] -> OK: Interacted with Wardrobe
