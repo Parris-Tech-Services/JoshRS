@@ -18,12 +18,14 @@ object Negotiation377 {
 
     data class Result(val negotiated: Boolean, val message: String)
 
-    fun probe(port: Int = PORT): Result {
+    fun probe(port: Int = PORT, host: String = "127.0.0.1"): Result {
         if (port !in 1..65535) return Result(false, "Invalid port")
+        val approvedHost = PrivateNetwork377.permittedIpv4(host)
+            ?: return Result(false, "Enter a numeric private IPv4 address (LAN, tailnet or 127.0.0.1)")
         return try {
             Socket().use { socket ->
                 socket.soTimeout = TIMEOUT_MS
-                socket.connect(InetSocketAddress("127.0.0.1", port), TIMEOUT_MS)
+                socket.connect(InetSocketAddress(approvedHost, port), TIMEOUT_MS)
                 socket.getOutputStream().write(byteArrayOf(14, 0))
                 socket.getOutputStream().flush()
                 val reply = ByteArray(REPLY_LENGTH)
@@ -41,7 +43,7 @@ object Negotiation377 {
         } catch (_: SocketTimeoutException) {
             Result(false, "377 negotiation timed out")
         } catch (_: Exception) {
-            Result(false, "377 negotiation unavailable on localhost")
+            Result(false, "377 negotiation unavailable at this private address")
         }
     }
 }
