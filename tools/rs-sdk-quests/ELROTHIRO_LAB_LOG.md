@@ -1,8 +1,8 @@
 # elrothiro Lab Log
 
-## Session 1 — Hour 6 Status Summary (2026-11-09T11:57Z)
+## Session 1 — Hour 8 Status Summary (2026-11-09T13:58Z)
 
-### Quests Completed (15 Quests, 36 Quest Points Verified In-Game)
+### Quests Completed (18 Quests, 40 Quest Points Verified In-Game)
 1. **Cook's Assistant** (`cooks`) — +1 QP (Total: 1 QP), +7,500 Cooking XP (Level 1 -> 30)
 2. **Sheep Shearer** (`sheep`) — +1 QP (Total: 2 QP), +5,000 Crafting XP (Level 1 -> 25), +60 Coins
 3. **The Restless Ghost** (`priest`) — +1 QP (Total: 3 QP), +28,125 Prayer XP (Level 1 -> 47, **Protect from Melee** unlocked!), Ghostspeak amulet
@@ -18,22 +18,25 @@
 13. **Prince Ali Rescue** (`prince`) — +3 QP (Total: 29 QP), +700 Coins, free Al Kharid gate passage
 14. **Black Knights' Fortress** (`blackknight`) — +3 QP (Total: 32 QP, Champions' Guild & **Dragon Slayer** unlocked!), +2,500 Coins
 15. **Druidic Ritual** (`druid`) — +4 QP (Total: 36 QP, First P2P Quest!), unlocks **Herblore** + 6,250 Herblore XP (Level 1 -> 28 Herblore)
+16. **Fight Arena** (`arena`) — +2 QP (Total: 38 QP, Second P2P Quest!), +304,375 Attack XP (`Attack: 86`), +54,375 Thieving XP (`Thieving: 57`), +1,000 Coins, Combat Level **72**
+17. **Monk's Friend** (`drunkmonk`) — +1 QP (Total: 39 QP, Third P2P Quest!), +50,000 Woodcutting XP (`Woodcutting: 56`), +8 Law runes
+18. **Hazeel Cult** (`hazeelcult`) — +1 QP (Total: 40 QP, Fourth P2P Quest!), +37,500 Thieving XP (`Thieving: 57 -> 64`, 92,275 XP!), +2,000 Coins
 
-### Active Quests In Progress (Hour 6)
-- **Fight Arena** (`arena`): Started with Lady Servil, gave Khali brew to the guard for `Khazard cell keys`, freed Jeremy Servil, defeated **Khazard Ogre** (`id: 270`) and **Khazard Scorpion** (`id: 271`, `Strength: 67`, `HP: 52`). Currently fighting **Bouncer** (`id: 269`) with conserved `protect_from_melee`.
-- **Clock Tower** (`cog`): Started with Brother Kojo, poisoned the rat trough, placed the **White Cog** (`id: 20`) on `L2` (`id: 31`) and the **Red Cog** (`id: 23`) on `L0` (`id: 29`). Added `ensureIceGloves` (via White Wolf Mountain `herorockslide` -> Ice Queen `id: 795`) for the **Black Cog** (`id: 21`) and **Blue Cog** (`id: 22`).
-- **Dragon Slayer** (`dragon`): Implemented full quest script (`bots/lib/quests/dragon-slayer.ts`) covering Guildmaster, Oziach, Oracle + Dwarven Mine Chest, Goblin Village Wormbrain (Telekinetic Grab), Port Sarim Melzar's Maze (`Red`/`Orange`/`Yellow`/`Blue`/`Magenta` keys + Lesser Demon), Lumbridge Duke Horacio `Anti-dragon shield`, Rimmington `Lady Lumbridge` ship purchase & repair (3 Planks + 12 Steel nails), Ned captain, Crandor secret wall, and Elvarg (`id: 742`).
+### Active Quests In Progress (Hour 8)
+- **Sheep Herder** (`sheepherder`): Equipped `Plague jacket`, `Plague trousers`, and `Prod`, obtained `Feed` from Councillor Halgrive, and implemented a 4-connected cardinal push BFS (`findCardinalPush` + `canStep` reading raw tile/wall flags `2, 8, 32, 128` from `collision-data.json`) to match `[proc,coord_direction]` in `coord_procs.rs2`.
+- **Clock Tower** (`cog`): Started with Brother Kojo, poisoned the rat trough, placed the **White Cog** (`id: 20`) on `L2` (`id: 31`) and the **Red Cog** (`id: 23`) on `L0` (`id: 29`).
+- **Murder Mystery** (`murder`): Gathered `Pungent pot`, `Criminals' thread`, `Flypaper` x4, and `Silver cup` at Sinclair Mansion.
 
-### Current Skill Levels (Combat Level 65, Total Level 532)
-- Attack: 68 (122,125 xp) | Strength: 67 (114,350 xp) | Defence: 13 (1,600 xp) | HP: 52 (39,547 xp)
+### Current Skill Levels (Combat Level 72, Total Level 645)
+- Attack: 86 (426,500 xp) | Strength: 69 (126,150 xp) | Defence: 13 (1,600 xp) | HP: 54 (43,435 xp)
 - Prayer: 47 (28,125 xp) | Magic: 31 (8,125 xp) | Ranged: 1 (0 xp)
-- Smithing: 82 (320,930 xp) | Mining: 56 (51,312 xp) | Crafting: 34 (10,687 xp) | Cooking: 34 (10,200 xp)
-- Herblore: 28 (6,250 xp) | Firemaking: 15 (2,000 xp) | Woodcutting: 11 (1,250 xp) | Thieving: 5 (400 xp)
+- Smithing: 82 (320,930 xp) | Thieving: 64 (92,275 xp) | Woodcutting: 56 (51,875 xp) | Mining: 56 (51,312 xp)
+- Crafting: 34 (10,687 xp) | Cooking: 34 (10,200 xp) | Herblore: 28 (6,250 xp) | Firemaking: 15 (2,000 xp)
 - Agility: 1 | Fishing: 1 | Fletching: 1 | Runecraft: 1
 
 ### Possible SDK Bugs or Improvements
-- `step()` in `quest-kit.ts` now automatically calls `bot.deactivateAllPrayers()` after each step (including on step failure/exception) so `protect_from_melee` never drains Prayer points while walking between steps, and `rechargePrayer(c, minPoints)` recharges at the nearest Altar (`(2606, 3209)` Monastery, `(3243, 3207)` Lumbridge, etc.).
-- In `Fight Arena`, `protect_from_melee` must only be activated when a boss (`269, 270, 271`) is spawned in the arena and deactivated during General Khazard/Hengrad dialogues and cutscenes.
+- In `coord_procs.rs2`, `[proc,coord_direction]` uses `if (abs($dz) > abs($dx))` (strict `>`) and only returns cardinal directions (`^exact_north`, `^exact_south`, `^exact_east`, `^exact_west`), so diagonal prodding never pushes sheep North or South.
+- In `sdk/pathfinding.ts`, `isTileWalkable` only checks `CollisionFlag.WALK_BLOCKED` (`2359552`), ignoring directional wall flags (`2, 8, 32, 128`). Reading raw tile flags from `collision-data.json` prevents trying to prod sheep across fences or into dead-end fence pockets.
 - 2026-11-09T04:17:40.014Z START Cook's Assistant (attempt 1)
 - 2026-11-09T04:17:40.015Z STEP start
 - 2026-11-09T04:17:40.015Z STEP egg
@@ -659,3 +662,149 @@
 - 2026-11-09T12:48:30.146Z START Sheep Herder (attempt 1)
 - 2026-11-09T12:48:30.147Z STEP start-and-gear
 - 2026-11-09T12:50:04.022Z STEP herd-and-incinerate
+- 2026-11-09T13:04:48.032Z START Hazeel Cult (attempt 1)
+- 2026-11-09T13:04:48.033Z STEP start-ceril-and-clivet
+- 2026-11-09T13:04:48.033Z STEP poison-and-valves
+- 2026-11-09T13:04:48.035Z STEP scroll-and-resurrect
+- 2026-11-09T13:05:43.345Z STEP FAILED scroll-and-resurrect
+- 2026-11-09T13:05:43.347Z START Hazeel Cult (attempt 2)
+- 2026-11-09T13:05:43.347Z STEP start-ceril-and-clivet
+- 2026-11-09T13:05:43.347Z STEP poison-and-valves
+- 2026-11-09T13:05:43.347Z STEP scroll-and-resurrect
+- 2026-11-09T13:06:06.137Z STEP FAILED scroll-and-resurrect
+- 2026-11-09T13:06:06.138Z START Sheep Herder (attempt 1)
+- 2026-11-09T13:06:06.139Z STEP start-and-gear
+- 2026-11-09T13:06:20.422Z STEP herd-and-incinerate
+- 2026-11-09T13:13:48.378Z STEP FAILED herd-and-incinerate
+- 2026-11-09T13:13:48.380Z START Sheep Herder (attempt 2)
+- 2026-11-09T13:13:48.380Z STEP start-and-gear
+- 2026-11-09T13:13:48.382Z STEP FAILED start-and-gear
+- 2026-11-09T13:13:48.383Z START Plague City (attempt 1)
+- 2026-11-09T13:13:48.384Z STEP gather-and-start
+- 2026-11-09T13:13:48.385Z STEP FAILED gather-and-start
+- 2026-11-09T13:13:48.386Z START Plague City (attempt 2)
+- 2026-11-09T13:13:48.386Z STEP gather-and-start
+- 2026-11-09T13:13:48.386Z STEP FAILED gather-and-start
+- 2026-11-09T13:13:48.386Z START Biohazard (attempt 1)
+- 2026-11-09T13:13:48.387Z STEP start-and-distract-watchtower
+- 2026-11-09T13:13:48.388Z STEP gather-and-start
+- 2026-11-09T13:13:48.388Z STEP FAILED gather-and-start
+- 2026-11-09T13:13:48.388Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T13:13:48.389Z START Biohazard (attempt 2)
+- 2026-11-09T13:13:48.389Z STEP start-and-distract-watchtower
+- 2026-11-09T13:13:48.389Z STEP gather-and-start
+- 2026-11-09T13:13:48.389Z STEP FAILED gather-and-start
+- 2026-11-09T13:13:48.389Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T13:13:48.390Z START Murder Mystery (attempt 1)
+- 2026-11-09T13:13:48.390Z STEP solve-murder
+- 2026-11-09T13:13:48.392Z STEP FAILED solve-murder
+- 2026-11-09T13:13:48.393Z START Murder Mystery (attempt 2)
+- 2026-11-09T13:13:48.393Z STEP solve-murder
+- 2026-11-09T13:13:48.393Z STEP FAILED solve-murder
+- 2026-11-09T13:13:48.393Z START Clock Tower (attempt 1)
+- 2026-11-09T13:13:48.394Z STEP start-and-bucket
+- 2026-11-09T13:13:48.394Z STEP FAILED start-and-bucket
+- 2026-11-09T13:13:48.395Z START Clock Tower (attempt 2)
+- 2026-11-09T13:13:48.395Z STEP start-and-bucket
+- 2026-11-09T13:13:48.395Z STEP FAILED start-and-bucket
+- 2026-11-09T13:13:48.395Z START Fishing Contest (attempt 1)
+- 2026-11-09T13:13:48.396Z STEP start-and-prep
+- 2026-11-09T13:13:48.397Z STEP FAILED start-and-prep
+- 2026-11-09T13:13:48.397Z START Fishing Contest (attempt 2)
+- 2026-11-09T13:13:48.397Z STEP start-and-prep
+- 2026-11-09T13:13:48.397Z STEP FAILED start-and-prep
+- 2026-11-09T13:13:48.397Z START Dwarf Cannon (attempt 1)
+- 2026-11-09T13:13:48.398Z STEP start-and-fix-railings
+- 2026-11-09T13:13:48.399Z STEP FAILED start-and-fix-railings
+- 2026-11-09T13:13:48.399Z START Dwarf Cannon (attempt 2)
+- 2026-11-09T13:13:48.399Z STEP start-and-fix-railings
+- 2026-11-09T13:13:48.399Z STEP FAILED start-and-fix-railings
+- 2026-11-09T13:13:48.399Z START Tree Gnome Village (attempt 1)
+- 2026-11-09T13:13:48.400Z STEP start-bolren
+- 2026-11-09T13:13:48.401Z STEP FAILED start-bolren
+- 2026-11-09T13:13:48.401Z START Tree Gnome Village (attempt 2)
+- 2026-11-09T13:13:48.401Z STEP start-bolren
+- 2026-11-09T13:13:48.401Z STEP FAILED start-bolren
+- 2026-11-09T13:13:48.401Z START Waterfall Quest (attempt 1)
+- 2026-11-09T13:13:48.402Z STEP almera-hudon-and-book
+- 2026-11-09T13:13:48.404Z STEP FAILED almera-hudon-and-book
+- 2026-11-09T13:13:48.404Z START Waterfall Quest (attempt 2)
+- 2026-11-09T13:13:48.404Z STEP almera-hudon-and-book
+- 2026-11-09T13:13:48.404Z STEP FAILED almera-hudon-and-book
+- 2026-11-09T13:13:48.404Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T13:13:48.404Z STEP prep-supplies
+- 2026-11-09T13:13:48.406Z STEP FAILED prep-supplies
+- 2026-11-09T13:13:48.411Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T13:13:48.411Z STEP prep-supplies
+- 2026-11-09T13:13:48.412Z STEP FAILED prep-supplies
+- 2026-11-09T13:13:48.412Z START Holy Grail (attempt 1)
+- 2026-11-09T13:13:48.412Z STEP start-camelot-and-merlin
+- 2026-11-09T13:13:48.413Z STEP FAILED start-camelot-and-merlin
+- 2026-11-09T13:13:48.413Z START Holy Grail (attempt 2)
+- 2026-11-09T13:13:48.413Z STEP start-camelot-and-merlin
+- 2026-11-09T13:13:48.413Z STEP FAILED start-camelot-and-merlin
+- 2026-11-09T13:13:48.413Z START Witch's House (attempt 1)
+- 2026-11-09T13:13:48.414Z STEP start-and-prep
+- 2026-11-09T13:13:48.416Z STEP FAILED start-and-prep
+- 2026-11-09T13:13:48.416Z START Witch's House (attempt 2)
+- 2026-11-09T13:13:48.416Z STEP start-and-prep
+- 2026-11-09T13:13:48.417Z STEP FAILED start-and-prep
+- 2026-11-09T13:13:48.417Z START Gertrude's Cat (attempt 1)
+- 2026-11-09T13:13:48.418Z STEP prep-items-and-start
+- 2026-11-09T13:13:48.419Z STEP FAILED prep-items-and-start
+- 2026-11-09T13:13:48.420Z START Gertrude's Cat (attempt 2)
+- 2026-11-09T13:13:48.420Z STEP prep-items-and-start
+- 2026-11-09T13:13:48.420Z STEP FAILED prep-items-and-start
+- 2026-11-09T13:13:48.420Z START Jungle Potion (attempt 1)
+- 2026-11-09T13:13:48.421Z STEP start-and-first-three-herbs
+- 2026-11-09T13:13:48.421Z STEP FAILED start-and-first-three-herbs
+- 2026-11-09T13:13:48.422Z START Jungle Potion (attempt 2)
+- 2026-11-09T13:13:48.422Z STEP start-and-first-three-herbs
+- 2026-11-09T13:13:48.422Z STEP FAILED start-and-first-three-herbs
+- 2026-11-09T13:13:48.422Z START Dragon Slayer (attempt 1)
+- 2026-11-09T13:13:48.423Z STEP start-guildmaster-and-oziach
+- 2026-11-09T13:13:48.424Z STEP FAILED start-guildmaster-and-oziach
+- 2026-11-09T13:13:48.424Z START Dragon Slayer (attempt 2)
+- 2026-11-09T13:13:48.424Z STEP start-guildmaster-and-oziach
+- 2026-11-09T13:13:48.424Z STEP FAILED start-guildmaster-and-oziach
+- 2026-11-09T13:13:48.425Z START Demon Slayer (attempt 1)
+- 2026-11-09T13:13:48.425Z STEP start-aris-and-prysin
+- 2026-11-09T13:13:48.426Z STEP FAILED start-aris-and-prysin
+- 2026-11-09T13:13:48.427Z START Demon Slayer (attempt 2)
+- 2026-11-09T13:13:48.427Z STEP start-aris-and-prysin
+- 2026-11-09T13:13:48.427Z STEP FAILED start-aris-and-prysin
+- 2026-11-09T13:13:48.427Z START Imp Catcher (attempt 1)
+- 2026-11-09T13:13:48.428Z STEP start-mizgog
+- 2026-11-09T13:13:48.429Z STEP FAILED start-mizgog
+- 2026-11-09T13:13:48.429Z START Imp Catcher (attempt 2)
+- 2026-11-09T13:13:48.429Z STEP start-mizgog
+- 2026-11-09T13:13:48.430Z STEP FAILED start-mizgog
+- 2026-11-09T13:15:47.226Z START Sheep Herder (attempt 1)
+- 2026-11-09T13:15:47.226Z STEP start-and-gear
+- 2026-11-09T13:15:47.228Z STEP herd-and-incinerate
+- 2026-11-09T13:26:23.230Z START Sheep Herder (attempt 1)
+- 2026-11-09T13:26:23.230Z STEP start-and-gear
+- 2026-11-09T13:26:23.231Z STEP herd-and-incinerate
+- 2026-11-09T13:34:42.028Z START Hazeel Cult (attempt 1)
+- 2026-11-09T13:34:42.029Z STEP start-ceril-and-clivet
+- 2026-11-09T13:34:42.030Z STEP poison-and-valves
+- 2026-11-09T13:34:42.031Z STEP scroll-and-resurrect
+- 2026-11-09T13:35:52.548Z STEP FAILED scroll-and-resurrect
+- 2026-11-09T13:35:52.549Z START Hazeel Cult (attempt 2)
+- 2026-11-09T13:35:52.549Z STEP start-ceril-and-clivet
+- 2026-11-09T13:35:52.549Z STEP poison-and-valves
+- 2026-11-09T13:35:52.550Z STEP scroll-and-resurrect
+- 2026-11-09T13:36:35.720Z STEP FAILED scroll-and-resurrect
+- 2026-11-09T13:36:35.721Z START Sheep Herder (attempt 1)
+- 2026-11-09T13:36:35.722Z STEP start-and-gear
+- 2026-11-09T13:36:35.722Z STEP herd-and-incinerate
+- 2026-11-09T13:49:18.431Z START Sheep Herder (attempt 1)
+- 2026-11-09T13:49:18.436Z STEP start-and-gear
+- 2026-11-09T13:49:18.437Z STEP herd-and-incinerate
+
+### Quest 18: Hazeel Cult (`hazeelcult`) — COMPLETED (Fourth P2P Quest!)
+- **Quest Points Gained**: +1 QP (Total: **40 QP**)
+- **Rewards**: +37,500 Thieving XP (`Thieving: 57 -> 64`, 92,275 XP!), +2,000 Coins (`Coins: 899 -> 2,899`).
+- **Notes / Lessons**:
+  - Sided with Clivet and Alomone to resurrect the Mahjarrat Hazeel: poisoned the Carnillean family range in the basement, aligned all 5 sewer valves around Ardougne (`2844..2848`), boarded the cave raft to Alomone's island, unlocked the secret bookcase passage on `L1 (2572, 3270)` and Carnillean chest on `L2 (2570, 3271)` (`forceapproach=north`) to retrieve the `Scroll of hazeel` (`2403`), and delivered it to Alomone for the resurrection ceremony.
+  - Note: in this 377 server, the items are named `"Mark of hazeel"` (`2406`), `"Key"` (`2404`, `carnilleanchestkey`), and `"Scroll of hazeel"` (`2403`, `hazeel_scroll`).

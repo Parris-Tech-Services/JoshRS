@@ -13,6 +13,7 @@ export const hazeelcult: Quest = {
     let started = false;
     let poisoned = false;
     let alomoneSpoken = false;
+    let needValves = false;
     let questComplete = false;
 
     const inCave = () => (sdk.getState()?.player?.worldZ ?? 0) > 9600;
@@ -57,7 +58,7 @@ export const hazeelcult: Quest = {
     };
 
     const startAndClivet = () => step(c, N, 'start-ceril-and-clivet', async () => {
-      if (questComplete || poisoned || alomoneSpoken || has(sdk, /^poison|mark of hazeel|hazeel's mark|carnillean key|chest key|key|hazeel scroll$/i)) return true;
+      if (questComplete || poisoned || alomoneSpoken || has(sdk, /^poison|mark of hazeel|hazeel's mark|carnillean key|chest key|key|hazeel scroll|scroll of hazeel$/i)) return true;
       await untrapCarnilleanDoor();
       if (!(await walkToKandarin(c, 2566, 3271))) return false;
       const wc = await bot.walkTo(2566, 3271, 1);
@@ -84,7 +85,8 @@ export const hazeelcult: Quest = {
     });
 
     const poisonAndValves = () => step(c, N, 'poison-and-valves', async () => {
-      if (questComplete || alomoneSpoken || has(sdk, /^hazeel scroll$/i)) return true;
+      if (questComplete || alomoneSpoken || has(sdk, /^hazeel scroll|scroll of hazeel$/i) || (!needValves && has(sdk, /^mark of hazeel|hazeel's mark$/i) && has(sdk, /^chest key|carnillean key|key$/i))) return true;
+      needValves = false;
       if (inCave() && !inBasement()) await exitCave();
       await untrapCarnilleanDoor();
 
@@ -182,7 +184,7 @@ export const hazeelcult: Quest = {
 
     const scrollAndFinish = () => step(c, N, 'scroll-and-resurrect', async () => {
       if (questComplete) return true;
-      if (!has(sdk, /hazeel scroll/i)) {
+      if (!has(sdk, /hazeel scroll|scroll of hazeel/i)) {
         if (inCave() && !inBasement()) await exitCave();
         if (!has(sdk, /chest key|carnillean key|^key$/i)) {
           await bot.walkTo(2570, 3267, 1);
@@ -200,8 +202,13 @@ export const hazeelcult: Quest = {
         }
 
         if (lvl(sdk) === 0) {
+          await untrapCarnilleanDoor();
           const ws = await bot.walkTo(2569, 3268, 1);
-          if (!ws?.success) { await openNearbyDoors(c, 2569, 3268, 4); await bot.walkTo(2569, 3268, 1); }
+          if (!ws?.success) {
+            await openNearbyDoors(c, 2569, 3273, 1);
+            await openNearbyDoors(c, 2569, 3270, 1);
+            await bot.walkTo(2569, 3268, 1);
+          }
           const st = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1722);
           if (st) await bot.interactLoc(st, /climb-?up/i);
           await waitCond(() => lvl(sdk) === 1, 5000, 250);
@@ -211,7 +218,15 @@ export const hazeelcult: Quest = {
           await bot.walkTo(2572, 3270, 0);
           const wall = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2854);
           if (wall) await sdk.sendInteractLoc(wall.x, wall.z, wall.id, 1);
-          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3270) >= 3271, 4000, 250);
+          const passed = await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3270) >= 3271, 4000, 250);
+          if (!passed) {
+            needValves = true;
+            await bot.walkTo(2569, 3268, 1);
+            const stD = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1723);
+            if (stD) await bot.interactLoc(stD, /climb-?down/i);
+            await waitCond(() => lvl(sdk) === 0, 5000, 250);
+            return false;
+          }
           const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1747);
           if (lad) await bot.interactLoc(lad, /climb-?up/i);
           await waitCond(() => lvl(sdk) === 2, 5000, 250);
@@ -229,9 +244,9 @@ export const hazeelcult: Quest = {
           const openCh = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2857);
           if (openCh) {
             await sdk.sendInteractLoc(openCh.x, openCh.z, openCh.id, 1);
-            await waitCond(() => has(sdk, /hazeel scroll/i) || !!sdk.getState()?.dialog?.isOpen, 5000, 250);
+            await waitCond(() => has(sdk, /hazeel scroll|scroll of hazeel/i) || !!sdk.getState()?.dialog?.isOpen, 5000, 250);
             if (sdk.getState()?.dialog?.isOpen) await chat(c);
-            await waitCond(() => has(sdk, /hazeel scroll/i), 3000, 250);
+            await waitCond(() => has(sdk, /hazeel scroll|scroll of hazeel/i), 3000, 250);
           }
           await sdk.sendWalk(2573, 3271, true);
           await sleep(800);
@@ -253,7 +268,7 @@ export const hazeelcult: Quest = {
           if (stD) await bot.interactLoc(stD, /climb-?down/i);
           await waitCond(() => lvl(sdk) === 0, 5000, 250);
         }
-        if (!has(sdk, /hazeel scroll/i)) return false;
+        if (!has(sdk, /hazeel scroll|scroll of hazeel/i)) return false;
       }
 
       if (!(await enterCave())) return false;
