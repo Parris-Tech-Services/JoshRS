@@ -3,10 +3,13 @@ package au.com.parristech.joshrs.android
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -20,6 +23,49 @@ import org.junit.runner.RunWith
  */
 @RunWith(AndroidJUnit4::class)
 class Real377EmulatorTest {
+    private fun assertSafeScreen(activity: MainActivity, screen: String) {
+        val content = activity.findViewById<ViewGroup>(android.R.id.content)
+        val frame = content.getChildAt(0) as FrameLayout
+        assertEquals("JoshRS safe content container", frame.contentDescription)
+        assertTrue("$screen content has not completed layout", frame.isLaidOut)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val insets = frame.rootWindowInsets
+            assertTrue("$screen root system insets not available", insets != null)
+            val bars = insets!!.getInsets(
+                android.view.WindowInsets.Type.systemBars() or
+                    android.view.WindowInsets.Type.displayCutout()
+            )
+            assertTrue("$screen top inset missing: padding=${frame.paddingTop}, required=${bars.top}",
+                frame.paddingTop >= bars.top)
+            assertTrue("$screen bottom inset missing: padding=${frame.paddingBottom}, required=${bars.bottom}",
+                frame.paddingBottom >= bars.bottom)
+        }
+    }
+
+    @Test fun androidSystemBarsDoNotCoverHomeOrDrawingScreen() {
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            // Wait for actual window attachment/layout; checking immediately
+            // after setContentView() tests pre-layout timing, not visible UI.
+            InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+            scenario.onActivity { activity ->
+                assertSafeScreen(activity, "home")
+                var preview: Button? = null
+                descend(activity.window.decorView) { view ->
+                    if (view is Button &&
+                        view.text.toString().contains("fictional offline art preview")) {
+                        preview = view
+                    }
+                }
+                assertTrue("Original drawing preview was not available", preview != null)
+                preview!!.performClick()
+            }
+            InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+            scenario.onActivity { activity ->
+                assertSafeScreen(activity, "preview")
+            }
+        }
+    }
+
     @Test fun threeDimensionalRendererActuallyDrawsTriangleOnEmulatorCanvas() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             scenario.onActivity { activity ->
