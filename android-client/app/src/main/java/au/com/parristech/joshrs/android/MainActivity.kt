@@ -1,6 +1,7 @@
 package au.com.parristech.joshrs.android
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -11,6 +12,7 @@ import android.view.WindowInsets
 import android.text.InputType
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -50,8 +52,105 @@ class MainActivity : Activity() {
         ))
     }
 
+    /**
+     * Android 15/16 draw behind the status and navigation bars by default.
+     * Apply platform insets to EVERY screen, including the SurfaceView preview.
+     */
+    private fun applySafeInsets(view: View, insets: WindowInsets) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val bars = insets.getInsets(
+                WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout()
+            )
+            if (view.paddingLeft != bars.left || view.paddingTop != bars.top ||
+                view.paddingRight != bars.right || view.paddingBottom != bars.bottom) {
+                view.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+            }
+        } else {
+            // Older Android activities already fit their content inside system
+            // bars unless edge-to-edge is explicitly requested.
+            // This Activity only opts into edge-to-edge on Android R+.
+        }
+    }
+
+    private fun setSafeContent(content: View) {
+        val frame = FrameLayout(this).apply {
+            contentDescription = "JoshRS safe content container"
+            setBackgroundColor(Color.rgb(49, 45, 39))
+            addView(content, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            ))
+            setOnApplyWindowInsetsListener { view, insets ->
+                applySafeInsets(view, insets)
+                insets
+            }
+        }
+        // On the Android 15 emulator, the normal insets listener delivered no
+        // top padding even though rootWindowInsets reported a 136px status bar.
+        // Read the ACTUAL root insets after attachment/layout. Reapplying only
+        // when values change prevents a global-layout feedback loop.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            frame.viewTreeObserver.addOnGlobalLayoutListener {
+                frame.rootWindowInsets?.let { applySafeInsets(frame, it) }
+            }
+        }
+        setContentView(frame)
+        frame.requestApplyInsets()
+        frame.post { frame.rootWindowInsets?.let { applySafeInsets(frame, it) } }
+    }
+
+    private fun showDiagnostic(message: String, title: String = "JoshRS result") {
+        statusText?.text = message
+        if (!isFinishing && !isDestroyed) {
+            AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", null)
+                .show()
+        }
+    }
+
+    private fun chooseCacheFiles() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        }
+        startActivityForResult(intent, PICK_CACHE)
+    }
+
+    private fun hasLumbridgeCache(): Boolean =
+        File(filesDir, "cache377").listFiles()?.any { folder ->
+            folder.isDirectory && folder.name.matches(Regex("[a-f0-9]{64}")) &&
+                listOf("main_file_cache.dat", "main_file_cache.idx0",
+                    "main_file_cache.idx4").all { File(folder, it).isFile }
+        } == true
+
+    private fun explainCacheImport() {
+        AlertDialog.Builder(this)
+            .setTitle("Real Lumbridge needs your private 377 cache")
+            .setMessage(
+                "On your own JoshRS computer, locate main_file_cache.dat, " +
+                    "main_file_cache.idx0 and main_file_cache.idx4. Copy all three " +
+                    "to your phone without changing the originals, then select " +
+                    "all three files together here. Nothing is downloaded or " +
+                    "copied from a server automatically. This is still a " +
+                    "read-only terrain viewer, not a playable game."
+            )
+            .setPositiveButton("Select cache files") { _, _ -> chooseCacheFiles() }
+            .setNegativeButton("Not now", null)
+            .show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Android 15+ enforces edge-to-edge. Explicitly disable decor fitting
+        // so our root FrameLayout receives the *unconsumed* system-bar insets.
+        // Without this, the top bar may be consumed by the decor while
+        // rootWindowInsets still reports it, letting text overlap the clock.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+        }
         window.statusBarColor = Color.rgb(49, 45, 39)
         window.navigationBarColor = Color.rgb(49, 45, 39)
         showHome()
@@ -76,7 +175,7 @@ class MainActivity : Activity() {
             isFillViewport = true
             addView(root)
         }
-        setContentView(scroll)
+        setSafeContent(scroll)
         root.addView(label("JoshRS 377 — Android", 24f))
         root.addView(label("PLAYABLE OFFLINE QUEST (no computer or imported files)", 19f))
         action("PLAY Cook's Assistant — offline Lumbridge quest slice") {
@@ -97,7 +196,10 @@ class MainActivity : Activity() {
         ).also { root.addView(it) }
         // Authentic cache-backed Lumbridge is the PRIMARY view, not the mock preview.
         root.addView(label("REAL RuneScape 377 Lumbridge — private map cache", 19f))
-        action("Explore real Lumbridge (region 50,50)") { openLumbridge() }
+        action(
+            if (hasLumbridgeCache()) "Explore real Lumbridge (region 50,50)"
+            else "Explore real Lumbridge — import cache first"
+        ) { openLumbridge() }
         root.addView(label(
             "This reads actual 377 terrain and placed object positions from your own " +
                 "main_file_cache.dat, idx0 and idx4. Import those three together below. " +
@@ -110,10 +212,13 @@ class MainActivity : Activity() {
                 val result = Loopback377.check()
                 runOnUiThread {
                     if (statusText === target) {
-                        target?.text =
+                        showDiagnostic(
                             "Game TCP: ${if (result.gameTcpReachable) "reachable" else "not reachable"}\n" +
-                            "Web TCP: ${if (result.webTcpReachable) "reachable" else "not reachable"}\n" +
-                            "This proves only port access, NOT a successful login, packets, quests or gameplay."
+                                "Web TCP: ${if (result.webTcpReachable) "reachable" else "not reachable"}\n" +
+                                "These check this PHONE's 127.0.0.1, not JParrisDesktop. " +
+                                "Port access does not prove a game login.",
+                            "Phone-local server"
+                        )
                     }
                 }
             }.start()
@@ -125,8 +230,10 @@ class MainActivity : Activity() {
                 val result = Negotiation377.probe()
                 runOnUiThread {
                     if (statusText === target) {
-                        target?.text = result.message +
-                            "\nNo player account or world state has been loaded."
+                        showDiagnostic(
+                            result.message + "\nNo player account or world state has been loaded.",
+                            "Phone-local 377 handshake"
+                        )
                     }
                 }
             }.start()
@@ -155,9 +262,12 @@ class MainActivity : Activity() {
                 val result = Negotiation377.probe(host = host)
                 runOnUiThread {
                     if (statusText === target) {
-                        target?.text = result.message +
-                            "\nThis is NOT account login or a playable 377 session. " +
-                            "No world or character state was changed."
+                        showDiagnostic(
+                            result.message +
+                                "\nThis is NOT account login or a playable 377 session. " +
+                                "No world or character state was changed.",
+                            "Private LAN 377 handshake"
+                        )
                     }
                 }
             }.start()
@@ -183,14 +293,7 @@ class MainActivity : Activity() {
                 "To inspect real Lumbridge, select dat + idx0 + idx4 TOGETHER. " +
                 "No copyrighted game data is bundled or downloaded."
         ))
-        action("Import private .dat with idx0 / idx1 / idx4") {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "*/*"
-                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            }
-            startActivityForResult(intent, PICK_CACHE)
-        }
+        action("Import private .dat with idx0 / idx1 / idx4") { chooseCacheFiles() }
         val cacheCount = File(filesDir, "cache377").listFiles {
             f -> f.isDirectory && !f.name.endsWith(".tmp")
         }?.size ?: 0
@@ -203,7 +306,10 @@ class MainActivity : Activity() {
                     runOnUiThread { showRealModel(loaded) }
                 } catch (error: Exception) {
                     runOnUiThread {
-                        statusText?.text = "Model loading blocked: ${error.message ?: "unsupported archive"}"
+                        showDiagnostic(
+                            "Model loading blocked: ${error.message ?: "unsupported archive"}",
+                            "Real 377 model unavailable"
+                        )
                     }
                 }
             }.start()
@@ -218,6 +324,10 @@ class MainActivity : Activity() {
     }
 
     private fun openLumbridge() {
+        if (!hasLumbridgeCache()) {
+            explainCacheImport()
+            return
+        }
         val target = statusText
         target?.text = "Reading authentic 377 Lumbridge from your private cache..."
         Thread {
@@ -229,10 +339,13 @@ class MainActivity : Activity() {
                     if (!isFinishing) {
                         // Errors must be visible even when invoked from the full-screen mock.
                         showHome()
-                        statusText?.text = "REAL Lumbridge unavailable: " +
-                            (error.message ?: "No valid 377 map cache") +
-                            "\nImport main_file_cache.dat + idx0 + idx4 together. " +
-                            "No fake landscape will be substituted."
+                        showDiagnostic(
+                            "REAL Lumbridge unavailable: " +
+                                (error.message ?: "No valid 377 map cache") +
+                                "\nCheck your idx0/idx4 pair and try importing all three files again. " +
+                                "No substitute landscape will be shown.",
+                            "Lumbridge cache could not be loaded"
+                        )
                     }
                 }
             }
@@ -242,6 +355,7 @@ class MainActivity : Activity() {
     private fun showLumbridge(region: Region377) {
         game?.pauseRendering()
         game = null
+        statusText = null
         showingPreview = true // Back returns to diagnostics; no online world state.
         root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -251,12 +365,13 @@ class MainActivity : Activity() {
         root.addView(Lumbridge377Viewer(this, region), LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
         ))
-        setContentView(root)
+        setSafeContent(root)
     }
 
     private fun showRealModel(model: PrivateModel377.Loaded) {
         game?.pauseRendering()
         game = null
+        statusText = null
         showingPreview = true // Back button returns to diagnostics
         root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -266,10 +381,11 @@ class MainActivity : Activity() {
         root.addView(Model377Viewer(this, model), LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
         ))
-        setContentView(root)
+        setSafeContent(root)
     }
 
     private fun showPreview(x: Float = 8f, y: Float = 8f) {
+        statusText = null
         showingPreview = true
         val world = PreviewWorld(x, y)
         val surface = GameSurfaceView(this, world)
@@ -283,7 +399,7 @@ class MainActivity : Activity() {
         root.addView(surface, LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
         ))
-        setContentView(root)
+        setSafeContent(root)
         surface.requestFocus()
     }
 
@@ -301,12 +417,15 @@ class MainActivity : Activity() {
             try {
                 val receipt = Cache377Vault.importPair(this, uris)
                 showHome()
-                statusText?.text = "Real legacy cache structure verified: " +
-                    "${receipt.readableArchives} archives (indices ${receipt.indices}) read. " +
-                    "Private snapshot ${receipt.cacheId}; no assets redistributed."
+                showDiagnostic(
+                    "Real legacy cache structure verified: " +
+                        "${receipt.readableArchives} archives (indices ${receipt.indices}) read. " +
+                        "Private snapshot ${receipt.cacheId}; no assets redistributed.",
+                    "Private cache imported"
+                )
             } catch (e: Exception) {
                 showHome()
-                statusText?.text = "Cache import refused: ${e.message ?: "invalid cache"}"
+                showDiagnostic("Cache import refused: ${e.message ?: "invalid cache"}", "Cache import failed")
             }
             return
         }
@@ -344,10 +463,10 @@ class MainActivity : Activity() {
             val summary = "Verified original save v${inspected.version}: " +
                 "${inspected.skills.size} skills, ${inspected.totalSkillXp} total XP, " +
                 "tile ${inspected.x},${inspected.z}. Stored privately; NOT loaded into a game."
-            statusText?.text = summary
+            showDiagnostic(summary, "Private save copy verified")
         } catch (e: Exception) {
             showHome()
-            statusText?.text = "Import rejected: ${e.message ?: "invalid save"}"
+            showDiagnostic("Import rejected: ${e.message ?: "invalid save"}", "Save import failed")
         }
     }
 
