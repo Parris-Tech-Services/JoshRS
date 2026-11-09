@@ -423,3 +423,99 @@
 - `(3192, 3273, L0)` **Open chest** (id `378`) [`Search`] -> OK: Interacted with Open chest | "You find nothing."
 - `(3192, 3273, L0)` **Open chest** (id `378`) [`Shut`] -> OK: Interacted with Open chest
 - `(3162, 3299, L0)` **Wheat** (id `313`) [`Pick`] -> OK: Interacted with Wheat
+
+### Region Completed: Draynor Village, Bank, Market & Prison (m48_50 & m49_50) — 2026-11-09T06:08:33.247Z
+- **Total Interactions Audited**: 28 (15 verified working, 13 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3123, 3243, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Prison Door` (id `2881`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Prison Door at (3123, 3243). Actual: success=true (Interacted with Prison Door), opRejectedDelta=1, messages="The door is locked. | The door is locked.", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3121, 3244, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Crate` (id `358`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3121, 3244). Actual: success=false (Can't reach Crate), opRejectedDelta=0, messages="I can't reach that! | I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3124, 3254, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Oak` (id `1281`) — action `Chop down`
+  - **Expected vs Actual**: Expected: Interact "Chop down" with Oak at (3124, 3254). Actual: success=false (Cannot reach Oak: Stuck at (3125, 3251)), opRejectedDelta=2, messages="The door is locked. | Oh dear you are dead!", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3096, 3266, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Closed chest` (id `375`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Closed chest at (3096, 3266). Actual: success=true (Interacted with Closed chest), opRejectedDelta=2, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3091, 3276, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Crate` (id `356`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3091, 3276). Actual: success=true (Interacted with Crate), opRejectedDelta=0, messages="I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3100, 3276, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3100, 3276). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3097, 3277, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Drawers` (id `350`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Drawers at (3097, 3277). Actual: success=false (Can't reach Drawers), opRejectedDelta=0, messages="I can't reach that! | I can't reach that! | I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3107, 3271, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Wheat` (id `313`) — action `Pick`
+  - **Expected vs Actual**: Expected: Interact "Pick" with Wheat at (3107, 3271). Actual: success=true (Interacted with Wheat), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3107, 3273, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Gate` (id `1551`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Gate at (3107, 3273). Actual: success=true (Interacted with Gate), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3107, 3274, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Gate` (id `1553`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Gate at (3107, 3274). Actual: success=false (Nothing happened interacting with Gate), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3101, 3258, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3101, 3258). Actual: success=false (Nothing happened interacting with Door), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3102, 3281, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Bookcase` (id `381`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Bookcase at (3102, 3281). Actual: success=true (Interacted with Bookcase), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3096, 3266, L0)` — Draynor Village, Bank, Market & Prison (m48_50 & m49_50)
+  - **Object & Action**: `Open chest` (id `378`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Open chest at (3096, 3266). Actual: success=true (Interacted with Open chest), opRejectedDelta=2, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(3122, 3244, L0)` **Crate** (id `357`) [`Search`] -> OK: Nothing happened interacting with Crate | "You search the crate but find nothing."
+- `(3096, 3267, L0)` **Closed chest** (id `375`) [`Open`] -> OK: Interacted with Closed chest
+- `(3092, 3268, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door (loc state changed)
+- `(3092, 3274, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door (loc state changed)
+- `(3090, 3277, L0)` **Sacks** (id `365`) [`Search`] -> OK: Interacted with Sacks
+- `(3088, 3258, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door (loc state changed)
+- `(3096, 3267, L0)` **Open chest** (id `378`) [`Search`] -> OK: Interacted with Open chest | "You find nothing."
+- `(3096, 3267, L0)` **Open chest** (id `378`) [`Shut`] -> OK: Interacted with Open chest
+- `(3083, 3256, L0)` **Wardrobe** (id `388`) [`Open`] -> OK: Interacted with Wardrobe
+- `(3096, 3266, L0)` **Open chest** (id `378`) [`Shut`] -> OK: Interacted with Open chest
+- `(3091, 3243, L0)` **Bank booth** (id `2213`) [`Use`] -> OK: Interacted with Bank booth
+- `(3091, 3243, L0)` **Bank booth** (id `2213`) [`Use-quickly`] -> OK: Interacted with Bank booth
+- `(3085, 3235, L0)` **Willow** (id `1308`) [`Chop down`] -> OK: Interacted with Willow | "You need a Woodcutting level of 30 to chop down this tree."
+- `(3083, 3256, L0)` **Wardrobe** (id `389`) [`Search`] -> OK: Interacted with Wardrobe
+- `(3083, 3256, L0)` **Wardrobe** (id `389`) [`Close`] -> OK: Interacted with Wardrobe
+
+### Region Completed: Wizards' Tower Island & Ground/Basement (m48_49) — 2026-11-09T06:09:32.053Z
+- **Total Interactions Audited**: 6 (3 verified working, 3 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3111, 3163, L0)` — Wizards' Tower Island & Ground/Basement (m48_49)
+  - **Object & Action**: `Door` (id `1536`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3111, 3163). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3107, 3162, L0)` — Wizards' Tower Island & Ground/Basement (m48_49)
+  - **Object & Action**: `Door` (id `1536`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3107, 3162). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3104, 3150, L0)` — Wizards' Tower Island & Ground/Basement (m48_49)
+  - **Object & Action**: `Oak` (id `1281`) — action `Chop down`
+  - **Expected vs Actual**: Expected: Interact "Chop down" with Oak at (3104, 3150). Actual: success=true (Interacted with Oak), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(3112, 3194, L0)` **Boxes** (id `359`) [`Search`] -> OK: Nothing happened interacting with Boxes | "There is nothing interesting in these boxes."
+- `(3109, 3166, L0)` **Door** (id `1536`) [`Open`] -> OK: Interacted with Door (loc state changed)
+- `(3113, 3160, L0)` **Bookcase** (id `380`) [`Search`] -> OK: Interacted with Bookcase | "You search the bookcase..."

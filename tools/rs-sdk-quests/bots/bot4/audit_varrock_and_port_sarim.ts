@@ -16,6 +16,32 @@ await runScript(async ({ bot, sdk }) => {
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
   const testedKeys = new Set<string>();
 
+  const clearAllUI = async () => {
+    for (let i = 0; i < 5; i++) {
+      const st = sdk.getState();
+      if (st?.interface?.isOpen) {
+        await bot.closeInterface();
+        await sleep(250);
+      }
+      if (st?.dialog?.isOpen) {
+        const opts = st.dialog.options ?? [];
+        const cancelOpt = opts.find((o: any) => /cancel|nevermind|no|nothing/i.test(o.text));
+        const idx = cancelOpt ? cancelOpt.index : (opts[0]?.index ?? 0);
+        await sdk.sendClickDialog(idx);
+        await sleep(300);
+      } else {
+        break;
+      }
+    }
+  };
+
+  const interactFast = async (loc: any, pattern: RegExp, timeoutMs = 4500) => {
+    return Promise.race([
+      bot.interactLoc(loc, pattern),
+      sleep(timeoutMs).then(() => ({ success: false, message: `Timed out after ${timeoutMs}ms` })),
+    ]);
+  };
+
   const auditRegion = async (
     regionName: string,
     waypoints: [number, number, string][],
@@ -35,28 +61,16 @@ await runScript(async ({ bot, sdk }) => {
       if (testedKeys.has(key)) return;
       testedKeys.add(key);
 
-      await bot.dismissBlockingUI();
-      if (sdk.getState()?.interface?.isOpen) {
-        await bot.closeInterface();
-      }
+      await clearAllUI();
       const stateBefore = sdk.getState();
       const pBefore = stateBefore?.player;
       const rejBefore = stateBefore?.opFeedback?.opRejectedCount ?? 0;
       const msgIdBefore = Math.max(0, ...(stateBefore?.gameMessages ?? []).map((m: any) => m.observationId ?? 0));
       const dialogCountBefore = (stateBefore?.recentDialogs ?? []).length;
 
-      const res = await bot.interactLoc(loc, new RegExp(`^${optText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i'));
-      await sleep(900);
-      if (sdk.getState()?.dialog?.isOpen) {
-        await bot.dismissBlockingUI();
-        if (sdk.getState()?.dialog?.isOpen) {
-          await sdk.sendClickDialog(0);
-          await sleep(500);
-        }
-      }
-      if (sdk.getState()?.interface?.isOpen) {
-        await bot.closeInterface();
-      }
+      const res = await interactFast(loc, new RegExp(`^${optText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i'));
+      await sleep(600);
+      await clearAllUI();
 
       const stateAfter = sdk.getState();
       const pAfter = stateAfter?.player;
@@ -109,6 +123,7 @@ await runScript(async ({ bot, sdk }) => {
     };
 
     for (const [wx, wz, label] of waypoints) {
+      await clearAllUI();
       const w = await bot.walkTo(wx, wz, 3);
       if (!w.success) {
         logFinding({
@@ -124,14 +139,14 @@ await runScript(async ({ bot, sdk }) => {
         continue;
       }
 
-      const locs = await sdk.scanNearbyLocs(12);
+      const locs = await sdk.scanNearbyLocs(9);
       for (const loc of locs) {
         if (loc.x < bounds.minX || loc.x > bounds.maxX || loc.z < bounds.minZ || loc.z > bounds.maxZ) continue;
-        if (/tree|plant|ladder|staircase|trapdoor/i.test(loc.name)) continue;
+        if (/tree|oak|willow|yew|plant|cactus|ladder|staircase|trapdoor/i.test(loc.name)) continue;
         for (const opt of loc.options ?? []) {
           if (!opt || /^examine$/i.test(opt)) continue;
           if (/^close$/i.test(opt) && /door|gate/i.test(loc.name)) continue;
-          if (/climb/i.test(opt)) continue;
+          if (/climb|chop|pick-lock/i.test(opt)) continue;
           await testLocOption(loc, opt, `Interact "${opt}" with ${loc.name} at (${loc.x}, ${loc.z})`);
         }
       }
