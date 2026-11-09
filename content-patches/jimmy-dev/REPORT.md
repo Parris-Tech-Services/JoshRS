@@ -170,3 +170,31 @@
 | 66 | Gnome (Brimstail Cave Entrance 2400,3417) | OK | Talk: Cannot reach Gnome: Path to (2400, 3417) stops 7 tiles short at (2407, 3411) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
 | 68 | Gnome (Brimstail Cave Entrance 2420,3426) | OK | Talk: Cannot reach Gnome: Path to (2420, 3426) stops 16 tiles short at (2410, 3410) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
 | 67 | Gnome (Gnomeball Field 2381,3425) | OK | Talk: Cannot reach Gnome: Path to (2381, 3425) stops 8 tiles short at (2373, 3417) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
+| 481 | Gnome (Tracker Gnome 1 2498,3260) | OK | Talk: Dialog: "" / Trade:  | - |
+| 482 | Gnome (Tracker Gnome 2 2523,3258) | OK | Talk: Gnome is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 483 | Gnome (Tracker Gnome 3 2496,3234) | OK | Talk: Dialog: "" / Trade:  | - |
+| 372 | Mourner (Kilron Outside Tree Gnome Village 2560,3303) | OK | Talk: Cannot reach Mourner: Stuck at (2560, 3300) / Trade:  | - |
+| 348 | Mourner (Kilron Outside Tree Gnome Village 2548,3288) | OK | Talk: Cannot reach Mourner: Path to (2548, 3288) stops 11 tiles short at (2559, 3288) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
+| 490 | Observatory professor (Observatory Reception 2439,3156) | OK | Talk: Cannot reach Observatory professor: Path to (2439, 3156) stops 5 tiles short at (2437, 3151) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
+| 555 | Shop keeper (Port Khazard Docks 2655,3152) | OK | Talk: Dialog: "" / Trade: Shop "Khazard General Store" (0 items) | - |
+| 463 | Murphy (Port Khazard Docks 2666,3160) | OK | Talk: Dialog: "" / Trade:  | - |
+| 256 | Khazard Guard (Khazard Bar 2568,3142) | OK | Talk: Dialog: "" / Trade:  | - |
+| 259 | Khazard barman (Khazard Bar 2564,3140) | OK | Talk: Dialog: "" / Trade:  | - |
+| 462 | Wizard Distentor (Yanille East Magic Guild & Shops 2596,3088) | OK | Talk: Wizard Distentor is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 593 | Frenita (Yanille Center 2564,3099) | OK | Talk: Dialog: "" / Trade: Shop "Frenita's Cookery Shop." (0 items) | - |
+| 739 | Bartender (Yanille Dragon Inn 2554,3077) | OK | Talk: Dialog: "" / Trade:  | - |
+| 852 | Ogre chieftain (Feldip Hills Rantz 2615,2988) | OK | Talk: Dialog did not open / Trade:  | - |
+| 367 | Chemist (Rimmington Chemist Inside 2930,3211) | OK | Talk: Dialog did not open / Trade:  | - |
+| 338 | Chancy (Rimmington Chemist Inside 2935,3219) | OK | Talk: Dialog did not open / Trade:  | - |
+| 340 | Hops (Rimmington Chemist Inside 2932,3218) | OK | Talk: Dialog did not open / Trade:  | - |
+| 336 | DeVinci (Rimmington Chemist Inside 2933,3219) | OK | Talk: Dialog did not open / Trade:  | - |
+| 495 | Banker (Draynor Wine & Market 3090,3243) | OK | Talk: Cannot reach Banker: Stuck at (3093, 3245) / Trade:  | - |
+| 494 | Banker (Draynor Wine & Market 3090,3245) | OK | Talk: Cannot reach Banker: Stuck at (3091, 3248) / Trade:  | - |
+| 919 | Lady Keli (Draynor Jail 3129,3244) | OK | Talk: Talking to Lady Keli / Trade:  | - |
+| 916 | Joe (Draynor Jail 3122,3245) | OK | Talk: Talking to Joe / Trade:  | - |
+| 920 | Prince Ali (Draynor Jail 3125,3243) | OK | Talk: Prince Ali is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 741 | Duke Horacio (Lumbridge Castle L1 3212,3220) | OK | Talk: Dialog: "" / Trade:  | - |
+| 546 | Zaff (Varrock Palace Tower L1 3204,3436) | OK | Talk: Cannot reach Zaff: Stuck at (3202, 3433) / Trade:  | - |
+| 847 | Head chef (Cooking Guild 3143,3444) | OK | Talk: Cannot reach Head chef: No path to (3143, 3444) from (3149, 3441): no waypoints / Trade:  | - |
+| 644 | Straven (Varrock Phoenix Gang Basement 3245,9781) | OK | Talk: Dialog: "" / Trade:  | - |
+| 458 | Father Urhney (Lumbridge Swamp Urhney 3232,3155) | OK | Talk: Dialog: "" / Trade:  | - |
