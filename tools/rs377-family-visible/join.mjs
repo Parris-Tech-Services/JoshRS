@@ -26,6 +26,7 @@ const usage=()=>[
   'Join: node tools/rs377-family-visible/join.mjs --connect --allow-family --host PRIVATE_IP --bot HarnessView1 --patrol',
   'From JParrisDesktop itself, --host 127.0.0.1 avoids cross-site routing.',
   'Password entered privately. Ctrl+C ends bot session. No quest automation/SDK state until observer is integrated.',
+  'To add Elrothiro: add --add-friend Elrothiro (one normal friends-list packet).',
   'Flags: --port 52402 --web-port 8888 --seconds 120 (max 600) --patrol (optional)'
 ].join('\n');
 
@@ -40,9 +41,9 @@ export function clientPublic377(){
 }
 export function options(argv){
  const valid=new Set(['--connect','--allow-family','--host','--bot','--port','--web-port',
-   '--seconds','--patrol','--help']);
+   '--seconds','--patrol','--add-friend','--help']);
  const data={connect:false,allowFamily:false,host:null,
-   bot:'HarnessView1',port:52402,webPort:8888,seconds:120,patrol:false,help:false};
+   bot:'HarnessView1',port:52402,webPort:8888,seconds:120,patrol:false,addFriend:null,help:false};
  for(let i=0;i<argv.length;i++){
   const arg=argv[i];
   if(!valid.has(arg))throw new Error('Unknown argument: '+arg);
@@ -52,7 +53,7 @@ export function options(argv){
   }
   const value=argv[++i];if(!value||value.startsWith('--'))throw new Error('Missing '+arg);
   const key={'--host':'host','--bot':'bot','--port':'port',
-    '--web-port':'webPort','--seconds':'seconds'}[arg];
+    '--web-port':'webPort','--seconds':'seconds','--add-friend':'addFriend'}[arg];
   if(['--port','--web-port','--seconds'].includes(arg)){
    if(!/^[0-9]+$/.test(value))throw new Error('Invalid number for '+arg);
    data[key]=Number(value);
@@ -69,6 +70,12 @@ export function options(argv){
   throw new Error('Duration must be 15–600 seconds; rerun to continue');
  if(!/^Harness[A-Za-z0-9_-]{1,5}$/.test(data.bot)||data.bot.length>12)
   throw new Error('Use a separate bot named Harness<up to 5 characters>, max 12 letters');
+ // Family companion trial is intentionally scoped to the user's own
+ // Elrothiro account: do not expose arbitrary friendship spam by CLI.
+ if(data.addFriend!==null){
+  if(data.addFriend!=='Elrothiro')
+   throw new Error('This family bot can only add Elrothiro');
+ }
  return data;
 }
 export async function fetchCrc37(host,webPort,{fetchImpl=fetch}={}){
@@ -130,6 +137,17 @@ export async function join(options, {Session=Session377,loadCrc=fetchCrc37,
   log('Bot '+options.bot+' joined TCP world '+options.host+':'+options.port+
       '. Check the real game client nearby; server/world identity still requires visual evidence.');
   if(options.patrol)log('Patrolling safe Lumbridge waypoints only. Go to Lumbridge near 3233,3218 to look for the character.');
+  if(options.addFriend){
+   // Allow normal login and social registration to settle; dispatch the
+   // exact 377 FRIENDLIST_ADD via this bot's authenticated packet stream.
+   // Never infer that an offline/disabled Friends service saved the entry.
+   await new Promise(resolve=>setTimeout(resolve,1600));
+   if(session.status().authenticated!==true)
+    throw new Error('Bot disconnected before friend add was sent');
+   const response=session.send({type:'friend_add',targetName:options.addFriend});
+   log('FRIEND_ADD_DISPATCHED: '+options.bot+' -> '+options.addFriend+
+     ' ('+response.status+'). Persistence and online status NOT VERIFIED; Friends service must be enabled.');
+  }
   const done=new Promise(resolve=>{
    keepalive=setInterval(()=>{
     try{
