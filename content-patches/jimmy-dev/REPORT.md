@@ -102,3 +102,71 @@
 | 376 | Captain Tobias (Port Sarim Fishing Shop 3029,3216) | OK | Talk: Dialog: "" / Trade:  | - |
 | 377 | Seaman Lorris (Port Sarim Fishing Shop 3026,3220) | OK | Talk: Dialog: "" / Trade:  | - |
 | 557 | Wydin (Port Sarim Food Store 3016,3204) | OK | Talk: Dialog: "" / Trade: Shop "Food Store" (0 items) | - |
+| 182 | Pirate (Port Sarim Food Store 3016,3190) | OK | Talk: Dialog did not open / Trade:  | - |
+| 556 | Grum (Port Sarim Jewellery Shop 3012,3248) | OK | Talk: Dialog: "" / Trade: Shop "Grum's Gold Exchange." (0 items) | - |
+| 604 | Thurgo (Mudskipper Point Thurgo 3000,3142) | OK | Talk: Dialog: "" / Trade:  | - |
+| 307 | Hetty (Rimmington Hetty 2969,3204) | OK | Talk: Dialog: "" / Trade:  | - |
+| 531 | Shop assistant (Rimmington Archery 2948,3216) | OK | Talk: Dialog: "" / Trade: Shop "Rimmington General Store" (0 items) | - |
+| 530 | Shop keeper (Rimmington Archery 2947,3216) | OK | Talk: Dialog: "" / Trade: Shop "Rimmington General Store" (0 items) | - |
+| 585 | Rommik (Rimmington Archery 2946,3202) | OK | Talk: Dialog: "" / Trade: Shop "Rommiks Crafty Supplies." (0 items) | - |
+| 338 | Chancy (Rimmington Crafting 2935,3219) | OK | Talk: Dialog did not open / Trade:  | - |
+| 367 | Chemist (Rimmington Chemist 2932,3213) | OK | Talk: Dialog did not open / Trade:  | - |
+| 336 | DeVinci (Rimmington Chemist 2932,3219) | OK | Talk: Dialog did not open / Trade:  | - |
+| 340 | Hops (Rimmington Chemist 2930,3219) | OK | Talk: Dialog did not open / Trade:  | - |
+| 805 |  Master crafter (Crafting Guild 2931,3287) | OK | Talk:  Master crafter is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 599 | Make-over mage (Makeover Mage 2917,3321) | OK | Talk: Dialog: "" / Trade:  | - |
+| 736 | Barmaid (Falador Rising Sun Inn 2956,3374) | OK | Talk: Cannot reach Barmaid / Trade:  | - |
+| 598 | Hairdresser (Falador Rising Sun Inn 2944,3379) | OK | Talk: Dialog: "" / Trade:  | - |
+| 527 | Shop assistant (Falador Rising Sun Inn 2958,3388) | OK | Talk: Dialog: "" / Trade: Shop "Falador General Store" (0 items) | - |
+| 580 | Flynn (Falador Rising Sun Inn 2952,3385) | OK | Talk: Dialog: "" / Trade: Shop "Flynn's Mace Market." (0 items) | - |
+| 577 | Cassie (Falador Cassie Shield Shop 2978,3384) | OK | Talk: Dialog: "" / Trade: Shop "Cassies' Shield Shop." (0 items) | - |
+| 584 | Herquin (Falador Herquin Gems 2946,3336) | OK | Talk: Dialog: "" / Trade: Shop "Herquin's Gems." (0 items) | - |
+| 581 | Wayne (Falador Wayne Chainmail 2969,3312) | OK | Talk: Dialog: "" / Trade: Shop "Wayne's Chains! - Chainmail specialist." (0 items) | - |
+| 36 | Wyson the gardener (Falador Park Wyson 3025,3383) | OK | Talk: Dialog: "" / Trade:  | - |
+| 803 | Monk (Edgeville Monastery 3051,3491) | OK | Talk: Dialog: "" / Trade:  | - |
+| 801 | Abbot Langley (Edgeville Monastery 3056,3484) | OK | Talk: Dialog: "" / Trade:  | - |
+| 538 | Peksa (Barbarian Village 3074,3429) | OK | Talk: Dialog: "" / Trade: Shop "Helmet Shop." (0 items) | - |
+| 642 | Katrine (Varrock Black Arm Gang 3188,3386) | OK | Talk: Dialog: "" / Trade:  | - |
+| 733 | Bartender (Varrock Blue Moon Inn 3226,3399) | OK | Talk: Dialog: "" / Trade:  | - |
+| 198 | Guild master (Champions Guild 3189,3362) | OK | Talk: Guild master is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 926 | Border Guard (Al Kharid Tannery 3268,3226) | OK | Talk: Border Guard is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 957 | Mubariz (Duel Arena Entrance 3319,3236) | OK | Talk: Dialog: "" / Trade:  | - |
+| 959 | A'abla (Duel Arena Hospital 3360,3271) | OK | Talk: Dialog: "" / Trade:  | - |
+| 962 | Jaraah (Duel Arena Hospital 3361,3276) | OK | Talk: Dialog: "" / Trade:  | - |
+| 963 | Zahwa (Duel Arena Hospital 3371,3276) | OK | Talk: Dialog: "" / Trade:  | - |
+| 961 | Tafani (Duel Arena Hospital 3377,3274) | OK | Talk: Dialog: "" / Trade:  | - |
+| 960 | Sabreen (Duel Arena Hospital 3369,3277) | OK | Talk: Dialog: "" / Trade:  | - |
+| 958 | Fadli (Duel Arena Walkway 3383,3269) | OK | Talk: Dialog: "" / Trade:  | - |
+| 545 | Dommik (Al Kharid Crafting Shop 3322,3194) | OK | Talk: Dialog: "" / Trade: Shop "Dommiks Crafting Store." (0 items) | - |
+| 804 | Tanner (Al Kharid Tannery 3274,3193) | OK | Talk: Dialog: "" / Trade: Interacted with Tanner | - |
+| 543 | Kebab seller (Al Kharid Tannery 3272,3181) | OK | Talk: Dialog: "" / Trade:  | - |
+| 496 | Banker (Al Kharid Kebab Shop 3267,3169) | OK | Talk: Cannot reach Banker: Stuck at (3271, 3167) / Trade:  | - |
+| 497 | Banker (Al Kharid Kebab Shop 3267,3168) | OK | Talk: Cannot reach Banker: Stuck at (3270, 3167) / Trade:  | - |
+| 573 | Fur trader (Ardougne Market Fur & Spice 2668,3296) | OK | Talk: Dialog: "" / Trade: Shop "Ardougne Fur Stall." (0 items) | - |
+| 589 | Zenesha (Ardougne Market Fur & Spice 2656,3293) | OK | Talk: Dialog: "" / Trade: Shop "Zenesha's Plate Mail Body Shop." (0 items) | - |
+| 572 | Spice seller (Ardougne Market Fur & Spice 2662,3292) | OK | Talk: Dialog: "" / Trade: Shop "Ardougne Spice Stall." (0 items) | - |
+| 494 | Banker (Ardougne Zenesha Platebody Shop 2657,3286) | OK | Talk: Cannot reach Banker: Stuck at (2653, 3285) / Trade:  | - |
+| 495 | Banker (Ardougne Zenesha Platebody Shop 2657,3280) | OK | Talk: Banker is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 843 | RPDT employee (Ardougne Zenesha Platebody Shop 2646,3278) | OK | Talk: Dialog: "" / Trade:  | - |
+| 289 | Councillor Halgrive (Ardougne Church & Halgrive 2616,3296) | OK | Talk: Dialog: "" / Trade:  | - |
+| 591 | Kortan (Ardougne Church & Halgrive 2613,3292) | OK | Talk: Dialog: "" / Trade: Shop "Aemad's Adventuring Supplies." (0 items) | - |
+| 590 | Aemad (Ardougne Church & Halgrive 2615,3292) | OK | Talk: Dialog: "" / Trade: Shop "Aemad's Adventuring Supplies." (0 items) | - |
+| 1216 | Parroty Pete (Ardougne Church & Halgrive 2610,3284) | OK | Talk: Dialog: "" / Trade:  | - |
+| 335 | Elena (Ardougne Elena House 2592,3336) | OK | Talk: Cannot reach Elena: Path to (2592, 3336) stops 3 tiles short at (2592, 3339) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
+| 273 | Lucien (Ardougne Elena House 2576,3324) | OK | Talk: Dialog: "" / Trade:  | - |
+| 718 | Mourner (Ardougne Elena House 2583,3325) | OK | Talk: Dialog: "" / Trade:  | - |
+| 738 | Bartender (Ardougne Adventurer Store 2575,3320) | OK | Talk: Dialog: "" / Trade:  | - |
+| 227 | Morris (Hemenster Fishing Contest 2643,3440) | OK | Talk: Dialog did not open / Trade:  | - |
+| 225 | Bonzo (Hemenster Fishing Contest 2641,3439) | OK | Talk: Bonzo is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 226 | A Sinister Stranger (Hemenster Fishing Contest 2636,3436) | OK | Talk: Dialog: "" / Trade:  | - |
+| 230 | Grandpa Jack (Hemenster Fishing Contest 2646,3454) | OK | Talk: Dialog: "" / Trade:  | - |
+| 679 | Ranging Guild Doorman (Hemenster Fishing Contest 2658,3439) | OK | Talk: Dialog: "" / Trade:  | - |
+| 694 | Ticket Merchant (Ranging Guild Entrance 2659,3433) | OK | Talk: Dialog: "" / Trade:  | - |
+| 682 | Armour salesman (Ranging Guild Entrance 2666,3437) | OK | Talk: Dialog: "" / Trade: Trade opened dialog: "" | - |
+| 563 | Arhein (Catherby Docks & Arhein 2803,3430) | OK | Talk: Dialog: "" / Trade: Shop "Arhein Store" (0 items) | - |
+| 562 | Candle maker (Catherby Docks & Arhein 2799,3440) | OK | Talk: Dialog: "" / Trade: Shop "Candle Shop" (0 items) | - |
+| 575 | Hickton (Catherby Hickton & Shops 2821,3442) | OK | Talk: Dialog: "" / Trade: Shop "Hicktons Archery Emporium." (0 items) | - |
+| 666 | Caleb (Catherby Hickton & Shops 2818,3452) | OK | Talk: Dialog: "" / Trade:  | - |
+| 66 | Gnome (Brimstail Cave Entrance 2400,3417) | OK | Talk: Cannot reach Gnome: Path to (2400, 3417) stops 7 tiles short at (2407, 3411) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
+| 68 | Gnome (Brimstail Cave Entrance 2420,3426) | OK | Talk: Cannot reach Gnome: Path to (2420, 3426) stops 16 tiles short at (2410, 3410) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
+| 67 | Gnome (Gnomeball Field 2381,3425) | OK | Talk: Cannot reach Gnome: Path to (2381, 3425) stops 8 tiles short at (2373, 3417) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
