@@ -324,6 +324,7 @@ class MainActivity : Activity() {
     private fun showLumbridge(region: Region377) {
         game?.pauseRendering()
         game = null
+        statusText = null
         showingPreview = true // Back returns to diagnostics; no online world state.
         root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -339,6 +340,7 @@ class MainActivity : Activity() {
     private fun showRealModel(model: PrivateModel377.Loaded) {
         game?.pauseRendering()
         game = null
+        statusText = null
         showingPreview = true // Back button returns to diagnostics
         root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -352,6 +354,7 @@ class MainActivity : Activity() {
     }
 
     private fun showPreview(x: Float = 8f, y: Float = 8f) {
+        statusText = null
         showingPreview = true
         val world = PreviewWorld(x, y)
         val surface = GameSurfaceView(this, world)
