@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -51,6 +52,9 @@ class OfflineLumbridgeActivity : Activity() {
 
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+        }
         window.statusBarColor = Color.rgb(32, 33, 28)
         window.navigationBarColor = Color.rgb(32, 33, 28)
         game = OfflineLumbridgeQuest.restore(prefs.getString("progress", null))
@@ -62,20 +66,40 @@ class OfflineLumbridgeActivity : Activity() {
         previousSave = SystemClock.elapsedRealtime()
     }
 
+    private fun applyQuestInsets(view: View, insets: WindowInsets) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val bars = insets.getInsets(
+                WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout()
+            )
+            val left = 8 + bars.left
+            val top = 8 + bars.top
+            val right = 8 + bars.right
+            val bottom = 8 + bars.bottom
+            if (view.paddingLeft != left || view.paddingTop != top ||
+                view.paddingRight != right || view.paddingBottom != bottom) {
+                view.setPadding(left, top, right, bottom)
+            }
+        }
+    }
+
     private fun renderUi() {
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.rgb(32, 33, 28))
             setPadding(8, 8, 8, 8)
             setOnApplyWindowInsetsListener { view, insets ->
-                val bars = insets.getInsets(
-                    WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout()
-                )
-                view.setPadding(8 + bars.left, 8 + bars.top, 8 + bars.right, 8 + bars.bottom)
+                applyQuestInsets(view, insets)
                 insets
             }
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            root.viewTreeObserver.addOnGlobalLayoutListener {
+                root.rootWindowInsets?.let { applyQuestInsets(root, it) }
+            }
+        }
         setContentView(root)
+        root.requestApplyInsets()
+        root.post { root.rootWindowInsets?.let { applyQuestInsets(root, it) } }
         fun heading(text: String, size: Float, colour: Int): TextView = TextView(this).apply {
             this.text = text
             textSize = size

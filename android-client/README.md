@@ -1,5 +1,37 @@
 # JoshRS Android — Kotlin foundation (stage 1)
 
+## 9 November — real Galaxy A55 screenshot fixes
+
+A phone playtest revealed two UX bugs on modern Android: the status icons overlapped
+the screen title and the gesture/navigation bar obscured the last buttons and
+the fictional preview panel. The Activity now wraps **every** screen in a
+system-bars/display-cutout-aware container using Android window insets, including
+the full-height canvas preview and real-cache inspectors. A new instrumentation
+test checks the home and drawing screens against platform insets.
+
+Diagnostic results now appear in an immediate modal dialog **and** remain
+in the home status summary. The real Lumbridge button explains the exact
+private files required and opens Android's multiple-file picker on confirmation
+instead of silently failing and putting a message at the top of a long page.
+
+**On a personal device**:
+- A `127.0.0.1` test checks only the **phone** or `adb reverse`, never the PC. A
+  private LAN address works only if the genuine 377 server already listens there.
+- Import `main_file_cache.dat`, `main_file_cache.idx0`, and
+  `main_file_cache.idx4` **as a set** to view read-only Lumbridge tile/loc
+  geometry. These files are **not** bundled with the app.
+- A Play Protect warning that the developer is unknown can occur for a
+  side-loaded development-signed APK. This is not a safety verification;
+  do not globally disable Play Protect. Install only if you trust the source
+  and verify the build provenance. CI playtest APKs intentionally use unique
+  package identities and debug signing keys, so installing a new build
+  side-by-side does **not** migrate private cache or save copies.
+- The existing 377 tools remain diagnostics. The separate offline Cook's
+  Assistant quest slice is playable, but it is **not** the full original game.
+  Real 377 authenticated login, world rendering, live inventory/XP and
+  cross-device movement are still not implemented.
+
+
 ## 9 Nov 2026 — FIRST SELF-CONTAINED OFFLINE GAMEPLAY SLICE
 
 The new **PLAY Cook's Assistant — offline Lumbridge quest slice** button
