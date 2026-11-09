@@ -48,6 +48,24 @@ bash tools/rs377-unified-updater/update-fedora.sh --apply --world /absolute/path
 
 The Fedora launcher refuses root/unattended installation, requires you to type **yes**, then passes explicit confirmation to the shared Node updater. It searches only known JoshRS 377 locations and refuses ambiguous selection; `--world` must explicitly identify a real sibling engine/content pair. It does **not** assume Agy's isolated RS-SDK sandbox is your family world.
 
+## SQLite preflight on copied Fedora installations
+
+The engine may use either legacy `engine/.env` or the newer authoritative
+`engine/data/config/world.json`. The updater now checks the **effective**
+backend, not just a literal `DB_BACKEND=sqlite` line in `.env`.
+It verifies any existing `engine/db.sqlite` has the SQLite file signature
+and checks configured game/web listeners before applying. Existing account
+databases and saves must still pass the backup and unchanged-hash checks.
+
+A missing or unconfirmed SQLite configuration remains a **hard block**.
+Do not add `DB_BACKEND=sqlite` blindly: first inspect whether `world.json`
+specifies a different backend, and verify the original account database.
+Never run database migrations or replace account files to make this gate pass.
+
+To view the private recovery report, use
+`less ~/.local/state/joshrs-desktop-to-fedora/latest-preflight.json` rather
+than trying to run the JSON file as a command.
+
 ## Safety and recovery
 
 - Default CLI mode is `--check` and writes **nothing to selected game files**. It builds a shadow patch plan in the OS temporary directory; no save/account files are read or modified by this check.
