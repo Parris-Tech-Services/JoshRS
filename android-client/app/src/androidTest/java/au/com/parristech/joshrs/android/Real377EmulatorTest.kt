@@ -43,15 +43,15 @@ class Real377EmulatorTest {
                     }
                 }
                 checkSafeFrame()
-                var foundPreview = false
+                var preview: Button? = null
                 descend(activity.window.decorView) { view ->
-                    if (!foundPreview && view is Button &&
+                    if (view is Button &&
                         view.text.toString().contains("fictional offline art preview")) {
-                        foundPreview = true
-                        view.performClick()
+                        preview = view
                     }
                 }
-                assertTrue("Original drawing preview was not available", foundPreview)
+                assertTrue("Original drawing preview was not available", preview != null)
+                preview!!.performClick()
                 checkSafeFrame()
             }
         }
