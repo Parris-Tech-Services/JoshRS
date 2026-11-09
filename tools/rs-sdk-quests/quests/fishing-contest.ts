@@ -1,6 +1,6 @@
 import {
   Ctx, Quest, has, count, xp, lvl, sleep, talk, chat, waitInv, waitCond, step,
-  openNearbyDoors, pickupWithWait
+  openNearbyDoors, pickupWithWait, ensureCoins
 } from '../quest-kit';
 import { walkToKandarin } from './monks-friend';
 
@@ -31,6 +31,10 @@ export const fishingcompo: Quest = {
 
       // 2. Buy Small fishing net (303) and Fishing rod (307) from Harry (264) in Catherby (2833, 3443) and train Fishing to 10
       await walkToKandarin(c, 2833, 3443);
+      if (count(sdk, /^coins$/i) < 20) {
+        await bot.walkTo(2805, 3435, 3);
+        await ensureCoins(c, 25);
+      }
       const wh = await bot.walkTo(2833, 3443, 2);
       if (!wh?.success) { await openNearbyDoors(c, 2833, 3441, 3); await bot.walkTo(2833, 3443, 2); }
       if (!has(sdk, /^small fishing net$/i) || !has(sdk, /^fishing rod$/i)) {

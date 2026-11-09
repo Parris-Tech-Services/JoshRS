@@ -1166,3 +1166,56 @@
 - 2026-11-09T17:05:46.831Z STEP start-and-bucket
 - 2026-11-09T17:05:46.832Z STEP white-cog
 - 2026-11-09T17:05:46.833Z STEP red-and-black-cogs
+- 2026-11-09T17:14:57.226Z START Biohazard (attempt 1)
+- 2026-11-09T17:14:57.227Z STEP start-and-distract-watchtower
+- 2026-11-09T17:21:14.863Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T17:21:14.865Z START Biohazard (attempt 2)
+- 2026-11-09T17:21:14.865Z STEP start-and-distract-watchtower
+- 2026-11-09T17:21:55.230Z talkTo /^elena$/i failed: Dialog did not open
+- 2026-11-09T17:21:55.230Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T17:21:55.230Z START Demon Slayer (attempt 1)
+- 2026-11-09T17:21:55.231Z STEP start-aris-and-prysin
+- 2026-11-09T17:23:24.433Z START Biohazard (attempt 1)
+- 2026-11-09T17:23:24.434Z STEP start-and-distract-watchtower
+- 2026-11-09T17:25:12.236Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T17:25:12.452Z START Biohazard (attempt 2)
+- 2026-11-09T17:25:12.452Z STEP start-and-distract-watchtower
+- 2026-11-09T17:27:13.841Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T17:27:14.045Z START Demon Slayer (attempt 1)
+- 2026-11-09T17:27:14.046Z STEP start-aris-and-prysin
+- 2026-11-09T17:28:04.827Z START Biohazard (attempt 1)
+- 2026-11-09T17:28:04.828Z STEP start-and-distract-watchtower
+- 2026-11-09T17:28:34.455Z STEP retrieve-distillator
+- 2026-11-09T17:32:36.033Z STEP FAILED retrieve-distillator
+- 2026-11-09T17:32:36.034Z START Biohazard (attempt 2)
+- 2026-11-09T17:32:36.034Z STEP start-and-distract-watchtower
+- 2026-11-09T17:36:50.029Z START Biohazard (attempt 1)
+- 2026-11-09T17:36:50.029Z STEP start-and-distract-watchtower
+- 2026-11-09T17:37:08.660Z STEP retrieve-distillator
+- 2026-11-09T17:49:26.430Z START Biohazard (attempt 1)
+- 2026-11-09T17:49:26.431Z STEP start-and-distract-watchtower
+- 2026-11-09T17:49:26.432Z STEP retrieve-distillator
+- 2026-11-09T17:51:00.036Z STEP FAILED retrieve-distillator
+- 2026-11-09T17:51:00.037Z START Biohazard (attempt 2)
+- 2026-11-09T17:51:00.037Z STEP start-and-distract-watchtower
+- 2026-11-09T17:51:30.021Z STEP retrieve-distillator
+- 2026-11-09T17:53:19.644Z STEP FAILED retrieve-distillator
+- 2026-11-09T17:53:19.645Z START Demon Slayer (attempt 1)
+- 2026-11-09T17:53:19.646Z STEP start-aris-and-prysin
+- 2026-11-09T17:54:17.636Z START Biohazard (attempt 1)
+- 2026-11-09T17:54:17.636Z STEP start-and-distract-watchtower
+- 2026-11-09T17:55:07.465Z STEP retrieve-distillator
+- 2026-11-09T17:57:02.042Z STEP FAILED retrieve-distillator
+- 2026-11-09T17:57:02.044Z START Biohazard (attempt 2)
+- 2026-11-09T17:57:02.044Z STEP start-and-distract-watchtower
+- 2026-11-09T17:57:31.866Z STEP retrieve-distillator
+- 2026-11-09T17:59:26.409Z STEP FAILED retrieve-distillator
+- 2026-11-09T17:59:26.410Z START Demon Slayer (attempt 1)
+- 2026-11-09T17:59:26.412Z STEP start-aris-and-prysin
+- 2026-11-09T18:01:26.416Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T18:01:27.416Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T18:01:28.417Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T18:01:29.417Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T18:01:30.418Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T18:01:31.419Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T18:01:32.419Z bank: still holding Iron chainbody, Plague jacket, Plague trousers, Rotten apples

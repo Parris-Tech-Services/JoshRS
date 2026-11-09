@@ -351,6 +351,8 @@ export async function rechargePrayer(c: Ctx, minPoints = 25): Promise<void> {
   const altars: [number, number][] = [
     [2606, 3209], // Ardougne Monastery
     [2615, 3304], // East Ardougne Church
+    [2694, 3463], // Seers' Village Church
+    [2925, 3483], // Taverley Druids' Circle
     [3243, 3207], // Lumbridge Church
     [2997, 3177], // Port Sarim Chapel
     [3254, 3483], // Varrock Church
@@ -363,17 +365,46 @@ export async function rechargePrayer(c: Ctx, minPoints = 25): Promise<void> {
     await openNearbyDoors(c, best[0], best[1], 3);
     await bot.walkTo(best[0], best[1], 2);
   }
-  const altar = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 409 || /^altar$/i.test(l.name));
+  const altar = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 409 || l.id === 410 || l.id === 411 || /^altar$/i.test(l.name));
   if (altar) {
     await sdk.sendInteractLoc(altar.x, altar.z, altar.id, 1);
     await waitCond(() => (sdk.getSkill('Prayer')?.level ?? 0) >= (sdk.getSkill('Prayer')?.baseLevel ?? 1), 5000, 250);
   }
 }
 
+export async function ensureCoins(c: Ctx, minCoins = 30): Promise<boolean> {
+  const { bot, sdk } = c;
+  const coinsNow = () => count(sdk, /^coins$/i);
+  if (coinsNow() >= minCoins) return true;
+  const deadline = Date.now() + 45_000;
+  while (Date.now() < deadline && coinsNow() < minCoins) {
+    const npc = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) =>
+      /^(man|woman|guard|knight of ardougne|farmer)$/i.test(n.name) &&
+      (n.options ?? []).some((o: string) => /^pickpocket$/i.test(o))
+    );
+    if (npc) {
+      const optIdx = (npc.options ?? []).findIndex((o: string) => /^pickpocket$/i.test(o));
+      await sdk.sendInteractNpc(npc.index, optIdx >= 0 ? optIdx + 1 : 3);
+      await sleep(1200);
+    } else {
+      await sleep(600);
+    }
+  }
+  return coinsNow() >= minCoins;
+}
+
 export async function runQuests(dir: string, quests: any[]) {
   await runScript(async ({ bot, sdk }: any) => {
     if (!bot.attack && bot.attackNpc) bot.attack = bot.attackNpc.bind(bot);
     if (!bot.buyItem && bot.buyFromShop) bot.buyItem = bot.buyFromShop.bind(bot);
+    if (!sdk.sendTakeGroundItem && sdk.sendPickup) sdk.sendTakeGroundItem = sdk.sendPickup.bind(sdk);
+    if (!bot.useItemOp1) {
+      bot.useItemOp1 = async (it: any) => {
+        const item = typeof it === 'object' && it && 'slot' in it ? it : sdk.findInventoryItem(it);
+        if (!item) return { success: false, message: 'Item not found' };
+        return await sdk.sendUseItem(item.slot, 1);
+      };
+    }
     if (!bot.useItemOnItem) {
       bot.useItemOnItem = async (a: any, b: any) => {
         const ia = typeof a === 'object' && a && 'slot' in a ? a : sdk.findInventoryItem(a);

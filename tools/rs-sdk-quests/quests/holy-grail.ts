@@ -166,7 +166,7 @@ async function galahadAndDraynorWhistles(c: QuestContext): Promise<boolean> {
     for (let i = 0; i < 6 && count(c.sdk, /^magic whistle$/i) < 2; i++) {
         const w = c.sdk.getState().groundItems.find((g: any) => /magic whistle/i.test(g.name));
         if (w) {
-            await c.sdk.sendTakeGroundItem(w.x, w.z, w.id);
+            await c.sdk.sendPickup(w.x, w.z, w.id);
             await c.sleep(900);
         } else {
             await interactLocNear(c, 22, /open/i, 3106, 3361, 8);
@@ -228,7 +228,7 @@ async function fisherKingRealmFirstVisit(c: QuestContext): Promise<boolean> {
         for (let i = 0; i < 6 && !hasInv(c, /^grail bell$/i); i++) {
             const bell = c.sdk.getState().groundItems.find((g: any) => /grail bell/i.test(g.name));
             if (bell) {
-                await c.sdk.sendTakeGroundItem(bell.x, bell.z, bell.id);
+                await c.sdk.sendPickup(bell.x, bell.z, bell.id);
                 await c.sleep(900);
             } else {
                 await c.sleep(800);
@@ -305,7 +305,7 @@ async function rescuePercivalAndClaimGrail(c: QuestContext): Promise<boolean> {
         for (let i = 0; i < 6 && !hasInv(c, /^holy grail$/i); i++) {
             const g = c.sdk.getState().groundItems.find((it: any) => /holy grail/i.test(it.name) || it.id === 19);
             if (g) {
-                await c.sdk.sendTakeGroundItem(g.x, g.z, g.id);
+                await c.sdk.sendPickup(g.x, g.z, g.id);
                 await c.sleep(1000);
             } else {
                 await c.sleep(800);

@@ -3,6 +3,8 @@ import {
     type QuestContext,
     ensureEquipped,
     ensureInInventory,
+    ensureCoins,
+    count,
     findInv,
     hasInv,
     interactLocNear,
@@ -33,10 +35,24 @@ let inspectedAltar = false;
 
 async function prepSupplies(c: QuestContext): Promise<boolean> {
     if (stage >= 7) return true;
-    await ensureEquipped(c, /rune scimitar/i, 'wield');
+    await ensureEquipped(c, /rune scimitar|silverlight/i, 'wield');
     await ensureInInventory(c, [{ pattern: /tinderbox/i, count: 1 }], KEEP_RE);
     await ensureInInventory(c, [{ pattern: /^coins$/i, count: 100 }], KEEP_RE);
     await ensureInInventory(c, [{ pattern: /^bread$/i, count: 1 }], KEEP_RE);
+
+    if (count(c.sdk, /^coins$/i) < 20) {
+        await walkTo(c, 3095, 3245);
+        await ensureCoins(c, 30);
+    }
+
+    if (!hasInv(c, /tinderbox/i)) {
+        await walkTo(c, 3212, 3246);
+        const shop = await c.bot.openShop(/shopkeeper|shop assistant/i);
+        if (shop?.success) {
+            await c.bot.buyFromShop(/tinderbox/i, 1);
+            await c.bot.closeShop();
+        }
+    }
 
     if (!hasInv(c, /^bread$/i) && !hasInv(c, /^excalibur$/i)) {
         await walkTo(c, 3014, 3204);
@@ -196,7 +212,7 @@ async function gatherBatBonesAndBlackCandle(c: QuestContext): Promise<boolean> {
         for (let attempt = 0; attempt < 8 && !hasInv(c, /^bat bones$/i); attempt++) {
             const g = c.sdk.getState().groundItems.find((i: any) => /^bat bones$/i.test(i.name));
             if (g) {
-                await c.sdk.sendTakeGroundItem(g.x, g.z, g.id);
+                await c.sdk.sendPickup(g.x, g.z, g.id);
                 await c.sleep(1000);
                 if (hasInv(c, /^bat bones$/i)) break;
             }
@@ -206,7 +222,7 @@ async function gatherBatBonesAndBlackCandle(c: QuestContext): Promise<boolean> {
                 await c.sleep(800);
                 const drop = c.sdk.getState().groundItems.find((i: any) => /^bat bones$/i.test(i.name));
                 if (drop) {
-                    await c.sdk.sendTakeGroundItem(drop.x, drop.z, drop.id);
+                    await c.sdk.sendPickup(drop.x, drop.z, drop.id);
                     await c.sleep(1000);
                 }
             } else {
@@ -232,7 +248,7 @@ async function gatherBatBonesAndBlackCandle(c: QuestContext): Promise<boolean> {
             for (let w = 0; w < 10 && !hasInv(c, /insect repellent/i); w++) {
                 const rep = c.sdk.getState().groundItems.find((i: any) => /insect repellent/i.test(i.name));
                 if (rep) {
-                    await c.sdk.sendTakeGroundItem(rep.x, rep.z, rep.id);
+                    await c.sdk.sendPickup(rep.x, rep.z, rep.id);
                     await c.sleep(900);
                 } else {
                     await c.sleep(1000);

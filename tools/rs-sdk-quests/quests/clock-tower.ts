@@ -43,7 +43,10 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
   };
 
   if ((sdk.getState()?.player?.worldZ ?? 0) < 9880) {
-    await rechargePrayer(c, 35);
+    if ((sdk.getState()?.player?.worldX ?? 3200) > 2860) {
+      await walkToKandarin(c, 2694, 3463);
+    }
+    await rechargePrayer(c, 42);
 
     // Walk to White Wolf Mountain rockslide at (2838, 3517) from the West side (2837, 3517) and mine East to (2840, 3516)
     if ((sdk.getState()?.player?.worldX ?? 0) < 2839 || (sdk.getState()?.player?.worldZ ?? 0) < 3508) {
@@ -83,7 +86,7 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
   }
 
   // Walk to Ice Queen (795 at 2866, 9956) and defeat her for Ice gloves (1580)
-  for (const w of [/^silverlight$/i, /^bronze sword$/i, /^iron chainbody$/i, /^bronze med helm$/i, /^wooden shield$/i]) {
+  for (const w of [/^excalibur$/i, /^silverlight$/i, /scimitar/i, /longsword/i, /sword/i, /battleaxe/i, /^iron chainbody$/i, /^bronze med helm$/i, /^wooden shield$/i]) {
     if (has(sdk, w)) { await bot.equipItem(w); await sleep(250); }
   }
   await sdk.sendSetCombatStyle(1);
@@ -371,10 +374,6 @@ export const cog: Quest = {
 
     const redAndBlackCogs = () => step(c, N, 'red-and-black-cogs', async () => {
       if (redPlaced && blackPlaced) return true;
-
-      if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
-        await bot.activatePrayer('protect_from_melee');
-      }
 
       // 1. Red cog (23 at 2583, 9613) -> pole 29 at L0 (2568, 3243)
       if (!redPlaced) {

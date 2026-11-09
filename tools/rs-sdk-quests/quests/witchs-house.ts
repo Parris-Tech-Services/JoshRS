@@ -78,7 +78,7 @@ export const ball: Quest = {
           while (Date.now() < deadline && !has(sdk, /^cheese$/i)) {
             const g = (sdk.getState()?.groundItems ?? []).find((i: any) => i.id === 1985 || /^cheese$/i.test(i.name));
             if (g) {
-              await sdk.sendTakeGroundItem(g.x, g.z, g.id);
+              await sdk.sendPickup(g.x, g.z, g.id);
               if (await waitInv(sdk, /^cheese$/i, 4000)) break;
             }
             await sleep(600);

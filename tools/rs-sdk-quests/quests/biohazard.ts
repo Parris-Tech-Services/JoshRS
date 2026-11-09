@@ -1,6 +1,6 @@
 import {
   Ctx, Quest, has, count, xp, lvl, sleep, chat, talk, waitInv, waitCond, step,
-  openNearbyDoors, pickupWithWait, walkToVarrock, walkFromVarrockToLumbridge
+  openNearbyDoors, pickupWithWait, walkToVarrock, walkFromVarrockToLumbridge, ensureCoins
 } from '../quest-kit';
 import { walkToKandarin } from './monks-friend';
 import { elena } from './plague-city';
@@ -56,83 +56,105 @@ export const biohazard: Quest = {
         }
       }
 
-      // 1. Talk to Elena (2592, 3336)
-      const we = await bot.walkTo(2592, 3336, 2);
-      if (!we?.success) {
-        await openNearbyDoors(c, 2592, 3335, 3);
-        await bot.walkTo(2592, 3336, 2);
-      }
-      if (!(await talk(c, /^elena$/i, [/try to retrieve it for you/i]))) return false;
-      const recentE = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
-      if (/let me know when you hear from king lathas/i.test(recentE)) {
-        questComplete = true;
-        return true;
-      }
-      if (/go see king lathas immediately|need to see the king of east ardougne/i.test(recentE)) {
-        reportedElena = true;
-        givenDistillator = true;
-        spokenGuidor = true;
-        return true;
-      }
+      const hasCageWithPigeons = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 424 || (/^pigeon cage$/i.test(i.name) && (i.options ?? []).some((o: string) => /open/i.test(o))));
+      const hasEmptyCage = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 425 || (/^pigeon cage$/i.test(i.name) && !(i.options ?? []).some((o: string) => /open/i.test(o))));
+      if (hasEmptyCage()) pigeonsReleased = true;
 
-      // 2. Talk to Jerico (2612, 3324)
-      const wj = await bot.walkTo(2612, 3324, 2);
-      if (!wj?.success) {
-        await openNearbyDoors(c, 2612, 3324, 3);
-        await bot.walkTo(2612, 3324, 2);
-      }
-      await talk(c, /^jerico$/i, [/messenger pigeons to distract them/i]);
+      if (!hasCageWithPigeons() && !pigeonsReleased) {
+        // 1. Talk to Elena (2592, 3336)
+        const we = await bot.walkTo(2592, 3336, 2);
+        if (!we?.success) {
+          await openNearbyDoors(c, 2592, 3337, 4);
+          await bot.walkTo(2592, 3336, 2);
+        }
+        if (!(await talk(c, /^elena$/i, [/try to retrieve it for you/i]))) return false;
+        const recentE = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
+        if (/let me know when you hear from king lathas/i.test(recentE)) {
+          questComplete = true;
+          return true;
+        }
+        if (/go see king lathas immediately|need to see the king of east ardougne/i.test(recentE)) {
+          reportedElena = true;
+          givenDistillator = true;
+          spokenGuidor = true;
+          return true;
+        }
+        if (/can't test the samples without the distillator|meet with jerico's friends and cross the wall/i.test(recentE)) {
+          pigeonsReleased = true;
+        }
 
-      // 3. Get Birdfeed (422) from Jerico's cupboard (2612, 3326)
-      if (!has(sdk, /^bird ?feed$/i) && !pigeonsReleased) {
-        await bot.walkTo(2612, 3326, 2);
-        for (let i = 0; i < 4 && !has(sdk, /^bird ?feed$/i); i++) {
-          const cb = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^cupboard$/i.test(l.name) && Math.hypot(l.x - 2612, l.z - 3326) <= 3);
-          if (cb) {
-            const opt = (cb.options ?? []).find((o: string) => /^(open|search)$/i.test(o)) ?? 'Open';
-            await bot.interactLoc(cb, new RegExp(`^${opt}$`, 'i'));
-            if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || has(sdk, /^bird ?feed$/i), 3500, 250)) {
-              if (sdk.getState()?.dialog?.isOpen) await chat(c);
+        if (!pigeonsReleased) {
+          // 2. Talk to Jerico (2612, 3324)
+          const wj = await bot.walkTo(2612, 3324, 2);
+          if (!wj?.success) {
+            await openNearbyDoors(c, 2612, 3324, 3);
+            await bot.walkTo(2612, 3324, 2);
+          }
+          await talk(c, /^jerico$/i, [/messenger pigeons to distract them/i]);
+
+          // 3. Get Birdfeed (422) from Jerico's cupboard (2612, 3326)
+          if (!has(sdk, /^bird ?feed$/i) && !pigeonsReleased) {
+            await bot.walkTo(2612, 3326, 2);
+            for (let i = 0; i < 4 && !has(sdk, /^bird ?feed$/i); i++) {
+              const cb = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^cupboard$/i.test(l.name) && Math.hypot(l.x - 2612, l.z - 3326) <= 3);
+              if (cb) {
+                const opt = (cb.options ?? []).find((o: string) => /^(open|search)$/i.test(o)) ?? 'Open';
+                await bot.interactLoc(cb, new RegExp(`^${opt}$`, 'i'));
+                if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || has(sdk, /^bird ?feed$/i), 3500, 250)) {
+                  if (sdk.getState()?.dialog?.isOpen) await chat(c);
+                }
+              }
+              await sleep(400);
             }
           }
-          await sleep(400);
+
+          // 4. Pick up Pigeon cage (424) behind Jerico's house at (2618, 3325)
+          if (!hasCageWithPigeons() && !pigeonsReleased) {
+            const wp = await bot.walkTo(2618, 3325, 2);
+            if (!wp?.success) {
+              await openNearbyDoors(c, 2615, 3325, 3);
+              await bot.walkTo(2618, 3325, 2);
+            }
+            await pickupWithWait(c, 2618, 3325, /^pigeon cage$/i, 15);
+          }
+
+          // 5. Talk to Omart at south end of wall (2559, 3266)
+          await bot.walkTo(2559, 3266, 2);
+          await talk(c, /^omart$/i, [/ok, lets do it/i]);
+          if (inWestArdougne()) return true;
         }
       }
 
-      // 4. Pick up Pigeon cage (424) behind Jerico's house at (2618, 3325)
-      if (!(sdk.getInventory() ?? []).some((i: any) => i.id === 424) && !pigeonsReleased) {
-        const wp = await bot.walkTo(2618, 3325, 2);
-        if (!wp?.success) {
-          await openNearbyDoors(c, 2615, 3325, 3);
-          await bot.walkTo(2618, 3325, 2);
+      if (!pigeonsReleased) {
+        // 6. Use Birdfeed on Watchtower (loc_2067 at 2563, 3302) and release Pigeons (424) at (2563, 3302)
+        await bot.walkTo(2563, 3302, 1);
+        const feed = (sdk.getInventory() ?? []).find((i: any) => i.id === 422 || /^bird ?feed$/i.test(i.name));
+        const tower = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => (l.id === 2067 || /^watchtower$/i.test(l.name)) && l.x === 2563 && l.z === 3302)
+          ?? (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2067 || /^watchtower$/i.test(l.name));
+        if (feed && tower) {
+          await sdk.sendUseItemOnLoc(feed.slot, tower.x, tower.z, tower.id);
+          await waitCond(() => !has(sdk, /^bird ?feed$/i), 5000, 300);
+          await sleep(2400);
         }
-        await pickupWithWait(c, 2618, 3325, /^pigeon cage$/i, 15);
-      }
-
-      // 5. Talk to Omart at south end of wall (2559, 3266)
-      await bot.walkTo(2559, 3266, 2);
-      await talk(c, /^omart$/i, [/ok, lets do it/i]);
-      if (inWestArdougne()) return true;
-
-      // 6. Use Birdfeed on Watchtower (loc_2067 at 2563, 3302) and release Pigeons (424) at (2563, 3302)
-      await bot.walkTo(2563, 3302, 1);
-      const feed = (sdk.getInventory() ?? []).find((i: any) => i.id === 422 || /^bird ?feed$/i.test(i.name));
-      const tower = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => (l.id === 2067 || /^watchtower$/i.test(l.name)) && l.x === 2563 && l.z === 3302)
-        ?? (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2067 || /^watchtower$/i.test(l.name));
-      if (feed && tower) {
-        await sdk.sendUseItemOnLoc(feed.slot, tower.x, tower.z, tower.id);
-        await waitCond(() => !has(sdk, /^bird ?feed$/i), 5000, 300);
-      }
-      const cage = (sdk.getInventory() ?? []).find((i: any) => i.id === 424 || (/^pigeon cage$/i.test(i.name) && (i.options ?? []).some((o: string) => /open/i.test(o))));
-      if (cage) {
-        await sdk.sendUseItem(cage.slot, 1);
-        await waitCond(() => !(sdk.getInventory() ?? []).some((i: any) => i.id === 424 || (/^pigeon cage$/i.test(i.name) && (i.options ?? []).some((o: string) => /open/i.test(o)))), 6000, 300);
-        pigeonsReleased = true;
+        const cage = (sdk.getInventory() ?? []).find((i: any) => i.id === 424 || (/^pigeon cage$/i.test(i.name) && (i.options ?? []).some((o: string) => /open/i.test(o))));
+        if (cage) {
+          await sdk.sendUseItem(cage.slot, 1);
+          await waitCond(() => !(sdk.getInventory() ?? []).some((i: any) => i.id === 424 || (/^pigeon cage$/i.test(i.name) && (i.options ?? []).some((o: string) => /open/i.test(o)))), 6000, 300);
+          await sleep(3200);
+          pigeonsReleased = true;
+        }
       }
 
       // 7. Return to Omart (2559, 3266) and climb over wall into West Ardougne
       await bot.walkTo(2559, 3266, 2);
       await talk(c, /^omart$/i, [/ok, lets do it/i]);
+      for (let i = 0; i < 6 && !inWestArdougne(); i++) {
+        if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || inWestArdougne(), 4500, 250)) {
+          if (sdk.getState()?.dialog?.isOpen) {
+            await chat(c, [/ok, lets do it/i]);
+          }
+        }
+      }
       await waitCond(() => inWestArdougne(), 8000, 300);
       return inWestArdougne();
     });
@@ -143,83 +165,130 @@ export const biohazard: Quest = {
       if (!inWestArdougne() && !hasDistillator()) {
         await bot.walkTo(2559, 3266, 2);
         await talk(c, /^omart$/i, [/ok, lets do it/i]);
+        for (let i = 0; i < 6 && !inWestArdougne(); i++) {
+          if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || inWestArdougne(), 4500, 250)) {
+            if (sdk.getState()?.dialog?.isOpen) {
+              await chat(c, [/ok, lets do it/i]);
+            }
+          }
+        }
         if (!(await waitCond(() => inWestArdougne(), 8000, 300))) return false;
       }
 
       if (!hasDistillator()) {
-        // 1. Pick up Rotten apple (1984) at (2535, 3333) and poison Cauldron (2043) at (2543, 3332)
-        if (!stewPoisoned) {
-          if (!has(sdk, /^rotten apple$/i)) {
-            await pickupWithWait(c, 2535, 3333, /^rotten apple$/i, 15);
+        const walkShort = async (tx: number, tz: number, tol = 1) => {
+          for (let attempt = 0; attempt < 4; attempt++) {
+            const px = sdk.getState()?.player?.worldX ?? 0;
+            const pz = sdk.getState()?.player?.worldZ ?? 0;
+            if (Math.hypot(px - tx, pz - tz) <= tol) return true;
+            await sdk.sendWalk(tx, tz, true);
+            if (await waitCond(() => Math.hypot((sdk.getState()?.player?.worldX ?? 0) - tx, (sdk.getState()?.player?.worldZ ?? 0) - tz) <= tol, 4500, 200)) {
+              return true;
+            }
           }
-          await bot.walkTo(2542, 3331, 1);
-          const fence = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^fence$/i.test(l.name) && (l.options ?? []).some((o: string) => /squeeze/i.test(o)));
-          if (fence) {
-            await bot.interactLoc(fence, /squeeze/i);
-            await sleep(2200);
-          }
-          const apple = (sdk.getInventory() ?? []).find((i: any) => i.id === 1984 || /^rotten apple$/i.test(i.name));
-          const cauldron = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2043 || /^cauldron$/i.test(l.name));
-          if (apple && cauldron) {
-            await sdk.sendUseItemOnLoc(apple.slot, cauldron.x, cauldron.z, cauldron.id);
-            await waitCond(() => !has(sdk, /^rotten apple$/i), 6000, 300);
-            stewPoisoned = true;
-          }
-          const fenceOut = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^fence$/i.test(l.name) && (l.options ?? []).some((o: string) => /squeeze/i.test(o)));
-          if (fenceOut && (sdk.getState()?.player?.worldX ?? 0) >= 2542) {
-            await bot.interactLoc(fenceOut, /squeeze/i);
-            await sleep(2200);
-          }
+          return false;
+        };
+
+        // Escape the (2542, 3321) dead-end pocket if currently inside it
+        if ((sdk.getState()?.player?.worldZ ?? 0) >= 3319 && (sdk.getState()?.player?.worldZ ?? 0) <= 3322 && (sdk.getState()?.player?.worldX ?? 0) >= 2540 && (sdk.getState()?.player?.worldX ?? 0) <= 2544) {
+          await walkShort(2541, 3318, 1);
         }
 
-        // 2. Get Doctor's gown (430) from Nurse Sarah's cupboard at (2518, 3276) and equip it
-        if (!wearingDoctorGown() && !has(sdk, /^doctor's gown$/i)) {
+        // 1. Pick up Rotten apple (1984) at (2535, 3333) and poison Cauldron (2043) at (2543, 3332)
+        if (!stewPoisoned) {
+          const hasApple = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 1984 || /rotten apple/i.test(i.name));
+          await bot.walkTo(2535, 3332, 1);
+          if (!hasApple()) {
+            await pickupWithWait(c, 2535, 3333, /rotten apple/i, 15);
+          }
+          // Walk to (2541, 3331) on the WEST (outside) side of mournerstewfence (id: 2068 at 2541, 3331) via (2540, 3334)
+          await walkShort(2535, 3334, 1);
+          await walkShort(2540, 3334, 1);
+          await walkShort(2541, 3331, 0);
+          if ((sdk.getState()?.player?.worldX ?? 0) <= 2541) {
+            await sdk.sendInteractLoc(2541, 3331, 2068, 1);
+            await waitCond(() => (sdk.getState()?.player?.worldX ?? 0) >= 2542, 5000, 250);
+            await sleep(2200);
+          }
+          for (let tries = 0; tries < 4 && hasApple() && (sdk.getState()?.player?.worldX ?? 0) >= 2542; tries++) {
+            await sdk.sendWalk(2543, 3331, true);
+            await sleep(900);
+            const apple = (sdk.getInventory() ?? []).find((i: any) => i.id === 1984 || /rotten apple/i.test(i.name));
+            if (apple) {
+              await sdk.sendUseItemOnLoc(apple.slot, 2543, 3332, 2043);
+              if (await waitCond(() => !hasApple(), 4500, 300)) {
+                await sleep(3600);
+                stewPoisoned = true;
+                break;
+              }
+            }
+          }
+          for (let tries = 0; tries < 3 && (sdk.getState()?.player?.worldX ?? 0) >= 2542; tries++) {
+            await sdk.sendWalk(2542, 3331, true);
+            await sleep(900);
+            await sdk.sendInteractLoc(2541, 3331, 2068, 1);
+            if (await waitCond(() => (sdk.getState()?.player?.worldX ?? 0) <= 2541, 5000, 250)) {
+              await sleep(2200);
+              break;
+            }
+          }
+          await walkShort(2540, 3334, 1);
+          await walkShort(2535, 3332, 1);
+        }
+
+        // 2. Get Doctor's gown (430) from Nurse Sarah's cupboard at (2517, 3276) and equip it
+        if (!wearingDoctorGown() && !has(sdk, /doctor's gown/i)) {
           const wn = await bot.walkTo(2518, 3275, 2);
           if (!wn?.success) {
-            await openNearbyDoors(c, 2517, 3273, 3);
+            await openNearbyDoors(c, 2519, 3275, 3);
             await bot.walkTo(2518, 3275, 2);
           }
-          for (let i = 0; i < 4 && !has(sdk, /^doctor's gown$/i); i++) {
-            const cb = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^cupboard$/i.test(l.name) && Math.hypot(l.x - 2518, l.z - 3276) <= 3);
+          for (let i = 0; i < 6 && !has(sdk, /doctor's gown/i); i++) {
+            const cb = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => (l.id === 2062 || l.id === 2063 || /^cupboard$/i.test(l.name)) && Math.hypot(l.x - 2517, l.z - 3276) <= 3);
             if (cb) {
               const opt = (cb.options ?? []).find((o: string) => /^(open|search)$/i.test(o)) ?? 'Open';
               await bot.interactLoc(cb, new RegExp(`^${opt}$`, 'i'));
-              await sleep(900);
+              await sleep(1000);
             }
           }
         }
-        if (has(sdk, /^doctor's gown$/i) && !wearingDoctorGown()) {
-          await bot.equipItem(/^doctor's gown$/i);
-          await sleep(400);
+        if (has(sdk, /doctor's gown/i) && !wearingDoctorGown()) {
+          await bot.equipItem(/doctor's gown/i);
+          await sleep(600);
         }
 
-        // 3. Enter Mourner HQ at (2551, 3320)
-        if (lvl(sdk) === 0) {
+        // 3. Enter Mourner HQ at (2551, 3320) -> interior door (2546, 3325) -> staircase up (2542, 3324)
+        if (lvl(sdk) === 0 && wearingDoctorGown()) {
           await bot.walkTo(2551, 3320, 1);
           for (let i = 0; i < 4 && (sdk.getState()?.player?.worldZ ?? 0) <= 3320; i++) {
-            const d = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^door$/i.test(l.name) && Math.hypot(l.x - 2551, l.z - 3320) <= 2);
-            if (d) {
-              await bot.interactLoc(d, /^open$/i);
-              if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || (sdk.getState()?.player?.worldZ ?? 0) >= 3321, 3500, 250)) {
-                if (sdk.getState()?.dialog?.isOpen) await chat(c);
-              }
+            await sdk.sendInteractLoc(2551, 3320, 2036, 1);
+            if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || (sdk.getState()?.player?.worldZ ?? 0) >= 3321, 3500, 250)) {
+              if (sdk.getState()?.dialog?.isOpen) await chat(c);
             }
             await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) >= 3321, 2500, 250);
           }
-          // Climb stairs/ladder at (2549, 3325) to L1
-          await bot.walkTo(2549, 3324, 2);
-          const up = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /(staircase|ladder)/i.test(l.name) && (l.options ?? []).some((o: string) => /climb-?up/i.test(o)));
-          if (up) {
-            await bot.interactLoc(up, /climb-?up/i);
+          if ((sdk.getState()?.player?.worldZ ?? 0) >= 3321) {
+            await walkShort(2547, 3325, 1);
+            const innerDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.x === 2546 && l.z === 3325 && (l.options ?? []).some((o: string) => /^open$/i.test(o)));
+            if (innerDoor) {
+              await bot.interactLoc(innerDoor, /^open$/i);
+              await sleep(800);
+            }
+            await walkShort(2544, 3325, 1);
+            await sdk.sendInteractLoc(2542, 3324, 1738, 1);
             await waitCond(() => lvl(sdk) === 1, 5000, 300);
           }
         }
 
-        // 4. On L1: kill sick Mourner (mournerstew2) for Key (423), open Gate, search Crate (mournercrateup)
+        // 4. On L1: open bedroom door (2547, 3325), kill sick Mourner (mournerstew2) for Key (423), open Gate (2551, 3325/3326), search Crate (2554, 3327)
         if (lvl(sdk) === 1 && !hasDistillator()) {
           const hasKey = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 423);
+          if ((sdk.getState()?.player?.worldX ?? 0) < 2547) {
+            await walkShort(2546, 3325, 0);
+            await sdk.sendInteractLoc(2547, 3325, 2034, 1);
+            await waitCond(() => (sdk.getState()?.player?.worldX ?? 0) >= 2547, 3500, 250);
+          }
           if (!hasKey()) {
-            await openNearbyDoors(c, 2549, 3325, 4);
             const mourner = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /^mourner$/i.test(n.name));
             if (mourner) {
               const wep = sdk.findInventoryItem(/sword|scimitar|axe|mace|dagger/i);
@@ -244,17 +313,22 @@ export const biohazard: Quest = {
             }
           }
 
-          // Open gate at (2554, 3326) and search Crate at (2554, 3327)
-          for (let i = 0; i < 5 && !hasDistillator(); i++) {
-            const gate = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^gate$/i.test(l.name) && Math.hypot(l.x - 2554, l.z - 3326) <= 3);
-            if (gate && (sdk.getState()?.player?.worldX ?? 0) < 2554) {
-              await bot.interactLoc(gate, /^open$/i);
-              await sleep(1200);
+          // Open gate at (2551, 3325 / 2551, 3326) and search Crate at (2554, 3327)
+          for (let i = 0; i < 6 && !hasDistillator(); i++) {
+            if ((sdk.getState()?.player?.worldX ?? 0) <= 2551) {
+              await walkShort(2551, 3325, 1);
+              const keyItem = (sdk.getInventory() ?? []).find((it: any) => it.id === 423);
+              if (keyItem) {
+                await sdk.sendUseItemOnLoc(keyItem.slot, 2551, 3325, 2060);
+              } else {
+                await sdk.sendInteractLoc(2551, 3325, 2060, 1);
+              }
+              await waitCond(() => (sdk.getState()?.player?.worldX ?? 0) >= 2552, 5000, 250);
             }
-            const crate = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^crate$/i.test(l.name) && Math.hypot(l.x - 2554, l.z - 3327) <= 3 && (l.options ?? []).some((o: string) => /^search$/i.test(o)));
-            if (crate) {
-              await bot.interactLoc(crate, /^search$/i);
-              await waitCond(() => hasDistillator(), 4500, 300);
+            if ((sdk.getState()?.player?.worldX ?? 0) >= 2552) {
+              await walkShort(2553, 3327, 1);
+              await sdk.sendInteractLoc(2554, 3327, 2064, 1);
+              await waitCond(() => hasDistillator(), 5000, 300);
             }
           }
         }
@@ -262,22 +336,30 @@ export const biohazard: Quest = {
 
       // Climb down to L0 if on L1
       if (lvl(sdk) === 1) {
-        const gate = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^gate$/i.test(l.name) && Math.hypot(l.x - 2554, l.z - 3326) <= 3);
-        if (gate && (sdk.getState()?.player?.worldX ?? 0) >= 2554) {
-          await bot.interactLoc(gate, /^open$/i);
-          await sleep(1000);
+        if ((sdk.getState()?.player?.worldX ?? 0) >= 2552) {
+          await sdk.sendInteractLoc(2551, 3325, 2060, 1);
+          await waitCond(() => (sdk.getState()?.player?.worldX ?? 0) <= 2551, 4000, 250);
         }
-        const down = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /(staircase|ladder)/i.test(l.name) && (l.options ?? []).some((o: string) => /climb-?down/i.test(o)));
-        if (down) {
-          await bot.interactLoc(down, /climb-?down/i);
-          await waitCond(() => lvl(sdk) === 0, 5000, 300);
+        if ((sdk.getState()?.player?.worldX ?? 0) >= 2547) {
+          await sdk.sendInteractLoc(2547, 3325, 2034, 1);
+          await waitCond(() => (sdk.getState()?.player?.worldX ?? 0) <= 2546, 4000, 250);
         }
+        await sdk.sendInteractLoc(2543, 3325, 1740, 1);
+        await waitCond(() => lvl(sdk) === 0, 5000, 300);
       }
 
       // Return across wall via Kilron at (2556, 3266)
       if (inWestArdougne()) {
-        if ((sdk.getState()?.player?.worldZ ?? 0) >= 3321 && (sdk.getState()?.player?.worldX ?? 0) >= 2547) {
-          await openNearbyDoors(c, 2551, 3320, 3);
+        if ((sdk.getState()?.player?.worldZ ?? 0) >= 3321 && (sdk.getState()?.player?.worldX ?? 0) >= 2541) {
+          const innerDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.x === 2546 && l.z === 3325 && (l.options ?? []).some((o: string) => /^open$/i.test(o)));
+          if (innerDoor && (sdk.getState()?.player?.worldX ?? 0) <= 2546) {
+            await bot.interactLoc(innerDoor, /^open$/i);
+            await sleep(800);
+          }
+          await sdk.sendWalk(2551, 3321, true);
+          await sleep(1500);
+          await sdk.sendInteractLoc(2551, 3320, 2036, 1);
+          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) <= 3320, 4000, 250);
         }
         await bot.walkTo(2556, 3266, 2);
         await talk(c, /^kilron$/i, [/yes i do/i]);
@@ -295,7 +377,7 @@ export const biohazard: Quest = {
       // Hand Distillator to Elena (2592, 3336)
       const we2 = await bot.walkTo(2592, 3336, 2);
       if (!we2?.success) {
-        await openNearbyDoors(c, 2592, 3335, 3);
+        await openNearbyDoors(c, 2592, 3337, 4);
         await bot.walkTo(2592, 3336, 2);
       }
       await talk(c, /^elena$/i, [/lost some of the stuff/i]);
@@ -355,12 +437,25 @@ export const biohazard: Quest = {
           await openNearbyDoors(c, 3274, 3390, 3);
           await bot.walkTo(3273, 3389, 2);
         }
-        if (!hasSulphuricBroline()) await talk(c, /^hops$/i);
-        if (!hasEthenea()) await talk(c, /^da vinci$/i);
-        if (!hasLiquidHoney()) await talk(c, /^chancy$/i);
+        if (!hasSulphuricBroline()) {
+          await talk(c, /^hops$/i);
+          if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 2500, 250)) await chat(c);
+        }
+        if (!hasEthenea()) {
+          await talk(c, /^da vinci$/i);
+          if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 2500, 250)) await chat(c);
+        }
+        if (!hasLiquidHoney()) {
+          await talk(c, /^chancy$/i);
+          if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 2500, 250)) await chat(c);
+        }
 
         // 5. Buy Priest gown top (428) and bottom (426) from Asyff (3281, 3398) and equip both
         if (!wearingPriestTop() || !wearingPriestBottom()) {
+          if (count(sdk, /^coins$/i) < 30) {
+            await bot.walkTo(3253, 3420, 3);
+            await ensureCoins(c, 30);
+          }
           const wa = await bot.walkTo(3281, 3398, 2);
           if (!wa?.success) {
             await openNearbyDoors(c, 3280, 3397, 3);
@@ -417,7 +512,7 @@ export const biohazard: Quest = {
       if (!reportedElena) {
         const we3 = await bot.walkTo(2592, 3336, 2);
         if (!we3?.success) {
-          await openNearbyDoors(c, 2592, 3335, 3);
+          await openNearbyDoors(c, 2592, 3337, 4);
           await bot.walkTo(2592, 3336, 2);
         }
         await talk(c, /^elena$/i);

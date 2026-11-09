@@ -80,7 +80,7 @@ export const junglepotion: Quest = {
       if (hasItemById(unidId) && !hasItemById(cleanId)) {
         const unid = (sdk.getInventory() ?? []).find((i: any) => i.id === unidId);
         if (unid) {
-          await bot.useItemOp1(unid);
+          await sdk.sendUseItem(unid.slot, 1);
           await waitCond(() => hasItemById(cleanId), 4000, 250);
         }
       }
