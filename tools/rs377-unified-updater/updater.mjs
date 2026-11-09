@@ -363,12 +363,12 @@ function readWorldSafetySettings(world) {
     const legacy=path.join(world.engine,'src/util/Environment.ts');
     const query=path.join(world.engine,'src/db/query.ts');
     if(!exists(legacy) || !exists(query) || fs.lstatSync(legacy).isSymbolicLink() ||
-       fs.lstatSync(query).isSymbolicLink())fail('Cannot prove pinned 377 SQLite default');
+       fs.lstatSync(query).isSymbolicLink())fail('SQLite backup only: Cannot prove pinned 377 SQLite default');
     const a=fs.readFileSync(legacy,'utf8'),q=fs.readFileSync(query,'utf8');
     if(!/\bDB_BACKEND\s*:\s*tryParseString\s*\(\s*process\.env\.DB_BACKEND\s*,\s*['"]sqlite['"]\s*\)/.test(a) ||
        !/Environment\.DB_BACKEND\s*===\s*['"]sqlite['"]/.test(q) ||
        !/new\s+DatabaseSync\s*\(\s*['"]db\.sqlite['"]\s*\)/.test(q))
-      fail('Cannot prove pinned 377 SQLite default and local database path');
+      fail('SQLite backup only: Cannot prove pinned 377 SQLite default and local database path');
     backend='sqlite';
   }
   if(process.env.DB_BACKEND && process.env.DB_BACKEND!=='sqlite')
