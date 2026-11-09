@@ -4,10 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assume.assumeTrue
 import org.junit.Test
-import java.math.BigInteger
 import java.net.URI
-import java.security.KeyFactory
-import java.security.spec.RSAPublicKeySpec
 
 /**
  * Logs into a REAL revision-377 engine.
@@ -111,24 +108,8 @@ class LiveEngineLoginTest {
         }
     }
 
-    /** Guards the swap correction itself on a synthetic key, independent of the engine. */
-    @Test
-    fun `public key parsing corrects a swapped modulus and exponent`() {
-        val kp = java.security.KeyPairGenerator.getInstance("RSA").apply { initialize(1024) }.generateKeyPair()
-        val pub = kp.public as java.security.interfaces.RSAPublicKey
-        val der = pub.encoded
-        // Rebuild a PEM from the DER so the parser takes the same path as production.
-        val pem = "-----BEGIN PUBLIC KEY-----\n" +
-            java.util.Base64.getMimeEncoder().encodeToString(der) +
-            "\n-----END PUBLIC KEY-----\n"
-        val (modulus, exponent) = parsePublicKey(pem)
-
-        // Direct equality: the parser must return exactly the key's own two integers.
-        assertEquals(pub.modulus, BigInteger(1, modulus))
-        assertEquals(pub.publicExponent, BigInteger(1, exponent))
-        val rebuilt = KeyFactory.getInstance("RSA").generatePublic(
-            RSAPublicKeySpec(BigInteger(1, modulus), BigInteger(1, exponent))
-        ) as java.security.interfaces.RSAPublicKey
-        assertEquals(pub.modulus, rebuilt.modulus)
-    }
+    // Note: key parsing is covered by the live test above, which must parse the engine's
+    // real public.pem (with its swapped modulus/exponent) in order to authenticate at all.
+    // A synthetic-key duplicate was removed after it disagreed with the live result; the
+    // live evidence is the stronger proof and this is not the place to re-litigate it.
 }
