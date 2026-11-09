@@ -1,5 +1,6 @@
 package au.com.parristech.joshrs.android.protocol
 
+import au.com.parristech.joshrs.android.Jagfile377
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
