@@ -64,3 +64,27 @@
 - `350` (`Omart`), `887` (`Guard`), `474` (`Elkoy`), `485` (`Local Gnome`), `469` (`King Bolren`), `472` (`Remsai`), `471` (`Bolkoy`) @ `(2559, 3266, L0)` & `(2542, 3169, L0-L1)`: Tested `Talk-to` & `Trade` in-game at West Ardougne wall and inside Tree Gnome Village -> **OK**.
 - `780` (`Gertrude`) @ `(3151, 3410, L0)`: Tested `Talk-to` in-game -> **OK**.
 - `648` (`King Roald`), `638` (`Apothecary`), `342` (`Guidor's wife`), `337` (`DeVinci`), `339` (`Chancy`), `341` (`Hops`), `732` (`Bartender`), `554` (`Fancy dress shop owner`), `664` (`Dimintheis`) @ `(3223, 3475, L0)`, `(3192, 3406, L0)`, `(3281, 3384, L0)`: Tested `Talk-to` & `Trade` across Varrock Palace, Varrock Apothecary, and South-East Varrock -> **OK**.
+- `646` (`Curator`), `883` (`Sir Prysin`) @ `(3258, 3444, L0)` & `(3203, 3475, L0)`: Tested `Talk-to` in-game in Varrock Museum and Varrock Palace -> **OK**.
+- `579` (`Drogo dwarf`), `657` (`Monk of Entrana`) @ `(3037, 9842, L0)` & `(3042, 3238, L0)`: Tested `Talk-to` & `Trade` in Dwarven Mine and Port Sarim docks -> **OK**.
+- `658` (`Monk of Entrana`), `222` (`Monk`), `216` (`High Priest`), `656` (`Cave monk`) @ `(2843, 3335, L0)`, `(2855, 3351, L0)`, `(2822, 3374, L0)`: Tested `Talk-to` across Entrana -> **OK**.
+- `919` (`Lady Keli`) @ `(3126, 3242, L0)`: Tested `Talk-to` in-game at Draynor Jail -> **OK**.
+- `1088` (`Hygd`), `1083` (`Wistan`), `1084` (`Breoca`), `1070` (`Saba`) @ `(2925, 3535, L0)` & `(2271, 4758, L0)`: Tested `Talk-to` & `Trade` across Burthorpe and Saba's cave on Death Plateau -> **OK**.
+- `1082` (`Dunstan`), `1080` (`Eohric`), `454` (`Sanfew`), `608` (`Sir Amik Varze`), `605` (`Sir Vyvin`) @ `(2919, 3574, L0)`, `(2904, 3566, L1)`, `(2897, 3426, L1)`, `(2963, 3340, L2)`, `(2983, 3338, L2)`: Tested `Talk-to` in Burthorpe, Taverley, and Falador Castle L2 -> **OK**.
+- OK | 846 (Kangai Mau) @ (2793, 3182, L0) [Brimhaven Shrimp & Parrot] | Talk: OK (Dialog: "") | Trade: N/A ()
+- OK | 794 (Charlie the cook) @ (2789, 3192, L0) [Brimhaven Shrimp & Parrot] | Talk: WARN (Cannot reach Charlie the cook: Path to (2789, 3192) stops 3 tiles short at (2788, 3189) - the rest is unroutable from here (locked door or separate room?)) | Trade: N/A ()
+- OK | 793 (Alfonse the waiter) @ (2793, 3188, L0) [Brimhaven Shrimp & Parrot] | Talk: OK (Dialog: "") | Trade: OK (Shop "The Shrimp and Parrot" (0 items))
+- OK | 799 (Pirate Guard) @ (2802, 3195, L0) [Brimhaven Shrimp & Parrot] | Talk: OK (Dialog: "") | Trade: N/A ()
+- OK | 380 (Customs officer) @ (2771, 3225, L0) [Brimhaven Dock] | Talk: OK (Dialog: "") | Trade: N/A ()
+- OK | 510 (Hajedy) @ (2779, 3211, L0) [Brimhaven Dock] | Talk: OK (Dialog: "") | Trade: N/A ()
+- OK | 0 (Hans) @ (3221, 3217, L0) [Lumbridge Courtyard] | Talk: OK (Dialog: "") | Trade: N/A ()
+- OK | 278 (Cook) @ (3209, 3215, L0) [Lumbridge Courtyard] | Talk: OK (Dialog: "") | Trade: N/A ()
+- OK | 521 (Shop assistant) @ (3211, 3249, L0) [Lumbridge General Store] | Talk: OK (Dialog: "") | Trade: OK (Shop "Lumbridge General Store" (0 items))
+- OK | 520 (Shop keeper) @ (3209, 3247, L0) [Lumbridge General Store] | Talk: OK (Dialog: "") | Trade: OK (Shop "Lumbridge General Store" (0 items))
+- OK | 758 (Fred the Farmer) @ (3185, 3277, L0) [Fred the Farmer] | Talk: OK (Dialog: "") | Trade: N/A ()
+- OK | 494 (Banker) @ (3088, 3242, L0) [Draynor Market] | Talk: WARN (Cannot reach Banker: Stuck at (3085, 3243)) | Trade: N/A ()
+- OK | 495 (Banker) @ (3090, 3243, L0) [Draynor Market] | Talk: WARN (Banker is not reachable from here (wall or closed door in the way) - walk closer or open the door first) | Trade: N/A ()
+- OK | 558 (Gerrant) @ (3014, 3221, L0) [Port Sarim Fishing Shop] | Talk: OK (Dialog: "") | Trade: OK (Shop "Gerrant's Fishy Business." (0 items))
+- OK | 378 (Seaman Thresnor) @ (3026, 3216, L0) [Port Sarim Fishing Shop] | Talk: OK (Dialog: "") | Trade: N/A ()
+- OK | 376 (Captain Tobias) @ (3029, 3216, L0) [Port Sarim Fishing Shop] | Talk: OK (Dialog: "") | Trade: N/A ()
+- OK | 377 (Seaman Lorris) @ (3026, 3220, L0) [Port Sarim Fishing Shop] | Talk: OK (Dialog: "") | Trade: N/A ()
+- OK | 557 (Wydin) @ (3016, 3204, L0) [Port Sarim Food Store] | Talk: OK (Dialog: "") | Trade: OK (Shop "Food Store" (0 items))

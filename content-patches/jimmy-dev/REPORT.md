@@ -78,3 +78,27 @@
 - `OK` | `350` (`omart`, "Omart"), `887` (`guard_ardougne`, "Guard"), `474` (`elkoy_village`, "Elkoy"), `485` (`local_gnome`, "Local Gnome"), `469` (`king_bolren`, "King Bolren"), `472` (`remsai`, "Remsai"), `471` (`bolkoy`, "Bolkoy") @ `(2559, 3266, L0)` & `(2542, 3169, L0-L1)` — Walked up and tested `Talk-to` & `Trade` in-game at the West Ardougne wall and inside Tree Gnome Village; all respond normally.
 - `OK` | `780` (`gertrude`, "Gertrude") @ `(3151, 3410, L0)` — Walked up and tested `Talk-to` in-game; responds normally.
 - `OK` | `648` (`king_roald`, "King Roald"), `638` (`apothecary`, "Apothecary"), `342` (`guidors_wife`, "Guidor's wife"), `337` (`devinci_varrock`, "DeVinci"), `339` (`chancy_varrock`, "Chancy"), `341` (`hops_varrock`, "Hops"), `732` (`bartender_dancingdonkey`, "Bartender"), `554` (`fancy_dress_shop_owner`, "Fancy dress shop owner"), `664` (`dimintheis`, "Dimintheis") @ `(3223, 3475, L0)`, `(3192, 3406, L0)`, `(3281, 3384, L0)` — Walked up and tested `Talk-to` & `Trade` across Varrock Palace, Varrock Apothecary, and South-East Varrock; all respond normally.
+- `OK` | `646` (`curator`, "Curator"), `883` (`sir_prysin`, "Sir Prysin") @ `(3258, 3444, L0)` & `(3203, 3475, L0)` — Walked up and tested `Talk-to` in-game in Varrock Museum and Varrock Palace; both respond normally.
+- `OK` | `579` (`drogo_dwarf`, "Drogo dwarf"), `657` (`monk_of_entrana_sarim`, "Monk of Entrana") @ `(3037, 9842, L0)` & `(3042, 3238, L0)` — Walked up and tested `Talk-to` & `Trade` in the Dwarven Mine and Port Sarim docks; both respond normally.
+- `OK` | `658` (`monk_of_entrana`, "Monk of Entrana"), `222` (`entrana_monk`, "Monk"), `216` (`high_priest`, "High Priest"), `656` (`cave_monk`, "Cave monk") @ `(2843, 3335, L0)`, `(2855, 3351, L0)`, `(2822, 3374, L0)` — Walked up and tested `Talk-to` across Entrana; all respond normally.
+- `OK` | `919` (`lady_keli`, "Lady Keli") @ `(3126, 3242, L0)` — Walked up and tested `Talk-to` in-game at Draynor Jail; responds normally.
+- `OK` | `1088` (`burthorpe_hygd`, "Hygd"), `1083` (`burthorpe_wistan`, "Wistan"), `1084` (`burthorpe_breoca`, "Breoca"), `1070` (`death_saba`, "Saba") @ `(2925, 3535, L0)` & `(2271, 4758, L0)` — Walked up and tested `Talk-to` & `Trade` across Burthorpe and Saba's cave on Death Plateau; all respond normally.
+- `OK` | `1082` (`death_smithy`, "Dunstan"), `1080` (`death_ig_commander`, "Eohric"), `454` (`sanfew`, "Sanfew"), `608` (`sir_amik_varze`, "Sir Amik Varze"), `605` (`sir_vyvin`, "Sir Vyvin") @ `(2919, 3574, L0)`, `(2904, 3566, L1)`, `(2897, 3426, L1)`, `(2963, 3340, L2)`, `(2983, 3338, L2)` — Walked up and tested `Talk-to` in Burthorpe, Taverley, and Falador Castle L2; all respond normally.
+| 846 | Kangai Mau (Brimhaven Shrimp & Parrot 2793,3182) | OK | Talk: Dialog: "" / Trade:  | - |
+| 794 | Charlie the cook (Brimhaven Shrimp & Parrot 2789,3192) | OK | Talk: Cannot reach Charlie the cook: Path to (2789, 3192) stops 3 tiles short at (2788, 3189) - the rest is unroutable from here (locked door or separate room?) / Trade:  | - |
+| 793 | Alfonse the waiter (Brimhaven Shrimp & Parrot 2793,3188) | OK | Talk: Dialog: "" / Trade: Shop "The Shrimp and Parrot" (0 items) | - |
+| 799 | Pirate Guard (Brimhaven Shrimp & Parrot 2802,3195) | OK | Talk: Dialog: "" / Trade:  | - |
+| 380 | Customs officer (Brimhaven Dock 2771,3225) | OK | Talk: Dialog: "" / Trade:  | - |
+| 510 | Hajedy (Brimhaven Dock 2779,3211) | OK | Talk: Dialog: "" / Trade:  | - |
+| 0 | Hans (Lumbridge Courtyard 3221,3217) | OK | Talk: Dialog: "" / Trade:  | - |
+| 278 | Cook (Lumbridge Courtyard 3209,3215) | OK | Talk: Dialog: "" / Trade:  | - |
+| 521 | Shop assistant (Lumbridge General Store 3211,3249) | OK | Talk: Dialog: "" / Trade: Shop "Lumbridge General Store" (0 items) | - |
+| 520 | Shop keeper (Lumbridge General Store 3209,3247) | OK | Talk: Dialog: "" / Trade: Shop "Lumbridge General Store" (0 items) | - |
+| 758 | Fred the Farmer (Fred the Farmer 3185,3277) | OK | Talk: Dialog: "" / Trade:  | - |
+| 494 | Banker (Draynor Market 3088,3242) | OK | Talk: Cannot reach Banker: Stuck at (3085, 3243) / Trade:  | - |
+| 495 | Banker (Draynor Market 3090,3243) | OK | Talk: Banker is not reachable from here (wall or closed door in the way) - walk closer or open the door first / Trade:  | - |
+| 558 | Gerrant (Port Sarim Fishing Shop 3014,3221) | OK | Talk: Dialog: "" / Trade: Shop "Gerrant's Fishy Business." (0 items) | - |
+| 378 | Seaman Thresnor (Port Sarim Fishing Shop 3026,3216) | OK | Talk: Dialog: "" / Trade:  | - |
+| 376 | Captain Tobias (Port Sarim Fishing Shop 3029,3216) | OK | Talk: Dialog: "" / Trade:  | - |
+| 377 | Seaman Lorris (Port Sarim Fishing Shop 3026,3220) | OK | Talk: Dialog: "" / Trade:  | - |
+| 557 | Wydin (Port Sarim Food Store 3016,3204) | OK | Talk: Dialog: "" / Trade: Shop "Food Store" (0 items) | - |
