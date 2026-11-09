@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPublicKey} from 'node:crypto';
 import {options,clientPublic377,fetchCrc37} from './join.mjs';
+import {buildAction,framePacket,Isaac377} from '../rs377-chatgpt-bridge/src/protocol.mjs';
+import {nameToBase37} from '../rs377-chatgpt-bridge/src/wordpack377.mjs';
 
 function args(...xs){return options(['--connect','--allow-family','--host','127.0.0.1',...xs])}
 test('safe import does not start any socket; default and incomplete approvals refused',()=>{
@@ -49,4 +51,26 @@ test('only a bounded exact 40-byte cache CRC is accepted from the correct privat
  await assert.rejects(()=>fetchCrc37('127.0.0.1',80,{fetchImpl}),/Invalid/);
  await assert.rejects(()=>fetchCrc37('127.0.0.1',8888,
   {fetchImpl:async()=>({ok:true,headers:new Headers(),arrayBuffer:async()=>new ArrayBuffer(41)})}),/40-byte/);
+});
+
+test('only named Elrothiro can be added; no silent or arbitrary friendship writes',()=>{
+ assert.equal(args('--add-friend','Elrothiro').addFriend,'Elrothiro');
+ assert.equal(args().addFriend,null);
+ for(const target of ['Sylvie','harnessscout','elrothiro','Elrothiro2','', '--patrol']){
+  assert.throws(()=>args('--add-friend',target));
+ }
+});
+test('native revision 377 friend add is opcode 120, fixed 8-byte canonical base37',()=>{
+ const pkt=buildAction({type:'friend_add',targetName:'Elrothiro'});
+ assert.equal(pkt.opcode,120);
+ assert.equal(pkt.variable,false);
+ assert.equal(pkt.body.length,8);
+ assert.equal(pkt.body.readBigUInt64BE(),nameToBase37('Elrothiro'));
+ assert.deepEqual(pkt,buildAction({type:'friend_add',targetName:'ELROTHIRO'}));
+ // Normal outbound ISAAC must encrypt the opcode; no extra length byte.
+ const seed=[0,0,0,0],frame=framePacket(pkt,new Isaac377(seed));
+ assert.equal(frame.length,9);
+ assert.deepEqual(frame.subarray(1),pkt.body);
+ assert.throws(()=>buildAction({type:'friend_add',targetName:'Elrothiro',admin:true}),/Unexpected/);
+ assert.throws(()=>buildAction({type:'friend_add',targetName:'é'}),/Invalid/);
 });
