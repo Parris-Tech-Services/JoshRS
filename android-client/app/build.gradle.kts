@@ -11,8 +11,8 @@ android {
         applicationId = "au.com.parristech.joshrs.android"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.3-377-connectivity"
+        versionCode = 3
+        versionName = "0.4-377-lumbridge-cache"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -33,6 +33,8 @@ android {
 }
 
 dependencies {
+    // Apache-2.0 licensed decompression for authentic 377 versionlist Jagfiles.
+    implementation("org.apache.commons:commons-compress:1.28.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test:core:1.6.1")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
