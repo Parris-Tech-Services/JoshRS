@@ -36,12 +36,18 @@ case "$1" in
   ;;
  *) exit 10 ;;
 esac
-if [ "$#" -eq 3 ]; then
- [ "$3" = "--dangerously-skip-permissions" ] || exit 12
-elif [ "$#" -ne 2 ]; then exit 13; fi
+if [ "$1" = "-i" ]; then
+ [ "$#" -eq 2 ] || [ "$#" -eq 3 ] || exit 13
+ if [ "$#" -eq 3 ]; then [ "$3" = "--dangerously-skip-permissions" ] || exit 12; fi
+ flag="$3"
+else
+ [ "$#" -eq 1 ] || [ "$#" -eq 2 ] || exit 13
+ if [ "$#" -eq 2 ]; then [ "$2" = "--dangerously-skip-permissions" ] || exit 12; fi
+ flag="$2"
+fi
 [ "$JOSHRS_HARNESSVIEW1_PASSWORD" = "onlybot123" ] || exit 14
 printf 'FAKE_AGY_ACCEPTED_TASK\\n'
-printf 'FAKE_AGY_FLAGS=%s\\n' "$3"
+printf 'FAKE_AGY_FLAGS=%s\\n' "$flag"
 printf 'FAKE_AGY_CWD=%s\\n' "$PWD"
 """)
         self.resume_dir = self.home / "dev/JoshRS-agy-cook-2CQGiwsR"
