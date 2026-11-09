@@ -34,14 +34,14 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
 
   await rechargePrayer(c, 35);
 
-  // Walk to White Wolf Mountain rockslide at (2839, 3517)
+  // Walk to White Wolf Mountain rockslide at (2838, 3517) from the West side (2837, 3517) and mine East to (2840, 3516)
   await bot.walkTo(2845, 3505, 3);
-  await bot.walkTo(2839, 3517, 1);
-  for (let i = 0; i < 4 && (sdk.getState()?.player?.worldX ?? 9999) > 2837; i++) {
+  await bot.walkTo(2837, 3517, 1);
+  for (let i = 0; i < 5 && (sdk.getState()?.player?.worldX ?? 0) < 2839; i++) {
     const rock = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2634);
     if (rock) {
       await sdk.sendInteractLoc(rock.x, rock.z, rock.id, 2);
-      await waitCond(() => (sdk.getState()?.player?.worldX ?? 9999) <= 2837, 6000, 250);
+      await waitCond(() => (sdk.getState()?.player?.worldX ?? 0) >= 2839, 6000, 250);
     }
     await sleep(400);
   }
@@ -60,15 +60,15 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
     await bot.activatePrayer('protect_from_melee');
   }
 
-  // Ladder chain into Ice Queen's lair
-  if (!(await climb(2823, 3530, 1567, true))) return false;
+  // Ladder chain into Ice Queen's lair (verified via findLongPath)
+  if (!(await climb(2848, 3513, 1759, true))) return false;
   if (!(await climb(2823, 9913, 1755, false))) return false;
   if (!(await climb(2827, 3510, 1759, true))) return false;
   if (!(await climb(2857, 9917, 1755, false))) return false;
   if (!(await climb(2859, 3519, 1759, true))) return false;
 
   // Walk to Ice Queen (795 at 2866, 9956) and defeat her for Ice gloves (1580)
-  for (const w of [/^silverlight$/i, /^bronze sword$/i, /^wooden shield$/i]) {
+  for (const w of [/^silverlight$/i, /^bronze sword$/i, /^iron chainbody$/i, /^bronze med helm$/i, /^wooden shield$/i]) {
     if (has(sdk, w)) { await bot.equipItem(w); await sleep(250); }
   }
   await sdk.sendSetCombatStyle(1);
@@ -103,17 +103,17 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
   await climb(2857, 3517, 1759, true);
   await climb(2827, 9910, 1755, false);
   await climb(2823, 3513, 1759, true);
-  await climb(2823, 9930, 1755, false);
+  await climb(2848, 9913, 1755, false);
 
   await bot.deactivateAllPrayers();
 
-  // Mine rockslide (2634 at 2838, 3517) from West side (2837, 3517) -> East side (2840, 3516)
-  await bot.walkTo(2837, 3517, 1);
-  for (let i = 0; i < 4 && (sdk.getState()?.player?.worldX ?? 0) < 2839; i++) {
+  // Mine rockslide (2634 at 2838, 3517) from East side (2840, 3517) -> West side (2837, 3518)
+  await bot.walkTo(2840, 3517, 1);
+  for (let i = 0; i < 5 && (sdk.getState()?.player?.worldX ?? 9999) > 2837; i++) {
     const rock = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2634);
     if (rock) {
       await sdk.sendInteractLoc(rock.x, rock.z, rock.id, 2);
-      await waitCond(() => (sdk.getState()?.player?.worldX ?? 0) >= 2839, 6000, 250);
+      await waitCond(() => (sdk.getState()?.player?.worldX ?? 9999) <= 2837, 6000, 250);
     }
     await sleep(400);
   }

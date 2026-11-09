@@ -6,9 +6,52 @@ import {
 const N = "Monk's Friend";
 const KEEP_RE = /^(coins|bronze axe|jug|jug of water|logs|child's blanket|law rune|silverlight|bronze sword|wooden shield|shrimps|bread|cabbage|trout|salmon|lobster)$/i;
 
+export async function exitCarnilleanEastRoom(c: Ctx): Promise<void> {
+  const { sdk } = c;
+  const p = sdk.getState()?.player;
+  if (!p || p.level !== 0 || p.worldX < 2570 || p.worldX > 2576 || p.worldZ < 3267 || p.worldZ > 3274) return;
+  if (p.worldZ >= 3271 && p.worldX >= 2571) {
+    const dOpen = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1533 && l.x === 2573 && l.z === 3271);
+    if (dOpen) {
+      await sdk.sendInteractLoc(dOpen.x, dOpen.z, dOpen.id, 1);
+      await sleep(800);
+    }
+    await sdk.sendWalk(2573, 3270, true);
+    await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3271) <= 3270, 3000, 200);
+  }
+  const p2 = sdk.getState()?.player;
+  if (p2 && p2.worldZ <= 3270 && p2.worldX >= 2572) {
+    const dClose = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1534 && l.x === 2573 && l.z === 3270);
+    if (dClose) {
+      await sdk.sendInteractLoc(dClose.x, dClose.z, dClose.id, 1);
+      await sleep(800);
+    }
+    await sdk.sendWalk(2570, 3271, true);
+    await waitCond(() => (sdk.getState()?.player?.worldX ?? 2573) <= 2571, 3500, 200);
+  }
+  const p3 = sdk.getState()?.player;
+  if (p3 && p3.worldX >= 2570) {
+    const dHall = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1533 && l.x === 2570 && l.z === 3271);
+    if (dHall) {
+      await sdk.sendInteractLoc(dHall.x, dHall.z, dHall.id, 1);
+      await sleep(800);
+    }
+    await sdk.sendWalk(2569, 3272, true);
+    await waitCond(() => (sdk.getState()?.player?.worldX ?? 2570) <= 2569, 3000, 200);
+  }
+  const dFront = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1533 && l.x === 2569 && l.z === 3273);
+  if (dFront) {
+    await sdk.sendInteractLoc(dFront.x, dFront.z, dFront.id, 1);
+    await sleep(800);
+  }
+  await sdk.sendWalk(2569, 3275, true);
+  await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3272) >= 3274, 3000, 200);
+}
+
 export async function walkToKandarin(c: Ctx, destX: number, destZ: number): Promise<boolean> {
   const { bot, sdk } = c;
   await exitWizardsTowerGround(c);
+  await exitCarnilleanEastRoom(c);
   // If underground in Clock Tower / Kandarin dungeon (worldZ > 9000) and destZ < 9000, climb up nearest ladder
   if ((sdk.getState()?.player?.worldZ ?? 0) > 9000 && destZ < 9000) {
     await openNearbyDoors(c, 2575, 9651, 3);
@@ -67,6 +110,7 @@ export const drunkmonk: Quest = {
     const hasBlanket = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 90 || /blanket/i.test(i.name));
 
     const prepAndStart = () => step(c, N, 'prep-and-start-omad', async () => {
+      await exitCarnilleanEastRoom(c);
       if (xp(sdk, 'Woodcutting') >= 20000 || started || blanketReturned || hasBlanket()) return true;
       await exitWizardsTowerGround(c);
 
@@ -123,17 +167,35 @@ export const drunkmonk: Quest = {
             await bot.closeShop();
           }
         }
-        // Fill Jug at Ardougne Monastery sink (2611, 3205) or East Ardougne fountain (2662, 3305)
-        const ws = await bot.walkTo(2611, 3206, 2);
-        if (!ws?.success) { await openNearbyDoors(c, 2609, 3208, 3); await bot.walkTo(2611, 3206, 2); }
-        await bot.useItemOnLoc(/^jug$/i, /^(sink|fountain)$/i);
-        await waitInv(sdk, /^jug of water$/i, 5000);
+        if (has(sdk, /^bucket of water$/i) && has(sdk, /^jug$/i)) {
+          await bot.useItemOnItem(/^bucket of water$/i, /^jug$/i);
+          await waitInv(sdk, /^jug of water$/i, 3000);
+        }
+        if (!has(sdk, /^jug of water$/i)) {
+          // Fill Jug at Ardougne Monastery sink (2611, 3205) or East Ardougne sink (2617, 3325)
+          const ws = await bot.walkTo(2611, 3206, 1);
+          if (!ws?.success) { await openNearbyDoors(c, 2610, 3208, 3); await bot.walkTo(2611, 3206, 1); }
+          await bot.useItemOnLoc(/^jug$/i, /^(sink|fountain)$/i);
+          await waitInv(sdk, /^jug of water$/i, 5000);
+        }
       }
 
       if (!has(sdk, /^logs$/i)) {
-        await bot.walkTo(2602, 3222, 3);
-        for (let i = 0; i < 4 && !has(sdk, /^logs$/i); i++) {
-          await bot.chopTree(/^tree$/i);
+        if (!has(sdk, /^(bronze|iron|steel|black|mithril|adamant|rune) axe$/i)) {
+          // Withdraw Bronze axe from East Ardougne South Bank (2653, 3283)
+          await bot.walkTo(2653, 3283, 2);
+          const ob = await bot.openBank();
+          if (ob?.success) {
+            await bot.withdrawItem(/^(bronze|iron|steel|black|mithril|adamant|rune) axe$/i, 1);
+            await bot.withdrawItem(/^logs$/i, 1);
+            await bot.closeBank();
+          }
+        }
+        if (!has(sdk, /^logs$/i)) {
+          await bot.walkTo(2602, 3222, 3);
+          for (let i = 0; i < 4 && !has(sdk, /^logs$/i); i++) {
+            await bot.chopTree(/^tree$/i);
+          }
         }
       }
 
@@ -142,7 +204,14 @@ export const drunkmonk: Quest = {
       if (!(await talk(c, /^brother omad$/i, [
         /why can't you sleep/i,
         /can i help at all/i,
+        /who's brother cedric/i,
+        /where should i look/i,
       ]))) return false;
+
+      if ((sdk.getState()?.recentDialogs ?? []).slice(-8).some((d: any) => /cedric|sleeping well|party/i.test((d.text ?? d.lines ?? []).join(' ')))) {
+        blanketReturned = true;
+        lookingCedric = true;
+      }
 
       started = true;
       return true;
@@ -187,7 +256,8 @@ export const drunkmonk: Quest = {
       const wo = await bot.walkTo(2604, 3209, 2);
       if (!wo?.success) { await openNearbyDoors(c, 2606, 3209, 3); await bot.walkTo(2604, 3209, 2); }
       await talk(c, /^brother omad$/i);
-      if (!(await waitCond(() => !hasBlanket(), 5000, 300))) return false;
+      const omadAlreadyGotBlanket = () => !hasBlanket() || (sdk.getState()?.recentDialogs ?? []).slice(-8).some((d: any) => /cedric|sleeping well|party/i.test((d.text ?? d.lines ?? []).join(' ')));
+      if (!(await waitCond(omadAlreadyGotBlanket, 5000, 300))) return false;
       blanketReturned = true;
 
       await talk(c, /^brother omad$/i, [
@@ -209,16 +279,9 @@ export const drunkmonk: Quest = {
 
       if (!cedricFixed) {
         await bot.walkTo(2614, 3259, 2);
-        // 1st talk: Cedric asks for Jug of water
-        await talk(c, /^brother cedric$/i);
-        // 2nd talk: hand Jug of water and agree to fix cart
-        if (has(sdk, /^jug of water$/i)) {
+        for (let i = 0; i < 4 && (has(sdk, /^jug of water$/i) || has(sdk, /^logs$/i)); i++) {
           await talk(c, /^brother cedric$/i, [/yes, i'd be happy to/i]);
-        }
-        // 3rd talk: hand Logs
-        if (has(sdk, /^logs$/i)) {
-          await talk(c, /^brother cedric$/i);
-          await waitCond(() => !has(sdk, /^logs$/i), 5000, 300);
+          await sleep(600);
         }
         cedricFixed = !has(sdk, /^logs$/i);
       }

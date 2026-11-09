@@ -48,15 +48,25 @@ export const hazeelcult: Quest = {
       return !inCave();
     };
 
-    const startAndClivet = () => step(c, N, 'start-ceril-and-clivet', async () => {
-      if (questComplete || poisoned || alomoneSpoken || has(sdk, /^poison|hazeel's mark|carnillean key|chest key|hazeel scroll$/i)) return true;
-      if (!(await walkToKandarin(c, 2569, 3275))) return false;
-      const wc = await bot.walkTo(2569, 3275, 2);
-      if (!wc?.success) {
-        await openNearbyDoors(c, 2569, 3275, 4);
-        await bot.walkTo(2569, 3275, 2);
+    const untrapCarnilleanDoor = async () => {
+      const d = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1534 && l.x === 2573 && l.z === 3270);
+      if (d) {
+        await sdk.sendInteractLoc(d.x, d.z, d.id, 1);
+        await sleep(1000);
       }
-      if (!(await talk(c, /^sir ceril carnillean$/i, [
+    };
+
+    const startAndClivet = () => step(c, N, 'start-ceril-and-clivet', async () => {
+      if (questComplete || poisoned || alomoneSpoken || has(sdk, /^poison|mark of hazeel|hazeel's mark|carnillean key|chest key|key|hazeel scroll$/i)) return true;
+      await untrapCarnilleanDoor();
+      if (!(await walkToKandarin(c, 2566, 3271))) return false;
+      const wc = await bot.walkTo(2566, 3271, 1);
+      if (!wc?.success) {
+        await openNearbyDoors(c, 2569, 3273, 1);
+        await openNearbyDoors(c, 2567, 3271, 1);
+        await bot.walkTo(2566, 3271, 1);
+      }
+      if (!(await talk(c, /^(sir )?ceril carnillean$/i, [
         /what's wrong/i,
         /yes, of course, i'd be happy to help/i,
       ], 20))) return false;
@@ -76,12 +86,14 @@ export const hazeelcult: Quest = {
     const poisonAndValves = () => step(c, N, 'poison-and-valves', async () => {
       if (questComplete || alomoneSpoken || has(sdk, /^hazeel scroll$/i)) return true;
       if (inCave() && !inBasement()) await exitCave();
+      await untrapCarnilleanDoor();
 
       if (!poisoned && has(sdk, /^poison$/i)) {
-        const wl = await bot.walkTo(2570, 3267, 1);
+        const wl = await bot.walkTo(2570, 3268, 1);
         if (!wl?.success) {
-          await openNearbyDoors(c, 2570, 3267, 4);
-          await bot.walkTo(2570, 3267, 1);
+          await openNearbyDoors(c, 2569, 3273, 1);
+          await openNearbyDoors(c, 2570, 3271, 1);
+          await bot.walkTo(2570, 3268, 1);
         }
         for (let i = 0; i < 3 && !inBasement(); i++) {
           const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1754);
@@ -91,7 +103,7 @@ export const hazeelcult: Quest = {
         if (!inBasement()) return false;
 
         // Grab chest key from crate (2858 at 2571, 9669)
-        if (!has(sdk, /key/i)) {
+        if (!has(sdk, /chest key|carnillean key|^key$/i)) {
           await bot.walkTo(2571, 9670, 1);
           const cr = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2858);
           if (cr) await bot.interactLoc(cr, /search/i);
@@ -114,37 +126,52 @@ export const hazeelcult: Quest = {
         }
       }
 
-      if (!has(sdk, /hazeel's mark/i)) {
+      if (!has(sdk, /mark of hazeel|hazeel's mark/i)) {
         if (!(await enterCave())) return false;
         await talk(c, /^clivet$/i, undefined, 20);
         await exitCave();
       }
 
-      // Turn all 5 sewer valves
-      const valves: [number, number, number, number][] = [
-        [2844, 2562, 3247, 2],
-        [2845, 2572, 3263, 2],
-        [2846, 2585, 3245, 1],
-        [2847, 2597, 3263, 2],
-        [2848, 2609, 3243, 2],
-      ];
-      for (const [vid, vx, vz, op] of valves) {
-        await bot.walkTo(vx, vz, 2);
-        const vLoc = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === vid);
-        if (vLoc) {
-          await sdk.sendInteractLoc(vLoc.x, vLoc.z, vLoc.id, op);
-          if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 4000, 250)) {
-            await chat(c);
-          }
+      // First try boarding the raft in case valves are already set
+      let reachedAlomoneIsland = false;
+      if (await enterCave()) {
+        await bot.walkTo(2568, 9679, 1);
+        const raft0 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2849);
+        if (raft0) await bot.interactLoc(raft0, /board/i);
+        reachedAlomoneIsland = await waitCond(() => (sdk.getState()?.player?.worldX ?? 2568) > 2595, 5000, 250);
+        if (sdk.getState()?.dialog?.isOpen) await chat(c);
+        if (!reachedAlomoneIsland) {
+          await exitCave();
         }
       }
 
-      if (!(await enterCave())) return false;
-      await bot.walkTo(2568, 9679, 1);
-      const raft = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2849);
-      if (raft) await bot.interactLoc(raft, /board/i);
-      if (!(await waitCond(() => (sdk.getState()?.player?.worldX ?? 2568) > 2595, 5000, 250))) return false;
-      if (sdk.getState()?.dialog?.isOpen) await chat(c);
+      if (!reachedAlomoneIsland) {
+        // Turn all 5 sewer valves
+        const valves: [number, number, number, number][] = [
+          [2844, 2562, 3247, 2],
+          [2845, 2572, 3263, 2],
+          [2846, 2585, 3245, 1],
+          [2847, 2597, 3263, 2],
+          [2848, 2609, 3243, 2],
+        ];
+        for (const [vid, vx, vz, op] of valves) {
+          await bot.walkTo(vx, vz, 2);
+          const vLoc = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === vid);
+          if (vLoc) {
+            await sdk.sendInteractLoc(vLoc.x, vLoc.z, vLoc.id, op);
+            if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 4000, 250)) {
+              await chat(c);
+            }
+          }
+        }
+
+        if (!(await enterCave())) return false;
+        await bot.walkTo(2568, 9679, 1);
+        const raft = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2849);
+        if (raft) await bot.interactLoc(raft, /board/i);
+        if (!(await waitCond(() => (sdk.getState()?.player?.worldX ?? 2568) > 2595, 5000, 250))) return false;
+        if (sdk.getState()?.dialog?.isOpen) await chat(c);
+      }
 
       await bot.walkTo(2607, 9672, 2);
       await talk(c, /^alomone$/i, undefined, 20);
@@ -157,7 +184,7 @@ export const hazeelcult: Quest = {
       if (questComplete) return true;
       if (!has(sdk, /hazeel scroll/i)) {
         if (inCave() && !inBasement()) await exitCave();
-        if (!has(sdk, /key/i)) {
+        if (!has(sdk, /chest key|carnillean key|^key$/i)) {
           await bot.walkTo(2570, 3267, 1);
           const ladD = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1754);
           if (ladD) await bot.interactLoc(ladD, /climb-?down/i);
@@ -191,19 +218,20 @@ export const hazeelcult: Quest = {
         }
 
         if (lvl(sdk) === 2) {
-          await sdk.sendWalk(2571, 3270, true);
-          await sleep(800);
+          await sdk.sendWalk(2570, 3271, true);
+          await sleep(1000);
           const shut = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2856);
-          const key = (sdk.getInventory() ?? []).find((i: any) => /key/i.test(i.name));
+          const key = (sdk.getInventory() ?? []).find((i: any) => /chest key|carnillean key|key/i.test(i.name));
           if (shut && key) {
             await sdk.sendUseItemOnLoc(key.slot, shut.x, shut.z, shut.id);
-            await sleep(1500);
+            await waitCond(() => !!(sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2857), 5000, 250);
           }
           const openCh = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2857);
           if (openCh) {
             await sdk.sendInteractLoc(openCh.x, openCh.z, openCh.id, 1);
-            await waitCond(() => has(sdk, /hazeel scroll/i) || !!sdk.getState()?.dialog?.isOpen, 4000, 250);
+            await waitCond(() => has(sdk, /hazeel scroll/i) || !!sdk.getState()?.dialog?.isOpen, 5000, 250);
             if (sdk.getState()?.dialog?.isOpen) await chat(c);
+            await waitCond(() => has(sdk, /hazeel scroll/i), 3000, 250);
           }
           await sdk.sendWalk(2573, 3271, true);
           await sleep(800);

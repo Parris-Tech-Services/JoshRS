@@ -26,8 +26,8 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     npcCoord: [2734, 3575, 0],
     barrelId: 2656,
     barrelCoord: [2733, 3575, 0],
-    silverRe: /^anna's silver necklace$/i,
-    dustedRe: /^anna's silver necklace$/i,
+    silverRe: /^silver necklace$/i,
+    dustedRe: /^silver necklace$/i,
     printRe: /^anna's print$/i,
     poisonLocId: 2650,
     poisonLocCoord: [2730, 3572, 0],
@@ -38,8 +38,8 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     npcCoord: [2748, 3559, 0],
     barrelId: 2657,
     barrelCoord: [2733, 3578, 0],
-    silverRe: /^bob's silver teacup$/i,
-    dustedRe: /^bob's silver teacup$/i,
+    silverRe: /^silver cup$/i,
+    dustedRe: /^silver cup$/i,
     printRe: /^bob's print$/i,
     poisonLocId: 2651,
     poisonLocCoord: [2730, 3559, 0],
@@ -50,8 +50,8 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     npcCoord: [2734, 3581, 1],
     barrelId: 2658,
     barrelCoord: [2733, 3581, 1],
-    silverRe: /^carol's silver bottle$/i,
-    dustedRe: /^carol's silver bottle$/i,
+    silverRe: /^silver bottle$/i,
+    dustedRe: /^silver bottle$/i,
     printRe: /^carol's print$/i,
     poisonLocId: 2652,
     poisonLocCoord: [2736, 3573, 0],
@@ -62,8 +62,8 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     npcCoord: [2739, 3581, 0],
     barrelId: 2659,
     barrelCoord: [2733, 3578, 1],
-    silverRe: /^david's silver book$/i,
-    dustedRe: /^david's silver book$/i,
+    silverRe: /^silver book$/i,
+    dustedRe: /^silver book$/i,
     printRe: /^david's print$/i,
     poisonLocId: 2653,
     poisonLocCoord: [2740, 3574, 1],
@@ -74,8 +74,8 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     npcCoord: [2746, 3581, 1],
     barrelId: 2660,
     barrelCoord: [2747, 3581, 1],
-    silverRe: /^elizabeth's silver needle$/i,
-    dustedRe: /^elizabeth's silver needle$/i,
+    silverRe: /^silver needle$/i,
+    dustedRe: /^silver needle$/i,
     printRe: /^elizabeth's print$/i,
     poisonLocId: 2654,
     poisonLocCoord: [2747, 3563, 0],
@@ -86,8 +86,8 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     npcCoord: [2742, 3577, 0],
     barrelId: 2661,
     barrelCoord: [2747, 3577, 1],
-    silverRe: /^frank's silver pot$/i,
-    dustedRe: /^frank's silver pot$/i,
+    silverRe: /^silver pot$/i,
+    dustedRe: /^silver pot$/i,
     printRe: /^frank's print$/i,
     poisonLocId: 2655,
     poisonLocCoord: [2746, 3573, 0],
@@ -137,12 +137,12 @@ export const murder: Quest = {
     const solve = () => step(c, N, 'solve-murder', async () => {
       if (xp(sdk, 'Crafting') > startXp + 1000) return true;
 
-      // Ensure we have an empty Pot (1931) — buy from Catherby General Store (2803, 3431) or Ardougne General Store (2615, 3293)
+      // Ensure we have an empty Pot (1931) — buy from Arhein at Catherby (2803, 3430) or Ardougne General Store (2615, 3293)
       if (!has(sdk, /^pot|pot of flour$/i)) {
-        await walkToKandarin(c, 2803, 3431);
-        const w = await bot.walkTo(2803, 3431, 2);
-        if (!w?.success) { await openNearbyDoors(c, 2803, 3431, 3); await bot.walkTo(2803, 3431, 2); }
-        const o = await bot.openShop(/^shopkeeper|shop assistant$/i);
+        await walkToKandarin(c, 2803, 3430);
+        const w = await bot.walkTo(2803, 3430, 2);
+        if (!w?.success) { await openNearbyDoors(c, 2803, 3430, 3); await bot.walkTo(2803, 3430, 2); }
+        const o = await bot.openShop(/^arhein|aemad|kortan|shopkeeper|shop assistant$/i);
         if (o?.success) {
           await bot.buyFromShop(/^pot$/i, 1);
           await bot.closeShop();
@@ -153,15 +153,15 @@ export const murder: Quest = {
       await walkToKandarin(c, 2741, 3561);
       await talk(c, /^guard$/i, [/sure, i'll help/i]);
 
-      // Enter crime scene room at (2746, 3578): pick up Criminal's dagger (1813), Pungent pot (1812), and search Window (2666)
-      const wc = await bot.walkTo(2746, 3578, 2);
+      // Enter crime scene room at (2747, 3579): pick up Criminal's dagger (1813), Pungent pot (1812), and search Window (2666)
+      const wc = await bot.walkTo(2747, 3579, 1);
       if (!wc?.success) {
         await openNearbyDoors(c, 2740, 3572, 4);
         await openNearbyDoors(c, 2745, 3577, 4);
-        await bot.walkTo(2746, 3578, 2);
+        await bot.walkTo(2747, 3579, 1);
       }
-      if (!has(sdk, /^criminal's dagger$/i)) {
-        await pickupWithWait(c, 2746, 3578, /^criminal's dagger$/i, 10);
+      if (!has(sdk, /^criminals?'s? dagger$/i)) {
+        await pickupWithWait(c, 2746, 3578, /^criminals?'s? dagger$/i, 10);
         if (sdk.getState()?.dialog?.isOpen) await chat(c);
       }
       if (!has(sdk, /^pungent pot$/i)) {
@@ -202,21 +202,21 @@ export const murder: Quest = {
       // Dust Criminal's dagger and get Unknown print (1822)
       if (!has(sdk, /^unknown print|killer's print$/i)) {
         await fillPotOfFlour();
-        await bot.useItemOnItem(/^pot of flour$/i, /^criminal's dagger$/i);
+        await bot.useItemOnItem(/^pot of flour$/i, /^criminals?'s? dagger$/i);
         await sleep(1000);
-        await bot.useItemOnItem(/^flypaper$/i, /^criminal's dagger$/i);
+        await bot.useItemOnItem(/^flypaper$/i, /^criminals?'s? dagger$/i);
         await waitInv(sdk, /^unknown print$/i, 4000);
       }
 
       // Check both suspects in `pair` to see whose print matches Unknown print -> becomes Killer's print (1815)
-      let culprit: SuspectInfo = pair[0];
+      let culprits: SuspectInfo[] = [...pair];
       for (const s of pair) {
         if (has(sdk, /^killer's print$/i)) break;
         await ensureMansionLevel(s.barrelCoord[2]);
-        const wb = await bot.walkTo(s.barrelCoord[0], s.barrelCoord[1], 2);
+        const wb = await bot.walkTo(s.barrelCoord[0], s.barrelCoord[1], 1);
         if (!wb?.success) {
           await openNearbyDoors(c, s.barrelCoord[0], s.barrelCoord[1], 4);
-          await bot.walkTo(s.barrelCoord[0], s.barrelCoord[1], 2);
+          await bot.walkTo(s.barrelCoord[0], s.barrelCoord[1], 1);
         }
         const bLoc = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === s.barrelId);
         if (bLoc) {
@@ -233,7 +233,7 @@ export const murder: Quest = {
         await sleep(1500);
         if (sdk.getState()?.dialog?.isOpen) await chat(c);
         if (has(sdk, /^killer's print$/i)) {
-          culprit = s;
+          culprits = [s];
           break;
         }
       }
@@ -246,28 +246,30 @@ export const murder: Quest = {
       if (!wp?.success) { await openNearbyDoors(c, 2695, 3495, 4); await bot.walkTo(2695, 3495, 2); }
       await talk(c, /^poison salesman$/i, [/who did you sell poison to at the house/i]);
 
-      // Return to Sinclair Mansion, talk to `culprit` about why they bought poison, then search their `poisonLocId`
+      // Return to Sinclair Mansion, talk to candidate culprit(s) about why they bought poison, then search their poisonLocId
       await bot.walkTo(2740, 3555, 3);
-      await ensureMansionLevel(culprit.npcCoord[2]);
-      const wn = await bot.walkTo(culprit.npcCoord[0], culprit.npcCoord[1], 2);
-      if (!wn?.success) {
-        await openNearbyDoors(c, culprit.npcCoord[0], culprit.npcCoord[1], 4);
-        await bot.walkTo(culprit.npcCoord[0], culprit.npcCoord[1], 2);
-      }
-      await talk(c, culprit.npcRe, [/why'd you buy poison the other day/i]);
+      for (const culprit of culprits) {
+        await ensureMansionLevel(culprit.npcCoord[2]);
+        const wn = await bot.walkTo(culprit.npcCoord[0], culprit.npcCoord[1], 2);
+        if (!wn?.success) {
+          await openNearbyDoors(c, culprit.npcCoord[0], culprit.npcCoord[1], 4);
+          await bot.walkTo(culprit.npcCoord[0], culprit.npcCoord[1], 2);
+        }
+        await talk(c, culprit.npcRe, [/why'd you buy poison the other day/i]);
 
-      // Search culprit's poison location
-      await ensureMansionLevel(culprit.poisonLocCoord[2]);
-      const wl = await bot.walkTo(culprit.poisonLocCoord[0], culprit.poisonLocCoord[1], 2);
-      if (!wl?.success) {
-        await openNearbyDoors(c, culprit.poisonLocCoord[0], culprit.poisonLocCoord[1], 4);
-        await bot.walkTo(culprit.poisonLocCoord[0], culprit.poisonLocCoord[1], 2);
-      }
-      const pLoc = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === culprit.poisonLocId);
-      if (pLoc) {
-        await sdk.sendInteractLoc(pLoc.x, pLoc.z, pLoc.id, 2);
-        await sleep(2000);
-        if (sdk.getState()?.dialog?.isOpen) await chat(c);
+        // Search culprit's poison location
+        await ensureMansionLevel(culprit.poisonLocCoord[2]);
+        const wl = await bot.walkTo(culprit.poisonLocCoord[0], culprit.poisonLocCoord[1], 2);
+        if (!wl?.success) {
+          await openNearbyDoors(c, culprit.poisonLocCoord[0], culprit.poisonLocCoord[1], 4);
+          await bot.walkTo(culprit.poisonLocCoord[0], culprit.poisonLocCoord[1], 2);
+        }
+        const pLoc = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === culprit.poisonLocId);
+        if (pLoc) {
+          await sdk.sendInteractLoc(pLoc.x, pLoc.z, pLoc.id, 2);
+          await sleep(2000);
+          if (sdk.getState()?.dialog?.isOpen) await chat(c);
+        }
       }
 
       // Report to Guard (812) at (2741, 3561)

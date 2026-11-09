@@ -570,3 +570,92 @@
 - 2026-11-09T11:52:54.447Z STEP arena-battles
 - 2026-11-09T11:56:35.630Z START Fight Arena (attempt 1)
 - 2026-11-09T11:56:35.631Z STEP start-and-armour
+- 2026-11-09T11:58:20.033Z STEP brew-and-keys
+- 2026-11-09T11:58:20.034Z STEP arena-battles
+- 2026-11-09T12:00:42.135Z STEP escape-and-finish
+- 2026-11-09T12:02:20.436Z DONE Fight Arena
+
+### Quest 16: Fight Arena (`arena`) — COMPLETED (Second P2P Quest!)
+- **Quest Points Gained**: +2 QP (Total: **38 QP**)
+- **Rewards**: +304,375 Attack XP (`Attack: 68 -> 86`, 426,500 XP!), +54,375 Thieving XP (`Thieving: 5 -> 57`, 54,775 XP!), +1,000 Coins, Combat Level **72**.
+- **Notes / Lessons**:
+  - Recharged Prayer at Ardougne Monastery altar (`2606, 3209`) before entering the Fight Arena, and toggled `protect_from_melee` ONLY while an arena boss (`Khazard Ogre` `270`, `Khazard Scorpion` `271`, `Bouncer` `269`) is spawned so prayer points are conserved during multi-page General Khazard / Jeremy Servil dialogues.
+  - Exited via `fightarena_door2` (`82`) automatically upon defeating Bouncer and declining General Khazard's final fight, then reported back to Lady Servil at `(2565, 3199)`.
+
+- 2026-11-09T12:02:20.436Z START Clock Tower (attempt 1)
+- 2026-11-09T12:02:20.437Z STEP start-and-bucket
+- 2026-11-09T12:02:43.029Z STEP white-cog
+- 2026-11-09T12:02:43.030Z STEP red-and-black-cogs
+- 2026-11-09T12:08:12.823Z STEP FAILED red-and-black-cogs
+- 2026-11-09T12:08:12.824Z START Clock Tower (attempt 2)
+- 2026-11-09T12:08:12.824Z STEP start-and-bucket
+- 2026-11-09T12:08:12.824Z STEP white-cog
+- 2026-11-09T12:08:12.824Z STEP red-and-black-cogs
+- 2026-11-09T12:08:48.024Z STEP FAILED red-and-black-cogs
+- 2026-11-09T12:08:48.025Z START Murder Mystery (attempt 1)
+- 2026-11-09T12:08:48.026Z STEP solve-murder
+- 2026-11-09T12:13:50.859Z STEP FAILED solve-murder
+- 2026-11-09T12:13:50.860Z START Murder Mystery (attempt 2)
+- 2026-11-09T12:13:50.860Z STEP solve-murder
+- 2026-11-09T12:18:56.024Z STEP FAILED solve-murder
+- 2026-11-09T12:18:56.025Z START Monk's Friend (attempt 1)
+- 2026-11-09T12:18:56.025Z STEP prep-and-start-omad
+- 2026-11-09T12:23:53.216Z STEP blanket-cave
+- 2026-11-09T12:25:02.405Z STEP cedric-and-party
+- 2026-11-09T12:25:54.870Z STEP FAILED cedric-and-party
+- 2026-11-09T12:25:54.870Z START Monk's Friend (attempt 2)
+- 2026-11-09T12:25:54.870Z STEP prep-and-start-omad
+- 2026-11-09T12:27:22.033Z START Monk's Friend (attempt 1)
+- 2026-11-09T12:27:22.033Z STEP prep-and-start-omad
+- 2026-11-09T12:28:28.043Z STEP blanket-cave
+- 2026-11-09T12:29:30.348Z STEP FAILED blanket-cave
+- 2026-11-09T12:29:30.349Z START Monk's Friend (attempt 2)
+- 2026-11-09T12:29:30.349Z STEP prep-and-start-omad
+- 2026-11-09T12:29:30.349Z STEP blanket-cave
+- 2026-11-09T12:29:39.523Z STEP FAILED blanket-cave
+- 2026-11-09T12:29:39.524Z START Hazeel Cult (attempt 1)
+- 2026-11-09T12:29:39.525Z STEP start-ceril-and-clivet
+- 2026-11-09T12:30:11.822Z talkTo /^sir ceril carnillean$/i failed: NPC not found
+- 2026-11-09T12:30:11.822Z STEP FAILED start-ceril-and-clivet
+- 2026-11-09T12:30:11.823Z START Hazeel Cult (attempt 2)
+- 2026-11-09T12:30:11.823Z STEP start-ceril-and-clivet
+- 2026-11-09T12:30:57.026Z talkTo /^sir ceril carnillean$/i failed: NPC not found
+- 2026-11-09T12:30:57.026Z STEP FAILED start-ceril-and-clivet
+- 2026-11-09T12:30:57.026Z START Sheep Herder (attempt 1)
+- 2026-11-09T12:30:57.027Z STEP start-and-gear
+- 2026-11-09T12:32:53.826Z talkTo /^councillor halgrive$/i failed: NPC not found
+- 2026-11-09T12:35:30.834Z START Monk's Friend (attempt 1)
+- 2026-11-09T12:35:30.835Z STEP prep-and-start-omad
+- 2026-11-09T12:35:31.859Z STEP blanket-cave
+- 2026-11-09T12:36:26.220Z talkTo /^brother omad$/i failed: NPC not found
+- 2026-11-09T12:36:44.626Z talkTo /^brother omad$/i failed: NPC not found
+- 2026-11-09T12:36:44.626Z STEP cedric-and-party
+- 2026-11-09T12:37:12.626Z talkTo /^brother cedric$/i failed: NPC not found
+- 2026-11-09T12:38:08.034Z START Monk's Friend (attempt 1)
+- 2026-11-09T12:38:08.035Z STEP prep-and-start-omad
+- 2026-11-09T12:38:14.207Z STEP blanket-cave
+- 2026-11-09T12:38:52.841Z STEP cedric-and-party
+- 2026-11-09T12:41:29.236Z START Monk's Friend (attempt 1)
+- 2026-11-09T12:41:29.237Z STEP prep-and-start-omad
+- 2026-11-09T12:41:29.239Z STEP blanket-cave
+- 2026-11-09T12:41:37.674Z STEP cedric-and-party
+- 2026-11-09T12:42:28.045Z DONE Monk's Friend
+
+### Quest 17: Monk's Friend (`drunkmonk`) — COMPLETED (Third P2P Quest!)
+- **Quest Points Gained**: +1 QP (Total: **39 QP**)
+- **Rewards**: +50,000 Woodcutting XP (`Woodcutting: 15 -> 56`, 51,875 XP!), +8 Law runes.
+- **Notes / Lessons**:
+  - Added `exitCarnilleanEastRoom(c)` to handle the Carnillean Mansion east room door (`1533` at `(2573, 3271)` -> `1534` at `(2573, 3270)` which blocks the 1-tile corridor `(2573, 3270) <-> (2572, 3270)` when open).
+  - Filled `Jug` directly from `Bucket of water` via `useItemOnItem`, withdrew `Bronze axe` from East Ardougne South Bank (`2653, 3283`), chopped `Logs`, recovered `Child's blanket` from the thieves' cave (`2570, 9604`), sobered up Brother Cedric (`2614, 3259`), repaired his cart, and joined Brother Omad's party!
+
+- 2026-11-09T12:42:28.045Z START Hazeel Cult (attempt 1)
+- 2026-11-09T12:42:28.046Z STEP start-ceril-and-clivet
+- 2026-11-09T12:44:08.142Z STEP poison-and-valves
+- 2026-11-09T12:46:56.561Z STEP scroll-and-resurrect
+- 2026-11-09T12:47:34.988Z STEP FAILED scroll-and-resurrect
+- 2026-11-09T12:47:34.989Z START Hazeel Cult (attempt 2)
+- 2026-11-09T12:47:34.989Z STEP start-ceril-and-clivet
+- 2026-11-09T12:48:30.146Z STEP FAILED start-ceril-and-clivet
+- 2026-11-09T12:48:30.146Z START Sheep Herder (attempt 1)
+- 2026-11-09T12:48:30.147Z STEP start-and-gear
+- 2026-11-09T12:50:04.022Z STEP herd-and-incinerate
