@@ -24,14 +24,54 @@ page.on('pageerror', (e) => consoleLines.push(`pageerror: ${String(e).slice(0, 2
 let ok = false;
 try {
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-    // The client boots, fetches cache over HTTP and paints a canvas.
-    await page.waitForTimeout(25000);
+
+    // The 274 web client paints into an existing canvas; a click is required to start loading.
+    await page.waitForSelector('canvas', { timeout: 30000 });
+    await page.waitForTimeout(3000);
+    const box = await page.locator('canvas').first().boundingBox();
+    if (box) {
+        await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+        await page.waitForTimeout(2000);
+        await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    }
+
+    // Poll the canvas itself until it stops being a flat colour (or time out).
+    const stats = await page.evaluate(async () => {
+        const c = document.querySelector('canvas');
+        if (!c) return { error: 'no canvas' };
+        const ctx = c.getContext('2d');
+        const deadline = Date.now() + 90000;
+        let last = null;
+        while (Date.now() < deadline) {
+            const data = ctx.getImageData(0, 0, c.width, c.height).data;
+            const seen = new Set();
+            for (let i = 0; i < data.length; i += 4 * 97) {
+                seen.add((data[i] << 16) | (data[i + 1] << 8) | data[i + 2]);
+            }
+            last = { shades: seen.size, w: c.width, h: c.height };
+            if (seen.size > 20) return last;
+            await new Promise((r) => setTimeout(r, 5000));
+        }
+        return { ...last, timedOut: true };
+    });
+    console.log(`canvas stats: ${JSON.stringify(stats)}`);
     ok = true;
 } catch (e) {
     console.log(`NAVIGATION FAILED: ${String(e).slice(0, 300)}`);
 }
 
 await page.screenshot({ path: out, fullPage: false });
+
+// Save the canvas alone: the game UI lives there, not in the page DOM.
+const canvasPng = await page.evaluate(() => {
+    const c = document.querySelector('canvas');
+    return c ? c.toDataURL('image/png') : null;
+});
+if (canvasPng) {
+    const { writeFileSync } = await import('node:fs');
+    writeFileSync(out.replace(/\.png$/, '-canvas.png'), Buffer.from(canvasPng.split(',')[1], 'base64'));
+    console.log(`canvas png: ${out.replace(/\.png$/, '-canvas.png')}`);
+}
 
 // Report what the page contained, as text.
 const canvases = await page.evaluate(() =>

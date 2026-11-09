@@ -73,11 +73,21 @@ jobs:
         run: |
           set -euo pipefail
           out="$RUNNER_TEMP/login-ocr.txt"
-          tesseract "$RUNNER_TEMP/login.png" stdout 2>/dev/null > "$out" || true
+          # The game UI is painted on the canvas, so OCR that, upscaled for small bitmap fonts.
+          src="$RUNNER_TEMP/login-canvas.png"
+          [ -f "$src" ] || src="$RUNNER_TEMP/login.png"
+          python3 - "$src" "$RUNNER_TEMP/ocr-input.png" <<'PY'
+          import sys
+          from PIL import Image
+          img = Image.open(sys.argv[1]).convert('L')
+          img = img.resize((img.width * 2, img.height * 2), Image.LANCZOS)
+          img.save(sys.argv[2])
+          PY
+          tesseract "$RUNNER_TEMP/ocr-input.png" stdout --psm 6 2>/dev/null > "$out" || true
           echo "--- OCR text (this is the evidence) ---"
           cat "$out"
           echo "--- end OCR ---"
-          if ! grep -qiE "runescape|username|password|click to play|world" "$out"; then
+          if ! grep -qiE "runescape|username|password|click to play|world|login|new user" "$out"; then
             echo "::error::OCR found none of the expected client strings on screen."
             exit 1
           fi
