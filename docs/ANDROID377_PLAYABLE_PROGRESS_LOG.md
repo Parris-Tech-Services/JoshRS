@@ -167,3 +167,51 @@ engine on `127.0.0.1:43594`.
 
 **Not claimed:** gameplay, authentication, multiplayer, audio, persistence.
 
+## 8. Round 4 — authenticated rev-377 login VERIFIED (server side)
+
+A clean-room Python probe (`tools/android377-phone/probe-login-377.py`) completed a **real
+credentialed login** against the pinned engine on the phone and received a live session.
+
+```
+NOTE: public.pem has modulus/exponent swapped; corrected by length
+handshake bytes: 17 00000000000000000000bc8a601ebd0558
+login status byte: 2 (2 = authenticated)
+opcode 222 at offset 3
+session bytes: 2939 (frames begin at offset 3)
+```
+
+Decoding the full response with the engine's own ISAAC yielded **536 frames, 0 errors**:
+
+| Packet | Count | Meaning |
+|---|---|---|
+| `VARP_SMALL` | 222 | live variable state |
+| `PLAYER_INFO` | 100 | players in the scene |
+| `NPC_INFO` | 100 | NPCs in the scene |
+| `UPDATE_ZONE_FULL_FOLLOWS` | 49 | map rebuilds |
+| `UPDATE_STAT` | 21 | **all 21 skills** |
+| `IF_SETTAB` | 14 | interface tabs |
+| `IF_SETTEXT` | 7 | interface text |
+| `MIDI_SONG` | 2 | music |
+| `LOGOUT` | 1 | session end |
+
+### Wire facts established by experiment (each cost a failed attempt)
+
+1. **Revision 377 does not fit in a byte.** Sending `377 & 0xff` yields status `6`
+   ("out of date"). The client must send `0xFF` then a 16-bit `377`.
+2. **CRC bytes** must be the first 36 bytes of the engine's `CrcBuffer`; the server checks
+   `crc32(those 36 bytes) == CrcBuffer32`, so a client needs the server's `/crc` data —
+   not the cache itself — to pass this gate.
+3. **The login response is `[status][2 unencrypted bytes][ISAAC frames]`.** Starting the
+   packet loop at offset 1 desynchronises after 2 frames; offset 3 parses all 2877–2939
+   bytes cleanly. This was found empirically by probing offsets 1–6.
+4. **`data/config/public.pem` in the pinned engine has modulus and exponent swapped**
+   (n is 32 bytes, e is 64; the private key is n=64, e=32). Any client trusting that file
+   builds a block the server rejects. The probe detects the swap by length and corrects it.
+
+**This verifies the server and the wire format, not the Android app.** The Kotlin client and
+the vendored Android app have still not logged in. The meter for client progress is unchanged.
+
+**Blocked:** APK installation on the A55 has not happened; `pm list packages` shows neither
+`com.meteor.android` nor `au.com.parristech.joshrs.android`, and there are no install events
+in logcat. Installing needs a human tap on the system package installer.
+
