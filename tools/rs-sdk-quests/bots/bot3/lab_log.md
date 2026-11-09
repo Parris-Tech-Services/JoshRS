@@ -344,6 +344,65 @@
 - **Progression stalls / friction points**:
   - **Item Naming Subtlety (`Uncooked berry pie`)**: Combining `Pie shell` (`2315`) + `Redberries` (`1951`) produces item ID `2321`, whose in-game display name in Lost City 377 is **`Uncooked berry pie`** (not `Uncooked redberry pie`), whereas cooking it produces **`Redberry pie`** (`2325`). Updated regex to `/^uncooked (red)?berry pie$/i`.
 
+### Milestone 16: Goblin Diplomacy Quest (`5 QP`, `+5,000` Crafting XP, Defence Lv 12 → 27)
+- **What we did & how long it took**:
+  1. Completed **Goblin Diplomacy (`5 QP`)** in **310.1 seconds**:
+     - Withdrew `Orange dye`, `Blue dye`, and `Goblin mail x1` from the bank and walked to the **Lumbridge Level 2 Goblin camp `(3248, 3238)`** (applying our Milestone 14b `npc_findhero` discovery).
+     - Switched combat style to **Defensive (`3`, Defence XP)** and farmed the remaining `2x Goblin mail` drops in under 2 minutes while raising **Defence from Level 12 (`1,300` XP) to Level 27 (`5,800` XP)** (`+4,500` Defence XP)!
+     - Combined `Orange dye` + `Goblin mail` → `Orange goblin mail` and `Blue dye` + `Goblin mail` → `Blue goblin mail`, walked to Goblin Village `(2957, 3511)`, and handed all three armours (`Orange goblin mail`, `Blue goblin mail`, and brown `Goblin mail`) to **General Wartface** (`+5,000` Crafting XP, Crafting Lv 34 → **38**, and **`1x Gold bar`** reward!).
+- **Approximate XP/hour and GP/hour**:
+  - **Lumbridge Level 2 Goblins (Defence Style `3`) + Goblin Diplomacy Hand-In (310.1s)**:
+    - **Crafting XP**: `+5,000` XP (`~58,045 Crafting XP/hr`).
+    - **Defence XP**: `+4,500` XP (`~52,241 Defence XP/hr` including walk to Goblin Village).
+    - **Reward**: `1x Gold bar` (`5 QP`).
+- **Shop prices paid & items needed**:
+  - None (used previously crafted `Orange dye` and `Blue dye`).
+- **Progression stalls / friction points**:
+  - Farming `Goblin mail` at Lumbridge `(3248, 3238)` was ~5x faster than Goblin Village because Lumbridge Level 2 Goblins never fight each other (`npc_findhero` is always `true`).
+
+### Milestone 17: Vampyre Slayer Quest (`3 QP`, Attack Lv 53 → 72, `+120,625` XP)
+- **What we did & how long it took**:
+  1. Completed **Vampyre Slayer (`3 QP`)** end-to-end in **471.0 seconds**:
+     - Spoke to **Morgan** in Draynor Village `(3098, 3268)` to start the quest, climbed to Level 1 `(3097, 3268)`, and searched his cupboard for `Garlic`.
+     - Walked to the **Blue Moon Inn** in Varrock `(3277, 3488)`, bought a `Beer` (`2 GP`) from the Bartender, and spoke to **Dr Harlow** twice to receive the `Stake`.
+     - Entered the **Draynor Manor Crypt** `(3116, 3356)` → `(3078, 9775)` carrying `Stake`, `Hammer`, `Garlic`, and `Cabbage x14`, opened the Coffin, defeated **Count Draynor** (Level 34), and automatically hammered the `Stake` into his chest (`> You hammer the stake into the vampire's chest! > Congratulations! Quest complete!`).
+  2. Raised **Attack from Level 53 (`41,100` XP) to Level 72 (`161,725` XP)** (`+120,625` Attack XP — unlocking **Dragon & Barrows/Whip-tier Attack requirements**!), **Hitpoints from Level 47 to Level 48** (`+1,548` HP XP), and **Defence from Level 27 to Level 28** (`+250` XP), pushing **Combat Level from 54 to 65**, **Total Skill Level from 537 to 578**, and **Quest Points to `20 QP` across 10 Completed Quests**!
+- **Approximate XP/hour and GP/hour**:
+  - **Vampyre Slayer (471.0s)**:
+    - **Attack XP**: `+120,625` XP in 471.0s = **`~921,974 Attack XP/hr`**!
+- **Shop prices paid & items needed**:
+  - **Blue Moon Inn Bartender `(3277, 3488)`**: `1x Beer` (`2 GP`).
+- **Progression stalls / friction points**:
+  - With `Garlic` in inventory, `Iron scimitar`, and Level 53 Attack / 51 Strength, Count Draynor died in seconds without requiring a single food item (`HP 48/48`).
+
+### Milestone 18: Ernest the Chicken Quest (`4 QP`, `+300 GP`, Basement Lever Puzzle)
+- **What we did & how long it took**:
+  1. Completed **Ernest the Chicken (`4 QP`)** end-to-end in **396.7 seconds (~6.6 minutes)**:
+     - Spoke to **Veronica** outside Draynor Manor `(3110, 3330)`, climbed to Level 1 `(3108, 3356)` to pick up `Fish food`, and spoke to **Professor Oddenstein** on Level 2 `(3110, 3366)`.
+     - Picked up `Poison` from the Witch's room on Level 0 `(3097, 3366)`, combined `Poison` + `Fish food` → `Poisoned fish food`, poisoned the piranhas in the SW Fountain `(3088, 3335)`, and searched the fountain for the **`Pressure gauge`**.
+     - Picked up the `Spade` in the east room `(3120, 3359)`, dug the **Compost heap** `(3086, 3361)` for the small `Key`, unlocked the skeleton closet `(3107, 3367)`, and grabbed the **`Rubber tube`**.
+     - Searched the secret bookcase `(3098, 3358)`, climbed down to the **Draynor Manor Basement Lever Puzzle** `(3116, 9754)`, executed the full 9-room lever sequence (`B` + `A` down → `D` down → `A` + `B` up → `E` + `F` down → `C` down → `E` up) to reach Room 9 `(3092, 9755)` and retrieve the **`Oil can`**.
+     - Returned to Professor Oddenstein on Level 2 `(3110, 3366)` and handed in the `Pressure gauge`, `Rubber tube`, and `Oil can` to transform Ernest back into a human (`+300 GP` reward, `Coins: 127 → 427`, **11 Quests Complete / `24 QP`**!).
+- **Approximate XP/hour and GP/hour**:
+  - **Ernest the Chicken (396.7s)**:
+    - **GP/hour**: `+300 GP` in 396.7s = **`~2,722 GP/hr`** (+ `4 QP`).
+- **Shop prices paid & items needed**:
+  - **Horvik's Armour Shop `(3229, 3437)`** (during Black Knights' Fortress prep immediately after): Bought `1x Iron chainbody` for **`210 GP`** (`Coins: 427 → 217`), plus picked up `1x Bronze med helm` (`0 GP` spawn in Draynor Manor `(3122, 3360)`) and `1x Cabbage` (`id 1965` at `(3054, 3285)`).
+- **Progression stalls / friction points**:
+  - None — the Draynor Manor basement lever puzzle completed cleanly on the first pass.
+
+### Milestone 18b: Black Knights' Fortress Spying & Level 33 Black Knight Combat Benchmark
+- **What we did & how long it took**:
+  1. Started **Black Knights' Fortress (`3 QP`)** at **Sir Amik Varze** on Level 2 of the White Knights' Castle West Tower `(2961, 3337)`, equipped `Bronze med helm` and `Iron chainbody`, infiltrated the **Black Knights' Fortress** `(3016, 3514)`, navigated the L0→L1→L2→L1→L0 secret wall & ladder maze, and listened at the **Grill** `(3025, 3507)` (`listened = true`).
+  2. While returning across Level 1 `(3025, 3511)`, engaged Level 33 Black Knights in Defensive combat style (`3`), gaining **`+5,800` Defence XP (Defence Lv 28 → 36)** and **`+5,997` Hitpoints XP (HP Lv 48 → 50)** before a multi-knight pile-on without food caused a respawn in Lumbridge (keeping `Iron scimitar`, `Iron platelegs`, and `Iron chainbody`).
+  3. Immediately transitioned into **Pirate's Treasure** prep, banking equipment, withdrawing `Spade`, farming Goblins (`+12,500` Strength XP, Strength Lv 51 → **55**), and buying a **`White apron` (`2 GP`)** from **Thessalia's Fine Clothes** `(3206, 3416)` in Varrock.
+- **Approximate XP/hour and GP/hour**:
+  - **Combat XP Gained**: `+5,800` Defence XP (Lv 28 → **36**), `+12,500` Strength XP (Lv 51 → **55**), `+5,997` Hitpoints XP (Lv 48 → **50**), pushing **Combat Level from 65 to 68** and **Total Skill Level from 578 to 592**.
+- **Shop prices paid & items needed**:
+  - **Thessalia's Fine Clothes `(3206, 3416)`**: Bought `1x White apron` (`2 GP`).
+- **Progression stalls / friction points**:
+  - On Level 1 of the Black Knights' Fortress (`(3021, 3515)`), `bot.walkTo` can get blocked if the two adjacent doors at `(3019, 3515)` and `(3021, 3515)` are closed while a Level 33 Black Knight is in combat with the player. Replaced `bot.walkTo` on that corridor with direct `walkInRoom` + door open steps.
+
 ---
 
 ## Summary Dataset: Skills, Methods, XP/hr, GP/hr & Balancing Findings
@@ -367,6 +426,7 @@
 | **Melee Combat** | 1 | Killing Chickens (`(3231, 3297)`) | 1 → 7 | **~62,585 XP/hr** | ~0 GP/hr | Safe (max hit 0), drops `Raw chicken`, `Bones`, `Feather`. |
 | **Melee Combat** | 2 | Killing Lumbridge Cows (`(3255, 3278)`) | 6 → 13 | **~114,813 XP/hr** | ~2,600 GP/hr (hides) | **1.83x faster** than Chickens; drops `Cowhide` + `Bones` + `Raw beef`. |
 | **Melee Combat** | 3 | Killing Goblin Village Goblins (`(2956, 3500)`) | 13 → 53 | **~296,560 XP/hr** | ~1,200 GP/hr | **2.58x faster** than Cows (`+97,544` HP XP/hr); drops `Goblin mail` only if player is top damager (`npc_findhero`). |
+| **Melee Combat** | 4 | Vampyre Slayer Quest (`3 QP`) | 53 → 72 | **~921,974 XP/hr** | -2 GP | `+120,625` Attack XP in 471s — jumps Attack from 53 to 72! |
 | **Magic** | 1 | Wind Strike (`Spells.WIND_STRIKE` at Chickens) | 1 → 14 | **~92,811 XP/hr** | -3,680 GP/hr | `~176.4` XP/cast (`7 GP`/cast in runes; `3 GP`/cast with Staff of air). |
 | **Magic** | 2 | Witch's Potion Quest (`1 QP`) | 14 → 33 | **~142,682 XP/hr** | -4 GP | `+8,125` XP in 205s — unlocks Varrock/Lumbridge Teleports & Telegrab! |
 | **Prayer** | 1 | Burying Chicken Bones (`(3231, 3297)`) | 1 → 5 | **~17,600 XP/hr** | 0 GP/hr | `112.5` XP per bone buried alongside Melee Method 1. |
@@ -382,7 +442,7 @@
 | **Smithing** | 3 | The Knight's Sword Quest (`1 QP`) | 26 → 82 | **~2,370,867 XP/hr** | -20 GP | `+318,750` XP in 484s — jumps straight to Level 82 Smithing (Adamantite)! |
 | **Crafting** | 1 | Sheep Shearer + Spinning 20 Balls of Wool | 1 → 25 | **~47,368 XP/hr** | +60 GP (quest) | Spinning phase (`62.5` XP/ball); Quest adds `+4,375` XP (Lv 1 → 25). |
 | **Crafting** | 2 | Gem Cutting via Gem Trader Arbitrage | 25 → 30 | **~909,210 XP/hr** | **~139,307 GP/hr** | `+450 GP` & `+2,937.5` XP in 11.6s (`Uncut sapphire` 25→175 GP, `Uncut emerald` 50→350 GP). |
-| **Crafting** | 3 | Leather Cowl Crafting (Al Kharid Tanner `679`) | 30 → 34 | **~562,660 XP/hr** | -1 GP/hide | **11.9x faster** than Spinning Wool (`462.5` XP/cowl). |
+| **Crafting** | 3 | Leather Cowl Crafting (Al Kharid Tanner `679`) | 30 → 38 | **~562,660 XP/hr** | -1 GP/hide | **11.9x faster** than Spinning Wool (`462.5` XP/cowl) + Goblin Diplomacy (`+5,000` XP). |
 
 ### 2. Key Economy & Progression Balancing Findings
 1. **Al Kharid Gem Trader Arbitrage (Verified Live: +450 GP in 11.6s, Multi-Minute Restock)**: The Gem Trader `(3286, 3211)` sells `Uncut sapphire` for `25 GP` (stock 1) and `Uncut emerald` for `50 GP` (stock 1), while buying cut `Sapphire` for `175 GP` and cut `Emerald` for `350 GP`. Starting with `25 GP` and a `1 GP Chisel` at Level 25 Crafting, cutting the Sapphire raised Crafting to Level 28 (`>= 27` needed for Emerald) and gave `175 GP`, which immediately funded buying & cutting the Emerald for `350 GP` (`475 GP` total = **+450 GP profit** in 11.6s), financing our `Iron scimitar` (`112 GP`) and `Iron platelegs` (`280 GP`). Re-checking 4 minutes later showed both uncut gems still at `0` stock, confirming a multi-minute restock timer.
@@ -390,5 +450,5 @@
 3. **Furnace vs. Anvil Separation**: Varrock has mines and anvils (`(3188, 3426)`) while Lumbridge and Al Kharid have furnaces (and Al Kharid lacks an anvil), creating a heavy walking bottleneck for early Smithing unless players mine at Al Kharid/SE Varrock, smelt in Al Kharid/Lumbridge, bank, and smith at Varrock West.
 4. **Draynor Fishing Spot Death Trap**: Level 7 Dark Wizards `(3084, 3236)` aggro onto low-level players clicking the northern fishing spots (`z >= 3231`) at Draynor `(3087, 3230)`. Staying on the southern spot `(3087, 3227)` avoids aggro.
 5. **Goblin Village `npc_findhero` Drop Table Mechanic**: Because Red and Green Goblins in Goblin Village `(2956, 3500)` fight each other, any Goblin that took >=50% of its damage from another Goblin fails `npc_findhero` on death and drops nothing. Farming `Goblin mail` for *Goblin Diplomacy* is far faster on Lumbridge Level 2 Goblins `(3248, 3238)` or full-HP Goblins.
-6. **Current Character State (`bot3`)**: Combat Level 54 (`HP 41/47`), Lumbridge `(3238, 3262)`, Total Skill Level **537** across 15 trained skills (`Smithing 82`, `Mining 55`, `Attack 53`, `Strength 51`, `Prayer 48`, `Hitpoints 47`, `Firemaking 39`, `Woodcutting 38`, `Cooking 37`, `Crafting 34`, `Magic 33`, `Thieving 23`, `Fishing 22`, `Defence 12`, `Fletching 11`), **8 Quests Complete (`12 QP`)**: `Cook's Assistant`, `Sheep Shearer`, `Romeo & Juliet`, `Rune Mysteries`, `The Restless Ghost`, `Witch's Potion`, `Doric's Quest`, `The Knight's Sword`.
+6. **Current Character State (`bot3`)**: Combat Level 65 (`HP 48/48`), Falador `(2966, 3370)`, Total Skill Level **578** across 15 trained skills (`Smithing 82`, `Attack 72`, `Mining 55`, `Strength 51`, `Prayer 48`, `Hitpoints 48`, `Firemaking 39`, `Woodcutting 38`, `Crafting 38`, `Cooking 37`, `Magic 33`, `Defence 28`, `Thieving 23`, `Fishing 22`, `Fletching 11`), **11 Quests Complete (`24 QP`)**: `Cook's Assistant`, `Sheep Shearer`, `Romeo & Juliet`, `Rune Mysteries`, `The Restless Ghost`, `Witch's Potion`, `Doric's Quest`, `The Knight's Sword`, `Goblin Diplomacy`, `Vampyre Slayer`, `Ernest the Chicken`.
 

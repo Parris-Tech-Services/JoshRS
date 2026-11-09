@@ -1,7 +1,7 @@
 import { Ctx, Quest, has, count, lvl, sleep, talk, chat, waitInv, waitCond, step, lumbridgeStairs, openNearbyDoors, pickupWithWait, bankJunk, withdrawFromDraynorBank, walkToVarrock, walkFromVarrockToLumbridge, exitWizardsTowerGround } from '../quest-kit';
 const N = "Pirate's Treasure";
 
-const KEEP_RE = /^(coins|bronze sword|wooden shield|white apron|spade|karamjan? rum|banana|chest key|pirate message|emerald|gold ring)$/i;
+const KEEP_RE = /^(coins|iron scimitar|bronze sword|wooden shield|white apron|spade|karamjan? rum|banana|chest key|pirate message|emerald|gold ring)$/i;
 
 export const hunt: Quest = {
   name: N,
@@ -9,6 +9,17 @@ export const hunt: Quest = {
     const { bot, sdk } = c;
     if (has(sdk, /^emerald$/i)) return true;
     let messageRead = false;
+    let rumSmuggledInCrate = false;
+
+    const walkInRoom = async (x: number, z: number, tol = 1, timeout = 5000) => {
+      const p0 = sdk.getState()?.player;
+      if (p0 && Math.hypot(p0.worldX - x, p0.worldZ - z) <= tol) return true;
+      await sdk.sendWalk(x, z, true);
+      return await waitCond(() => {
+        const p = sdk.getState()?.player;
+        return !!p && Math.hypot(p.worldX - x, p.worldZ - z) <= tol;
+      }, timeout, 250);
+    };
 
     const startAndSmuggle = () => step(c, N, 'start-and-smuggle', async () => {
       if (has(sdk, /^chest key|pirate message|emerald$/i) || messageRead) return true;
@@ -27,36 +38,23 @@ export const hunt: Quest = {
       if ((sdk.getState()?.player?.worldX ?? 3050) >= 2980) {
         if (has(sdk, /^karamjan? rum$/i)) return true;
         await bankJunk(c, KEEP_RE);
-        await withdrawFromDraynorBank(c, [/^coins$/i, /^bronze sword$/i, /^wooden shield$/i, /^white apron$/i, /^spade$/i]);
-        if (has(sdk, /^bronze sword$/i)) await bot.equipItem(/^bronze sword$/i);
+        await withdrawFromDraynorBank(c, [/^coins$/i, /^iron scimitar$/i, /^bronze sword$/i, /^wooden shield$/i, /^white apron$/i, /^spade$/i]);
+        if (has(sdk, /^iron scimitar$/i)) await bot.equipItem(/^iron scimitar$/i);
+        else if (has(sdk, /^bronze sword$/i)) await bot.equipItem(/^bronze sword$/i);
         if (has(sdk, /^wooden shield$/i)) await bot.equipItem(/^wooden shield$/i);
 
-        if (count(sdk, /^coins$/i) < 95) {
-          if ((sdk.getState()?.player?.worldX ?? 3092) < 3180) await bot.walkTo(3185, 3245, 3);
-          await bot.walkTo(3248, 3240, 3);
-          await sdk.sendSetCombatStyle(1);
-          const deadline = Date.now() + 240_000;
-          while (Date.now() < deadline && count(sdk, /^coins$/i) < 100) {
+        if (count(sdk, /^coins$/i) < 65) {
+          await bot.walkTo(3100, 3250, 3);
+          const deadline = Date.now() + 90_000;
+          while (Date.now() < deadline && count(sdk, /^coins$/i) < 65) {
             await bot.dismissBlockingUI();
-            const gc = sdk.findGroundItem(/^coins$/i);
-            if (gc) { await bot.pickupItem(gc); await sleep(600); }
-            const dag = sdk.findGroundItem(/^iron dagger$/i);
-            if (dag && (sdk.getInventory()?.length ?? 0) < 25) { await bot.pickupItem(dag); await sleep(600); }
-            const px = sdk.getState()?.player?.worldX ?? 3248;
-            const pz = sdk.getState()?.player?.worldZ ?? 3240;
-            if (Math.hypot(px - 3248, pz - 3240) > 18) await bot.walkTo(3248, 3240, 3);
-            const gob = (sdk.getState()?.nearbyNpcs ?? [])
-              .filter((n: any) => /^goblin$/i.test(n.name) && n.combatLevel <= 5 && n.x >= 3242 && n.x <= 3260 && n.z >= 3225 && n.z <= 3252)
-              .sort((a: any, b: any) => Math.hypot(a.x - px, a.z - pz) - Math.hypot(b.x - px, b.z - pz))[0];
-            if (gob && !sdk.getState()?.player?.combat?.inCombat) await bot.attack(gob);
-            await sleep(700);
-          }
-          if (count(sdk, /^coins$/i) < 95 && has(sdk, /^iron dagger$/i)) {
-            await bot.walkTo(3212, 3246, 2);
-            const o = await bot.openShop(/^shop keeper$/i);
-            if (o?.success) {
-              await bot.sellToShop(/^iron dagger$/i, 'all');
-              await bot.closeShop();
+            const npc = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /^(man|woman)$/i.test(n.name) && n.combatLevel <= 4 && n.reachable !== false);
+            if (npc) {
+              await bot.pickpocketNpc(npc);
+              await sleep(600);
+            } else {
+              await bot.walkTo(3100, 3250, 3);
+              await sleep(600);
             }
           }
         }
@@ -131,35 +129,48 @@ export const hunt: Quest = {
             await chat(c);
           }
 
-          const wl2 = await bot.walkTo(2939, 3154, 2);
-          if (!wl2?.success) { await openNearbyDoors(c, 2939, 3152, 2); await bot.walkTo(2939, 3154, 2); }
+          await walkInRoom(2939, 3154, 1, 5000);
+          const coinsBefore = count(sdk, /^coins$/i);
           await talk(c, /^luthas$/i, [/thank you, i'll be on my way/i]);
           if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 3500, 300)) {
             await chat(c, [/thank you, i'll be on my way/i]);
           }
+          await waitCond(() => count(sdk, /^coins$/i) >= coinsBefore + 30, 3000, 250);
         };
 
-        while (!has(sdk, /^karamjan? rum$/i) && count(sdk, /^coins$/i) < 30) {
-          await fillBananaCrateForLuthas(false);
-        }
-
-        if (!has(sdk, /^karamjan? rum$/i)) {
-          const wz = await bot.walkTo(2925, 3143, 2);
-          if (!wz?.success) { await openNearbyDoors(c, 2925, 3143, 3); await bot.walkTo(2925, 3143, 2); }
-          for (let i = 0; i < 3 && !has(sdk, /^karamjan? rum$/i); i++) {
-            const o = await bot.openShop(/^zambo$/i);
-            if (o?.success) {
-              await bot.buyFromShop(/^karamjan? rum$/i, 1);
-              await bot.closeShop();
-            }
-            await sleep(600);
+        if (!rumSmuggledInCrate) {
+          while (!has(sdk, /^karamjan? rum$/i) && count(sdk, /^coins$/i) < 30) {
+            await fillBananaCrateForLuthas(false);
           }
-          if (!has(sdk, /^karamjan? rum$/i)) return false;
-        }
 
-        await fillBananaCrateForLuthas(true);
+          if (!has(sdk, /^karamjan? rum$/i)) {
+            const wz = await bot.walkTo(2925, 3143, 2);
+            if (!wz?.success) { await openNearbyDoors(c, 2925, 3143, 3); await bot.walkTo(2925, 3143, 2); }
+            for (let i = 0; i < 3 && !has(sdk, /^karamjan? rum$/i); i++) {
+              const o = await bot.openShop(/^zambo$/i);
+              if (o?.success) {
+                await bot.buyFromShop(/^karamjan? rum$/i, 1);
+                await bot.closeShop();
+              }
+              await sleep(600);
+            }
+            if (!has(sdk, /^karamjan? rum$/i)) return false;
+          }
+
+          await fillBananaCrateForLuthas(true);
+          rumSmuggledInCrate = true;
+        }
 
         // Sail back to Port Sarim
+        while (count(sdk, /^coins$/i) < 30) {
+          const npc = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /^man$/i.test(n.name) && n.combatLevel <= 4 && n.reachable !== false);
+          if (npc) {
+            await bot.pickpocketNpc(npc);
+            await sleep(700);
+          } else {
+            await fillBananaCrateForLuthas(false);
+          }
+        }
         await bot.walkTo(2954, 3146, 2);
         await talk(c, /^customs officer$/i, [/can i journey on this ship/i, /search away/i, /^ok\.?$/i]);
         await waitCond(() => (sdk.getState()?.player?.worldX ?? 2954) > 3000, 12_000, 400);

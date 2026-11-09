@@ -7,7 +7,7 @@ export const vampire: Quest = {
   async run(c: Ctx) {
     const { bot, sdk } = c;
     const startAttackXp = xp(sdk, 'Attack');
-    let alreadyComplete = startAttackXp >= 200_000;
+    let alreadyComplete = startAttackXp >= 150_000;
 
     const morgan = () => step(c, N, 'morgan-and-garlic', async () => {
       if (alreadyComplete) return true;

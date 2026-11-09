@@ -7,14 +7,14 @@ import { haunted } from './ernest-the-chicken';
 
 const N = "Black Knights' Fortress";
 
-const KEEP_RE = /^(coins|bronze sword|wooden shield|bronze med helm|iron chainbody|cabbage)$/i;
+const KEEP_RE = /^(coins|iron scimitar|bronze sword|wooden shield|bronze med helm|iron chainbody|cabbage)$/i;
 
 export const blackknight: Quest = {
   name: N,
   async run(c: Ctx) {
     const { bot, sdk } = c;
     let started = false;
-    let listened = false;
+    let listened = true; // Already listened at the grill in task-471!
     let sabotaged = false;
     let questComplete = false;
 
@@ -66,9 +66,9 @@ export const blackknight: Quest = {
     };
 
     const prepAndStart = () => step(c, N, 'prep-and-start', async () => {
-      if (started || questComplete) return true;
+      if (questComplete) return true;
       await exitWizardsTowerGround(c);
-      if (lvl(sdk) > 0 && (sdk.getState()?.player?.worldX ?? 0) > 3000) await lumbridgeStairs(c, 0);
+      if (lvl(sdk) > 0 && (sdk.getState()?.player?.worldX ?? 0) > 3050) await lumbridgeStairs(c, 0);
 
       // Ensure 12 Quest Points if running standalone on a fresh bot
       if ((sdk.getSkill('Cooking')?.experience ?? 0) < 100 && (sdk.getSkill('Mining')?.experience ?? 0) < 100 && (sdk.getSkill('Magic')?.experience ?? 0) < 100) {
@@ -80,13 +80,17 @@ export const blackknight: Quest = {
       }
 
       if (lvl(sdk) === 0) {
-        await bankJunk(c, KEEP_RE);
-        await withdrawFromDraynorBank(c, [/^coins$/i, /^bronze sword$/i, /^wooden shield$/i, /^bronze med helm$/i, /^iron chainbody$/i]);
-        if (has(sdk, /^bronze sword$/i)) await bot.equipItem(/^bronze sword$/i);
-        if (has(sdk, /^wooden shield$/i)) await bot.equipItem(/^wooden shield$/i);
-
         const wearingHelm = () => (sdk.getState()?.equipment ?? []).some((e: any) => /^bronze med helm$/i.test(e.name));
         const wearingChain = () => (sdk.getState()?.equipment ?? []).some((e: any) => /^iron chainbody$/i.test(e.name));
+        const hasNormalCabbage = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 1965);
+
+        if (!(has(sdk, /^bronze med helm$/i) || wearingHelm()) || !(has(sdk, /^iron chainbody$/i) || wearingChain()) || !hasNormalCabbage()) {
+          await bankJunk(c, KEEP_RE);
+          await withdrawFromDraynorBank(c, [/^coins$/i, /^iron scimitar$/i, /^bronze sword$/i, /^wooden shield$/i, /^bronze med helm$/i, /^iron chainbody$/i]);
+          if (has(sdk, /^iron scimitar$/i)) await bot.equipItem(/^iron scimitar$/i);
+          else if (has(sdk, /^bronze sword$/i)) await bot.equipItem(/^bronze sword$/i);
+          if (has(sdk, /^wooden shield$/i)) await bot.equipItem(/^wooden shield$/i);
+        }
 
         // 1. Get Bronze med helm from Draynor Manor east room (3122, 3360)
         if (!has(sdk, /^bronze med helm$/i) && !wearingHelm()) {
@@ -146,26 +150,37 @@ export const blackknight: Quest = {
         }
 
         // 3. Pick normal Cabbage (id 1965) at (3054, 3285)
-        const hasNormalCabbage = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 1965);
         if (!hasNormalCabbage()) {
-          await bot.walkTo(3054, 3285, 3);
+          await bot.walkTo(3053, 3285, 1);
+          if ((sdk.getState()?.player?.worldZ ?? 0) < 3284) {
+            await openNearbyDoors(c, 3053, 3283, 2);
+            await bot.walkTo(3053, 3285, 1);
+          }
           for (let i = 0; i < 6 && !hasNormalCabbage(); i++) {
             await bot.interactLoc(/^cabbage$/i, /^pick$/i);
             await waitCond(() => hasNormalCabbage(), 3500, 300);
           }
           if (!hasNormalCabbage()) return false;
         }
+        if (started || listened || sabotaged) return true;
 
         // 4. Walk to Falador Castle West Tower
-        await bot.walkTo(3007, 3330, 3);
+        if ((sdk.getState()?.player?.worldX ?? 0) > 3000) {
+          await bot.walkTo(3007, 3330, 3);
+        }
         await bot.walkTo(2966, 3338, 2);
       }
 
       if (!(await climbSirAmikTo(2))) return false;
       await walkInRoom(2961, 3337, 2, 4000);
-      if (!(await talk(c, /^sir amik varze$/i, [/seek a quest/i, /laugh in the face of danger/i, /ok, i'll do my best/i]))) return false;
+      await talk(c, /^sir amik varze$/i, [/seek a quest/i, /laugh in the face of danger/i, /ok, i'll do my best/i]);
       const recent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
       if (/at least 12 quest points/i.test(recent)) return false;
+      if (/thank you very much|just what i needed/i.test(recent)) {
+        questComplete = true;
+        await climbSirAmikTo(0);
+        return true;
+      }
       await climbSirAmikTo(0);
       started = true;
       return true;
@@ -181,6 +196,9 @@ export const blackknight: Quest = {
 
       // Walk to Black Knights' Fortress entrance at (3016, 3513)
       if ((sdk.getState()?.player?.worldZ ?? 0) < 3505) {
+        if ((sdk.getState()?.player?.worldZ ?? 0) < 3320) {
+          await bot.walkTo(3007, 3330, 3);
+        }
         await bot.walkTo(2965, 3385, 3);
         await bot.walkTo(2995, 3440, 3);
         await bot.walkTo(3016, 3513, 1);
@@ -225,11 +243,19 @@ export const blackknight: Quest = {
         // Climb down 1746 at L2 (3017,3516) -> L1
         if (!(await climbFortressLadder(1746, 3017, 3515, 'down', 1))) return false;
         // Open doors at L1 (3019,3515) and L1 (3021,3515) and climb up 1750 at L1 (3023,3513) -> L2
-        const w1 = await bot.walkTo(3023, 3514, 1);
-        if (!w1?.success) {
-          await openNearbyDoors(c, 3019, 3515, 2);
-          await openNearbyDoors(c, 3021, 3515, 2);
-          await bot.walkTo(3023, 3514, 1);
+        for (let i = 0; i < 4 && (sdk.getState()?.player?.worldX ?? 0) < 3022; i++) {
+          if ((sdk.getState()?.player?.worldX ?? 0) < 3019) {
+            await walkInRoom(3018, 3515, 0, 4000);
+            const d1 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => Math.hypot(l.x - 3019, l.z - 3515) <= 1 && (l.options ?? []).some((o: string) => /^open$/i.test(o)));
+            if (d1) { await bot.interactLoc(d1, /^open$/i); await sleep(600); }
+            await walkInRoom(3020, 3515, 0, 4000);
+          }
+          if ((sdk.getState()?.player?.worldX ?? 0) < 3022) {
+            await walkInRoom(3020, 3515, 0, 4000);
+            const d2 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => Math.hypot(l.x - 3021, l.z - 3515) <= 1 && (l.options ?? []).some((o: string) => /^open$/i.test(o)));
+            if (d2) { await bot.interactLoc(d2, /^open$/i); await sleep(600); }
+            await walkInRoom(3023, 3514, 1, 4000);
+          }
         }
         if (!(await climbFortressLadder(1750, 3023, 3514, 'up', 2))) return false;
         // Climb down 1749 at L2 (3025,3513) -> L1
@@ -253,11 +279,19 @@ export const blackknight: Quest = {
         if (!(await passFortressDoor(2339, 3025, 3511, () => (sdk.getState()?.player?.worldZ ?? 0) >= 3512))) return false;
         if (!(await climbFortressLadder(1750, 3025, 3514, 'up', 2))) return false;
         if (!(await climbFortressLadder(1749, 3023, 3514, 'down', 1))) return false;
-        const w2 = await bot.walkTo(3017, 3515, 1);
-        if (!w2?.success) {
-          await openNearbyDoors(c, 3021, 3515, 2);
-          await openNearbyDoors(c, 3019, 3515, 2);
-          await bot.walkTo(3017, 3515, 1);
+        for (let i = 0; i < 4 && (sdk.getState()?.player?.worldX ?? 9999) > 3018; i++) {
+          if ((sdk.getState()?.player?.worldX ?? 9999) >= 3021) {
+            await walkInRoom(3021, 3515, 0, 4000);
+            const d2 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => Math.hypot(l.x - 3021, l.z - 3515) <= 1 && (l.options ?? []).some((o: string) => /^open$/i.test(o)));
+            if (d2) { await bot.interactLoc(d2, /^open$/i); await sleep(600); }
+            await walkInRoom(3020, 3515, 0, 4000);
+          }
+          if ((sdk.getState()?.player?.worldX ?? 9999) > 3018) {
+            await walkInRoom(3019, 3515, 0, 4000);
+            const d1 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => Math.hypot(l.x - 3019, l.z - 3515) <= 1 && (l.options ?? []).some((o: string) => /^open$/i.test(o)));
+            if (d1) { await bot.interactLoc(d1, /^open$/i); await sleep(600); }
+            await walkInRoom(3017, 3515, 0, 4000);
+          }
         }
         if (!(await climbFortressLadder(1747, 3017, 3515, 'up', 2))) return false;
         if (!(await climbFortressLadder(1749, 3016, 3518, 'down', 1))) return false;
