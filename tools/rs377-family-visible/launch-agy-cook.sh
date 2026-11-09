@@ -33,36 +33,12 @@ find_controllers() {
   done
 }
 
-find_existing_agy_cook() {
-  # Never start a second Agy control session for this exact bot/task.
-  local proc candidate i match
-  local -a argv=()
-  for proc in /proc/[0-9]*/cmdline; do
-    [[ -r "$proc" ]] || continue
-    argv=()
-    mapfile -d '' -t argv < "$proc" 2>/dev/null || continue
-    ((${#argv[@]} >= 3)) || continue
-    case "${argv[0]##*/}" in agy) ;; *) continue ;; esac
-    match=0
-    for ((i=1; i<${#argv[@]}; i++)); do
-      if [[ "${argv[i]}" == *"Agy task: HarnessView1 completes Cook's Assistant"* ]]; then
-        match=1
-        break
-      fi
-    done
-    if ((match)); then
-      candidate="${proc#/proc/}"
-      printf '%s\\n' "${candidate%%/*}"
-    fi
-  done
-}
-
 is_port_listening() {
   [[ -n "$(ss -H -ltn "sport = :$1" 2>/dev/null)" ]]
 }
 
 main() {
-  local root prompt_path game agy_bin pids active_agy elapsed=0 password status
+  local root prompt_path game agy_bin pids elapsed=0 password status
   root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)" || {
     printf 'HANDOFF_BLOCKED: cannot locate source worktree.\n' >&2
     return 2
@@ -96,66 +72,6 @@ main() {
     printf 'HANDOFF_BLOCKED: agy CLI not found. Use the installed Antigravity CLI.\n' >&2
     return 1
   fi
-  active_agy="$(find_existing_agy_cook)"
-  if [[ -n "$active_agy" ]]; then
-    printf 'HANDOFF_BLOCKED: Cook task already running in Agy PID(s): %s. Do not launch another.\\n' "${active_agy//    pids="$(find_controllers)"
-    printf 'HANDOFF_PREFLIGHT_OK: Agy CLI found, JoshRS ports listening; '
-    if [[ -n "$pids" ]]; then
-      printf 'existing HarnessView1 controller PID(s): %s\n' "${pids//$'\n'/, }"
-    else
-      printf 'no known active normal patrol controller.\n'
-    fi
-    printf 'No Agy process, bot login or game action started.\n'
-    return 0
-  fi
-  pids="$(find_controllers)"
-  if [[ -n "$pids" ]]; then
-    printf 'HarnessView1\x27s previous time-limited patrol is running (PID %s).\n' "${pids//$'\n'/, }"
-    printf 'Waiting for its normal disconnect, without stopping it or JoshRS.\n'
-    while [[ -n "$pids" && "$elapsed" -lt 240 ]]; do
-      sleep 3
-      elapsed=$((elapsed+3))
-      pids="$(find_controllers)"
-    done
-    if [[ -n "$pids" ]]; then
-      printf 'HANDOFF_BLOCKED: controller still running (PID %s). Nothing taken over.\n' "${pids//$'\n'/, }" >&2
-      return 1
-    fi
-  fi
-  if [[ ! -t 0 ]]; then
-    printf 'HANDOFF_BLOCKED: interactive Terminal required for bot-only password.\n' >&2
-    return 1
-  fi
-  printf 'The former patrol is offline. Starting a visible, interactive Agy session.\\n'
-  printf 'Agy instructions (first 12 lines):\\n'
-  sed -n '1,12p' "$prompt_path"
-  printf 'Full task: %s\\n' "$prompt_path"
-  IFS= read -r -s -p 'HarnessView1 bot-only password (hidden): ' password
-  printf '\n'
-  if [[ -z "$password" || "${#password}" -gt 20 ]]; then
-    printf 'HANDOFF_BLOCKED: bot-only password must contain 1–20 characters.\n' >&2
-    return 1
-  fi
-  # The secret is supplied only in this foreground child process's environment.
-  # It must never be included in the prompt text, logs or shell arguments.
-  printf 'Launching Agy interactive UI (-i) in %s.\\n' "$root"
-  printf 'Agy may ask for ordinary tool permissions. Do not approve destructive world changes.\n'
-  (
-    cd -- "$root" || return 2
-    JOSHRS_HARNESSVIEW1_PASSWORD="$password" "$agy_bin" -i "$(cat "$prompt_path")"
-  )
-  status=$?
-  unset password
-  printf 'AGY_HANDOFF_FINISHED: CLI exit %d. Check Agy\x27s live quest verification above.\\n' "$status"
-  if ((status != 0)); then
-    printf 'Agy could not complete its CLI session; no success is assumed.\n' >&2
-  fi
-  return "$status"
-}
-main "$@"
-\\n'/, }" >&2
-    return 1
-  fi
   if [[ "${1:-}" == '--check' ]]; then
     pids="$(find_controllers)"
     printf 'HANDOFF_PREFLIGHT_OK: Agy CLI found, JoshRS ports listening; '
@@ -185,7 +101,10 @@ main "$@"
     printf 'HANDOFF_BLOCKED: interactive Terminal required for bot-only password.\n' >&2
     return 1
   fi
-  printf 'The former patrol is offline. Start the Agy Cook\x27s Assistant task.\n'
+  printf 'The former patrol is offline. Opening the visible Agy interactive interface.\n'
+  printf 'Agy prompt preview (first 12 lines):\n'
+  sed -n '1,12p' "$prompt_path"
+  printf 'Full task file: %s\n' "$prompt_path"
   IFS= read -r -s -p 'HarnessView1 bot-only password (hidden): ' password
   printf '\n'
   if [[ -z "$password" || "${#password}" -gt 20 ]]; then
@@ -194,11 +113,11 @@ main "$@"
   fi
   # The secret is supplied only in this foreground child process's environment.
   # It must never be included in the prompt text, logs or shell arguments.
-  printf 'Launching Agy in %s.\n' "$root"
+  printf 'Launching Agy interactive (-i) in %s.\n' "$root"
   printf 'Agy may ask for ordinary tool permissions. Do not approve destructive world changes.\n'
   (
     cd -- "$root" || return 2
-    JOSHRS_HARNESSVIEW1_PASSWORD="$password" "$agy_bin" -p "$(cat "$prompt_path")" --output-format text
+    JOSHRS_HARNESSVIEW1_PASSWORD="$password" "$agy_bin" -i "$(cat "$prompt_path")"
   )
   status=$?
   unset password
