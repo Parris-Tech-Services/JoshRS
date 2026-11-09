@@ -17,6 +17,18 @@ for (const [lvl, x, z, f] of (collisionData as any).tiles as [number, number, nu
     RAW_FLAGS.set(`${x},${z}`, f);
   }
 }
+const GATE_TILES = new Set<string>();
+for (let gx = 2592; gx <= 2594; gx++) {
+  for (let gz = 3360; gz <= 3363; gz++) {
+    GATE_TILES.add(`${gx},${gz}`);
+  }
+}
+const PEN_TILES = new Set<string>();
+for (let px = 2595; px <= 2609; px++) {
+  for (let pz = 3351; pz <= 3364; pz++) {
+    PEN_TILES.add(`${px},${pz}`);
+  }
+}
 const WALK_BLOCKED = 256 | 262144 | 2097152;
 
 function rawFlags(x: number, z: number): number {
@@ -28,11 +40,11 @@ function tileOpen(x: number, z: number): boolean {
 }
 
 function inPen(x: number, z: number): boolean {
-  return x >= 2595 && x <= 2609 && z >= 3351 && z <= 3364;
+  return PEN_TILES.has(`${x},${z}`);
 }
 
 function inGateZone(x: number, z: number): boolean {
-  return x >= 2592 && x <= 2594 && z >= 3360 && z >= 3363;
+  return GATE_TILES.has(`${x},${z}`);
 }
 
 function canStep(x: number, z: number, dx: number, dz: number): boolean {
@@ -49,7 +61,7 @@ function canStep(x: number, z: number, dx: number, dz: number): boolean {
 function findCardinalPush(sx: number, sz: number): { first: [number, number]; len: number } | null {
   const visited = new Set<string>([`${sx},${sz}`]);
   const queue: { x: number; z: number; first: [number, number]; len: number }[] = [];
-  const cardinals: [number, number][] = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+  const cardinals: [number, number][] = [[0, -1], [-1, 0], [1, 0], [0, 1]];
   for (const [dx, dz] of cardinals) {
     if (!canStep(sx, sz, dx, dz) || !canStep(sx, sz, -dx, -dz)) continue;
     const nx = sx + dx;
@@ -240,8 +252,9 @@ export const sheepherder: Quest = {
               }
 
               const [pdx, pdz] = chosenCand!.push!.first;
-              const bx = sheep.x - pdx;
-              const bz = sheep.z - pdz;
+              const lead = missCount >= 1 && canStep(sheep.x - pdx, sheep.z - pdz, -pdx, -pdz) ? 2 : 1;
+              const bx = sheep.x - lead * pdx;
+              const bz = sheep.z - lead * pdz;
 
               const p0 = sdk.getState()?.player;
               if (!p0 || Math.hypot(p0.worldX - bx, p0.worldZ - bz) > 5) {
@@ -252,23 +265,22 @@ export const sheepherder: Quest = {
                 await sdk.sendWalk(bx, bz, true);
                 await waitCond(() => {
                   const cp = sdk.getState()?.player;
-                  const cs = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => n.index === sheep.index);
-                  if (cs && (cs.x !== sheep.x || cs.z !== sheep.z)) return true;
                   return !!cp && cp.worldX === bx && cp.worldZ === bz;
                 }, 2400, 150);
+              }
+              if (lead === 2) {
+                await waitCond(() => {
+                  const cp = sdk.getState()?.player;
+                  const cs = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => n.index === sheep.index);
+                  return !!cp && !!cs && cs.x - cp.worldX === pdx && cs.z - cp.worldZ === pdz;
+                }, 900, 150);
               }
 
               const sNow = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => n.index === sheep.index);
               const pNow = sdk.getState()?.player;
               if (!sNow || !pNow) continue;
               if (sNow.x - pNow.worldX !== pdx || sNow.z - pNow.worldZ !== pdz) {
-                missCount++;
-                if (missCount >= 3) {
-                  await sdk.sendInteractNpc(sNow.index, 1);
-                  await sleep(1800);
-                  if (sdk.getState()?.dialog?.isOpen) await chat(c);
-                  missCount = 0;
-                }
+                missCount = (sNow.x !== sheep.x || sNow.z !== sheep.z) ? 1 : 0;
                 continue;
               }
               missCount = 0;

@@ -1,8 +1,8 @@
 # elrothiro Lab Log
 
-## Session 1 — Hour 8 Status Summary (2026-11-09T13:58Z)
+## Session 1 — Hour 8.5 Status Summary (2026-11-09T14:30Z)
 
-### Quests Completed (18 Quests, 40 Quest Points Verified In-Game)
+### Quests Completed (19 Quests, 44 Quest Points Verified In-Game)
 1. **Cook's Assistant** (`cooks`) — +1 QP (Total: 1 QP), +7,500 Cooking XP (Level 1 -> 30)
 2. **Sheep Shearer** (`sheep`) — +1 QP (Total: 2 QP), +5,000 Crafting XP (Level 1 -> 25), +60 Coins
 3. **The Restless Ghost** (`priest`) — +1 QP (Total: 3 QP), +28,125 Prayer XP (Level 1 -> 47, **Protect from Melee** unlocked!), Ghostspeak amulet
@@ -21,9 +21,10 @@
 16. **Fight Arena** (`arena`) — +2 QP (Total: 38 QP, Second P2P Quest!), +304,375 Attack XP (`Attack: 86`), +54,375 Thieving XP (`Thieving: 57`), +1,000 Coins, Combat Level **72**
 17. **Monk's Friend** (`drunkmonk`) — +1 QP (Total: 39 QP, Third P2P Quest!), +50,000 Woodcutting XP (`Woodcutting: 56`), +8 Law runes
 18. **Hazeel Cult** (`hazeelcult`) — +1 QP (Total: 40 QP, Fourth P2P Quest!), +37,500 Thieving XP (`Thieving: 57 -> 64`, 92,275 XP!), +2,000 Coins
+19. **Sheep Herder** (`sheepherder`) — +4 QP (Total: 44 QP, Fifth P2P Quest!), +3,100 Coins (`Coins: 2,899 -> 5,999`)
 
-### Active Quests In Progress (Hour 8)
-- **Sheep Herder** (`sheepherder`): Equipped `Plague jacket`, `Plague trousers`, and `Prod`, obtained `Feed` from Councillor Halgrive, and implemented a 4-connected cardinal push BFS (`findCardinalPush` + `canStep` reading raw tile/wall flags `2, 8, 32, 128` from `collision-data.json`) to match `[proc,coord_direction]` in `coord_procs.rs2`.
+### Active Quests In Progress (Hour 8.5)
+- **Plague City** (`elena`): Gathering dwellberries, rope, bucket of milk, chocolate dust, and snape grass to rescue Elena in West Ardougne.
 - **Clock Tower** (`cog`): Started with Brother Kojo, poisoned the rat trough, placed the **White Cog** (`id: 20`) on `L2` (`id: 31`) and the **Red Cog** (`id: 23`) on `L0` (`id: 29`).
 - **Murder Mystery** (`murder`): Gathered `Pungent pot`, `Criminals' thread`, `Flypaper` x4, and `Silver cup` at Sinclair Mansion.
 
@@ -808,3 +809,90 @@
 - **Notes / Lessons**:
   - Sided with Clivet and Alomone to resurrect the Mahjarrat Hazeel: poisoned the Carnillean family range in the basement, aligned all 5 sewer valves around Ardougne (`2844..2848`), boarded the cave raft to Alomone's island, unlocked the secret bookcase passage on `L1 (2572, 3270)` and Carnillean chest on `L2 (2570, 3271)` (`forceapproach=north`) to retrieve the `Scroll of hazeel` (`2403`), and delivered it to Alomone for the resurrection ceremony.
   - Note: in this 377 server, the items are named `"Mark of hazeel"` (`2406`), `"Key"` (`2404`, `carnilleanchestkey`), and `"Scroll of hazeel"` (`2403`, `hazeel_scroll`).
+- 2026-11-09T14:14:12.858Z STEP finish-halgrive
+- 2026-11-09T14:14:40.822Z STEP FAILED finish-halgrive
+- 2026-11-09T14:14:40.823Z START Sheep Herder (attempt 2)
+- 2026-11-09T14:14:40.823Z STEP start-and-gear
+- 2026-11-09T14:14:40.823Z STEP herd-and-incinerate
+- 2026-11-09T14:17:48.832Z START Sheep Herder (attempt 1)
+- 2026-11-09T14:17:48.837Z STEP start-and-gear
+- 2026-11-09T14:17:48.838Z STEP herd-and-incinerate
+- 2026-11-09T14:19:39.227Z START Sheep Herder (attempt 1)
+- 2026-11-09T14:19:39.227Z STEP start-and-gear
+- 2026-11-09T14:19:39.228Z STEP herd-and-incinerate
+- 2026-11-09T14:29:29.829Z STEP finish-halgrive
+- 2026-11-09T14:29:55.688Z DONE Sheep Herder
+
+### Quest 19: Sheep Herder (`sheepherder`) — COMPLETED (Fifth P2P Quest!)
+- **Quest Points Gained**: +4 QP (Total: **44 QP**)
+- **Rewards**: +3,100 Coins (`Coins: 2,899 -> 5,999`).
+- **Notes / Lessons**:
+  - Bought `Plague jacket` and `Plague trousers` from Doctor Orbon (`100 gp`), equipped them with `Prod` (`278`), obtained `Feed` (`277`) from Councillor Halgrive, and herded all 4 diseased sheep (`292..295`) into the enclosure (`2594, 3363`), poisoned each with `Feed`, and incinerated `Sheep bones 1..4` (`279..282`) in the furnace (`2599, 3361`).
+  - **Bun v1.4.4 JavaScriptCore DFG/FTL JIT Bug**: Calling `inGateZone(x, z)` (`x >= 2592 && x <= 2594 && z >= 3360 && z <= 3363`) inside the 6,000-step BFS loop of `findCardinalPush` caused JSC's FTL JIT to drop the `z` range comparison after ~3,000 calls and return `true` for ANY `(x, z)` with `2592 <= x <= 2594` (such as `(2592, 3394)` and `(2594, 3391)`!). Replacing `inGateZone` and `inPen` with `GATE_TILES.has(\`${x},${z}\`)` and `PEN_TILES.has(\`${x},${z}\`)` (`Set<string>`) completely avoided this JIT miscompilation.
+  - Loaded `RAW_FLAGS` directly from `sdk/collision-data.json` so closed doors/gates are never unmasked when planning sheep push paths.
+
+- 2026-11-09T14:29:55.688Z START Plague City (attempt 1)
+- 2026-11-09T14:29:55.689Z STEP gather-and-start
+- 2026-11-09T14:42:35.839Z talkTo /^edmond$/i failed: NPC not found
+- 2026-11-09T14:44:42.399Z STEP FAILED gather-and-start
+- 2026-11-09T14:44:42.400Z START Plague City (attempt 2)
+- 2026-11-09T14:44:42.400Z STEP gather-and-start
+- 2026-11-09T14:47:26.034Z START Plague City (attempt 1)
+- 2026-11-09T14:47:26.035Z STEP gather-and-start
+- 2026-11-09T14:49:42.618Z talkTo /^edmond$/i failed: NPC not found
+- 2026-11-09T14:49:52.226Z talkTo /^alrena$/i failed: NPC not found
+- 2026-11-09T14:50:01.421Z talkTo /^edmond$/i failed: NPC not found
+- 2026-11-09T14:50:01.421Z STEP FAILED gather-and-start
+- 2026-11-09T14:50:01.423Z START Plague City (attempt 2)
+- 2026-11-09T14:50:01.423Z STEP gather-and-start
+- 2026-11-09T14:53:14.828Z START Plague City (attempt 1)
+- 2026-11-09T14:53:14.829Z STEP gather-and-start
+- 2026-11-09T14:53:32.854Z STEP enter-west-ardougne
+- 2026-11-09T14:53:45.863Z STEP FAILED enter-west-ardougne
+- 2026-11-09T14:53:45.864Z START Plague City (attempt 2)
+- 2026-11-09T14:53:45.864Z STEP gather-and-start
+- 2026-11-09T14:53:54.472Z STEP enter-west-ardougne
+- 2026-11-09T14:54:19.468Z STEP FAILED enter-west-ardougne
+- 2026-11-09T14:54:19.468Z START Biohazard (attempt 1)
+- 2026-11-09T14:54:19.469Z STEP start-and-distract-watchtower
+- 2026-11-09T14:54:19.470Z STEP gather-and-start
+- 2026-11-09T14:54:27.686Z STEP enter-west-ardougne
+- 2026-11-09T14:55:20.680Z STEP FAILED enter-west-ardougne
+- 2026-11-09T14:55:20.681Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T14:55:20.682Z START Biohazard (attempt 2)
+- 2026-11-09T14:55:20.682Z STEP start-and-distract-watchtower
+- 2026-11-09T14:55:20.682Z STEP gather-and-start
+- 2026-11-09T14:55:32.101Z STEP enter-west-ardougne
+- 2026-11-09T14:55:45.885Z STEP FAILED enter-west-ardougne
+- 2026-11-09T14:55:45.886Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T14:55:45.886Z START Murder Mystery (attempt 1)
+- 2026-11-09T14:55:45.887Z STEP solve-murder
+- 2026-11-09T14:57:23.473Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T14:58:35.631Z START Plague City (attempt 1)
+- 2026-11-09T14:58:35.632Z STEP gather-and-start
+- 2026-11-09T14:59:28.072Z STEP enter-west-ardougne
+- 2026-11-09T15:00:29.868Z STEP FAILED enter-west-ardougne
+- 2026-11-09T15:00:29.870Z START Plague City (attempt 2)
+- 2026-11-09T15:00:29.870Z STEP gather-and-start
+- 2026-11-09T15:00:34.150Z STEP enter-west-ardougne
+- 2026-11-09T15:01:29.868Z STEP FAILED enter-west-ardougne
+- 2026-11-09T15:01:29.868Z START Biohazard (attempt 1)
+- 2026-11-09T15:01:29.869Z STEP start-and-distract-watchtower
+- 2026-11-09T15:01:29.870Z STEP gather-and-start
+- 2026-11-09T15:01:35.681Z STEP enter-west-ardougne
+- 2026-11-09T15:02:33.089Z STEP FAILED enter-west-ardougne
+- 2026-11-09T15:02:33.090Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T15:02:33.090Z START Biohazard (attempt 2)
+- 2026-11-09T15:02:33.090Z STEP start-and-distract-watchtower
+- 2026-11-09T15:02:33.090Z STEP gather-and-start
+- 2026-11-09T15:02:37.687Z STEP enter-west-ardougne
+- 2026-11-09T15:03:37.489Z STEP FAILED enter-west-ardougne
+- 2026-11-09T15:03:37.490Z STEP FAILED start-and-distract-watchtower
+- 2026-11-09T15:03:37.491Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:03:37.491Z STEP solve-murder
+- 2026-11-09T15:08:12.430Z talkTo /^carol$/i failed: NPC not found
+- 2026-11-09T15:08:32.892Z STEP FAILED solve-murder
+- 2026-11-09T15:08:32.893Z START Murder Mystery (attempt 2)
+- 2026-11-09T15:08:32.893Z STEP solve-murder
+- 2026-11-09T15:11:50.427Z START Murder Mystery (attempt 1)
+- 2026-11-09T15:11:50.427Z STEP solve-murder

@@ -42,6 +42,13 @@ export const biohazard: Quest = {
         if (!(await walkToKandarin(c, 2592, 3336))) return false;
       }
 
+      for (const dropRe of [/^bucket$/i, /^picture$/i, /^warrant$/i, /^a small key$/i, /^a magic scroll$/i, /^mark of hazeel$/i, /^child's blanket$/i, /^feed$/i, /^key$/i, /^spade$/i]) {
+        for (const it of (sdk.getInventory() ?? []).filter((i: any) => dropRe.test(i.name))) {
+          await sdk.sendDropItem(it.slot);
+          await sleep(300);
+        }
+      }
+
       // 1. Talk to Elena (2592, 3336)
       const we = await bot.walkTo(2592, 3336, 2);
       if (!we?.success) {
@@ -265,9 +272,11 @@ export const biohazard: Quest = {
       }
 
       // Ensure at least 5 free inventory slots before talking to Elena
-      for (const dropRe of [/^pigeon cage$/i, /^key$/i, /^rotten apple$/i]) {
-        const it = sdk.findInventoryItem(dropRe);
-        if (it) { await sdk.sendDropItem(it.slot); await sleep(400); }
+      for (const dropRe of [/^pigeon cage$/i, /^key$/i, /^rotten apple$/i, /^bucket$/i, /^picture$/i, /^warrant$/i, /^a small key$/i, /^a magic scroll$/i, /^mark of hazeel$/i, /^child's blanket$/i, /^feed$/i, /^spade$/i]) {
+        for (const it of (sdk.getInventory() ?? []).filter((i: any) => dropRe.test(i.name))) {
+          await sdk.sendDropItem(it.slot);
+          await sleep(300);
+        }
       }
 
       // Hand Distillator to Elena (2592, 3336)

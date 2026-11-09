@@ -28,7 +28,7 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     barrelCoord: [2733, 3575, 0],
     silverRe: /^silver necklace$/i,
     dustedRe: /^silver necklace$/i,
-    printRe: /^anna's print$/i,
+    printRe: /^annas?'s? print$/i,
     poisonLocId: 2650,
     poisonLocCoord: [2730, 3572, 0],
   },
@@ -40,7 +40,7 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     barrelCoord: [2733, 3578, 0],
     silverRe: /^silver cup$/i,
     dustedRe: /^silver cup$/i,
-    printRe: /^bob's print$/i,
+    printRe: /^bobs?'s? print$/i,
     poisonLocId: 2651,
     poisonLocCoord: [2730, 3559, 0],
   },
@@ -52,7 +52,7 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     barrelCoord: [2733, 3581, 1],
     silverRe: /^silver bottle$/i,
     dustedRe: /^silver bottle$/i,
-    printRe: /^carol's print$/i,
+    printRe: /^carols?'s? print$/i,
     poisonLocId: 2652,
     poisonLocCoord: [2736, 3573, 0],
   },
@@ -64,7 +64,7 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     barrelCoord: [2733, 3578, 1],
     silverRe: /^silver book$/i,
     dustedRe: /^silver book$/i,
-    printRe: /^david's print$/i,
+    printRe: /^davids?'s? print$/i,
     poisonLocId: 2653,
     poisonLocCoord: [2740, 3574, 1],
   },
@@ -76,7 +76,7 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     barrelCoord: [2747, 3581, 1],
     silverRe: /^silver needle$/i,
     dustedRe: /^silver needle$/i,
-    printRe: /^elizabeth's print$/i,
+    printRe: /^elizabeths?'s? print$/i,
     poisonLocId: 2654,
     poisonLocCoord: [2747, 3563, 0],
   },
@@ -88,7 +88,7 @@ const SUSPECTS: Record<string, SuspectInfo> = {
     barrelCoord: [2747, 3577, 1],
     silverRe: /^silver pot$/i,
     dustedRe: /^silver pot$/i,
-    printRe: /^frank's print$/i,
+    printRe: /^franks?'s? print$/i,
     poisonLocId: 2655,
     poisonLocCoord: [2746, 3573, 0],
   },
@@ -105,14 +105,14 @@ export const murder: Quest = {
       if (targetLevel === 1) {
         const w = await bot.walkTo(2740, 3578, 2);
         if (!w?.success) { await openNearbyDoors(c, 2740, 3575, 4); await bot.walkTo(2740, 3578, 2); }
-        const st = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 597);
+        const st = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 597 || /stair/i.test(l.name));
         if (st) {
           await sdk.sendInteractLoc(st.x, st.z, st.id, 1);
           await waitCond(() => lvl(sdk) === 1, 5000, 300);
         }
       } else {
         await bot.walkTo(2740, 3581, 2);
-        const st = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 598);
+        const st = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 598 || /stair/i.test(l.name));
         if (st) {
           await sdk.sendInteractLoc(st.x, st.z, st.id, 1);
           await waitCond(() => lvl(sdk) === 0, 5000, 300);
@@ -200,7 +200,7 @@ export const murder: Quest = {
       }
 
       // Dust Criminal's dagger and get Unknown print (1822)
-      if (!has(sdk, /^unknown print|killer's print$/i)) {
+      if (!has(sdk, /^unknown print|killers?'s? print$/i)) {
         await fillPotOfFlour();
         await bot.useItemOnItem(/^pot of flour$/i, /^criminals?'s? dagger$/i);
         await sleep(1000);
@@ -208,31 +208,35 @@ export const murder: Quest = {
         await waitInv(sdk, /^unknown print$/i, 4000);
       }
 
-      // Check both suspects in `pair` to see whose print matches Unknown print -> becomes Killer's print (1815)
+      // Check both suspects in `pair` to see whose print matches Unknown print -> becomes Killers' print (1815)
       let culprits: SuspectInfo[] = [...pair];
       for (const s of pair) {
-        if (has(sdk, /^killer's print$/i)) break;
-        await ensureMansionLevel(s.barrelCoord[2]);
-        const wb = await bot.walkTo(s.barrelCoord[0], s.barrelCoord[1], 1);
-        if (!wb?.success) {
-          await openNearbyDoors(c, s.barrelCoord[0], s.barrelCoord[1], 4);
-          await bot.walkTo(s.barrelCoord[0], s.barrelCoord[1], 1);
+        if (has(sdk, /^killers?'s? print$/i)) break;
+        if (!has(sdk, s.printRe)) {
+          if (!has(sdk, s.silverRe)) {
+            await ensureMansionLevel(s.barrelCoord[2]);
+            const wb = await bot.walkTo(s.barrelCoord[0], s.barrelCoord[1], 1);
+            if (!wb?.success) {
+              await openNearbyDoors(c, s.barrelCoord[0], s.barrelCoord[1], 4);
+              await bot.walkTo(s.barrelCoord[0], s.barrelCoord[1], 1);
+            }
+            const bLoc = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === s.barrelId);
+            if (bLoc) {
+              await sdk.sendInteractLoc(bLoc.x, bLoc.z, bLoc.id, 2);
+              await sleep(1500);
+              if (sdk.getState()?.dialog?.isOpen) await chat(c);
+            }
+          }
+          await fillPotOfFlour();
+          await bot.useItemOnItem(/^pot of flour$/i, s.silverRe);
+          await sleep(1000);
+          await bot.useItemOnItem(/^flypaper$/i, s.dustedRe);
+          await waitInv(sdk, s.printRe, 4000);
         }
-        const bLoc = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === s.barrelId);
-        if (bLoc) {
-          await sdk.sendInteractLoc(bLoc.x, bLoc.z, bLoc.id, 2);
-          await sleep(1500);
-          if (sdk.getState()?.dialog?.isOpen) await chat(c);
-        }
-        await fillPotOfFlour();
-        await bot.useItemOnItem(/^pot of flour$/i, s.silverRe);
-        await sleep(1000);
-        await bot.useItemOnItem(/^flypaper$/i, s.dustedRe);
-        await waitInv(sdk, s.printRe, 4000);
         await bot.useItemOnItem(s.printRe, /^unknown print$/i);
         await sleep(1500);
         if (sdk.getState()?.dialog?.isOpen) await chat(c);
-        if (has(sdk, /^killer's print$/i)) {
+        if (has(sdk, /^killers?'s? print$/i)) {
           culprits = [s];
           break;
         }

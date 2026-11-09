@@ -16,6 +16,14 @@ export const elena: Quest = {
     const gatherAndStart = () => step(c, N, 'gather-and-start', async () => {
       if (xp(sdk, 'Mining') > startXp + 1000) return true;
 
+      // Drop leftover quest items from completed quests to ensure plenty of inventory space
+      for (const dropRe of [/^mark of hazeel$/i, /^child's blanket$/i, /^feed$/i, /^key$/i]) {
+        for (const it of (sdk.getInventory() ?? []).filter((i: any) => dropRe.test(i.name))) {
+          await sdk.sendDropItem(it.slot);
+          await sleep(300);
+        }
+      }
+
       // If east of White Wolf Mountain or need Snape grass (231), pick it up at Hobgoblin Peninsula (2906, 3297)
       if (!has(sdk, /^snape grass|hangover cure$/i)) {
         const p = sdk.getState()?.player;
@@ -34,36 +42,58 @@ export const elena: Quest = {
         await pickupWithWait(c, 2906, 3297, /^snape grass$/i, 20);
       }
 
-      await walkToKandarin(c, 2615, 3293);
-
-      // Buy Rope (954) and 4 Buckets (1925) at Ardougne General Store (2615, 3293)
-      if (!has(sdk, /^rope$/i) || count(sdk, /^bucket$/i) + count(sdk, /^bucket of water$/i) < 4) {
+      // Buy Rope (954) and Bucket (1925) at Ardougne General Store (2615, 3293) if needed
+      if (!has(sdk, /^rope$/i) || (count(sdk, /^bucket$/i) + count(sdk, /^bucket of water$/i) < 1)) {
+        await walkToKandarin(c, 2615, 3293);
         const w = await bot.walkTo(2615, 3293, 2);
         if (!w?.success) { await openNearbyDoors(c, 2615, 3293, 3); await bot.walkTo(2615, 3293, 2); }
         const o = await bot.openShop(/^aemad|kortan$/i);
         if (o?.success) {
           if (!has(sdk, /^rope$/i)) await bot.buyFromShop(/^rope$/i, 1);
-          const needBuckets = Math.max(0, 4 - count(sdk, /^bucket$/i) - count(sdk, /^bucket of water$/i));
-          if (needBuckets > 0) await bot.buyFromShop(/^bucket$/i, needBuckets);
+          if (count(sdk, /^bucket$/i) + count(sdk, /^bucket of water$/i) < 1) await bot.buyFromShop(/^bucket$/i, 1);
           await bot.closeShop();
         }
       }
 
-      // Buy Chocolate dust (1975), Bucket of milk (1927), Dwellberries (2126) from Hudo at Grand Tree Groceries (2449, 3495, L1)
+      // Buy Chocolate dust (1975), Bucket of milk (1927), Dwellberries (2126) from Hudo at Grand Tree Groceries (2448, 3509, L1)
       if (!has(sdk, /^hangover cure$/i) || (!has(sdk, /^dwellberries$/i) && !has(sdk, /^gas mask$/i))) {
-        await bot.walkTo(2530, 3365, 3);
-        await bot.walkTo(2461, 3381, 2);
-        const gate = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^gate$/i.test(l.name));
-        if (gate && (sdk.getState()?.player?.worldZ ?? 0) < 3383) {
-          await bot.interactLoc(gate, 'Open');
-          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) >= 3383, 6000, 300);
+        const pCur = sdk.getState()?.player;
+        if (lvl(sdk) === 0 && pCur && pCur.worldZ <= 3383) {
+          if (pCur.worldX > 2505) {
+            await bot.walkTo(2558, 3337, 3);
+            await bot.walkTo(2500, 3340, 3);
+          }
+          await bot.walkTo(2461, 3382, 1);
+          for (let gTry = 0; gTry < 4 && (sdk.getState()?.player?.worldZ ?? 0) <= 3383; gTry++) {
+            const gate = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 190 || (/^gate$/i.test(l.name) && Math.hypot(l.x - 2459, l.z - 3383) <= 4));
+            if (gate) {
+              await sdk.sendInteractLoc(gate.x, gate.z, gate.id, 1);
+              if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || (sdk.getState()?.player?.worldZ ?? 0) >= 3384, 5000, 250)) {
+                if (sdk.getState()?.dialog?.isOpen) {
+                  await chat(c, [/sorry, i'm a bit busy/i]);
+                }
+              }
+              await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) >= 3384, 4000, 250);
+            }
+          }
         }
-        await bot.walkTo(2465, 3440, 3);
-        const wt = await bot.walkTo(2466, 3494, 2);
-        if (!wt?.success) { await openNearbyDoors(c, 2465, 3491, 3); await bot.walkTo(2466, 3494, 2); }
-        await bot.interactLoc(/^ladder$/i, 'Climb-up');
-        await waitCond(() => lvl(sdk) === 1, 5000, 300);
-        await bot.walkTo(2449, 3495, 2);
+        if (lvl(sdk) === 0 && (sdk.getState()?.player?.worldZ ?? 0) < 3493) {
+          await bot.walkTo(2465, 3440, 3);
+          await bot.walkTo(2465, 3491, 1);
+          for (let dTry = 0; dTry < 3 && (sdk.getState()?.player?.worldZ ?? 0) < 3493; dTry++) {
+            const td = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /tree door/i.test(l.name));
+            if (td) {
+              await sdk.sendInteractLoc(td.x, td.z, td.id, 1);
+              await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) >= 3493, 4000, 250);
+            }
+          }
+        }
+        if (lvl(sdk) === 0) {
+          await bot.walkTo(2466, 3495, 1);
+          await bot.interactLoc(/^ladder$/i, 'Climb-up');
+          await waitCond(() => lvl(sdk) === 1, 5000, 300);
+        }
+        await bot.walkTo(2448, 3509, 2);
         const o = await bot.openShop(/^hudo$/i);
         if (o?.success) {
           if (!has(sdk, /^chocolate dust|chocolaty milk|hangover cure$/i)) await bot.buyFromShop(/^chocolate dust$/i, 1);
@@ -71,16 +101,39 @@ export const elena: Quest = {
           if (!has(sdk, /^dwellberries|gas mask$/i)) await bot.buyFromShop(/^dwellberries$/i, 1);
           await bot.closeShop();
         }
-        await bot.walkTo(2466, 3495, 2);
+        await bot.walkTo(2466, 3495, 1);
         await bot.interactLoc(/^ladder$/i, 'Climb-down');
         await waitCond(() => lvl(sdk) === 0, 5000, 300);
-        await bot.walkTo(2465, 3440, 3);
-        await bot.walkTo(2461, 3386, 2);
-        const gateOut = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^gate$/i.test(l.name));
-        if (gateOut && (sdk.getState()?.player?.worldZ ?? 0) >= 3383) {
-          await bot.interactLoc(gateOut, 'Open');
-          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) < 3383, 6000, 300);
+      }
+
+      // If currently inside Grand Tree or Tree Gnome Stronghold, exit back to East Ardougne
+      if (lvl(sdk) === 1 && (sdk.getState()?.player?.worldX ?? 3000) < 2505) {
+        await bot.walkTo(2466, 3495, 1);
+        await bot.interactLoc(/^ladder$/i, 'Climb-down');
+        await waitCond(() => lvl(sdk) === 0, 5000, 300);
+      }
+      if (lvl(sdk) === 0 && (sdk.getState()?.player?.worldX ?? 3000) < 2505 && (sdk.getState()?.player?.worldZ ?? 0) >= 3384) {
+        if ((sdk.getState()?.player?.worldZ ?? 0) >= 3492 && (sdk.getState()?.player?.worldX ?? 0) >= 2461 && (sdk.getState()?.player?.worldX ?? 0) <= 2470) {
+          await bot.walkTo(2465, 3493, 1);
+          for (let dTry = 0; dTry < 3 && (sdk.getState()?.player?.worldZ ?? 3493) >= 3492; dTry++) {
+            const td = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /tree door/i.test(l.name));
+            if (td) {
+              await sdk.sendInteractLoc(td.x, td.z, td.id, 1);
+              await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3493) <= 3491, 4000, 250);
+            }
+          }
         }
+        await bot.walkTo(2465, 3440, 3);
+        await bot.walkTo(2461, 3385, 1);
+        for (let gTry = 0; gTry < 3 && (sdk.getState()?.player?.worldZ ?? 3385) >= 3384; gTry++) {
+          const gateOut = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 190 || (/^gate$/i.test(l.name) && Math.hypot(l.x - 2459, l.z - 3383) <= 4));
+          if (gateOut) {
+            await sdk.sendInteractLoc(gateOut.x, gateOut.z, gateOut.id, 1);
+            await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3385) <= 3382, 5000, 250);
+          }
+        }
+        await bot.walkTo(2500, 3340, 3);
+        await bot.walkTo(2558, 3337, 3);
       }
 
       if (has(sdk, /^chocolate dust$/i) && has(sdk, /^bucket of milk$/i)) {
@@ -90,17 +143,11 @@ export const elena: Quest = {
         await combineItems(c, /^snape grass$/i, /^chocolaty milk$/i, /^hangover cure$/i);
       }
 
-      // Walk to Edmond (2568, 3334) and fill 4 Buckets of water at the sink
-      await bot.walkTo(2568, 3334, 2);
-      while (has(sdk, /^bucket$/i) && count(sdk, /^bucket of water$/i) < 4) {
-        const before = count(sdk, /^bucket of water$/i);
-        await bot.useItemOnLoc(/^bucket$/i, /^sink$/i);
-        if (!(await waitCond(() => count(sdk, /^bucket of water$/i) > before, 4000, 300))) break;
-      }
+      // Walk to Edmond (2568, 3334)
+      if (!has(sdk, /^gas mask$/i) && ! (sdk.getState()?.equipment ?? []).some((e: any) => /gas mask/i.test(e.name))) {
+        await bot.walkTo(2568, 3334, 2);
+        await talk(c, /^edmond$/i, [/what's happened to her/i, /can i help find her/i]);
 
-      await talk(c, /^edmond$/i, [/what's happened to her/i, /^yes\.$/i]);
-
-      if (!has(sdk, /^gas mask$/i)) {
         const wa = await bot.walkTo(2573, 3333, 2);
         if (!wa?.success) { await openNearbyDoors(c, 2573, 3331, 3); await bot.walkTo(2573, 3333, 2); }
         await talk(c, /^alrena$/i);
@@ -117,7 +164,7 @@ export const elena: Quest = {
 
       await bot.walkTo(2568, 3334, 2);
       await talk(c, /^edmond$/i);
-      return has(sdk, /^gas mask$/i) && has(sdk, /^spade$/i);
+      return (has(sdk, /^gas mask$/i) || (sdk.getState()?.equipment ?? []).some((e: any) => /gas mask/i.test(e.name))) && has(sdk, /^spade$/i);
     });
 
     const enterWestArdougne = () => step(c, N, 'enter-west-ardougne', async () => {
@@ -126,16 +173,39 @@ export const elena: Quest = {
       if (p0 && p0.worldX < 2558 && p0.worldZ < 4000) return true;
 
       if ((sdk.getState()?.player?.worldZ ?? 0) < 9000) {
-        await bot.walkTo(2566, 3333, 1);
-        for (let i = 0; i < 4 && has(sdk, /^bucket of water$/i); i++) {
-          const mud = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2531 || l.id === 2532);
-          if (!mud) break;
-          const b = count(sdk, /^bucket of water$/i);
+        for (let i = 0; i < 4; i++) {
+          if (!has(sdk, /^bucket of water$/i) && has(sdk, /^bucket$/i)) {
+            await bot.walkTo(2602, 3336, 3);
+            await bot.walkTo(2609, 3324, 1);
+            await openNearbyDoors(c, 2610, 3324, 2);
+            await bot.walkTo(2616, 3325, 1);
+            await bot.useItemOnLoc(/^bucket$/i, /^sink$/i);
+            await waitInv(sdk, /^bucket of water$/i, 4000);
+          }
+          if (!has(sdk, /^bucket of water$/i)) break;
+          if ((sdk.getState()?.player?.worldX ?? 0) > 2600) {
+            await openNearbyDoors(c, 2610, 3324, 2);
+            await bot.walkTo(2602, 3336, 3);
+          }
+          await bot.walkTo(2566, 3333, 1);
+          const beforeTick = sdk.getState()?.tick ?? 0;
           await bot.useItemOnLoc(/^bucket of water$/i, /^mud patch$/i);
-          await waitCond(() => count(sdk, /^bucket of water$/i) < b, 4000, 300);
+          if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 4000, 200)) {
+            await chat(c);
+          }
+          const recText = (sdk.getState()?.recentDialogs ?? [])
+            .filter((d: any) => (d.tick ?? 0) >= beforeTick)
+            .flatMap((d: any) => d.text ?? d.lines ?? [])
+            .join(' ');
+          if (/soft enough/i.test(recText)) break;
         }
+        await bot.walkTo(2566, 3333, 1);
         await bot.useItemOnLoc(/^spade$/i, /^mud patch$/i);
-        await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) > 9000, 8000, 300);
+        if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || (sdk.getState()?.player?.worldZ ?? 0) > 9000, 5000, 250)) {
+          if (sdk.getState()?.dialog?.isOpen) await chat(c);
+        }
+        await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) > 9000, 6000, 250);
+        if (sdk.getState()?.dialog?.isOpen) await chat(c);
       }
 
       if ((sdk.getState()?.player?.worldZ ?? 0) > 9000) {
@@ -221,8 +291,8 @@ export const elena: Quest = {
         }
 
         // 4. Civic Office — Clerk (2528, 3317) & Bravek (2536, 3314)
-        const wc = await bot.walkTo(2528, 3317, 2);
-        if (!wc?.success) { await openNearbyDoors(c, 2524, 3316, 3); await bot.walkTo(2528, 3317, 2); }
+        const wc = await bot.walkTo(2530, 3315, 1);
+        if (!wc?.success) { await openNearbyDoors(c, 2524, 3316, 3); await bot.walkTo(2530, 3315, 1); }
         await talk(c, /^clerk$/i, [/need permission to enter a plague house/i, /who is through that door/i, /urgent though/i]);
 
         await bot.walkTo(2530, 3314, 1);
@@ -264,6 +334,7 @@ export const elena: Quest = {
         if (barrel) {
           await sdk.sendInteractLoc(barrel.x, barrel.z, barrel.id, 1);
           await waitInv(sdk, /^a small key$/i, 4000);
+          if (sdk.getState()?.dialog?.isOpen) await chat(c);
         }
       }
 
