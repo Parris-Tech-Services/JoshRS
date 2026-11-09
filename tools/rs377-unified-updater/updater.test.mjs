@@ -99,7 +99,7 @@ test('failed compile restores sources, config pack, script pack and account/save
     return {status:1,stdout:'failure simulated',stderr:''};
   }}),e=>{
     assert.match(e.message,/Native 377 build failed/);
-    assert.match(e.message,/Compiler log: .*build\\.log/);
+    assert.ok(e.message.includes('Compiler log: ') && e.message.includes('build.log'));
     return true;
   });
   const backups=fs.readdirSync(path.join(f.statePath,'backups'));
