@@ -295,6 +295,21 @@
 - **Progression stalls / friction points**:
   - None! Both `Witch's Potion` and `Doric's Quest` completed on the first pass.
 
+### Milestone 14a: Goblin Diplomacy Dyes Crafted (Aggie + Wyson) & Melee Combat Method 3 (Goblin Village Goblins: Strength Lv 17 → 39, HP Lv 17 → 30, Combat Lv 30 → 40!)
+- **What we did & duration** (`06:46:47Z` → `07:04:52Z`, **17m 22s / 1,042s** across `task-328` and `task-344`):
+  - **Goblin Diplomacy — Rumours & Dyes Crafted** (`540s`):
+    - Spoke to the `Bartender` at the Rusty Anchor Inn in Port Sarim `(3045, 3257)` to start the quest dialogue.
+    - Purchased `2 Woad leaf` (`20 GP`) from `Wyson the gardener` in Falador Park `(3027, 3379)`, picked `Onions` and gathered `Redberries`, and paid `Aggie` the witch in Draynor Village `(3086, 3259)` `5 GP` each (`15 GP` total) to make `Red dye`, `Yellow dye`, and `Blue dye`, then mixed `Red dye` + `Yellow dye` into `Orange dye`!
+  - **Melee Combat Method 3 — Killing Level 5 Goblins in Goblin Village** (`(2956, 3500)`, **502s**):
+    - Fought Level 5 `Goblin`s in Goblin Village to farm `Goblin mail` drops. Obtained `1 Goblin mail` so far while gaining **`+31,700` Strength XP** (advancing Strength from **Level 17 → 39**!) and **`+10,413` Hitpoints XP** (advancing Hitpoints from **Level 17 → 30**, `35/38` HP!), boosting Combat Level from **30 → 40**!
+- **Approximate XP/hour & GP/hour**:
+  - **Melee Combat Method 3 (Goblin Village Level 5 Goblins, Lv 30–40)**: `+31,700` Strength XP and `+10,413` Hitpoints XP in `502s` = **~227,330 Melee XP/hr** and **~74,674 Hitpoints XP/hr** (**1.98x faster** than Lumbridge Cows' `114,813` XP/hr and **3.63x faster** than Chickens' `62,585` XP/hr due to massive multi-spawn density in Goblin Village!).
+- **Shop prices paid & items needed but couldn't buy**:
+  - **Wyson the gardener** (`(3027, 3379)`): Paid **20 GP** for `2 Woad leaf` via dialogue (`"How about 20 coins?"`).
+  - **Aggie the Witch** (`(3086, 3259)`): Paid **15 GP** (`5 GP` x 3) to craft `Red dye`, `Yellow dye`, and `Blue dye`.
+- **Progression stalls / friction points**:
+  - `Goblin mail` drop rate from Level 5 Goblins in Goblin Village has RNG variance (yielded 1 `Goblin mail` in ~60 kills over 502s). Switching combat style to Attack (`0`) for the remaining 2 `Goblin mail` drops balances melee stats while finishing the quest.
+
 ---
 
 ## Summary Dataset: Skills, Methods, XP/hr, GP/hr & Balancing Findings
@@ -317,6 +332,7 @@
 | **Thieving** | 2 | East Varrock Tea Stall (`(3268, 3410)`) | 20 → 21 | **~180,000 XP/hr** | ~0 GP/hr | `400` XP/steal (~7.5s respawn), zero stun damage, free 3 HP heal (`Cup of tea`). |
 | **Melee Combat** | 1 | Killing Chickens (`(3231, 3297)`) | 1 → 7 | **~62,585 XP/hr** | ~0 GP/hr | Safe (max hit 0), drops `Raw chicken`, `Bones`, `Feather`. |
 | **Melee Combat** | 2 | Killing Lumbridge Cows (`(3255, 3278)`) | 6 → 13 | **~114,813 XP/hr** | ~2,600 GP/hr (hides) | **1.83x faster** than Chickens; drops `Cowhide` + `Bones` + `Raw beef`. |
+| **Melee Combat** | 3 | Killing Goblin Village Goblins (`(2956, 3500)`) | 17 → 39 | **~227,330 XP/hr** | ~1,200 GP/hr | **1.98x faster** than Cows (`+74,674` HP XP/hr); drops `Goblin mail`, `Bones`, `Coins`. |
 | **Magic** | 1 | Wind Strike (`Spells.WIND_STRIKE` at Chickens) | 1 → 14 | **~92,811 XP/hr** | -3,680 GP/hr | `~176.4` XP/cast (`7 GP`/cast in runes; `3 GP`/cast with Staff of air). |
 | **Magic** | 2 | Witch's Potion Quest (`1 QP`) | 14 → 33 | **~142,682 XP/hr** | -4 GP | `+8,125` XP in 205s — unlocks Varrock/Lumbridge Teleports & Telegrab! |
 | **Prayer** | 1 | Burying Chicken Bones (`(3231, 3297)`) | 1 → 5 | **~17,600 XP/hr** | 0 GP/hr | `112.5` XP per bone buried alongside Melee Method 1. |
@@ -338,5 +354,5 @@
 2. **Pickaxe Progression Gap**: Bob's Brilliant Axes in Lumbridge only stocks `Bronze pickaxe` (`1 GP`). New players in Lumbridge/Varrock cannot upgrade to Iron/Steel/Mithril pickaxes locally without traveling to Dwarven Mine (Nurmof).
 3. **Furnace vs. Anvil Separation**: Varrock has mines and anvils (`(3188, 3426)`) while Lumbridge and Al Kharid have furnaces (and Al Kharid lacks an anvil), creating a heavy walking bottleneck for early Smithing unless players mine at Al Kharid/SE Varrock, smelt in Al Kharid/Lumbridge, bank, and smith at Varrock West.
 4. **Draynor Fishing Spot Death Trap**: Level 7 Dark Wizards `(3084, 3236)` aggro onto low-level players clicking the northern fishing spots (`z >= 3231`) at Draynor `(3087, 3230)`. Staying on the southern spot `(3087, 3227)` avoids aggro.
-5. **Current Character State (`bot3`)**: Combat Level 30 (`HP 21/21`), Falador West Bank `(2945, 3370)`, Total Skill Level **376** across 15 trained skills (`Mining 54`, `Prayer 48`, `Firemaking 39`, `Woodcutting 38`, `Cooking 35`, `Crafting 34`, `Magic 33`, `Smithing 26`, `Fishing 22`, `Thieving 22`, `Hitpoints 17`, `Strength 17`, `Attack 13`, `Fletching 11`, `Defence 10`), **7 Quests Complete (`11 QP`)**: `Cook's Assistant`, `Sheep Shearer`, `Romeo & Juliet`, `Rune Mysteries`, `The Restless Ghost`, `Witch's Potion`, `Doric's Quest`.
+5. **Current Character State (`bot3`)**: Combat Level 40 (`HP 35/38`), Goblin Village `(2957, 3497)`, Total Skill Level **411** across 15 trained skills (`Mining 54`, `Prayer 48`, `Firemaking 39`, `Strength 39`, `Woodcutting 38`, `Cooking 35`, `Crafting 34`, `Magic 33`, `Hitpoints 30`, `Smithing 26`, `Fishing 22`, `Thieving 22`, `Attack 13`, `Fletching 11`, `Defence 10`), **7 Quests Complete (`11 QP`)**: `Cook's Assistant`, `Sheep Shearer`, `Romeo & Juliet`, `Rune Mysteries`, `The Restless Ghost`, `Witch's Potion`, `Doric's Quest` (with `Goblin Diplomacy` on final step holding `Orange dye`, `Blue dye`, and `1/3 Goblin mail`).
 

@@ -12,7 +12,7 @@ export const gobdip: Quest = {
       count(sdk, /^goblin mail$/i) + count(sdk, /^orange goblin mail$/i) + count(sdk, /^blue goblin mail$/i);
 
     const startPortSarim = () => step(c, N, 'start-port-sarim', async () => {
-      if (started || has(sdk, /^gold bar$/i)) return true;
+      if (started || has(sdk, /^gold bar|orange dye|blue dye|goblin mail|orange goblin mail|blue goblin mail$/i)) return true;
       await exitWizardsTowerGround(c);
       if (lvl(sdk) > 0) await lumbridgeStairs(c, 0);
       await bankJunk(c, /^(coins|iron scimitar|bronze sword|wooden shield|goblin mail|orange goblin mail|blue goblin mail|redberries|onion|woad leaf|red dye|yellow dye|orange dye|blue dye|gold bar|cabbage)$/i);
@@ -168,7 +168,7 @@ export const gobdip: Quest = {
         await bot.walkTo(2965, 3385, 3);
         await bot.walkTo(2956, 3450, 3);
         await bot.walkTo(2956, 3500, 2);
-        await sdk.sendSetCombatStyle(1);
+        await sdk.sendSetCombatStyle(0);
         const deadline = Date.now() + 420_000;
         while (Date.now() < deadline && totalMails() < 3) {
           await bot.dismissBlockingUI();
