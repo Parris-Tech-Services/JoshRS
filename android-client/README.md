@@ -10,6 +10,18 @@
 - Authenticated game login, full terrain/models/textures/animations, inventory/quests/combat visible in the client, one-APK embedded engine, and real phone play remain **OPEN**. Do not describe this as the finished JoshRS 377 Android app.
 
 
+## 9 November — private LAN and tailnet diagnostic (no account login)
+
+The **existing** Kotlin app can now send the real revision-377 **two-byte, credential-free negotiation** to a numeric, explicitly private IPv4 address. Open the app, find **Private LAN / Windows host**, enter the CURRENT Windows host IPv4 (for example `192.168.1.20`), then tap **Test private LAN revision-377 negotiation**.
+
+- Supported: `127.0.0.1` for a phone-local Termux server or CI `adb reverse`, RFC1918 home LAN, and `100.64.0.0/10` tailnet addresses. Public IPs, hostnames, malformed and ambiguous addresses are rejected **before** opening a socket; there is no DNS lookup or credential transmission.
+- This requires the existing server to be listening on the chosen private address and reachable over Wi-Fi/tailnet. **The app never changes server binding, Windows Firewall, router ports or account data.** If the existing server listens only on loopback, the LAN test will (correctly) fail. Do not modify the live family server merely to satisfy this diagnostic.
+- The reply is a 17-byte revision-377 negotiation, not an authenticated login or a working game client. Successful negotiation gives no access to inventory, NPCs, quests, camera, saves or multiplayer.
+- The prior `Test real 377 login negotiation` button still checks `127.0.0.1` on the phone, preserving the emulator/phone-local path. Unit tests cover numeric-address allow/deny rules and an actual disposable TCP handshake.
+- **No change to JoshRS 377 production saves or server code.** Verify Wi-Fi reachability only against an explicitly approved, disposable listener or an already-authorised host.
+
+The earlier RSBox + Meteor monorepo proposal is **reference research**, not the implementation here. RSBox targets a different server/revision and Meteor is desktop-oriented; neither gives us a plug-and-play Kotlin Android renderer for the existing personalised revision-377 world. The same applies to OpenOSRS-mobile, which requires a separate client APK and is not an independently licensed drop-in revision-377 renderer. Reuse third-party source only after checking its exact commit, licence, Android compatibility and packet/cache revision.
+
 ## Stage 2 foundation (8 November 2026) — REAL 377 data, still no playable client
 
 The new phone-local integration work adds `Save377` (real save CRC, skills and private copy vault), `Negotiation377` (actual 377 login negotiation over loopback, no password), `LegacyStore377` (authentic read-only 520-byte legacy disk-cache sectors) and optional private import of your own `main_file_cache.dat` + `.idx0` files. It never commits or distributes a game cache. The `tools/android377-phone/install-phone-server.sh` script attempts a full pinned 377 engine build on a *new* isolated Termux Debian installation and restricts listener bindings to loopback.
