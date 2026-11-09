@@ -219,3 +219,42 @@
 - **OK** | `375` (Redbeard Frank) @ (3053, 3250, L0) — Talk-to -> "Click here to continue"
 - **OK** | `657` (Monk of Entrana) @ (3046, 3237, L0) — Talk-to -> "Click here to continue"
 - **OK** | `744` (Klarense) @ (3047, 3204, L0) — Talk-to -> "Click here to continue"
+- **OK** | `300` (Sedridor) @ (3102, 9571, L0) — Talk-to -> "Click here to continue"
+- **OK** | `881` (Traiborn) @ (3112, 3162, L1) — Talk-to -> "Click here to continue"
+- **OK** | `706` (Wizard Mizgog) @ (3103, 3163, L2) — Talk-to -> "Click here to continue"
+- **FAIL** | `707` (Wizard Grayzag) @ (3109, 3162, L2) — Talk-to -> "No response"
+- **OK** | `519` (Bob) @ (3232, 3203, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `456` (Father Aereck) @ (3245, 3205, L0) — Talk-to -> "Click here to continue"
+- **FAIL** | `707` (Wizard Grayzag) @ (3110, 3159, L2) — Talk-to -> "No response"
+- **OK** | `379` (Luthas) @ (2935, 3153, L0) — Talk-to -> "Click here to continue"
+- **OK** | `568` (Zambo) @ (2924, 3143, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **FAIL** | `790` (Trobert) @ (2808, 3172, L0) — Talk-to -> "No response"
+- **OK** | `1171` (Lubufu) @ (2769, 3169, L0) — Talk-to -> "Click here to continue"
+- **OK** | `1595` (Saniboch) @ (2745, 3152, L0) — Talk-to -> "Click here to continue"
+- **OK** | `560` (Jiminua) @ (2768, 3124, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `740` (Trufitus) @ (2807, 3086, L0) — Talk-to -> "Click here to continue"
+- **OK** | `1167` (Tamayu) @ (2846, 3041, L0) — Talk-to -> "Click here to continue"
+- **OK** | `553` (Aubury) @ (3254, 3402, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `550` (Lowe) @ (3230, 3423, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `549` (Horvik) @ (3232, 3438, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `546` (Zaff) @ (3204, 3432, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **FAIL** | `547` (Baraek) @ (3219, 3434, L0) — Talk-to -> "No response"
+- **OK** | `640` (Father Lawrence) @ (3255, 3477, L0) — Talk-to -> "Click here to continue"
+- **FAIL** | `647` (Reldo) @ (3209, 3495, L0) — Talk-to -> "No response"
+- **OK** | `648` (King Roald) @ (3222, 3475, L0) — Talk-to -> "Click here to continue"
+- **OK** | `647` (Reldo) @ (3208, 3493, L0) — Talk-to -> "Click here to continue"
+- **OK** | `547` (Baraek) @ (3216, 3437, L0) — Talk-to -> "Can you sell me some furs? Hello. I am in search of a quest."
+- **OK** | `646` (Curator) @ (3252, 3446, L0) — Talk-to -> "Click here to continue"
+- **OK** | `595` (Tea seller) @ (3271, 3412, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `732` (Bartender) @ (3268, 3393, L0) — Talk-to -> "Click here to continue"
+- **OK** | `638` (Apothecary) @ (3194, 3406, L0) — Talk-to -> "Click here to continue"
+- **FAIL** | `494` (Banker) @ (3187, 3436, L0) — Talk-to -> "No response"
+- **OK** | `540` (Gem trader) @ (3288, 3213, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `539` (Silk trader) @ (3299, 3204, L0) — Talk-to -> "Click here to continue"
+- **OK** | `541` (Zeke) @ (3288, 3190, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `542` (Louie legs) @ (3318, 3175, L0) — Talk-to ("") + Trade (shopOpen=true)
+- **OK** | `544` (Ranael) @ (3318, 3164, L0) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `923` (Hassan) @ (3302, 3161, L0) — Talk-to -> "Click here to continue"
+- **OK** | `924` (Osman) @ (3282, 3181, L0) — Talk-to -> "Click here to continue"
+- **OK** | `836` (Shantay) @ (3302, 3123, L0) — Talk-to ("") + Trade (shopOpen=true)
+- **OK** | `731` (Bartender) @ (3277, 3488, L0) — Talk-to -> "Click here to continue"

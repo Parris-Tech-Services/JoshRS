@@ -20,7 +20,24 @@ function getDialogString(dlg: any): string {
   return Array.isArray(lines) ? lines.join(" ") : String(lines || "Dialog open");
 }
 
+async function clearDialog(sdk: any) {
+  for (let i = 0; i < 8; i++) {
+    const dlg = sdk.getDialog();
+    if (!dlg || !dlg.isOpen) break;
+    const opts = dlg.options || [];
+    if (opts.length >= 2) {
+      // Choose last option (usually "Nevermind" / "Goodbye" / "No thanks") or first option
+      const cancelOpt = opts.find((o: any) => /nevermind|no|goodbye|bye|nothing|leave/i.test(o.text)) || opts[opts.length - 1];
+      await sdk.sendClickDialog(cancelOpt.index ?? 1);
+    } else {
+      await sdk.sendClickDialog(0);
+    }
+    await sdk.waitForTicks(2);
+  }
+}
+
 async function testNpc(bot: any, sdk: any, npc: any) {
+  await clearDialog(sdk);
   const level = sdk.getState()?.player?.level || 0;
   sdk.getNewChat();
   await bot.talkTo(npc);
@@ -28,10 +45,7 @@ async function testNpc(bot: any, sdk: any, npc: any) {
   const dlg = sdk.getDialog();
   const text = getDialogString(dlg);
   const chat = sdk.getNewChat().map((c: any) => c.text).join(" | ");
-  for (let i = 0; i < 6 && sdk.getDialog()?.isOpen; i++) {
-    await sdk.sendClickDialog(0);
-    await sdk.waitForTicks(2);
-  }
+  await clearDialog(sdk);
   if (npc.options.some((o: string) => /trade/i.test(o))) {
     await bot.openShop(npc);
     await sdk.waitForTicks(3);
@@ -44,20 +58,18 @@ async function testNpc(bot: any, sdk: any, npc: any) {
 }
 
 await runScript(async ({ bot, sdk }) => {
-  await bot.dismissBlockingUI();
-  while (sdk.getDialog()?.isOpen) {
-    await sdk.sendClickDialog(0);
-    await sdk.waitForTicks(2);
-  }
+  await clearDialog(sdk);
 
-  // 1. Walk to Wizard's Tower (3109, 3167)
+  // 1. Walk to Wizards' Tower (3109, 3167)
   console.log("=== Walking to Wizards' Tower (3109, 3167) ===");
   for (const [wx, wz] of [
-    [3060, 3240],
-    [3095, 3230],
-    [3110, 3200],
+    [3047, 3235],
+    [3075, 3250],
+    [3105, 3225],
+    [3111, 3190],
     [3109, 3167],
   ] as [number, number][]) {
+    await clearDialog(sdk);
     await bot.walkTo(wx, wz, 3);
   }
 
@@ -177,6 +189,7 @@ await runScript(async ({ bot, sdk }) => {
 
   // Pickpocket Man/Woman for 90gp so we can sail to Karamja and Brimhaven/Ardougne
   console.log("=== Getting coins for ship fares ===");
+  await bot.walkTo(3222, 3218, 4);
   for (let i = 0; i < 40; i++) {
     const coins = sdk.findInventoryItem(/coins/i);
     if (coins && coins.count >= 90) break;
