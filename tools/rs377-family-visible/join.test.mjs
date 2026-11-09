@@ -31,6 +31,12 @@ test('safe bot identity and durations and ports cannot silently target family us
  assert.throws(()=>args('--web-port','52402'),/web port/);
  assert.throws(()=>args('--unknown'),/Unknown/);
 });
+test('read-only position evidence is explicit and requires the patrol',()=>{
+ const o=args('--bot','HarnessView1','--patrol','--verify-position');
+ assert.equal(o.verifyPosition,true);
+ assert.throws(()=>args('--verify-position'),/requires --patrol/);
+ assert.equal(args('--bot','HarnessView1','--patrol').verifyPosition,false);
+});
 test('public key matches exact pinned revision-377 Client-Java constants',()=>{
  const jwk=createPublicKey(clientPublic377()).export({format:'jwk'});
  const dec=x=>BigInt('0x'+Buffer.from(x,'base64url').toString('hex')).toString();

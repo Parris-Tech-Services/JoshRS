@@ -15,6 +15,7 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import {emitKeypressEvents} from 'node:readline';
 import {Session377,checkTarget} from '../rs377-chatgpt-bridge/src/session.mjs';
+import {readSnapshot,compareSnapshots} from './verify-patrol.mjs';
 
 const MODULUS='7162900525229798032761816791230527296329313291232324290237849263501208207972894053929065636522363163621000728841182238772712427862772219676577293600221789';
 const EXPONENT='58778699976184461502525193738213253649000149147835990136706041084440742975821';
@@ -27,7 +28,7 @@ const usage=()=>[
   'From JParrisDesktop itself, --host 127.0.0.1 avoids cross-site routing.',
   'Password entered privately. Ctrl+C ends bot session. No quest automation/SDK state until observer is integrated.',
   'To add Elrothiro: add --add-friend Elrothiro (one normal friends-list packet).',
-  'Flags: --port 52402 --web-port 8888 --seconds 120 (max 600) --patrol (optional)'
+  'Flags: --port 52402 --web-port 8888 --seconds 120 (max 600) --patrol --verify-position (optional)'
 ].join('\n');
 
 function decimalToB64url(n){
@@ -41,15 +42,15 @@ export function clientPublic377(){
 }
 export function options(argv){
  const valid=new Set(['--connect','--allow-family','--host','--bot','--port','--web-port',
-   '--seconds','--patrol','--add-friend','--help']);
+   '--seconds','--patrol','--add-friend','--verify-position','--help']);
  const data={connect:false,allowFamily:false,host:null,
-   bot:'HarnessView1',port:52402,webPort:8888,seconds:120,patrol:false,addFriend:null,help:false};
+   bot:'HarnessView1',port:52402,webPort:8888,seconds:120,patrol:false,verifyPosition:false,addFriend:null,help:false};
  for(let i=0;i<argv.length;i++){
   const arg=argv[i];
   if(!valid.has(arg))throw new Error('Unknown argument: '+arg);
-  if(['--connect','--allow-family','--patrol','--help'].includes(arg)){
+  if(['--connect','--allow-family','--patrol','--verify-position','--help'].includes(arg)){
    const key={'--connect':'connect','--allow-family':'allowFamily',
-     '--patrol':'patrol','--help':'help'}[arg];data[key]=true;continue;
+     '--patrol':'patrol','--verify-position':'verifyPosition','--help':'help'}[arg];data[key]=true;continue;
   }
   const value=argv[++i];if(!value||value.startsWith('--'))throw new Error('Missing '+arg);
   const key={'--host':'host','--bot':'bot','--port':'port',
@@ -60,6 +61,7 @@ export function options(argv){
   }else data[key]=value;
  }
  if(data.help)return data;
+ if(data.verifyPosition&&!data.patrol)throw new Error('--verify-position requires --patrol');
  if(!data.connect||!data.allowFamily)throw new Error('Explicit --connect --allow-family required; no automatic login');
  if(!data.host)throw new Error('Explicit --host private IP required (never guess the family world)');
  if(!net.isIP(data.host))throw new Error('Host must be a numeric private IP, not unverified DNS');
@@ -123,6 +125,9 @@ export async function secretFromTerminal(input=process.stdin,output=process.stde
 export async function join(options, {Session=Session377,loadCrc=fetchCrc37,
   getPassword=secretFromTerminal,log=console.log}={}){
  const crc=await loadCrc(options.host,options.webPort);
+ const before=options.verifyPosition ? readSnapshot() : null;
+ if(before && before.position.region!=='LUMBRIDGE')
+  throw new Error('Bot saved outside Lumbridge; refusing blind patrol verification');
  const password=await getPassword();
  const session=new Session({target:{host:options.host,port:options.port,
    mode:'family',approvedFamily:true},username:options.bot,password,
@@ -178,6 +183,19 @@ export async function join(options, {Session=Session377,loadCrc=fetchCrc37,
   if(patrol)clearInterval(patrol);
   if(deadline)clearTimeout(deadline);
   session.close();
+  if(before) {
+   let after;
+   try {
+    for(let attempt=0;attempt<15;attempt++){
+     await new Promise(resolve=>setTimeout(resolve,750));
+     after=readSnapshot();
+     if(after.mtimeMs>before.mtimeMs)break;
+    }
+    log('POSITION_PROOF: '+JSON.stringify(compareSnapshots(before,after)));
+   }catch(error){
+    log('POSITION_PROOF_UNVERIFIED: '+String(error?.message??error));
+   }
+  }
  }
 }
 async function main(){

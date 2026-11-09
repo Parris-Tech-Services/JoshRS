@@ -213,3 +213,34 @@ The error "only immutable disposable GitHub runner engine is permitted" is the p
 ## Evidence needed for promotion
 
 S1 private route and native login, S2 visible bot in real Java client, S3 matched account/player server tick and clean save, S4 SDK controller actions confirmed through the real observer, S5 actual full quest/relogin. Source tests and simulated CI cannot substitute for S2–S5.
+
+## Verify bot's actual persisted movement (Fedora only)
+
+Only one `HarnessView1` login can be active at a time. After any
+existing patrol has finished, in a **new Fedora Terminal** run:
+
+```bash
+cd ~/dev/JoshRS-quest-runner && git pull --ff-only
+node tools/rs377-family-visible/join.mjs --connect --allow-family --host 127.0.0.1 --bot HarnessView1 --patrol --seconds 120 --verify-position
+```
+
+Enter the existing dedicated HarnessView1 password (not Elrothiro's).
+The controller sends ordinary #377 walking requests, disconnects normally
+after two minutes and waits briefly for the *server* to save the account.
+It does not edit a save or restart the server.
+
+`POSITION_PROOF` with `PERSISTED_POSITION_CHANGED` means the server
+persisted a different real coordinate in Lumbridge. If the result says
+`UNVERIFIED`, the bot might not have moved; the command will not claim
+success from a sent packet alone. Even a changed saved position is not
+proof of visual rendering, individual walking steps or RS-SDK autonomy.
+
+If a patrol is **still active** with a known PID, you can alternatively
+monitor it without another login (replace the PID with the current one):
+
+```bash
+node tools/rs377-family-visible/verify-patrol.mjs --pid 794093 --watch
+```
+
+The watcher must start before the bot disconnects. It never alters or
+kills any process and only reads HarnessView1's own native save.
