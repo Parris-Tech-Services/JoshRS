@@ -16,6 +16,7 @@ Source: `/data/data/com.termux/files/home/lc274/content/scripts/quests`
 
 | Quest | scripts | labels | VARP | JOURNAL | REWARD | WIRED | TODOs | Missing |
 |---|---|---|---|---|---|---|---|---|
+| `quest_agrith` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_arena` | 14 | 21 | yes | yes | yes | yes | 4 | — |
 | `quest_arthur` | 4 | 8 | yes | yes | yes | yes | 0 | — |
 | `quest_ball` | 5 | 4 | yes | yes | yes | yes | 1 | — |
@@ -27,6 +28,7 @@ Source: `/data/data/com.termux/files/home/lc274/content/scripts/quests`
 | `quest_cog` | 8 | 10 | yes | yes | yes | yes | 0 | — |
 | `quest_cook` | 2 | 4 | yes | yes | yes | yes | 0 | — |
 | `quest_crest` | 8 | 55 | yes | yes | yes | yes | 0 | — |
+| `quest_deal` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_death` | 10 | 42 | yes | yes | yes | yes | 2 | — |
 | `quest_demon` | 3 | 2 | yes | yes | yes | yes | 1 | — |
 | `quest_desertrescue` | 12 | 178 | yes | yes | yes | yes | 2 | — |
@@ -35,33 +37,50 @@ Source: `/data/data/com.termux/files/home/lc274/content/scripts/quests`
 | `quest_druid` | 2 | 0 | yes | yes | yes | yes | 0 | — |
 | `quest_druidspirit` | 6 | 29 | yes | yes | yes | yes | 2 | — |
 | `quest_drunkmonk` | 2 | 1 | yes | yes | yes | yes | 0 | — |
+| `quest_dwarfrock` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_eadgar` | 6 | 49 | yes | yes | yes | yes | 8 | — |
 | `quest_elemental_workshop` | 7 | 5 | yes | yes | yes | yes | 2 | — |
 | `quest_elena` | 17 | 44 | yes | yes | yes | yes | 3 | — |
+| `quest_elid` | 2 | 4 | **no** | yes | yes | **no** | 0 | VARP, WIRED |
+| `quest_fenkenstrain` | 5 | 15 | yes | yes | yes | yes | 1 | — |
+| `quest_feud` | 2 | 3 | **no** | yes | yes | **no** | 0 | VARP, WIRED |
 | `quest_fishingcompo` | 3 | 4 | yes | yes | yes | yes | 0 | — |
 | `quest_fluffs` | 3 | 7 | yes | yes | yes | yes | 2 | — |
+| `quest_forget` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
+| `quest_garden` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
+| `quest_giantdwarf` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_gobdip` | 3 | 15 | yes | yes | yes | yes | 1 | — |
+| `quest_golem` | 8 | 8 | yes | yes | yes | yes | 3 | — |
 | `quest_grail` | 10 | 16 | yes | yes | yes | yes | 2 | — |
 | `quest_grandtree` | 12 | 34 | yes | yes | yes | yes | 0 | — |
+| `quest_handsand` | 2 | 3 | **no** | yes | yes | **no** | 0 | VARP, WIRED |
 | `quest_haunted` | 2 | 4 | yes | yes | yes | yes | 1 | — |
+| `quest_hauntedmine` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_hazeelcult` | 10 | 12 | yes | yes | yes | yes | 2 | — |
 | `quest_hero` | 12 | 5 | yes | yes | yes | yes | 5 | — |
 | `quest_hetty` | 2 | 0 | yes | yes | yes | yes | 0 | — |
 | `quest_horror` | 8 | 24 | yes | yes | yes | yes | 4 | — |
 | `quest_hunt` | 7 | 19 | yes | yes | yes | yes | 0 | — |
+| `quest_ics` | 1 | 0 | yes | yes | yes | **no** | 0 | WIRED |
 | `quest_ikov` | 7 | 20 | yes | yes | yes | yes | 2 | — |
 | `quest_imp` | 2 | 0 | yes | yes | yes | yes | 0 | — |
 | `quest_itexam` | 13 | 74 | yes | yes | yes | yes | 15 | — |
 | `quest_itgronigen` | 9 | 17 | yes | yes | yes | yes | 3 | — |
 | `quest_itwatchtower` | 13 | 41 | yes | yes | yes | yes | 1 | — |
 | `quest_junglepotion` | 2 | 0 | yes | yes | yes | yes | 0 | — |
-| `quest_legends` | 21 | 206 | yes | yes | yes | yes | 18 | — |
+| `quest_legends` | 22 | 208 | yes | yes | yes | yes | 18 | — |
+| `quest_losttribe` | 1 | 1 | **no** | yes | yes | **no** | 0 | VARP, WIRED |
+| `quest_makinghistory` | 2 | 3 | **no** | yes | yes | **no** | 0 | VARP, WIRED |
 | `quest_mcannon` | 17 | 46 | yes | yes | yes | yes | 1 | — |
+| `quest_mdaughter` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_mortton` | 6 | 51 | yes | yes | yes | yes | 3 | — |
 | `quest_murder` | 17 | 15 | yes | yes | yes | yes | 5 | — |
+| `quest_myreque` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
+| `quest_osf` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_priest` | 3 | 7 | yes | yes | yes | yes | 0 | — |
 | `quest_priestperil` | 6 | 14 | yes | yes | yes | yes | 1 | — |
 | `quest_prince` | 2 | 1 | yes | yes | yes | yes | 0 | — |
+| `quest_rag` | 5 | 3 | yes | yes | yes | **no** | 0 | WIRED |
 | `quest_regicide` | 17 | 14 | yes | yes | yes | yes | 4 | — |
 | `quest_romeojuliet` | 2 | 0 | yes | yes | yes | yes | 0 | — |
 | `quest_runemysteries` | 2 | 0 | yes | yes | yes | yes | 0 | — |
@@ -69,24 +88,50 @@ Source: `/data/data/com.termux/files/home/lc274/content/scripts/quests`
 | `quest_seaslug` | 2 | 3 | yes | yes | yes | yes | 0 | — |
 | `quest_sheep` | 2 | 0 | yes | yes | yes | yes | 0 | — |
 | `quest_sheepherder` | 8 | 28 | yes | yes | yes | yes | 0 | — |
+| `quest_soulbane` | 1 | 2 | yes | yes | yes | **no** | 0 | WIRED |
 | `quest_squire` | 2 | 17 | yes | yes | yes | yes | 0 | — |
+| `quest_swansong` | 5 | 1 | yes | yes | yes | yes | 0 | — |
 | `quest_tbwt` | 8 | 76 | yes | yes | yes | yes | 1 | — |
+| `quest_tog` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_totem` | 2 | 1 | yes | yes | yes | yes | 2 | — |
 | `quest_tree` | 4 | 1 | yes | yes | yes | yes | 1 | — |
 | `quest_troll` | 7 | 15 | yes | yes | yes | yes | 0 | — |
+| `quest_troll_love` | 5 | 13 | yes | yes | yes | **no** | 7 | WIRED |
+| `quest_twocats` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_upass` | 22 | 32 | yes | yes | yes | yes | 13 | — |
 | `quest_vampire` | 3 | 4 | yes | yes | yes | yes | 0 | — |
 | `quest_viking` | 20 | 50 | yes | yes | yes | yes | 4 | — |
+| `quest_wanted` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_waterfall` | 9 | 10 | yes | yes | yes | yes | 1 | — |
 | `quest_zanaris` | 4 | 4 | yes | yes | yes | yes | 0 | — |
+| `quest_zogre` | 1 | 0 | **no** | yes | yes | n/a | 0 | VARP |
 | `quest_zombiequeen` | 6 | 38 | yes | yes | yes | yes | 4 | — |
 
 ## Summary
 
-- quests: **64**
-- structurally complete: **63**
-- with at least one gap: **1**
+- quests: **90**
+- structurally complete: **66**
+- with at least one gap: **24**
 
 ### Priority list (most gaps first)
 
 - `quest_barcrawl` — missing JOURNAL, REWARD
+- `quest_elid` — missing VARP, WIRED
+- `quest_feud` — missing VARP, WIRED
+- `quest_handsand` — missing VARP, WIRED
+- `quest_losttribe` — missing VARP, WIRED
+- `quest_makinghistory` — missing VARP, WIRED
+- `quest_agrith` — missing VARP
+- `quest_deal` — missing VARP
+- `quest_dwarfrock` — missing VARP
+- `quest_forget` — missing VARP
+- `quest_garden` — missing VARP
+- `quest_giantdwarf` — missing VARP
+- `quest_hauntedmine` — missing VARP
+- `quest_ics` — missing WIRED
+- `quest_mdaughter` — missing VARP
+- `quest_myreque` — missing VARP
+- `quest_osf` — missing VARP
+- `quest_rag` — missing WIRED
+- `quest_soulbane` — missing WIRED
+- `quest_tog` — missing VARP

@@ -86,3 +86,44 @@ Four edits carried in the world, all captured as patches in `content-patches/rs2
 
 Player saves are **not** content: `~/lc274/engine/data/players/main/elrothiro.sav` (858 bytes) is
 untouched, and a dated copy is kept in `~/saves-backup/`.
+
+## The one remaining structural gap: journals for 9 ported quests
+
+Nine ported quests fail the structural audit, and **all nine fail on the same single flag** —
+`JOURNAL`. They have stage varps, rewards and reachable logic:
+
+```
+quest_elid  quest_feud  quest_handsand  quest_ics  quest_losttribe
+quest_makinghistory  quest_rag  quest_soulbane  quest_troll_love
+```
+
+### Cause, confirmed
+
+A quest journal needs a button component in the quest list interface. That file is
+`scripts/player/interfaces/questlist.if`, and it contains a component for existing quests:
+
+```
+[cook]     present
+[feud]     absent
+[rag]      absent
+```
+
+So the ported scripts contain `[if_button,questlist:feud]` handlers that **no interface button can
+ever trigger**. The quest is playable but its journal entry is unreachable.
+
+### Why this was not fixed
+
+Adding nine components means editing a UI layout: positions, sizes, text, and which sprite or line
+each entry uses. This project has **no renderer and no client running the 274 interface**, so the
+result cannot be checked visually — a misplaced component could overlap or break the quest list for
+every other quest.
+
+Editing an interface blind is exactly the class of change that produces something which passes
+packing and looks broken in play. It needs a client to look at.
+
+### Cheapest way to close it
+
+Add one component at a time and open the quest journal in the browser client after each. Nine small
+verified edits beat one large unverified one. The file and the required component name are known, so
+this is mechanical work with a visual check at each step.
+
