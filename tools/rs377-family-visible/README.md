@@ -1,3 +1,38 @@
+## Verify actual patrol movement from the saved character (Fedora, read-only)
+
+If a HarnessView1 patrol is **already running**, do not start a second copy.
+While it is still running, use this in a second Fedora Terminal:
+
+```bash
+cd ~/dev/JoshRS-quest-runner && git pull --ff-only
+node tools/rs377-family-visible/verify-patrol.mjs --pid 794093 --watch
+```
+
+Replace `794093` with the actual PID if the original controller restarted.
+This command never stops the process, logs into the game, or writes a save.
+It captures the persisted baseline, waits for the **existing bot** to exit,
+then checks its native server save for a different coordinate.
+If the process has already ended it cannot prove historical walking.
+A result of `PERSISTED_POSITION_CHANGED` proves the server persisted
+a changed Lumbridge position; it does **not** prove visually rendered
+steps, which particular packet caused the move, or full RS-SDK autonomy.
+`UNVERIFIED` is a normal and honest outcome if the position did not change
+or the save did not update.
+
+For a **future** two-minute proof in *one* command after the old patrol has
+finished (never run two sessions for the same account simultaneously):
+
+```bash
+cd ~/dev/JoshRS-quest-runner
+node tools/rs377-family-visible/join.mjs --connect --allow-family --host 127.0.0.1 --bot HarnessView1 --patrol --seconds 120 --verify-position
+```
+
+Enter **HarnessView1's existing bot-only password**, never Elrothiro's.
+This waits for normal game logout and prints `POSITION_PROOF`.
+The bot must have a valid native save already near Lumbridge.
+Both commands are read-only with respect to the game's save: only the
+game server can update it during ordinary account logout.
+
 # See a JoshRS bot inside Elrothiro's existing World 1
 
 **Target:** the current JParrisDesktop Windows revision-377 world, usually game TCP 52402 and cache web 8888. **Status:** normal network-client visibility prototype, **not** a full RS-SDK AI quest agent and not yet live-verified on family accounts.
