@@ -4,7 +4,7 @@ import {createObserver} from './observation.mjs';
  * No filesystem, shell, engine mutation, fake world state, or TCP game decoding.
  * A native 377 client/engine must emit its own real, bot-scoped observations.
  */
-export function createNative377Observer(source,{botName,expectedWorld,token,maxBytes=32768}={}){
+export function createNative377Observer(source,{botName,expectedWorld,token,maxBytes=32768,approvedFamily=false}={}){
  if(!source||typeof source.read!=='function')throw new Error('native_read_source_required');
  if(typeof token!=='string'||Buffer.byteLength(token)<32)throw new Error('observer_authentication_required');
  if(!Number.isInteger(maxBytes)||maxBytes<1024||maxBytes>65536)throw new Error('invalid_observer_size');
@@ -21,5 +21,5 @@ export function createNative377Observer(source,{botName,expectedWorld,token,maxB
   sequence=message.sequence;
   return message.observation;
  };
- return createObserver(readRaw,{botName,expectedWorld});
+ return createObserver(readRaw,{botName,expectedWorld,approvedFamily});
 }
