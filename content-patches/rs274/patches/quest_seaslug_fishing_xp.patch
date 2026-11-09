@@ -1,0 +1,11 @@
+diff --git a/scripts/quests/quest_seaslug/scripts/quest_seaslug.rs2 b/scripts/quests/quest_seaslug/scripts/quest_seaslug.rs2
+index 131bfd8..5adb9a9 100644
+--- a/scripts/quests/quest_seaslug/scripts/quest_seaslug.rs2
++++ b/scripts/quests/quest_seaslug/scripts/quest_seaslug.rs2
+@@ -119,5 +119,6 @@ if (npc_find(movecoord(coord, 0, 0, 2), kennith, 5, 0) = true) {
+ }
+ 
+ [queue,seaslug_quest_complete]
++stat_advance(fishing, 71750); // 7,175 Fishing XP
+ session_log(^log_adventure, "Quest complete: Sea Slug");
+ ~send_quest_complete(questlist:seaslug, seasluginv, 250, ^seaslug_questpoints, "You have completed the\\nSea Slug Quest!");
