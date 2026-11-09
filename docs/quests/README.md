@@ -45,6 +45,8 @@ Supporting analysis:
 - [QUEST_AUDIT.md](QUEST_AUDIT.md) — structural audit of all 64 quest directories
 - [QUEST_TARGET_STATUS.md](QUEST_TARGET_STATUS.md) — the 88-quest target list against reality
 - [QUEST_RECONCILIATION.md](QUEST_RECONCILIATION.md) — bot playtests vs structure vs targets
+- [LEGENDS_REWARD_SPEC.md](LEGENDS_REWARD_SPEC.md) — exact values and implementation plan for the
+  Legends' Quest reward
 - [../ANDROID377_PLAYABLE_PROGRESS_LOG.md](../ANDROID377_PLAYABLE_PROGRESS_LOG.md) — the wider
   native-client log
 
@@ -62,7 +64,8 @@ Supporting analysis:
 ### 1. Legends' Quest grants no XP at all — BLOCKED on a decision
 
 4 QP and an item; no `stat_advance` anywhere in the completion path, in **either** revision. The
-wiki describes 30,000 XP in four chosen skills (~120,000 total).
+wiki describes 7,650 XP in each of four chosen skills (30,600 total). **Earlier batches said
+~120,000 — that used the modern 30,000 figure, which only exists since November 2022.**
 
 Not implemented because the wiki's allowed-skill list is **truncated in the source I have**
 ("limited to Attack, Defence…"), and the existing lamp mechanism grants level × 10 XP rather
