@@ -321,20 +321,67 @@ async function isPortOpen(port) {
     socket.once('timeout',()=>finish(false));
   });
 }
-async function assertStopped(world) {
+// Verify the effective backend, not just the legacy .env. Newer Lost City
+// engines use data/config/world.json in preference to .env.
+function readWorldSafetySettings(world) {
   const envfile=path.join(world.engine,'.env');
-  if(!exists(envfile))fail('No engine .env; unable to verify selected game ports');
-  const env=fs.readFileSync(envfile,'utf8');
-  // Backups support SQLite only; never silently proceed with PostgreSQL or
-  // an unknown database backend that the updater cannot preserve.
-  if(!/^DB_BACKEND=sqlite\s*$/m.test(env)) {
-    fail('SQLite backup only: verify DB_BACKEND=sqlite before updating this world');
+  const configfile=path.join(world.engine,'data/config/world.json');
+  const values=new Map();
+  if(exists(envfile)) {
+    if(fs.lstatSync(envfile).isSymbolicLink())fail('Engine .env symlink refused');
+    for(const raw of fs.readFileSync(envfile,'utf8').split(/\r?\n/)) {
+      const line=raw.trim();
+      if(!line || line.startsWith('#'))continue;
+      const m=/^(?:export\s+)?([A-Z_][A-Z0-9_]*)\s*=\s*(.*)$/.exec(line);
+      if(!m)continue;
+      let value=m[2].trim();
+      if((value.startsWith('"')&&value.endsWith('"')) || (value.startsWith("'")&&value.endsWith("'")))
+        value=value.slice(1,-1);
+      if(values.has(m[1])&&values.get(m[1])!==value)fail('Conflicting duplicate .env setting: '+m[1]);
+      values.set(m[1],value);
+    }
   }
-  const ports=['NODE_PORT','WEB_PORT','WEB_MANAGEMENT_PORT']
-    .map(k=>readPort(env,k)).filter(v=>v!==null);
-  if(ports.length<2||ports.some(v=>v<1||v>65535))fail('Unknown or unsafe game ports in .env');
-  for(const port of new Set(ports))if(await isPortOpen(port))fail('Local server listener still active on port '+port);
+  const ports=[];
+  let backend;
+  if(exists(configfile)) {
+    if(fs.lstatSync(configfile).isSymbolicLink())fail('World configuration symlink refused');
+    let config;
+    try {config=JSON.parse(fs.readFileSync(configfile,'utf8'));} catch {fail('Unable to parse active world.json; no migration');}
+    if(!config || typeof config!=='object' || Array.isArray(config))fail('Invalid active world.json');
+    backend=config.db?.backend;
+    for(const val of [config.node?.port,config.web?.port,config.web?.managementPort]) {
+      if(val!==undefined && val!==null)ports.push(val);
+    }
+    // Older wrappers may still listen on the .env ports: check both sets.
+  } else {
+    backend=values.get('DB_BACKEND');
+  }
+  if(backend!=='sqlite')fail('SQLite backup only: effective database backend not explicitly confirmed as sqlite');
+  for(const key of ['NODE_PORT','WEB_PORT','WEB_MANAGEMENT_PORT'])if(values.has(key))ports.push(values.get(key));
+  const parsed=[];
+  for(const val of ports) {
+    const number=typeof val==='number'?val:Number(val);
+    if(!Number.isInteger(number)||number<1||number>65535||String(val).trim()==='')fail('Invalid configured game port');
+    parsed.push(number);
+  }
+  if(new Set(parsed).size<2)fail('Need at least two configured game/web ports to verify shutdown');
+  const db=path.join(world.engine,'db.sqlite');
+  if(exists(db)) {
+    if(fs.lstatSync(db).isSymbolicLink() || !fs.statSync(db).isFile())fail('Unsafe SQLite database path');
+    const header=Buffer.alloc(16);
+    const fd=fs.openSync(db,'r');
+    try {if(fs.readSync(fd,header,0,16,0)!==16 || header.toString('ascii')!=='SQLite format 3\0')
+      fail('Account database does not have SQLite file signature; cannot back it up safely');}
+    finally {fs.closeSync(fd);}
+  }
+  return {source:exists(configfile)?'world.json':'.env',ports:[...new Set(parsed)],dbExists:exists(db)};
 }
+
+async function assertStopped(world) {
+  const settings=readWorldSafetySettings(world);
+  for(const port of settings.ports)if(await isPortOpen(port))fail('Local server listener still active on port '+port);
+}
+
 function writeAtomic(file,data) {
   fs.mkdirSync(path.dirname(file),{recursive:true});
   const tmp=file+'.joshrs-new-'+process.pid;
@@ -498,4 +545,4 @@ async function main(argv) {
 if(process.argv[1] && real(process.argv[1])===real(fileURLToPath(import.meta.url))) {
   main(process.argv.slice(2)).catch(err=>{console.error(err.message);process.exitCode=1;});
 }
-export {SCHEMA,parsePatchPaths,getPatches,detectWorld,planUpdate,applyAndBuild,parseArgs,saveSources,hashDirectory,assertStopped};
+export {SCHEMA,parsePatchPaths,getPatches,detectWorld,planUpdate,applyAndBuild,parseArgs,saveSources,hashDirectory,assertStopped,readWorldSafetySettings};
