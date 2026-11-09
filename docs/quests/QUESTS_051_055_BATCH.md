@@ -18,8 +18,13 @@ session_log(^log_adventure, "Quest complete: Legends Quest");
 ```
 
 4 quest points and an item, and **no `stat_advance` anywhere in the completion path**. The
-377 revision is identical. The wiki describes **30,000 experience in each of four skills of your
-choice** — up to 120,000 XP, the largest single reward in the free-game content.
+377 revision is identical. The wiki describes **7,650 experience in each of four skills of your choice** — 30,600 XP
+total, the largest single reward in the free-game content.
+
+> **Correction (later round):** this batch originally said 30,000 per skill / ~120,000 total.
+> That figure is modern — the wiki's change log dates the increase from 7,650 to 30,000 to
+> **30 November 2022**. For this era the correct value is 7,650. See
+> [LEGENDS_REWARD_SPEC.md](LEGENDS_REWARD_SPEC.md).
 
 This is not a one-line fix like Sea Slug. It needs:
 
