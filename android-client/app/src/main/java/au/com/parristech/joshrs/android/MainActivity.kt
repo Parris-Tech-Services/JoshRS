@@ -129,11 +129,11 @@ class MainActivity : Activity() {
         root.addView(label("Validated private save copies: $count"))
         root.addView(label("Private historical cache inspector", 19f))
         root.addView(label(
-            "Select your own main_file_cache.dat and main_file_cache.idx0. " +
+            "Select your own main_file_cache.dat plus idx0 (archives) or idx1 (3D models). " +
                 "Validates original legacy cache sectors and stores a private copy. " +
-                "No models or world maps are displayed yet; no assets are downloaded."
+                "The optional idx1 inspector displays actual untextured 3D mesh geometry, not terrain or world animations."
         ))
-        action("Inspect/import both original cache files") {
+        action("Import private .dat + .idx0 or .idx1 cache pair") {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "*/*"
@@ -145,12 +145,40 @@ class MainActivity : Activity() {
             f -> f.isDirectory && !f.name.endsWith(".tmp")
         }?.size ?: 0
         root.addView(label("Private cache snapshots: $cacheCount"))
+        action("View a real 377 model from private idx1 cache") {
+            statusText?.text = "Decoding your own real 377 model (read-only)..."
+            Thread {
+                try {
+                    val loaded = PrivateModel377.loadFirst(filesDir)
+                    runOnUiThread { showRealModel(loaded) }
+                } catch (error: Exception) {
+                    runOnUiThread {
+                        statusText?.text = "Model loading blocked: ${error.message ?: "unsupported archive"}"
+                    }
+                }
+            }.start()
+        }
         root.addView(label("Visual study (not the 377 game)", 19f))
         action("Open original isometric preview") { showPreview() }
         root.addView(label(
             "Next integration milestone: compatible licensed 377 renderer/cache and " +
                 "authenticated session against the local engine. No public network ports."
         ))
+    }
+
+    private fun showRealModel(model: PrivateModel377.Loaded) {
+        game?.pauseRendering()
+        game = null
+        showingPreview = true // Back button returns to diagnostics
+        root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundColor(Color.rgb(49, 45, 39))
+        }
+        root.addView(label("PRIVATE CACHE GEOMETRY — not a playable 377 world", 15f))
+        root.addView(Model377Viewer(this, model), LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
+        ))
+        setContentView(root)
     }
 
     private fun showPreview(x: Float = 8f, y: Float = 8f) {
@@ -185,8 +213,8 @@ class MainActivity : Activity() {
                 val receipt = Cache377Vault.importPair(this, uris)
                 showHome()
                 statusText?.text = "Real legacy cache structure verified: " +
-                    "${receipt.readableArchives} archives read. Private snapshot ${receipt.cacheId}. " +
-                    "3D model/map rendering still unimplemented."
+                    "${receipt.readableArchives} archives (idx${receipt.indexNumber}) read. " +
+                    "Private snapshot ${receipt.cacheId}; no assets redistributed."
             } catch (e: Exception) {
                 showHome()
                 statusText?.text = "Cache import refused: ${e.message ?: "invalid cache"}"

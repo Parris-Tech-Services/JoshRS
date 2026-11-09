@@ -51,8 +51,8 @@ python3 -I "$repo/tools/android377-phone/loopback_bind.py" "$engine"
 shopt -s nullglob
 patches=("$overlay"/patches/[0-9][0-9][0-9][0-9]-*.patch)
 shopt -u nullglob
-[[ "${#patches[@]}" -eq 32 ]] || fail "expected 32 reviewed revision-377 patches, found ${#patches[@]}"
-for ((i = 0; i < 32; i++)); do
+[[ "${#patches[@]}" -ge 33 && "${#patches[@]}" -le 128 ]] || fail "expected at least 33 ordered reviewed revision-377 patches, found ${#patches[@]}"
+for ((i = 0; i < ${#patches[@]}; i++)); do
   n="$(printf %04d "$((i+1))")"
   [[ "$(basename "${patches[i]}")" == "$n-"* ]] || fail "patch order mismatch $n"
   git -C "$content" apply --check "${patches[i]}"
@@ -91,6 +91,7 @@ for checker in check_fenk_map.py check_morytania_batch.py check_swansong_wall_ma
   python3 -I "$overlay/tools/$checker" --content "$content"
 done
 python3 -I "$overlay/tools/check_demon_slayer.py" --content "$content" --engine "$engine"
+python3 -I "$overlay/tools/check_romeo_juliet.py" --content "$content"
 
 cat > "$engine/.env" <<'ENV'
 EASY_STARTUP=true
