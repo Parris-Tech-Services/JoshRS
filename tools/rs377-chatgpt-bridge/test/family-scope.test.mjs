@@ -55,8 +55,8 @@ test('native packet actions need the additional family flag, real normal bot sta
   observer:{observe:async()=>family()},...scope,approvedFamily:true}),/not_authorized/);
 });
 test('source-level family observer is restricted to local known ports and exact HarnessView1 identity',()=>{
- const web=readFileSync(new URL('../../../rs377-bot-bench/engine-patch/src/web.ts',import.meta.url),'utf8');
- const trace=readFileSync(new URL('../../../rs377-bot-bench/engine-patch/src/engine/observer/Native377Trace.ts',import.meta.url),'utf8');
+ const web=readFileSync(new URL('../../rs377-bot-bench/engine-patch/src/web.ts',import.meta.url),'utf8');
+ const trace=readFileSync(new URL('../../rs377-bot-bench/engine-patch/src/engine/observer/Native377Trace.ts',import.meta.url),'utf8');
  for(const text of [web,trace]){
   assert.match(text,/RS377_OBSERVER_FAMILY_APPROVED/);
   assert.match(text,/HarnessView1@2026-11-09/);
@@ -67,7 +67,7 @@ test('source-level family observer is restricted to local known ports and exact 
  assert.match(web,/WEB_MANAGEMENT_PORT === '8898'/);
  assert.match(web,/timingSafeEqual/);
  assert.match(web,/127\.0\.0\.1/);
- const script=readFileSync(new URL('../../../rs377-live-quest-bridge/run-fedora.mjs',import.meta.url),'utf8');
+ const script=readFileSync(new URL('../../rs377-live-quest-bridge/run-fedora.mjs',import.meta.url),'utf8');
  assert.match(script,/approvedFamily:true/);
  assert.match(script,/--check/);
  assert.match(script,/BOT='HarnessView1'/);
