@@ -1,8 +1,8 @@
 # elrothiro Lab Log
 
-## Session 1 — Hour 10.5 Status Summary (2026-11-09T16:40Z)
+## Session 1 — Hour 11.5 Status Summary (2026-11-09T18:38Z)
 
-### Quests Completed (21 Quests, 48 Quest Points Verified In-Game)
+### Quests Completed (22 Quests, 51 Quest Points Verified In-Game)
 1. **Cook's Assistant** (`cooks`) — +1 QP (Total: 1 QP), +7,500 Cooking XP (Level 1 -> 30)
 2. **Sheep Shearer** (`sheep`) — +1 QP (Total: 2 QP), +5,000 Crafting XP (Level 1 -> 25), +60 Coins
 3. **The Restless Ghost** (`priest`) — +1 QP (Total: 3 QP), +28,125 Prayer XP (Level 1 -> 47, **Protect from Melee** unlocked!), Ghostspeak amulet
@@ -24,13 +24,15 @@
 19. **Sheep Herder** (`sheepherder`) — +4 QP (Total: 44 QP, Fifth P2P Quest!), +3,100 Coins (`Coins: 2,899 -> 5,999`)
 20. **Plague City** (`elena`) — +1 QP (Total: 45 QP, Sixth P2P Quest!), +60,625 Mining XP (`Mining: 56 -> 67`, 111,937 XP!), `A magic scroll` (Ardougne teleport scroll)
 21. **Murder Mystery** (`murder`) — +3 QP (Total: 48 QP, Seventh P2P Quest!), +35,150 Crafting XP (`Crafting: 34 -> 54`, 45,837 XP!), +2,000 Coins (`Coins: 5,963 -> 7,963`)
+22. **Demon Slayer** (`demon`) — +3 QP (Total: **51 QP**, 15th F2P Quest!), `Silverlight` (`id: 2402`, equipped), Strength 69 -> 70, HP 54 -> 55, Combat Level -> **73**!
 
-### Active Quests In Progress (Hour 10.5)
-- **Biohazard** (`biohazard`): Talking to Elena (`2592, 3336`), Jerico (`2612, 3324`), and Omart (`2559, 3266`) to distract the watchtower guards with messenger pigeons and retrieve Elena's Distillator.
-- **Clock Tower** (`cog`): Started with Brother Kojo, poisoned the rat trough, placed the **White Cog** (`id: 20`) on `L2` (`id: 31`) and the **Red Cog** (`id: 23`) on `L0` (`id: 29`).
+### Active Quests In Progress (Hour 11.5)
+- **Merlin's Crystal** (`arthur`): Preparing supplies (`Bread`, `Tinderbox`, `Bucket of wax`, `Bat bones`, `Black candle`) and starting at Camelot Castle (`2763, 3513`).
+- **Clock Tower** (`cog`): Placed White Cog (`id: 20`) on L2 and Red Cog (`id: 23`) on L0; next obtaining `Ice gloves` from the Ice Queen (`2846, 9636`) for the Black Cog (`id: 21`) and placing the Blue Cog (`id: 22`).
+- **Biohazard** (`biohazard`): Poisoning the Mourner HQ cauldron (`2543, 3332`), retrieving Elena's Distillator from the upstairs crate (`2554, 3327`), and delivering the samples to Guidor in Varrock.
 
-### Current Skill Levels (Combat Level 72, Total Level 676)
-- Attack: 86 (426,500 xp) | Strength: 69 (126,150 xp) | Defence: 13 (1,600 xp) | HP: 54 (43,435 xp)
+### Current Skill Levels (Combat Level 73, Total Level 678)
+- Attack: 86 (426,500 xp) | Strength: 70 (135,950 xp) | Defence: 13 (1,600 xp) | HP: 55 (46,625 xp)
 - Prayer: 47 (28,125 xp) | Magic: 31 (8,125 xp) | Ranged: 1 (0 xp)
 - Smithing: 82 (320,930 xp) | Mining: 67 (111,937 xp) | Thieving: 64 (92,275 xp) | Woodcutting: 56 (51,875 xp)
 - Crafting: 54 (45,837 xp) | Cooking: 34 (10,200 xp) | Herblore: 28 (6,250 xp) | Firemaking: 15 (2,000 xp)
@@ -1219,3 +1221,46 @@
 - 2026-11-09T18:01:30.418Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
 - 2026-11-09T18:01:31.419Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
 - 2026-11-09T18:01:32.419Z bank: still holding Iron chainbody, Plague jacket, Plague trousers, Rotten apples
+- 2026-11-09T18:04:29.622Z START Demon Slayer (attempt 1)
+- 2026-11-09T18:04:29.622Z STEP start-aris-and-prysin
+- 2026-11-09T18:04:33.633Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T18:09:41.927Z STEP rovin-and-drain-keys
+- 2026-11-09T18:11:12.867Z STEP FAILED rovin-and-drain-keys
+- 2026-11-09T18:11:12.868Z START Demon Slayer (attempt 2)
+- 2026-11-09T18:11:12.868Z STEP start-aris-and-prysin
+- 2026-11-09T18:11:12.868Z STEP rovin-and-drain-keys
+- 2026-11-09T18:12:13.854Z STEP FAILED rovin-and-drain-keys
+- 2026-11-09T18:12:13.854Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T18:12:13.855Z STEP prep-supplies
+- 2026-11-09T18:13:18.831Z START Demon Slayer (attempt 1)
+- 2026-11-09T18:13:18.831Z STEP start-aris-and-prysin
+- 2026-11-09T18:13:18.832Z STEP rovin-and-drain-keys
+- 2026-11-09T18:15:42.498Z STEP FAILED rovin-and-drain-keys
+- 2026-11-09T18:15:42.499Z START Demon Slayer (attempt 2)
+- 2026-11-09T18:15:42.499Z STEP start-aris-and-prysin
+- 2026-11-09T18:15:42.499Z STEP rovin-and-drain-keys
+- 2026-11-09T18:16:44.100Z STEP FAILED rovin-and-drain-keys
+- 2026-11-09T18:16:44.101Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T18:16:44.101Z STEP prep-supplies
+- 2026-11-09T18:17:38.026Z START Demon Slayer (attempt 1)
+- 2026-11-09T18:17:38.027Z STEP start-aris-and-prysin
+- 2026-11-09T18:17:38.028Z STEP rovin-and-drain-keys
+- 2026-11-09T18:19:31.703Z STEP traiborn-bones-key
+- 2026-11-09T18:21:09.226Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T18:29:05.231Z START Demon Slayer (attempt 1)
+- 2026-11-09T18:29:05.232Z STEP start-aris-and-prysin
+- 2026-11-09T18:29:05.233Z STEP rovin-and-drain-keys
+- 2026-11-09T18:29:05.234Z STEP traiborn-bones-key
+- 2026-11-09T18:33:18.833Z talkTo /^traiborn$/i failed: Dialog did not open
+- 2026-11-09T18:33:46.408Z STEP silverlight-and-delrith
+- 2026-11-09T18:37:16.830Z DONE Demon Slayer
+- 2026-11-09T18:37:16.830Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T18:37:16.830Z STEP prep-supplies
+- 2026-11-09T18:39:57.045Z STEP start-camelot
+- 2026-11-09T18:43:20.625Z STEP FAILED start-camelot
+- 2026-11-09T18:43:20.627Z START Merlin's Crystal (attempt 2)
+- 2026-11-09T18:43:20.627Z STEP prep-supplies
+- 2026-11-09T18:46:28.256Z STEP start-camelot
+- 2026-11-09T18:47:08.030Z START Merlin's Crystal (attempt 1)
+- 2026-11-09T18:47:08.031Z STEP prep-supplies
+- 2026-11-09T18:47:08.032Z STEP start-camelot

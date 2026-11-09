@@ -291,18 +291,23 @@ export async function walkFromVarrockToLumbridge(c: Ctx, destX = 3222, destZ = 3
 
 export async function pickupWithWait(c: Ctx, x: number, z: number, item: RegExp, waitSec = 25): Promise<boolean> {
   const { bot, sdk } = c;
-  if (has(sdk, item)) return true;
+  const beforeCount = count(sdk, item);
   await bot.walkTo(x, z, 2);
   for (let i = 0; i < waitSec; i++) {
-    const g = (sdk.getState()?.groundItems ?? []).find((it: any) => item.test(it.name));
+    const g = (sdk.getState()?.groundItems ?? [])
+      .filter((it: any) => item.test(it.name) && Math.hypot(it.x - x, it.z - z) <= 6)
+      .sort((a: any, b: any) => a.distance - b.distance)[0]
+      ?? (sdk.getState()?.groundItems ?? []).find((it: any) => item.test(it.name));
     if (g) {
       const r = await bot.pickupItem(g);
       if (!r?.success) await openNearbyDoors(c, g.x, g.z, 2);
-      if (await waitInv(sdk, item, 5000)) return true;
+      if (await waitCond(() => count(sdk, item) > beforeCount, 5000, 250)) return true;
+    } else if (beforeCount > 0) {
+      return true;
     }
     await sleep(1000);
   }
-  return has(sdk, item);
+  return count(sdk, item) > beforeCount || has(sdk, item);
 }
 
 // Everything we used to ask Josh to paste, written to one file.
@@ -376,16 +381,37 @@ export async function ensureCoins(c: Ctx, minCoins = 30): Promise<boolean> {
   const { bot, sdk } = c;
   const coinsNow = () => count(sdk, /^coins$/i);
   if (coinsNow() >= minCoins) return true;
+  const spots: Array<[number, number]> = [
+    [3222, 3218], // Lumbridge courtyard
+    [3212, 3428], // Varrock square
+    [3253, 3420], // Varrock east bank
+    [3098, 3268], // Draynor north
+    [2965, 3380], // Falador square
+    [2662, 3305], // Ardougne market
+    [2725, 3485], // Seers' Village
+  ];
   const deadline = Date.now() + 45_000;
   while (Date.now() < deadline && coinsNow() < minCoins) {
-    const npc = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) =>
+    await bot.dismissBlockingUI();
+    let npc = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) =>
       /^(man|woman|guard|knight of ardougne|farmer)$/i.test(n.name) &&
+      n.reachable !== false &&
       (n.options ?? []).some((o: string) => /^pickpocket$/i.test(o))
     );
+    if (!npc) {
+      const px = sdk.getState()?.player?.worldX ?? 3222;
+      const pz = sdk.getState()?.player?.worldZ ?? 3218;
+      const best = spots.slice().sort((a, b) => Math.hypot(a[0] - px, a[1] - pz) - Math.hypot(b[0] - px, b[1] - pz))[0];
+      if (best) await bot.walkTo(best[0], best[1], 3);
+      npc = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) =>
+        /^(man|woman|guard|knight of ardougne|farmer)$/i.test(n.name) &&
+        n.reachable !== false &&
+        (n.options ?? []).some((o: string) => /^pickpocket$/i.test(o))
+      );
+    }
     if (npc) {
-      const optIdx = (npc.options ?? []).findIndex((o: string) => /^pickpocket$/i.test(o));
-      await sdk.sendInteractNpc(npc.index, optIdx >= 0 ? optIdx + 1 : 3);
-      await sleep(1200);
+      await bot.pickpocketNpc(npc);
+      await sleep(800);
     } else {
       await sleep(600);
     }

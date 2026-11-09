@@ -1,7 +1,7 @@
 import {
   Ctx, Quest, has, count, log, sleep, talk, chat, waitInv, waitCond, step, lvl,
   bankJunk, withdrawFromDraynorBank, openNearbyDoors, pickupWithWait,
-  walkToVarrock, walkFromVarrockToLumbridge, exitWizardsTowerGround
+  walkToVarrock, walkFromVarrockToLumbridge, exitWizardsTowerGround, ensureCoins
 } from '../quest-kit';
 
 const N = 'Demon Slayer';
@@ -28,12 +28,25 @@ export const demon: Quest = {
       for (let g = 0; g < 6 && lvl(sdk) !== targetLevel; g++) {
         const cur = lvl(sdk);
         const dir = targetLevel > cur ? /climb-?up/i : /climb-?down/i;
-        if (cur === 0) {
-          const w = await bot.walkTo(3105, 3160, 2);
-          if (!w?.success) {
-            await openNearbyDoors(c, 3109, 3166, 2);
-            await openNearbyDoors(c, 3107, 3162, 2);
-            await bot.walkTo(3105, 3160, 2);
+        if (cur === 0 && targetLevel > 0) {
+          const p = sdk.getState()?.player;
+          if (!p || p.worldX < 3104 || p.worldX > 3107 || p.worldZ < 3158 || p.worldZ > 3163) {
+            await bot.walkTo(3109, 3168, 2);
+            const d2 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /door/i.test(l.name) && Math.hypot(l.x - 3109, l.z - 3166) <= 2 && (l.options ?? []).some((o: string) => /^open$/i.test(o)));
+            if (d2) { await bot.interactLoc(d2, /^open$/i); await sleep(900); }
+            await sdk.sendWalk(3108, 3164, true);
+            await sleep(1400);
+            const d1 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /door/i.test(l.name) && Math.hypot(l.x - 3107, l.z - 3162) <= 2 && (l.options ?? []).some((o: string) => /^open$/i.test(o)));
+            if (d1) { await bot.interactLoc(d1, /^open$/i); await sleep(900); }
+            await sdk.sendWalk(3105, 3160, true);
+            await sleep(1400);
+          }
+        } else if (cur === 1 && targetLevel === 0) {
+          const p = sdk.getState()?.player;
+          if (p && p.worldX >= 3108) {
+            await openNearbyDoors(c, 3109, 3161, 4);
+            await sdk.sendWalk(3105, 3160, true);
+            await sleep(1400);
           }
         }
         const st = (sdk.getState()?.nearbyLocs ?? [])
@@ -46,6 +59,19 @@ export const demon: Quest = {
         await sleep(600);
       }
       return lvl(sdk) === targetLevel;
+    };
+
+    const reachTraibornRoom = async () => {
+      for (let i = 0; i < 4; i++) {
+        const p = sdk.getState()?.player;
+        if (p && p.level === 1 && p.worldX >= 3110 && p.worldZ >= 3159 && p.worldZ <= 3166) return true;
+        await openNearbyDoors(c, 3109, 3161, 4);
+        const w = await bot.walkTo(3111, 3162, 1);
+        if (w?.success && (sdk.getState()?.player?.worldX ?? 0) >= 3110) return true;
+        await sdk.sendWalk(3111, 3162, true);
+        await sleep(1400);
+      }
+      return (sdk.getState()?.player?.worldX ?? 0) >= 3110;
     };
 
     const climbPalaceNW = async (targetLevel: number) => {
@@ -80,11 +106,8 @@ export const demon: Quest = {
       if ((sdk.getState()?.player?.worldZ ?? 0) < 3350) {
         await bankJunk(c, KEEP_RE);
         await withdrawFromDraynorBank(c, [/^coins$/i, /^bucket$/i, /^bucket of water$/i, /^bones$/i]);
-        while (count(sdk, /^coins$/i) < 1) {
-          await bot.walkTo(3100, 3250, 4);
-          const npc = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /^(man|woman)$/i.test(n.name) && n.combatLevel <= 4);
-          if (npc) await bot.pickpocketNpc(npc);
-          await sleep(800);
+        if (count(sdk, /^coins$/i) < 1) {
+          await ensureCoins(c, 50);
         }
         if (!has(sdk, /^bucket|bucket of water$/i)) {
           await bot.walkTo(3216, 3291, 2);
@@ -93,11 +116,8 @@ export const demon: Quest = {
       }
 
       if (!(await walkToVarrock(c, 3203, 3424))) return false;
-      while (count(sdk, /^coins$/i) < 1) {
-        await bot.walkTo(3210, 3424, 4);
-        const npc = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /^(man|woman)$/i.test(n.name) && n.combatLevel <= 4);
-        if (npc) await bot.pickpocketNpc(npc);
-        await sleep(800);
+      if (count(sdk, /^coins$/i) < 1) {
+        await ensureCoins(c, 50);
       }
       await bot.walkTo(3203, 3424, 2);
       if (!(await talk(c, /^gypsy$/i, [
@@ -175,48 +195,53 @@ export const demon: Quest = {
       if (!hasKey3()) {
         if (lvl(sdk) > 0) await climbPalaceNW(0);
         if (!inSewer()) {
-          if (!has(sdk, /^bucket of water$/i)) {
-            if (!has(sdk, /^bucket$/i)) {
-              // Climb up palace NE stairs at (3212, 3473) to pick up Bucket at L1 (3221, 3497)
-              await bot.walkTo(3212, 3472, 2);
-              const stUp = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1722);
-              if (stUp) {
-                await bot.interactLoc(stUp, /climb-?up/i);
-                await waitCond(() => lvl(sdk) === 1, 5000);
-              }
-              if (lvl(sdk) === 1) {
-                const wb = await bot.walkTo(3221, 3496, 2);
-                if (!wb?.success) { await openNearbyDoors(c, 3219, 3492, 3); await bot.walkTo(3221, 3496, 2); }
-                await pickupWithWait(c, 3221, 3497, /^bucket$/i, 15);
-                await bot.walkTo(3212, 3475, 2);
-                const stDn = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1723);
-                if (stDn) {
-                  await bot.interactLoc(stDn, /climb-?down/i);
-                  await waitCond(() => lvl(sdk) === 0, 5000);
+          // Check if Manhole is already open or drain already flushed
+          await bot.walkTo(3236, 3458, 1);
+          const alreadyOpen = (sdk.getState()?.nearbyLocs ?? []).some((l: any) => l.id === 882);
+          if (!alreadyOpen) {
+            if (!has(sdk, /^bucket of water$/i)) {
+              if (!has(sdk, /^bucket$/i)) {
+                // Climb up palace NE stairs at (3212, 3473) to pick up Bucket at L1 (3221, 3497)
+                await bot.walkTo(3212, 3472, 2);
+                const stUp = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1722);
+                if (stUp) {
+                  await bot.interactLoc(stUp, /climb[- ]?up/i);
+                  await waitCond(() => lvl(sdk) === 1, 5000);
+                }
+                if (lvl(sdk) === 1) {
+                  const wb = await bot.walkTo(3221, 3496, 2);
+                  if (!wb?.success) { await openNearbyDoors(c, 3219, 3492, 3); await bot.walkTo(3221, 3496, 2); }
+                  await pickupWithWait(c, 3221, 3497, /^bucket$/i, 15);
+                  await bot.walkTo(3212, 3475, 2);
+                  const stDn = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1723);
+                  if (stDn) {
+                    await bot.interactLoc(stDn, /climb[- ]?down/i);
+                    await waitCond(() => lvl(sdk) === 0, 5000);
+                  }
                 }
               }
+              if (!has(sdk, /^bucket$/i)) return false;
+              await bot.walkTo(3218, 3465, 2);
+              await bot.useItemOnLoc(/^bucket$/i, /^fountain$/i);
+              if (!(await waitInv(sdk, /^bucket of water$/i, 5000))) return false;
             }
-            if (!has(sdk, /^bucket$/i)) return false;
-            await bot.walkTo(3218, 3465, 2);
-            await bot.useItemOnLoc(/^bucket$/i, /^fountain$/i);
-            if (!(await waitInv(sdk, /^bucket of water$/i, 5000))) return false;
+
+            await bot.walkTo(3225, 3496, 1);
+            await bot.useItemOnLoc(/^bucket of water$/i, /^drain$/i);
+            if (!(await waitInv(sdk, /^bucket$/i, 5000))) return false;
+            await sleep(2500);
           }
 
-          await bot.walkTo(3225, 3496, 1);
-          await bot.useItemOnLoc(/^bucket of water$/i, /^drain$/i);
-          if (!(await waitInv(sdk, /^bucket$/i, 5000))) return false;
-          await sleep(2500);
-
-          await bot.walkTo(3237, 3458, 1);
+          await bot.walkTo(3236, 3458, 1);
           for (let i = 0; i < 4 && !inSewer(); i++) {
             const mhClosed = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 881);
             if (mhClosed) {
-              await bot.interactLoc(mhClosed, 'Open');
+              await sdk.sendInteractLoc(mhClosed.x, mhClosed.z, mhClosed.id, 1);
               await sleep(1200);
             }
             const mhOpen = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 882);
             if (mhOpen) {
-              await bot.interactLoc(mhOpen, /climb-?down/i);
+              await sdk.sendInteractLoc(mhOpen.x, mhOpen.z, mhOpen.id, 1);
               if (await waitCond(() => inSewer(), 5000, 250)) break;
             }
             await sleep(600);
@@ -227,14 +252,13 @@ export const demon: Quest = {
         await bot.walkTo(3237, 9866, 2);
         await bot.walkTo(3229, 9882, 2);
         await bot.walkTo(3225, 9897, 2);
-        if (!(await pickupWithWait(c, 3225, 9897, /^key$/i, 15))) return false;
+        if (!(await pickupWithWait(c, 3225, 9897, /^key$/i, 15)) || !hasKey3()) return false;
 
         await bot.walkTo(3229, 9882, 2);
-        await bot.walkTo(3237, 9858, 2);
+        await bot.walkTo(3237, 9859, 2);
         for (let i = 0; i < 4 && inSewer(); i++) {
-          const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1755);
-          if (lad) await bot.interactLoc(lad, /climb-?up/i);
-          else await bot.interactLoc(/^ladder$/i, /climb-?up/i);
+          const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1755 || /^ladder$/i.test(l.name));
+          if (lad) await sdk.sendInteractLoc(lad.x, lad.z, lad.id, 1);
           if (await waitCond(() => !inSewer(), 5000, 250)) break;
         }
       }
@@ -246,51 +270,28 @@ export const demon: Quest = {
       if (questComplete || hasSilverlight() || hasKey1()) return true;
 
       if ((sdk.getState()?.player?.worldZ ?? 0) > 3350) {
-        if (!(await walkFromVarrockToLumbridge(c, 3092, 3245))) return false;
+        if (!(await walkFromVarrockToLumbridge(c, 3231, 3298))) return false;
       }
 
-      // Free inventory space at Draynor bank so we can carry ~20+ bones per trip
-      await bankJunk(c, /^(coins|bones|key|silverlight|bronze sword|iron dagger|steel|mithril|adamant|rune)$/i);
-      await withdrawFromDraynorBank(c, [/^bones$/i]);
-
-      if (!traibornStarted) {
-        await bot.walkTo(3108, 3168, 2);
-        if (!(await climbWizardsTower(1))) return false;
-        const wt = await bot.walkTo(3112, 3162, 2);
-        if (!wt?.success) {
-          await openNearbyDoors(c, 3107, 3162, 3);
-          await openNearbyDoors(c, 3111, 3162, 3);
-          await bot.walkTo(3112, 3162, 2);
-        }
-        await talk(c, /^traiborn$/i, [
-          /need to get a key given to you by sir prysin/i,
-          /well, have you got any keys knocking around/i,
-          /i'll get the bones for you/i,
-        ], 20);
-        // If we already had bones and Traiborn was already on bone-collection stage, wait for bone loop
-        await waitCond(() => count(sdk, /^bones$/i) === 0 || !!sdk.getState()?.dialog?.isOpen, 20000, 400);
-        if (sdk.getState()?.dialog?.isOpen) await chat(c);
-        await sleep(1000);
-        traibornStarted = true;
-        await climbWizardsTower(0);
-        await exitWizardsTowerGround(c);
-        if (hasKey1()) return true;
+      if ((sdk.getInventory()?.length ?? 0) - count(sdk, /^bones$/i) > 3) {
+        await bankJunk(c, /^(coins|bones|key|silverlight|bronze sword|iron dagger|steel|mithril|adamant|rune)$/i);
+        await withdrawFromDraynorBank(c, [/^bones$/i]);
       }
 
-      for (let trip = 0; trip < 4 && !hasKey1(); trip++) {
-        // Collect bones from Lumbridge west chicken farm (3177, 3296) or east chicken farm (3231, 3295)
-        while ((sdk.getInventory()?.length ?? 0) < 28 && count(sdk, /^bones$/i) < 25) {
+      for (let trip = 0; trip < 3 && !hasKey1(); trip++) {
+        // Collect 25 bones at East Lumbridge Chicken Coop (3231, 3298 - 9 chickens) before climbing Wizards' Tower
+        for (let iter = 0; iter < 90 && (sdk.getInventory()?.length ?? 0) < 28 && count(sdk, /^bones$/i) < 25; iter++) {
           const p = sdk.getState()?.player;
-          if (!p || Math.hypot(p.worldX - 3177, p.worldZ - 3296) > 12) {
-            const wc = await bot.walkTo(3177, 3296, 3);
+          if (!p || p.worldX < 3225 || p.worldX > 3236 || p.worldZ < 3295 || p.worldZ > 3301) {
+            const wc = await bot.walkTo(3231, 3298, 2);
             if (!wc?.success) {
-              await openNearbyDoors(c, 3183, 3291, 3);
-              await openNearbyDoors(c, 3177, 3291, 3);
-              await bot.walkTo(3177, 3296, 3);
+              await bot.walkTo(3237, 3295, 2);
+              await openNearbyDoors(c, 3236, 3295, 3);
+              await bot.walkTo(3231, 3298, 2);
             }
           }
           const gBone = (sdk.getState()?.groundItems ?? [])
-            .filter((g: any) => /^bones$/i.test(g.name) && g.reachable !== false && g.distance <= 8)
+            .filter((g: any) => /^bones$/i.test(g.name) && g.reachable !== false && g.distance <= 8 && g.x >= 3225 && g.x <= 3236 && g.z >= 3295 && g.z <= 3301)
             .sort((a: any, b: any) => a.distance - b.distance)[0];
           if (gBone) {
             const before = count(sdk, /^bones$/i);
@@ -299,31 +300,46 @@ export const demon: Quest = {
             continue;
           }
           const chk = (sdk.getState()?.nearbyNpcs ?? [])
-            .filter((n: any) => /^chicken$/i.test(n.name) && !n.inCombat && n.reachable !== false)
+            .filter((n: any) => /^chicken$/i.test(n.name) && !n.inCombat && n.reachable !== false && n.x >= 3225 && n.x <= 3236 && n.z >= 3295 && n.z <= 3301)
             .sort((a: any, b: any) => a.distance - b.distance)[0];
           if (chk) {
             await bot.attack(chk);
-            await waitCond(() => !sdk.getState()?.player?.combat?.inCombat && (sdk.getState()?.groundItems ?? []).some((g: any) => /^bones$/i.test(g.name) && g.distance <= 3), 8000, 300);
+            await waitCond(() => (sdk.getState()?.groundItems ?? []).some((g: any) => /^bones$/i.test(g.name) && g.distance <= 3), 5000, 250);
           } else {
-            await sleep(800);
+            await sleep(600);
           }
         }
 
-        await bot.walkTo(3108, 3168, 2);
+        await bot.walkTo(3109, 3168, 2);
         if (!(await climbWizardsTower(1))) return false;
-        const wt = await bot.walkTo(3112, 3162, 2);
-        if (!wt?.success) {
-          await openNearbyDoors(c, 3107, 3162, 3);
-          await openNearbyDoors(c, 3111, 3162, 3);
-          await bot.walkTo(3112, 3162, 2);
+        if (!(await reachTraibornRoom())) return false;
+
+        if (!traibornStarted) {
+          if (!(await talk(c, /^traiborn$/i, [
+            /need to get a key given to you by sir prysin/i,
+            /well, have you got any keys knocking around/i,
+            /i'll get the bones for you/i,
+          ], 20))) return false;
+          traibornStarted = true;
+          await sleep(800);
         }
-        await talk(c, /^traiborn$/i);
-        // Wait for Traiborn's 1-bone-per-tick loop to finish and open the completion or "I still need more" dialog
-        await waitCond(() => count(sdk, /^bones$/i) === 0 && !!sdk.getState()?.dialog?.isOpen, 22000, 400);
-        if (sdk.getState()?.dialog?.isOpen) {
-          await chat(c);
+
+        if (count(sdk, /^bones$/i) > 0 && !hasKey1()) {
+          if (!(await reachTraibornRoom())) return false;
+          await talk(c, /^traiborn$/i);
+          // Wait for Traiborn's 1-bone-per-tick loop to finish and open the completion or "I still need more" dialog
+          await sleep(1500);
+          await waitCond(() => !!sdk.getState()?.dialog?.isOpen || count(sdk, /^bones$/i) === 0, 24000, 400);
+          await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 4000, 300);
+          if (sdk.getState()?.dialog?.isOpen) {
+            await chat(c);
+          }
+          await waitCond(() => hasKey1(), 5000, 250);
+          if (sdk.getState()?.dialog?.isOpen) {
+            await chat(c);
+          }
         }
-        await waitCond(() => hasKey1(), 4000, 250);
+
         await climbWizardsTower(0);
         await exitWizardsTowerGround(c);
       }

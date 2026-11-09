@@ -29,20 +29,25 @@ const KEEP_RE = [
     /lobster|trout|salmon|meat|bread/i,
 ];
 
-let stage = 0; // 0=unstarted, 1=arthur, 2=gawain, 3=lancelot, 4=mordred/morgan, 5=thrantax, 6=freed, 7=complete
+let stage = 2; // 0=unstarted, 1=arthur, 2=gawain, 3=lancelot, 4=mordred/morgan, 5=thrantax, 6=freed, 7=complete
 let spokenLady = false;
 let inspectedAltar = false;
 
 async function prepSupplies(c: QuestContext): Promise<boolean> {
     if (stage >= 7) return true;
     await ensureEquipped(c, /rune scimitar|silverlight/i, 'wield');
+    if (hasInv(c, /tinderbox/i) && (hasInv(c, /^bread$/i) || hasInv(c, /^excalibur$/i))) {
+        return true;
+    }
     await ensureInInventory(c, [{ pattern: /tinderbox/i, count: 1 }], KEEP_RE);
-    await ensureInInventory(c, [{ pattern: /^coins$/i, count: 100 }], KEEP_RE);
     await ensureInInventory(c, [{ pattern: /^bread$/i, count: 1 }], KEEP_RE);
 
-    if (count(c.sdk, /^coins$/i) < 20) {
-        await walkTo(c, 3095, 3245);
-        await ensureCoins(c, 30);
+    if (!hasInv(c, /tinderbox/i) || (!hasInv(c, /^bread$/i) && !hasInv(c, /^excalibur$/i))) {
+        await ensureInInventory(c, [{ pattern: /^coins$/i, count: 100 }], KEEP_RE);
+        if (count(c.sdk, /^coins$/i) < 20) {
+            await walkTo(c, 3095, 3245);
+            await ensureCoins(c, 30);
+        }
     }
 
     if (!hasInv(c, /tinderbox/i)) {
@@ -93,27 +98,28 @@ async function startCamelot(c: QuestContext): Promise<boolean> {
         if (!ok) return false;
         await advanceDialogs(c, [
             /do you know how merlin got trapped/i,
-            /any ideas on how to get into morgan le faye's stronghold/i,
+            /any ideas? (on )?how to get into morgan le faye's stronghold/i,
         ]);
         stage = 2;
     }
 
-    // 3. Climb up staircase 1722 at (2757, 3512) to L1 and talk to Sir Lancelot
+    // 3. Climb up staircase 1725 at (2750, 3510) to L1 and talk to Sir Lancelot
     if (stage < 3) {
         if ((c.sdk.getState().player?.level ?? 0) === 0) {
-            await interactLocNear(c, 1722, /climb-up/i, 2757, 3512, 8);
-            await c.sleep(1200);
+            await interactLocNear(c, 1725, /climb-up/i, 2750, 3510, 8);
+            await c.sleep(1500);
         }
+        if ((c.sdk.getState().player?.level ?? 0) !== 1) return false;
         const ok = await interactNpcNear(c, /sir lancelot/i, /talk/i, 2760, 3511, 12);
         if (!ok) return false;
         await advanceDialogs(c, [
-            /any ideas on how to get into morgan le faye's stronghold/i,
+            /any ideas? (on )?how to get into morgan le faye's stronghold/i,
         ]);
         stage = 3;
     }
     if ((c.sdk.getState().player?.level ?? 0) === 1) {
-        await interactLocNear(c, 1723, /climb-down/i, 2757, 3512, 10);
-        await c.sleep(1000);
+        await interactLocNear(c, 1726, /climb-down/i, 2750, 3511, 10);
+        await c.sleep(1200);
     }
     return stage >= 3;
 }
@@ -140,18 +146,17 @@ async function keepLeFayeMordred(c: QuestContext): Promise<boolean> {
     // Climb staircase 1722 at L0 (2769, 3404) -> L1
     if ((c.sdk.getState().player?.level ?? 0) === 0) {
         await interactLocNear(c, 1722, /climb-up/i, 2769, 3404, 12);
-        await c.sleep(1200);
+        await c.sleep(1500);
     }
-    // Climb ladder 1747 at L1 (2764, 3402) -> L2
+    // Climb staircase 1722 at L1 (2769, 3398) -> L2
     if ((c.sdk.getState().player?.level ?? 0) === 1) {
-        await interactLocNear(c, 1747, /climb-up/i, 2764, 3402, 12);
-        await c.sleep(1200);
+        await interactLocNear(c, 1722, /climb-up/i, 2769, 3398, 12);
+        await c.sleep(1500);
     }
 
     // Attack Sir Mordred on L2 until Morgan Le Faye spawns and opens dialog
     let morganSpoke = false;
     for (let tick = 0; tick < 80; tick++) {
-        await eatIfLow(c);
         const s = c.sdk.getState();
         if (s.dialog.isOpen) {
             await advanceDialogs(c, [
@@ -178,12 +183,12 @@ async function keepLeFayeMordred(c: QuestContext): Promise<boolean> {
 
     // Climb down L2 -> L1 -> L0 and exit Keep Le Faye
     if ((c.sdk.getState().player?.level ?? 0) === 2) {
-        await interactLocNear(c, 1746, /climb-down/i, 2764, 3402, 12);
-        await c.sleep(1200);
+        await interactLocNear(c, 1723, /climb-down/i, 2769, 3399, 12);
+        await c.sleep(1500);
     }
     if ((c.sdk.getState().player?.level ?? 0) === 1) {
         await interactLocNear(c, 1723, /climb-down/i, 2769, 3405, 12);
-        await c.sleep(1200);
+        await c.sleep(1500);
     }
     // Open front door of Keep Le Faye from inside (2769, 3402)
     const p0 = c.sdk.getState().player;
