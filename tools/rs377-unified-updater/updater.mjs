@@ -356,6 +356,23 @@ function readWorldSafetySettings(world) {
   } else {
     backend=values.get('DB_BACKEND');
   }
+  // 377-wip predates world.json: its Environment.ts defaults to SQLite.
+  // Prove the *installed* source selects a local db.sqlite before accepting
+  // an absent legacy DB_BACKEND setting. Never guess a backend.
+  if(!backend && !exists(configfile)) {
+    const legacy=path.join(world.engine,'src/util/Environment.ts');
+    const query=path.join(world.engine,'src/db/query.ts');
+    if(!exists(legacy) || !exists(query) || fs.lstatSync(legacy).isSymbolicLink() ||
+       fs.lstatSync(query).isSymbolicLink())fail('Cannot prove pinned 377 SQLite default');
+    const a=fs.readFileSync(legacy,'utf8'),q=fs.readFileSync(query,'utf8');
+    if(!/\bDB_BACKEND\s*:\s*tryParseString\s*\(\s*process\.env\.DB_BACKEND\s*,\s*['"]sqlite['"]\s*\)/.test(a) ||
+       !/Environment\.DB_BACKEND\s*===\s*['"]sqlite['"]/.test(q) ||
+       !/new\s+DatabaseSync\s*\(\s*['"]db\.sqlite['"]\s*\)/.test(q))
+      fail('Cannot prove pinned 377 SQLite default and local database path');
+    backend='sqlite';
+  }
+  if(process.env.DB_BACKEND && process.env.DB_BACKEND!=='sqlite')
+    fail('Non-SQLite process DB_BACKEND override; no migration');
   if(backend!=='sqlite')fail('SQLite backup only: effective database backend not explicitly confirmed as sqlite');
   for(const key of ['NODE_PORT','WEB_PORT','WEB_MANAGEMENT_PORT'])if(values.has(key))ports.push(values.get(key));
   const parsed=[];
