@@ -106,7 +106,11 @@ class CacheOnDemand377Test {
     @Test
     fun `jagfile returns null when the server does not expose that file`() {
         val cache = CacheOnDemand377("http://host") { url ->
-            if (url.contains("/config")) ByteArray(3) else null
+            when {
+                url.endsWith("/crc") -> crcBuffer(0, 1, 2, 3)
+                url.contains("/config") -> ByteArray(3)
+                else -> null
+            }
         }
         assertEquals(3, cache.jagfile(Jagfile377.CONFIG)?.size)
         assertNull(cache.jagfile(Jagfile377.TEXTURES))
