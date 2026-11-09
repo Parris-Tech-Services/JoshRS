@@ -55,14 +55,14 @@ fi
 if $have_world; then
   check "elrothiro save present" test -s "$world/engine/data/players/main/elrothiro.sav"
 
-  check "structural audit matches documented 63 of 64" \
-    bash -c "cd '$repo' && node tools/questops/audit-quests.mjs '$world/content' | grep -q '63 structurally complete'"
+  check "structural audit matches documented 66 of 90" \
+    bash -c "cd '$repo' && node tools/questops/audit-quests.mjs '$world/content' | grep -q '66 structurally complete'"
 
   check "every quest has a completion path" \
     bash -c "cd '$repo' && node tools/questops/check-completion-paths.mjs '$world/content' | grep -q '0 failures'"
 
-  check "target status matches documented 62 / 22 / 26" \
-    bash -c "cd '$repo' && node tools/questops/quest-status.mjs --content '$world/content' --log '$HOME/elrothiro.md' | grep -q 'present=62 verified=22 absent=26'"
+  check "target status matches documented 72 / 22 / 16" \
+    bash -c "cd '$repo' && node tools/questops/quest-status.mjs --content '$world/content' --log '$HOME/elrothiro.md' | grep -q 'present=72 verified=22 absent=16'"
 fi
 
 # --- patch inventory --------------------------------------------------------------------------
