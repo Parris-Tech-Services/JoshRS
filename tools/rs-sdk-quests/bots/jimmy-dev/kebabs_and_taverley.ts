@@ -3,9 +3,9 @@ import { runScript } from '../../sdk/runner';
 await runScript(async ({ bot, sdk }) => {
     const getHp = () => (sdk.getSkill('Hitpoints') || sdk.getSkill('HP'))?.level ?? 10;
 
-    // 1. Pickpocket Man/Woman in Lumbridge until >= 22 coins
-    for (let i = 0; i < 18; i++) {
-        if ((sdk.findInventoryItem(/coins/i)?.count ?? 0) >= 22) break;
+    // 1. Pickpocket Man/Woman in Lumbridge until >= 24 coins
+    for (let i = 0; i < 20; i++) {
+        if ((sdk.findInventoryItem(/coins/i)?.count ?? 0) >= 24) break;
         const man = sdk.findNearbyNpc(/^(man|woman)$/i);
         if (man) {
             await bot.pickpocketNpc(man);
@@ -16,13 +16,13 @@ await runScript(async ({ bot, sdk }) => {
     }
     console.log(`Coins: ${sdk.findInventoryItem(/coins/i)?.count ?? 0}`);
 
-    // 2. Walk north around Al Kharid fence (3260, 3325) -> (3282, 3320) -> (3273, 3180) to buy 22 Kebabs
+    // 2. Walk north around Al Kharid fence (3260, 3325) -> (3282, 3320) -> (3273, 3180) to buy 24 Kebabs
     for (const [wx, wz] of [[3255, 3280], [3260, 3325], [3282, 3320], [3280, 3250], [3273, 3180]]) {
         await bot.walkTo(wx, wz, 4);
     }
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 25; i++) {
         if ((sdk.findInventoryItem(/coins/i)?.count ?? 0) < 1) break;
-        if (sdk.getInventory().length >= 26) break;
+        if (sdk.getInventory().length >= 27) break;
         const seller = sdk.findNearbyNpc(/kebab seller/i);
         if (!seller) break;
         await bot.talkTo(seller);
@@ -39,7 +39,7 @@ await runScript(async ({ bot, sdk }) => {
     }
     console.log(`Kebabs bought: ${sdk.getInventory().filter(i => /kebab/i.test(i.name)).length}`);
 
-    // Start background eat loop every 3 ticks (waits 3 ticks after eating so heal registers)
+    // Start background eat loop every 2 ticks
     let stopEating = false;
     const eatLoop = (async () => {
         while (!stopEating) {
@@ -90,7 +90,7 @@ await runScript(async ({ bot, sdk }) => {
         }
         console.log(`Past Suit of Armour door: (${sdk.getState().player?.worldX}, ${sdk.getState().player?.worldZ}) HP=${getHp()}`);
 
-        // 5. Walk via X=2925 (outside Blue Dragon door at 2924,9803, and west of Lesser Demons at 2933,9809!)
+        // 5. Walk to Lord Daquarius (2892, 9680) FIRST!
         const dungeonSteps = [
             [2896, 9821],
             [2917, 9827],
@@ -98,45 +98,38 @@ await runScript(async ({ bot, sdk }) => {
             [2924, 9768],
             [2921, 9744],
             [2924, 9712],
-            [2931, 9693]
+            [2915, 9685],
+            [2892, 9680]
         ];
         for (const [wx, wz] of dungeonSteps) {
             await bot.walkTo(wx, wz, 2);
             console.log(`Reached (${sdk.getState().player?.worldX}, ${sdk.getState().player?.worldZ}) HP=${getHp()} kebabs=${sdk.getInventory().filter(i => /kebab/i.test(i.name)).length}`);
         }
 
-        console.log('Nearby NPCs at Jailer area:', sdk.getNearbyNpcs().map(n => `${n.name}(${n.id})@(${n.x},${n.z}) ops=${n.options.map(o => o.text)}`));
-        const jailer = sdk.getNearbyNpcs().find(n => n.id === 201 || /jailer/i.test(n.name));
-        if (jailer) {
-            console.log(`Testing Talk-to on Jailer (${jailer.id}) at (${jailer.x}, ${jailer.z})...`);
-            await sdk.sendInteractNpc(jailer.index, 1);
-            await sdk.waitForTicks(6);
-            console.log('Jailer dialog:', JSON.stringify(sdk.getDialog()));
-            console.log('Jailer recent messages:', sdk.getState().recentMessages);
-            while (sdk.getDialog()?.isOpen) {
-                await sdk.sendClickDialog(0);
-                await sdk.waitForTicks(2);
-            }
-        }
-
-        // 6. Walk to Lord Daquarius (2892, 9680)
-        for (const [wx, wz] of [[2915, 9685], [2902, 9682], [2892, 9680]]) {
-            await bot.walkTo(wx, wz, 3);
-        }
-        console.log(`At Lord Daquarius area: (${sdk.getState().player?.worldX}, ${sdk.getState().player?.worldZ}) HP=${getHp()}`);
-        console.log('Nearby NPCs at Daquarius area:', sdk.getNearbyNpcs().map(n => `${n.name}(${n.id})@(${n.x},${n.z}) ops=${n.options.map(o => o.text)}`));
-
         const daquarius = sdk.getNearbyNpcs().find(n => n.id === 200 || /daquarius/i.test(n.name));
         if (daquarius) {
             console.log(`Testing Talk-to on Lord Daquarius (${daquarius.id}) at (${daquarius.x}, ${daquarius.z})...`);
             await sdk.sendInteractNpc(daquarius.index, 1);
-            await sdk.waitForTicks(6);
-            console.log('Lord Daquarius dialog:', JSON.stringify(sdk.getDialog()));
-            console.log('Lord Daquarius recent messages:', sdk.getState().recentMessages);
-            while (sdk.getDialog()?.isOpen) {
+            await sdk.waitForTicks(5);
+            for (let step = 0; step < 6 && sdk.getDialog()?.isOpen; step++) {
+                console.log(`Lord Daquarius dialog page ${step}:`, JSON.stringify(sdk.getDialog()));
                 await sdk.sendClickDialog(0);
-                await sdk.waitForTicks(2);
+                await sdk.waitForTicks(3);
             }
+        }
+
+        // 6. Now walk to Jailer at (2933, 9693) via (2915, 9685) -> (2933, 9692)
+        for (const [wx, wz] of [[2915, 9685], [2926, 9692], [2932, 9692]]) {
+            await bot.walkTo(wx, wz, 2);
+        }
+        console.log(`At Jailer area: (${sdk.getState().player?.worldX}, ${sdk.getState().player?.worldZ}) HP=${getHp()}`);
+        const jailer = sdk.getNearbyNpcs().find(n => n.id === 201 || /jailer/i.test(n.name));
+        if (jailer) {
+            console.log(`Testing Talk-to on Jailer (${jailer.id}) at (${jailer.x}, ${jailer.z}) reachable=${jailer.reachable}...`);
+            await sdk.sendInteractNpc(jailer.index, 1);
+            await sdk.waitForTicks(5);
+            console.log('Jailer dialog:', JSON.stringify(sdk.getDialog()));
+            console.log('Jailer chat:', JSON.stringify(sdk.getChat().slice(-5)));
         }
     } finally {
         stopEating = true;

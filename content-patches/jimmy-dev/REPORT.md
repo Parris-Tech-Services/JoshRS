@@ -1,6 +1,8 @@
 # NPC Talk-to Audit & Fix Report (jimmy-dev)
 
 - `PASS` | `1239` (`bedabin_fighter`, "Bedabin Nomad Fighter") @ `(3160, 3031, L0)` — Added `[opnpc1,bedabin_fighter]` & `[proc,bedabin_fighter_options]` in `bedabin_nomad.rs2`; verified all dialogue branches and relog in-game (`patches/0001-bedabin-fighter-talkto.patch`).
+- `PASS` | `200` (`lord_daquarius`, "Lord Daquarius") @ `(2892, 9680, L0)` — Caught `No trigger for [opnpc1,lord_daquarius]` in-game; enabled `[opnpc1,lord_daquarius]` in `lord_daquarius.rs2` and added `head1=chat_male_head_mediumhair` in `taverly_dungeon.npc`; verified in-game (`patches/0002-taverley-dungeon-daquarius-jailer-talkto.patch`).
+- `PASS` | `201` (`jailer`, "Jailer") @ `(2933, 9693, L0)` — Added `[opnpc1,jailer]` (`"The Jailer does not appear interested in talking."`) in `jailer.rs2`; verified in-game (`patches/0002-taverley-dungeon-daquarius-jailer-talkto.patch`).
 - `OK` | `1595` (`tribesman_doorman`, "Saniboch") @ `(2745, 3152, L0)` — Walked up and tested `Talk-to` in-game; responds with `"Good day to you bwana."` and Brimhaven Dungeon entry options.
 - `OK` | `1287` (`vt_council_workmen`, "Council workman") @ `(2655, 3592, L0)` — Walked up and tested `Talk-to` in-game; opens dialogue normally.
 - `OK` | `610` (`grillknight`, "Black Knight") @ `(3028, 3508, L0)` — Walked to Black Knights' Fortress `(3016, 3513, L0)`; NPC is inside the sealed Witch/Greldo eavesdrop room (`[oploc1,bkfortress_grill]` cutscene NPC, not directly reachable for `opnpc1`).
