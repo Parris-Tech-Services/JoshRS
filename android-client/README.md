@@ -6,7 +6,7 @@
 
 This stage independently implements the revision-377 layout described by the
 original 377 Java client: Jagfile/OnDemand map_index, GZIP map land files,
-World.method31 tile opcodes, and packed loc-ID/position deltas.
+World.method31 tile opcodes, packed loc-ID/position deltas, and the original flo.dat RGB/texture-ID definitions from config Jagfile #2.
 
 - Select YOUR matching **main_file_cache.dat + idx0 + idx4** files together in
   Android's private cache importer. This produces an atomic private snapshot.
@@ -15,10 +15,11 @@ World.method31 tile opcodes, and packed loc-ID/position deltas.
   actual 377 versionlist (#5 in idx0), resolves the two region 50,50 file IDs,
   decompresses the land and location archives in idx4, and decodes real
   four-plane 64x64 tile heights, overlay/underlay IDs, flags, location types,
-  orientations and world coordinates.
+  orientations and world coordinates. Where the original config cache exists,
+  base floor RGB values also come from its real flo.dat definitions.
 - Touch drag and pinch zoom inspect the decoded region. The coloured ground
-  is a **diagnostic approximation of underlay/overlay IDs**, not actual
-  floor colours/textures. Dots mark actual object positions, not 3D models or
+  uses **original floor RGB** where cached, or a visibly labelled fallback
+  tint otherwise. Texture images, lighting and shading remain incomplete. Dots mark actual object positions, not 3D models or
   collision. The orange 3233,3218 marker is a coordinate, **not an avatar**.
 - Missing/corrupt cache data causes an explicit failure, never a silently
   invented Lumbridge. No account logs in or changes a server/saved character.
