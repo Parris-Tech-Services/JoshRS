@@ -947,3 +947,36 @@
 - `(2887, 3424, L0)` **Flax** (id `2646`) [`Pick`] -> OK: Interacted with Flax
 - `(2884, 3423, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door (loc state changed)
 
+
+### Region Completed: Wizards' Tower First & Second Floors (m48_49 L1 & L2) — 2026-11-09T09:34:03.282Z
+- **Total Interactions Audited**: 1 (0 verified working, 1 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3104, 3158, L0)` — Wizards' Tower First & Second Floors (m48_49 L1 & L2)
+  - **Object & Action**: `Bookcase` (id `380`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Bookcase at (3104, 3158). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+
+### Region Completed: Edgeville Dungeon Entrance Hall (m48_154) — 2026-11-09T09:36:36.657Z
+- **Total Interactions Audited**: 5 (2 verified working, 3 anomalous/unimplemented)
+- Verified Trapdoor at `(3097, 3468, L0)` (`Open` -> `Climb-down` to `(3097, 9868)`), and audited entrance corridor crates (receiving `Broken staff` from `Crate` id `356` at `(3101, 9904)`).
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3100, 9904, L0)` — Edgeville Dungeon Entrance Hall (m48_154)
+  - **Object & Action**: `Crate` (id `357`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3100, 9904). Actual: success=false (Timed out after 4500ms), opRejectedDelta=8, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3101, 9904, L0)` — Edgeville Dungeon Entrance Hall (m48_154)
+  - **Object & Action**: `Crate` (id `356`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3101, 9904). Actual: success=true (Interacted with Crate, awarded `Broken staff`), opRejectedDelta=2, messages="You search the crate...", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3094, 9909, L0)` — Edgeville Dungeon Entrance Hall (m48_154)
+  - **Object & Action**: `Crate` (id `358`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3094, 9909). Actual: success=true (Interacted with Crate), opRejectedDelta=7, messages="You search the crate but find nothing.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(3097, 3468, L0)` **Trapdoor** [`Open` / `Climb-down`] -> OK: Opened trapdoor and descended to `(3097, 9868, L0)` in Edgeville Dungeon.
+
