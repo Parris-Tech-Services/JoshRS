@@ -546,3 +546,34 @@
 - `(3314, 3174, L0)` **Sacks** (id `365`) [`Search`] -> OK: Interacted with Sacks
 - `(3309, 3120, L0)` **Shantay chest** (id `2693`) [`Open`] -> OK: Interacted with Shantay chest
 - `(3297, 3124, L0)` **Prison door** (id `2692`) [`Open`] -> OK: Timed out after 4500ms (loc state changed)
+
+### Region Completed: Region 7b: Al Kharid Palace, Bank, Furnace & North Mine (m51_49, m51_50, m51_51) (2026-11-09T06:20:00.431Z)
+- **Objects/Interactions Audited**: 5 (5 working normally, 0 anomalies/findings)
+- Audited Al Kharid Palace Courtyard, Bank, Furnace, North Scorpion Pit Mine, and exited north via (3282, 3318) bypassing the toll gate.
+- **Findings**: No broken interactions found in this region.
+
+### Region Completed: Region 11: South Varrock, Champions' Guild, Stone Circle & Mines (m49_51, m50_51, m50_52, m51_52) (2026-11-09T06:21:02.420Z)
+- **Objects/Interactions Audited**: 5 (5 working normally, 0 anomalies/findings)
+- Audited SE Varrock Mine, Varrock South Gate, Stone Circle, Champions' Guild entrance, and SW Varrock Mine.
+- **Findings**: No broken interactions found in this region.
+
+### Region Completed: Region 12: Varrock Town, Square, Palace, Churches & Banks (m49_52, m50_52, m50_53, m51_52) (2026-11-09T06:22:54.460Z)
+- **Objects/Interactions Audited**: 9 (8 working normally, 1 anomalies/findings)
+- Audited Varrock West Bank, West Anvils, Town Square, Blue Moon Inn, East Bank, Museum, Church, Palace Courtyard, and West Gate.
+
+#### Findings in Region 12: Varrock Town, Square, Palace, Churches & Banks (m49_52, m50_52, m50_53, m51_52)
+- **Coordinates & Region**: `(3153, 3433, L0) [player at (3154, 3426, L0)]` (Region 12: Varrock Town, Square, Palace, Churches & Banks (m49_52, m50_52, m50_53, m51_52))
+  - **Object & Action**: `Waypoint: Varrock West Gate` -> `walkTo(3153, 3433)`
+  - **Expected**: Reachable navigation to Varrock West Gate
+  - **Actual**: walkTo failed: Path to (3153, 3433) stops 5 tiles short at (3148, 3433) - the rest is unroutable from here (locked door or separate room?)
+  - **Severity**: **Blocks progress**
+
+### Region Completed: Region 10: Draynor Manor Grounds & Ground Floor (m48_51 & m48_52) (2026-11-09T06:24:04.832Z)
+- **Objects/Interactions Audited**: 4 (4 working normally, 0 anomalies/findings)
+- Audited Draynor Manor gates, grounds, fountain, compost heap, and entrance doors.
+- **Findings**: No broken interactions found in this region.
+
+### Region Completed: Region 13: Barbarian Village & Edgeville (m48_53 & m48_54) (2026-11-09T06:25:39.626Z)
+- **Objects/Interactions Audited**: 6 (6 working normally, 0 anomalies/findings)
+- Audited Barbarian Village mine, longhall, pottery oven/wheel, Edgeville bank, ruined houses, and Monastery exterior.
+- **Findings**: No broken interactions found in this region.
