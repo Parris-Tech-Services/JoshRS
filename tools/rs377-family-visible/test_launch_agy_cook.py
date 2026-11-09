@@ -28,12 +28,26 @@ class AgyHandoffTests(unittest.TestCase):
         self.bin.mkdir()
         self.make_exe("ss", "#!/bin/sh\nprintf 'LISTEN\\n'\n")
         self.make_exe("agy", """#!/bin/sh
-[ "$1" = "-i" ] || exit 10
-case "$2" in *"Cook's Assistant"*"HarnessView1"*) ;; *) exit 11 ;; esac
-[ "$#" = "2" ] || exit 12
+case "$1" in
+ -i)
+  case "$2" in *"Cook's Assistant"*"HarnessView1"*) ;; *) exit 11 ;; esac
+  ;;
+ --conversation=ed46254e-75c9-411b-9d31-7d048c0fe8dd)
+  ;;
+ *) exit 10 ;;
+esac
+if [ "$#" -eq 3 ]; then
+ [ "$3" = "--dangerously-skip-permissions" ] || exit 12
+elif [ "$#" -ne 2 ]; then exit 13; fi
 [ "$JOSHRS_HARNESSVIEW1_PASSWORD" = "onlybot123" ] || exit 14
 printf 'FAKE_AGY_ACCEPTED_TASK\\n'
+printf 'FAKE_AGY_FLAGS=%s\\n' "$3"
+printf 'FAKE_AGY_CWD=%s\\n' "$PWD"
 """)
+        self.resume_dir = self.home / "dev/JoshRS-agy-cook-2CQGiwsR"
+        (self.resume_dir / "docs/rs377").mkdir(parents=True)
+        (self.resume_dir / ".git").write_text("gitdir: synthetic")
+        (self.resume_dir / "docs/rs377/AGY_HARNESSVIEW1_COOKS_ASSISTANT_LIVE_2026-11-09.md").write_text("Cook's Assistant")
         self.env = dict(os.environ, HOME=str(self.home),
                         PATH=str(self.bin) + os.pathsep + os.environ.get("PATH", ""))
 
@@ -55,10 +69,10 @@ printf 'FAKE_AGY_ACCEPTED_TASK\\n'
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("interactive Terminal required", result.stderr)
 
-    def test_foreground_handoff_passes_private_password_without_echo(self):
+    def run_private_tty(self, extra_args):
         master, slave = pty.openpty()
         try:
-            child = subprocess.Popen(["bash", str(LAUNCHER)], env=self.env,
+            child = subprocess.Popen(["bash", str(LAUNCHER), *extra_args], env=self.env,
                                      stdin=slave, stdout=slave, stderr=slave,
                                      start_new_session=True, close_fds=True)
             os.close(slave)
@@ -84,10 +98,9 @@ printf 'FAKE_AGY_ACCEPTED_TASK\\n'
             self.assertTrue(sent, output.decode("utf8", "replace"))
             self.assertEqual(child.wait(timeout=5), 0, output.decode("utf8", "replace"))
             self.assertIn(b"FAKE_AGY_ACCEPTED_TASK", output)
-            self.assertIn(b"Agy prompt preview (first 12 lines)", output)
-            self.assertIn(b"Launching Agy interactive (-i)", output)
             self.assertIn(b"AGY_HANDOFF_FINISHED: CLI exit 0", output)
             self.assertNotIn(b"onlybot123", output)
+            return output
         finally:
             try:
                 if slave >= 0:
@@ -96,6 +109,40 @@ printf 'FAKE_AGY_ACCEPTED_TASK\\n'
                 pass
             os.close(master)
 
+    def test_default_foreground_still_requires_normal_permissions(self):
+        output = self.run_private_tty([])
+        self.assertIn(b"Agy prompt preview (first 12 lines)", output)
+        self.assertIn(b"Standard Agy permission prompts remain enabled", output)
+        self.assertNotIn(b"permission bypass enabled", output)
+
+    def test_explicit_permission_bypass_uses_exact_documented_cli_flag(self):
+        output = self.run_private_tty(["--dangerously-skip-permissions"])
+        self.assertIn(b"permission bypass enabled", output)
+        self.assertIn(b"FAKE_AGY_FLAGS=--dangerously-skip-permissions", output)
+
+    def test_resume_preserves_existing_worktree_and_conversation(self):
+        output = self.run_private_tty([
+            "--dangerously-skip-permissions",
+            "--resume-conversation", "ed46254e-75c9-411b-9d31-7d048c0fe8dd",
+            "--workspace", str(self.resume_dir)])
+        self.assertIn(b"Resuming existing Agy conversation", output)
+        self.assertIn(str(self.resume_dir).encode(), output)
+        self.assertIn(b"FAKE_AGY_FLAGS=--dangerously-skip-permissions", output)
+        self.assertIn(("FAKE_AGY_CWD="+str(self.resume_dir)).encode(), output)
+        self.assertNotIn(b"Agy prompt preview", output)
+
+    def test_invalid_resume_refused_before_any_agent_start(self):
+        result = subprocess.run([
+            "bash", str(LAUNCHER),
+            "--dangerously-skip-permissions",
+            "--resume-conversation", "unverified",
+            "--workspace", "/tmp/random"], env=self.env,
+            text=True, capture_output=True, timeout=10)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("HANDOFF_BLOCKED", result.stderr)
+        self.assertNotIn("FAKE_AGY_ACCEPTED_TASK", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
+
