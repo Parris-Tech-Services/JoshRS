@@ -1,17 +1,39 @@
 # elrothiro Lab Log
 
-## Session 1
+## Session 1 — Hour 6 Status Summary (2026-11-09T11:57Z)
 
-### Goals
--
+### Quests Completed (15 Quests, 36 Quest Points Verified In-Game)
+1. **Cook's Assistant** (`cooks`) — +1 QP (Total: 1 QP), +7,500 Cooking XP (Level 1 -> 30)
+2. **Sheep Shearer** (`sheep`) — +1 QP (Total: 2 QP), +5,000 Crafting XP (Level 1 -> 25), +60 Coins
+3. **The Restless Ghost** (`priest`) — +1 QP (Total: 3 QP), +28,125 Prayer XP (Level 1 -> 47, **Protect from Melee** unlocked!), Ghostspeak amulet
+4. **Rune Mysteries** (`runemysteries`) — +1 QP (Total: 4 QP), Air talisman
+5. **Romeo & Juliet** (`romeojuliet`) — +5 QP (Total: 9 QP)
+6. **Doric's Quest** (`doric`) — +1 QP (Total: 10 QP), +36,750 Mining XP (Level 1 -> 54), +180 Coins
+7. **Witch's Potion** (`hetty`) — +1 QP (Total: 11 QP), +8,125 Magic XP (Level 1 -> 31)
+8. **Ernest the Chicken** (`haunted`) — +4 QP (Total: 15 QP), +300 Coins
+9. **The Knight's Sword** (`squire`) — +1 QP (Total: 16 QP), +318,125 Smithing XP (Level 18 -> 82!)
+10. **Vampyre Slayer** (`vampire`) — +3 QP (Total: 19 QP), +120,625 Attack XP (Level 13 -> 68!)
+11. **Pirate's Treasure** (`hunt`) — +2 QP (Total: 21 QP), +450 Coins, Gold ring, Emerald
+12. **Goblin Diplomacy** (`gobdip`) — +5 QP (Total: 26 QP), +5,000 Crafting XP (Level 25 -> 33), Gold bar
+13. **Prince Ali Rescue** (`prince`) — +3 QP (Total: 29 QP), +700 Coins, free Al Kharid gate passage
+14. **Black Knights' Fortress** (`blackknight`) — +3 QP (Total: 32 QP, Champions' Guild & **Dragon Slayer** unlocked!), +2,500 Coins
+15. **Druidic Ritual** (`druid`) — +4 QP (Total: 36 QP, First P2P Quest!), unlocks **Herblore** + 6,250 Herblore XP (Level 1 -> 28 Herblore)
 
-### Observations
--
+### Active Quests In Progress (Hour 6)
+- **Fight Arena** (`arena`): Started with Lady Servil, gave Khali brew to the guard for `Khazard cell keys`, freed Jeremy Servil, defeated **Khazard Ogre** (`id: 270`) and **Khazard Scorpion** (`id: 271`, `Strength: 67`, `HP: 52`). Currently fighting **Bouncer** (`id: 269`) with conserved `protect_from_melee`.
+- **Clock Tower** (`cog`): Started with Brother Kojo, poisoned the rat trough, placed the **White Cog** (`id: 20`) on `L2` (`id: 31`) and the **Red Cog** (`id: 23`) on `L0` (`id: 29`). Added `ensureIceGloves` (via White Wolf Mountain `herorockslide` -> Ice Queen `id: 795`) for the **Black Cog** (`id: 21`) and **Blue Cog** (`id: 22`).
+- **Dragon Slayer** (`dragon`): Implemented full quest script (`bots/lib/quests/dragon-slayer.ts`) covering Guildmaster, Oziach, Oracle + Dwarven Mine Chest, Goblin Village Wormbrain (Telekinetic Grab), Port Sarim Melzar's Maze (`Red`/`Orange`/`Yellow`/`Blue`/`Magenta` keys + Lesser Demon), Lumbridge Duke Horacio `Anti-dragon shield`, Rimmington `Lady Lumbridge` ship purchase & repair (3 Planks + 12 Steel nails), Ned captain, Crandor secret wall, and Elvarg (`id: 742`).
 
-### Next Steps
+### Current Skill Levels (Combat Level 65, Total Level 532)
+- Attack: 68 (122,125 xp) | Strength: 67 (114,350 xp) | Defence: 13 (1,600 xp) | HP: 52 (39,547 xp)
+- Prayer: 47 (28,125 xp) | Magic: 31 (8,125 xp) | Ranged: 1 (0 xp)
+- Smithing: 82 (320,930 xp) | Mining: 56 (51,312 xp) | Crafting: 34 (10,687 xp) | Cooking: 34 (10,200 xp)
+- Herblore: 28 (6,250 xp) | Firemaking: 15 (2,000 xp) | Woodcutting: 11 (1,250 xp) | Thieving: 5 (400 xp)
+- Agility: 1 | Fishing: 1 | Fletching: 1 | Runecraft: 1
 
-### Possible SDK Bugs or Improvements:
--
+### Possible SDK Bugs or Improvements
+- `step()` in `quest-kit.ts` now automatically calls `bot.deactivateAllPrayers()` after each step (including on step failure/exception) so `protect_from_melee` never drains Prayer points while walking between steps, and `rechargePrayer(c, minPoints)` recharges at the nearest Altar (`(2606, 3209)` Monastery, `(3243, 3207)` Lumbridge, etc.).
+- In `Fight Arena`, `protect_from_melee` must only be activated when a boss (`269, 270, 271`) is spawned in the arena and deactivated during General Khazard/Hengrad dialogues and cutscenes.
 - 2026-11-09T04:17:40.014Z START Cook's Assistant (attempt 1)
 - 2026-11-09T04:17:40.015Z STEP start
 - 2026-11-09T04:17:40.015Z STEP egg
@@ -462,3 +484,89 @@
 - 2026-11-09T10:47:35.230Z STEP start-and-bucket
 - 2026-11-09T10:49:24.827Z START Witch's House (attempt 1)
 - 2026-11-09T10:49:24.828Z STEP start-and-prep
+- 2026-11-09T10:51:43.663Z STEP get-magnet-and-unlock-garden
+- 2026-11-09T10:52:25.544Z STEP garden-and-experiment
+- 2026-11-09T10:54:10.932Z STEP FAILED garden-and-experiment
+- 2026-11-09T10:54:10.933Z START Witch's House (attempt 2)
+- 2026-11-09T10:54:10.933Z STEP start-and-prep
+- 2026-11-09T10:56:26.472Z STEP get-magnet-and-unlock-garden
+- 2026-11-09T10:58:03.753Z STEP garden-and-experiment
+- 2026-11-09T10:59:54.956Z STEP FAILED garden-and-experiment
+- 2026-11-09T10:59:54.957Z START Gertrude's Cat (attempt 1)
+- 2026-11-09T10:59:54.957Z STEP prep-items-and-start
+- 2026-11-09T11:01:06.024Z STEP FAILED prep-items-and-start
+- 2026-11-09T11:01:06.025Z START Gertrude's Cat (attempt 2)
+- 2026-11-09T11:01:06.025Z STEP prep-items-and-start
+- 2026-11-09T11:01:06.025Z STEP FAILED prep-items-and-start
+- 2026-11-09T11:01:06.025Z START Clock Tower (attempt 1)
+- 2026-11-09T11:01:06.026Z STEP start-and-bucket
+- 2026-11-09T11:05:59.416Z STEP white-cog
+- 2026-11-09T11:09:32.050Z STEP FAILED white-cog
+- 2026-11-09T11:09:32.050Z START Clock Tower (attempt 2)
+- 2026-11-09T11:09:32.050Z STEP start-and-bucket
+- 2026-11-09T11:09:32.828Z talkTo /^brother kojo$/i failed: NPC not found
+- 2026-11-09T11:09:32.828Z STEP FAILED start-and-bucket
+- 2026-11-09T11:09:32.828Z START Fight Arena (attempt 1)
+- 2026-11-09T11:09:32.829Z STEP start-and-armour
+- 2026-11-09T11:09:53.633Z STEP FAILED start-and-armour
+- 2026-11-09T11:09:53.633Z START Fight Arena (attempt 2)
+- 2026-11-09T11:09:53.633Z STEP start-and-armour
+- 2026-11-09T11:09:58.033Z STEP FAILED start-and-armour
+- 2026-11-09T11:09:58.034Z START Murder Mystery (attempt 1)
+- 2026-11-09T11:09:58.035Z STEP solve-murder
+- 2026-11-09T11:10:00.434Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T11:10:23.626Z STEP FAILED solve-murder
+- 2026-11-09T11:10:23.627Z START Murder Mystery (attempt 2)
+- 2026-11-09T11:10:23.627Z STEP solve-murder
+- 2026-11-09T11:10:26.040Z talkTo /^guard$/i failed: NPC not found
+- 2026-11-09T11:13:45.622Z START Clock Tower (attempt 1)
+- 2026-11-09T11:13:45.622Z STEP start-and-bucket
+- 2026-11-09T11:13:45.623Z STEP white-cog
+- 2026-11-09T11:14:44.945Z STEP FAILED white-cog
+- 2026-11-09T11:14:44.946Z START Clock Tower (attempt 2)
+- 2026-11-09T11:14:44.946Z STEP start-and-bucket
+- 2026-11-09T11:15:15.669Z STEP white-cog
+- 2026-11-09T11:16:30.437Z START Clock Tower (attempt 1)
+- 2026-11-09T11:16:30.438Z STEP start-and-bucket
+- 2026-11-09T11:16:30.438Z STEP white-cog
+- 2026-11-09T11:17:44.034Z STEP FAILED white-cog
+- 2026-11-09T11:17:44.035Z START Clock Tower (attempt 2)
+- 2026-11-09T11:17:44.035Z STEP start-and-bucket
+- 2026-11-09T11:17:44.035Z STEP white-cog
+- 2026-11-09T11:18:17.633Z STEP FAILED white-cog
+- 2026-11-09T11:18:17.633Z START Fight Arena (attempt 1)
+- 2026-11-09T11:18:17.634Z STEP start-and-armour
+- 2026-11-09T11:18:34.432Z START Clock Tower (attempt 1)
+- 2026-11-09T11:18:34.432Z STEP start-and-bucket
+- 2026-11-09T11:18:34.433Z STEP white-cog
+- 2026-11-09T11:18:43.363Z STEP red-and-black-cogs
+- 2026-11-09T11:20:01.222Z STEP FAILED red-and-black-cogs
+- 2026-11-09T11:20:01.223Z START Clock Tower (attempt 2)
+- 2026-11-09T11:20:01.223Z STEP start-and-bucket
+- 2026-11-09T11:20:01.223Z STEP white-cog
+- 2026-11-09T11:21:00.580Z STEP FAILED white-cog
+- 2026-11-09T11:21:00.581Z START Fight Arena (attempt 1)
+- 2026-11-09T11:21:00.582Z STEP start-and-armour
+- 2026-11-09T11:21:47.923Z STEP brew-and-keys
+- 2026-11-09T11:23:31.683Z STEP arena-battles
+- 2026-11-09T11:38:23.636Z START Fight Arena (attempt 1)
+- 2026-11-09T11:38:23.637Z STEP start-and-armour
+- 2026-11-09T11:47:28.426Z START Fight Arena (attempt 1)
+- 2026-11-09T11:47:28.427Z STEP start-and-armour
+- 2026-11-09T11:48:15.530Z STEP brew-and-keys
+- 2026-11-09T11:49:18.510Z STEP FAILED brew-and-keys
+- 2026-11-09T11:49:18.511Z START Fight Arena (attempt 2)
+- 2026-11-09T11:49:18.511Z STEP start-and-armour
+- 2026-11-09T11:49:32.427Z STEP brew-and-keys
+- 2026-11-09T11:50:13.685Z STEP arena-battles
+- 2026-11-09T11:51:06.436Z START Fight Arena (attempt 1)
+- 2026-11-09T11:51:06.436Z STEP start-and-armour
+- 2026-11-09T11:51:06.833Z STEP brew-and-keys
+- 2026-11-09T11:51:06.834Z STEP arena-battles
+- 2026-11-09T11:52:54.445Z STEP FAILED arena-battles
+- 2026-11-09T11:52:54.446Z START Fight Arena (attempt 2)
+- 2026-11-09T11:52:54.446Z STEP start-and-armour
+- 2026-11-09T11:52:54.447Z STEP brew-and-keys
+- 2026-11-09T11:52:54.447Z STEP arena-battles
+- 2026-11-09T11:56:35.630Z START Fight Arena (attempt 1)
+- 2026-11-09T11:56:35.631Z STEP start-and-armour

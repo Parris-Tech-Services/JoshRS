@@ -22,7 +22,10 @@ export const fluffs: Quest = {
       if (questComplete || fluffsRescued || paidBoy) return true;
       await exitWizardsTowerGround(c);
 
-      if ((sdk.getState()?.player?.worldZ ?? 0) < 3350) {
+      if (!has(sdk, /^raw sardine|seasoned sardine$/i) || !has(sdk, /^bucket of milk$/i)) {
+        if ((sdk.getState()?.player?.worldZ ?? 0) >= 3350) {
+          await walkFromVarrockToLumbridge(c);
+        }
         await bankJunk(c, KEEP_RE);
         await withdrawFromDraynorBank(c, [
           /^coins$/i, /^bucket$/i, /^bucket of milk$/i, /^raw sardine$/i, /^doogle leaves$/i, /^seasoned sardine$/i,

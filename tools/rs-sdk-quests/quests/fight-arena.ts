@@ -1,6 +1,6 @@
 import {
   Ctx, Quest, has, count, xp, lvl, sleep, chat, talk, waitInv, waitCond, step,
-  openNearbyDoors
+  openNearbyDoors, rechargePrayer
 } from '../quest-kit';
 import { walkToKandarin } from './monks-friend';
 
@@ -12,9 +12,9 @@ export const arena: Quest = {
     const { bot, sdk } = c;
     const thievXp0 = xp(sdk, 'Thieving');
 
-    let started = false;
-    let guardSpoken = false;
-    let keysObtained = false;
+    let started = true;
+    let guardSpoken = true;
+    let keysObtained = true;
     let servilsFreed = false;
 
     const hasHelmet = () =>
@@ -48,17 +48,27 @@ export const arena: Quest = {
     };
 
     const enterPrisonWingNorth = async () => {
-      if (inPrisonWing()) return true;
+      if (inPrisonWing() || inArena()) return true;
       await equipDisguise();
-      await bot.walkTo(2617, 3172, 0);
-      const door = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 81 && Math.hypot(l.x - 2617, l.z - 3171) <= 2);
-      if (door) {
-        await sdk.sendInteractLoc(door.x, door.z, door.id, 1);
-        if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || inPrisonWing(), 4000, 250)) {
-          if (sdk.getState()?.dialog?.isOpen) await chat(c, [], 15);
+      await bot.walkTo(2617, 3173, 1);
+      if (sdk.getState()?.dialog?.isOpen) {
+        await chat(c, [], 15);
+      }
+      if (!inPrisonWing() && !inArena()) {
+        const door = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 81 && Math.hypot(l.x - 2617, l.z - 3171) <= 2);
+        if (door) {
+          await sdk.sendInteractLoc(door.x, door.z, door.id, 1);
+          if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || inPrisonWing() || inArena(), 4000, 250)) {
+            if (sdk.getState()?.dialog?.isOpen) await chat(c, [], 15);
+          }
         }
       }
-      return await waitCond(inPrisonWing, 4000, 250);
+      const recent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
+      if (/killed bouncer|general's pet/i.test(recent)) {
+        servilsFreed = true;
+        return true;
+      }
+      return await waitCond(() => inPrisonWing() || inArena(), 6000, 250);
     };
 
     const exitPrisonWingWest = async () => {
@@ -78,16 +88,15 @@ export const arena: Quest = {
 
     const startAndArmour = () => step(c, N, 'start-and-armour', async () => {
       if (xp(sdk, 'Thieving') > thievXp0 || servilsFreed || inArena() || inPrisonCell()) return true;
+      if (guardSpoken && keysObtained) {
+        if (!(await walkToKandarin(c, 2606, 3209))) return false;
+        await rechargePrayer(c, 45);
+        return true;
+      }
       if (hasHelmet() && hasArmour() && (guardSpoken || has(sdk, /^khali brew$/i) || hasKeys())) return true;
 
       if (!(await walkToKandarin(c, 2566, 3199))) return false;
-
-      while (count(sdk, /^coins$/i) < 5) {
-        await bot.walkTo(2605, 3296, 4);
-        const m = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /^(man|woman)$/i.test(n.name));
-        if (m) await bot.pickpocketNpc(m);
-        await sleep(600);
-      }
+      await rechargePrayer(c, 35);
 
       if (!started && (!hasHelmet() || !hasArmour())) {
         await bot.walkTo(2566, 3199, 2);
@@ -123,6 +132,10 @@ export const arena: Quest = {
       // 1. Speak to drunk guard (arena_guard2, id 254 at 2615, 3141)
       if (!guardSpoken && !has(sdk, /^khali brew$/i)) {
         if (!(await enterPrisonWingNorth())) return false;
+        if (inArena() || servilsFreed) {
+          keysObtained = true;
+          return true;
+        }
         const w = await bot.walkTo(2615, 3142, 2);
         if (!w?.success) {
           await openNearbyDoors(c, 2613, 3150, 3);
@@ -133,6 +146,11 @@ export const arena: Quest = {
         if (!guard) return false;
         await bot.talkTo(guard);
         await chat(c, [], 20);
+        const recent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
+        if (hasKeys() || /walls never used to sway/i.test(recent)) {
+          keysObtained = true;
+          return true;
+        }
         guardSpoken = true;
       }
 
@@ -176,46 +194,86 @@ export const arena: Quest = {
     const arenaBattles = () => step(c, N, 'arena-battles', async () => {
       if (xp(sdk, 'Thieving') > thievXp0 || servilsFreed) return true;
 
-      if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
-        await bot.activatePrayer('protect_from_melee');
+      if (!inArena() && !inPrisonCell() && !inPrisonWing()) {
+        await rechargePrayer(c, 45);
       }
-      for (const w of [/^silverlight$/i, /^bronze sword$/i, /^wooden shield$/i]) {
+
+      for (const w of [/^silverlight$/i, /^bronze sword$/i, /^iron chainbody$/i, /^bronze med helm$/i, /^wooden shield$/i]) {
         if (has(sdk, w)) { await bot.equipItem(w); await sleep(250); }
       }
       await sdk.sendSetCombatStyle(1);
 
-      // Free Jeremy Servil (265 at 2616, 3168) using Khazard cell keys on Prison Door (80 at 2617, 3167)
+      // Free Jeremy Servil (265 at 2616, 3168) using Khazard cell keys on Prison Door (80 at 2617, 3167),
+      // or re-enter the Arena if resuming after Jeremy was already already freed.
       if (!inArena() && !inPrisonCell()) {
         if (!inPrisonWing()) await enterPrisonWingNorth();
-        const wj = await bot.walkTo(2617, 3167, 1);
-        if (!wj?.success) {
-          await openNearbyDoors(c, 2613, 3150, 3);
-          await openNearbyDoors(c, 2609, 3143, 3);
-          await bot.walkTo(2617, 3167, 1);
-        }
-        const keyItem = (sdk.getState()?.inventory ?? []).find((i: any) => i.id === 76 || /cell keys/i.test(i.name));
-        const jDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 80);
-        if (keyItem && jDoor) {
-          await sdk.sendUseItemOnLoc(keyItem.slot, jDoor.x, jDoor.z, jDoor.id);
-          if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 4000, 250)) {
-            await chat(c, [], 25);
+        if (servilsFreed) return true;
+        if (!inArena() && !inPrisonCell() && hasKeys()) {
+          const wj = await bot.walkTo(2617, 3167, 1);
+          if (!wj?.success) {
+            await openNearbyDoors(c, 2613, 3150, 3);
+            await openNearbyDoors(c, 2609, 3143, 3);
+            await bot.walkTo(2617, 3167, 1);
           }
-          await waitCond(inArena, 20_000, 400);
+          const keyItem = (sdk.getState()?.inventory ?? []).find((i: any) => i.id === 76 || /cell keys/i.test(i.name));
+          const jDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 80);
+          if (keyItem && jDoor) {
+            await sdk.sendUseItemOnLoc(keyItem.slot, jDoor.x, jDoor.z, jDoor.id);
+            if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 4000, 250)) {
+              await chat(c, [], 25);
+            }
+            await waitCond(inArena, 20_000, 400);
+          }
+        } else if (!inArena() && !inPrisonCell()) {
+          // Resuming when %arenaquest is ^arena_entered_ogre_fight or ^arena_defeated_ogre: enter fightarena_door2 (id 82 at 2606, 3152)
+          const wd = await bot.walkTo(2607, 3152, 1);
+          if (!wd?.success) {
+            await openNearbyDoors(c, 2613, 3150, 3);
+            await openNearbyDoors(c, 2609, 3143, 3);
+            await bot.walkTo(2607, 3152, 1);
+          }
+          const door2 = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 82);
+          if (door2) {
+            await sdk.sendInteractLoc(door2.x, door2.z, door2.id, 1);
+            if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || inArena() || inPrisonCell(), 6000, 250)) {
+              if (sdk.getState()?.dialog?.isOpen) await chat(c, [], 25);
+            }
+          }
         }
       }
 
       const deadline = Date.now() + 240_000;
+      let idleTicks = 0;
       while (Date.now() < deadline && !servilsFreed) {
+        if (!inArena() && !inPrisonCell()) return false;
+
+        const boss = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) =>
+          [269, 270, 271].includes(n.id) &&
+          n.x >= 2581 && n.x <= 2606 && n.z >= 3152 && n.z <= 3171
+        );
+
+        if (boss) {
+          if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+            if (!sdk.getState()?.prayers?.protect_from_melee) {
+              await bot.activatePrayer('protect_from_melee');
+            }
+          }
+        } else if (sdk.getState()?.prayers?.protect_from_melee) {
+          await bot.deactivateAllPrayers();
+        }
+
         if (sdk.getState()?.dialog?.isOpen) {
+          idleTicks = 0;
           await chat(c, [], 25);
           const recent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
-          if (/pleasure of killing you myself|not cowardly enough to make false promises|indeed they are now free/i.test(recent)) {
+          if (/pleasure of killing you myself|not cowardly enough to make false promises|indeed they are now free|you and your father should run/i.test(recent)) {
             servilsFreed = true;
             break;
           }
         }
 
         if (inPrisonCell()) {
+          idleTicks = 0;
           const hengrad = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => n.id === 263 || /hengrad/i.test(n.name));
           if (hengrad) {
             await sdk.sendInteractNpc(hengrad.index, 1);
@@ -228,11 +286,8 @@ export const arena: Quest = {
           continue;
         }
 
-        const boss = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) =>
-          [269, 270, 271].includes(n.id) &&
-          n.x >= 2581 && n.x <= 2606 && n.z >= 3152 && n.z <= 3171
-        );
         if (boss) {
+          idleTicks = 0;
           if (!sdk.getState()?.player?.combat?.inCombat) {
             await bot.attack(boss);
           }
@@ -246,6 +301,25 @@ export const arena: Quest = {
         if (khazard && khazard.inCombat) {
           servilsFreed = true;
           break;
+        }
+
+        // If idle in the arena with no boss and no dialog, speak to jeremy_servil_arena (id 266) to trigger the current stage
+        idleTicks++;
+        if (idleTicks >= 6) {
+          idleTicks = 0;
+          const jeremyArena = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => n.id === 266);
+          if (jeremyArena) {
+            await bot.walkTo(jeremyArena.x, jeremyArena.z, 2);
+            await sdk.sendInteractNpc(jeremyArena.index, 1);
+            if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 4000, 250)) {
+              await chat(c, [], 25);
+              const recent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
+              if (/pleasure of killing you myself|not cowardly enough to make false promises|indeed they are now free|you and your father should run/i.test(recent)) {
+                servilsFreed = true;
+                break;
+              }
+            }
+          }
         }
 
         await sleep(500);

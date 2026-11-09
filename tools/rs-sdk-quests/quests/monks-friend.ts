@@ -9,6 +9,17 @@ const KEEP_RE = /^(coins|bronze axe|jug|jug of water|logs|child's blanket|law ru
 export async function walkToKandarin(c: Ctx, destX: number, destZ: number): Promise<boolean> {
   const { bot, sdk } = c;
   await exitWizardsTowerGround(c);
+  // If underground in Clock Tower / Kandarin dungeon (worldZ > 9000) and destZ < 9000, climb up nearest ladder
+  if ((sdk.getState()?.player?.worldZ ?? 0) > 9000 && destZ < 9000) {
+    await openNearbyDoors(c, 2575, 9651, 3);
+    await openNearbyDoors(c, 2575, 9648, 3);
+    await bot.walkTo(2566, 9642, 2);
+    const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1755);
+    if (lad) {
+      await sdk.sendInteractLoc(lad.x, lad.z, lad.id, 1);
+      await waitCond(() => (sdk.getState()?.player?.worldZ ?? 9999) < 9000, 4000, 250);
+    }
+  }
   const p0 = sdk.getState()?.player;
   if (!p0) return false;
 

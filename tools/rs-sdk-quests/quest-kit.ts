@@ -141,12 +141,12 @@ export async function exitWizardsTowerGround(c: Ctx) {
   // Also exit Witch's House if inside on L0 (2901..2907, 3466..3476)
   const pw = sdk.getState()?.player;
   if (pw && pw.level === 0 && pw.worldX >= 2901 && pw.worldX <= 2907 && pw.worldZ >= 3466 && pw.worldZ <= 3476) {
-    const w = await bot.walkTo(2901, 3473, 0);
-    if (!w?.success) {
-      await openNearbyDoors(c, 2902, 3468, 2);
-      await openNearbyDoors(c, 2902, 3474, 2);
-      await bot.walkTo(2901, 3473, 0);
-    }
+    await openNearbyDoors(c, 2902, 3468, 2);
+    await sdk.sendWalk(2901, 3473, true);
+    await sleep(1600);
+    await openNearbyDoors(c, 2902, 3474, 2);
+    await sdk.sendWalk(2901, 3473, true);
+    await sleep(1200);
     const frontDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2861);
     if (frontDoor) {
       await sdk.sendInteractLoc(frontDoor.x, frontDoor.z, frontDoor.id, 1);
@@ -338,14 +338,50 @@ export async function step(c: Ctx, quest: string, name: string, fn: () => Promis
   log(c, `STEP ${name}`);
   let ok = false, err: any;
   try { ok = await fn(); } catch (e) { err = e; }
+  try { await c.bot.deactivateAllPrayers(); } catch {}
   if (!ok) { log(c, `STEP FAILED ${name}`); snapshot(c, quest, name, err); }
   return ok;
+}
+
+export async function rechargePrayer(c: Ctx, minPoints = 25): Promise<void> {
+  const { bot, sdk } = c;
+  const pr = sdk.getSkill('Prayer');
+  if (!pr || (pr.level ?? 0) >= Math.min(minPoints, pr.baseLevel ?? 1)) return;
+  const p = sdk.getState()?.player;
+  const altars: [number, number][] = [
+    [2606, 3209], // Ardougne Monastery
+    [2615, 3304], // East Ardougne Church
+    [3243, 3207], // Lumbridge Church
+    [2997, 3177], // Port Sarim Chapel
+    [3254, 3483], // Varrock Church
+  ];
+  const best = p
+    ? altars.slice().sort((a, b) => Math.hypot(a[0] - p.worldX, a[1] - p.worldZ) - Math.hypot(b[0] - p.worldX, b[1] - p.worldZ))[0]
+    : altars[0];
+  const w = await bot.walkTo(best[0], best[1], 2);
+  if (!w?.success) {
+    await openNearbyDoors(c, best[0], best[1], 3);
+    await bot.walkTo(best[0], best[1], 2);
+  }
+  const altar = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 409 || /^altar$/i.test(l.name));
+  if (altar) {
+    await sdk.sendInteractLoc(altar.x, altar.z, altar.id, 1);
+    await waitCond(() => (sdk.getSkill('Prayer')?.level ?? 0) >= (sdk.getSkill('Prayer')?.baseLevel ?? 1), 5000, 250);
+  }
 }
 
 export async function runQuests(dir: string, quests: any[]) {
   await runScript(async ({ bot, sdk }: any) => {
     if (!bot.attack && bot.attackNpc) bot.attack = bot.attackNpc.bind(bot);
     if (!bot.buyItem && bot.buyFromShop) bot.buyItem = bot.buyFromShop.bind(bot);
+    if (!bot.useItemOnItem) {
+      bot.useItemOnItem = async (a: any, b: any) => {
+        const ia = typeof a === 'object' && a && 'slot' in a ? a : sdk.findInventoryItem(a);
+        const ib = typeof b === 'object' && b && 'slot' in b ? b : sdk.findInventoryItem(b);
+        if (!ia || !ib) return { success: false, message: 'Item not found' };
+        return await sdk.sendUseItemOnItem(ia.slot, ib.slot);
+      };
+    }
     const c: Ctx = { bot, sdk, dir, sleep };
     await bot.skipTutorial();
     if (sdk.getState()?.modalOpen || sdk.getState()?.interface?.isOpen) await bot.closeInterface();

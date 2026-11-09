@@ -51,12 +51,9 @@ export const ball: Quest = {
       // If inside Witch's House on L0 (2901..2907, 3466..3476) and missing Cheese, exit front door first
       const pStart = sdk.getState()?.player;
       if (pStart && pStart.worldX >= 2901 && pStart.worldX <= 2907 && pStart.worldZ >= 3466 && pStart.worldZ <= 3476 && !has(sdk, /^cheese$/i)) {
-        const w = await bot.walkTo(2901, 3473, 0);
-        if (!w?.success) {
-          await openNearbyDoors(c, 2902, 3468, 2);
-          await openNearbyDoors(c, 2902, 3474, 2);
-          await bot.walkTo(2901, 3473, 0);
-        }
+        await openNearbyDoors(c, 2902, 3468, 2);
+        await sdk.sendWalk(2901, 3473, true);
+        await sleep(1600);
         const frontDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2861);
         if (frontDoor) await sdk.sendInteractLoc(frontDoor.x, frontDoor.z, frontDoor.id, 1);
         await waitCond(() => (sdk.getState()?.player?.worldX ?? 9999) <= 2900, 4000, 250);
@@ -211,11 +208,12 @@ export const ball: Quest = {
       for (let i = 0; i < 4; i++) {
         const p = sdk.getState()?.player;
         if (p && Math.hypot(p.worldX - 2902, p.worldZ - 3466) <= 2 && p.worldZ <= 3467) break;
-        const w = await bot.walkTo(2902, 3466, 1);
-        if (!w?.success) {
-          await openNearbyDoors(c, 2902, 3474, 2);
-          await openNearbyDoors(c, 2902, 3468, 2);
-        }
+        await openNearbyDoors(c, 2902, 3474, 2);
+        await sdk.sendWalk(2902, 3469, true);
+        await sleep(1400);
+        await openNearbyDoors(c, 2902, 3468, 2);
+        await sdk.sendWalk(2902, 3466, true);
+        await sleep(1400);
       }
 
       // Use Cheese on Mouse hole (2870 at 2903, 3466) and Magnet on Mouse (901)
@@ -245,29 +243,70 @@ export const ball: Quest = {
     const gardenAndExperiment = () => step(c, N, 'garden-and-experiment', async () => {
       if (has(sdk, /^ball$/i)) return true;
 
-      // Open back door (2862 at 2901, 3465) into garden if inside mouse room
-      if (!inGarden() && !inShed()) {
-        await bot.walkTo(2901, 3466, 0);
-        const backDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2862);
-        if (backDoor) await sdk.sendInteractLoc(backDoor.x, backDoor.z, backDoor.id, 1);
-        await waitCond(() => (sdk.getState()?.player?.worldZ ?? 9999) <= 3465, 4000, 250);
-      }
+      const checkCaught = () => {
+        const p = sdk.getState()?.player;
+        if (p && p.worldZ === 3456 && p.worldX >= 2925) {
+          doorUnlocked = false;
+          return true;
+        }
+        return false;
+      };
 
-      // Helper: wait until Nora T. Hagg (896) is safely away from target x range
-      const waitNoraSafe = async (pred: (nx: number) => boolean, maxMs = 15_000) => {
+      // Helper: wait until Nora T. Hagg (896) is visible in nearbyNpcs and satisfies pred(nx, dx)
+      const waitNoraVisible = async (pred: (nx: number, dx: number) => boolean, maxMs = 35_000) => {
         const deadline = Date.now() + maxMs;
+        let lastX: number | null = null;
         while (Date.now() < deadline) {
+          if (checkCaught()) return false;
           const nora = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => n.id === 896 || /nora/i.test(n.name));
-          if (!nora || pred(nora.x)) return true;
-          await sleep(300);
+          if (nora) {
+            const dx = lastX !== null ? nora.x - lastX : 0;
+            if (pred(nora.x, dx)) return true;
+            lastX = nora.x;
+          }
+          await sleep(250);
         }
         return true;
       };
 
-      // 1. Get Shed key (2411) from Fountain (2864 at 2909, 3470)
+      // Open back door (2862 at 2901, 3465) into garden when Nora is moving East (nx >= 2910, dx >= 0)
+      if (!inGarden() && !inShed()) {
+        await bot.walkTo(2901, 3466, 0);
+        await waitNoraVisible((nx, dx) => nx >= 2910 && dx >= 0);
+        const backDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2862);
+        if (backDoor) await sdk.sendInteractLoc(backDoor.x, backDoor.z, backDoor.id, 1);
+        if (!(await waitCond(() => (sdk.getState()?.player?.worldZ ?? 9999) <= 3465 || !!sdk.getState()?.dialog?.isOpen, 4000, 200))) {
+          return false;
+        }
+        if (sdk.getState()?.dialog?.isOpen) {
+          await chat(c, [], 10);
+          doorUnlocked = false;
+          return false;
+        }
+      }
+
+      // 1. Get Shed key (2411) from Fountain (2864 at 2909, 3470) via safe hedge pocket (2908, 3460)
       if (!hasShedKey() && !inShed()) {
-        await waitNoraSafe((nx) => nx >= 2914);
-        await bot.walkTo(2909, 3471, 1);
+        await sdk.sendWalk(2901, 3460, true);
+        await sleep(1600);
+        await sdk.sendWalk(2908, 3460, true);
+        await waitCond(() => {
+          const p = sdk.getState()?.player;
+          return !!p && p.worldX === 2908 && p.worldZ === 3460;
+        }, 4000, 200);
+        if (checkCaught()) return false;
+
+        // At (2908, 3460), hedge at (2908, 3461) blocks Nora's LoS. Wait until Nora is West (nx <= 2905)
+        await waitNoraVisible((nx) => nx <= 2905);
+        if (checkCaught()) return false;
+
+        await sdk.sendWalk(2915, 3465, true);
+        await sleep(2200);
+        await sdk.sendWalk(2912, 3467, true);
+        await sleep(1500);
+        await bot.walkTo(2910, 3470, 1);
+        if (checkCaught()) return false;
+
         for (let i = 0; i < 4 && !hasShedKey(); i++) {
           const ftn = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2864);
           if (ftn) await sdk.sendInteractLoc(ftn.x, ftn.z, ftn.id, 2);
@@ -278,13 +317,28 @@ export const ball: Quest = {
         }
       }
 
-      if (!hasShedKey() && !inShed()) return false;
+      if (!hasShedKey() && !inShed()) {
+        if (checkCaught()) return false;
+        return false;
+      }
 
-      // 2. Walk to Shed door (2863 at 2934, 3463) along z=3463 when Nora is west
+      // 2. From Fountain (2910, 3470), hide at safe north hedge pocket (2913, 3466), wait for Nora West (nx <= 2908), then run East along z=3466 to Shed (2933, 3463)
       if (!inShed()) {
-        await bot.walkTo(2901, 3463, 1);
-        await waitNoraSafe((nx) => nx <= 2915);
-        await bot.walkTo(2933, 3463, 0);
+        await bot.walkTo(2913, 3466, 0);
+        await waitNoraVisible((nx) => nx <= 2908);
+        if (checkCaught()) return false;
+
+        await sdk.sendWalk(2924, 3466, true);
+        await sleep(2200);
+        await sdk.sendWalk(2933, 3466, true);
+        await sleep(2000);
+        await sdk.sendWalk(2933, 3463, true);
+        await waitCond(() => {
+          const p = sdk.getState()?.player;
+          return !!p && p.worldX === 2933 && p.worldZ === 3463;
+        }, 3000, 200);
+        if (checkCaught()) return false;
+
         const keyItem = (sdk.getState()?.inventory ?? []).find((i: any) => i.id === 2411);
         const shedDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2863);
         if (keyItem && shedDoor) {
@@ -348,12 +402,9 @@ export const ball: Quest = {
       }
 
       if ((sdk.getState()?.player?.worldX ?? 9999) >= 2901 && (sdk.getState()?.player?.worldX ?? 9999) <= 2907 && (sdk.getState()?.player?.worldZ ?? 0) >= 3466) {
-        const w = await bot.walkTo(2901, 3473, 0);
-        if (!w?.success) {
-          await openNearbyDoors(c, 2902, 3468, 2);
-          await openNearbyDoors(c, 2902, 3474, 2);
-          await bot.walkTo(2901, 3473, 0);
-        }
+        await openNearbyDoors(c, 2902, 3468, 2);
+        await sdk.sendWalk(2901, 3473, true);
+        await sleep(1600);
         const frontDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2861);
         if (frontDoor) await sdk.sendInteractLoc(frontDoor.x, frontDoor.z, frontDoor.id, 1);
         await waitCond(() => (sdk.getState()?.player?.worldX ?? 9999) <= 2900, 4000, 250);

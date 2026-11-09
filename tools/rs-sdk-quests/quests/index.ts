@@ -31,5 +31,6 @@ import { biohazard } from './biohazard';
 import { junglepotion } from './jungle-potion';
 import { arthur } from './merlins-crystal';
 import { grail } from './holy-grail';
-export { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp, druid, fluffs, drunkmonk, hazeelcult, sheepherder, mcannon, elena, murder, tree, waterfall, ball, cog, arena, biohazard, junglepotion, arthur, grail };
-export const ALL = { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp, druid, fluffs, drunkmonk, hazeelcult, sheepherder, mcannon, elena, murder, tree, waterfall, ball, cog, arena, biohazard, junglepotion, arthur, grail };
+import { dragon } from './dragon-slayer';
+export { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp, druid, fluffs, drunkmonk, hazeelcult, sheepherder, mcannon, elena, murder, tree, waterfall, ball, cog, arena, biohazard, junglepotion, arthur, grail, dragon };
+export const ALL = { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp, druid, fluffs, drunkmonk, hazeelcult, sheepherder, mcannon, elena, murder, tree, waterfall, ball, cog, arena, biohazard, junglepotion, arthur, grail, dragon };
