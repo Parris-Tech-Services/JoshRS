@@ -129,11 +129,11 @@ class MainActivity : Activity() {
         root.addView(label("Validated private save copies: $count"))
         root.addView(label("Private historical cache inspector", 19f))
         root.addView(label(
-            "Select your own main_file_cache.dat plus idx0 (archives) or idx1 (3D models). " +
-                "Validates original legacy cache sectors and stores a private copy. " +
-                "The optional idx1 inspector displays actual untextured 3D mesh geometry, not terrain or world animations."
+            "Select your own main_file_cache.dat plus idx0, idx1 or idx4. " +
+                "To inspect real Lumbridge, select dat + idx0 + idx4 TOGETHER. " +
+                "No copyrighted game data is bundled or downloaded."
         ))
-        action("Import private .dat + .idx0 or .idx1 cache pair") {
+        action("Import private .dat with idx0 / idx1 / idx4") {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "*/*"
@@ -158,12 +158,48 @@ class MainActivity : Activity() {
                 }
             }.start()
         }
+        root.addView(label("Real Lumbridge map data (private 377 cache)", 19f))
+        action("Explore REAL Lumbridge terrain (region 50,50)") {
+            val target = statusText
+            target?.text = "Decoding private revision-377 Lumbridge terrain and locs..."
+            Thread {
+                try {
+                    val decoded = PrivateLumbridge377.loadFirst(filesDir)
+                    runOnUiThread { showLumbridge(decoded) }
+                } catch (error: Exception) {
+                    runOnUiThread {
+                        if (statusText === target) statusText?.text =
+                            "Lumbridge map unavailable: " + (error.message ?: "invalid or incomplete cache")
+                    }
+                }
+            }.start()
+        }
+        root.addView(label(
+            "This displays actual 377 terrain heights, tile material IDs and scene-object " +
+                "positions. Colours and objects are simplified markers, NOT original textured " +
+                "buildings, the player, NPCs or an authenticated game world."
+        ))
         root.addView(label("Visual study (not the 377 game)", 19f))
         action("Open original isometric preview") { showPreview() }
         root.addView(label(
             "Next integration milestone: compatible licensed 377 renderer/cache and " +
                 "authenticated session against the local engine. No public network ports."
         ))
+    }
+
+    private fun showLumbridge(region: Region377) {
+        game?.pauseRendering()
+        game = null
+        showingPreview = true // Back returns to diagnostics; no online world state.
+        root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundColor(Color.rgb(49, 45, 39))
+        }
+        root.addView(label("REAL 377 LUMBRIDGE — terrain and locs, not game play", 15f))
+        root.addView(Lumbridge377Viewer(this, region), LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
+        ))
+        setContentView(root)
     }
 
     private fun showRealModel(model: PrivateModel377.Loaded) {
@@ -213,7 +249,7 @@ class MainActivity : Activity() {
                 val receipt = Cache377Vault.importPair(this, uris)
                 showHome()
                 statusText?.text = "Real legacy cache structure verified: " +
-                    "${receipt.readableArchives} archives (idx${receipt.indexNumber}) read. " +
+                    "${receipt.readableArchives} archives (indices ${receipt.indices}) read. " +
                     "Private snapshot ${receipt.cacheId}; no assets redistributed."
             } catch (e: Exception) {
                 showHome()
