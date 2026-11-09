@@ -4,11 +4,13 @@ import {mapSdkAction,toBotWorldState} from './sdk-bridge.mjs';
  * No gateway, account selection, state fabrication or privileged commands.
  * Dispatch is not evidence that the game server performed an action.
  */
-export function createSdk377Runtime({session,observer,botName,expectedWorld}={}){
+export function createSdk377Runtime({session,observer,botName,expectedWorld,approvedFamily=false}={}){
  if(!session||typeof session.sendPacket!=='function'||typeof session.status!=='function')
   throw new Error('authenticated_native_session_required');
  if(!observer||typeof observer.observe!=='function')throw new Error('authoritative_observer_required');
  if(typeof botName!=='string'||!expectedWorld)throw new Error('explicit_bot_and_world_required');
+ if(approvedFamily===true&&(botName!=='HarnessView1'||expectedWorld!=='family-joshrs-377'||
+   session.status().mode!=='family'))throw new Error('family_sdk_identity_not_authorized');
  let last=null;
  let lastActionTick=-1;
  let actionInFlight=false;
@@ -23,7 +25,7 @@ export function createSdk377Runtime({session,observer,botName,expectedWorld}={})
   observe,
   async getSdkState(){
    const snapshot=await observe();
-   const mapped=toBotWorldState(snapshot,{botName,expectedWorld});
+   const mapped=toBotWorldState(snapshot,{botName,expectedWorld,approvedFamily});
    // Authenticated own-character quest state; not part of upstream TS
    // schema. The unmodified BotSDK preserves additional sdk_state keys.
    const native=snapshot.questStages;
@@ -49,7 +51,7 @@ export function createSdk377Runtime({session,observer,botName,expectedWorld}={})
    try {
     if(session.status().authenticated!==true)throw new Error('native_session_not_authenticated');
     const snapshot=await observe();
-    const mapped=mapSdkAction(action,snapshot);
+    const mapped=mapSdkAction(action,snapshot,{approvedFamily});
     if(mapped.kind==='no_action')return Object.freeze({status:'no_action',tick:snapshot.tick});
     if(mapped.kind==='wait')return Object.freeze({status:'wait_requested',ticks:mapped.ticks,tick:snapshot.tick});
     if(mapped.kind==='read'){
