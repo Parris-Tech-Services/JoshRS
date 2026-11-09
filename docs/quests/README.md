@@ -124,3 +124,45 @@ Fifty-five quests have correct rewards. **None of them has been played.** Reward
 catches missing or wrong numbers; it cannot catch a broken stage, an unreachable NPC, a wrong
 item id, or dialogue that fires out of order. Five batches of correct numbers is not five
 batches of testing, and this document does not claim otherwise.
+
+## 11. Porting 377 quests into the 274 world — 62 → 72 of 88 present
+
+The 18 sheet quests from 71–88 were all absent from the 274 content (they are 2005 quests). Rather
+than treat that as a dead end, the 377 content was ported across, because both revisions share the
+same ReScript engine and symbol naming.
+
+`tools/questops/port-377-quests.sh <377-content> <274-world>` copies quests across, refusing any
+without a `send_quest_complete` call and never overwriting quests that already exist with local
+fixes. It is idempotent — a second run copies nothing.
+
+### Result, measured
+
+| | before | after |
+|---|---|---|
+| quest directories in 274 | 64 | **90** |
+| sheet targets present | 62 | **72** |
+| sheet targets absent | 26 | **16** |
+| completion-path failures | 0 | **0** |
+
+The world repacked and reached `World ready` with all 26 ported quests present, and
+`check-completion-paths` reports **0 failures across 90 quests**.
+
+### Five quests were deliberately refused
+
+`quest_100`, `quest_fever`, `quest_mm`, `quest_mourning2`, `quest_rd` pack cleanly but contain **no
+completion call** — they cannot be finished. Shipping those would have been worse than leaving them
+absent, so they are excluded and the exclusion is enforced in the script rather than remembered.
+
+`quest_mortton` is also excluded: 274 already has a local version with fixes, and porting the 377
+copy would silently overwrite them.
+
+### The caveat that matters most
+
+**Packing is not playing.** A ported quest may reference NPCs, items, objects or maps that exist in
+377 but not in 274. Packing proves syntax and symbol syntax only. Every ported quest is
+**UNPLAYED** and should be treated as suspect until someone completes it.
+
+Structural completeness also dropped in relative terms: 66 of 90 quests pass the structural audit,
+because many ported quests bring scripts but not journals or varps. That is a real gap, not a
+bookkeeping artefact.
+
