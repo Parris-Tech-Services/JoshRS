@@ -366,3 +366,41 @@ Probed against a live `Engine-TS@377-wip` (`tools/android377-phone/probe-ondeman
 **Verified:** the four routes and their byte counts. **Not verified:** that these jagfiles
 parse into usable definitions in Kotlin, and no model/land archive download has been tested.
 
+## 13. Round 9 — private LAN mode, and a security default that was silently off
+
+Goal: let a second family device join the 274 world over the home network (M2 in the
+parity roadmap), with no WAN exposure.
+
+`tools/play274/start-playable-274.sh --lan [ip]` now:
+
+- discovers the phone's own address without Android tools (a never-used UDP socket still
+  resolves the default route's interface — `/system/bin/ip` returns nothing to Termux);
+- **refuses any non-private, loopback or link-local address**, so a typo cannot widen exposure;
+- binds only the **game web server** to that address; management stays on `127.0.0.1`;
+- writes an explicit WebSocket origin allowlist;
+- defaults to `127.0.0.1` when `--lan` is absent.
+
+Verified against a live world bound to `10.8.0.1`:
+
+```
+http://10.8.0.1:8888/rs2.cgi         -> 200
+http://127.0.0.1:8888/rs2.cgi        -> refused (bound to the LAN address only)
+ws origin http://10.8.0.1:8888       -> OPEN
+ws origin http://evil.example        -> REJECTED 401
+```
+
+### The security finding
+
+The first origin test **passed every origin**, including `http://evil.example`. Cause:
+`loadWorldConfig()` reads env vars only from a legacy `.env` file, **not** `process.env`,
+and the default `web.allowedOrigin` is the empty string, which the check treats as
+"allow all". So exporting `WEB_ALLOWED_ORIGIN` does nothing and the allowlist is inert —
+a setting that looks configured but is not.
+
+Fix: write `data/config/world.json` explicitly (`tools/play274/set-allowed-origin.ts`), then
+re-verify. This is exactly the class of bug the roadmap's §status vocabulary exists for.
+
+**Verified:** bind, refusal of loopback, and origin rejection.
+**Not verified:** a second physical device actually joining — that needs a second device on
+the same network, which cannot be tested from this phone alone.
+
