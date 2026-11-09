@@ -44,6 +44,23 @@ jobs:
       - name: Install pinned RS-SDK test dependencies without executing scripts
         working-directory: rs-sdk-pinned
         run: bun install --ignore-scripts
+      - name: Verify native Agy MCP source and single-bot scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check tools/rs377-live-quest-bridge/mcp-private.mjs
+          node --check tools/rs377-live-quest-bridge/mcp-session.mjs
+          node --check tools/rs377-live-quest-bridge/mcp-server.mjs
+          node --test tools/rs377-live-quest-bridge/mcp.test.mjs
+      - name: Test actual original RS-SDK MCP stdio protocol (NO live game)
+        shell: bash
+        run: |
+          set -euo pipefail
+          pin=db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb
+          mkdir -p "$HOME/.local/share/joshrs"
+          test "$(git -C rs-sdk-pinned rev-parse HEAD)" = "$pin"
+          cp -a rs-sdk-pinned "$HOME/.local/share/joshrs/rs-sdk-$pin"
+          timeout --signal=TERM --kill-after=5s 45s bun tools/rs377-live-quest-bridge/mcp-protocol.acceptance.ts
       - name: Test actual upstream BotSDK class over authenticated 377-shaped WebSocket
         shell: bash
         run: |
