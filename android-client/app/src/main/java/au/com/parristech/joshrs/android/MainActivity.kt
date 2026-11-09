@@ -56,6 +56,22 @@ class MainActivity : Activity() {
      * Android 15/16 draw behind the status and navigation bars by default.
      * Apply platform insets to EVERY screen, including the SurfaceView preview.
      */
+    private fun applySafeInsets(view: View, insets: WindowInsets) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val bars = insets.getInsets(
+                WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout()
+            )
+            if (view.paddingLeft != bars.left || view.paddingTop != bars.top ||
+                view.paddingRight != bars.right || view.paddingBottom != bars.bottom) {
+                view.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+            }
+        } else {
+            // Older Android activities already fit their content inside system
+            // bars unless edge-to-edge is explicitly requested.
+            // This Activity only opts into edge-to-edge on Android R+.
+        }
+    }
+
     private fun setSafeContent(content: View) {
         val frame = FrameLayout(this).apply {
             contentDescription = "JoshRS safe content container"
@@ -65,19 +81,17 @@ class MainActivity : Activity() {
                 FrameLayout.LayoutParams.MATCH_PARENT
             ))
             setOnApplyWindowInsetsListener { view, insets ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    val bars = insets.getInsets(
-                        WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout()
-                    )
-                    view.setPadding(bars.left, bars.top, bars.right, bars.bottom)
-                } else {
-                    @Suppress("DEPRECATION")
-                    view.setPadding(
-                        insets.systemWindowInsetLeft, insets.systemWindowInsetTop,
-                        insets.systemWindowInsetRight, insets.systemWindowInsetBottom
-                    )
-                }
+                applySafeInsets(view, insets)
                 insets
+            }
+        }
+        // On the Android 15 emulator, the normal insets listener delivered no
+        // top padding even though rootWindowInsets reported a 136px status bar.
+        // Read the ACTUAL root insets after attachment/layout. Reapplying only
+        // when values change prevents a global-layout feedback loop.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            frame.viewTreeObserver.addOnGlobalLayoutListener {
+                frame.rootWindowInsets?.let { applySafeInsets(frame, it) }
             }
         }
         setContentView(frame)
