@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowInsets
+import android.text.InputType
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -108,6 +110,37 @@ class MainActivity : Activity() {
                     if (statusText === target) {
                         target?.text = result.message +
                             "\nNo player account or world state has been loaded."
+                    }
+                }
+            }.start()
+        }
+        root.addView(label("Private LAN / Windows host (diagnostic only)", 19f))
+        root.addView(label(
+            "To test JParrisDesktop, enter its CURRENT private IPv4 address on the same " +
+                "home network or approved tailnet. The server must already be listening " +
+                "on that address. No passwords, player saves or login packets are sent."
+        ))
+        val lanAddress = EditText(this).apply {
+            hint = "e.g. 192.168.1.20"
+            setSingleLine(true)
+            inputType = InputType.TYPE_CLASS_PHONE
+            setTextColor(Color.WHITE)
+            setHintTextColor(Color.LTGRAY)
+            setText("127.0.0.1")
+            contentDescription = "Private IPv4 address of JoshRS revision-377 server"
+        }
+        root.addView(lanAddress)
+        action("Test private LAN revision-377 negotiation") {
+            val host = lanAddress.text.toString()
+            val target = statusText
+            target?.text = "Checking private address (credential-free handshake only)..."
+            Thread {
+                val result = Negotiation377.probe(host = host)
+                runOnUiThread {
+                    if (statusText === target) {
+                        target?.text = result.message +
+                            "\nThis is NOT account login or a playable 377 session. " +
+                            "No world or character state was changed."
                     }
                 }
             }.start()
