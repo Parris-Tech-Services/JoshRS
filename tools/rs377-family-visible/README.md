@@ -4,6 +4,43 @@
 
 This is **not** the Fedora sandbox. Players in an isolated Fedora disposable world can never appear in JParrisDesktop's already-running game.
 
+## 9 Nov: fewer Agy permission prompts and resuming Cook's Assistant
+
+Agy CLI 1.5.3 accepts the exact flag
+`--dangerously-skip-permissions` for interactive sessions. It auto-approves
+ordinary tool permission requests, **not a guarantee that commands are safe**.
+Some built-in protected operations may still require review; do not interpret
+this flag as a safety mechanism. The flag is **opt-in for this one handoff**,
+not a persistent global change to Antigravity.
+
+The previously interrupted Agy Cook's Assistant session can resume using
+its original conversation ID and original worktree (which may contain
+uncommitted, useful changes to `protocol.mjs`). Do not create a new game
+character or run a second bot connection. From a **fresh clean source
+worktree containing this script**, invoke:
+
+```bash
+bash tools/rs377-family-visible/launch-agy-cook.sh \
+  --resume-conversation ed46254e-75c9-411b-9d31-7d048c0fe8dd \
+  --workspace "$HOME/dev/JoshRS-agy-cook-2CQGiwsR" \
+  --dangerously-skip-permissions
+```
+
+The launcher validates the saved worktree location, real Fedora game
+ports and bot save, waits for any known normal patrol connection to
+finish, then prompts privately for the dedicated bot's password.
+It resumes Agy with `--conversation=<ID>` **from that original worktree**
+and appends `--dangerously-skip-permissions` rather than creating a new
+conversation with `-i`. It never pulls/reset-cleans the user's dirty repo,
+logs into Elrothiro, restarts the server or edits a save itself. Agy may
+still run unsafe commands independently if allowed: protect private
+credentials, review unexpected output and avoid using this mode with
+untrusted code, chat or downloaded instructions.
+
+For a **new** Cook's Assistant Agy conversation, omit the resume flags
+and supply only `--dangerously-skip-permissions`. For normal approvals
+omit the dangerous flag entirely. Use `--check` for no-login preflight.
+
 ## Handoff to local Antigravity (Agy): HarnessView1 attempts Cook's Assistant
 
 The operator has authorised **Agy to play the dedicated HarnessView1 account
