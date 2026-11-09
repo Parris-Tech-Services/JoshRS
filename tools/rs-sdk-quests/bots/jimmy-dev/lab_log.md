@@ -358,3 +358,26 @@
 - **OK** | `168` (Gnome woman) @ (2466, 3402, L0) — Talk-to -> "Click here to continue"
 - **OK** | `168` (Gnome woman) @ (2472, 3401, L0) — Talk-to -> "Click here to continue"
 - **OK** | `162` (Gnome trainer) @ (2469, 3422, L0) — Talk-to -> "Click here to continue"
+- **OK** | `168` (Gnome woman) @ (2481, 3400, L0) — Talk-to -> "Click here to continue"
+- **OK** | `67` (Gnome) @ (2456, 3422, L0) — Talk-to -> "Click here to continue"
+- **OK** | `169` (Gnome woman) @ (2482, 3409, L0) — Talk-to -> "Click here to continue"
+- **OK** | `162` (Gnome trainer) @ (2482, 3424, L0) — Talk-to -> "Click here to continue"
+- **OK** | `67` (Gnome) @ (2455, 3421, L0) — Talk-to -> "Click here to continue"
+- **OK** | `162` (Gnome trainer) @ (2469, 3425, L0) — Talk-to -> "Click here to continue"
+- **OK** | `670` (King Narnode Shareen) @ (2467, 3496, L0) — Talk-to -> "Click here to continue"
+- **OK** | `848` (Blurberry) @ (2478, 3488, L1) — Talk-to -> "Click here to continue"
+- **OK** | `603` (Heckel Funch) @ (2490, 3488, L1) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `601` (Rometti) @ (2481, 3509, L1) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **FAIL** | `636` (Cheerleader) @ (2397, 3495, L0) — Talk-to -> "No response"
+- **FAIL** | `636` (Cheerleader) @ (2395, 3495, L0) — Talk-to -> "No response"
+- **FAIL** | `635` (Gnome ball referee) @ (2384, 3488, L0) — Talk-to -> "No response"
+- **FAIL** | `676` (Femi) @ (2460, 3382, L0) — Talk-to -> "No response"
+- **OK** | `676` (Femi) @ (2460, 3382, L0) — Talk-to -> game message: "The little gnome is too busy to talk."
+- **OK** | `851` (Gnome Waiter) @ (2452, 3502, L1) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `850` (Aluft Gianne) @ (2451, 3502, L1) — Talk-to -> "Click here to continue"
+- **FAIL** | `166` (Gnome banker) @ (2440, 3488, L1) — Talk-to -> "No response"
+- **FAIL** | `166` (Gnome banker) @ (2439, 3487, L1) — Talk-to -> "No response"
+- **FAIL** | `166` (Gnome banker) @ (2448, 3480, L1) — Talk-to -> "No response"
+- **FAIL** | `166` (Gnome banker) @ (2450, 3480, L1) — Talk-to -> "No response"
+- **OK** | `600` (Hudo) @ (2449, 3508, L1) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
+- **OK** | `170` (Gnome pilot) @ (2464, 3501, L3) — Talk-to -> "Click here to continue"
