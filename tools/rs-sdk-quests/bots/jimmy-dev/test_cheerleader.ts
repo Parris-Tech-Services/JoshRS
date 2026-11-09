@@ -1,9 +1,16 @@
 import { runScript } from '../../sdk/runner';
 
 await runScript(async ({ bot, sdk }) => {
-    // Walk out of gnomeball pitch gate (2410, 3488) and around to (2396, 3496)
-    for (const [wx, wz] of [[2411, 3488], [2405, 3498], [2396, 3496]]) {
-        await bot.walkTo(wx, wz, 2);
+    await bot.walkTo(2384, 3488, 1);
+    const gate = sdk.findNearbyLoc(/gate/i);
+    if (gate) {
+        console.log('Opening Gnomeball pitch gate:', gate.name, gate.x, gate.z);
+        await bot.interactLoc(gate, 'Open');
+        await sdk.waitForTicks(4);
+    }
+    for (const [wx, wz] of [[2382, 3495], [2395, 3496]]) {
+        await sdk.sendWalk(wx, wz, true);
+        await sdk.waitForTicks(6);
     }
     const npcs = sdk.getNearbyNpcs();
     const cheer = npcs.find(n => n.id === 636 || /cheerleader/i.test(n.name));
@@ -17,5 +24,5 @@ await runScript(async ({ bot, sdk }) => {
 }, {
     botName: 'jimmy-dev',
     disconnectAfter: true,
-    timeout: 25_000,
+    timeout: 35_000,
 });
