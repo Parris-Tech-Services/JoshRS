@@ -54,6 +54,42 @@ class Real377EmulatorTest {
         }
     }
 
+    @Test fun privateLumbridgeTerrainViewerActuallyRasterisesOnAndroidEmulator() {
+        // Geometry fixture is SYNTHETIC. The real idx0/idx4 decoding is tested
+        // separately; do not mistake this for an original game-world screenshot.
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                val region = Region377(
+                    50, 50, 12, 13,
+                    List(4 * 64 * 64) { index ->
+                        Tile377(
+                            height = if (index < 64 * 64) -16 else -32,
+                            overlayId = 0,
+                            overlayShape = 0,
+                            rotation = 0,
+                            flag = 0,
+                            underlayId = if (index % 2 == 0) 1 else 2
+                        )
+                    },
+                    listOf(LocPlacement377(10, 3233, 3218, 0, 10, 2))
+                )
+                val view = Lumbridge377Viewer(activity, region)
+                view.layout(0, 0, 720, 960)
+                val bitmap = android.graphics.Bitmap.createBitmap(
+                    720, 960, android.graphics.Bitmap.Config.ARGB_8888
+                )
+                view.draw(android.graphics.Canvas(bitmap))
+                val background = android.graphics.Color.rgb(27, 33, 37)
+                var painted = 0
+                for (y in 240..720 step 8) for (x in 80..640 step 8) {
+                    if (bitmap.getPixel(x, y) != background) painted++
+                }
+                assertTrue("Authentic-coordinate terrain viewer did not paint tiles", painted > 100)
+                bitmap.recycle()
+            }
+        }
+    }
+
     @Test fun emulatorNegotiatesWithActualPinned377Engine() {
         val result = Negotiation377.probe()
         assertTrue("Actual 377 server negotiation failed: ${result.message}", result.negotiated)
