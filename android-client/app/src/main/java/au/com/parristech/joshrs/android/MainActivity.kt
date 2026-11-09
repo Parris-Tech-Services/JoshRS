@@ -86,6 +86,14 @@ class MainActivity : Activity() {
         statusText = label(
             "No server checked. The phone-local Termux engine uses TCP 52402 and web 8888."
         ).also { root.addView(it) }
+        // Authentic cache-backed Lumbridge is the PRIMARY view, not the mock preview.
+        root.addView(label("REAL RuneScape 377 Lumbridge — private map cache", 19f))
+        action("Explore real Lumbridge (region 50,50)") { openLumbridge() }
+        root.addView(label(
+            "This reads actual 377 terrain and placed object positions from your own " +
+                "main_file_cache.dat, idx0 and idx4. Import those three together below. " +
+                "Read-only map viewer: no animated NPCs, real 3D buildings or online avatar yet."
+        ))
         action("Check actual phone-local server") {
             val target = statusText
             target?.text = "Checking 127.0.0.1 only..."
@@ -191,33 +199,35 @@ class MainActivity : Activity() {
                 }
             }.start()
         }
-        root.addView(label("Real Lumbridge map data (private 377 cache)", 19f))
-        action("Explore REAL Lumbridge terrain (region 50,50)") {
-            val target = statusText
-            target?.text = "Decoding private revision-377 Lumbridge terrain and locs..."
-            Thread {
-                try {
-                    val decoded = PrivateLumbridge377.loadFirst(filesDir)
-                    runOnUiThread { showLumbridge(decoded) }
-                } catch (error: Exception) {
-                    runOnUiThread {
-                        if (statusText === target) statusText?.text =
-                            "Lumbridge map unavailable: " + (error.message ?: "invalid or incomplete cache")
-                    }
-                }
-            }.start()
-        }
-        root.addView(label(
-            "This displays actual 377 terrain heights, tile material IDs and scene-object " +
-                "positions. Colours and objects are simplified markers, NOT original textured " +
-                "buildings, the player, NPCs or an authenticated game world."
-        ))
-        root.addView(label("Visual study (not the 377 game)", 19f))
-        action("Open original isometric preview") { showPreview() }
+
+        root.addView(label("Optional fictional drawing demo — NOT the actual map", 19f))
+        action("Open fictional offline art preview") { showPreview() }
         root.addView(label(
             "Next integration milestone: compatible licensed 377 renderer/cache and " +
                 "authenticated session against the local engine. No public network ports."
         ))
+    }
+
+    private fun openLumbridge() {
+        val target = statusText
+        target?.text = "Reading authentic 377 Lumbridge from your private cache..."
+        Thread {
+            try {
+                val decoded = PrivateLumbridge377.loadFirst(filesDir)
+                runOnUiThread { if (!isFinishing) showLumbridge(decoded) }
+            } catch (error: Exception) {
+                runOnUiThread {
+                    if (!isFinishing) {
+                        // Errors must be visible even when invoked from the full-screen mock.
+                        showHome()
+                        statusText?.text = "REAL Lumbridge unavailable: " +
+                            (error.message ?: "No valid 377 map cache") +
+                            "\nImport main_file_cache.dat + idx0 + idx4 together. " +
+                            "No fake landscape will be substituted."
+                    }
+                }
+            }
+        }.start()
     }
 
     private fun showLumbridge(region: Region377) {
@@ -259,7 +269,8 @@ class MainActivity : Activity() {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.rgb(49, 45, 39))
         }
-        root.addView(label("ORIGINAL VISUAL PREVIEW — not revision 377", 13f))
+        root.addView(label("FICTIONAL OFFLINE DRAWING — NOT RuneScape Lumbridge", 13f))
+        action("Switch to REAL 377 Lumbridge map") { openLumbridge() }
         root.addView(surface, LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
         ))
