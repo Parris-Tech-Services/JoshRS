@@ -66,6 +66,31 @@ class Real377EmulatorTest {
         }
     }
 
+    @Test fun offlineQuestControlsStayInsideAndroidSystemBars() {
+        ActivityScenario.launch(OfflineLumbridgeActivity::class.java).use { scenario ->
+            InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+            scenario.onActivity { activity ->
+                val content = activity.findViewById<ViewGroup>(android.R.id.content)
+                val root = content.getChildAt(0) as android.widget.LinearLayout
+                assertTrue("Offline quest did not finish laying out", root.isLaidOut)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                    val bars = root.rootWindowInsets!!.getInsets(
+                        android.view.WindowInsets.Type.systemBars() or
+                            android.view.WindowInsets.Type.displayCutout()
+                    )
+                    assertTrue(
+                        "Offline quest top inset missing: ${root.paddingTop} < ${bars.top}",
+                        root.paddingTop >= bars.top + 8
+                    )
+                    assertTrue(
+                        "Offline quest bottom inset missing: ${root.paddingBottom} < ${bars.bottom}",
+                        root.paddingBottom >= bars.bottom + 8
+                    )
+                }
+            }
+        }
+    }
+
     @Test fun threeDimensionalRendererActuallyDrawsTriangleOnEmulatorCanvas() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             scenario.onActivity { activity ->
