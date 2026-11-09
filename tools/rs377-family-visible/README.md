@@ -4,6 +4,36 @@
 
 This is **not** the Fedora sandbox. Players in an isolated Fedora disposable world can never appear in JParrisDesktop's already-running game.
 
+## Fedora: safe one-command bot patrol (does not close Terminal)
+
+If a previous command closed your interactive Terminal, the shell command
+`|| exit` was wrong: a failed `cd` or `git pull` causes Bash to exit the
+current interactive session. The safe commands below **never use `exit` in
+the interactive shell**.
+
+Keep JoshRS, its server and Elrothiro running. In a new Fedora Terminal:
+
+```bash
+cd ~/dev/JoshRS-quest-runner && git pull --ff-only origin main && bash tools/rs377-family-visible/run-fedora-patrol.sh
+```
+
+The child script checks the exact existing Fedora JoshRS ports, the dedicated
+bot save and JavaScript syntax. It detects an already-running HarnessView1
+controller and refuses a second login instead of producing an auth-code-5
+error. If no session is active, it asks for the **bot's own** password, runs
+a bounded 120-second ordinary walking pilot, and reports native saved-position
+evidence via `POSITION_PROOF`. An unverified result is **not** full RS-SDK
+autonomy. It does not restart the game, change a save, kill a process or
+run `git pull` internally.
+
+If `git pull` fails, the command stops **without closing Terminal**; copy
+the Git error for diagnosis. If the launcher blocks or fails, the parent
+Terminal remains available and shows the error. Run the read-only preflight
+on its own via `bash tools/rs377-family-visible/run-fedora-patrol.sh --check`.
+
+The earlier commands containing `cd ... || exit 1` are historical examples
+and should **not** be pasted into an interactive Terminal.
+
 ## Make HarnessView1 add Elrothiro as a friend
 
 The normal 377 client opcode is `FRIENDLIST_ADD=120` with exactly eight
