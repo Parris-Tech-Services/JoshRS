@@ -836,3 +836,114 @@
   - **Expected vs Actual**: Expected: Map icon loc or scenery object to either have a proper display name or be hidden from object interaction lists. Actual: Exposes raw internal identifier `gnomeglider_icon1` at `(2850, 3495, L0)` next to `Gnome glider` and `Gnome pilot`.
   - **Impact**: **Cosmetic**
 
+
+### Region Completed: Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49) — 2026-11-09T06:57:23.547Z
+- **Total Interactions Audited**: 22 (4 verified working, 18 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3001, 3142, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3001, 3142). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2996, 3119, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Waypoint: Mudskipper Point South Tip` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Mudskipper Point South Tip at (2996, 3119). Actual: walkTo failed: Path to (2996, 3119) stops 14 tiles short at (3002, 3133) - the rest is unroutable from here (locked door or separate room?)
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2938, 3252, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Door` (id `2602`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2938, 3252). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2946, 3249, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Onion` (id `3366`) — action `Pick`
+  - **Expected vs Actual**: Expected: Interact "Pick" with Onion at (2946, 3249). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2946, 3256, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `cabbage` (id `1161`) — action `Pick`
+  - **Expected vs Actual**: Expected: Interact "Pick" with cabbage at (2946, 3256). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2929, 3292, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Pottery Oven` (id `2643`) — action `Fire`
+  - **Expected vs Actual**: Expected: Interact "Fire" with Pottery Oven at (2929, 3292). Actual: success=true (Interacted with Pottery Oven), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2937, 3284, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Rocks clay ore` (id `2108`) — action `Mine`
+  - **Expected vs Actual**: Expected: Interact "Mine" with Rocks clay ore at (2937, 3284). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2937, 3284, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Rocks clay ore` (id `2108`) — action `Prospect`
+  - **Expected vs Actual**: Expected: Interact "Prospect" with Rocks clay ore at (2937, 3284). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2938, 3285, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Rocks clay ore` (id `2109`) — action `Mine`
+  - **Expected vs Actual**: Expected: Interact "Mine" with Rocks clay ore at (2938, 3285). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2938, 3285, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Rocks clay ore` (id `2109`) — action `Prospect`
+  - **Expected vs Actual**: Expected: Interact "Prospect" with Rocks clay ore at (2938, 3285). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2938, 3287, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Crate` (id `357`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (2938, 3287). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2940, 3286, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Rocks silver ore` (id `2100`) — action `Mine`
+  - **Expected vs Actual**: Expected: Interact "Mine" with Rocks silver ore at (2940, 3286). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2940, 3286, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Rocks silver ore` (id `2100`) — action `Prospect`
+  - **Expected vs Actual**: Expected: Interact "Prospect" with Rocks silver ore at (2940, 3286). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2940, 3290, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Rocks silver ore` (id `2101`) — action `Mine`
+  - **Expected vs Actual**: Expected: Interact "Mine" with Rocks silver ore at (2940, 3290). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2940, 3290, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Rocks silver ore` (id `2101`) — action `Prospect`
+  - **Expected vs Actual**: Expected: Interact "Prospect" with Rocks silver ore at (2940, 3290). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2924, 3292, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Gate` (id `1551`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Gate at (2924, 3292). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2938, 3280, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Rocks gold ore` (id `2099`) — action `Mine`
+  - **Expected vs Actual**: Expected: Interact "Mine" with Rocks gold ore at (2938, 3280). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2938, 3280, L0)` — Mudskipper Point, Thurgo's Peninsula, Melzar's Maze & Crafting Guild (m45_50, m45_51, m46_48, m46_49)
+  - **Object & Action**: `Rocks gold ore` (id `2099`) — action `Prospect`
+  - **Expected vs Actual**: Expected: Interact "Prospect" with Rocks gold ore at (2938, 3280). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(2941, 3248, L0)` **Door** (id `2595`) [`Open`] -> OK: Interacted with Door | "The door is securely locked."
+- `(2938, 3244, L0)` **Wardrobe** (id `388`) [`Open`] -> OK: Timed out after 4500ms | "The door is securely locked."
+- `(2937, 3243, L0)` **Sacks** (id `365`) [`Search`] -> OK: Timed out after 4500ms | "The door is securely locked. | The door is securely locked. | The door is securely locked."
+- `(2933, 3289, L0)` **Guild Door** (id `2647`) [`Open`] -> OK: Interacted with Guild Door
+
+### Region Completed: Taverley Town, Druids' Circle & Lady of the Lake (m45_52 & m45_53) — 2026-11-09T07:01:50.436Z
+- **Total Interactions Audited**: 8 (4 verified working, 4 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(2896, 3450, L0)` — Taverley Town, Druids' Circle & Lady of the Lake (m45_52 & m45_53)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2896, 3450). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2882, 3425, L0)` — Taverley Town, Druids' Circle & Lady of the Lake (m45_52 & m45_53)
+  - **Object & Action**: `Drawers` (id `350`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Drawers at (2882, 3425). Actual: success=true (Interacted with Drawers), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2884, 3438, L0)` — Taverley Town, Druids' Circle & Lady of the Lake (m45_52 & m45_53)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2884, 3438). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2893, 3421, L0)` — Taverley Town, Druids' Circle & Lady of the Lake (m45_52 & m45_53)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2893, 3421). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+
+#### Verified Working Interactions (Summary)
+- `(2925, 3483, L0)` **Altar of Guthix** (id `410`) [`Pray-at`] -> OK: Interacted with Altar of Guthix | "You already have full prayer points."
+- `(2901, 3465, L0)` **Door** (id `2862`) [`Open`] -> OK: Timed out after 4500ms | "The door is locked. | The door is locked."
+- `(2887, 3424, L0)` **Flax** (id `2646`) [`Pick`] -> OK: Interacted with Flax
+- `(2884, 3423, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door (loc state changed)
+
