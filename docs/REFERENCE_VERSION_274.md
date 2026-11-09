@@ -6,6 +6,8 @@
 **Does not mean:** JoshRS currently implements this historical game, or that 2004Scape assets can be redistributed. The public single-player Woodlands game is an interim original experience.  
 **Canonical machine-readable lock:** [`REFERENCE_VERSION_LOCK.json`](REFERENCE_VERSION_LOCK.json). Subsequent agents must read this brief and lock before designing gameplay, choosing assets or upgrading a reference engine.
 
+**Scope clarification (9 November 2026):** The [owner's 8 November exact-content parity/risk decision](decisions/2026-11-08-private-rune-parity-and-risk.md) supersedes *original-feel-only as the private programme's overall goal*. This document still locks the **separate 23 November 2004 revision-274 historical reference**; it must not block distinct private OSRS/RS3 fidelity projects or imply invented substitutes satisfy their content requirements. It does **not** license protected Jagex assets or change the independent public Woodlands project's release constraints.
+
 ## 1. Why this version is locked
 
 1. JoshRS already researches **revision 274** with a pinned, boot-tested Lost City engine and matching content; see [deploy/server/Dockerfile](../deploy/server/Dockerfile) and [deploy/server/README.md](../deploy/server/README.md). This choice uses verified project history rather than resetting work.

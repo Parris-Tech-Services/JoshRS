@@ -2,6 +2,8 @@
 
 **Date:** 2026-11-08. **Decision:** Option D — **hybrid three-profile architecture**, conditional on disposable integration prototype and a reviewed cost/rights gate. This is a research recommendation, not a completed architecture deployment.
 
+**Owner-goal override:** [8 November 2026 private exact-content parity/risk ADR](../../../docs/decisions/2026-11-08-private-rune-parity-and-risk.md). The **private family's requested content** is faithful Jagex-authored RuneScape, OSRS and RS3, not merely inspired alternatives. Internal profile names ending in `-like` are legacy engineering identifiers, **not a fidelity reduction or a permission to fabricate replacement content**. Owner acceptance of legal risk does not grant content rights; rights must be independently tracked, with no protected asset distribution in this public repository.
+
 ## Four candidate approaches
 
 | Dimension | A: extend 377 client+server | B: modern client on 377 server | C: one new universal engine | D: hybrid preserved legacy + separate modern profiles |
@@ -15,7 +17,7 @@
 | Code duplication burden | Low initially, high compatibility tax | Medium | Lowest theoretical shared core; costly rewrite | Medium, shared *only stable* subsystems |
 | Time to first family play | Fast if existing 377 works | Medium | Slow | **Fast with preserved 377** |
 | Time to genuine modern vertical slice | Slow, protocol ceiling | Medium | Medium/slow | Medium with separate prototype |
-| Source/dev licence constraints | Historical source/code/asset provenance | Same plus replacement client | Must establish all new rights | Legacy protected; new original/cleared pack |
+| Source/dev licence constraints | Historical source/code/asset provenance | Same plus replacement client | Must establish all rights | Legacy protected; fidelity targets have independent per-asset rights gates |
 | Production disruption | High if upgraded in place | High if network/save migrations | High if migrated | **Low if isolation is enforced** |
 | CI/playtest automation | Existing 377 tests reusable | Needs adapter/old engine integration | Clean test model but rewrite cost | **Separate suites; unified evidence ledger** |
 | Long-term maintenance | High backport complexity | High cross-era glue | High new-engine rewrite cost | **Medium/high but manageable boundaries** |
@@ -29,10 +31,10 @@ These are **engineering judgements, not timed benchmarks**. Verify selected appr
   | -- Legacy historical profile (rev274 reference and pinned native 377 world)
   |      \-- Existing 377 client + 377 engine/content + ORIGINAL private saves (untouched)
   |
-  | -- OSRS-style modern profile (future independently authored content pack)
+  | -- OSRS fidelity-target modern profile (future rights-reviewed content pack)
   |      \-- Modern client/protocol adapter -> OSRS-specific ruleset and instances -> OSRS save store
   |
-  \ -- RS3-style modern profile (future independently authored content pack)
+  \ -- RS3 fidelity-target modern profile (future rights-reviewed content pack)
          \-- Modern client/protocol adapter -> RS3-specific EoC/ability rules -> RS3 save store
                                |
          Shared HOUSEHOLD foundation (no item/quest state sharing by default):

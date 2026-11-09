@@ -6,6 +6,8 @@ This pipeline inventories candidate code and community knowledge for RuneScape r
 
 GitHub Actions is configured daily at 03:21 UTC, on manual dispatch and for relevant code pushes. Schedules can run late or be disabled by GitHub. Hosted runners do not require keeping your PC running or buying an API subscription. The runner writes catalogues and original specs into the repo when allowed by branch permissions.
 
+**Product-intent reconciliation (9 November 2026):** [Owner's 8 November private exact-content fidelity and risk decision](decisions/2026-11-08-private-rune-parity-and-risk.md) takes priority when describing what the **private family RuneScape project should ultimately reproduce**: Jagex's actual version-specific quests, dialogue, NPCs, mechanics, items and worlds, not invented original substitutions. The factory below remains a **public metadata/research and original-content pipeline** and **must not bypass licensing or copy protected assets**. Its independently authored outputs are not to be reported as satisfying missing exact game content. The owner's stated "maximal legal risk" does not supply a licence.
+
 ## Pipeline
 
 1. Read content-factory/sources.json: seeded public sources and explicit refs, eras and rights policies.

@@ -2,6 +2,16 @@
 
 **Date:** 2026-11-08. **Classification:** technical/legal issue tracking, **not legal advice or a statement that any project has infringed**. Accepting risk does not grant rights. Public JoshRS repo must remain free of secrets and protected assets lacking redistribution permission.
 
+## Owner's recorded risk acceptance versus actual rights
+
+**Product direction:** [the 8 November 2026 owner decision](../../../docs/decisions/2026-11-08-private-rune-parity-and-risk.md) expressly records the desire for **faithful Jagex-authored RuneScape, OSRS and RS3 content in a private, offline, family-only game**, with rejection of invented/inspired-by substitutes as satisfying parity. The owner expressly accepted **"maximal legal risk"**, i.e. communicated a willingness to bear personal consequences from that aim.
+
+**Legal interpretation:** This is a documentation of the owner's stated risk tolerance, **not** an executed legal indemnity, licence, signed assumption-of-liability agreement, statutory exemption or release; no person can conclusively assign all third-party or contributor liability through this repository statement. The project is not authorised to publish protected game content merely because its owner accepts risk. Keep the aspirational fidelity target and the content-rights clearance state in **separate records**. Do not downgrade the goal to an invented substitute, and do not bypass rights gates or auto-copy proprietary assets.
+
+**Two independently recorded outcomes:**
+- `fidelity_status`: EXACT_TARGET, PARTIAL, MISSING or VERIFIED_IN_GAME; must be grounded in the correct original game version and live evidence.
+- `rights_status`: LICENSED, REVIEW_REQUIRED, BLOCKED or NOT_APPLICABLE; requires provenance and permission evidence where necessary.
+
 | Asset / source category | Observed research context | Reuse gate | Acceptance |
 | --- | --- | --- | --- |
 | JoshRS independently authored original Woodlands code | `README.md`, `package.json`; original browser RPG | Verify exact contribution/source licence | Authorship/license file documented |
