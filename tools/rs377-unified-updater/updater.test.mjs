@@ -189,3 +189,25 @@ test('conflicting repeated backend declaration fails closed',t=>{
   write(f.world.engine,'.env','DB_BACKEND=sqlite\nDB_BACKEND=mysql\nNODE_PORT=15402\nWEB_PORT=18880\n');
   assert.throws(()=>readWorldSafetySettings(f.world),/Conflicting duplicate/);
 });
+
+test('pinned 377-wip legacy Environment.ts explicitly proves a SQLite default',t=>{
+  const f=fixture(t);
+  write(f.world.engine,'.env','NODE_PORT=15402\nWEB_PORT=18880\n');
+  write(f.world.engine,'src/util/Environment.ts',
+    "DB_BACKEND: tryParseString(process.env.DB_BACKEND, 'sqlite'),\n");
+  write(f.world.engine,'src/db/query.ts',
+    "if (Environment.DB_BACKEND === 'sqlite') { database: new DatabaseSync('db.sqlite'); }\n");
+  fs.writeFileSync(path.join(f.world.engine,'db.sqlite'),
+    Buffer.concat([Buffer.from('SQLite format 3\0','ascii'),Buffer.alloc(128)]));
+  const settings=readWorldSafetySettings(f.world);
+  assert.equal(settings.source,'.env');
+  assert.deepEqual(settings.ports,[15402,18880]);
+});
+test('legacy 377-wip defaults cannot be inferred from a missing selector branch',t=>{
+  const f=fixture(t);
+  write(f.world.engine,'.env','NODE_PORT=15402\nWEB_PORT=18880\n');
+  write(f.world.engine,'src/util/Environment.ts',
+    "DB_BACKEND: tryParseString(process.env.DB_BACKEND, 'sqlite'),\n");
+  write(f.world.engine,'src/db/query.ts',"database: new DatabaseSync('db.sqlite')\n");
+  assert.throws(()=>readWorldSafetySettings(f.world),/Cannot prove pinned 377/);
+});
