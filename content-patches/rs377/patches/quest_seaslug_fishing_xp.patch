@@ -1,0 +1,23 @@
+diff --git a/scripts/quests/quest_priestperil/scripts/priestperil.rs2 b/scripts/quests/quest_priestperil/scripts/priestperil.rs2
+index 9f10daac..ce3d3c59 100644
+--- a/scripts/quests/quest_priestperil/scripts/priestperil.rs2
++++ b/scripts/quests/quest_priestperil/scripts/priestperil.rs2
+@@ -7,6 +7,6 @@
+ [queue,priestperil_complete]
+ %priestperil = ^priestperil_complete;
+ inv_add(inv, dagger_wolfbane, 1);
+-stat_advance(prayer, 1406);
++stat_advance(prayer, 14060);
+ session_log(^log_adventure, "Quest complete: Priest in Peril");
+ ~send_quest_complete(questlist:priestperil, dagger_wolfbane, 250, ^priestperil_questpoints, "You have completed the\\nPriest In Peril Quest!", "1406 Prayer XP|Wolfbane dagger|Route to Canifis");
+diff --git a/scripts/quests/quest_seaslug/scripts/quest_seaslug.rs2 b/scripts/quests/quest_seaslug/scripts/quest_seaslug.rs2
+index d097a946..63ce86df 100644
+--- a/scripts/quests/quest_seaslug/scripts/quest_seaslug.rs2
++++ b/scripts/quests/quest_seaslug/scripts/quest_seaslug.rs2
+@@ -122,5 +122,6 @@ if (npc_find(movecoord(coord, 0, 0, 2), kennith, 5, 0) = true) {
+ }
+ 
+ [queue,seaslug_quest_complete]
++stat_advance(fishing, 71750); // 7,175 Fishing XP, as the completion message already states
+ session_log(^log_adventure, "Quest complete: Sea Slug");
+ ~send_quest_complete(questlist:seaslug, seasluginv, 250, ^seaslug_questpoints, "You have completed the\\nSea Slug Quest!", "7,175 Fishing XP|Fishing Platform Access|Some Oyster Pearls");
