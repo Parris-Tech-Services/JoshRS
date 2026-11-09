@@ -76,11 +76,20 @@ acceptable.
 **Needs:** the full list of allowed skills from a complete wiki page or the original interface,
 then the reward can be built against the existing lamp pattern.
 
-### 2. Sheep Shearer's +50 spin bonus — PARTIAL
+### 2. Sheep Shearer's +50 spin bonus — IMPLEMENTED, NOT PLAYTESTED
 
 Wiki: *"an additional 50 experience if you make the balls of wool on a spinning wheel instead of
-buying it yourself."* Not implemented. Needs a flag at the spinning wheel plus a check at
-hand-in. Unresolved whether the bonus existed in this era.
+buying it yourself."*
+
+Implemented: `%sheepspun` is set in the **wool** case of the spinning wheel (not flax or other
+spinning), and `quest_sheep.rs2` adds `stat_advance(crafting, 500)` when it is set.
+
+**Interpretation choice:** the wiki does not say whether the bonus needs *all* 20 balls spun or
+just some. The quest only tracks balls delivered, not their origin, so this grants the bonus for
+spinning **at least one**. That is the lenient reading; the strict one would need per-ball
+tracking that the original content does not have.
+
+Patch: `content-patches/rs274/patches/quest_sheep_spin_bonus.patch`.
 
 ### 3. Priest in Peril, 377 branch only — FIX WRITTEN, NOT APPLIED
 
