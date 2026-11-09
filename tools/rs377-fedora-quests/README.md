@@ -76,13 +76,15 @@ on the physical Fedora workstation remains unverified until run there.
 | Unmodified pinned upstream `BotSDK` and `BotActions` | **Integrated** |
 | Native 377 normal-player packet adapter | Existing 39-type action contract, each effect still requires proof |
 | Native bot-owned quest progress varps | **Observer extended** to 104+7 reference varp names; actual packed IDs may be missing and are explicitly omitted |
-| First quest scenario | `playbooks/cook.ts` tests Cook NPC Talk-to **only if currently visible**, not the full egg/milk/flour quest |
+| First quest scenario | `playbooks/cook.ts` now attempts the actual Cook dialogue, egg, bucket, dairy cow, wheat, two-level windmill, flour bin and hand-in **through normal SDK actions**; every missing object/effect blocks, and logout/relogin, once-only rewards and actual Fedora gameplay remain **UNVERIFIED** |
 | Source-only or missing playbook scenarios | **BLOCKED**, not automatically marked complete |
 | Full quest and 4-QP / stage/reward/save-relog acceptance | **NOT VERIFIED**; separate full scripts + real-client checks required |
 | RS3 / post-377 OSRS quests | **Not in rev377**; require modern profile and separate suite |
 | Existing family characters | **Never targeted** by this runner |
 
 **Important:** A multi-varp stage observation is a numeric record of a real persistent variable, **not proof of correct quest implementation or completion**. The game client draws some UI that server-only telemetry cannot see. The queue marks blocked/unknown rather than creating placeholder interactions. Add each exact quest playbook only after verifying its authentic stage graph and the named NPCs/objects/items; the playbook must use normal SDK actions, not `setVarp`, direct account DB updates, XP grants, teleports or admin completions.
+
+The Cook playbook checks native stage **0 → 1 → 2**, the three real inventory ingredients, their consumption, and at least **300 Cooking XP** after hand-in. It uses the 377-wip original scripts as its source and rejects unsupported objects or unobserved actions. The new `cook.test.mjs` is a **synthetic state fixture**, never a live quest playthrough.
 
 A real quest is `VERIFIED_PLAYABLE` only after full native-client traversal, exact rewards once, valid player prereqs, logout/relogin and independent server-state proof. **No existing playbook can claim that status yet.**
 
