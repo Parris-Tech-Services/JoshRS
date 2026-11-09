@@ -2,9 +2,11 @@
 
 **Research cutoff:** 8 November 2026, Australia/Sydney. **Evidence:** public current GitHub files and repo PR/issues; OSRS/RS3 news and wiki pages; no personal desktop or family save access. **Overall:** RESEARCH PARTIALLY COMPLETE, LIVE FAMILY ENVIRONMENT NOT VERIFIED. No gameplay changes installed.
 
+**Owner intent supersession (8 November):** The [recorded owner decision](../../../docs/decisions/2026-11-08-private-rune-parity-and-risk.md) sets **exact Jagex-content fidelity in a private, offline family experience** as the target, not OSRS-/RS3-*like* substitutes. The owner explicitly accepted "maximal legal risk" as a statement of personal willingness; this conveys no rights or release from legal obligations. The architecture below is a **technical version-isolation recommendation**, not an endorsement of lower-fidelity replacement quests, characters or dialogue. Existing production and rights protections remain.
+
 ## Executive decision
 
-**Use Option D: a hybrid, three-experience architecture.** Preserve the pinned historical 274 design and private 377 local world; launch two independently versioned modern game profiles inspired by OSRS and RS3, with carefully shared offline launcher, local family account identities, backup/restore, observability and QA. Do not merge incompatible quest flags, ability systems, world geography or item IDs into the legacy save schema. A modern client capability boundary is mandatory.
+**Use Option D as the version-isolation engineering proposal: a hybrid, three-experience architecture.** Preserve the pinned historical 274 design and private 377 local world; plan distinct OSRS and RS3 profiles as **exact, version-specific content fidelity targets** (not loosely inspired original replacements), with carefully shared offline launcher, local family identities, backup/restore, observability and QA. Do not merge incompatible quest flags, ability systems, world geography or item IDs into the legacy save schema. A modern client capability boundary is mandatory. Copyrighted content still requires an independent rights decision; the plan is not a public distribution authorisation.
 
 ### Distinct products rather than a fictional "one JoshRS world"
 
@@ -15,8 +17,8 @@
 | Public JoshRS site | `README.md` says launcher links to external 2004Scape and runs original Woodlands demo | Keep separate from actual 377 game; never claim public game parity |
 | 225 RS-SDK | Separate experimental test server | Never use its quest/AI evidence to certify 377 |
 | 377 SDK bridge/agents | Observable real disposable-world login, movement, ticks and some saves in repository-described CI; complete `BotWorldState`, UI, bank/shop/dialogue/combat remain unresolved; manager not certified for family world | Complete actual state feed and real agent action effects in isolated world |
-| Modern OSRS-style profile | **No source-backed deployed complete experience located** | Independent ruleset, client, original content pack, fully local |
-| Modern RS3-style profile | **No source-backed deployed complete experience located** | Distinct EoC/rules and UI, original content pack, fully local |
+| Modern OSRS fidelity profile | **No source-backed deployed complete experience located** | Edition-specific ruleset/client, exact source-fidelity backlog, rights-reviewed content provision, fully local |
+| Modern RS3 fidelity profile | **No source-backed deployed complete experience located** | Distinct EoC/rules and UI, exact source-fidelity backlog, rights-reviewed content provision, fully local |
 
 ### Confirmed audit populations — do not equate to gameplay
 
