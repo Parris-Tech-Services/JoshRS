@@ -78,8 +78,17 @@ gradle -p "$GITHUB_WORKSPACE/android-client" --no-daemon :app:connectedDebugAndr
 # screenshot does NOT demonstrate authenticated game rendering.
 # Gradle connectedAndroidTest can uninstall the target app on completion.
 # Install the exact just-built debug APK before taking a screenshot.
-adb install -r "$GITHUB_WORKSPACE/android-client/app/build/outputs/apk/debug/app-debug.apk"
-adb shell am start -W -n au.com.parristech.joshrs.android/.MainActivity
+apk="$GITHUB_WORKSPACE/android-client/app/build/outputs/apk/debug/app-debug.apk"
+aapt="$ANDROID_HOME/build-tools/35.0.0/aapt"
+test -x "$aapt"
+app_id="$("$aapt" dump badging "$apk" | sed -n "s/^package: name='\\([^']*\\)'.*/\\1/p" | head -1)"
+[[ "$app_id" =~ ^au[.]com[.]parristech[.]joshrs[.]android[.]playtest[A-Za-z0-9]+$ ]] || {
+  echo "BLOCKED: Android build has an unexpected package ID: $app_id" >&2
+  exit 2
+}
+adb install -r "$apk"
+# Namespace remains unchanged; only the installable applicationId has a unique suffix.
+adb shell am start -W -n "$app_id/au.com.parristech.joshrs.android.MainActivity"
 sleep 2
 adb exec-out screencap -p > "$status_dir/android-emulator-377-diagnostics.png"
 test -s "$status_dir/android-emulator-377-diagnostics.png"
