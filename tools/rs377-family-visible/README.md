@@ -259,6 +259,16 @@ The controller sends ordinary #377 walking requests, disconnects normally
 after two minutes and waits briefly for the *server* to save the account.
 It does not edit a save or restart the server.
 
+**9 Nov 2026 correction:** The original 120-second patrol dispatched 21 walk
+requests and its last requested destination (3233,3217) exactly matched the
+bot's initial saved tile (3233,3217). Therefore a final unchanged save could
+be a genuine round trip **or** ignored movement. The pilot now records
+`POSITION_PROOF_PLAN` and holds a waypoint different from the starting tile
+for its last 30 seconds. The only accepted evidence remains a changed,
+server-persisted native save after the bot disconnects. No position change is
+still `UNVERIFIED`; it is not proof that the client or server ignored packets.
+Do not restart the world or directly alter any save to force a passing result.
+
 `POSITION_PROOF` with `PERSISTED_POSITION_CHANGED` means the server
 persisted a different real coordinate in Lumbridge. If the result says
 `UNVERIFIED`, the bot might not have moved; the command will not claim
