@@ -467,7 +467,7 @@ function applyAndBuildLocked(plan,{build=true,runBuild}={}) {
       });
       const result=runner();
       fs.writeFileSync(path.join(backup,'build.log'),String(result.stdout||'')+'\n'+String(result.stderr||''),{mode:0o600});
-      if(result.status!==0 || result.error) fail('Native 377 build failed; original scripts and packs will be restored');
+      if(result.status!==0 || result.error) fail('Native 377 build failed; original scripts and packs will be restored. Compiler log: '+path.join(backup,'build.log')+' (exit '+String(result.status)+', signal '+String(result.signal||'none')+')');
       for(const rel of ['data/pack/server/script.dat','data/pack/server/script.idx']) {
         const f=path.join(world.engine,rel);
         if(!exists(f)||fs.statSync(f).size<1)fail('Compiled script pack missing: '+rel);
