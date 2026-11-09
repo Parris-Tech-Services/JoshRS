@@ -48,21 +48,44 @@ export const ball: Quest = {
         }
       }
 
-      // 1. Pick up Cheese (1985) in Aggie's house in Draynor (3083, 3260) if needed
-      if (!has(sdk, /^cheese$/i) && !has(sdk, /^magnet$/i) && !hasShedKey()) {
-        const w = await bot.walkTo(3083, 3260, 2);
+      // If inside Witch's House on L0 (2901..2907, 3466..3476) and missing Cheese, exit front door first
+      const pStart = sdk.getState()?.player;
+      if (pStart && pStart.worldX >= 2901 && pStart.worldX <= 2907 && pStart.worldZ >= 3466 && pStart.worldZ <= 3476 && !has(sdk, /^cheese$/i)) {
+        const w = await bot.walkTo(2901, 3473, 0);
         if (!w?.success) {
-          await openNearbyDoors(c, 3085, 3258, 3);
-          await bot.walkTo(3083, 3260, 2);
+          await openNearbyDoors(c, 2902, 3468, 2);
+          await openNearbyDoors(c, 2902, 3474, 2);
+          await bot.walkTo(2901, 3473, 0);
         }
-        const deadline = Date.now() + 35_000;
-        while (Date.now() < deadline && !has(sdk, /^cheese$/i)) {
-          const g = (sdk.getState()?.groundItems ?? []).find((i: any) => i.id === 1985 || /^cheese$/i.test(i.name));
-          if (g) {
-            await bot.pickupItem(g);
-            if (await waitInv(sdk, /^cheese$/i, 4000)) break;
+        const frontDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2861);
+        if (frontDoor) await sdk.sendInteractLoc(frontDoor.x, frontDoor.z, frontDoor.id, 1);
+        await waitCond(() => (sdk.getState()?.player?.worldX ?? 9999) <= 2900, 4000, 250);
+      }
+
+      // 1. Get Cheese (1985) from Port Sarim food shop (Wydin, 3014, 3204) or Aggie's house (3083, 3260)
+      if (!has(sdk, /^cheese$/i) && !hasShedKey()) {
+        const wy = await bot.walkTo(3014, 3204, 2);
+        if (!wy?.success) {
+          await openNearbyDoors(c, 3016, 3206, 3);
+          await bot.walkTo(3014, 3204, 2);
+        }
+        const shopOpen = await bot.openShop(/^wydin$/i);
+        if (shopOpen?.success) {
+          await bot.buyFromShop(/^cheese$/i, 1);
+          await bot.closeShop();
+        }
+        if (!has(sdk, /^cheese$/i)) {
+          await openNearbyDoors(c, 3085, 3258, 3);
+          await bot.walkTo(3083, 3259, 1);
+          const deadline = Date.now() + 20_000;
+          while (Date.now() < deadline && !has(sdk, /^cheese$/i)) {
+            const g = (sdk.getState()?.groundItems ?? []).find((i: any) => i.id === 1985 || /^cheese$/i.test(i.name));
+            if (g) {
+              await sdk.sendTakeGroundItem(g.x, g.z, g.id);
+              if (await waitInv(sdk, /^cheese$/i, 4000)) break;
+            }
+            await sleep(600);
           }
-          await sleep(600);
         }
       }
 

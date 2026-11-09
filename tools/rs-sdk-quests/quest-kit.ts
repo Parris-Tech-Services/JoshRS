@@ -1,7 +1,7 @@
 import { runScript } from '../../sdk/runner';
 import { appendFileSync, mkdirSync, writeFileSync } from 'fs';
 
-export type Ctx = { bot: any; sdk: any; dir: string };
+export type Ctx = { bot: any; sdk: any; dir: string; sleep: (ms: number) => Promise<any> };
 export type Quest = { name: string; run: (c: Ctx) => Promise<boolean> };
 
 export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -138,6 +138,21 @@ export async function julietStairs(c: Ctx, targetLevel: 0 | 1): Promise<boolean>
 
 export async function exitWizardsTowerGround(c: Ctx) {
   const { bot, sdk } = c;
+  // Also exit Witch's House if inside on L0 (2901..2907, 3466..3476)
+  const pw = sdk.getState()?.player;
+  if (pw && pw.level === 0 && pw.worldX >= 2901 && pw.worldX <= 2907 && pw.worldZ >= 3466 && pw.worldZ <= 3476) {
+    const w = await bot.walkTo(2901, 3473, 0);
+    if (!w?.success) {
+      await openNearbyDoors(c, 2902, 3468, 2);
+      await openNearbyDoors(c, 2902, 3474, 2);
+      await bot.walkTo(2901, 3473, 0);
+    }
+    const frontDoor = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2861);
+    if (frontDoor) {
+      await sdk.sendInteractLoc(frontDoor.x, frontDoor.z, frontDoor.id, 1);
+      await waitCond(() => (sdk.getState()?.player?.worldX ?? 9999) <= 2900, 4000, 250);
+    }
+  }
   // Also exit Draynor Manor if inside (front door is one-way from outside; exit via east wing)
   const pm = sdk.getState()?.player;
   if (pm && pm.worldX >= 3090 && pm.worldX <= 3123 && pm.worldZ >= 3354 && pm.worldZ <= 3371) {
@@ -327,16 +342,33 @@ export async function step(c: Ctx, quest: string, name: string, fn: () => Promis
   return ok;
 }
 
-export async function runQuests(dir: string, quests: Quest[]) {
+export async function runQuests(dir: string, quests: any[]) {
   await runScript(async ({ bot, sdk }: any) => {
-    const c: Ctx = { bot, sdk, dir };
+    if (!bot.attack && bot.attackNpc) bot.attack = bot.attackNpc.bind(bot);
+    if (!bot.buyItem && bot.buyFromShop) bot.buyItem = bot.buyFromShop.bind(bot);
+    const c: Ctx = { bot, sdk, dir, sleep };
     await bot.skipTutorial();
     if (sdk.getState()?.modalOpen || sdk.getState()?.interface?.isOpen) await bot.closeInterface();
     for (const q of quests) {
       for (let attempt = 1; attempt <= 2; attempt++) {
         log(c, `START ${q.name} (attempt ${attempt})`);
         let ok = false;
-        try { ok = await q.run(c); } catch (e: any) { log(c, `ERROR ${q.name}: ${e?.message ?? e}`); snapshot(c, q.name, 'exception', e); }
+        try {
+          if (typeof q.run === 'function') {
+            ok = await q.run(c);
+          } else if (Array.isArray(q.steps)) {
+            if (typeof q.isComplete === 'function' && q.isComplete(c)) {
+              ok = true;
+            } else {
+              ok = true;
+              for (const s of q.steps) {
+                if (typeof s.isDone === 'function' && s.isDone(c)) continue;
+                const stepOk = await step(c, q.name, s.name, () => s.run(c));
+                if (!stepOk) { ok = false; break; }
+              }
+            }
+          }
+        } catch (e: any) { log(c, `ERROR ${q.name}: ${e?.message ?? e}`); snapshot(c, q.name, 'exception', e); }
         if (sdk.getState()?.modalOpen || sdk.getState()?.interface?.isOpen) await bot.closeInterface();
         if (ok) { log(c, `DONE ${q.name}`); break; }
         await bot.dismissBlockingUI();
@@ -465,3 +497,93 @@ export async function draynorManorCrypt(c: Ctx, down: boolean): Promise<boolean>
   }
   return inCrypt();
 }
+
+export type QuestContext = Ctx;
+export type QuestStep = { name: string; isDone?: (c: Ctx) => boolean; run: (c: Ctx) => Promise<boolean> };
+export type QuestModule = {
+  id: string;
+  name: string;
+  varpId?: number;
+  completedValue?: number;
+  isComplete?: (c: Ctx) => boolean;
+  steps: QuestStep[];
+};
+
+export const getVarp = (c: Ctx, id: number): number => c.sdk.getVarp(id) ?? 0;
+export const hasInv = (c: Ctx, re: RegExp): boolean => has(c.sdk, re);
+export const findInv = (c: Ctx, re: RegExp): any => c.sdk.findInventoryItem(re);
+export const advanceDialogs = (c: Ctx, want: RegExp[] = [], max = 60) => chat(c, want, max);
+
+export async function walkTo(c: Ctx, x: number, z: number, tol = 2): Promise<boolean> {
+  const r = await c.bot.walkTo(x, z, tol);
+  if (!r?.success) {
+    await openNearbyDoors(c, x, z, 3);
+    await c.bot.walkTo(x, z, tol);
+  }
+  const p = c.sdk.getState()?.player;
+  return !!p && Math.hypot(p.worldX - x, p.worldZ - z) <= tol + 4;
+}
+
+export async function eatIfLow(c: Ctx): Promise<void> {
+  const hp = c.sdk.getSkill('Hitpoints');
+  if (hp && hp.level < Math.max(10, Math.floor(hp.baseLevel * 0.55))) {
+    const food = c.sdk.findInventoryItem(/lobster|salmon|trout|tuna|swordfish|shark|meat|chicken|bread|cake|pie|shrimps/i);
+    if (food) await c.bot.eatFood(food);
+  }
+}
+
+export async function ensureEquipped(c: Ctx, pattern: RegExp, _op = 'wield'): Promise<boolean> {
+  if ((c.sdk.getState()?.equipment ?? []).some((e: any) => pattern.test(e.name))) return true;
+  if (!has(c.sdk, pattern)) {
+    await withdrawFromDraynorBank(c, [pattern]);
+  }
+  if (has(c.sdk, pattern)) {
+    await c.bot.equipItem(pattern);
+    await sleep(400);
+  }
+  return (c.sdk.getState()?.equipment ?? []).some((e: any) => pattern.test(e.name));
+}
+
+export async function ensureInInventory(c: Ctx, reqs: { pattern: RegExp; count: number }[], keepList: RegExp[] = []): Promise<boolean> {
+  const missing = reqs.filter(r => count(c.sdk, r.pattern) < r.count);
+  if (missing.length === 0) return true;
+  if (keepList.length > 0) {
+    const combined = new RegExp(keepList.map(r => r.source).join('|'), 'i');
+    await bankJunk(c, combined);
+  }
+  await withdrawFromDraynorBank(c, missing.map(m => m.pattern));
+  return reqs.every(r => count(c.sdk, r.pattern) >= r.count);
+}
+
+export async function interactNpcNear(c: Ctx, npcRe: RegExp, opRe: RegExp, x: number, z: number, _radius = 12): Promise<boolean> {
+  await walkTo(c, x, z, 3);
+  if (/talk/i.test(opRe.source)) {
+    let r = await c.bot.talkTo(npcRe);
+    if (!r?.success) {
+      const target = c.sdk.findNearbyNpc(npcRe);
+      await openNearbyDoors(c, target?.x ?? x, target?.z ?? z, 3);
+      r = await c.bot.talkTo(npcRe);
+    }
+    return !!r?.success;
+  }
+  const target = c.sdk.findNearbyNpc(npcRe);
+  if (!target) return false;
+  const r = await c.bot.interactNpc(target, opRe);
+  return !!r?.success;
+}
+
+export async function interactLocNear(c: Ctx, idOrRe: number | RegExp, opRe: RegExp, x: number, z: number, radius = 10): Promise<boolean> {
+  await walkTo(c, x, z, 2);
+  const locs = c.sdk.getState()?.nearbyLocs ?? [];
+  const loc = locs
+    .filter((l: any) => (typeof idOrRe === 'number' ? l.id === idOrRe : idOrRe.test(l.name)) && Math.hypot(l.x - x, l.z - z) <= radius)
+    .sort((a: any, b: any) => a.distance - b.distance)[0];
+  if (!loc) return false;
+  let r = await c.bot.interactLoc(loc, opRe);
+  if (!r?.success) {
+    await openNearbyDoors(c, loc.x, loc.z, 3);
+    r = await c.bot.interactLoc(loc, opRe);
+  }
+  return !!r?.success;
+}
+

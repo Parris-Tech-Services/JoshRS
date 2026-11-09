@@ -56,8 +56,13 @@ export const fluffs: Quest = {
           }
           const wc = await bot.walkTo(3253, 3272, 2);
           if (!wc?.success) { await openNearbyDoors(c, 3253, 3266, 2); await bot.walkTo(3253, 3272, 2); }
-          await bot.useItemOnLoc(/^bucket$/i, /dairy cow/i);
-          if (!(await waitInv(sdk, /^bucket of milk$/i, 5000))) return false;
+          const cow = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /^cow$/i.test(n.name));
+          if (cow) {
+            await bot.useItemOnNpc(/^bucket$/i, cow);
+          } else {
+            await bot.useItemOnLoc(/^bucket$/i, /dairy cow/i);
+          }
+          if (!(await waitInv(sdk, /^bucket of milk$/i, 6000))) return false;
         }
       }
 

@@ -128,16 +128,7 @@ export const imp: Quest = {
           .sort((a: any, b: any) => a.distance - b.distance)[0];
 
         if (impNpc) {
-          const lastX = impNpc.x;
-          const lastZ = impNpc.z;
-          await bot.attack(impNpc);
-          // Wait until combat ends or imp teleports/dies
-          await waitCond(() => {
-            const st = sdk.getState();
-            const hasGroundBead = (st?.groundItems ?? []).some((g: any) => /^(red|yellow|black|white) bead$/i.test(g.name) && needBead(g.name));
-            if (hasGroundBead) return true;
-            return !st?.player?.combat?.inCombat;
-          }, 6000, 250);
+          await bot.attackNpc(impNpc, 8000);
           await sleep(400);
           // Re-check ground around where we fought
           const drop = (sdk.getState()?.groundItems ?? [])

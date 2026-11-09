@@ -441,3 +441,24 @@
   - Note: in revision 377, the enchanted rat and bear meats are named `"Enchanted rat"` and `"Enchanted bear"` (without `" meat"`), whereas the raw versions are `"Raw rat meat"` and `"Raw bear meat"`. Updated `druidic-ritual.ts` to match `/^enchanted rat( meat)?$/i` and `/^enchanted bear( meat)?$/i`.
 - 2026-11-09T10:21:31.232Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
 - 2026-11-09T10:22:34.645Z STEP collect-beads
+- 2026-11-09T10:35:06.034Z STEP hand-in-mizgog
+- 2026-11-09T10:38:38.823Z START Gertrude's Cat (attempt 1)
+- 2026-11-09T10:38:38.829Z STEP prep-items-and-start
+- 2026-11-09T10:38:46.030Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T10:40:43.126Z STEP FAILED prep-items-and-start
+- 2026-11-09T10:40:43.127Z START Gertrude's Cat (attempt 2)
+- 2026-11-09T10:40:43.127Z STEP prep-items-and-start
+- 2026-11-09T10:42:07.934Z STEP FAILED prep-items-and-start
+- 2026-11-09T10:42:07.935Z START Witch's House (attempt 1)
+- 2026-11-09T10:42:07.936Z STEP start-and-prep
+- 2026-11-09T10:42:48.034Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T10:45:45.600Z STEP get-magnet-and-unlock-garden
+- 2026-11-09T10:47:04.826Z STEP FAILED get-magnet-and-unlock-garden
+- 2026-11-09T10:47:04.827Z START Witch's House (attempt 2)
+- 2026-11-09T10:47:04.827Z STEP start-and-prep
+- 2026-11-09T10:47:22.460Z STEP get-magnet-and-unlock-garden
+- 2026-11-09T10:47:35.228Z STEP FAILED get-magnet-and-unlock-garden
+- 2026-11-09T10:47:35.229Z START Clock Tower (attempt 1)
+- 2026-11-09T10:47:35.230Z STEP start-and-bucket
+- 2026-11-09T10:49:24.827Z START Witch's House (attempt 1)
+- 2026-11-09T10:49:24.828Z STEP start-and-prep
