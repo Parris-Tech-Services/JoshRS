@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPublicKey} from 'node:crypto';
-import {options,clientPublic377,fetchCrc37} from './join.mjs';
+import {options,clientPublic377,fetchCrc37,verificationDestination,patrolWaypoint} from './join.mjs';
 import {buildAction,framePacket,Isaac377} from '../rs377-chatgpt-bridge/src/protocol.mjs';
 import {nameToBase37} from '../rs377-chatgpt-bridge/src/wordpack377.mjs';
 
@@ -79,4 +79,29 @@ test('native revision 377 friend add is opcode 120, fixed 8-byte canonical base3
  assert.deepEqual(frame.subarray(1),pkt.body);
  assert.throws(()=>buildAction({type:'friend_add',targetName:'Elrothiro',admin:true}),/Unexpected/);
  assert.throws(()=>buildAction({type:'friend_add',targetName:'é'}),/Invalid/);
+});
+
+test('verified patrol pins last 30s to a distinct Lumbridge tile instead of round-trip start',()=>{
+ const startingPosition={x:3233,z:3217};
+ assert.deepEqual(verificationDestination(startingPosition),[3232,3220]);
+ assert.deepEqual(patrolWaypoint(20,{verifyPosition:false,startingPosition,
+   elapsedMs:115500,durationMs:120000}),[3233,3217]);
+ for(const step of [16,17,18,19,20,21]){
+  assert.deepEqual(patrolWaypoint(step,{verifyPosition:true,startingPosition,
+    elapsedMs:90000+step*1000,durationMs:120000}),[3232,3220]);
+ }
+ assert.deepEqual(patrolWaypoint(10,{verifyPosition:true,startingPosition,
+   elapsedMs:89999,durationMs:120000}),[3232,3220]);
+ assert.deepEqual(patrolWaypoint(8,{verifyPosition:true,startingPosition,
+   elapsedMs:10000,durationMs:120000}),[3233,3217]);
+});
+test('distinct final target is selected for any of the four starting waypoints',()=>{
+ for(const [x,z] of [[3233,3217],[3231,3218],[3232,3220],[3234,3219]]){
+  const [tx,tz]=verificationDestination({x,z});
+  assert.notDeepEqual([tx,tz],[x,z]);
+  assert.ok(tx>=3231&&tx<=3234);
+  assert.ok(tz>=3217&&tz<=3220);
+ }
+ assert.throws(()=>verificationDestination({x:NaN,z:3217}),/valid saved/);
+ assert.throws(()=>patrolWaypoint(-1),/Invalid patrol/);
 });
