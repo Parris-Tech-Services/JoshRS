@@ -25,8 +25,8 @@ await runScript(async ({ bot, sdk }) => {
       }
       if (st?.dialog?.isOpen) {
         const opts = st.dialog.options ?? [];
-        const cancelOpt = opts.find((o: any) => /cancel|nevermind|no|nothing|continue/i.test(o.text));
-        const idx = cancelOpt ? cancelOpt.index : (opts[0]?.index ?? 0);
+        const targetOpt = opts.find((o: any) => /yes|ok|continue|cancel|nevermind|nothing/i.test(o.text));
+        const idx = targetOpt ? targetOpt.index : (opts[0]?.index ?? 0);
         await sdk.sendClickDialog(idx);
         await sleep(350);
       } else {
@@ -43,12 +43,28 @@ await runScript(async ({ bot, sdk }) => {
   };
 
   const ensureSurfaceL0 = async () => {
-    for (let attempt = 0; attempt < 5; attempt++) {
+    for (let attempt = 0; attempt < 6; attempt++) {
       const p = sdk.getState()?.player;
       if (!p) break;
-      if (p.level === 0 && p.worldZ < 6000) break;
       await clearAllUI();
       const scanned = await sdk.scanNearbyLocs(12);
+
+      // Check if we are in a ship hold on L0 (where Ship's ladder Climb-up is nearby at x=2958,z=3141)
+      if (p.level === 0 && p.worldX >= 2950 && p.worldX <= 2964 && p.worldZ >= 3138 && p.worldZ <= 3144) {
+        const shipsLadderUp = scanned.find(
+          (l: any) => /ship's ladder/i.test(l.name) && l.x === 2958 && (l.options ?? []).some((o: string) => /climb-?up/i.test(o))
+        ) ?? scanned.find(
+          (l: any) => /ship's ladder/i.test(l.name) && (l.options ?? []).some((o: string) => /climb-?up/i.test(o))
+        );
+        if (shipsLadderUp) {
+          await interactFast(shipsLadderUp, /climb-?up/i, 5000);
+          await sleep(1200);
+          continue;
+        }
+      }
+
+      if (p.level === 0 && p.worldZ < 6000) break;
+
       if (p.worldZ >= 6000) {
         const upLoc = scanned.find(
           (l: any) => /ladder|staircase|stairs|trapdoor/i.test(l.name) && (l.options ?? []).some((o: string) => /climb-?up|walk-?up|climb/i.test(o))
@@ -61,8 +77,14 @@ await runScript(async ({ bot, sdk }) => {
         }
       }
       if (p.level > 0) {
+        const plank = scanned.find((l: any) => /gangplank/i.test(l.name));
+        if (plank) {
+          await interactFast(plank, /cross/i, 5000);
+          await sleep(1200);
+          continue;
+        }
         const downLoc = scanned.find(
-          (l: any) => /ladder|staircase|stairs/i.test(l.name) && (l.options ?? []).some((o: string) => /climb-?down|walk-?down|climb/i.test(o))
+          (l: any) => /ladder|staircase|stairs/i.test(l.name) && !/ship's ladder/i.test(l.name) && (l.options ?? []).some((o: string) => /climb-?down|walk-?down|climb/i.test(o))
         );
         if (downLoc) {
           const opt = (downLoc.options ?? []).find((o: string) => /climb-?down|walk-?down|climb/i.test(o)) ?? 'Climb-down';
@@ -174,11 +196,11 @@ await runScript(async ({ bot, sdk }) => {
       const locs = await sdk.scanNearbyLocs(9);
       for (const loc of locs) {
         if (loc.x < bounds.minX || loc.x > bounds.maxX || loc.z < bounds.minZ || loc.z > bounds.maxZ) continue;
-        if (/tree|oak|willow|yew|plant|cactus|ladder|staircase|stairs|trapdoor/i.test(loc.name)) continue;
+        if (/tree|oak|willow|yew|plant|cactus|gangplank|ladder|staircase|stairs|trapdoor/i.test(loc.name)) continue;
         for (const opt of loc.options ?? []) {
           if (!opt || /^examine$/i.test(opt)) continue;
           if (/^close$/i.test(opt) && /door|gate/i.test(loc.name)) continue;
-          if (/climb|walk-down|walk-up|chop|pick-lock/i.test(opt)) continue;
+          if (/climb|cross|walk-down|walk-up|chop|pick-lock/i.test(opt)) continue;
           await testLocOption(loc, opt, `Interact "${opt}" with ${loc.name} at (${loc.x}, ${loc.z})`);
         }
       }
@@ -218,61 +240,9 @@ await runScript(async ({ bot, sdk }) => {
     console.log(`[AUDIT] Appended ${findings.length} findings for ${regionName} to bots/bot4/lab_log.md`);
   };
 
-  // Step 1: Dismiss any open dialog (such as Border Guard at 3268, 3227)
-  await clearAllUI();
-
-  // Step 2: Ensure we have at least 60 coins by pickpocketing Men/Women in Lumbridge if needed
-  if ((sdk.findInventoryItem(/coins/i)?.count ?? 0) < 60) {
-    await bot.walkTo(3222, 3218, 4);
-    for (let attempt = 0; attempt < 35; attempt++) {
-      const coinsCount = sdk.findInventoryItem(/coins/i)?.count ?? 0;
-      if (coinsCount >= 65) break;
-      if ((sdk.getState()?.player?.hp ?? 10) <= 3) break;
-      const citizen = sdk.findNearbyNpc(/^(man|woman)$/i);
-      if (citizen) {
-        await bot.pickpocketNpc(citizen);
-        await sleep(600);
-      } else {
-        await bot.walkTo(3222, 3218, 3);
-        await sleep(600);
-      }
-    }
-  }
-  console.log(`[AUDIT] Coins before Port Sarim ship: ${sdk.findInventoryItem(/coins/i)?.count ?? 0}`);
-
-  // Step 3: Walk to Port Sarim Docks (3029, 3217) and board ship to Karamja (30 gp)
-  await clearAllUI();
-  await bot.walkTo(3029, 3217, 2);
-  const seaman = sdk.findNearbyNpc(/captain tobias|seaman lorris|seaman thresnor/i);
-  if (seaman) {
-    const hasPayFare = (seaman.options ?? []).some((o: string) => /pay-fare/i.test(o));
-    if (hasPayFare) {
-      await bot.interactNpc(seaman, /pay-fare/i);
-    } else {
-      await bot.talkTo(seaman);
-    }
-    for (let i = 0; i < 15; i++) {
-      await sleep(600);
-      const d = sdk.getDialog();
-      if (!d?.isOpen) {
-        if ((sdk.getState()?.player?.worldX ?? 3029) < 2970) break;
-        continue;
-      }
-      const yesOpt = (d.options ?? []).find((o: any) => /yes|pay|please/i.test(o.text));
-      if (yesOpt) {
-        await sdk.sendClickDialog(yesOpt.index);
-      } else {
-        await sdk.sendClickDialog(0);
-      }
-    }
-    await sleep(3000);
-    await clearAllUI();
-    const plank = (await sdk.scanNearbyLocs(8)).find((l: any) => /gangplank/i.test(l.name));
-    if (plank) {
-      await interactFast(plank, /cross/i, 5000);
-      await sleep(1200);
-    }
-  }
+  // Step 1: Climb out of the ship hold (L0) -> ship deck (L1) -> cross Gangplank onto Karamja dock (L0)
+  await ensureSurfaceL0();
+  console.log(`[AUDIT] Position after ensureSurfaceL0: (${sdk.getState()?.player?.worldX}, ${sdk.getState()?.player?.worldZ}, L${sdk.getState()?.player?.level})`);
 
   if ((sdk.getState()?.player?.worldX ?? 3029) < 2970) {
     // Region 26: Karamja — Musa Point Docks, Banana Plantation & Luthas's House (m45_49 & m45_48)
@@ -288,6 +258,23 @@ await runScript(async ({ bot, sdk }) => {
       false
     );
 
+    // Pick bananas if low HP on Karamja before walking to Brimhaven
+    if ((sdk.getState()?.player?.hp ?? 10) < 8) {
+      await bot.walkTo(2916, 3162, 3);
+      for (let i = 0; i < 6; i++) {
+        const bTree = sdk.findNearbyLoc(/banana tree/i);
+        if (bTree) {
+          await interactFast(bTree, /pick/i, 4000);
+          await sleep(600);
+        }
+        const banana = sdk.findInventoryItem(/banana/i);
+        if (banana && (sdk.getState()?.player?.hp ?? 10) < 10) {
+          await bot.eatFood(banana);
+          await sleep(600);
+        }
+      }
+    }
+
     // Region 27: Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
     await auditRegion(
       'Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)',
@@ -301,10 +288,31 @@ await runScript(async ({ bot, sdk }) => {
       false
     );
 
-    // Sail from Brimhaven (2772, 3227) to East Ardougne (2683, 3271) via Captain Barnaby / Customs Officer
+    // Ensure Coins >= 30 in Brimhaven if needed
+    if ((sdk.findInventoryItem(/coins/i)?.count ?? 0) < 30) {
+      await bot.walkTo(2794, 3179, 4);
+      for (let attempt = 0; attempt < 25; attempt++) {
+        if ((sdk.findInventoryItem(/coins/i)?.count ?? 0) >= 32) break;
+        const banana = sdk.findInventoryItem(/banana/i);
+        if (banana && (sdk.getState()?.player?.hp ?? 10) < 8) {
+          await bot.eatFood(banana);
+          await sleep(600);
+        }
+        if ((sdk.getState()?.player?.hp ?? 10) <= 2) break;
+        const man = sdk.findNearbyNpc(/^(man|woman)$/i);
+        if (man) {
+          await bot.pickpocketNpc(man);
+          await sleep(1000);
+        } else {
+          await bot.walkTo(2772, 3185, 4);
+        }
+      }
+    }
+
+    // Sail from Brimhaven (2772, 3227) to East Ardougne (2683, 3271) via Captain Barnaby
     await clearAllUI();
     await bot.walkTo(2772, 3227, 2);
-    const barnaby = sdk.findNearbyNpc(/captain barnaby|customs officer/i);
+    const barnaby = sdk.findNearbyNpc(/captain barnaby/i);
     if (barnaby) {
       const hasPayFare = (barnaby.options ?? []).some((o: string) => /pay-fare/i.test(o));
       if (hasPayFare) {
@@ -328,11 +336,7 @@ await runScript(async ({ bot, sdk }) => {
       }
       await sleep(3000);
       await clearAllUI();
-      const ardyPlank = (await sdk.scanNearbyLocs(8)).find((l: any) => /gangplank/i.test(l.name));
-      if (ardyPlank) {
-        await interactFast(ardyPlank, /cross/i, 5000);
-        await sleep(1200);
-      }
+      await ensureSurfaceL0();
     }
   }
 

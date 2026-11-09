@@ -1093,3 +1093,91 @@
 - `(3362, 3272, L0)` **Drawers** (id `3191`) [`Shut`] -> OK: Interacted with Drawers
 - `(3357, 3260, L0)` **Wall** (id `3082`) [`Lean against`] -> OK: Timed out after 4500ms (loc state changed)
 - `(3358, 3260, L0)` **Wall** (id `3077`) [`Lean against`] -> OK: Interacted with Wall
+
+
+### Region Spot-Check: Karamja Ship Hold & Deck (m46_49) — 2026-11-09T10:44:58.000Z
+- **Total Interactions Audited**: 3 (2 verified working, 1 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(2954, 3141, L0)` — Karamja Ship Hold & Deck (m46_49)
+  - **Object & Action**: `Ship's ladder` (id `272`) — action `Climb-up`
+  - **Expected vs Actual**: Expected: Climb up the western ship hold ladder at `(2954, 3141, L0)` to the main ship deck (`L1`). Actual: `bot.interactLoc` walks to `(2953, 3141, L0)` and the server rejects the op (`opRejectedDelta=1`), leaving the player in the hold (`L0`). The middle ladder `Ship's ladder` (id `272`) at `(2958, 3141, L0)` works and ascends to `(2956, 3140, L1)`.
+  - **Impact**: **Blocks progress**
+
+#### Verified Working Interactions (Summary)
+- `(2958, 3141, L0)` **Ship's ladder** (id `272`) [`Climb-up`] -> OK: Ascends from ship hold (`L0`) to ship deck `(2956, 3140, L1)`
+- `(2956, 3144, L1)` **Gangplank** (id `2082`) [`Cross`] -> OK: Crosses from ship deck (`L1`) onto Musa Point dock `(2956, 3146, L0)`
+
+
+### Region Completed: Karamja — Musa Point, Banana Plantation & Luthas's House (m45_49 & m45_48) — 2026-11-09T10:48:43.652Z
+- **Total Interactions Audited**: 5 (1 verified working, 4 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(2935, 3156, L0)` — Karamja — Musa Point, Banana Plantation & Luthas's House (m45_49 & m45_48)
+  - **Object & Action**: `Crate` (id `366`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (2935, 3156). Actual: success=true (Interacted with Crate), opRejectedDelta=2, messages="You search the crate but find nothing.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2940, 3156, L0)` — Karamja — Musa Point, Banana Plantation & Luthas's House (m45_49 & m45_48)
+  - **Object & Action**: `Boxes` (id `361`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Boxes at (2940, 3156). Actual: success=true (Interacted with Boxes), opRejectedDelta=1, messages="There is nothing interesting in these boxes.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2941, 3156, L0)` — Karamja — Musa Point, Banana Plantation & Luthas's House (m45_49 & m45_48)
+  - **Object & Action**: `Boxes` (id `360`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Boxes at (2941, 3156). Actual: success=false (Can't reach Boxes), opRejectedDelta=0, messages="I can't reach that! | I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2943, 3151, L0)` — Karamja — Musa Point, Banana Plantation & Luthas's House (m45_49 & m45_48)
+  - **Object & Action**: `Crate` (id `2072`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (2943, 3151). Actual: success=true (Interacted with Crate), opRejectedDelta=1, messages="The crate is completely empty.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(2935, 3152, L0)` **Sacks** (id `365`) [`Search`] -> OK: Nothing happened interacting with Sacks | "There's nothing interesting in these sacks."
+
+### Region Completed: Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50) — 2026-11-09T10:50:55.685Z
+- **Total Interactions Audited**: 12 (2 verified working, 10 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(2805, 3177, L0)` — Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
+  - **Object & Action**: `Cupboard` (id `368`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Cupboard at (2805, 3177). Actual: success=true (Interacted with Cupboard), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2791, 3170, L0)` — Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
+  - **Object & Action**: `Sacks` (id `365`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Sacks at (2791, 3170). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2770, 3190, L0)` — Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
+  - **Object & Action**: `Cupboard` (id `368`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Cupboard at (2770, 3190). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2778, 3190, L0)` — Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
+  - **Object & Action**: `Door` (id `1533`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2778, 3190). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="I can't reach that! | Nothing interesting happens.", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2778, 3191, L0)` — Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
+  - **Object & Action**: `Cupboard` (id `368`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Cupboard at (2778, 3191). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="Nothing interesting happens.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2768, 3192, L0)` — Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
+  - **Object & Action**: `Open chest` (id `378`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Open chest at (2768, 3192). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="Nothing interesting happens.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2768, 3192, L0)` — Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
+  - **Object & Action**: `Open chest` (id `378`) — action `Shut`
+  - **Expected vs Actual**: Expected: Interact "Shut" with Open chest at (2768, 3192). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="Nothing interesting happens.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2767, 3194, L0)` — Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
+  - **Object & Action**: `Door` (id `1533`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2767, 3194). Actual: success=false (Timed out after 4500ms), opRejectedDelta=2, messages="I can't reach that! | I can't reach that!", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2782, 3194, L0)` — Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2782, 3194). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="I can't reach that! | Nothing interesting happens.", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2783, 3195, L0)` — Brimhaven Town, Docks, Pub & Shrine (m43_49 & m43_50)
+  - **Object & Action**: `Boxes` (id `360`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Boxes at (2783, 3195). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(2774, 3187, L0)` **Door** (id `2627`) [`Open`] -> OK: Interacted with Door
+- `(2771, 3189, L0)` **Door** (id `1533`) [`Open`] -> OK: Timed out after 4500ms (loc state changed)
