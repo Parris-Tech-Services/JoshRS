@@ -19,3 +19,26 @@
 - `0` (`Hans`), `1`/`3` (`Man`), `4` (`Woman`), `278` (`Cook`) @ `(3222, 3219, L0)`: Tested `Talk-to` in-game in Lumbridge -> **OK**.
 - `970` (`Diango`), `917` (`Jail guard`), `922` (`Aggie`) @ `(3080, 3248, L0)`: Tested `Talk-to` and `Trade` in-game in Draynor Village -> **OK**.
 - `376` (`Captain Tobias`), `377` (`Seaman Lorris`), `378` (`Seaman Thresnor`) @ `(3026, 3220, L0)`: Tested `Talk-to` in-game at Port Sarim docks -> **OK**.
+- `558` (`Gerrant`), `556` (`Grum`) @ `(3011, 3226, L0)`: Tested `Talk-to` and `Trade` in-game in Port Sarim -> **OK**.
+- `530` (`Shop keeper`), `531` (`Shop assistant`), `585` (`Rommik`) @ `(2947, 3216, L0)`: Tested `Talk-to` and `Trade` in-game in Rimmington -> **OK**.
+- `526` (`Shop keeper`), `527` (`Shop assistant`), `577` (`Cassie`), `580` (`Flynn`), `736` (`Barmaid`), `6` (`Woman`) @ `(2958, 3387, L0)`: Tested `Talk-to` and `Trade` in-game in Falador -> **OK**.
+- `1079` (`Tostig`), `1087` (`Penda`), `1060` (`Denulth`), `1065`/`1063`/`1064` (`Soldier`), `1062` (`Sergeant`), `1074` (`Archer`) @ `(2907, 3537, L0)`: Tested `Talk-to` and `Trade` in-game in Burthorpe -> **OK**.
+- `1061` (`Sergeant`), `1066`/`1067`/`1068` (`Soldier`), `1073` (`Archer`), `1076`/`1077` (`Guard`), `1081` (`Servant`), `1085` (`Ocga`), `1089` (`Ceolburg`), `1092` (`White Knight`) @ `(2901, 3562, L0)`: Tested `Talk-to` in-game across north Burthorpe -> **OK**.
+- `796` (`Achietties`), `586` (`Gaius`), `587` (`Jatix`) @ `(2898, 3426, L0)`: Tested `Talk-to` and `Trade` in-game at Heroes' Guild and Taverley -> **OK**.
+- `1213` (`Tegid`), `250` (`The Lady of the Lake`), `455` (`Kaqemeex`) @ `(2924, 3405, L0)`: Tested `Talk-to` in-game in Taverley -> **OK**.
+- `801` (`Abbot Langley`), `803` (`Monk`), `12` (`Barbarian`) @ `(3057, 3484, L0)`: Tested `Talk-to` in-game at the Monastery and Barbarian Village -> **OK**.
+- `639` (`Romeo`), `882` (`Gypsy`), `546` (`Zaff`), `547` (`Baraek`), `781` (`Shilop`), `783` (`Wilough`), `548` (`Thessalia`), `522` (`Shop keeper`) @ `(3212, 3428, L0)`: Tested `Talk-to` and `Trade` in-game around Varrock Square -> **OK**.
+- `641` (`Tramp`), `551` (`Shop keeper`), `552` (`Shop assistant`), `645` (`Jonny the beard`), `550` (`Lowe`), `549` (`Horvik`), `553` (`Aubury`), `368` (`Guard`), `640` (`Father Lawrence`) @ `(3233, 3425, L0)`: Tested `Talk-to` and `Trade` in-game across South and East Varrock -> **OK**.
+- `618` (`Examiner`), `619` (`Archaeological expert`) @ `(3361, 3343, L0)`: Tested `Talk-to` in-game at the Digsite Exam Centre -> **OK**.
+- `613` (`Digsite workman`), `620` (`Panning guide`), `615`/`616`/`617` (`Student`) @ `(3361, 3409, L0)`: Tested `Talk-to` in-game at the Digsite -> **OK**.
+- `959` (`A'abla`), `960` (`Sabreen`), `961` (`Tafani`), `962` (`Jaraah`), `963` (`Zahwa`) @ `(3366, 3275, L0)`: Tested `Talk-to` in-game at the Duel Arena -> **OK**.
+- `924` (`Osman`), `541` (`Zeke`), `836` (`Shantay`), `925` (`Border Guard`) @ `(3285, 3188, L0)`: Tested `Talk-to` and `Trade` in-game in Al Kharid and Shantay Pass -> **OK**.
+- `540` (`Gem trader`), `539` (`Silk trader`), `170` (`Gnome pilot`), `524` (`Shop keeper`), `525` (`Shop assistant`), `542` (`Louie legs`), `544` (`Ranael`), `923` (`Hassan`) @ `(3316, 3165, L0)`: Tested `Talk-to` and `Trade` in-game across Al Kharid -> **OK**.
+- `731` (`Bartender`), `756` (`Dr Harlow`), `647` (`Reldo`) @ `(3277, 3488, L0)` & `(3210, 3497, L0)`: Tested `Talk-to` in-game at the Jolly Boar Inn and Varrock Palace Library -> **OK**.
+- `300` (`Sedridor`), `1263` (`Wizard`), `881` (`Traiborn`) @ `(3098, 9569, L0)` & `(3112, 3162, L1)`: Tested `Talk-to` in-game in the Wizards' Tower basement and first floor -> **OK**.
+- `706` (`Wizard Mizgog`), `285` (`Veronica`), `606` (`Squire`) @ `(3103, 3163, L2)`, `(3110, 3331, L0)`, `(2977, 3345, L0)`: Tested `Talk-to` in-game on Wizards' Tower L2, Draynor Manor, and Falador Castle -> **OK**.
+- `581` (`Wayne`), `584` (`Herquin`), `36` (`Wyson the gardener`), `599` (`Make-over mage`) @ `(2969, 3312, L0)` & `(2917, 3323, L0)`: Tested `Talk-to` and `Trade` in-game in Falador -> **OK**.
+- `895` (`Boy`), `296` (`General Bentnoze`), `297` (`General Wartface`), `298`/`299` (`Goblin`) @ `(2956, 3511, L0)`: Tested `Talk-to` in-game at Witch's House and Goblin Village -> **OK**.
+- `284` (`Doric`), `746` (`Oracle`), `609` (`Fortress Guard`), `528` (`Shop keeper`), `529` (`Shop assistant`) @ `(2952, 3452, L0)`, `(3012, 3503, L0)`, `(3077, 3511, L0)`: Tested `Talk-to` and `Trade` in-game at Doric's house, Ice Mountain, Black Knights' Fortress, and Edgeville -> **OK**.
+- `747` (`Oziach`), `538` (`Peksa`) @ `(3070, 3517, L0)` & `(3077, 3427, L0)`: Tested `Talk-to` and `Trade` in-game in Edgeville and Barbarian Village -> **OK**.
+- `582` (`Dwarf` shopkeeper), `594` (`Nurmof`) @ `(2997, 9818, L0)` & `(2996, 9847, L0)`: Tested `Talk-to` and `Trade` in-game in the Dwarven Mine -> **OK**.
