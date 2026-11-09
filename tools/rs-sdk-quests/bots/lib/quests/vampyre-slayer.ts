@@ -56,6 +56,12 @@ export const vampire: Quest = {
       await withdrawFromDraynorBank(c, [/^coins$/i, /^bronze sword$/i, /^wooden shield$/i, /^shrimps$/i, /^bread$/i]);
       if (has(sdk, /^bronze sword$/i)) await bot.equipItem(/^bronze sword$/i);
       if (has(sdk, /^wooden shield$/i)) await bot.equipItem(/^wooden shield$/i);
+      for (let p = 0; p < 15 && count(sdk, /^coins$/i) < 15; p++) {
+        await bot.walkTo(3100, 3250, 4);
+        const man = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /^(man|woman)$/i.test(n.name) && n.combatLevel <= 4 && n.reachable !== false);
+        if (man) await bot.pickpocketNpc(man);
+        await sleep(600);
+      }
       if (!has(sdk, /^hammer$/i)) {
         const w = await bot.walkTo(3212, 3247, 2);
         if (!w?.success) { await openNearbyDoors(c, 3212, 3247, 2); await bot.walkTo(3212, 3247, 2); }
@@ -128,6 +134,9 @@ export const vampire: Quest = {
       }
       if (!(await draynorManorCrypt(c, true))) return false;
       await bot.walkTo(3078, 9775, 2);
+      if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+        await bot.activatePrayer('protect_from_melee');
+      }
       const deadline = Date.now() + 120_000;
       while (Date.now() < deadline && xp(sdk, 'Attack') < 48250) {
         await bot.dismissBlockingUI();
@@ -151,6 +160,7 @@ export const vampire: Quest = {
         await sleep(800);
       }
       const done = await waitCond(() => xp(sdk, 'Attack') >= 48250, 6000);
+      await bot.deactivateAllPrayers();
       await bot.closeInterface();
       await draynorManorCrypt(c, false);
       return done;

@@ -137,3 +137,59 @@
 - 2026-11-09T05:43:01.045Z START The Knight's Sword (attempt 2)
 - 2026-11-09T05:43:01.045Z STEP start-squire-and-reldo
 - 2026-11-09T05:43:01.045Z STEP redberry-pie-and-iron-bars
+- 2026-11-09T05:49:21.169Z STEP steal-portrait
+- 2026-11-09T05:51:20.334Z STEP blurite-sword-and-finish
+- 2026-11-09T05:53:36.038Z STEP FAILED blurite-sword-and-finish
+- 2026-11-09T05:57:52.450Z START The Knight's Sword (attempt 1)
+- 2026-11-09T05:57:52.451Z STEP start-squire-and-reldo
+- 2026-11-09T05:57:52.452Z STEP redberry-pie-and-iron-bars
+- 2026-11-09T05:57:52.454Z STEP steal-portrait
+- 2026-11-09T05:57:52.455Z STEP blurite-sword-and-finish
+- 2026-11-09T06:02:20.451Z DONE The Knight's Sword
+
+### Quest 9: The Knight's Sword (Completed)
+- **Quest Points Gained**: +1 QP (Total: 16 QP)
+- **Rewards**: +318,125 Smithing XP (Level 18 -> 82!)
+- **Notes**: Started with the Squire in Falador Castle courtyard (`2977, 3342`), spoke to Reldo in Varrock Palace library (`3211, 3494`), crafted `Uncooked berry pie` and cooked `Redberry pie` on the Rimmington range (`2968, 3212`), trained Smithing to Level 18 and smelted 2 `Iron bar`s at Falador Furnace (`2974, 3369`), distracted Sir Vyvin via a White Knight in the adjacent room on Falador Castle L2 (`2983, 3348`) to search the cupboard (`2984, 3336`) for the `Portrait`, handed the `Portrait` to Thurgo, activated **Protect from Melee** (`protect_from_melee`) before descending into the Asgarnian Ice Dungeon (`3008, 3150`) to safely mine `Blurite ore` at (`3049, 9566`) amidst Ice Warriors/Giants, obtained the `Blurite sword` from Thurgo, and returned it to the Squire.
+- 2026-11-09T06:02:59.234Z START Vampyre Slayer (attempt 1)
+- 2026-11-09T06:02:59.235Z STEP morgan-and-garlic
+- 2026-11-09T06:04:18.847Z STEP prep
+- 2026-11-09T06:08:58.320Z STEP stake
+- 2026-11-09T06:10:56.522Z STEP slay
+- 2026-11-09T06:13:48.892Z DONE Vampyre Slayer
+
+### Quest 10: Vampyre Slayer (Completed)
+- **Quest Points Gained**: +3 QP (Total: 19 QP)
+- **Rewards**: +120,625 Attack XP (Level 13 -> 51! Combat Level -> 41)
+- **Notes**: Started with Morgan in Draynor Village (`3098, 3268`), searched the upstairs cupboard (`3097, 3268` L1) for `Garlic`, bought a `Hammer` at Lumbridge General Store (`3212, 3247`), trained melee stats on Lumbridge chickens (`Attack 13`, `Strength 16`, `Defence 13`, `HP 18`), bought a `Beer` for Dr. Harlow at the Jolly Boar Inn (`3277, 3491`) to obtain the `Stake`, descended into Draynor Manor Crypt (`3078, 9774`), activated `protect_from_melee`, and defeated Count Draynor (Lvl 34) with 0 damage taken.
+- 2026-11-09T06:13:48.892Z START Pirate's Treasure (attempt 1)
+- 2026-11-09T06:13:48.893Z STEP start-and-smuggle
+- 2026-11-09T06:16:20.831Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T06:28:15.844Z STEP FAILED start-and-smuggle
+- 2026-11-09T06:28:15.850Z START Pirate's Treasure (attempt 2)
+- 2026-11-09T06:28:15.850Z STEP start-and-smuggle
+- 2026-11-09T06:33:42.019Z START Pirate's Treasure (attempt 1)
+- 2026-11-09T06:33:42.020Z STEP start-and-smuggle
+- 2026-11-09T06:37:14.734Z STEP FAILED start-and-smuggle
+- 2026-11-09T06:37:14.736Z START Pirate's Treasure (attempt 2)
+- 2026-11-09T06:37:14.736Z STEP start-and-smuggle
+- 2026-11-09T06:38:06.433Z START Pirate's Treasure (attempt 1)
+- 2026-11-09T06:38:06.433Z STEP start-and-smuggle
+- 2026-11-09T06:38:38.662Z STEP FAILED start-and-smuggle
+- 2026-11-09T06:38:38.668Z START Pirate's Treasure (attempt 2)
+- 2026-11-09T06:38:38.668Z STEP start-and-smuggle
+- 2026-11-09T06:40:11.632Z STEP retrieve-rum-and-key
+- 2026-11-09T06:40:59.752Z STEP blue-moon-chest
+- 2026-11-09T06:43:35.578Z STEP dig-falador-park
+- 2026-11-09T06:46:55.465Z DONE Pirate's Treasure
+- 2026-11-09T06:46:55.465Z START Goblin Diplomacy (attempt 1)
+- 2026-11-09T06:46:55.466Z STEP start-port-sarim
+
+### Quest 11: Pirate's Treasure (`hunt`) — COMPLETED
+- **Quest Points Gained**: +2 QP (Total: **21 QP**)
+- **Rewards**: 450 Coins (`Coins x466`), Gold ring, Emerald (One-Eyed Hector's Casket).
+- **Notes / Lessons**:
+  - Karamja `Banana Tree` locs (`id: 2073..2077`) have option `Search`, not `Pick` (`bananatreeempty` is `2078`). Fixed `pirates-treasure.ts` to filter for `l.id >= 2073 && l.id <= 2077` and interact with `/^pick|search$/i`.
+  - Fixed Luthas house entry (`tol = 1` at `(2938, 3154)`) and dialogue options (`/no, the crate isn't full yet/i`) and prevented re-buying Karamjan rum if rum was already shipped to Wydin's store.
+- 2026-11-09T06:47:42.028Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T06:48:06.359Z STEP dyes

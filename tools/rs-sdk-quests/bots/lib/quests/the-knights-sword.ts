@@ -42,7 +42,7 @@ export const squire: Quest = {
     };
 
     const startAndReldo = () => step(c, N, 'start-squire-and-reldo', async () => {
-      if (reldoSpoken || thurgoPieGiven || squirePortraitAsked || thurgoPortraitGiven || has(sdk, /^portrait|blurite sword|uncooked (red)?berry pie|redberry pie$/i)) return true;
+      if (reldoSpoken || thurgoPieGiven || squirePortraitAsked || thurgoPortraitGiven || count(sdk, /^iron bar$/i) >= 2 || has(sdk, /^portrait|blurite ore|blurite sword|uncooked (red)?berry pie|redberry pie$/i)) return true;
       await exitWizardsTowerGround(c);
       if (lvl(sdk) > 0) await lumbridgeStairs(c, 0);
 
@@ -88,7 +88,7 @@ export const squire: Quest = {
     });
 
     const pieAndBars = () => step(c, N, 'redberry-pie-and-iron-bars', async () => {
-      if (thurgoPieGiven || squirePortraitAsked || thurgoPortraitGiven || has(sdk, /^portrait|blurite sword$/i)) return true;
+      if (thurgoPieGiven || squirePortraitAsked || thurgoPortraitGiven || has(sdk, /^portrait|blurite ore|blurite sword$/i) || (count(sdk, /^iron bar$/i) >= 2 && !has(sdk, /^redberry pie|uncooked (red)?berry pie$/i))) return true;
 
       // 1. In Varrock Palace Kitchen (3222, 3494), grab Pie dish and fill Bucket at Sink (3224, 3494)
       if (!has(sdk, /^redberry pie|uncooked (red)?berry pie|pie shell$/i) && !has(sdk, /^pie dish$/i)) {
@@ -143,8 +143,13 @@ export const squire: Quest = {
           if (!(await mineRocks(3283, 3365, [2094, 2095], /^tin ore$/i, needBronze))) return false;
         }
         if (count(sdk, /^iron ore$/i) < 5) {
-          if (!(await walkToVarrock(c, 3285, 3368))) return false;
-          if (!(await mineRocks(3285, 3368, [2092, 2093], /^iron ore$/i, 5))) return false;
+          if ((sdk.getState()?.player?.worldX ?? 0) < 3100) {
+            await bot.walkTo(2969, 3240, 2);
+            if (!(await mineRocks(2969, 3240, [2092, 2093], /^iron ore$/i, 5))) return false;
+          } else {
+            if (!(await walkToVarrock(c, 3285, 3368))) return false;
+            if (!(await mineRocks(3285, 3368, [2092, 2093], /^iron ore$/i, 5))) return false;
+          }
         }
       }
 
@@ -263,7 +268,7 @@ export const squire: Quest = {
     });
 
     const portrait = () => step(c, N, 'steal-portrait', async () => {
-      if (thurgoPortraitGiven || has(sdk, /^portrait|blurite sword$/i)) return true;
+      if (thurgoPortraitGiven || has(sdk, /^portrait|blurite ore|blurite sword$/i) || count(sdk, /^iron bar$/i) >= 2) return true;
 
       if (!squirePortraitAsked) {
         if (lvl(sdk) > 0) {
@@ -372,15 +377,48 @@ export const squire: Quest = {
 
       if (!has(sdk, /^blurite sword$/i)) {
         if ((sdk.getState()?.player?.worldZ ?? 0) < 9000) {
+          if (!has(sdk, /^bronze pickaxe$/i) && !has(sdk, /^blurite ore$/i)) {
+            if ((sdk.getState()?.player?.worldX ?? 0) > 3180) {
+              while (count(sdk, /^coins$/i) < 5) {
+                const man = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /^(man|woman)$/i.test(n.name) && n.combatLevel <= 4 && n.reachable !== false);
+                if (man) await bot.pickpocketNpc(man);
+                else await bot.walkTo(3222, 3219, 3);
+                await sleep(600);
+              }
+              const wb = await bot.walkTo(3230, 3203, 2);
+              if (!wb?.success) { await openNearbyDoors(c, 3234, 3203, 2); await bot.walkTo(3230, 3203, 2); }
+              const o = await bot.openShop(/^bob$/i);
+              if (o?.success) {
+                await bot.buyFromShop(/^bronze pickaxe$/i, 1);
+                await bot.closeShop();
+              }
+            } else {
+              await withdrawFromDraynorBank(c, [/^bronze pickaxe$/i]);
+            }
+          }
+          if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) < 15 && (sdk.getState()?.player?.worldX ?? 0) > 3180) {
+            const wc = await bot.walkTo(3243, 3206, 2);
+            if (!wc?.success) { await openNearbyDoors(c, 3238, 3210, 2); await bot.walkTo(3243, 3206, 2); }
+            await bot.interactLoc(/^altar$/i, /pray/i);
+            await sleep(1200);
+          }
           if (has(sdk, /^portrait$/i)) {
             await bot.walkTo(3007, 3330, 3);
-            await bot.walkTo(3001, 3144, 2);
+            const wt = await bot.walkTo(3001, 3143, 1);
+            if (!wt?.success) { await openNearbyDoors(c, 3001, 3142, 2); await bot.walkTo(3001, 3143, 1); }
             await talk(c, /^thurgo$/i, [/picture of the sword/i]);
             if (!(await waitCond(() => !has(sdk, /^portrait$/i), 4000, 300))) return false;
             thurgoPortraitGiven = true;
           }
           if (!has(sdk, /^blurite ore$/i)) {
+            if ((sdk.getState()?.player?.worldX ?? 0) > 3150) {
+              await bot.walkTo(3110, 3250, 3);
+              await bot.walkTo(3030, 3240, 3);
+            }
             await bot.walkTo(3008, 3150, 1);
+            if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+              await bot.activatePrayer('protect_from_melee');
+            }
             for (let i = 0; i < 3 && (sdk.getState()?.player?.worldZ ?? 0) < 9000; i++) {
               const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1759);
               if (lad) await bot.interactLoc(lad, /climb-?down/i);
@@ -391,6 +429,9 @@ export const squire: Quest = {
         }
 
         if ((sdk.getState()?.player?.worldZ ?? 0) > 9000) {
+          if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0 && !sdk.isPrayerActive('protect_from_melee')) {
+            await bot.activatePrayer('protect_from_melee');
+          }
           if (!has(sdk, /^blurite ore$/i)) {
             await bot.walkTo(3028, 9555, 3);
             await bot.walkTo(3049, 9566, 2);
@@ -404,9 +445,11 @@ export const squire: Quest = {
             else await bot.interactLoc(/^ladder$/i, /climb-?up/i);
             if (await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) < 9000, 5000, 300)) break;
           }
+          await bot.deactivateAllPrayers();
         }
 
-        await bot.walkTo(3001, 3144, 2);
+        const wt2 = await bot.walkTo(3001, 3143, 1);
+        if (!wt2?.success) { await openNearbyDoors(c, 3001, 3142, 2); await bot.walkTo(3001, 3143, 1); }
         await talk(c, /^thurgo$/i);
         if (!(await waitInv(sdk, /^blurite sword$/i, 5000))) return false;
       }

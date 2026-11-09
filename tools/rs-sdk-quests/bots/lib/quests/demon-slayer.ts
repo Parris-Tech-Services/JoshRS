@@ -353,8 +353,18 @@ export const demon: Quest = {
         await sleep(600);
       }
 
+      if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) < 20) {
+        const wa = await bot.walkTo(3254, 3483, 2);
+        if (!wa?.success) { await openNearbyDoors(c, 3254, 3480, 3); await bot.walkTo(3254, 3483, 2); }
+        await bot.interactLoc(/^altar$/i, /pray/i);
+        await sleep(1200);
+      }
+
       if (!(await walkToVarrock(c, 3228, 3369))) return false;
       await bot.walkTo(3228, 3369, 2);
+      if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+        await bot.activatePrayer('protect_from_melee');
+      }
 
       for (let i = 0; i < 40; i++) {
         const msgs = (sdk.getState()?.gameMessages ?? []).map((m: any) => m.text).join(' ');

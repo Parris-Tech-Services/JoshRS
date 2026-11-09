@@ -266,6 +266,9 @@ export const blackknight: Quest = {
       }
 
       // Enter east banquet hall via 2338 at L0 (3020, 3515) -> x >= 3020
+      if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+        await bot.activatePrayer('protect_from_melee');
+      }
       if (lvl(sdk) === 0 && (sdk.getState()?.player?.worldX ?? 0) < 3020) {
         if (!(await passFortressDoor(2338, 3019, 3515, () => (sdk.getState()?.player?.worldX ?? 0) >= 3020, [/going in anyway/i]))) return false;
       }
