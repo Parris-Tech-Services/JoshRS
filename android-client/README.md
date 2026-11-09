@@ -1,5 +1,31 @@
 # JoshRS Android — Kotlin foundation (stage 1)
 
+## Actual Lumbridge vs fictional preview (phone report, 9 Nov 2026)
+
+The user's Galaxy A55 screenshot showed **FICTIONAL OFFLINE DRAWING**, the
+old isometric design exercise. That drawing is **not** Lumbridge, contains
+no RuneScape terrain/collisions/NPCs and should not be confused with a
+playable client.
+
+The home screen now puts **Explore real Lumbridge (region 50,50)** immediately
+under the title/status and the drawing demo at the end. The mock scene has
+a visible **Switch to REAL 377 Lumbridge map** control. Both routes use
+exactly `PrivateLumbridge377.loadFirst(filesDir)`. If the cache is missing,
+the app returns to its home screen and displays a real error plus the
+three required files. It never substitutes the fictional drawing for
+missing historical game assets.
+
+**Data requirement:** user-owned `main_file_cache.dat`,
+`main_file_cache.idx0`, `main_file_cache.idx4`, imported together
+via the Android file picker. On Fedora,
+`bash tools/android377-phone/copy-private-lumbridge-cache.sh --check`
+verifies the private cache, and `--copy` copies those three files to
+a single authorised USB phone's Downloads/JoshRS377Cache without
+touching player saves. The cache is not bundled in the APK.
+This is still a read-only 377 terrain/loc viewer, **not** the full
+3D game with an avatar, authentication, NPCs or quests.
+
+
 ## Side-by-side Android playtests (9 November 2026)
 
 An operator's Galaxy A55 displayed **Google Play Protect: unknown developer**, then Android's **Update this app?**, then **Something went wrong. App not installed** for an earlier debug APK. Those are distinct events. The second is consistent with Android rejecting a different debug signing certificate or attempted version downgrade for the *same package*, not evidence that the 377 game itself failed.
