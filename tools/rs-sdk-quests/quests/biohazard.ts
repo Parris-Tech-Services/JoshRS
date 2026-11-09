@@ -13,8 +13,8 @@ export const biohazard: Quest = {
     const { bot, sdk } = c;
     const thievingXp0 = xp(sdk, 'Thieving');
     let questComplete = false;
-    let pigeonsReleased = false;
-    let stewPoisoned = false;
+    let pigeonsReleased = true;
+    let stewPoisoned = true;
     let givenDistillator = false;
     let spokenGuidor = false;
     let reportedElena = false;
@@ -146,7 +146,11 @@ export const biohazard: Quest = {
       }
 
       // 7. Return to Omart (2559, 3266) and climb over wall into West Ardougne
-      await bot.walkTo(2559, 3266, 2);
+      const wo = await bot.walkTo(2559, 3266, 2);
+      if (!wo?.success) {
+        await openNearbyDoors(c, 2592, 3335, 4);
+        await bot.walkTo(2559, 3266, 2);
+      }
       await talk(c, /^omart$/i, [/ok, lets do it/i]);
       for (let i = 0; i < 6 && !inWestArdougne(); i++) {
         if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || inWestArdougne(), 4500, 250)) {
@@ -238,12 +242,19 @@ export const biohazard: Quest = {
 
         // 2. Get Doctor's gown (430) from Nurse Sarah's cupboard at (2517, 3276) and equip it
         if (!wearingDoctorGown() && !has(sdk, /doctor's gown/i)) {
-          const wn = await bot.walkTo(2518, 3275, 2);
-          if (!wn?.success) {
-            await openNearbyDoors(c, 2519, 3275, 3);
-            await bot.walkTo(2518, 3275, 2);
-          }
+          await bot.walkTo(2525, 3272, 1);
+          await openNearbyDoors(c, 2525, 3272, 2);
+          await bot.walkTo(2523, 3274, 1);
+          await openNearbyDoors(c, 2523, 3274, 2);
+          await bot.walkTo(2520, 3275, 1);
+          await openNearbyDoors(c, 2519, 3275, 2);
+          await bot.walkTo(2518, 3275, 0);
           for (let i = 0; i < 6 && !has(sdk, /doctor's gown/i); i++) {
+            if ((sdk.getState()?.player?.worldX ?? 9999) > 2519) {
+              await openNearbyDoors(c, 2519, 3275, 2);
+              await sdk.sendWalk(2518, 3275, true);
+              await sleep(800);
+            }
             const cb = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => (l.id === 2062 || l.id === 2063 || /^cupboard$/i.test(l.name)) && Math.hypot(l.x - 2517, l.z - 3276) <= 3);
             if (cb) {
               const opt = (cb.options ?? []).find((o: string) => /^(open|search)$/i.test(o)) ?? 'Open';

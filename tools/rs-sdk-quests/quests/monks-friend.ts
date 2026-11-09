@@ -74,12 +74,14 @@ export async function walkToKandarin(c: Ctx, destX: number, destZ: number): Prom
     await bot.walkTo(2965, 3385, 3);
     await bot.walkTo(2905, 3428, 3);
     await bot.walkTo(2865, 3435, 3);
-    if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+    if ((sdk.getSkill('Hitpoints')?.level ?? 50) < 30 && (sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
       await bot.activatePrayer('protect_from_melee');
     }
     await bot.walkTo(2848, 3496, 3);
     await bot.walkTo(2815, 3440, 3);
-    await bot.deactivateAllPrayers();
+    if (sdk.getState()?.prayers?.protect_from_melee) {
+      await bot.deactivateAllPrayers();
+    }
   }
 
   const p1 = sdk.getState()?.player;

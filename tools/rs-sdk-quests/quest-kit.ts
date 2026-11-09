@@ -367,11 +367,14 @@ export async function rechargePrayer(c: Ctx, minPoints = 25): Promise<void> {
     : altars[0];
   const w = await bot.walkTo(best[0], best[1], 2);
   if (!w?.success) {
-    await openNearbyDoors(c, best[0], best[1], 3);
+    await openNearbyDoors(c, best[0], best[1], 6);
     await bot.walkTo(best[0], best[1], 2);
   }
   const altar = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 409 || l.id === 410 || l.id === 411 || /^altar$/i.test(l.name));
   if (altar) {
+    if (altar.reachable === false) {
+      await openNearbyDoors(c, altar.x, altar.z, 6);
+    }
     await sdk.sendInteractLoc(altar.x, altar.z, altar.id, 1);
     await waitCond(() => (sdk.getSkill('Prayer')?.level ?? 0) >= (sdk.getSkill('Prayer')?.baseLevel ?? 1), 5000, 250);
   }

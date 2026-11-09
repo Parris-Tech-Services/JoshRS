@@ -1350,3 +1350,71 @@
 - 2026-11-09T19:49:55.221Z STEP red-and-black-cogs
 - 2026-11-09T19:57:39.228Z START Merlin's Crystal (attempt 1)
 - 2026-11-09T19:57:39.228Z STEP obtain-excalibur-and-inspect-altar
+- 2026-11-09T20:00:41.232Z STEP summon-thrantax-and-free-merlin
+- 2026-11-09T20:05:26.533Z DONE Merlin's Crystal
+- 2026-11-09T20:05:26.533Z START Clock Tower (attempt 1)
+- 2026-11-09T20:05:26.533Z STEP start-and-bucket
+- 2026-11-09T20:05:26.534Z STEP white-cog
+- 2026-11-09T20:05:26.535Z STEP red-and-black-cogs
+
+
+### Quest 23 Completed: Merlin's Crystal (`arthur`, 8th P2P Quest)
+- **Quest Points Gained**: **+6 QP** (Total: **57 QP**; 23 Quests Completed: 15 F2P + 8 P2P)
+- **Rewards**: **`Excalibur`** (`id: 35`)
+- **Key Technical Findings & Fixes**:
+  1. **Keep Le Faye Shipping Crate & Staircases**:
+     - Walk through Candle-maker's doorway `(2798, 3440)` to `(2801, 3441)` (`tol=0`), interact with `id: 63` (`op2=Hide-in`), and advance through the ~25 cutscene pages (`Yes.` twice) until arriving on the Keep Le Faye jetty `(2778, 3401)`.
+     - Open the jetty `Large door` (`id: 1516`/`1519` at `2776, 3400..3401`), approach `1722` (`forceapproach=south`) from `(2769, 3403)` (L0->L1) and `(2769, 3397)` (L1->L2), defeat Sir Mordred with `protect_from_melee`, speak to Morgan Le Faye, and exit via `1723` (`forceapproach=north`) and front `Large door` `71`/`72` at `(2763, 3401..3402)`.
+  2. **`thrantaxaltar` (`id: 61`) Map Placement in `rs-sdk/server/content/maps/`**:
+     - In `/home/josh/dev/JoshRS/lostcity377/engine/rs-sdk/server/content/maps/`, SE Varrock church `(3259, 3381)` has `id: 411` (`chaosaltar`, `op1=Pray-at` only), whereas `id: 61` (`thrantaxaltar`, `op2=Check`) is placed in `m50_56.jm2` at **`(3239, 3608)`** (Level 12 Wilderness Chaos Temple, entered via the open north archway at `3239, 3615` -> `3239, 3609`).
+  3. **Summoning Thrantax & Shattering `merlins_crystal` (`id: 62`)**:
+     - Dropped `Bat bones` at `(2780, 3515)` while holding `Lit black candle`, selected `"Snarthon Candtrick Termanto"`, climbed Camelot SE tower ladders (`1747` at `2769, 3493` and `2767, 3491`) to L2, used unequipped `Excalibur` from inventory on `Giant crystal` (`id: 62` at `2767, 3493`), and spoke to King Arthur (`2763, 3513`) to complete the quest!
+- 2026-11-09T20:11:48.830Z START Clock Tower (attempt 1)
+- 2026-11-09T20:11:48.830Z STEP start-and-bucket
+- 2026-11-09T20:11:48.831Z STEP white-cog
+- 2026-11-09T20:11:48.832Z STEP red-and-black-cogs
+- 2026-11-09T20:23:22.825Z START Clock Tower (attempt 1)
+- 2026-11-09T20:23:22.826Z STEP start-and-bucket
+- 2026-11-09T20:23:22.826Z STEP white-cog
+- 2026-11-09T20:23:22.827Z STEP red-and-black-cogs
+- 2026-11-09T20:30:31.669Z STEP FAILED red-and-black-cogs
+- 2026-11-09T20:30:31.670Z START Clock Tower (attempt 2)
+- 2026-11-09T20:30:31.670Z STEP start-and-bucket
+- 2026-11-09T20:30:31.670Z STEP white-cog
+- 2026-11-09T20:30:31.671Z STEP red-and-black-cogs
+- 2026-11-09T20:31:11.231Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T20:32:51.628Z START Clock Tower (attempt 1)
+- 2026-11-09T20:32:51.628Z STEP start-and-bucket
+- 2026-11-09T20:32:51.629Z STEP white-cog
+- 2026-11-09T20:32:51.629Z STEP red-and-black-cogs
+- 2026-11-09T20:36:33.236Z STEP FAILED red-and-black-cogs
+- 2026-11-09T20:36:33.237Z START Clock Tower (attempt 2)
+- 2026-11-09T20:36:33.237Z STEP start-and-bucket
+- 2026-11-09T20:36:33.237Z STEP white-cog
+- 2026-11-09T20:36:33.237Z STEP red-and-black-cogs
+- 2026-11-09T20:39:02.029Z START Clock Tower (attempt 1)
+- 2026-11-09T20:39:02.029Z STEP start-and-bucket
+- 2026-11-09T20:39:02.030Z STEP white-cog
+- 2026-11-09T20:39:02.031Z STEP red-and-black-cogs
+- 2026-11-09T20:47:29.232Z STEP blue-cog-and-finish
+- 2026-11-09T20:49:12.446Z STEP FAILED blue-cog-and-finish
+- 2026-11-09T20:49:12.447Z START Clock Tower (attempt 2)
+- 2026-11-09T20:49:12.447Z STEP start-and-bucket
+- 2026-11-09T20:49:12.447Z STEP white-cog
+- 2026-11-09T20:49:12.447Z STEP red-and-black-cogs
+- 2026-11-09T20:51:14.026Z STEP FAILED red-and-black-cogs
+- 2026-11-09T20:51:14.027Z START Biohazard (attempt 1)
+- 2026-11-09T20:51:14.028Z STEP start-and-distract-watchtower
+- 2026-11-09T20:52:23.850Z STEP retrieve-distillator
+- 2026-11-09T20:54:16.815Z STEP FAILED retrieve-distillator
+- 2026-11-09T20:54:16.816Z START Biohazard (attempt 2)
+- 2026-11-09T20:54:16.816Z STEP start-and-distract-watchtower
+- 2026-11-09T20:54:47.065Z STEP retrieve-distillator
+- 2026-11-09T20:56:38.828Z STEP FAILED retrieve-distillator
+- 2026-11-09T20:56:38.829Z START Fishing Contest (attempt 1)
+- 2026-11-09T20:56:38.830Z STEP start-and-prep
+- 2026-11-09T20:58:49.231Z START Clock Tower (attempt 1)
+- 2026-11-09T20:58:49.232Z STEP start-and-bucket
+- 2026-11-09T20:58:49.233Z STEP white-cog
+- 2026-11-09T20:58:49.233Z STEP red-and-black-cogs
+- 2026-11-09T20:58:49.234Z STEP blue-cog-and-finish

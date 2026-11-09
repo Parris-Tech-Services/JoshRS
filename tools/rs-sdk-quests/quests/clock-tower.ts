@@ -1,6 +1,6 @@
 import {
   Ctx, Quest, has, lvl, sleep, chat, talk, waitInv, waitCond, step,
-  openNearbyDoors, rechargePrayer, withdrawFromDraynorBank, pickupWithWait
+  openNearbyDoors, rechargePrayer, withdrawFromDraynorBank, pickupWithWait, bankJunk
 } from '../quest-kit';
 import { walkToKandarin } from './monks-friend';
 
@@ -20,17 +20,30 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
     return true;
   }
 
-  // Ensure pickaxe for mining the White Wolf Mountain rockslide (level 50 Mining required)
+  // Ensure only 1 weapon + 1 pickaxe are carried so Ice gloves is ALWAYS kept as one of top 3 items even on death
+  for (const eq of sdk.getState()?.equipment ?? []) {
+    if (!/scimitar|excalibur|pickaxe|ice gloves/i.test(eq.name)) {
+      await sdk.sendUseEquipmentItem(eq.slot, 1);
+      await sleep(350);
+    }
+  }
+  for (const item of sdk.getState()?.inventory ?? []) {
+    if (!/scimitar|excalibur|pickaxe|ice gloves/i.test(item.name)) {
+      await sdk.sendDropItem(item.slot);
+      await sleep(300);
+    }
+  }
   const hasPick = () =>
     has(sdk, /pickaxe/i) ||
     (sdk.getState()?.equipment ?? []).some((e: any) => /pickaxe/i.test(e.name));
   if (!hasPick()) {
-    await withdrawFromDraynorBank(c, [/pickaxe/i]);
-  }
-  if (!hasPick()) {
     await pickupWithWait(c, 3009, 3342, /bronze pickaxe/i, 25);
   }
   if (!hasPick()) return false;
+
+  for (const w of [/rune scimitar/i, /^excalibur$/i, /^silverlight$/i, /scimitar/i, /longsword/i, /sword/i]) {
+    if (has(sdk, w)) { await bot.equipItem(w); await sleep(250); break; }
+  }
 
   const climb = async (lx: number, lz: number, wx: number, wz: number, id: number, toUnderground: boolean) => {
     for (let i = 0; i < 4 && ((sdk.getState()?.player?.worldZ ?? 0) > 9000) !== toUnderground; i++) {
@@ -43,10 +56,20 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
   };
 
   if ((sdk.getState()?.player?.worldZ ?? 0) < 9880) {
-    if ((sdk.getState()?.player?.worldX ?? 3200) > 2860) {
-      await walkToKandarin(c, 2694, 3463);
+    if ((sdk.getSkill('Prayer')?.level ?? 0) < 40) {
+      await rechargePrayer(c, 42);
     }
-    await rechargePrayer(c, 42);
+    const pStart = sdk.getState()?.player;
+    if (pStart && pStart.worldX > 2860) {
+      if (pStart.worldX > 3040) {
+        await bot.walkTo(3050, 3275, 3);
+        await bot.walkTo(3007, 3330, 3);
+      }
+      await bot.walkTo(2965, 3385, 3);
+      await bot.walkTo(2905, 3428, 3);
+      await bot.walkTo(2865, 3435, 3);
+      await bot.walkTo(2848, 3496, 3);
+    }
 
     // Walk to White Wolf Mountain rockslide at (2838, 3517) from the West side (2837, 3517) and mine East to (2840, 3516)
     if ((sdk.getState()?.player?.worldX ?? 0) < 2839 || (sdk.getState()?.player?.worldZ ?? 0) < 3508) {
@@ -62,18 +85,12 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
       }
     }
 
-    if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
-      await bot.activatePrayer('protect_from_melee');
-    }
+    await bot.deactivateAllPrayers();
 
     if (!(await climb(2848, 3513, 2848, 3512, 1759, true))) return false;
   }
 
-  if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
-    await bot.activatePrayer('protect_from_melee');
-  }
-
-  // Ladder chain into Ice Queen's lair (verified via exact collision-data BFS)
+  // Ladder chain into Ice Queen's lair (save prayer in first wolf tunnel, use prayer in Ice Giant/Warrior tunnel)
   if ((sdk.getState()?.player?.worldX ?? 0) < 2855) {
     if ((sdk.getState()?.player?.worldZ ?? 0) > 9000 && (sdk.getState()?.player?.worldX ?? 0) <= 2850) {
       await climb(2824, 9907, 2824, 9908, 1755, false);
@@ -95,17 +112,17 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
   }
 
   // Walk to Ice Queen (795 at 2866, 9956) and defeat her for Ice gloves (1580)
-  for (const w of [/^excalibur$/i, /^silverlight$/i, /scimitar/i, /longsword/i, /sword/i, /battleaxe/i, /^iron chainbody$/i, /^bronze med helm$/i, /^wooden shield$/i]) {
-    if (has(sdk, w)) { await bot.equipItem(w); await sleep(250); }
+  for (const w of [/rune scimitar/i, /^excalibur$/i, /^silverlight$/i, /scimitar/i, /longsword/i, /sword/i]) {
+    if (has(sdk, w)) { await bot.equipItem(w); await sleep(250); break; }
   }
   await sdk.sendSetCombatStyle(1);
-  await bot.walkTo(2866, 9956, 3);
+  await bot.walkTo(2866, 9957, 2);
 
-  const deadline = Date.now() + 90_000;
+  const deadline = Date.now() + 110_000;
   while (Date.now() < deadline && !hasGloves()) {
     if ((sdk.getState()?.player?.worldZ ?? 0) < 9000) {
       await bot.deactivateAllPrayers();
-      return false;
+      return hasGloves();
     }
     if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
       if (!sdk.getState()?.prayers?.protect_from_melee) {
@@ -118,10 +135,29 @@ export async function ensureIceGloves(c: Ctx): Promise<boolean> {
       if (await waitCond(hasGloves, 4000, 200)) break;
     }
     const queen = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => n.id === 795 || /ice queen/i.test(n.name));
-    if (queen && !sdk.getState()?.player?.combat?.inCombat) {
-      await sdk.sendInteractNpc(queen.index, 2);
+    if (queen) {
+      const atk = await bot.attack(queen, 5000);
+      if (atk.success) {
+        await waitCond(() => {
+          const hasDrop = (sdk.getState()?.groundItems ?? []).some((i: any) => i.id === 1580 || /ice gloves/i.test(i.name));
+          const qNow = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => n.index === queen.index);
+          return hasDrop || !qNow || (sdk.getState()?.player?.worldZ ?? 0) < 9000;
+        }, 65000, 400);
+      } else if (atk.reason === 'already_in_combat') {
+        const warrior = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => /ice warrior/i.test(n.name) && n.inCombat && n.distance <= 2);
+        if (warrior) {
+          await sdk.sendInteractNpc(warrior.index, 2);
+          await waitCond(() => {
+            const wNow = (sdk.getState()?.nearbyNpcs ?? []).find((n: any) => n.index === warrior.index);
+            return !wNow || !wNow.inCombat || (sdk.getState()?.player?.worldZ ?? 0) < 9000;
+          }, 25000, 400);
+        } else {
+          await sleep(1500);
+        }
+      }
+    } else {
+      await sleep(800);
     }
-    await sleep(300);
   }
 
   if (has(sdk, /^ice gloves$/i)) {
@@ -160,7 +196,7 @@ export const cog: Quest = {
     let started = true;
     let whitePlaced = true;
     let redPlaced = true;
-    let blackPlaced = false;
+    let blackPlaced = true;
     let bluePlaced = false;
 
     const inDungeon = () => {
@@ -201,7 +237,7 @@ export const cog: Quest = {
         started = true;
         return true;
       }
-      if (started && (has(sdk, /^bucket of water$/i) || blackPlaced)) return true;
+      if (started) return true;
 
       if (inDungeon() && (!started || (!has(sdk, /^bucket of water$/i) && !blackPlaced))) {
         await openNearbyDoors(c, 2575, 9651, 3);
@@ -513,20 +549,21 @@ export const cog: Quest = {
 
     const blueCogAndFinish = () => step(c, N, 'blue-cog-and-finish', async () => {
       if (!bluePlaced) {
+        for (const extra of (sdk.getState()?.inventory ?? []).filter((i: any) => [20, 21, 23].includes(i.id))) {
+          await sdk.sendDropItem(extra.slot);
+          await sleep(400);
+        }
         if (!hasCog(22)) {
           if (inDungeon()) {
             const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1755);
             if (lad) await sdk.sendInteractLoc(lad.x, lad.z, lad.id, 1);
             await waitCond(() => !inDungeon(), 4000, 250);
           }
-          const w = await bot.walkTo(2566, 3228, 1);
-          if (!w?.success) {
-            await openNearbyDoors(c, 2569, 3239, 3);
-            await openNearbyDoors(c, 2567, 3245, 3);
-            await bot.walkTo(2566, 3228, 1);
-          }
+          // Climb down Ardougne Zoo south ladder (1754 at 2621, 3261 -> 2621, 9661)
+          await walkToKandarin(c, 2621, 3260);
+          await bot.walkTo(2621, 3260, 1);
           for (let i = 0; i < 4 && !inDungeon(); i++) {
-            const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1754 && Math.hypot(l.x - 2566, l.z - 3227) <= 2);
+            const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 1754 && Math.hypot(l.x - 2621, l.z - 3261) <= 2);
             if (lad) await sdk.sendInteractLoc(lad.x, lad.z, lad.id, 1);
             await waitCond(inDungeon, 4000, 250);
           }
