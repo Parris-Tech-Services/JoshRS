@@ -35,7 +35,8 @@ object PrivateLumbridge377 {
             ?: error("Lumbridge land #${target.landId} not present in user's idx4")
         val locs = maps.read(target.locId)
             ?: error("Lumbridge locs #${target.locId} not present in user's idx4")
-        return Map377Codec.lumbridge(versionlist, land, locs)
+        val config = LegacyStore377(bytes, idx0, 0).read(2) // original config archive
+        return Map377Codec.lumbridge(versionlist, land, locs, config)
     }
 }
 
@@ -56,6 +57,12 @@ class Lumbridge377Viewer(context: Context, private val region: Region377) : View
         val overlay = tile.overlayId != 0
         val id = if (overlay) tile.overlayId and 255 else tile.underlayId
         if (id == 0) return Color.rgb(66, 73, 65)
+        val original = region.floors.getOrNull(id - 1)?.rgb
+        if (original != null) return Color.rgb(
+            (original ushr 16) and 255, (original ushr 8) and 255, original and 255
+        )
+        // Fallback is clearly labelled: absent floor definition/texture is
+        // visualised with a synthetic diagnostic tint, not invented art.
         val s = (id * 29 + 35) % 70
         return if (overlay) Color.rgb(56 + s / 3, 89 + s / 2, 118 + s)
         else Color.rgb(65 + s / 2, 94 + s, 58 + s / 3)
@@ -119,7 +126,11 @@ class Lumbridge377Viewer(context: Context, private val region: Region377) : View
         canvas.drawText("64x64 tiles · ${region.locs.size} actual scene locs", 16f, 69f, paint)
         canvas.drawText("Land #${region.landFile} · Loc #${region.locFile} · No game login", 16f, 92f, paint)
         paint.color = Color.rgb(241, 218, 182)
-        canvas.drawText("Pan: drag · Zoom: pinch · Colours are approximate", 16f, height - 46f, paint)
+        canvas.drawText(
+            if (region.floors.isNotEmpty()) "Floor RGB from 377 config · lighting/textures incomplete"
+            else "Pan: drag · Zoom: pinch · floor colours are diagnostic",
+            16f, height - 46f, paint
+        )
         canvas.drawText("Orange marker 3233,3218 is NOT a player", 16f, height - 20f, paint)
     }
 
