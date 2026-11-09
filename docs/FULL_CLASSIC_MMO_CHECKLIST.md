@@ -4,6 +4,8 @@ Last checked: 30 October 2026 (Australia/Sydney). Owner: JoshRS project. Status:
 
 This is the authoritative feature-by-feature acceptance register for transforming JoshRS into a **full-featured, independent, free-to-play, desktop/mobile, classic RuneScape-style MMORPG**. It is a checklist of desired outcomes, not a claim that they are all implemented. A completed feature must have a link to evidence and pass actual gameplay acceptance before checking its box.
 
+**Historical-scope update (9 November 2026):** This 30 October checklist addresses an **independent original classic-inspired game** and the 274 reference, not the entirety of the owner's later [8 November private exact-content OSRS/RS3 parity decision](decisions/2026-11-08-private-rune-parity-and-risk.md). The owner explicitly accepted "maximal legal risk" for an offline family project and rejected substitute original quests/NPCs/dialogue as equivalent to original RuneScape fidelity. Preserve this original-project checklist, its rights/public-hosting gates, and its item statuses; do **not** reinterpret its ORIGINAL-asset tasks as satisfying exact private parity or as legal authorisation.
+
 ## 0. Define exactly which historical target
 
 - [x] **BASE-01** Identify the established technical research target: Lost City / 2004Scape **revision 274, November 23, 2004**. The local research-only pinned engine and content builds are separate from the published JoshRS game. Evidence: deploy/server/README.md, docs/SELF_HOST.md.
