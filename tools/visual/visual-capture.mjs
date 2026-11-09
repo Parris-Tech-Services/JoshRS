@@ -18,7 +18,7 @@ const args = process.argv.slice(2);
 const url = args[0] ?? 'http://127.0.0.1:8888/rs2.cgi';
 const out = args[1] ?? 'login.png';
 const waitForIdx = args.indexOf('--wait-for');
-const waitFor = waitForIdx >= 0 ? new RegExp(args[waitForIdx + 1], 'i') : /username|password|new user|existing user/i;
+const waitFor = waitForIdx >= 0 ? new RegExp(args[waitForIdx + 1], 'i') : /username|password/i;
 const maxIdx = args.indexOf('--max-seconds');
 const maxSeconds = maxIdx >= 0 ? Number(args[maxIdx + 1]) : 420;
 
@@ -38,6 +38,54 @@ function ocr(pngPath) {
     } catch (e) {
         return `OCR_FAILED: ${String(e).slice(0, 120)}`;
     }
+}
+
+/** OCR a PNG and return words with boxes in CANVAS pixel coordinates. */
+function ocrWords(pngPath, canvasW, canvasH) {
+    try {
+        execFileSync('python3', ['-c',
+            "import sys;from PIL import Image;img=Image.open(sys.argv[1]).convert('L');" +
+            "img.resize((img.width*2,img.height*2),Image.LANCZOS).save(sys.argv[2])",
+            pngPath, ocrInput], { stdio: 'pipe' });
+        const tsv = execFileSync('tesseract', [ocrInput, 'stdout', '--psm', '6', 'tsv'],
+            { stdio: ['ignore', 'pipe', 'pipe'] }).toString('utf8');
+        const out = [];
+        for (const line of tsv.split('\n').slice(1)) {
+            const cols = line.split('\t');
+            if (cols.length < 12) continue;
+            const word = cols[11];
+            if (!word || !word.trim()) continue;
+            const left = Number(cols[6]) / 2, top = Number(cols[7]) / 2;
+            const w = Number(cols[8]) / 2, h = Number(cols[9]) / 2;
+            if (!Number.isFinite(left) || !Number.isFinite(top)) continue;
+            // Canvas pixels; the caller maps to page coordinates.
+            out.push({ word, cx: left + w / 2, cy: top + h / 2, canvasW, canvasH });
+        }
+        return out;
+    } catch {
+        return [];
+    }
+}
+
+/** Click the centre of the first word matching `re`. Returns true if clicked. */
+async function clickWord(page, re) {
+    const canvas = page.locator('canvas').first();
+    const box = await canvas.boundingBox();
+    const dims = await page.evaluate(() => {
+        const c = document.querySelector('canvas');
+        return c ? { w: c.width, h: c.height } : null;
+    });
+    if (!box || !dims) return false;
+
+    const words = ocrWords(canvasPath, dims.w, dims.h);
+    const hit = words.find((wd) => re.test(wd.word));
+    if (!hit) return false;
+
+    const px = box.x + (hit.cx / dims.w) * box.width;
+    const py = box.y + (hit.cy / dims.h) * box.height;
+    await page.mouse.click(px, py);
+    console.log(`clicked "${hit.word}" at canvas(${Math.round(hit.cx)},${Math.round(hit.cy)}) -> page(${Math.round(px)},${Math.round(py)})`);
+    return true;
 }
 
 const browser = await chromium.launch({
@@ -74,6 +122,26 @@ async function snapshot() {
 let matched = false;
 let lastText = '';
 const start = Date.now();
+
+// The title screen also shows "New User | Existing User", so matching that string proves nothing.
+// Click through to the credential form first, then wait for Username/Password.
+let formReached = false;
+for (let attempt = 1; attempt <= 6 && !formReached; attempt++) {
+    await snapshot();
+    if (await clickWord(page, /^existing$/i) || await clickWord(page, /^existing user$/i)) {
+        await page.waitForTimeout(6000);
+        const check = await snapshot();
+        if (/username|password/i.test(check)) {
+            formReached = true;
+            console.log('login form reached');
+        } else {
+            console.log('clicked Existing User but form not detected yet; retrying');
+        }
+    } else {
+        console.log('could not locate an "Existing User" button in OCR output');
+        await page.waitForTimeout(4000);
+    }
+}
 for (let poll = 1; Date.now() - start < maxSeconds * 1000; poll++) {
     lastText = await snapshot();
     const flat = lastText.replace(/\s+/g, ' ').slice(0, 220);
