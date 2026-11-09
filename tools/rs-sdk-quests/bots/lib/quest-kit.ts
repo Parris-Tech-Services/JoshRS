@@ -136,6 +136,22 @@ export async function julietStairs(c: Ctx, targetLevel: 0 | 1): Promise<boolean>
 
 export async function exitWizardsTowerGround(c: Ctx) {
   const { bot, sdk } = c;
+  // Also exit Draynor Manor if inside (front door is one-way from outside; exit via east wing)
+  const pm = sdk.getState()?.player;
+  if (pm && pm.worldX >= 3090 && pm.worldX <= 3123 && pm.worldZ >= 3354 && pm.worldZ <= 3371) {
+    while ((sdk.getState()?.player?.level ?? 0) > 0) {
+      const down = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /staircase|ladder/i.test(l.name) && (l.options ?? []).some((o: string) => /climb-?down/i.test(o)));
+      if (!down) break;
+      await bot.interactLoc(down, /climb-?down/i);
+      await sleep(1800);
+    }
+    await bot.walkTo(3119, 3356, 1);
+    await openNearbyDoors(c, 3120, 3356, 2);
+    await bot.walkTo(3122, 3360, 1);
+    await openNearbyDoors(c, 3123, 3360, 2);
+    await sdk.sendWalk(3126, 3360, true);
+    await sleep(1800);
+  }
   for (let i = 0; i < 4; i++) {
     const p = sdk.getState()?.player;
     if (!p || p.level !== 0 || p.worldX < 3102 || p.worldX > 3112 || p.worldZ < 3155 || p.worldZ > 3166) return;

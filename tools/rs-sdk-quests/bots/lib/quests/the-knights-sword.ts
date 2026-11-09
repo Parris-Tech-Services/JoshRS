@@ -4,7 +4,7 @@ import { doric } from './dorics-quest';
 
 const N = "The Knight's Sword";
 
-const KEEP_RE = /^(coins|bronze pickaxe|bronze sword|wooden shield|hammer|bucket|bucket of water|pot|pot of flour|pastry dough|pie dish|pie shell|redberries|uncooked redberry pie|redberry pie|burnt pie|copper ore|tin ore|bronze bar|iron ore|iron bar|blurite ore|portrait|blurite sword)$/i;
+const KEEP_RE = /^(coins|bronze pickaxe|bronze sword|wooden shield|hammer|bucket|bucket of water|pot|pot of flour|pastry dough|pie dish|pie shell|redberries|uncooked berry pie|uncooked redberry pie|redberry pie|burnt pie|copper ore|tin ore|bronze bar|iron ore|iron bar|blurite ore|portrait|blurite sword)$/i;
 
 export const squire: Quest = {
   name: N,
@@ -42,7 +42,7 @@ export const squire: Quest = {
     };
 
     const startAndReldo = () => step(c, N, 'start-squire-and-reldo', async () => {
-      if (reldoSpoken || thurgoPieGiven || squirePortraitAsked || thurgoPortraitGiven || has(sdk, /^portrait|blurite sword$/i)) return true;
+      if (reldoSpoken || thurgoPieGiven || squirePortraitAsked || thurgoPortraitGiven || has(sdk, /^portrait|blurite sword|uncooked (red)?berry pie|redberry pie$/i)) return true;
       await exitWizardsTowerGround(c);
       if (lvl(sdk) > 0) await lumbridgeStairs(c, 0);
 
@@ -91,7 +91,7 @@ export const squire: Quest = {
       if (thurgoPieGiven || squirePortraitAsked || thurgoPortraitGiven || has(sdk, /^portrait|blurite sword$/i)) return true;
 
       // 1. In Varrock Palace Kitchen (3222, 3494), grab Pie dish and fill Bucket at Sink (3224, 3494)
-      if (!has(sdk, /^redberry pie|uncooked redberry pie|pie shell$/i) && !has(sdk, /^pie dish$/i)) {
+      if (!has(sdk, /^redberry pie|uncooked (red)?berry pie|pie shell$/i) && !has(sdk, /^pie dish$/i)) {
         const wk = await bot.walkTo(3222, 3494, 2);
         if (!wk?.success) {
           await openNearbyDoors(c, 3209, 3490, 3);
@@ -102,7 +102,7 @@ export const squire: Quest = {
         if (!(await pickupWithWait(c, 3222, 3494, /^pie dish$/i, 15))) return false;
       }
 
-      if (!has(sdk, /^redberry pie|uncooked redberry pie|pie shell|pastry dough$/i) && !has(sdk, /^bucket of water$/i)) {
+      if (!has(sdk, /^redberry pie|uncooked (red)?berry pie|pie shell|pastry dough$/i) && !has(sdk, /^bucket of water$/i)) {
         if (!has(sdk, /^bucket$/i)) {
           await walkFromVarrockToLumbridge(c, 3216, 3291);
           await pickupWithWait(c, 3216, 3291, /^bucket$/i, 15);
@@ -119,7 +119,7 @@ export const squire: Quest = {
       }
 
       // 2. Pick 2 Redberries at SE Varrock (3267, 3371) in case the first pie burns
-      if (!has(sdk, /^redberry pie|uncooked redberry pie$/i) && count(sdk, /^redberries$/i) < 2) {
+      if (!has(sdk, /^redberry pie|uncooked (red)?berry pie$/i) && count(sdk, /^redberries$/i) < 2) {
         if (!(await walkToVarrock(c, 3267, 3371))) return false;
         const deadline = Date.now() + 60_000;
         while (Date.now() < deadline && count(sdk, /^redberries$/i) < 2) {
@@ -137,7 +137,7 @@ export const squire: Quest = {
       // 3. Ensure 2 Iron bars (if Smithing < 15, mine 5 Copper + 5 Tin; then mine 5 Iron ore at SE Varrock 3285,3368)
       if (count(sdk, /^iron bar$/i) < 2) {
         const needBronze = (sdk.getSkill('Smithing')?.baseLevel ?? 1) < 15 ? 5 : 0;
-        if (needBronze > 0 && count(sdk, /^bronze bar$/i) < needBronze) {
+        if (needBronze > 0 && count(sdk, /^bronze bar$/i) < needBronze && count(sdk, /^copper ore$/i) < needBronze) {
           if (!(await walkToVarrock(c, 3286, 3364))) return false;
           if (!(await mineRocks(3286, 3364, [2090, 2091], /^copper ore$/i, needBronze))) return false;
           if (!(await mineRocks(3283, 3365, [2094, 2095], /^tin ore$/i, needBronze))) return false;
@@ -165,7 +165,7 @@ export const squire: Quest = {
 
       // 4. Buy 2 Pot of flour from Wydin in Port Sarim (3014, 3204) and make/cook Redberry pie
       if (!has(sdk, /^redberry pie$/i)) {
-        if (!has(sdk, /^uncooked redberry pie$/i) && count(sdk, /^pot of flour$/i) < 2) {
+        if (!has(sdk, /^uncooked (red)?berry pie$/i) && count(sdk, /^pot of flour$/i) < 2) {
           const ww = await bot.walkTo(3014, 3204, 2);
           if (!ww?.success) { await openNearbyDoors(c, 3017, 3206, 2); await bot.walkTo(3014, 3204, 2); }
           const o = await bot.openShop(/^wydin$/i);
@@ -181,13 +181,10 @@ export const squire: Quest = {
             const bp = sdk.findInventoryItem(/^burnt pie$/i);
             if (bp) { await sdk.sendUseItem(bp.slot); await sleep(800); }
           }
-          if (!has(sdk, /^uncooked redberry pie$/i)) {
+          if (!has(sdk, /^uncooked (red)?berry pie$/i)) {
             if (!has(sdk, /^pie shell$/i)) {
               if (!has(sdk, /^pastry dough$/i)) {
                 if (!has(sdk, /^bucket of water$/i)) {
-                  await bot.walkTo(3121, 3243, 2); // sink/water or Lumbridge sink (3207, 3213)
-                  const ws = await bot.walkTo(3014, 3233, 2);
-                  // Port Sarim / Rimmington well or Falador waterpump (2968, 3364)
                   await bot.walkTo(3207, 3213, 2);
                   await bot.useItemOnLoc(/^bucket$/i, /^sink$/i);
                   await waitInv(sdk, /^bucket of water$/i, 5000);
@@ -204,46 +201,58 @@ export const squire: Quest = {
               }
               await combineItems(c, /^pastry dough$/i, /^pie dish$/i, /^pie shell$/i);
             }
-            await combineItems(c, /^pie shell$/i, /^redberries$/i, /^uncooked redberry pie$/i);
+            await combineItems(c, /^pie shell$/i, /^redberries$/i, /^uncooked (red)?berry pie$/i);
           }
 
-          // Cook on Port Sarim range at (3016, 3238)
-          const wr = await bot.walkTo(3016, 3238, 2);
-          if (!wr?.success) { await openNearbyDoors(c, 3016, 3238, 3); await bot.walkTo(3016, 3238, 2); }
-          await bot.useItemOnLoc(/^uncooked redberry pie$/i, /^range$/i);
-          await waitCond(() => !has(sdk, /^uncooked redberry pie$/i), 6000, 300);
+          // Cook on Rimmington range at (2969, 3212)
+          const wr = await bot.walkTo(2968, 3212, 1);
+          if (!wr?.success) { await openNearbyDoors(c, 2966, 3212, 2); await bot.walkTo(2968, 3212, 1); }
+          await bot.useItemOnLoc(/^uncooked (red)?berry pie$/i, /^range$/i);
+          await waitCond(() => !has(sdk, /^uncooked (red)?berry pie$/i), 6000, 300);
         }
         if (!has(sdk, /^redberry pie$/i)) return false;
       }
 
       // 5. Smelt Bronze/Iron bars at Falador Furnace (2974, 3369)
       if (count(sdk, /^iron bar$/i) < 2) {
-        await bot.walkTo(3007, 3330, 3);
-        const wf = await bot.walkTo(2974, 3369, 2);
-        if (!wf?.success) { await openNearbyDoors(c, 2977, 3373, 2); await bot.walkTo(2974, 3369, 2); }
-        while (has(sdk, /^copper ore$/i) && has(sdk, /^tin ore$/i)) {
-          const b = count(sdk, /^bronze bar$/i);
-          await bot.useItemOnLoc(/^copper ore$/i, /^furnace$/i);
-          await waitCond(() => count(sdk, /^bronze bar$/i) > b, 5000, 300);
+        if (has(sdk, /^copper ore$/i) && has(sdk, /^tin ore$/i)) {
+          await bot.walkTo(3007, 3330, 3);
+          const wf = await bot.walkTo(2974, 3369, 2);
+          if (!wf?.success) { await openNearbyDoors(c, 2977, 3373, 2); await bot.walkTo(2974, 3369, 2); }
+          for (let k = 0; k < 10 && has(sdk, /^copper ore$/i) && has(sdk, /^tin ore$/i); k++) {
+            const b = count(sdk, /^bronze bar$/i);
+            await bot.useItemOnLoc(/^copper ore$/i, /^furnace$/i);
+            await waitCond(() => count(sdk, /^bronze bar$/i) > b, 5000, 300);
+          }
         }
         if ((sdk.getSkill('Smithing')?.baseLevel ?? 1) < 15 && has(sdk, /^bronze bar$/i)) {
-          await bot.walkTo(2997, 3145, 2);
-          while ((sdk.getSkill('Smithing')?.baseLevel ?? 1) < 15 && has(sdk, /^bronze bar$/i)) {
-            await bot.smithAtAnvil('dagger');
+          const wa = await bot.walkTo(3000, 3143, 1);
+          if (!wa?.success) { await openNearbyDoors(c, 3001, 3142, 2); await bot.walkTo(3000, 3143, 1); }
+          for (let s = 0; s < 8 && (sdk.getSkill('Smithing')?.baseLevel ?? 1) < 15 && has(sdk, /^bronze bar$/i); s++) {
+            const r = await bot.smithAtAnvil('dagger');
+            if (!r?.success) {
+              await openNearbyDoors(c, 3001, 3142, 2);
+              await bot.walkTo(3000, 3143, 1);
+            }
             await sleep(600);
           }
-          await bot.walkTo(2974, 3369, 2);
         }
-        for (let i = 0; i < 8 && count(sdk, /^iron bar$/i) < 2 && has(sdk, /^iron ore$/i); i++) {
-          const b = count(sdk, /^iron ore$/i);
-          await bot.useItemOnLoc(/^iron ore$/i, /^furnace$/i);
-          await waitCond(() => count(sdk, /^iron ore$/i) < b, 5000, 300);
+        if (count(sdk, /^iron bar$/i) < 2) {
+          await bot.walkTo(3007, 3330, 3);
+          const wf2 = await bot.walkTo(2974, 3369, 2);
+          if (!wf2?.success) { await openNearbyDoors(c, 2977, 3373, 2); await bot.walkTo(2974, 3369, 2); }
+          for (let i = 0; i < 8 && count(sdk, /^iron bar$/i) < 2 && has(sdk, /^iron ore$/i); i++) {
+            const b = count(sdk, /^iron ore$/i);
+            await bot.useItemOnLoc(/^iron ore$/i, /^furnace$/i);
+            await waitCond(() => count(sdk, /^iron ore$/i) < b, 5000, 300);
+          }
+          if (count(sdk, /^iron bar$/i) < 2) return false;
         }
-        if (count(sdk, /^iron bar$/i) < 2) return false;
       }
 
       // 6. Talk to Thurgo at (3001, 3144) to give Redberry pie and ask about sword
-      await bot.walkTo(3001, 3144, 2);
+      const wt = await bot.walkTo(3001, 3143, 1);
+      if (!wt?.success) { await openNearbyDoors(c, 3001, 3142, 2); await bot.walkTo(3001, 3143, 1); }
       if (has(sdk, /^redberry pie$/i)) {
         await talk(c, /^thurgo$/i, [/would you like (a|some) redberry pie/i]);
         if (!(await waitCond(() => !has(sdk, /^redberry pie$/i), 4000, 300))) return false;

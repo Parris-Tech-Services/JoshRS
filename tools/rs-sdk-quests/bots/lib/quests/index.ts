@@ -14,4 +14,5 @@ import { squire } from './the-knights-sword';
 import { blackknight } from './black-knights-fortress';
 import { demon } from './demon-slayer';
 import { imp } from './imp-catcher';
+export { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp };
 export const ALL = { cooks, sheep, runemysteries, romeojuliet, priest, prince, vampire, doric, hetty, gobdip, haunted, hunt, squire, blackknight, demon, imp };
