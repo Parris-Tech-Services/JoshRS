@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {parsePatchPaths,planUpdate,applyAndBuild,parseArgs,assertStopped} from './updater.mjs';
+import {parsePatchPaths,planUpdate,applyAndBuild,parseArgs,assertStopped,readWorldSafetySettings} from './updater.mjs';
 
 const QUESTS=['quest_fenkenstrain','quest_rag','quest_soulbane','quest_swansong',
   'quest_myreque','quest_ics','quest_mdaughter','quest_hauntedmine','quest_losttribe',
@@ -145,4 +145,47 @@ test('non-SQLite database backend is refused before live installation',async t=>
   const f=fixture(t);
   write(f.world.engine,'.env','NODE_PORT=15402\nWEB_PORT=18880\nDB_BACKEND=postgresql\n');
   await assert.rejects(()=>assertStopped(f.world),/SQLite backup only/);
+});
+
+test('world.json is authoritative for newer engines even if legacy .env omits backend',t=>{
+  const f=fixture(t);
+  write(f.world.engine,'.env','NODE_PORT=15402\nWEB_PORT=18880\n');
+  write(f.world.engine,'data/config/world.json',JSON.stringify({
+    db:{backend:'sqlite'},node:{port:15402},web:{port:18880,managementPort:18881}
+  }));
+  fs.writeFileSync(path.join(f.world.engine,'db.sqlite'),Buffer.concat([
+    Buffer.from('SQLite format 3\0','ascii'),Buffer.alloc(128)
+  ]));
+  const settings=readWorldSafetySettings(f.world);
+  assert.equal(settings.source,'world.json');
+  assert.deepEqual(settings.ports,[15402,18880,18881]);
+  assert.equal(settings.dbExists,true);
+});
+test('non-SQLite active world.json overrides seemingly safe legacy env and blocks',t=>{
+  const f=fixture(t);
+  write(f.world.engine,'.env','DB_BACKEND=sqlite\nNODE_PORT=15402\nWEB_PORT=18880\n');
+  write(f.world.engine,'data/config/world.json',JSON.stringify({
+    db:{backend:'mysql'},node:{port:15402},web:{port:18880}
+  }));
+  assert.throws(()=>readWorldSafetySettings(f.world),/SQLite backup only/);
+});
+test('quoted, exported legacy SQLite setting is accepted without rewriting config',t=>{
+  const f=fixture(t);
+  write(f.world.engine,'.env','  export DB_BACKEND = "sqlite"  \nNODE_PORT=15402\nWEB_PORT=18880\n');
+  fs.writeFileSync(path.join(f.world.engine,'db.sqlite'),Buffer.concat([
+    Buffer.from('SQLite format 3\0','ascii'),Buffer.alloc(128)
+  ]));
+  assert.equal(readWorldSafetySettings(f.world).source,'.env');
+});
+test('absent backend or malformed SQLite signature fails closed',t=>{
+  const f=fixture(t);
+  write(f.world.engine,'.env','NODE_PORT=15402\nWEB_PORT=18880\n');
+  assert.throws(()=>readWorldSafetySettings(f.world),/SQLite backup only/);
+  write(f.world.engine,'.env','DB_BACKEND=sqlite\nNODE_PORT=15402\nWEB_PORT=18880\n');
+  assert.throws(()=>readWorldSafetySettings(f.world),/SQLite file signature/);
+});
+test('conflicting repeated backend declaration fails closed',t=>{
+  const f=fixture(t);
+  write(f.world.engine,'.env','DB_BACKEND=sqlite\nDB_BACKEND=mysql\nNODE_PORT=15402\nWEB_PORT=18880\n');
+  assert.throws(()=>readWorldSafetySettings(f.world),/Conflicting duplicate/);
 });
