@@ -15,6 +15,14 @@ be recontrolled after launch; its TCP session must disconnect first.
 Agy needs the installed, authenticated `agy` CLI on Fedora; this GitHub
 connector cannot itself operate the local desktop or start that process.
 
+**Interactive UI:** Earlier PR #211 launched `agy -p`, which is headless
+and may show no terminal output while it processes the task. The handoff now
+prints the task preview and opens `agy -i` with the full prompt already
+supplied, showing the normal interactive agent UI and permission requests.
+If an earlier headless `agy -p` task is still running, **do not launch a second
+copy**; finish/cancel the old task first. No source update edits the live
+world or logs into HarnessView1 on its own.
+
 To protect the uncommitted changes in the main JoshRS-quest-runner checkout,
 use a **fresh Git worktree** and a foreground handoff:
 
