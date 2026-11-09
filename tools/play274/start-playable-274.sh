@@ -53,6 +53,37 @@ if [[ ! -d "$target/engine/.git" ]]; then
   git clone --depth 1 --branch 274 https://github.com/LostCityRS/Content.git "$target/content"
 fi
 
+
+# Android Chrome throttles background tabs to roughly one timer per minute. The upstream
+# engine logs a player out after 30s without a connection and force-logs after 60s, so
+# switching tabs ends the session. Expose both as env vars and default them high for a
+# private world. Idempotent: the upstream defaults are preserved on the public repo.
+patch_idle_timeouts() {
+  local world="$1/src/engine/World.ts"
+  [[ -f "$world" ]] || fail "engine source not found: $world"
+  grep -q "JOSHRS_IDLE_LOGOUT_TICKS" "$world" && return 0
+  python3 - "$world" <<'PATCH'
+import sys
+path = sys.argv[1]
+src = open(path).read()
+old = ("    private static readonly TIMEOUT_NO_CONNECTION: number = 50;"
+       " // 30s with no connection (16 ticks in osrs)\n"
+       "    private static readonly TIMEOUT_NO_RESPONSE: number = 100;"
+       " // 60s without any response")
+new = ("    // JoshRS: Android Chrome throttles background tabs; raise for a private world.\n"
+       "    private static readonly TIMEOUT_NO_CONNECTION: number ="
+       " Number(process.env.JOSHRS_IDLE_LOGOUT_TICKS ?? 50);"
+       " // 30s with no connection (16 ticks in osrs)\n"
+       "    private static readonly TIMEOUT_NO_RESPONSE: number ="
+       " Number(process.env.JOSHRS_FORCE_LOGOUT_TICKS ?? 100);"
+       " // 60s without any response")
+if old not in src:
+    sys.exit("idle-timeout patch did not match upstream source; refusing to guess")
+open(path, "w").write(src.replace(old, new))
+PATCH
+  echo "idle timeouts made configurable"
+}
+
 # Keep every listener on loopback so this world is never exposed to the LAN.
 python3 -I "$repo/tools/android377-phone/loopback_bind.py" "$target/engine"
 
@@ -63,13 +94,20 @@ fi
 # Android may kill Termux when the screen sleeps; keep the world alive.
 command -v termux-wake-lock >/dev/null && termux-wake-lock || true
 
+patch_idle_timeouts "$target/engine"
+
 if running; then
   echo "already running: $url"
   exit 0
 fi
 
+# 600ms per tick: 7200 ticks = 72 min of tab-switching without being logged out.
+export JOSHRS_IDLE_LOGOUT_TICKS="${JOSHRS_IDLE_LOGOUT_TICKS:-7200}"
+export JOSHRS_FORCE_LOGOUT_TICKS="${JOSHRS_FORCE_LOGOUT_TICKS:-14400}"
+
 cd "$target/engine"
-nohup npx tsx src/app.ts > "$log" 2>&1 &
+setsid nohup npx tsx src/app.ts > "$log" 2>&1 < /dev/null &
+disown || true
 
 echo "Booting. First run packs the cache (~60-90s on a Galaxy A55)."
 for _ in $(seq 1 60); do
