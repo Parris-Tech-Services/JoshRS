@@ -21,6 +21,29 @@ const MODULUS='71629005252297980327618167912305272963293132912323242902378492635
 const EXPONENT='58778699976184461502525193738213253649000149147835990136706041084440742975821';
 const MAX_SECONDS=600;
 const WAYPOINTS=Object.freeze([[3233,3217],[3231,3218],[3232,3220],[3234,3219]]);
+/**
+ * With --verify-position, a circular patrol can end where it started.
+ * For the last 30 seconds, hold a reachable Lumbridge waypoint DISTINCT
+ * from the bot's saved starting tile. This enables a meaningful post-logout
+ * delta check without implying every walk request worked.
+ */
+export function verificationDestination(startingPosition) {
+ if (!startingPosition || !Number.isInteger(startingPosition.x) || !Number.isInteger(startingPosition.z))
+  throw new Error('Verified patrol requires a valid saved starting tile');
+ const distinct=WAYPOINTS.filter(([x,z])=>x!==startingPosition.x || z!==startingPosition.z);
+ if (!distinct.length)throw new Error('No distinct safe patrol destination');
+ return distinct.reduce((best,point)=>{
+  const distance=p=>Math.abs(p[0]-startingPosition.x)+Math.abs(p[1]-startingPosition.z);
+  return distance(point)>distance(best)?point:best;
+ });
+}
+export function patrolWaypoint(index,{verifyPosition=false,startingPosition=null,elapsedMs=0,durationMs=120000}={}) {
+ if (!Number.isSafeInteger(index)||index<0)throw new Error('Invalid patrol step');
+ if (verifyPosition && startingPosition && elapsedMs>=Math.max(0,durationMs-30000))
+  return verificationDestination(startingPosition);
+ return WAYPOINTS[index%WAYPOINTS.length];
+}
+
 const usage=()=>[
   'JoshRS: one visible normal #377 bot on the SAME running world.',
   'Read-only checks FIRST: node tools/rs377-net-doctor/doctor.mjs --host PRIVATE_IP --port 52402 --json',
@@ -134,6 +157,13 @@ export async function join(options, {Session=Session377,loadCrc=fetchCrc37,
    publicKeyPem:clientPublic377(),crcs:crc,timeoutMs:8500});
  let active=true;
  let keepalive=null,patrol=null,deadline=null,index=0,actions=0;
+ const patrolStarted=Date.now();
+ if(before){
+  const target=verificationDestination(before.position);
+  log('POSITION_PROOF_PLAN: final 30s hold '+target.join(',')+
+   ' (distinct from saved start '+before.position.x+','+before.position.z+
+   '); persisted movement still requires post-logout proof.');
+ }
  try{
   const result=await session.connect();
   if(result?.authenticated!==true||session.status().authenticated!==true)
@@ -163,7 +193,9 @@ export async function join(options, {Session=Session377,loadCrc=fetchCrc37,
    if(options.patrol)patrol=setInterval(()=>{
     try{
      if(!active||!session.status().authenticated)throw new Error('connection_closed');
-     const [x,z]=WAYPOINTS[index++%WAYPOINTS.length];
+     const [x,z]=patrolWaypoint(index++,{verifyPosition:options.verifyPosition,
+       startingPosition:before?.position,elapsedMs:Date.now()-patrolStarted,
+       durationMs:options.seconds*1000});
      const effect=session.send({type:'walk',x,z,running:false});
      actions++;
      log('Walk requested to '+x+','+z+' — '+effect.status+
