@@ -980,3 +980,24 @@
 #### Verified Working Interactions (Summary)
 - `(3097, 3468, L0)` **Trapdoor** [`Open` / `Climb-down`] -> OK: Opened trapdoor and descended to `(3097, 9868, L0)` in Edgeville Dungeon.
 
+
+### Region Completed: North-East Varrock, Jolly Boar Inn, Lumber Yard & Earth Altar Ruins (m51_53 & m51_54) — 2026-11-09T09:43:34.453Z
+- **Total Interactions Audited**: 5 (2 verified working, 3 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3274, 3420, L0)` — North-East Varrock, Jolly Boar Inn, Lumber Yard & Earth Altar Ruins (m51_53 & m51_54)
+  - **Object & Action**: `Crate` (id `354`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3274, 3420). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3308, 3497, L0)` — North-East Varrock, Jolly Boar Inn, Lumber Yard & Earth Altar Ruins (m51_53 & m51_54)
+  - **Object & Action**: `Barrel` (id `2619`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Barrel at (3308, 3497). Actual: success=false (Timed out after 4500ms), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3310, 3498, L0)` — North-East Varrock, Jolly Boar Inn, Lumber Yard & Earth Altar Ruins (m51_53 & m51_54)
+  - **Object & Action**: `Crate` (id `2620`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3310, 3498). Actual: success=false (Cannot reach Crate: No path to (3310, 3498) from (3308, 3492): destination tile is blocked), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(3268, 3435, L0)` **Door** (id `1591`) [`Open`] -> OK: Timed out after 4500ms | "You try and open the door... | The door is locked tight, I can't open it. | You try and open the door... | The door is locked tight, I can't open it."
+- `(3275, 3420, L0)` **Crate** (id `355`) [`Search`] -> OK: Interacted with Crate | "You search the crate but find nothing."
