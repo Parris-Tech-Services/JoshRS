@@ -96,17 +96,21 @@ export const hunt: Quest = {
 
       if ((sdk.getState()?.player?.worldX ?? 3050) < 2970) {
         const fillBananaCrateForLuthas = async (withRum: boolean) => {
-          const wl = await bot.walkTo(2939, 3154, 2);
-          if (!wl?.success) { await openNearbyDoors(c, 2939, 3152, 2); await bot.walkTo(2939, 3154, 2); }
-          await talk(c, /^luthas$/i, [/offer me employment/i]);
+          const wl = await bot.walkTo(2938, 3154, 1);
+          if (!wl?.success) { await openNearbyDoors(c, 2938, 3151, 2); await bot.walkTo(2938, 3154, 1); }
+          await talk(c, /^luthas$/i, [/offer me employment/i, /no, the crate isn't full yet/i]);
 
           if (count(sdk, /^banana$/i) < 10) {
             await bot.walkTo(2918, 3161, 3);
-            for (let i = 0; i < 20 && count(sdk, /^banana$/i) < 10; i++) {
+            for (let i = 0; i < 25 && count(sdk, /^banana$/i) < 10; i++) {
               const before = count(sdk, /^banana$/i);
-              const tree = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /^banana tree$/i.test(l.name) && (l.options ?? []).some((o: string) => /^pick$/i.test(o)));
+              const px = sdk.getState()?.player?.worldX ?? 2918;
+              const pz = sdk.getState()?.player?.worldZ ?? 3161;
+              const tree = (sdk.getState()?.nearbyLocs ?? [])
+                .filter((l: any) => l.id >= 2073 && l.id <= 2077)
+                .sort((a: any, b: any) => Math.hypot(a.x - px, a.z - pz) - Math.hypot(b.x - px, b.z - pz))[0];
               if (tree) {
-                await bot.interactLoc(tree, /^pick$/i);
+                await bot.interactLoc(tree, /^pick|search$/i);
                 await waitCond(() => count(sdk, /^banana$/i) > before, 3500, 250);
               } else {
                 await bot.walkTo(2912, 3161, 3);
@@ -131,33 +135,43 @@ export const hunt: Quest = {
             await chat(c);
           }
 
-          const wl2 = await bot.walkTo(2939, 3154, 2);
-          if (!wl2?.success) { await openNearbyDoors(c, 2939, 3152, 2); await bot.walkTo(2939, 3154, 2); }
-          await talk(c, /^luthas$/i, [/thank you, i'll be on my way/i]);
+          const wl2 = await bot.walkTo(2938, 3154, 1);
+          if (!wl2?.success) { await openNearbyDoors(c, 2938, 3151, 2); await bot.walkTo(2938, 3154, 1); }
+          await talk(c, /^luthas$/i, [/thank you, i'll be on my way/i, /no, the crate isn't full yet/i]);
           if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 3500, 300)) {
-            await chat(c, [/thank you, i'll be on my way/i]);
+            await chat(c, [/thank you, i'll be on my way/i, /no, the crate isn't full yet/i]);
           }
         };
+
+        const alreadyShipped = () => (sdk.getState()?.gameMessages ?? []).some((m: any) => /already some rum in wydin/i.test(m.text));
 
         while (!has(sdk, /^karamjan? rum$/i) && count(sdk, /^coins$/i) < 30) {
           await fillBananaCrateForLuthas(false);
         }
 
-        if (!has(sdk, /^karamjan? rum$/i)) {
-          const wz = await bot.walkTo(2925, 3143, 2);
-          if (!wz?.success) { await openNearbyDoors(c, 2925, 3143, 3); await bot.walkTo(2925, 3143, 2); }
-          for (let i = 0; i < 3 && !has(sdk, /^karamjan? rum$/i); i++) {
-            const o = await bot.openShop(/^zambo$/i);
-            if (o?.success) {
-              await bot.buyFromShop(/^karamjan? rum$/i, 1);
-              await bot.closeShop();
+        if (!alreadyShipped()) {
+          if (!has(sdk, /^karamjan? rum$/i)) {
+            const wz = await bot.walkTo(2925, 3143, 2);
+            if (!wz?.success) { await openNearbyDoors(c, 2925, 3143, 3); await bot.walkTo(2925, 3143, 2); }
+            for (let i = 0; i < 3 && !has(sdk, /^karamjan? rum$/i); i++) {
+              const o = await bot.openShop(/^zambo$/i);
+              if (o?.success) {
+                await bot.buyFromShop(/^karamjan? rum$/i, 1);
+                await bot.closeShop();
+              }
+              await sleep(600);
             }
-            await sleep(600);
+            if (!has(sdk, /^karamjan? rum$/i)) return false;
           }
-          if (!has(sdk, /^karamjan? rum$/i)) return false;
+
+          await fillBananaCrateForLuthas(true);
         }
 
-        await fillBananaCrateForLuthas(true);
+        const extraRum = sdk.findInventoryItem(/^karamjan? rum$/i);
+        if (extraRum) {
+          await sdk.sendDropItem(extraRum.slot);
+          await sleep(600);
+        }
 
         // Sail back to Port Sarim
         await bot.walkTo(2954, 3146, 2);

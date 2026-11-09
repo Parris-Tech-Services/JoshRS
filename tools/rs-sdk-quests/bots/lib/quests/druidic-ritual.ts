@@ -110,10 +110,10 @@ export const druid: Quest = {
         if (!(await killAndLootMeat(3032, 3305, /^cow$/i, /^raw beef$/i))) return false;
       }
 
-      // 3. Raw rat meat from Giant rat west of Rimmington/Port Sarim (2932, 3248)
+      // 3. Raw rat meat from Giant rat in Lumbridge Swamp (3206, 3178)
       if (!has(sdk, /^(raw|enchanted) rat meat$/i)) {
-        await bot.walkTo(2932, 3248, 3);
-        if (!(await killAndLootMeat(2932, 3248, /^giant rat$/i, /^raw rat meat$/i))) return false;
+        await bot.walkTo(3206, 3178, 3);
+        if (!(await killAndLootMeat(3206, 3178, /^giant rat$/i, /^raw rat meat$/i))) return false;
       }
 
       // 4. Raw bear meat from Black bear north of Falador (2966, 3474)
@@ -127,24 +127,18 @@ export const druid: Quest = {
       if (!started && !sanfewSpoken) {
         await bot.walkTo(2925, 3486, 2);
         if (!(await talk(c, /^kaqemeex$/i, [/in search of a quest/i, /ok, i will try and help/i]))) return false;
-        const recent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
-        if (/speak to my fellow druid sanfew|go to the village south/i.test(recent)) {
-          started = true;
-        }
+        started = true;
       }
 
       // 6. Talk to Sanfew in Taverley (2898, 3427 L1)
       if (!sanfewSpoken) {
         await bot.walkTo(2898, 3427, 2);
         if (!(await climbSanfew(1))) return false;
-        await talk(c, /^sanfew$/i, [
+        if (!(await talk(c, /^sanfew$/i, [
           /sent to help purify|assist you with the ritual/i,
           /ok, i'll do that then|where can i find this cauldron/i,
-        ]);
-        const recentS = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
-        if (/cauldron of thunder|required ingredients|talk to kaqemeex/i.test(recentS)) {
-          sanfewSpoken = true;
-        }
+        ]))) return false;
+        sanfewSpoken = true;
         await climbSanfew(0);
       }
 

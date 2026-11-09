@@ -277,3 +277,130 @@
 - 2026-11-09T08:49:38.032Z STEP varrock-items
 - 2026-11-09T08:49:38.033Z STEP aggie-paste-and-dye
 - 2026-11-09T08:50:10.428Z lit fire at (3163,3290)
+- 2026-11-09T08:51:30.842Z STEP ned-wig-and-rope
+- 2026-11-09T08:51:40.832Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T08:53:15.223Z lumbridgeStairs L0->L1 from (3205,3209) -> {"success":true,"message":"Interacted with Staircase"}
+- 2026-11-09T08:53:44.051Z lumbridgeStairs L1->L0 from (3205,3209) -> {"success":true,"message":"Interacted with Staircase"}
+- 2026-11-09T08:55:06.377Z STEP FAILED ned-wig-and-rope
+- 2026-11-09T08:55:06.378Z START Prince Ali Rescue (attempt 2)
+- 2026-11-09T08:55:06.378Z STEP start-hassan-osman
+- 2026-11-09T08:55:06.378Z STEP varrock-items
+- 2026-11-09T08:55:06.378Z STEP aggie-paste-and-dye
+- 2026-11-09T08:55:06.378Z STEP ned-wig-and-rope
+- 2026-11-09T08:56:58.434Z START Prince Ali Rescue (attempt 1)
+- 2026-11-09T08:56:58.434Z STEP start-hassan-osman
+- 2026-11-09T08:56:58.435Z STEP varrock-items
+- 2026-11-09T08:56:58.437Z STEP aggie-paste-and-dye
+- 2026-11-09T08:56:58.438Z STEP ned-wig-and-rope
+- 2026-11-09T08:57:13.350Z STEP FAILED ned-wig-and-rope
+- 2026-11-09T08:57:13.352Z START Prince Ali Rescue (attempt 2)
+- 2026-11-09T08:57:13.352Z STEP start-hassan-osman
+- 2026-11-09T08:57:13.352Z STEP varrock-items
+- 2026-11-09T08:57:13.352Z STEP aggie-paste-and-dye
+- 2026-11-09T08:57:13.352Z STEP ned-wig-and-rope
+- 2026-11-09T08:57:17.557Z STEP FAILED ned-wig-and-rope
+- 2026-11-09T08:57:17.557Z START Imp Catcher (attempt 1)
+- 2026-11-09T08:57:17.558Z STEP start-mizgog
+- 2026-11-09T08:57:22.832Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T08:58:26.676Z STEP FAILED start-mizgog
+- 2026-11-09T08:58:26.677Z START Imp Catcher (attempt 2)
+- 2026-11-09T08:58:26.677Z STEP start-mizgog
+- 2026-11-09T08:59:43.875Z STEP FAILED start-mizgog
+- 2026-11-09T08:59:43.875Z START Demon Slayer (attempt 1)
+- 2026-11-09T08:59:43.876Z STEP start-aris-and-prysin
+- 2026-11-09T08:59:45.665Z lumbridgeStairs L2->L0 from (3205,3209) -> {"success":true,"message":"Interacted with Staircase"}
+- 2026-11-09T08:59:54.070Z lumbridgeStairs L1->L0 from (3205,3209) -> {"success":true,"message":"Interacted with Staircase"}
+- 2026-11-09T09:03:56.766Z talkTo /^sir prysin$/i failed: NPC not found
+- 2026-11-09T09:03:56.766Z STEP FAILED start-aris-and-prysin
+- 2026-11-09T09:03:56.766Z START Demon Slayer (attempt 2)
+- 2026-11-09T09:03:56.766Z STEP start-aris-and-prysin
+- 2026-11-09T09:04:43.576Z talkTo /^sir prysin$/i failed: NPC not found
+- 2026-11-09T09:04:43.576Z STEP FAILED start-aris-and-prysin
+- 2026-11-09T09:04:43.577Z START Black Knights' Fortress (attempt 1)
+- 2026-11-09T09:04:43.578Z STEP prep-and-start
+- 2026-11-09T09:06:24.428Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T09:13:57.230Z STEP spy-and-sabotage
+- 2026-11-09T09:16:11.626Z STEP FAILED spy-and-sabotage
+- 2026-11-09T09:16:11.645Z START Black Knights' Fortress (attempt 2)
+- 2026-11-09T09:16:11.646Z STEP prep-and-start
+- 2026-11-09T09:16:26.424Z lumbridgeStairs L1->L0 from (3205,3209) -> {"success":false,"message":"Cannot reach Staircase: Path to (3011, 3515) stops 10 tiles short at (3021, 3513) - the rest is unroutable from here (locked door or separate room?)","reason":"cant_reach"}
+- 2026-11-09T09:16:50.829Z lumbridgeStairs L1->L0 from (3206,3208) -> {"success":false,"message":"No matching option on Staircase","reason":"no_matching_option"}
+- 2026-11-09T09:18:55.367Z STEP spy-and-sabotage
+- 2026-11-09T09:21:10.435Z START Black Knights' Fortress (attempt 1)
+- 2026-11-09T09:21:10.436Z STEP prep-and-start
+- 2026-11-09T09:23:29.230Z STEP spy-and-sabotage
+- 2026-11-09T09:26:09.633Z STEP FAILED spy-and-sabotage
+- 2026-11-09T09:26:09.634Z START Black Knights' Fortress (attempt 2)
+- 2026-11-09T09:26:09.634Z STEP prep-and-start
+- 2026-11-09T09:26:09.635Z STEP spy-and-sabotage
+- 2026-11-09T09:27:16.024Z STEP FAILED spy-and-sabotage
+- 2026-11-09T09:27:16.024Z START Druidic Ritual (attempt 1)
+- 2026-11-09T09:27:16.025Z STEP gather-meats-and-start
+- 2026-11-09T09:28:43.226Z START Black Knights' Fortress (attempt 1)
+- 2026-11-09T09:28:43.227Z STEP prep-and-start
+- 2026-11-09T09:28:43.227Z STEP spy-and-sabotage
+- 2026-11-09T09:29:33.963Z STEP FAILED spy-and-sabotage
+- 2026-11-09T09:29:33.969Z START Black Knights' Fortress (attempt 2)
+- 2026-11-09T09:29:33.969Z STEP prep-and-start
+- 2026-11-09T09:29:33.969Z STEP spy-and-sabotage
+- 2026-11-09T09:30:24.244Z STEP FAILED spy-and-sabotage
+- 2026-11-09T09:30:24.244Z START Druidic Ritual (attempt 1)
+- 2026-11-09T09:30:24.245Z STEP gather-meats-and-start
+- 2026-11-09T09:34:59.352Z STEP FAILED gather-meats-and-start
+- 2026-11-09T09:34:59.353Z START Druidic Ritual (attempt 2)
+- 2026-11-09T09:34:59.354Z STEP gather-meats-and-start
+- 2026-11-09T09:37:00.507Z STEP FAILED gather-meats-and-start
+- 2026-11-09T09:37:00.507Z START Prince Ali Rescue (attempt 1)
+- 2026-11-09T09:37:00.508Z STEP start-hassan-osman
+- 2026-11-09T09:37:39.231Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T09:37:50.321Z STEP varrock-items
+- 2026-11-09T09:37:50.323Z STEP aggie-paste-and-dye
+- 2026-11-09T09:37:50.324Z STEP ned-wig-and-rope
+- 2026-11-09T09:37:50.832Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T09:39:47.221Z lumbridgeStairs L0->L1 from (3205,3209) -> {"success":true,"message":"Interacted with Staircase"}
+- 2026-11-09T09:40:12.050Z lumbridgeStairs L1->L0 from (3205,3209) -> {"success":true,"message":"Interacted with Staircase"}
+- 2026-11-09T09:41:00.912Z STEP keli-osman-leela
+- 2026-11-09T09:45:00.057Z STEP rescue-and-finish
+- 2026-11-09T09:45:42.423Z talkTo /^prince ali$/i failed: Cannot reach Prince Ali: Stuck at (3123, 3244)
+- 2026-11-09T09:45:47.528Z STEP FAILED rescue-and-finish
+- 2026-11-09T09:45:47.529Z START Prince Ali Rescue (attempt 2)
+- 2026-11-09T09:45:47.529Z STEP start-hassan-osman
+- 2026-11-09T09:45:47.529Z STEP varrock-items
+- 2026-11-09T09:49:42.032Z START Prince Ali Rescue (attempt 1)
+- 2026-11-09T09:49:42.032Z STEP start-hassan-osman
+- 2026-11-09T09:49:42.033Z STEP varrock-items
+- 2026-11-09T09:49:42.034Z STEP aggie-paste-and-dye
+- 2026-11-09T09:49:42.035Z STEP ned-wig-and-rope
+- 2026-11-09T09:51:25.234Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T09:53:31.221Z lumbridgeStairs L0->L1 from (3205,3209) -> {"success":true,"message":"Interacted with Staircase"}
+- 2026-11-09T09:53:55.241Z lumbridgeStairs L1->L0 from (3205,3209) -> {"success":true,"message":"Interacted with Staircase"}
+- 2026-11-09T09:54:43.332Z STEP keli-osman-leela
+- 2026-11-09T09:54:46.031Z STEP rescue-and-finish
+- 2026-11-09T09:55:02.844Z STEP FAILED rescue-and-finish
+- 2026-11-09T09:55:02.846Z START Prince Ali Rescue (attempt 2)
+- 2026-11-09T09:55:02.846Z STEP start-hassan-osman
+- 2026-11-09T09:55:02.846Z STEP varrock-items
+- 2026-11-09T09:55:02.846Z STEP aggie-paste-and-dye
+- 2026-11-09T09:55:02.846Z STEP ned-wig-and-rope
+- 2026-11-09T09:55:02.846Z STEP keli-osman-leela
+- 2026-11-09T09:55:10.432Z STEP rescue-and-finish
+- 2026-11-09T09:56:57.353Z DONE Prince Ali Rescue
+- 2026-11-09T09:56:57.353Z START Black Knights' Fortress (attempt 1)
+- 2026-11-09T09:56:57.354Z STEP prep-and-start
+
+### Quest 13: Prince Ali Rescue (`prince`) — COMPLETED
+- **Quest Points Gained**: +3 QP (Total: **29 QP**)
+- **Rewards**: +700 Coins, free passage through the Al Kharid Toll Gate.
+- **Notes / Lessons**:
+  - In revision 377, the cell door at `(3123, 3243)` (`id: 2881`, `alidoor`) is named `"Prison Door"`, not `"Prison gate"`. Updated `prince-ali-rescue.ts` to match `/^prison (gate|door)$/i` and skip re-buying beer once `Bronze key` is obtained.
+- 2026-11-09T09:58:58.046Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T09:58:59.046Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T09:59:00.046Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T09:59:01.047Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T09:59:02.047Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T09:59:03.047Z openBank -> {"success":false,"message":"No banker NPC or bank booth found nearby","reason":"no_bank_found"}
+- 2026-11-09T09:59:04.048Z bank: still holding Shears
+- 2026-11-09T09:59:41.232Z START Black Knights' Fortress (attempt 1)
+- 2026-11-09T09:59:41.233Z STEP prep-and-start
+- 2026-11-09T09:59:49.621Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T10:01:25.630Z STEP spy-and-sabotage

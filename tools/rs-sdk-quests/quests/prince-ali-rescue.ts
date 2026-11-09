@@ -108,15 +108,15 @@ export const prince: Quest = {
     };
 
     const start = () => step(c, N, 'start-hassan-osman', async () => {
-      if (started || has(sdk, /^key print|bronze key|paste|wig$/i) || osmanKeyGiven || princeSaved || questComplete) return true;
+      if (started || has(sdk, /^key print|bronze key|paste|wig$/i) || (has(sdk, /^soft clay$/i) && has(sdk, /^pink skirt$/i)) || osmanKeyGiven || princeSaved || questComplete) return true;
       await exitWizardsTowerGround(c);
       if ((sdk.getState()?.player?.worldX ?? 0) < 3268) {
         await bankJunk(c, KEEP_RE);
         await withdrawFromDraynorBank(c, [
           /^coins$/i, /^bronze pickaxe$/i, /^bronze axe$/i, /^tinderbox$/i, /^bucket$/i, /^pot$/i, /^shears$/i,
-          /^soft clay$/i, /^key print$/i, /^bronze bar$/i, /^bronze key$/i, /^pink skirt$/i, /^beer$/i, /^redberries$/i, /^paste$/i, /^yellow dye$/i, /^wig$/i, /^rope$/i,
+          /^soft clay$/i, /^key print$/i, /^copper ore$/i, /^tin ore$/i, /^bronze bar$/i, /^bronze key$/i, /^pink skirt$/i, /^beer$/i, /^redberries$/i, /^paste$/i, /^yellow dye$/i, /^wig$/i, /^rope$/i,
         ]);
-        if (has(sdk, /^key print|bronze key|paste|wig$/i)) return true;
+        if (has(sdk, /^key print|bronze key|paste|wig$/i) || (has(sdk, /^soft clay$/i) && has(sdk, /^pink skirt$/i))) return true;
         await ensureCoins(70, 3100, 3250);
       }
       await walkToAlKharid(3298, 3163);
@@ -124,6 +124,7 @@ export const prince: Quest = {
       const recent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
       if (/friend of the town of al-kharid|eternal gratitude of the emir/i.test(recent)) { questComplete = true; return true; }
       if (/getting on well with the rescue/i.test(recent)) { started = true; osmanKeyGiven = true; return true; }
+      if (/spymaster has hired you/i.test(recent)) { started = true; return true; }
       await bot.walkTo(3286, 3180, 2);
       if (!(await talk(c, /^osman$/i, [/okay, i better go/i, /second thing you need/i, /what i still need/i]))) return false;
       const osmanRecent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
@@ -137,7 +138,7 @@ export const prince: Quest = {
       const needClay = !has(sdk, /^soft clay|key print|bronze key$/i) && !osmanKeyGiven;
       const needBar = !has(sdk, /^bronze bar|bronze key$/i) && !(has(sdk, /^copper ore$/i) && has(sdk, /^tin ore$/i)) && !osmanKeyGiven;
       const needSkirt = !has(sdk, /^pink skirt$/i);
-      const needBeer = count(sdk, /^beer$/i) < 3 && !leelaReady;
+      const needBeer = count(sdk, /^beer$/i) < 3 && !leelaReady && !has(sdk, /^bronze key$/i);
       const needBerries = !has(sdk, /^redberries|paste$/i);
       if (!needClay && !needBar && !needSkirt && !needBeer && !needBerries) return true;
 
@@ -390,18 +391,25 @@ export const prince: Quest = {
           if (!(await shearAndSpin(3))) return false;
           const wn = await bot.walkTo(3100, 3258, 2);
           if (!wn?.success) { await openNearbyDoors(c, 3101, 3258, 2); await bot.walkTo(3100, 3258, 2); }
-          await talk(c, /^ned$/i, [/other things from wool/i, /sort of a wig/i, /make me a wig/i]);
+          await talk(c, /^ned$/i, [/other things from wool/i, /sort of a? ?wig/i, /make me a wig/i]);
           if (!(await waitCond(() => hasPlainWig(), 4000))) return false;
         }
-        await combineItems(c, /^yellow dye$/i, /^wig$/i, /^wig$/i);
-        if (!(await waitCond(() => hasBlondeWig(), 4000))) return false;
+        for (let i = 0; i < 3 && !hasBlondeWig(); i++) {
+          const dye = sdk.findInventoryItem(/^yellow dye$/i);
+          const wig = (sdk.getInventory() ?? []).find((it: any) => it.id === 2421);
+          if (dye && wig) {
+            await sdk.sendUseItemOnItem(dye.slot, wig.slot);
+            await waitCond(() => hasBlondeWig(), 3000, 250);
+          }
+        }
+        if (!hasBlondeWig()) return false;
       }
 
       if (needRope) {
-        if (!(await shearAndSpin(4))) return false;
+        if (count(sdk, /^coins$/i) < 15 && !(await shearAndSpin(4))) return false;
         const wn = await bot.walkTo(3100, 3258, 2);
         if (!wn?.success) { await openNearbyDoors(c, 3101, 3258, 2); await bot.walkTo(3100, 3258, 2); }
-        await talk(c, /^ned$/i, [/would like some rope/i, /balls of wool.*make me some rope/i]);
+        await talk(c, /^ned$/i, [/would like some rope/i, /balls of wool.*make me some rope/i, /sell me some rope/i]);
         if (!(await waitInv(sdk, /^rope$/i, 4000))) return false;
       }
 
@@ -453,7 +461,16 @@ export const prince: Quest = {
           await talk(c, /^joe$/i, [/have some beer here, fancy one/i]);
           if (!(await waitCond(() => count(sdk, /^beer$/i) === 0, 6000))) return false;
         }
-        if (has(sdk, /^rope$/i)) {
+        if (sdk.findNearbyNpc(/^lady keli$/i) && !has(sdk, /^rope$/i)) {
+          if (count(sdk, /^coins$/i) < 15 && !(await shearAndSpin(4))) return false;
+          const wn = await bot.walkTo(3100, 3258, 2);
+          if (!wn?.success) { await openNearbyDoors(c, 3101, 3258, 2); await bot.walkTo(3100, 3258, 2); }
+          await talk(c, /^ned$/i, [/would like some rope/i, /balls of wool.*make me some rope/i, /sell me some rope/i]);
+          if (!(await waitInv(sdk, /^rope$/i, 4000))) return false;
+          const wj2 = await bot.walkTo(3124, 3245, 2);
+          if (!wj2?.success) { await openNearbyDoors(c, 3128, 3246, 2); await bot.walkTo(3124, 3245, 2); }
+        }
+        if (has(sdk, /^rope$/i) && sdk.findNearbyNpc(/^lady keli$/i)) {
           for (let i = 0; i < 4 && has(sdk, /^rope$/i); i++) {
             const keli = sdk.findNearbyNpc(/^lady keli$/i);
             if (!keli) break;
@@ -461,18 +478,21 @@ export const prince: Quest = {
             await sleep(1200);
             if (sdk.getState()?.dialog?.isOpen) await chat(c);
           }
-          if (has(sdk, /^rope$/i)) return false;
+          if (sdk.findNearbyNpc(/^lady keli$/i)) return false;
         }
         await bot.walkTo(3123, 3244, 0);
         for (let i = 0; i < 4 && (sdk.getState()?.player?.worldZ ?? 3244) > 3243; i++) {
-          await bot.useItemOnLoc(/^bronze key$/i, /^prison gate$/i);
-          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3244) <= 3243, 4000, 300);
+          await bot.useItemOnLoc(/^bronze key$/i, /^prison (gate|door)$/i);
+          if (!(await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3244) <= 3243, 3000, 300))) {
+            await bot.interactLoc(/^prison (gate|door)$/i, /open/i);
+            await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3244) <= 3243, 3000, 300);
+          }
         }
         await talk(c, /^prince ali$/i);
         if (!(await waitCond(() => !has(sdk, /^pink skirt$/i), 5000))) return false;
         princeSaved = true;
         if ((sdk.getState()?.player?.worldZ ?? 3244) <= 3243) {
-          await bot.interactLoc(/^prison gate$/i, 'Open');
+          await bot.interactLoc(/^prison (gate|door)$/i, /open/i);
           await waitCond(() => (sdk.getState()?.player?.worldZ ?? 3242) > 3243, 4000, 300);
         }
       }

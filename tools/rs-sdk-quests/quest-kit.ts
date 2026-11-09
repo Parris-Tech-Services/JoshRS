@@ -73,6 +73,8 @@ export async function talk(c: Ctx, npc: RegExp, want: RegExp[] = []) {
 // Climb Lumbridge Castle south spiral staircase at (3204,3207), landing tile (3205,3209).
 export async function lumbridgeStairs(c: Ctx, targetLevel: 0 | 1 | 2): Promise<boolean> {
   const { bot, sdk } = c;
+  const p0 = sdk.getState()?.player;
+  if (p0 && Math.hypot(p0.worldX - 3205, p0.worldZ - 3209) > 35) return false;
   for (let attempt = 0; attempt < 6 && lvl(sdk) !== targetLevel; attempt++) {
     const cur = lvl(sdk);
     const dir = cur < targetLevel ? /climb-?up/i : /climb-?down/i;
@@ -136,6 +138,22 @@ export async function julietStairs(c: Ctx, targetLevel: 0 | 1): Promise<boolean>
 
 export async function exitWizardsTowerGround(c: Ctx) {
   const { bot, sdk } = c;
+  // Also exit Draynor Manor if inside (front door is one-way from outside; exit via east wing)
+  const pm = sdk.getState()?.player;
+  if (pm && pm.worldX >= 3090 && pm.worldX <= 3123 && pm.worldZ >= 3354 && pm.worldZ <= 3371) {
+    while ((sdk.getState()?.player?.level ?? 0) > 0) {
+      const down = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => /staircase|ladder/i.test(l.name) && (l.options ?? []).some((o: string) => /climb-?down/i.test(o)));
+      if (!down) break;
+      await bot.interactLoc(down, /climb-?down/i);
+      await sleep(1800);
+    }
+    await bot.walkTo(3119, 3356, 1);
+    await openNearbyDoors(c, 3120, 3356, 2);
+    await bot.walkTo(3122, 3360, 1);
+    await openNearbyDoors(c, 3123, 3360, 2);
+    await sdk.sendWalk(3126, 3360, true);
+    await sleep(1800);
+  }
   for (let i = 0; i < 4; i++) {
     const p = sdk.getState()?.player;
     if (!p || p.level !== 0 || p.worldX < 3102 || p.worldX > 3112 || p.worldZ < 3155 || p.worldZ > 3166) return;
@@ -147,6 +165,18 @@ export async function exitWizardsTowerGround(c: Ctx) {
     if (d2) { await bot.interactLoc(d2, /^open$/i); await sleep(900); }
     await sdk.sendWalk(3109, 3168, true);
     await sleep(1400);
+  }
+  const pa = sdk.getState()?.player;
+  if (pa && pa.level === 0 && pa.worldX >= 3268 && pa.worldZ >= 3140 && pa.worldZ <= 3330) {
+    await bot.walkTo(3268, 3227, 1);
+    const gate = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2882 || l.id === 2883 || /^gate$/i.test(l.name));
+    if (gate) {
+      await sdk.sendInteractLoc(gate.x, gate.z, gate.id, 1);
+      if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || (sdk.getState()?.player?.worldX ?? 9999) < 3268, 4000, 200)) {
+        if (sdk.getState()?.dialog?.isOpen) await chat(c, [/yes, ok/i], 15);
+        await waitCond(() => (sdk.getState()?.player?.worldX ?? 9999) < 3268, 4000, 200);
+      }
+    }
   }
 }
 
@@ -274,6 +304,7 @@ export function snapshot(c: Ctx, quest: string, stepName: string, err?: any) {
     npcs: (s.nearbyNpcs ?? []).slice(0, 30).map((n: any) => ({ n: n.name, id: n.id, idx: n.index, x: n.x, z: n.z, o: n.options })),
     ground: s.groundItems,
     dialog: s.dialog,
+    recentDialogs: s.recentDialogs,
     interface: s.interface,
     modalOpen: s.modalOpen,
     modalInterface: s.modalInterface,
@@ -311,7 +342,7 @@ export async function runQuests(dir: string, quests: Quest[]) {
         await bot.dismissBlockingUI();
       }
     }
-  }, { timeout: 45 * 60_000 });
+  }, { timeout: 8 * 60 * 60_000 });
 }
 
 // Empty the inventory into the Draynor bank, keeping only items matching `keep`. Equipment stays on.

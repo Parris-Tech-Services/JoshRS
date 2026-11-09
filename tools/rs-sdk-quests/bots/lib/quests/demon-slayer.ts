@@ -120,6 +120,7 @@ export const demon: Quest = {
         return true;
       }
 
+      await bot.walkTo(3212, 3472, 2);
       const wp = await bot.walkTo(3204, 3472, 2);
       if (!wp?.success) {
         await openNearbyDoors(c, 3207, 3473, 3);

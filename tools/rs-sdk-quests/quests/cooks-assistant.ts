@@ -39,6 +39,11 @@ export const cooks: Quest = {
 
     const grain = () => step(c, N, 'grain', async () => {
       if (has(sdk, /^grain$/i) || has(sdk, /pot of flour/i)) return true;
+      const bin = sdk.findNearbyLoc(/flour bin/i, { withOption: /empty/i });
+      if (bin) {
+        await bot.interactLoc(bin, 'Empty');
+        if (await waitInv(sdk, /pot of flour/i, 4000)) return true;
+      }
       await bot.walkTo(3165, 3298, 1); await sleep(1000);
       const field = (sdk.getState()?.nearbyLocs ?? []).filter((l: any) => /^wheat$/i.test(l.name));
       field.sort((a: any, b: any) => Math.hypot(a.x - 3162, a.z - 3299) - Math.hypot(b.x - 3162, b.z - 3299));

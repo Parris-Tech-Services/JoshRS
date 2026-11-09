@@ -90,11 +90,8 @@ export const fluffs: Quest = {
       started = true;
 
       await bot.walkTo(3221, 3434, 3);
-      if (!(await talk(c, /^(shilop|wilough)$/i, [/what will make you tell me/i, /okay then, i'll pay/i], 20))) return false;
-      const recentB = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
-      if (/abandoned lumber mill|broken fence|already told you|wont help otherwise/i.test(recentB)) {
-        paidBoy = true;
-      }
+      if (!(await talk(c, /^(shilop|wilough)$/i, [/what will make you tell me/i, /okay then, i'll pay/i]))) return false;
+      paidBoy = true;
       return paidBoy;
     });
 

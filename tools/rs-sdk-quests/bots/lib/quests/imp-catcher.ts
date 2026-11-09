@@ -30,12 +30,22 @@ export const imp: Quest = {
             await openNearbyDoors(c, 3107, 3162, 2);
             await bot.walkTo(3105, 3160, 2);
           }
+        } else {
+          const w = await bot.walkTo(3105, 3160, 2);
+          if (!w?.success) {
+            await openNearbyDoors(c, 3107, 3162, 3);
+            await bot.walkTo(3105, 3160, 2);
+          }
         }
         const st = (sdk.getState()?.nearbyLocs ?? [])
           .filter((l: any) => /stair/i.test(l.name) && Math.hypot(l.x - 3104, l.z - 3160) <= 4 && (l.options ?? []).some((o: string) => dir.test(o)))
           .sort((a: any, b: any) => a.distance - b.distance)[0];
         if (st) {
-          await bot.interactLoc(st, dir);
+          const ir = await bot.interactLoc(st, dir);
+          if (!ir?.success) {
+            await openNearbyDoors(c, 3107, 3162, 3);
+            await bot.interactLoc(st, dir);
+          }
           await waitCond(() => lvl(sdk) !== cur, 5000, 250);
         }
         await sleep(600);
@@ -71,15 +81,12 @@ export const imp: Quest = {
         await exitWizardsTowerGround(c);
         return true;
       }
-      if (/could you get my beads back|how are you doing finding my beads|well get on with it|come back when you have them all/i.test(recent)) {
-        started = true;
-        if (!hasAllBeads()) {
-          await climbWizardsTower(0);
-          await exitWizardsTowerGround(c);
-        }
-        return true;
+      started = true;
+      if (!hasAllBeads()) {
+        await climbWizardsTower(0);
+        await exitWizardsTowerGround(c);
       }
-      return false;
+      return true;
     });
 
     const farmBeads = () => step(c, N, 'collect-beads', async () => {

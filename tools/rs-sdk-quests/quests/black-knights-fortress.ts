@@ -67,8 +67,14 @@ export const blackknight: Quest = {
 
     const prepAndStart = () => step(c, N, 'prep-and-start', async () => {
       if (started || questComplete) return true;
+      const pInit = sdk.getState()?.player;
+      if (pInit && pInit.worldZ >= 3505 && pInit.worldX >= 3010 && pInit.worldX <= 3035 && (sdk.getInventory() ?? []).some((i: any) => i.id === 1965)) {
+        started = true;
+        listened = true;
+        return true;
+      }
       await exitWizardsTowerGround(c);
-      if (lvl(sdk) > 0 && (sdk.getState()?.player?.worldX ?? 0) > 3000) await lumbridgeStairs(c, 0);
+      if (lvl(sdk) > 0 && (sdk.getState()?.player?.worldX ?? 0) > 3150) await lumbridgeStairs(c, 0);
 
       // Ensure 12 Quest Points if running standalone on a fresh bot
       if ((sdk.getSkill('Cooking')?.experience ?? 0) < 100 && (sdk.getSkill('Mining')?.experience ?? 0) < 100 && (sdk.getSkill('Magic')?.experience ?? 0) < 100) {
@@ -166,6 +172,10 @@ export const blackknight: Quest = {
       if (!(await talk(c, /^sir amik varze$/i, [/seek a quest/i, /laugh in the face of danger/i, /ok, i'll do my best/i]))) return false;
       const recent = (sdk.getState()?.recentDialogs ?? []).flatMap((d: any) => d.text ?? []).join(' ');
       if (/at least 12 quest points/i.test(recent)) return false;
+      if (/sabotage it somehow|secret weapon is/i.test(recent)) listened = true;
+      if (/ruined the black knight|hello, friend/i.test(recent)) {
+        questComplete = true;
+      }
       await climbSirAmikTo(0);
       started = true;
       return true;
@@ -187,70 +197,39 @@ export const blackknight: Quest = {
       }
 
       const passFortressDoor = async (doorId: number, sx: number, sz: number, pred: () => boolean, choices?: RegExp[]) => {
-        for (let i = 0; i < 4 && !pred(); i++) {
-          await walkInRoom(sx, sz, 0, 5000);
+        for (let i = 0; i < 10 && !pred(); i++) {
+          await walkInRoom(sx, sz, 0, 4000);
           const d = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === doorId);
-          if (d) await bot.interactLoc(d, /^(open|push)$/i);
-          if (choices && (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 3000, 250))) {
+          if (d) {
+            await sdk.sendInteractLoc(d.x, d.z, d.id, 1);
+          }
+          if (choices && (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 2500, 250))) {
             await chat(c, choices);
           }
-          if (await waitCond(pred, 4000, 250)) { await sleep(300); return true; }
+          if (await waitCond(pred, 3000, 250)) { await sleep(300); return true; }
         }
         return pred();
       };
 
       const climbFortressLadder = async (ladId: number, sx: number, sz: number, dir: 'up' | 'down', targetL: number) => {
-        for (let i = 0; i < 4 && lvl(sdk) !== targetL; i++) {
-          await walkInRoom(sx, sz, 1, 5000);
+        for (let i = 0; i < 8 && lvl(sdk) !== targetL; i++) {
+          await walkInRoom(sx, sz, 1, 4000);
           const lad = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === ladId && Math.hypot(l.x - sx, l.z - sz) <= 2);
-          if (lad) await bot.interactLoc(lad, dir === 'up' ? /climb-?up/i : /climb-?down/i);
+          if (lad) await sdk.sendInteractLoc(lad.x, lad.z, lad.id, 1);
           else await bot.interactLoc(/^ladder$/i, dir === 'up' ? /climb-?up/i : /climb-?down/i);
-          if (await waitCond(() => lvl(sdk) === targetL, 5000, 250)) { await sleep(300); return true; }
+          if (await waitCond(() => lvl(sdk) === targetL, 4000, 250)) { await sleep(300); return true; }
         }
         return lvl(sdk) === targetL;
       };
 
-      // Enter front door (2337 at 3016,3514) -> z >= 3515
-      if (lvl(sdk) === 0 && (sdk.getState()?.player?.worldZ ?? 0) <= 3514) {
-        if (!(await passFortressDoor(2337, 3016, 3513, () => (sdk.getState()?.player?.worldZ ?? 0) >= 3515))) return false;
-      }
-
-      if (!listened) {
-        // Push secret wall (2341 at 3016,3517) -> z >= 3517
-        if (!(await passFortressDoor(2341, 3016, 3516, () => (sdk.getState()?.player?.worldZ ?? 0) >= 3517))) return false;
-        // Climb up 1750 at L0 (3015,3519) -> L1
-        if (!(await climbFortressLadder(1750, 3015, 3518, 'up', 1))) return false;
-        // Climb up 1750 at L1 (3016,3519) -> L2
-        if (!(await climbFortressLadder(1750, 3016, 3518, 'up', 2))) return false;
-        // Climb down 1746 at L2 (3017,3516) -> L1
-        if (!(await climbFortressLadder(1746, 3017, 3515, 'down', 1))) return false;
-        // Open doors at L1 (3019,3515) and L1 (3021,3515) and climb up 1750 at L1 (3023,3513) -> L2
-        const w1 = await bot.walkTo(3023, 3514, 1);
-        if (!w1?.success) {
-          await openNearbyDoors(c, 3019, 3515, 2);
-          await openNearbyDoors(c, 3021, 3515, 2);
-          await bot.walkTo(3023, 3514, 1);
+      // If starting inside the south L1 grill-ladder room (3021..3028, 3506..3511), return to entrance hall L0 first
+      if (lvl(sdk) === 1 && (sdk.getState()?.player?.worldZ ?? 9999) <= 3511 && (sdk.getState()?.player?.worldX ?? 0) <= 3028) {
+        if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+          await bot.activatePrayer('protect_from_melee');
         }
-        if (!(await climbFortressLadder(1750, 3023, 3514, 'up', 2))) return false;
-        // Climb down 1749 at L2 (3025,3513) -> L1
-        if (!(await climbFortressLadder(1749, 3025, 3514, 'down', 1))) return false;
-        // Open sturdy door 2339 at L1 (3025,3511) -> z <= 3511
-        if (!(await passFortressDoor(2339, 3025, 3512, () => (sdk.getState()?.player?.worldZ ?? 9999) <= 3511))) return false;
-        // Climb down 1746 at L1 (3021,3510) -> L0
-        if (!(await climbFortressLadder(1746, 3022, 3510, 'down', 0))) return false;
-        // Listen at Grill (2342 at L0 3025,3507)
-        await walkInRoom(3025, 3507, 0, 5000);
-        const grill = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2342);
-        if (grill) await bot.interactLoc(grill, /listen/i);
-        else await bot.interactLoc(/^grill$/i, /listen/i);
-        if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 4000, 250)) {
-          await chat(c);
+        if ((sdk.getState()?.player?.worldX ?? 0) <= 3025) {
+          if (!(await passFortressDoor(2339, 3025, 3511, () => (sdk.getState()?.player?.worldX ?? 0) >= 3026))) return false;
         }
-        listened = true;
-
-        // Return to entrance hall L0 (3016, 3515)
-        if (!(await climbFortressLadder(1747, 3022, 3510, 'up', 1))) return false;
-        if (!(await passFortressDoor(2339, 3025, 3511, () => (sdk.getState()?.player?.worldZ ?? 0) >= 3512))) return false;
         if (!(await climbFortressLadder(1750, 3025, 3514, 'up', 2))) return false;
         if (!(await climbFortressLadder(1749, 3023, 3514, 'down', 1))) return false;
         const w2 = await bot.walkTo(3017, 3515, 1);
@@ -263,9 +242,77 @@ export const blackknight: Quest = {
         if (!(await climbFortressLadder(1749, 3016, 3518, 'down', 1))) return false;
         if (!(await climbFortressLadder(1749, 3015, 3518, 'down', 0))) return false;
         if (!(await passFortressDoor(2341, 3016, 3517, () => (sdk.getState()?.player?.worldZ ?? 9999) <= 3516))) return false;
+        listened = true;
+      }
+
+      // Enter front door (2337 at 3016,3514) -> z >= 3515
+      if (lvl(sdk) === 0 && (sdk.getState()?.player?.worldZ ?? 0) <= 3514) {
+        if (!(await passFortressDoor(2337, 3016, 3513, () => (sdk.getState()?.player?.worldZ ?? 0) >= 3515))) return false;
+      }
+
+      if (!listened) {
+        // If we are not already in the south grill-ladder room (L1 x <= 3025, z <= 3511), traverse there from L0 entrance
+        if (!(lvl(sdk) === 1 && (sdk.getState()?.player?.worldX ?? 9999) <= 3025 && (sdk.getState()?.player?.worldZ ?? 9999) <= 3511)) {
+          // Push secret wall (2341 at 3016,3517) -> z >= 3517
+          if (lvl(sdk) === 0) {
+            if (!(await passFortressDoor(2341, 3016, 3516, () => (sdk.getState()?.player?.worldZ ?? 0) >= 3517))) return false;
+            if (!(await climbFortressLadder(1750, 3015, 3518, 'up', 1))) return false;
+          }
+          if (lvl(sdk) === 1 && (sdk.getState()?.player?.worldX ?? 0) <= 3017 && (sdk.getState()?.player?.worldZ ?? 0) >= 3517) {
+            if (!(await climbFortressLadder(1750, 3016, 3518, 'up', 2))) return false;
+          }
+          if (lvl(sdk) === 2 && (sdk.getState()?.player?.worldX ?? 0) <= 3020) {
+            if (!(await climbFortressLadder(1746, 3017, 3515, 'down', 1))) return false;
+          }
+          if (lvl(sdk) === 1 && (sdk.getState()?.player?.worldZ ?? 0) >= 3512 && (sdk.getState()?.player?.worldX ?? 0) <= 3024) {
+            const w1 = await bot.walkTo(3023, 3514, 1);
+            if (!w1?.success) {
+              await openNearbyDoors(c, 3019, 3515, 2);
+              await openNearbyDoors(c, 3021, 3515, 2);
+              await bot.walkTo(3023, 3514, 1);
+            }
+            if (!(await climbFortressLadder(1750, 3023, 3514, 'up', 2))) return false;
+          }
+          if (lvl(sdk) === 2) {
+            if (!(await climbFortressLadder(1749, 3025, 3514, 'down', 1))) return false;
+          }
+          if (lvl(sdk) === 1 && ((sdk.getState()?.player?.worldZ ?? 9999) >= 3512 || (sdk.getState()?.player?.worldX ?? 0) >= 3026)) {
+            if (!(await passFortressDoor(2339, 3026, 3511, () => (sdk.getState()?.player?.worldX ?? 9999) <= 3025))) return false;
+          }
+        }
+        // Climb down 1746 at L1 (3021,3510) -> L0
+        if (!(await climbFortressLadder(1746, 3022, 3510, 'down', 0))) return false;
+        // Listen at Grill (2342 at L0 3025,3507)
+        await walkInRoom(3025, 3507, 0, 5000);
+        const grill = (sdk.getState()?.nearbyLocs ?? []).find((l: any) => l.id === 2342);
+        if (grill) await bot.interactLoc(grill, /listen/i);
+        else await bot.interactLoc(/^grill$/i, /listen/i);
+        if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen, 4000, 250)) {
+          await chat(c);
+        }
+
+        // Return to entrance hall L0 (3016, 3515)
+        if (!(await climbFortressLadder(1747, 3022, 3510, 'up', 1))) return false;
+        if (!(await passFortressDoor(2339, 3025, 3511, () => (sdk.getState()?.player?.worldX ?? 0) >= 3026))) return false;
+        if (!(await climbFortressLadder(1750, 3025, 3514, 'up', 2))) return false;
+        if (!(await climbFortressLadder(1749, 3023, 3514, 'down', 1))) return false;
+        const w2 = await bot.walkTo(3017, 3515, 1);
+        if (!w2?.success) {
+          await openNearbyDoors(c, 3021, 3515, 2);
+          await openNearbyDoors(c, 3019, 3515, 2);
+          await bot.walkTo(3017, 3515, 1);
+        }
+        if (!(await climbFortressLadder(1747, 3017, 3515, 'up', 2))) return false;
+        if (!(await climbFortressLadder(1749, 3016, 3518, 'down', 1))) return false;
+        if (!(await climbFortressLadder(1749, 3015, 3518, 'down', 0))) return false;
+        if (!(await passFortressDoor(2341, 3016, 3517, () => (sdk.getState()?.player?.worldZ ?? 9999) <= 3516))) return false;
+        listened = true;
       }
 
       // Enter east banquet hall via 2338 at L0 (3020, 3515) -> x >= 3020
+      if ((sdk.getSkill('Prayer')?.baseLevel ?? 1) >= 43 && (sdk.getSkill('Prayer')?.level ?? 0) > 0) {
+        await bot.activatePrayer('protect_from_melee');
+      }
       if (lvl(sdk) === 0 && (sdk.getState()?.player?.worldX ?? 0) < 3020) {
         if (!(await passFortressDoor(2338, 3019, 3515, () => (sdk.getState()?.player?.worldX ?? 0) >= 3020, [/going in anyway/i]))) return false;
       }
