@@ -1,6 +1,11 @@
 name: JoshRS to RS-SDK compatibility audit
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tools/rs-sdk-patch-bridge/**'
+      - 'content-patches/**'
+      - '.github/workflows/sdk-compatibility.yml'
   push:
     paths:
       - 'tools/rs-sdk-patch-bridge/**'
