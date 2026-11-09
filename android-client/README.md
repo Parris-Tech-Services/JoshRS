@@ -8,6 +8,11 @@ This stage independently implements the revision-377 layout described by the
 original 377 Java client: Jagfile/OnDemand map_index, GZIP map land files,
 World.method31 tile opcodes, packed loc-ID/position deltas, and the original flo.dat RGB/texture-ID definitions from config Jagfile #2.
 
+- On Fedora, run a read-only cache check: bash tools/android377-phone/copy-private-lumbridge-cache.sh --check.
+  Once your phone is connected over USB and adb is authorised, use --copy to
+  put only these three cache files under Android Downloads/JoshRS377Cache.
+  The export deliberately excludes uid.dat, player saves and account files.
+  Downloads is a shared location until the app imports its own private copy.
 - Select YOUR matching **main_file_cache.dat + idx0 + idx4** files together in
   Android's private cache importer. This produces an atomic private snapshot.
   It never downloads or ships a Jagex game cache or copied models.
