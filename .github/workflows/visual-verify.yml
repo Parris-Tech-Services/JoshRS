@@ -69,8 +69,9 @@ jobs:
           set -euo pipefail
           node tools/visual/visual-capture.mjs \
             http://127.0.0.1:8888/rs2.cgi "$RUNNER_TEMP/login.png" \
-            --wait-for "username|password|new user|existing user" \
-            --max-seconds 480
+            --login "${VISUAL_USER:-visualprobe}:${VISUAL_PASS:-visualprobe}" \
+            --wait-for "lumbridge|chat|attack|strength|inventory|welcome" \
+            --max-seconds 600
 
       - name: Summarise pixels (no image viewing needed)
         shell: bash

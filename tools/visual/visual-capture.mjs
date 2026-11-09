@@ -21,6 +21,8 @@ const waitForIdx = args.indexOf('--wait-for');
 const waitFor = waitForIdx >= 0 ? new RegExp(args[waitForIdx + 1], 'i') : /username|password/i;
 const maxIdx = args.indexOf('--max-seconds');
 const maxSeconds = maxIdx >= 0 ? Number(args[maxIdx + 1]) : 420;
+const loginIdx = args.indexOf('--login');
+const login = loginIdx >= 0 ? args[loginIdx + 1] : null; // "user:pass"
 
 const canvasPath = out.replace(/\.png$/, '-canvas.png');
 const ocrInput = out.replace(/\.png$/, '-ocr-input.png');
@@ -117,6 +119,45 @@ async function snapshot() {
     writeFileSync(canvasPath, Buffer.from(dataUrl.split(',')[1], 'base64'));
     await page.screenshot({ path: out });
     return ocr(canvasPath);
+}
+
+// Log in when credentials are supplied: the client's fields are canvas-drawn, so each field is
+// located by OCR and clicked, then typed into.
+if (login) {
+    const [user, pass] = login.split(':');
+    const clickField = async (re) => {
+        const canvas = page.locator('canvas').first();
+        const box = await canvas.boundingBox();
+        const dims = await page.evaluate(() => {
+            const c = document.querySelector('canvas');
+            return c ? { w: c.width, h: c.height } : null;
+        });
+        if (!box || !dims) return false;
+        const words = ocrWords(canvasPath, dims.w, dims.h);
+        const hit = words.find((wd) => re.test(wd.word));
+        if (!hit) return false;
+        await page.mouse.click(box.x + (hit.cx / dims.w) * box.width, box.y + (hit.cy / dims.h) * box.height);
+        return true;
+    };
+
+    if (await clickField(/username|sername/i)) {
+        await page.keyboard.type(user, { delay: 60 });
+        console.log(`typed username (${user.length} chars)`);
+    } else {
+        console.log('could not locate the username field');
+    }
+    await page.keyboard.press('Tab');
+    await page.keyboard.type(pass, { delay: 60 });
+    console.log('typed password');
+    await page.waitForTimeout(500);
+    const shot = await snapshot();
+    console.log(`pre-login screen: ${JSON.stringify(shot.replace(/\s+/g, ' ').slice(0, 120))}`);
+    if (!(await clickField(/^login$/i))) {
+        console.log('could not locate the Login button');
+    } else {
+        console.log('clicked Login');
+    }
+    await page.waitForTimeout(8000);
 }
 
 let matched = false;
