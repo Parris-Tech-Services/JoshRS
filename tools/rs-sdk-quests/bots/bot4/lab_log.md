@@ -519,3 +519,30 @@
 - `(3112, 3194, L0)` **Boxes** (id `359`) [`Search`] -> OK: Nothing happened interacting with Boxes | "There is nothing interesting in these boxes."
 - `(3109, 3166, L0)` **Door** (id `1536`) [`Open`] -> OK: Interacted with Door (loc state changed)
 - `(3113, 3160, L0)` **Bookcase** (id `380`) [`Search`] -> OK: Interacted with Bookcase | "You search the bookcase..."
+
+### Region Completed: Al Kharid Town, Palace, Bank, Furnace & Shantay Pass (m51_49 & m51_50) — 2026-11-09T06:17:56.549Z
+- **Total Interactions Audited**: 11 (8 verified working, 3 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3293, 3174, L0)` — Al Kharid Town, Palace, Bank, Furnace & Shantay Pass (m51_49 & m51_50)
+  - **Object & Action**: `Waypoint: Al Kharid Palace Courtyard` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Al Kharid Palace Courtyard at (3293, 3174). Actual: walkTo failed: Walk timed out after 120000ms: at (3267, 3228), destination (3293, 3174)
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3269, 3167, L0)` — Al Kharid Town, Palace, Bank, Furnace & Shantay Pass (m51_49 & m51_50)
+  - **Object & Action**: `Waypoint: Al Kharid Bank` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Al Kharid Bank at (3269, 3167). Actual: walkTo failed: Walk timed out after 120000ms: at (3252, 3254), destination (3269, 3167)
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3275, 3186, L0)` — Al Kharid Town, Palace, Bank, Furnace & Shantay Pass (m51_49 & m51_50)
+  - **Object & Action**: `Waypoint: Al Kharid Furnace & Tanning` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Al Kharid Furnace & Tanning at (3275, 3186). Actual: walkTo failed: Walk timed out after 120000ms: at (3267, 3228), destination (3275, 3186)
+  - **Impact**: **Blocks progress**
+
+#### Verified Working Interactions (Summary)
+- `(3291, 3189, L0)` **Curtain** (id `1529`) [`Close`] -> OK: Interacted with Curtain
+- `(3296, 3206, L0)` **Crate** (id `357`) [`Search`] -> OK: Interacted with Crate
+- `(3308, 3206, L0)` **Boxes** (id `361`) [`Search`] -> OK: Interacted with Boxes | "There is nothing interesting in these boxes."
+- `(3316, 3177, L0)` **Crate** (id `356`) [`Search`] -> OK: Interacted with Crate
+- `(3317, 3179, L0)` **Crate** (id `358`) [`Search`] -> OK: Interacted with Crate | "You search the crate but find nothing."
+- `(3314, 3174, L0)` **Sacks** (id `365`) [`Search`] -> OK: Interacted with Sacks
+- `(3309, 3120, L0)` **Shantay chest** (id `2693`) [`Open`] -> OK: Interacted with Shantay chest
+- `(3297, 3124, L0)` **Prison door** (id `2692`) [`Open`] -> OK: Timed out after 4500ms (loc state changed)

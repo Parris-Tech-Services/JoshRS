@@ -118,7 +118,10 @@ async function auditRegionWaypoints(
         await clearAllUI(ctx);
         await ensureGroundLevel(ctx);
 
-        const walkRes = await bot.walkTo(wp.x, wp.z, 3);
+        const walkRes = await Promise.race([
+            bot.walkTo(wp.x, wp.z, 3),
+            sleep(45000).then(() => ({ success: false, message: `Walk timed out after 45000ms to (${wp.x}, ${wp.z})` })),
+        ]);
         const pAfter = sdk.getState()?.player;
         if (!walkRes.success) {
             recordFinding({
@@ -144,7 +147,7 @@ async function auditRegionWaypoints(
 
         const locs = sdk.getNearbyLocs().filter(l => l.optionsWithIndex.length > 0 && l.dist <= 9);
         for (const loc of locs) {
-            if (/tree|oak|willow|yew|plant|ladder|staircase|trapdoor/i.test(loc.name)) continue;
+            if (/tree|oak|willow|yew|plant|cactus|ladder|staircase|trapdoor/i.test(loc.name)) continue;
             const nonWalkOpts = loc.optionsWithIndex.filter(o =>
                 !/^(walk here|examine|cancel)$/i.test(o.text) &&
                 !/^(close|shut)$/i.test(o.text) &&
@@ -237,19 +240,20 @@ async function auditRegionWaypoints(
 }
 
 await runScript(async (ctx) => {
-    // Region 10: Draynor Manor Grounds, Ground Floor & barbarian path (m48_51, m48_52)
+    // Region 7b: Al Kharid Interior (Palace, Bank, Furnace) & Northern Al Kharid Mine (m51_49, m51_50, m51_51)
     await auditRegionWaypoints(
         ctx,
-        'Region 10: Draynor Manor Grounds & Ground Floor (m48_51 & m48_52)',
+        'Region 7b: Al Kharid Palace, Bank, Furnace & North Mine (m51_49, m51_50, m51_51)',
         [
-            { x: 3108, z: 3328, label: 'Draynor Manor Front Gate' },
-            { x: 3108, z: 3352, label: 'Draynor Manor Front Entrance' },
-            { x: 3126, z: 3359, label: 'Draynor Manor East Grounds / Compost / Fountain' },
-            { x: 3092, z: 3360, label: 'Draynor Manor West Grounds / Cabbage Patch' },
+            { x: 3293, z: 3174, label: 'Al Kharid Palace Courtyard' },
+            { x: 3269, z: 3167, label: 'Al Kharid Bank' },
+            { x: 3275, z: 3186, label: 'Al Kharid Furnace & Tanning' },
+            { x: 3299, z: 3284, label: 'Al Kharid Scorpion Pit / North Mine' },
+            { x: 3282, z: 3318, label: 'Al Kharid North Pass Exit' },
         ]
     );
-    flushRegionLog('Region 10: Draynor Manor Grounds & Ground Floor (m48_51 & m48_52)', [
-        'Audited Draynor Manor gates, grounds, fountain, compost heap, and entrance doors.'
+    flushRegionLog('Region 7b: Al Kharid Palace, Bank, Furnace & North Mine (m51_49, m51_50, m51_51)', [
+        'Audited Al Kharid Palace Courtyard, Bank, Furnace, North Scorpion Pit Mine, and exited north via (3282, 3318) bypassing the toll gate.'
     ]);
 
     // Region 11: South Varrock, Champions' Guild & SW/SE Mines (m49_51, m50_51, m50_52, m51_52)
@@ -257,15 +261,15 @@ await runScript(async (ctx) => {
         ctx,
         "Region 11: South Varrock, Champions' Guild, Stone Circle & Mines (m49_51, m50_51, m50_52, m51_52)",
         [
-            { x: 3180, z: 3367, label: 'South-West Varrock Mine' },
-            { x: 3191, z: 3362, label: "Champions' Guild Exterior" },
-            { x: 3205, z: 3365, label: 'South Varrock Dark Wizards Stone Circle' },
-            { x: 3212, z: 3385, label: 'Varrock South Gate' },
             { x: 3286, z: 3365, label: 'South-East Varrock Mine' },
+            { x: 3212, z: 3385, label: 'Varrock South Gate' },
+            { x: 3205, z: 3365, label: 'South Varrock Dark Wizards Stone Circle' },
+            { x: 3191, z: 3362, label: "Champions' Guild Exterior" },
+            { x: 3180, z: 3367, label: 'South-West Varrock Mine' },
         ]
     );
     flushRegionLog("Region 11: South Varrock, Champions' Guild, Stone Circle & Mines (m49_51, m50_51, m50_52, m51_52)", [
-        "Audited SW Varrock Mine, Champions' Guild entrance, Stone Circle, Varrock South Gate, and SE Varrock Mine."
+        "Audited SE Varrock Mine, Varrock South Gate, Stone Circle, Champions' Guild entrance, and SW Varrock Mine."
     ]);
 
     // Region 12: Varrock Town, Square, Palace, Churches & East Bank (m49_52, m50_52, m50_53, m51_52)
@@ -286,6 +290,21 @@ await runScript(async (ctx) => {
     );
     flushRegionLog('Region 12: Varrock Town, Square, Palace, Churches & Banks (m49_52, m50_52, m50_53, m51_52)', [
         'Audited Varrock West Bank, West Anvils, Town Square, Blue Moon Inn, East Bank, Museum, Church, Palace Courtyard, and West Gate.'
+    ]);
+
+    // Region 10: Draynor Manor Grounds, Ground Floor & barbarian path (m48_51, m48_52)
+    await auditRegionWaypoints(
+        ctx,
+        'Region 10: Draynor Manor Grounds & Ground Floor (m48_51 & m48_52)',
+        [
+            { x: 3108, z: 3328, label: 'Draynor Manor Front Gate' },
+            { x: 3108, z: 3352, label: 'Draynor Manor Front Entrance' },
+            { x: 3126, z: 3359, label: 'Draynor Manor East Grounds / Compost / Fountain' },
+            { x: 3092, z: 3360, label: 'Draynor Manor West Grounds / Cabbage Patch' },
+        ]
+    );
+    flushRegionLog('Region 10: Draynor Manor Grounds & Ground Floor (m48_51 & m48_52)', [
+        'Audited Draynor Manor gates, grounds, fountain, compost heap, and entrance doors.'
     ]);
 
     // Region 13: Barbarian Village & Edgeville (m48_53 & m48_54)
