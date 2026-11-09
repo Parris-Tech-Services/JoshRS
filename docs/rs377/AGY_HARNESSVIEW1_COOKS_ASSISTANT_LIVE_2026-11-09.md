@@ -27,6 +27,37 @@ No additional user confirmation is needed for routine in-game decisions.
   it without logging the value, writing it to files, including it in shell
   history, sending it to web services, or committing it to Git.
 
+## Revision-377 source-grounded Cook's Assistant route
+
+The existing pinned-source audit is
+`research/rs377/playability_audits/001_cooks_assistant_2026-11-08.md`.
+Use these as **source-level pointers, not proof of the currently installed
+world or live NPC slots**:
+
+- Cook NPC definition 278 at Lumbridge Castle kitchen (3209,3215).
+  `[opnpc1,cook]` starts the dialogue; accepted quest stage is
+  `%cookquest=1`, completed stage is **2**.
+- Empty pot item 1931 near (3209,3214). Egg item 1944 at
+  (3226,3301) or (3229,3299). Empty bucket item 1925
+  near (3225,3294).
+- Milking uses a normal interaction with dairy-cow loc 8689 and
+  changes empty bucket 1925 to bucket of milk 1927.
+- Wheat loc 313 yields grain item 1947. At the windmill,
+  hopper loc 2714 and its controls loc 2718 are on the upper
+  floor; then use the flour bin with an empty pot to obtain
+  pot of flour item 1933.
+- Hand in **egg, bucket of milk and pot of flour** to Cook.
+  Pinned script awards **1 quest point + 300 Cooking XP** and sets
+  permanent `cookquest=2`. Verify this against the actual installed
+  content pack rather than using reward guesses.
+- Optional supporting NPC dialogue for Millie Miller (3806) and
+  Gillie Groats (3807) is not a prerequisite. A distinct special-range
+  interaction had a known original TODO and later source overlay,
+  so **do not claim it works in the live Fedora pack** without testing.
+- These map/object pointers have NOT been confirmed in a complete
+  Fedora game playthrough. NPC *type IDs are not live NPC slot indices*.
+  Do not send NPC packets using a type ID as a slot.
+
 ## Completion contract
 1. **One controller / no disruption.** First check read-only whether a
    HarnessView1 session remains connected, whether live ports match the above
