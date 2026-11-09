@@ -450,3 +450,35 @@ Tests (CI-gated) prove:
 cache loading, and the entire renderer. The native client has not yet held a session
 against the live engine.
 
+## 16. Round 12 — the Kotlin client logs into the REAL engine (VERIFIED)
+
+This closes the objective's central claim. `LiveEngineLoginTest` is skipped locally and run
+by `.github/workflows/android377-live-login.yml`, which clones the **pinned** engine and
+content (`b5ac859`, `44eab09`), builds them, boots a loopback-only world, then runs the
+Kotlin test against it.
+
+CI **42692949416: success**.
+
+What the passing run proves:
+
+1. the Kotlin client fetched the server's own 40-byte `CrcBuffer` and correctly used the
+   first 36 bytes in the login block;
+2. it parsed the engine's real `public.pem`, including the **modulus/exponent swap
+   correction** — without that it could not reach status 2 at all;
+3. it authenticated: **status 2**;
+4. it consumed the **2-byte preamble** and decoded **real ISAAC frames** from the live session.
+
+### Two failures worth keeping
+
+- **First run:** authentication succeeded, then the read loop threw `ProtocolViolation` —
+  because `login()` returned after the status byte and the loop started on the preamble.
+  That is exactly the offset-3 trap found earlier with the Python probe, reproduced
+  independently in Kotlin. Fixed with `loginAndOpenSession()`, which consumes the 2 bytes.
+- **Second run:** only a redundant synthetic key-parsing test failed, while the live login
+  passed. The live test is the stronger proof (it must parse the real swapped key to
+  succeed), so the duplicate was removed rather than debugged blind.
+
+**Verified now:** native Kotlin authentication and post-login framing against the genuine
+engine. **Still absent:** cache loading, rendering, entities, interfaces, audio, reconnect,
+and any gameplay. The app still cannot be played; this is a protocol milestone, not a client.
+

@@ -1,0 +1,112 @@
+name: Android 377 live engine login
+
+# Proves the Kotlin client authenticates against the REAL pinned revision-377 engine.
+# Everything else in the protocol package is verified against fixtures or reference
+# vectors; this is the only job that exercises the actual server.
+#
+# The engine is built and booted inside the job and binds loopback only.
+
+on:
+  pull_request:
+    paths:
+      - "android-client/**"
+      - ".github/workflows/android377-live-login.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-login:
+    name: Kotlin client to real pinned 377 engine
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+
+      - name: Install Android SDK 35
+        shell: bash
+        run: |
+          set -euo pipefail
+          sdk_root="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          echo "ANDROID_HOME=$sdk_root" >> "$GITHUB_ENV"
+          sdkmanager_bin="$(find "$sdk_root/cmdline-tools" -type f -name sdkmanager -print -quit)"
+          test -n "$sdkmanager_bin"
+          yes | "$sdkmanager_bin" --sdk_root="$sdk_root" --licenses >/dev/null || true
+          "$sdkmanager_bin" --sdk_root="$sdk_root" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Clone pinned engine and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/live377"
+          mkdir -p "$root"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Engine-TS.git "$root/engine"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Content.git "$root/content"
+          for spec in 'engine b5ac859b47915afb545e60e4c1208f25d43cb3fb' 'content 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50'; do
+            read -r name pin <<< "$spec"
+            if [[ "$(git -C "$root/$name" rev-parse HEAD)" != "$pin" ]]; then
+              git -C "$root/$name" fetch --depth 1 origin "$pin"
+              git -C "$root/$name" checkout --detach "$pin"
+            fi
+            test "$(git -C "$root/$name" rev-parse HEAD)" = "$pin"
+          done
+          python3 tools/android377-phone/loopback_bind.py "$root/engine" --verify || python3 tools/android377-phone/loopback_bind.py "$root/engine"
+          echo "ENGINE_ROOT=$root" >> "$GITHUB_ENV"
+
+      - name: Build revision-377 engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$ENGINE_ROOT/engine"
+          npm ci --no-audit --no-fund
+          BUILD_SRC_DIR=../content BUILD_VERIFY=true BUILD_VERIFY_PACK=true npm run build
+          DB_BACKEND=sqlite NODE_PROFILE=joshrs_android_live_login npm run sqlite:migrate
+
+      - name: Boot engine and wait for world ready
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$ENGINE_ROOT/engine"
+          nohup npx tsx src/app.ts > "$RUNNER_TEMP/engine.log" 2>&1 &
+          for _ in $(seq 1 120); do
+            if grep -q "World ready" "$RUNNER_TEMP/engine.log"; then
+              echo "engine ready"; break
+            fi
+            if ! kill -0 $! 2>/dev/null; then
+              echo "engine exited early" >&2; tail -40 "$RUNNER_TEMP/engine.log" >&2; exit 1
+            fi
+            sleep 5
+          done
+          grep -q "World ready" "$RUNNER_TEMP/engine.log" || { tail -60 "$RUNNER_TEMP/engine.log"; exit 1; }
+          tail -5 "$RUNNER_TEMP/engine.log"
+
+      - name: Kotlin client logs in to the real engine
+        shell: bash
+        env:
+          JS377_IT_HOST: 127.0.0.1
+          JS377_IT_PORT: "43594"
+          JS377_IT_WEB: http://127.0.0.1:8888
+        run: |
+          set -euo pipefail
+          export JS377_IT_KEYFILE="$ENGINE_ROOT/engine/data/config/public.pem"
+          cd android-client
+          gradle --no-daemon :app:testDebugUnitTest --tests '*LiveEngineLoginTest*'
+
+      - name: Show engine log on failure
+        if: failure()
+        shell: bash
+        run: tail -80 "$RUNNER_TEMP/engine.log" || true
