@@ -29,5 +29,9 @@ jobs:
         run: |
           python3 -m py_compile tools/rs377-family-visible/prepare_lumbridge.py
           python3 -m unittest discover -s tools/rs377-family-visible -p 'test_prepare_lumbridge.py' -v
+      - name: Read-only actual saved movement verification (synthetic fixtures)
+        run: |
+          node --check tools/rs377-family-visible/verify-patrol.mjs
+          node --test tools/rs377-family-visible/verify-patrol.test.mjs
       - name: Safe no-login help
         run: node tools/rs377-family-visible/join.mjs --help
