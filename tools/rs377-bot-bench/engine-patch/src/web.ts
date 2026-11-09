@@ -926,14 +926,26 @@ management.get('/dev/rs377-observe', async (req, reply) => {
     const botName = process.env.RS377_OBSERVER_BOT;
     const instanceId = process.env.RS377_OBSERVER_WORLD;
     const sourceSha = process.env.RS377_OBSERVER_SOURCE_SHA;
+    // Family mode is separately and deliberately authorised. It may observe
+    // ONLY the real network-connected HarnessView1 in this exact Fedora world.
+    // The existing CI disposable mode remains unchanged and is never silently
+    // promoted to production.
+    const familyMode = process.env.RS377_OBSERVER_FAMILY === 'true' &&
+        process.env.RS377_OBSERVER_ISOLATED !== 'true' &&
+        process.env.RS377_OBSERVER_FAMILY_APPROVED === 'HarnessView1@2026-11-09' &&
+        botName === 'HarnessView1' && instanceId === 'family-joshrs-377' &&
+        process.env.NODE_PORT === '52402' && process.env.WEB_PORT === '8888' &&
+        process.env.WEB_MANAGEMENT_PORT === '8898';
+    const isolatedMode = process.env.RS377_OBSERVER_ISOLATED === 'true' &&
+        process.env.RS377_OBSERVER_FAMILY !== 'true' &&
+        /^isolated-[a-z0-9_-]{4,64}$/i.test(instanceId ?? '');
     const supplied = req.headers.authorization ?? '';
     const expected = `Bearer ${token ?? ''}`;
     if (process.env.RS377_OBSERVER_ENABLED !== 'true' ||
-        process.env.RS377_OBSERVER_ISOLATED !== 'true' ||
+        !(isolatedMode || familyMode) ||
         process.env.NODE_XPRATE !== '1' ||
         !token || Buffer.byteLength(token) < 32 ||
         !/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName ?? '') ||
-        !/^isolated-[a-z0-9_-]{4,64}$/i.test(instanceId ?? '') ||
         !/^[a-f0-9]{40}$/i.test(sourceSha ?? '') ||
         !['127.0.0.1', '::1'].includes(req.ip) ||
         Buffer.byteLength(supplied) !== Buffer.byteLength(expected) ||
@@ -1298,7 +1310,7 @@ management.get('/dev/rs377-observe', async (req, reply) => {
     };
 
     const observation = {
-        world: { mode: 'isolated', revision: 377, tickMs: 600,
+        world: { mode: familyMode ? 'family' : 'isolated', revision: 377, tickMs: 600,
             xpMultiplier: 1, instanceId: instanceId!, sourceSha: sourceSha! },
         player: { username: botName!, isBot: true },
         tick: World.currentTick,

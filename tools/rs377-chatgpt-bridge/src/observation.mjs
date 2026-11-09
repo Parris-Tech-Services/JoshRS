@@ -31,7 +31,7 @@ const checkNearby=(a,name,idField)=>{
   if(!a.every(e=>e&&isInt(e[idField],65535)&&isInt(e.x,16383)&&isInt(e.z,16383)))
     fail(name+' invalid position/identity');
 };
-export function validateObservation(raw,{botName,expectedWorld}={}) {
+export function validateObservation(raw,{botName,expectedWorld,approvedFamily=false}={}) {
   if(!raw||typeof raw!=='object'||Array.isArray(raw))fail('missing raw input');
   const own=['world','player','tick','position','skills','inventory','equipment',
     'nearbyNpcs','nearbyLocs','groundItems','dialogue','questStages','sdkDetails','unsupported'];
@@ -46,10 +46,13 @@ export function validateObservation(raw,{botName,expectedWorld}={}) {
   const v=copy(raw);const w=v.world||{}, p=v.player||{};
   if(!botName||!/^Harness[A-Za-z0-9_-]{1,10}$/.test(botName))fail('approved bot name required');
   if(p.username!==botName||p.isBot!==true)fail('wrong identity');
-  if(w.mode!=='isolated'||w.revision!==377||w.tickMs!==600||w.xpMultiplier!==1)
-    fail('only isolated normal speed/XP world is allowed');
-  if(typeof w.instanceId!=='string'||!/^isolated-[a-z0-9_-]{4,64}$/i.test(w.instanceId))
-    fail('missing isolated-world fingerprint');
+  const isolated = w.mode==='isolated' && /^isolated-[a-z0-9_-]{4,64}$/i.test(w.instanceId??'');
+  const family = approvedFamily===true && w.mode==='family' &&
+    botName==='HarnessView1' && p.username==='HarnessView1' &&
+    w.instanceId==='family-joshrs-377';
+  if(w.revision!==377||w.tickMs!==600||w.xpMultiplier!==1)
+    fail('only normal speed/XP revision-377 world is allowed');
+  if(!isolated&&!family)fail('family world requires bot-only explicit approval or isolated fingerprint');
   if(expectedWorld&&expectedWorld!==w.instanceId)fail('wrong world instance');
   if(typeof w.sourceSha!=='string'||!/^[a-f0-9]{40}$/i.test(w.sourceSha))fail('unverified world source SHA');
   if(!isInt(v.tick))fail('tick');
@@ -80,12 +83,12 @@ export function validateObservation(raw,{botName,expectedWorld}={}) {
   v.unsupported=supported.filter(key=>v[key]===null);
   return deepFreeze(v);
 }
-export function createObserver(readRaw,{botName,expectedWorld}={}) {
+export function createObserver(readRaw,{botName,expectedWorld,approvedFamily=false}={}) {
   if(typeof readRaw!=='function')throw new TypeError('Read-only source callback required');
   let lastTick=-1,lastWorld=null;
   return Object.freeze({
     async observe(){
-      const snapshot=validateObservation(await readRaw(),{botName,expectedWorld});
+      const snapshot=validateObservation(await readRaw(),{botName,expectedWorld,approvedFamily});
       if(lastWorld!==null&&snapshot.world.instanceId!==lastWorld)
         throw new Error('World changed during observation');
       if(snapshot.tick<lastTick)throw new Error('Observed tick decreased');

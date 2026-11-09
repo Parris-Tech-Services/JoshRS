@@ -29,6 +29,11 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: '1.3.0'
+      - name: Compile opt-in Fedora family quest runner (no account login)
+        shell: bash
+        run: |
+          bun build tools/rs377-live-quest-bridge/run-fedora.mjs --target=bun --outfile="$RUNNER_TEMP/family-bot-quest-runner.js"
+          node --check tools/rs377-live-quest-bridge/run-fedora.mjs
       - name: Checkout the exact upstream RS-SDK for real BotSDK class test
         uses: actions/checkout@v4
         with:

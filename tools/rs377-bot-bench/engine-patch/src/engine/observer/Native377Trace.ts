@@ -28,12 +28,20 @@ type Trace = {
     dialogPages: Array<{tick:number;interfaceId:number;text:string[];complete:boolean}>;
 };
 const traceByPlayer = new WeakMap<Player, Trace>();
-const allowed = (player: Player): boolean =>
-    process.env.RS377_OBSERVER_ENABLED === 'true' &&
-    process.env.RS377_OBSERVER_ISOLATED === 'true' &&
-    process.env.NODE_PROFILE === 'joshrs_ci_377' &&
-    /^Harness[A-Za-z0-9_-]{1,10}$/.test(process.env.RS377_OBSERVER_BOT ?? '') &&
-    player.username.toLowerCase() === process.env.RS377_OBSERVER_BOT!.toLowerCase();
+const allowed = (player: Player): boolean => {
+    const isolated = process.env.RS377_OBSERVER_ISOLATED === 'true' &&
+        process.env.RS377_OBSERVER_FAMILY !== 'true' &&
+        process.env.NODE_PROFILE === 'joshrs_ci_377';
+    const family = process.env.RS377_OBSERVER_FAMILY === 'true' &&
+        process.env.RS377_OBSERVER_ISOLATED !== 'true' &&
+        process.env.RS377_OBSERVER_FAMILY_APPROVED === 'HarnessView1@2026-11-09' &&
+        process.env.RS377_OBSERVER_BOT === 'HarnessView1' &&
+        process.env.RS377_OBSERVER_WORLD === 'family-joshrs-377' &&
+        process.env.NODE_PORT === '52402';
+    return process.env.RS377_OBSERVER_ENABLED === 'true' && (isolated || family) &&
+        /^Harness[A-Za-z0-9_-]{1,10}$/.test(process.env.RS377_OBSERVER_BOT ?? '') &&
+        player.username.toLowerCase() === process.env.RS377_OBSERVER_BOT!.toLowerCase();
+};
 
 function forBot(player: Player): Trace | null {
     if (!allowed(player) || !player.isActive) return null;
