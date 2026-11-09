@@ -31,9 +31,12 @@ Decoding the live file produced, in order: `Dwarf remains`, `Tool kit`, `Cannonb
 Implemented in `ObjDefinitions377` with the opcode table from `Engine-TS` `ObjType.ts` (MIT), and
 covered by tests in CI.
 
-## BLOCKED: `npc.dat`
+## RESOLVED: `npc.dat`
 
-The same approach works until **NPC 226**, then desynchronises:
+> **Resolved.** See "How npc.dat was actually solved" at the end. The section below is kept as
+> written, because the diagnosis is the useful part: it shows how a wrong opcode hides.
+
+The same approach worked until **NPC 226**, then desynchronised:
 
 ```
 npc 226 ops decoded: 17, 13, 99, 95, 106, then opcode 255
@@ -88,3 +91,40 @@ source and only the *early* results were spot-checked, which is why 226 NPCs dec
 before breaking.
 
 Spot-checking the first few entries of a sequential format proves very little.
+
+
+---
+
+## How `npc.dat` was actually solved
+
+Not by re-reading the source — by **measuring the engine**.
+
+1. Patched `NpcType.prototype.decode` to log `(code, pos before, pos after)` and ran the load.
+   For NPC 226, opcode 106 consumed **9 bytes**, not 2.
+2. Printed the **runtime** function source (`decode.toString()`). The executing branch was not
+   the branch I had read from the file: opcode 106 is a whole block —
+
+```js
+this.multivarbit = dat.g2();
+this.multivarp  = dat.g2();
+const count     = dat.g1();
+this.multinpc   = new Array(count + 1);
+for (let i = 0; i <= count; i++) this.multinpc[i] = dat.g2();
+```
+
+3. Re-parsed in Python with the corrected block: **all 3,852 definitions, zero bytes remaining**,
+   and names matching the engine exactly (`226` null, `227` "Morris", `0` "Hans",
+   `223` "Brother Kojo").
+
+`NpcDefinitions377` now implements this, and `decodeAll` **requires the whole archive to be
+consumed** — an under-read would otherwise return plausible partial results, which is precisely
+how the error survived 226 NPCs of spot-checking.
+
+### Two lessons worth keeping
+
+**The executing code is the only authority.** A source file in the repo can differ from what runs
+(a build artefact, a stale branch, a different module instance). Measuring beat reading.
+
+**A sequential format gives no partial-credit signal.** Decoding 226 NPCs correctly was worth
+nothing, because none of them used the one opcode that was wrong. Only consuming the *entire*
+archive proves a table is right.
