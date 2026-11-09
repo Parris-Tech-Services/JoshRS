@@ -652,3 +652,129 @@
 - `(2962, 3350, L0)` **Boxes** (id `359`) [`Search`] -> OK: Timed out after 4500ms (loc state changed)
 - `(2963, 3350, L0)` **Boxes** (id `361`) [`Search`] -> OK: Interacted with Boxes (loc state changed)
 - `(3011, 3354, L0)` **Bank booth** (id `2213`) [`Use-quickly`] -> OK: Interacted with Bank booth
+
+### Region Completed: North Falador, Doric's Hut, Goblin Village & Ice Mountain (m46_53, m46_54, m47_53, m47_54) — 2026-11-09T06:34:52.251Z
+- **Total Interactions Audited**: 17 (8 verified working, 9 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(2949, 3450, L0)` — North Falador, Doric's Hut, Goblin Village & Ice Mountain (m46_53, m46_54, m47_53, m47_54)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2949, 3450). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2952, 3453, L0)` — North Falador, Doric's Hut, Goblin Village & Ice Mountain (m46_53, m46_54, m47_53, m47_54)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2952, 3453). Actual: success=false (Nothing happened interacting with Door), opRejectedDelta=0, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2957, 3509, L0)` — North Falador, Doric's Hut, Goblin Village & Ice Mountain (m46_53, m46_54, m47_53, m47_54)
+  - **Object & Action**: `Large door` (id `1516`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Large door at (2957, 3509). Actual: success=true (Interacted with Large door), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(2952, 3501, L0)` — North Falador, Doric's Hut, Goblin Village & Ice Mountain (m46_53, m46_54, m47_53, m47_54)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (2952, 3501). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2951, 3507, L0)` — North Falador, Doric's Hut, Goblin Village & Ice Mountain (m46_53, m46_54, m47_53, m47_54)
+  - **Object & Action**: `Sacks` (id `365`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Sacks at (2951, 3507). Actual: success=true (Interacted with Sacks), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2956, 3512, L0)` — North Falador, Doric's Hut, Goblin Village & Ice Mountain (m46_53, m46_54, m47_53, m47_54)
+  - **Object & Action**: `Closed chest` (id `375`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Closed chest at (2956, 3512). Actual: success=true (Interacted with Closed chest), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(2957, 3512, L0)` — North Falador, Doric's Hut, Goblin Village & Ice Mountain (m46_53, m46_54, m47_53, m47_54)
+  - **Object & Action**: `Closed chest` (id `375`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Closed chest at (2957, 3512). Actual: success=true (Interacted with Closed chest), opRejectedDelta=0, messages="I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3007, 3476, L0)` — North Falador, Doric's Hut, Goblin Village & Ice Mountain (m46_53, m46_54, m47_53, m47_54)
+  - **Object & Action**: `Waypoint: Ice Mountain Summit & Oracle` (id `-1`) — action `Walk`
+  - **Expected vs Actual**: Expected: Walk to Ice Mountain Summit & Oracle at (3007, 3476). Actual: walkTo failed: Walk timed out after 45000ms to (3007, 3476)
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3012, 3452, L0)` — North Falador, Doric's Hut, Goblin Village & Ice Mountain (m46_53, m46_54, m47_53, m47_54)
+  - **Object & Action**: `Drawers` (id `350`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Drawers at (3012, 3452). Actual: success=true (Interacted with Drawers), opRejectedDelta=1, messages="The door is locked. | I can't reach that!", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(2960, 3507, L0)` **Sacks** (id `23`) [`Prod`] -> OK: Interacted with Sacks
+- `(2960, 3507, L0)` **Sacks** (id `23`) [`Open`] -> OK: Interacted with Sacks | "I have no reason to do that."
+- `(2954, 3505, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door
+- `(2958, 3509, L0)` **Large door** (id `1519`) [`Open`] -> OK: Nothing happened interacting with Large door (loc state changed)
+- `(2951, 3508, L0)` **Boxes** (id `359`) [`Search`] -> OK: Interacted with Boxes
+- `(2955, 3512, L0)` **Closed chest** (id `375`) [`Open`] -> OK: Interacted with Closed chest
+- `(3016, 3453, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door
+- `(3015, 3453, L0)` **Door** (id `3`) [`Open`] -> OK: Interacted with Door | "The door is locked."
+
+### Region Completed: Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54) — 2026-11-09T06:38:06.426Z
+- **Total Interactions Audited**: 24 (12 verified working, 12 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3095, 3489, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Bank booth` (id `2213`) — action `Use`
+  - **Expected vs Actual**: Expected: Interact "Use" with Bank booth at (3095, 3489). Actual: success=true (Interacted with Bank booth), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3081, 3490, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Drawers` (id `350`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Drawers at (3081, 3490). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3084, 3431, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Crate` (id `354`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Crate at (3084, 3431). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3073, 3430, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Boxes` (id `361`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Boxes at (3073, 3430). Actual: success=false (Timed out after 4500ms), opRejectedDelta=2, messages="You search the crate but find nothing.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3073, 3431, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Boxes` (id `360`) — action `Search`
+  - **Expected vs Actual**: Expected: Interact "Search" with Boxes at (3073, 3431). Actual: success=false (Timed out after 4500ms), opRejectedDelta=3, messages="There is nothing interesting in these boxes.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3085, 3429, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Closed chest` (id `375`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Closed chest at (3085, 3429). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3076, 3427, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3076, 3427). Actual: success=true (Interacted with Door), opRejectedDelta=2, messages="This rock contains coal.", locUnchanged=false
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3086, 3425, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Rocks tin ore` (id `2094`) — action `Mine`
+  - **Expected vs Actual**: Expected: Interact "Mine" with Rocks tin ore at (3086, 3425). Actual: success=true (Interacted with Rocks tin ore), opRejectedDelta=3, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3105, 3355, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Wardrobe` (id `388`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Wardrobe at (3105, 3355). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="The doors won't open.", locUnchanged=true
+  - **Impact**: **Cosmetic**
+- **Coordinates & Region**: `(3115, 3357, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Stairs` (id `2616`) — action `Walk-Down`
+  - **Expected vs Actual**: Expected: Interact "Walk-Down" with Stairs at (3115, 3357). Actual: success=false (Timed out after 4500ms), opRejectedDelta=1, messages="I can't reach that! | The doors won't open.", locUnchanged=true
+  - **Impact**: **Blocks progress**
+- **Coordinates & Region**: `(3109, 3358, L0)` — Edgeville, Barbarian Village & Draynor Manor Objects (m48_52, m48_53, m48_54)
+  - **Object & Action**: `Door` (id `1530`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Door at (3109, 3358). Actual: success=true (Interacted with Door), opRejectedDelta=1, messages="none", locUnchanged=false
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
+- `(3049, 3483, L0)` **Bookcase** (id `380`) [`Search`] -> OK: Interacted with Bookcase
+- `(3095, 3489, L0)` **Bank booth** (id `2213`) [`Use-quickly`] -> OK: Interacted with Bank booth
+- `(3081, 3430, L0)` **Spinning wheel** (id `2644`) [`Spin`] -> OK: Interacted with Spinning wheel
+- `(3084, 3428, L0)` **Sacks** (id `365`) [`Search`] -> OK: Interacted with Sacks
+- `(3087, 3431, L0)` **Rocks coal ore** (id `2096`) [`Mine`] -> OK: Interacted with Rocks coal ore
+- `(3087, 3431, L0)` **Rocks coal ore** (id `2096`) [`Prospect`] -> OK: Interacted with Rocks coal ore | "You examine the rock for ores..."
+- `(3082, 3427, L0)` **Door** (id `1530`) [`Open`] -> OK: Interacted with Door (loc state changed)
+- `(3085, 3429, L0)` **Open chest** (id `378`) [`Search`] -> OK: Interacted with Open chest
+- `(3085, 3429, L0)` **Open chest** (id `378`) [`Shut`] -> OK: Interacted with Open chest
+- `(3086, 3425, L0)` **Rocks tin ore** (id `2094`) [`Prospect`] -> OK: Interacted with Rocks tin ore | "You examine the rock for ores..."
+- `(3108, 3353, L0)` **Large door** (id `134`) [`Open`] -> OK: Interacted with Large door
+- `(3109, 3353, L0)` **Large door** (id `135`) [`Open`] -> OK: Interacted with Large door (loc state changed) | "The doors slam shut behind you."
+
+
+### Region Completed: Draynor Manor Crypt & Back Conservatory Exit (m48_152 & m48_52) — 2026-11-09T06:40:54.658Z
+- **Total Interactions Audited**: 1 (0 verified working, 1 anomalous/unimplemented)
+
+#### Anomalies / Missing Handlers / Unreachable Findings
+- **Coordinates & Region**: `(3077, 9775, L0)` — Draynor Manor Crypt & Back Conservatory Exit (m48_152 & m48_52)
+  - **Object & Action**: `Coffin` (id `2614`) — action `Open`
+  - **Expected vs Actual**: Expected: Interact "Open" with Coffin at (3077, 9775). Actual: success=true (Interacted with Coffin), opRejectedDelta=1, messages="none", locUnchanged=true
+  - **Impact**: **Cosmetic**
+
+#### Verified Working Interactions (Summary)
