@@ -6,6 +6,12 @@ A **launch hub for the actual 2004Scape reconstruction** plus an original, small
 
 This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009Scape. Their full MMO server backends, client assets, accounts and worlds are not embedded or deployed here. Upstream projects have different dependencies and licences. Do not present this as a deployment of their complete games.
 
+## Owner decision: exact RuneScape content parity for the private family game (8 Nov 2026)
+
+**[Canonical owner decision and risk acknowledgement](docs/decisions/2026-11-08-private-rune-parity-and-risk.md)** — the owner explicitly accepted **"maximal legal risk"** as a personal risk-tolerance statement for a **private, offline-first, family-only** project and requested **actual RuneScape, OSRS and RS3 content and gameplay reproduced as faithfully as possible**. The requested target is Jagex-authored quests, NPCs, dialogue, items, world geography, skills, combat, story and presentation — **not an inspired-by approximation, invented replacements or generic AI filler**. Earlier "original substitute" recommendations are **not the private parity objective**.
+
+**Distinct scopes:** this public repository's *current* homepage remains an external 2004Scape launcher with the separate original Woodlands demo. The existing private rev377 game and locked rev274 reference remain distinct; OSRS/RS3 are aspirational edition-specific research and implementation targets, **not currently implemented features**. Owner risk acceptance is **not a copyright licence, a legal waiver or permission to redistribute protected Jagex assets**. Keep source/rights provenance and public-release gates independent; do not commit protected caches or private family saves. See [rights register](research/parity/roadmap/CONTENT_RIGHTS_REGISTER.md).
+
 ## Current project-wide backlog and audit (2 Nov 2026)
 
 - **[Production rollback & non-disruption guard — Task 39](docs/rs377/CHATGPT_TASK_39_ROLLBACK_NONDISRUPTION_2026-11-02.md)** — read-only fail-closed host gate, offline regression tests and supervised rollback. No unattended restarts or live-world certification.
@@ -26,7 +32,7 @@ This project is **not** RuneScape, the 2004Scape client/server, OpenRSC, or 2009
 
 **[Full classic MMO build and visual-fidelity checklist](docs/FULL_CLASSIC_MMO_CHECKLIST.md)** — 114 auditable tasks across 13 sections, covering the classic 3D interface, world, skills, combat, quests, multiplayer, permanent player saves, mobile UX, hosting, testing and release. The checkboxes distinguish verified existing Woodlands features from everything still required.
 
-**BASE-02 decision: [Option A — 23 November 2004, revision 274](docs/REFERENCE_VERSION_274.md) is the adopted visual and gameplay reference**, and [the version lock](docs/REFERENCE_VERSION_LOCK.json) is checked in CI. Do not mix in 2007-derived OSRS interfaces, modern OSRS features, or later era content without an explicit version-change decision. We are reproducing the historically recognisable *structure and feel* using original/cleared assets, not treating Jagex-owned art as open source.
+**BASE-02 historical-reference decision:** [Option A — 23 November 2004, revision 274](docs/REFERENCE_VERSION_274.md) remains the adopted *2004 reference*, backed by [its separate version lock](docs/REFERENCE_VERSION_LOCK.json) and CI. Keep incompatible versions out of the 274 runtime. The **later, explicit 8 November owner decision** above adds private, version-specific **exact-content OSRS/RS3 parity ambitions**; it supersedes an "original-feel-only" statement *as the private product goal*, without granting rights or changing the independent public Woodlands implementation.
 
 Important: **2004Scape (November 2004)** and **official Old School RuneScape (2007-derived)** are distinct historical versions. Original game software being MIT-licensed does not license Jagex-owned artwork, music, names, quest content or branding. The checklist therefore differentiates *exact historical asset reproduction requiring rights* from an independent original game that faithfully evokes the classic feel. No additional hosting purchase or asset rights are assumed.
 
@@ -74,7 +80,7 @@ For your personalised revision-377 world, **log out and stop the game**, then do
 
 
 
-The [377 Content Factory](docs/377_CONTENT_FACTORY.md) uses a scheduled GitHub Actions runner to inventory public 377/community source *metadata* in rotating batches, track exact source hashes and prepare strictly original, user-authored integration specifications. [Agent instructions](AGENTS.md) tell Agy, Codex and Claude Code how to turn reviewed candidates into validated server content. See [generated packs](content-factory/generated/) as they appear. No Jagex-owned assets are copied or auto-installed; no discovered item is called playable before compiling and testing it in the real custom 377 world.
+The [377 Content Factory](docs/377_CONTENT_FACTORY.md) uses a scheduled GitHub Actions runner to inventory public 377/community source *metadata* in rotating batches, track exact source hashes and prepare strictly original, user-authored integration specifications. [Agent instructions](AGENTS.md) tell Agy, Codex and Claude Code how to turn reviewed candidates into validated server content. See [generated packs](content-factory/generated/) as they appear. No Jagex-owned assets are copied or auto-installed; no discovered item is called playable before compiling and testing it in the real custom 377 world. This describes **the current public research/implementation pipeline and redistribution boundary**, not a decision to substitute invented content for the owner's private exact-parity target.
 
 ### Native 377 content: compiled source and one-click local installation
 
