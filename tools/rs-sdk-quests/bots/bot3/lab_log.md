@@ -403,6 +403,25 @@
 - **Progression stalls / friction points**:
   - On Level 1 of the Black Knights' Fortress (`(3021, 3515)`), `bot.walkTo` can get blocked if the two adjacent doors at `(3019, 3515)` and `(3021, 3515)` are closed while a Level 33 Black Knight is in combat with the player. Replaced `bot.walkTo` on that corridor with direct `walkInRoom` + door open steps.
 
+### Milestone 19: Black Knights' Fortress Quest (`3 QP`, `+2,500 GP` Reward!)
+- **What we did & how long it took**:
+  1. Completed **Black Knights' Fortress (`3 QP`)** in **388.2 seconds**:
+     - Opened the Draynor cabbage patch gate `(3053, 3283)` and picked a normal `Cabbage` (`id 1965`).
+     - Equipped `Bronze med helm` and `Iron chainbody`, infiltrated the **Black Knights' Fortress** `(3016, 3514)`, entered the east banquet hall via the guard door `(3020, 3515)` (`"I'm going in anyway"`), climbed the L0→L1 ladder `(3022, 3518)`, pushed the secret wall `(3030, 3510)`, and dropped the normal `Cabbage` down the **Hole** `(3031, 3507)` into the Witch's cauldron to sabotage the invincible potion!
+     - Returned to **Sir Amik Varze** on Level 2 of the White Knights' Castle West Tower `(2961, 3337)` and claimed the **`2,500 GP`** reward (`> Sir Amik hands you 2500 coins. > Congratulations! Quest complete!`), raising `Coins` from `2` to **`2,502 GP`** and **Quest Points to `27 QP` across 12 Completed Quests**!
+- **Approximate XP/hour and GP/hour**:
+  - **Black Knights' Fortress (388.2s)**:
+    - **GP/hour**: `+2,500 GP` in 388.2s = **`~23,184 GP/hr`** (+ `3 QP`).
+- **Shop prices paid & items needed**:
+  - Used `Iron chainbody` (`210 GP` from Horvik), `Bronze med helm` (free spawn), and `Cabbage` (`id 1965`).
+- **Progression stalls / friction points**:
+  - None after opening the Draynor cabbage patch gate `(3053, 3283)`.
+
+### Session Pause — Client Disconnected (`status: "dead"` at Port Sarim Dock `(3028, 3220)`)
+- **What happened**:
+  - During `Pirate's Treasure` (`task-547`) while boarding Captain Tobias's ship at Port Sarim `(3028, 3220)` (`HP 51/51`, safe non-combat spot, holding `Coins x2502`, `White apron`, `Spade`), `http://localhost:7780/status/bot3` reported `"status": "dead", "inGame": false` (`stateAge: 719286`).
+  - Per Hard Rules ("Never touch or reload the bot's browser tab; if status shows 'dead', stop and report it in the log" & "Stop and ask me only if the client disconnects"), I have logged this state and paused all bot scripts until `bot3`'s browser client is reconnected.
+
 ---
 
 ## Summary Dataset: Skills, Methods, XP/hr, GP/hr & Balancing Findings
@@ -420,8 +439,8 @@
 | **Fishing** | 1 | Small Net Shrimp (Draynor `(3087, 3230)`) | 3 → 14 | **~73,322 XP/hr** | ~0 GP/hr | **Hazard**: Lv 7 Dark Wizards aggro at `z >= 3231`. Don't spam-click spot! |
 | **Fishing** | 2 | Bait Fishing Sardines (Draynor `(3087, 3227)`) | 14 → 22 | **~184,885 XP/hr** | -1,500 GP/hr | **2.52x faster** than Net Fishing; requires `Fishing rod` (5 GP) + `Fishing bait` (3 GP ea) from Port Sarim. |
 | **Cooking** | 1 | Cook's Assistant Quest + Cooking Shrimps | 1 → 31 | **~1,345,962 XP/hr** | ~0 GP/hr | Quest takes 168s (`+7,500` XP, Lv 1 → 30) and unlocks Castle Range. |
-| **Cooking** | 2 | Cooking Raw Chicken (Lumbridge Castle Range) | 31 → 37 | **~1,185,250 XP/hr** | ~0 GP/hr | Zero burns at Lv 31+; heals 3 HP per chicken. |
-| **Thieving** | 1 | Pickpocketing Men (Lumbridge/Al Kharid) | 5 → 22 | **~120,599 XP/hr** | **~1,809 GP/hr** | Must wait ~4.5s after stun or server discards op (`opRejectedCount`). |
+| **Cooking** | 2 | Cooking Raw Chicken (Lumbridge Castle Range) | 31 → 38 | **~1,185,250 XP/hr** | ~0 GP/hr | Zero burns at Lv 31+; heals 3 HP per chicken. |
+| **Thieving** | 1 | Pickpocketing Men (Lumbridge/Al Kharid) | 5 → 24 | **~120,599 XP/hr** | **~1,809 GP/hr** | Must wait ~4.5s after stun or server discards op (`opRejectedCount`). |
 | **Thieving** | 2 | East Varrock Tea Stall (`(3268, 3410)`) | 20 → 23 | **~180,000 XP/hr** | ~0 GP/hr | `400` XP/steal (~7.5s respawn), zero stun damage, free 3 HP heal (`Cup of tea`). |
 | **Melee Combat** | 1 | Killing Chickens (`(3231, 3297)`) | 1 → 7 | **~62,585 XP/hr** | ~0 GP/hr | Safe (max hit 0), drops `Raw chicken`, `Bones`, `Feather`. |
 | **Melee Combat** | 2 | Killing Lumbridge Cows (`(3255, 3278)`) | 6 → 13 | **~114,813 XP/hr** | ~2,600 GP/hr (hides) | **1.83x faster** than Chickens; drops `Cowhide` + `Bones` + `Raw beef`. |
@@ -434,7 +453,7 @@
 | **Prayer** | 3 | The Restless Ghost Quest (`1 QP`) | 10 → 48 | **~234,375 XP/hr** | 0 GP/hr | `+28,125` XP in 432s — unlocks Protect from Magic/Missiles/Melee! |
 | **Mining** | 1 | Copper & Tin Ore (SE Varrock `(3286, 3365)`) | 1 → 25 | **~221,821 XP/hr** | ~0 GP/hr | 1-tick rock extraction at Lv 15+; `437.5` XP/ore. |
 | **Mining** | 2 | Iron Ore (SE Varrock `(3286, 3368)`) | 25 → 33 | **~447,265 XP/hr** | ~0 GP/hr | **2.02x faster** than Copper/Tin (`875` XP/ore + fast respawn). |
-| **Mining** | 3 | Doric's Quest + Rimmington Clay/Copper/Iron | 33 → 55 | **~621,126 XP/hr** | **~3,042 GP/hr** | `+36,750` XP & `+180 GP` in 213s; unlocks Doric's anvils. |
+| **Mining** | 3 | Doric's Quest + Rimmington Clay/Copper/Iron | 33 → 56 | **~621,126 XP/hr** | **~3,042 GP/hr** | `+36,750` XP & `+180 GP` in 213s; unlocks Doric's anvils. |
 | **Smithing** | 1a | Smelting Bronze Bars (Lumbridge Furnace) | 1 → 9 | **~202,321 XP/hr** | ~0 GP/hr | 100% success (`155` XP/bar), furnace phase only (~35k XP/hr w/ walk). |
 | **Smithing** | 1b | Smelting Iron Bars (Al Kharid Furnace) | 18 → 22 | **~49,329 XP/hr** | ~0 GP/hr | ~53–60% base success rate (`312.5` XP/bar). |
 | **Smithing** | 2a | Smithing Bronze Daggers (Varrock West Anvil) | 9 → 18 | **~159,176 XP/hr** | **~2,630 GP/hr** | `312.5` XP/bar; sells to Varrock Swordshop for ~5.17 GP each. |
@@ -442,7 +461,7 @@
 | **Smithing** | 3 | The Knight's Sword Quest (`1 QP`) | 26 → 82 | **~2,370,867 XP/hr** | -20 GP | `+318,750` XP in 484s — jumps straight to Level 82 Smithing (Adamantite)! |
 | **Crafting** | 1 | Sheep Shearer + Spinning 20 Balls of Wool | 1 → 25 | **~47,368 XP/hr** | +60 GP (quest) | Spinning phase (`62.5` XP/ball); Quest adds `+4,375` XP (Lv 1 → 25). |
 | **Crafting** | 2 | Gem Cutting via Gem Trader Arbitrage | 25 → 30 | **~909,210 XP/hr** | **~139,307 GP/hr** | `+450 GP` & `+2,937.5` XP in 11.6s (`Uncut sapphire` 25→175 GP, `Uncut emerald` 50→350 GP). |
-| **Crafting** | 3 | Leather Cowl Crafting (Al Kharid Tanner `679`) | 30 → 38 | **~562,660 XP/hr** | -1 GP/hide | **11.9x faster** than Spinning Wool (`462.5` XP/cowl) + Goblin Diplomacy (`+5,000` XP). |
+| **Crafting** | 3 | Leather Cowl Crafting (Al Kharid Tanner `679`) | 30 → 39 | **~562,660 XP/hr** | -1 GP/hide | **11.9x faster** than Spinning Wool (`462.5` XP/cowl) + Goblin Diplomacy (`+5,000` XP). |
 
 ### 2. Key Economy & Progression Balancing Findings
 1. **Al Kharid Gem Trader Arbitrage (Verified Live: +450 GP in 11.6s, Multi-Minute Restock)**: The Gem Trader `(3286, 3211)` sells `Uncut sapphire` for `25 GP` (stock 1) and `Uncut emerald` for `50 GP` (stock 1), while buying cut `Sapphire` for `175 GP` and cut `Emerald` for `350 GP`. Starting with `25 GP` and a `1 GP Chisel` at Level 25 Crafting, cutting the Sapphire raised Crafting to Level 28 (`>= 27` needed for Emerald) and gave `175 GP`, which immediately funded buying & cutting the Emerald for `350 GP` (`475 GP` total = **+450 GP profit** in 11.6s), financing our `Iron scimitar` (`112 GP`) and `Iron platelegs` (`280 GP`). Re-checking 4 minutes later showed both uncut gems still at `0` stock, confirming a multi-minute restock timer.
@@ -450,5 +469,5 @@
 3. **Furnace vs. Anvil Separation**: Varrock has mines and anvils (`(3188, 3426)`) while Lumbridge and Al Kharid have furnaces (and Al Kharid lacks an anvil), creating a heavy walking bottleneck for early Smithing unless players mine at Al Kharid/SE Varrock, smelt in Al Kharid/Lumbridge, bank, and smith at Varrock West.
 4. **Draynor Fishing Spot Death Trap**: Level 7 Dark Wizards `(3084, 3236)` aggro onto low-level players clicking the northern fishing spots (`z >= 3231`) at Draynor `(3087, 3230)`. Staying on the southern spot `(3087, 3227)` avoids aggro.
 5. **Goblin Village `npc_findhero` Drop Table Mechanic**: Because Red and Green Goblins in Goblin Village `(2956, 3500)` fight each other, any Goblin that took >=50% of its damage from another Goblin fails `npc_findhero` on death and drops nothing. Farming `Goblin mail` for *Goblin Diplomacy* is far faster on Lumbridge Level 2 Goblins `(3248, 3238)` or full-HP Goblins.
-6. **Current Character State (`bot3`)**: Combat Level 65 (`HP 48/48`), Falador `(2966, 3370)`, Total Skill Level **578** across 15 trained skills (`Smithing 82`, `Attack 72`, `Mining 55`, `Strength 51`, `Prayer 48`, `Hitpoints 48`, `Firemaking 39`, `Woodcutting 38`, `Crafting 38`, `Cooking 37`, `Magic 33`, `Defence 28`, `Thieving 23`, `Fishing 22`, `Fletching 11`), **11 Quests Complete (`24 QP`)**: `Cook's Assistant`, `Sheep Shearer`, `Romeo & Juliet`, `Rune Mysteries`, `The Restless Ghost`, `Witch's Potion`, `Doric's Quest`, `The Knight's Sword`, `Goblin Diplomacy`, `Vampyre Slayer`, `Ernest the Chicken`.
+6. **Current Character State (`bot3`)**: Combat Level 69 (`HP 51/51`), Rimmington `(2941, 3195)`, Total Skill Level **596** across 15 trained skills (`Smithing 82`, `Attack 72`, `Strength 57`, `Mining 56`, `Hitpoints 51`, `Prayer 48`, `Firemaking 39`, `Crafting 39`, `Woodcutting 38`, `Cooking 38`, `Defence 36`, `Magic 33`, `Thieving 24`, `Fishing 22`, `Fletching 11`), **12 Quests Complete (`27 QP`)**: `Cook's Assistant`, `Sheep Shearer`, `Romeo & Juliet`, `Rune Mysteries`, `The Restless Ghost`, `Witch's Potion`, `Doric's Quest`, `The Knight's Sword`, `Goblin Diplomacy`, `Vampyre Slayer`, `Ernest the Chicken`, `Black Knights' Fortress`.
 

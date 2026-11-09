@@ -35,8 +35,11 @@ export const hunt: Quest = {
         }
       }
 
-      if ((sdk.getState()?.player?.worldX ?? 3050) >= 2980) {
+      if ((sdk.getState()?.player?.worldX ?? 3050) >= 2980 || ((sdk.getState()?.player?.worldZ ?? 3150) > 3180)) {
         if (has(sdk, /^karamjan? rum$/i)) return true;
+        if ((sdk.getState()?.player?.worldX ?? 3050) < 2990) {
+          await bot.walkTo(3007, 3230, 3);
+        }
         await bankJunk(c, KEEP_RE);
         await withdrawFromDraynorBank(c, [/^coins$/i, /^iron scimitar$/i, /^bronze sword$/i, /^wooden shield$/i, /^white apron$/i, /^spade$/i]);
         if (has(sdk, /^iron scimitar$/i)) await bot.equipItem(/^iron scimitar$/i);
@@ -92,7 +95,7 @@ export const hunt: Quest = {
         }
       }
 
-      if ((sdk.getState()?.player?.worldX ?? 3050) < 2970) {
+      if ((sdk.getState()?.player?.worldX ?? 3050) < 2970 && (sdk.getState()?.player?.worldZ ?? 3250) < 3180) {
         const fillBananaCrateForLuthas = async (withRum: boolean) => {
           const wl = await bot.walkTo(2939, 3154, 2);
           if (!wl?.success) { await openNearbyDoors(c, 2939, 3152, 2); await bot.walkTo(2939, 3154, 2); }
