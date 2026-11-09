@@ -1,0 +1,41 @@
+name: JoshRS to RS-SDK compatibility audit
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tools/rs-sdk-patch-bridge/**'
+      - 'content-patches/**'
+      - '.github/workflows/sdk-compatibility.yml'
+  push:
+    paths:
+      - 'tools/rs-sdk-patch-bridge/**'
+      - 'content-patches/**'
+      - '.github/workflows/sdk-compatibility.yml'
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: joshrs
+      - uses: actions/checkout@v4
+        with:
+          repository: MaxBittker/rs-sdk
+          path: rs-sdk
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Audit test (read-only)
+        run: node --test joshrs/tools/rs-sdk-patch-bridge/audit.test.mjs
+      - name: Compare all patch hunks against SDK content (read-only)
+        run: node joshrs/tools/rs-sdk-patch-bridge/audit.mjs --source "$PWD/joshrs" --sdk "$PWD/rs-sdk" --json > rs-sdk-compatibility-report.json
+      - name: Summarise classifications
+        run: |
+          node -e "const r=require('./rs-sdk-compatibility-report.json'); console.log(JSON.stringify({sourceCommit:r.sourceCommit,sdkCommit:r.sdkCommit,patchCounts:r.counts,bundleCounts:r.bundleCounts},null,2));"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rs-sdk-compatibility-report
+          path: rs-sdk-compatibility-report.json
+          retention-days: 14
