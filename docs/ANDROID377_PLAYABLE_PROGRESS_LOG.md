@@ -430,3 +430,23 @@ reply is refused instead of being mis-sliced.
 exist and are tested separately), reconnect, and cache loading. The native client has not
 yet logged in to the live engine — only to a loopback test server.
 
+## 15. Round 11 — post-login read loop
+
+`protocol/GameSession377.kt` reads the authenticated stream: it seeds the decryptor with
+`Isaac(seed + 50)` in exactly one place, feeds a [FrameAccumulator], and returns decoded
+`ServerProt` frames.
+
+Tests (CI-gated) prove:
+
+- a batch of three server frames decodes to the right opcodes and payloads;
+- **byte-at-a-time delivery** keeps the cipher in step, because a partial frame must not
+  consume ISAAC output;
+- a partial frame buffers without emitting;
+- tampering with the seed delta produces a `ProtocolViolation` — the off-by-delta bug that
+  would otherwise desynchronise silently and permanently;
+- end of stream returns empty instead of spinning.
+
+**Still absent:** wiring the loop to `TcpTransport` in a live session, reconnect/backoff,
+cache loading, and the entire renderer. The native client has not yet held a session
+against the live engine.
+
