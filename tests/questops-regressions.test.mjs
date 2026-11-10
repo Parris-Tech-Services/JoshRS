@@ -130,3 +130,17 @@ test('quest audit counts quest-local NPC/LOC/OBJ definitions and treats missing 
     assert.equal(row.status, 'BLOCKED', p.stdout);
     assert.deepEqual(row.missingLoc, ['golem_gate']);
 });
+
+
+test('map-definition importer refuses existing numeric IDs with different 377 meanings', (t) => {
+    const { source, target } = fixture(t);
+    put(source, 'pack/npc.pack', '1=golem\n');
+    put(target, 'pack/npc.pack', '1=sheep\n');
+    put(source, 'maps/m1_1.jm2', npcMap(['0 0 1: 1']));
+    put(target, 'maps/m1_1.jm2', npcMap(['0 0 1: 1']));
+    const original = readFileSync(join(target, 'pack/npc.pack'), 'utf8');
+    const p = run('python3', 'port-map-definitions.py', target, source, '--dry-run');
+    assert.equal(p.status, 1, p.stdout + p.stderr);
+    assert.match(p.stdout, /BLOCKED.*wrong-identity IDs/);
+    assert.equal(readFileSync(join(target, 'pack/npc.pack'), 'utf8'), original);
+});
