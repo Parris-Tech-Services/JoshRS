@@ -1,0 +1,145 @@
+// Royal Trouble (22 May 2006) — independently written, original dialogue.
+// NO protected dialogue or new third-party caches/assets. JoshRS rev377.
+ // GAMEPLAY BOUNDARY: authentic investigation phase only (through royal
+// permission to enter the dungeon). No dungeon, boss, stolen-box/letter,
+// quest-point, coin, XP or kingdom-production reward is fabricated here.
+// Native 377 has the story NPCs but not the Royal Trouble cave/boss assets.
+// The Throne completion varp stage gate needs local evidence before deployment.
+
+[opnpc1,misc_advisor_ghrim]
+if (map_members = ^false) {
+    mes(^mes_members_feature);
+    return;
+}
+switch_int (%joshrs_royaltrouble) {
+    case ^rt_unstarted :
+        // Fail closed for characters with no Throne progress at all.
+        // The threshold requires independent verification (see README).
+        if (%misc_quest < ^rt_throne_completion_hold) {
+            ~chatnpc("<p,neutral>These matters belong to the appointed regent.|Please finish your duties for King Vargas first.");
+            return;
+        }
+        ~chatnpc("<p,neutral>Our island and Etceteria are arguing over missing supplies.|Both courts blame one another, and neither will listen to reason.");
+        def_int $help = ~p_choice2("I will look into the dispute.", 1, "Not right now.", 2);
+        if ($help = 1) {
+            %joshrs_royaltrouble = ^rt_ghrim_briefing;
+            ~chatnpc("<p,neutral>Thank you. Ask Prince Brand or Princess Astrid for their view.|They know the two courts better than anyone.");
+            mes("Royal Trouble: investigate the quarrel between the two islands.");
+        } else {
+            ~chatnpc("<p,neutral>The trouble will be here when you return.");
+        }
+    case ^rt_king_mystery :
+        ~chatnpc("<p,neutral>Two islands reporting the same thefts? That suggests a third party.|Ask the sailor at our docks if any strangers have landed recently.");
+        %joshrs_royaltrouble = ^rt_ghrim_docks_referral;
+    case ^rt_ghrim_briefing :
+        ~chatnpc("<p,neutral>Speak to Brand or Astrid. Their ideas may help calm the courts.");
+    case ^rt_ghrim_docks_referral, ^rt_sailor_report :
+        ~chatnpc("<p,neutral>The dockside sailor should know who has been visiting.|Bring whatever you discover back to King Vargas.");
+    case default :
+        ~chatnpc("<p,neutral>Investigate carefully. An accusation without evidence could start a war.");
+}
+
+[opnpc1,misc_prince_brand] @joshrs_rt_royal_child;
+[opnpc1,misc_princess_astrid] @joshrs_rt_royal_child;
+
+[label,joshrs_rt_royal_child]
+if (%joshrs_royaltrouble = ^rt_ghrim_briefing) {
+    ~chatnpc("<p,neutral>A wedding might make the kings and queens behave, but a wedding won't explain the thefts.|Ask Father about the missing supplies.");
+    %joshrs_royaltrouble = ^rt_royal_children;
+    mes("Royal Trouble: speak to King Vargas about the missing supplies.");
+    return;
+}
+if (%joshrs_royaltrouble = ^rt_unstarted) {
+    ~chatnpc("<p,neutral>Our family has too much on its mind. Perhaps Advisor Ghrim can explain.");
+    return;
+}
+~chatnpc("<p,neutral>Perhaps someone besides our neighbours is responsible.|Keep looking for evidence.");
+
+[opnpc1,misc_king_vargas]
+if (%joshrs_royaltrouble = ^rt_royal_children) {
+    ~chatnpc("<p,neutral>Tools, crops and other goods have vanished from my subjects.|Find out what my people have witnessed.");
+    %joshrs_royaltrouble = ^rt_king_investigation;
+    mes("Royal Trouble: ask a Miscellania worker about the thefts.");
+    return;
+}
+if (%joshrs_royaltrouble = ^rt_misc_worker) {
+    ~chatnpc("<p,neutral>So our workers accuse Etceteria. I cannot start a war on a rumour.|Go and speak to Queen Sigrid herself.");
+    %joshrs_royaltrouble = ^rt_king_queen_referral;
+    return;
+}
+if (%joshrs_royaltrouble = ^rt_queen_report) {
+    ~chatnpc("<p,neutral>Both islands are missing goods, and each blames the other?|Please ask Ghrim where to begin a proper investigation.");
+    %joshrs_royaltrouble = ^rt_king_mystery;
+    return;
+}
+if (%joshrs_royaltrouble = ^rt_sailor_report) {
+    ~chatnpc("<p,neutral>Strangers have been exploring underground?|You have my permission to investigate the dungeon beneath the castle.");
+    %joshrs_royaltrouble = ^rt_king_dungeon_permission;
+    mes("Royal Trouble: permission granted, but the new dungeon content is not yet implemented.");
+    return;
+}
+if (%joshrs_royaltrouble = ^rt_king_dungeon_permission) {
+    ~chatnpc("<p,neutral>Your permission still stands.|Do not confront the culprit without sufficient preparation.");
+    return;
+}
+if (%joshrs_royaltrouble = ^rt_unstarted) {
+    ~chatnpc("<p,neutral>Advisor Ghrim can inform the regent about current affairs.");
+    return;
+}
+~chatnpc("<p,neutral>We need evidence, not another quarrel. Continue your investigation.");
+
+[opnpc1,misc_gardener] @joshrs_rt_misc_worker;
+[opnpc1,misc_lumberjack] @joshrs_rt_misc_worker;
+[opnpc1,misc_miner] @joshrs_rt_misc_worker;
+[opnpc1,misc_fisherman] @joshrs_rt_misc_worker;
+
+[label,joshrs_rt_misc_worker]
+if (%joshrs_royaltrouble = ^rt_king_investigation) {
+    ~chatnpc("<p,neutral>We refused a demand for more tribute. Then our supplies vanished overnight.|We assumed the visitors from Etceteria took them, but no one saw a theft.");
+    %joshrs_royaltrouble = ^rt_misc_worker;
+    mes("Royal Trouble: report the worker's account to King Vargas.");
+    return;
+}
+~chatnpc("<p,neutral>There is work to be done. I hope the missing goods turn up.");
+
+[opnpc1,misc_queen_sigrid]
+if (%joshrs_royaltrouble = ^rt_king_queen_referral) {
+    ~chatnpc("<p,neutral>My people have lost goods as well. King Vargas cannot blame us without proof.|Speak to the citizens of Etceteria and hear their complaints.");
+    %joshrs_royaltrouble = ^rt_queen_investigation;
+    mes("Royal Trouble: interview an Etceterian citizen.");
+    return;
+}
+if (%joshrs_royaltrouble = ^rt_etc_worker) {
+    ~chatnpc("<p,neutral>Now you have heard both versions. Neither island has an army to steal supplies.|Find the true culprit before the courts turn against each other.");
+    %joshrs_royaltrouble = ^rt_queen_report;
+    mes("Royal Trouble: return to King Vargas with both accounts.");
+    return;
+}
+if (%joshrs_royaltrouble = ^rt_unstarted) {
+    ~chatnpc("<p,neutral>Our island has grievances of its own. Perhaps you should consult Advisor Ghrim.");
+    return;
+}
+~chatnpc("<p,neutral>Our people want peace. Find the real thief and we can settle this.");
+
+[opnpc1,misc_etc_man_1] @joshrs_rt_etc_worker;
+[opnpc1,misc_etc_man_2] @joshrs_rt_etc_worker;
+[opnpc1,misc_etc_woman_1] @joshrs_rt_etc_worker;
+[opnpc1,misc_etc_woman_2] @joshrs_rt_etc_worker;
+
+[label,joshrs_rt_etc_worker]
+if (%joshrs_royaltrouble = ^rt_queen_investigation) {
+    ~chatnpc("<p,neutral>Our stores were taken after visitors demanded tribute.|They claimed to speak for Miscellania, but we never saw where the thieves went.");
+    %joshrs_royaltrouble = ^rt_etc_worker;
+    mes("Royal Trouble: report the Etceterian account to Queen Sigrid.");
+    return;
+}
+~chatnpc("<p,neutral>We have little to spare. Please keep the two islands out of another war.");
+
+[opnpc1,misc_sailor]
+if (%joshrs_royaltrouble = ^rt_ghrim_docks_referral) {
+    ~chatnpc("<p,neutral>A band of young travellers arrived recently.|They asked about the underground settlement and went towards the castle.");
+    %joshrs_royaltrouble = ^rt_sailor_report;
+    mes("Royal Trouble: ask King Vargas about dungeon access.");
+    return;
+}
+~chatnpc("<p,neutral>I've seen new faces at the docks. Ask Advisor Ghrim what is troubling the court.");
