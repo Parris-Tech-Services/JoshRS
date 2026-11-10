@@ -75,3 +75,25 @@ count.
 2. Lumbridge Castle → see Sigmund beside Duke Horacio, open his dialogue
 3. Advance one quest stage → logout → login → confirm the stage persisted
 4. Only then can any quest be reported VERIFIED PLAYABLE
+
+## A third route: prove persistence without a client
+
+Character design is only a blocker for *visual* verification. Persistence can be tested at the
+library level instead:
+
+- `src/engine/entity/PlayerLoading.ts` exposes `PlayerLoading.load(name, sav, client)` and the
+  constants `SAV_MAGIC = 0x2004`, `SAV_VERSION = 7`
+- `Player.save()` (`src/engine/entity/Player.ts:189`) writes the save, and the varp array is part of
+  the payload
+
+So a test could: construct a player, set a stage varp, `save()`, reload through `PlayerLoading.load`,
+and assert the value survived. That proves storage and retrieval of quest stage — the exact thing
+"progress survives logout and restart" claims — **without a browser**.
+
+The obstacle is that `PlayerLoading.load` touches `World.currentTick`, so the world must be
+initialised first. Booting the full world inside a unit test is heavy but not impossible; the engine's
+own test setup may already do it.
+
+This route is worth trying before more client automation, because it tests the property that matters
+and does not depend on the character-design screen at all.
+
