@@ -81,7 +81,7 @@ for (const name of readdirSync(questsDir).filter((n) => PORTED.has(n)).sort()) {
 
     // Interaction handlers name a symbol and a registry: opnpc -> npc, oploc -> loc, opheld -> obj.
     // Treating them as one namespace produced false "missing NPC" reports for objects and scenery.
-    const byKind = (k) => [...new Set([...text.matchAll(new RegExp(`\\[op${k}\\d+,([a-z0-9_]+)\\]`, 'gi'))].map((m) => m[1]))];
+    const byKind = (k) => [...new Set([...text.matchAll(new RegExp(`\\[op${k}u?\\d*,\\s*([a-z0-9_]+)\\]`, 'gi'))].map((m) => m[1]))];
     const npcRefs = byKind('npc');
     const locRefs = byKind('loc');
     const objRefs = byKind('held');

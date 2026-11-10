@@ -87,7 +87,8 @@ def main() -> int:
             continue
         for f in (q / "scripts").glob("*.rs2"):
             text = f.read_text(errors="ignore")
-            wanted |= set(re.findall(r"\[op(?:npc\d+|held\d+|loc\d+),([a-z0-9_]+)\]", text, re.I))
+            # NPC handlers only, including the "u" variants ([opnpcu,...]) used heavily by quests.
+            wanted |= set(re.findall(r"\[opnpcu?\d*,\s*([a-z0-9_]+)\]", text, re.I))
 
     to_add, refused, no_def = [], [], []
     for name in sorted(wanted):
