@@ -70,3 +70,16 @@ export function handlerRefs(text) {
     };
     return { npc: grab('npc'), loc: grab('loc'), obj: grab('held|obj') };
 }
+
+/** imported-maps.txt ("<name>.jm2 <sha256>" per line, '#' comments) -> Map<name, sha256>. */
+export function parseManifest(text) {
+    const m = new Map();
+    for (const raw of text.split(/\r?\n/)) {
+        const line = raw.replace(/#.*/, '').trim();
+        if (!line) continue;
+        const [name, sha = ''] = line.split(/\s+/);
+        if (name.endsWith('.jm2')) m.set(name, sha);
+    }
+    return m;
+}
+export const MANIFEST = 'imported-maps.txt';

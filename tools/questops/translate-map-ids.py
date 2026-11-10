@@ -67,8 +67,22 @@ def main() -> int:
     dry = "--dry-run" in sys.argv
 
     tmaps_dir, smaps_dir = target / "maps", source / "maps"
+<<<<<<< HEAD
+    # Only maps actually imported may be rewritten. Judging by filename overlap also caught native
+    # 274 maps that share a name with a 377 map, and rewriting those corrupts original areas.
+    manifest = target / "imported-maps.txt"
+    if not manifest.exists():
+        print(f"BLOCKED: {manifest} missing; run record-imported-maps.mjs first")
+        return 2
+    # Lines are "<map> <sha256>" with "#" comments; taking the whole line as a filename matched nothing.
+    names = {l.split()[0] for l in manifest.read_text().splitlines()
+             if l.strip() and not l.lstrip().startswith("#")}
+    imported = sorted(f for f in tmaps_dir.glob("*.jm2") if f.name in names)
+    print(f"manifest maps: {len(imported)}")
+=======
     imported = sorted(f for f in tmaps_dir.glob("*.jm2") if (smaps_dir / f.name).exists())
     print(f"imported maps: {len(imported)}")
+>>>>>>> origin/main
 
     rev = "274"
     wj = target.parent / "engine/data/config/world.json"

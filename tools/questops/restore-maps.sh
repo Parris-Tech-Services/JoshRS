@@ -11,6 +11,10 @@
 # The `.jm2` format is text with a stable `==== MAP ====` header across both revisions, so a map can
 # usually be dropped in unchanged. Verify by booting the engine and checking for parse errors.
 #
+# Every copied map is recorded in <target-content>/imported-maps.txt ("<name>.jm2 <sha256>", one per
+# line). That manifest is the only record of which maps came from the source revision: native 274 maps
+# share names with 377 maps, and checking those against the 377 packs reports false mismatches.
+#
 # Usage:
 #   restore-maps.sh <source-content-dir> <target-content-dir> [--dry-run]
 set -Eeuo pipefail
@@ -22,6 +26,7 @@ smaps="$src/maps"; dmaps="$dst/maps"
 [[ -d "$smaps" ]] || { echo "BLOCKED: no maps in $src" >&2; exit 2; }
 [[ -d "$dmaps" ]] || { echo "BLOCKED: no maps in $dst" >&2; exit 2; }
 
+manifest="$dst/imported-maps.txt"
 copied=0; skipped=0
 for f in "$smaps"/*.jm2; do
   base="$(basename "$f")"
@@ -32,6 +37,7 @@ for f in "$smaps"/*.jm2; do
     echo "would copy $base"
   else
     cp -p "$f" "$dmaps/$base"
+    printf '%s %s\n' "$base" "$(sha256sum "$f" | cut -d' ' -f1)" >> "$manifest"
   fi
   copied=$((copied+1))
 done
@@ -64,5 +70,6 @@ PY
 
 echo
 echo "copied=$copied skipped=$skipped"
+[[ "$dry" == "--dry-run" ]] || echo "manifest: $manifest"
 echo "target maps now: $(ls -1 "$dmaps"/*.jm2 2>/dev/null | wc -l)"
 [[ "$dry" == "--dry-run" ]] || echo "restart the world to repack; watch the log for map parse errors"
