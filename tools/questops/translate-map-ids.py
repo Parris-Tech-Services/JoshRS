@@ -107,31 +107,44 @@ def main() -> int:
 
         defs = index_definitions(source, kind)
         next_id = max(t_pack) + 1
+        # Reuse an existing target ID when the same symbol was already imported. Creating a
+        # second ID/name pair would produce a duplicate registry symbol and fail packing.
+        by_name = {name: id for id, name in t_pack.items()}
         remap: dict[int, int] = {}
+        allocations: dict[int, tuple[int, str]] = {}
         missing = []
         for old, sym in sorted(conflicts.items()):
+            if sym in by_name:
+                remap[old] = by_name[sym]
+                continue
             if sym not in defs:
                 missing.append((old, sym))
                 continue
             remap[old] = next_id
+            allocations[old] = (next_id, sym)
+            by_name[sym] = next_id
             next_id += 1
 
         print(f"{kind}: conflicts={len(conflicts)} translatable={len(remap)} "
               f"no-definition={len(missing)} new ids {min(remap.values()) if remap else '-'}..{next_id - 1}")
         if missing:
             print(f"  cannot translate (no definition): {missing[:5]}")
+            # Do not make a partial rewrite that would leave this map kind unresolved.
+            return 1
         total_conflicts += len(remap)
         if dry or not remap:
             continue
 
-        # Register the source symbols under the new ids.
-        with (target / f"pack/{kind}.pack").open("a") as fh:
-            for old, new in remap.items():
-                fh.write(f"{new}={conflicts[old]}\n")
-        t_all = target / "scripts/_unpack" / rev / f"all.{kind}"
-        with t_all.open("a") as fh:
-            for old, new in remap.items():
-                fh.write("\n" + defs[conflicts[old]])
+        # Only newly allocated symbols need new pack and definition entries. Reusing an
+        # already registered symbol must never duplicate its definition.
+        if allocations:
+            with (target / f"pack/{kind}.pack").open("a") as fh:
+                for _, (new, sym) in allocations.items():
+                    fh.write(f"{new}={sym}\n")
+            t_all = target / "scripts/_unpack" / rev / f"all.{kind}"
+            with t_all.open("a") as fh:
+                for _, (_, sym) in allocations.items():
+                    fh.write("\n" + defs[sym])
 
         # Rewrite only the imported maps, only in this kind's section.
         rewritten = 0
@@ -155,7 +168,7 @@ def main() -> int:
             if changed:
                 f.write_text("".join(lines))
                 rewritten += 1
-        print(f"  registered {len(remap)} symbols, rewrote {rewritten} maps")
+        print(f"  registered {len(allocations)} new symbols, reused {len(remap) - len(allocations)} existing, rewrote {rewritten} maps")
 
     print(f"\ntotal translated references: {total_conflicts}")
     if not dry:
