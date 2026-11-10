@@ -122,3 +122,37 @@ edit content → npm run build (MUST exit 0) → run.ts <scenario> → PASS/FAIL
 The first gate currently fails for reasons outside the content's control. Until the cache question is
 answered, **no scenario result for these quests can be produced**, and no quest can progress past
 BLOCKED.
+
+---
+
+## Measured: the cache gap is models, and it is small in bytes but absolute in content
+
+| file | dev274 (`~/dev274/engine/data/pack`) | rev-377 (`~/js377/engine/data/pack`) |
+|---|---|---|
+| `main_file_cache.idx0` | 54 B | 54 B |
+| `main_file_cache.idx1` (**models**) | **27,702 B** | **89,562 B** |
+| `main_file_cache.idx4` (maps/configs) | 6,048 B | 8,340 B |
+
+`idx0` is a placeholder in both, so configs live in the world database, not the cache. The material gap
+is **`idx1`: models**. The 274 cache simply does not contain the models the 2005 scenery and NPCs use,
+which is why the packer kept asking for animations that resolve through model data.
+
+Copying `idx1` across is not a safe fix: model ids are numeric and the 274 content references its own
+numbering, so a straight copy would silently repoint existing 274 objects at 377 models — the same
+class of identity failure as the map ids, but with no manifest to bound it.
+
+## Decision required
+
+This is a fork, not a task:
+
+- **A. Run the ported content on a 377 cache** — what the other agents concluded weeks ago
+  ("ported 2005-06 quests compile natively on 377, not 274"). Evidence gathered here independently
+  agrees: the content packs on 377 and cannot pack on 274.
+- **B. Bring 377 cache assets into a 274 world** — possible only with a full id-translation pass over
+  models as well as maps, and with the assets present locally and never committed.
+
+Option A is cheap and already half-done elsewhere. Option B is what the last six rounds were
+implicitly attempting, and the measurements above are the first honest evidence of its cost.
+
+**Nothing below this line is verified in a running world, and no quest is SCRIPT-VERIFIED or
+VERIFIED PLAYABLE.**
