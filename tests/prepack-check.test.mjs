@@ -156,3 +156,16 @@ test('keys the 274 packer rejects (multivar/multiloc) are reported; digit-leadin
     assert.deepEqual(issues.map((i) => i.key), ['multivar', 'multiloc']);
     assert.equal(acceptedKeys(null, 'loc'), null);                              // no engine source: not checked, not passed
 });
+
+test('selfcheck: refuses the live world, passes a clean tree, fails and names a broken one', () => {
+    const run = (...a) => spawnSync(process.execPath, ['tools/questops/selfcheck.mjs', ...a], { encoding: 'utf8' });
+    assert.equal(run('/home/x/lc274/content').status, 2);
+    const clean = tree({ ...BASE, 'scripts/general/scripts/quests.rs2': '[proc,count_questpoints]()(int)\nreturn(0);\n' });
+    const ok = run(clean);
+    assert.equal(ok.status, 0, ok.stdout);
+    assert.match(ok.stdout, /SKIPPED imported maps\s+no --source/);
+    const broken = tree({ ...BASE, 'scripts/general/scripts/quests.rs2': '[proc,count_questpoints]()(int)\nreturn(0);\n', 'scripts/_unpack/225/all.npc': '[hans]\nmodel1=nonexistent\n' });
+    const bad = run(broken);
+    assert.equal(bad.status, 1);
+    assert.match(bad.stdout, /FAIL\s+prepack/);
+});

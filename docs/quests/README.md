@@ -3,6 +3,11 @@
 Quest work happens one batch at a time, each with its own evidence file. This page is the index
 and the summary, so nobody has to read fourteen files to find out where things stand.
 
+**Porting 377 quests into the 274 dev world?** Follow [SELF_CHECK_LOOP.md](SELF_CHECK_LOOP.md). Start with
+`node tools/questops/selfcheck.mjs <dev274 content> --source <377 content>`: one command, one summary of
+the static checks. A quest is SCRIPT-VERIFIED only when those pass, `npm run build` exits 0, and the
+server and client checks pass.
+
 ## Method, and the four times it was wrong
 
 The rules below each exist because an earlier version produced a false result:
