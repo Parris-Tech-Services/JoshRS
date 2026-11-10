@@ -8041,3 +8041,8 @@
 - COPIED_MODEL obj_twocats_mouse_toy (local only - never commit .ob2 files)
 - COPIED_MODEL obj_twocats_mouse_toy_manwear (local only - never commit .ob2 files)
 - COPIED_MODEL obj_wanted_solus_trophy (local only - never commit .ob2 files)
+# Substitutions made for the rev-274 port
+
+| symbol / file | original | replacement | reason |
+|---|---|---|---|
+| `scripts/_ported/configs/ported.loc` | `multivar=<varbit>` properties | property removed | `multivar` is a 377-only loc property key; the 274 packer rejects it (`Invalid property key`). Removing it makes the loc static rather than multi-state. |
