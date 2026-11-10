@@ -44,33 +44,7 @@ def load_pack(path: Path) -> dict[str, int]:
     return out
 
 
-_INDEX: dict[str, str] = {}
-
-
-def build_index(source: Path) -> None:
-    """Index every NPC definition in the source tree.
-
-    Many definitions are NOT in `_unpack/377/all.npc`; they live in per-quest configs such as
-    `scripts/quests/quest_mm/configs/mm.npc`. Reading only all.npc made the importer skip real
-    definitions and report them as unavailable.
-    """
-    for f in (source / "scripts").rglob("*.npc"):
-        try:
-            lines = f.read_text(errors="ignore").splitlines(True)
-        except OSError:
-            continue
-        for i, line in enumerate(lines):
-            if line.startswith("[") and line.rstrip().endswith("]"):
-                name = line.strip()[1:-1]
-                if name in _INDEX:
-                    continue
-                end = next((j for j in range(i + 1, len(lines)) if lines[j].startswith("[")), len(lines))
-                _INDEX[name] = "".join(lines[i:end])
-
-
 def npc_block(all_npc: Path, name: str) -> str | None:
-    if name in _INDEX:
-        return _INDEX[name]
     lines = all_npc.read_text(errors="ignore").splitlines(True)
     try:
         start = next(i for i, l in enumerate(lines) if l.strip() == f"[{name}]")
@@ -103,8 +77,7 @@ def main() -> int:
         print(f"BLOCKED: need {t_all_npc} and {s_all_npc}")
         return 2
 
-    build_index(src)
-    known_defs = set(re.findall(r"(?m)^\[([a-z0-9_]+)\]", t_all_npc.read_text(errors="ignore")))
+    known_defs = set(re.findall(r"(?m)^\[([^\]\r\n]+)\]", t_all_npc.read_text(errors="ignore")))
 
     # Collect symbols referenced by ported quests
     wanted: set[str] = set()
@@ -115,7 +88,7 @@ def main() -> int:
         for f in (q / "scripts").glob("*.rs2"):
             text = f.read_text(errors="ignore")
             # NPC handlers only, including the "u" variants ([opnpcu,...]) used heavily by quests.
-            wanted |= set(re.findall(r"\[opnpcu?\d*,\s*([a-z0-9_]+)\]", text, re.I))
+            wanted |= set(re.findall(r"\[[oa]pnpc(?:\d+|u|t)?,\s*([^\],\s]+)\]", text, re.I))
 
     to_add, refused, no_def = [], [], []
     for name in sorted(wanted):

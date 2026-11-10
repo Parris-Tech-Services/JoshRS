@@ -14,6 +14,7 @@
 // Usage: check-map-integrity.mjs <target-content> <source-content> [--json] [--map m54_48]
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join, basename } from 'node:path';
+import { loadPack, indexDefs, parseMapRefs } from './lib/rs-refs.mjs';
 
 const [target, source] = process.argv.slice(2);
 if (!target || !source) {
@@ -23,64 +24,16 @@ if (!target || !source) {
 const asJson = process.argv.includes('--json');
 const onlyMap = process.argv.includes('--map') ? process.argv[process.argv.indexOf('--map') + 1] : null;
 
-function loadPack(file) {
-    const m = new Map();
-    if (!existsSync(file)) return m;
-    for (const line of readFileSync(file, 'utf8').split('\n')) {
-        const parts = line.split('=');
-        if (parts.length >= 2 && parts[0].trim().match(/^\d+$/)) m.set(Number(parts[0]), parts[1].trim());
-    }
-    return m;
-}
-
 const packs = {};
 for (const kind of ['npc', 'loc', 'obj']) {
     packs[kind] = { t: loadPack(join(target, `pack/${kind}.pack`)), s: loadPack(join(source, `pack/${kind}.pack`)) };
 }
 
-// A pack entry is only usable if the definition exists too (all.npc / all.loc / all.obj).
+// A pack entry is only usable if a definition exists, in all.<kind> or a per-quest config file.
 const defs = {};
-// Definitions live both in `_unpack/<rev>/all.<kind>` and in per-quest config files, so index the
-// whole scripts tree. Reading only the unpack files reported thousands of false "no definition".
-for (const kind of ['npc', 'loc', 'obj']) {
-    const names = new Set();
-    const walk = (dir) => {
-        if (!existsSync(dir)) return;
-        for (const e of readdirSync(dir, { withFileTypes: true })) {
-            const p = join(dir, e.name);
-            if (e.isDirectory()) walk(p);
-            else if (e.name.endsWith(`.${kind}`)) {
-                for (const m of readFileSync(p, 'utf8').matchAll(/^\[([^\]\n]+)\]/gim)) names.add(m[1]);
-            }
-        }
-    };
-    walk(join(target, 'scripts'));
-    defs[kind] = names;
-}
+for (const kind of ['npc', 'loc', 'obj']) defs[kind] = indexDefs(join(target, 'scripts'), kind);
 
-const SECTIONS = { npc: 'NPC', loc: 'LOC', obj: 'OBJ' };
-
-/** Parse a .jm2 into { npc: Set<id>, loc: Set<id>, obj: Set<id> }. */
-function parseMap(file) {
-    const out = { npc: new Set(), loc: new Set(), obj: new Set() };
-    let cur = null;
-    for (const raw of readFileSync(file, 'utf8').split('\n')) {
-        const line = raw.trim();
-        if (line.startsWith('====')) {
-            cur = Object.keys(SECTIONS).find((k) => line.includes(SECTIONS[k])) ?? null;
-            continue;
-        }
-        if (!cur || !line) continue;
-        // Map records are "level x y: id" - the id follows a colon. An earlier pattern treated the
-        // positional numbers as the id, matched nothing, and reported a clean bill of health.
-        const m = line.match(/^-?\d+\s+-?\d+\s+-?\d+:\s*(-?\d+)/);
-        if (!m) continue;
-        const id = Number(m[1]);
-        // 0 is a valid id in .jm2 records; filtering it silently dropped real references.
-        if (Number.isFinite(id)) out[cur].add(id);
-    }
-    return out;
-}
+const parseMap = (file) => parseMapRefs(readFileSync(file, 'utf8'));
 
 const rows = [];
 const tmaps = join(target, 'maps');
@@ -104,10 +57,10 @@ for (const f of readdirSync(tmaps).filter((n) => n.endsWith('.jm2'))) {
     if (bad > 0) rows.push(r);
 }
 
+// Problems fail the run in both output modes; --json used to exit 0 whatever it found.
+process.exitCode = rows.length ? 1 : 0;
 if (asJson) {
     console.log(JSON.stringify(rows, null, 2));
-    // A machine-readable report that always exits 0 cannot gate anything.
-    process.exitCode = rows.length ? 1 : 0;
 } else {
     const total = (k1, k2) => rows.reduce((a, r) => a + r[k1][k2].length, 0);
     console.log(`maps with problems: ${rows.length}`);
@@ -124,5 +77,4 @@ if (asJson) {
         console.log(`  ${r.map}  dangling[${d.join(',') || '-'}] mismatch[${m.join(',') || '-'}]`);
         if (r.mismatch.npc.length) console.log(`     npc mismatches: ${r.mismatch.npc.slice(0, 3).join(' ')}`);
     }
-    process.exitCode = rows.length ? 1 : 0;
 }
