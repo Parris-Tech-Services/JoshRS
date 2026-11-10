@@ -44,14 +44,23 @@ def load_pack(path: Path) -> dict[str, int]:
     return out
 
 
-def npc_block(all_npc: Path, name: str) -> str | None:
-    lines = all_npc.read_text(errors="ignore").splitlines(True)
-    try:
-        start = next(i for i, l in enumerate(lines) if l.strip() == f"[{name}]")
-    except StopIteration:
-        return None
-    end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("[")), len(lines))
-    return "".join(lines[start:end])
+def npc_definitions(scripts: Path) -> dict[str, str]:
+    """Discover NPC definitions across unpacked and quest-local config files.
+
+    Quest NPCs are commonly defined in scripts/quests/*/configs/*.npc instead of
+    scripts/_unpack/377/all.npc. Prefer quest-local blocks if both exist.
+    """
+    found: dict[str, str] = {}
+    files = sorted(scripts.rglob("*.npc"),
+                   key=lambda p: (0 if "quests" in p.parts else 1, str(p)))
+    for file in files:
+        lines = file.read_text(errors="ignore").splitlines(keepends=True)
+        starts = [(i, line.strip()[1:-1]) for i, line in enumerate(lines)
+                  if re.fullmatch(r"\[[^\]\n]+\]", line.strip())]
+        for idx, (begin, name) in enumerate(starts):
+            finish = starts[idx + 1][0] if idx + 1 < len(starts) else len(lines)
+            found.setdefault(name, "".join(lines[begin:finish]))
+    return found
 
 
 def main() -> int:
@@ -72,12 +81,14 @@ def main() -> int:
         import json
         rev = str(json.loads(world_json.read_text()).get("engine", {}).get("revision", rev)) or rev
     t_all_npc = target / f"scripts/_unpack/{rev}/all.npc"
-    s_all_npc = src / "scripts/_unpack/377/all.npc"
-    if not t_all_npc.exists() or not s_all_npc.exists():
-        print(f"BLOCKED: need {t_all_npc} and {s_all_npc}")
+    if not t_all_npc.exists():
+        print(f"BLOCKED: need {t_all_npc}")
         return 2
-
-    known_defs = set(re.findall(r"(?m)^\[([a-z0-9_]+)\]", t_all_npc.read_text(errors="ignore")))
+    source_defs = npc_definitions(src / "scripts")
+    target_defs = npc_definitions(target / "scripts")
+    if not source_defs:
+        print("BLOCKED: no source NPC definitions found")
+        return 2
 
     # Collect symbols referenced by ported quests
     wanted: set[str] = set()
@@ -88,7 +99,7 @@ def main() -> int:
         for f in (q / "scripts").glob("*.rs2"):
             text = f.read_text(errors="ignore")
             # NPC handlers only, including the "u" variants ([opnpcu,...]) used heavily by quests.
-            wanted |= set(re.findall(r"\[opnpcu?\d*,\s*([a-z0-9_]+)\]", text, re.I))
+            wanted |= {m.strip() for m in re.findall(r"\[opnpcu?\d*,\s*([^\]\r\n]+)\]", text, re.I)}
 
     to_add, refused, no_def = [], [], []
     for name in sorted(wanted):
@@ -101,11 +112,12 @@ def main() -> int:
         if sid in set(ref_pack.values()):
             refused.append((name, sid))
             continue
-        block = npc_block(s_all_npc, name)
+        block = target_defs.get(name) or source_defs.get(name)
         if block is None:
             no_def.append(name)
             continue
-        to_add.append((name, sid, block))
+        # A definition already in the target quest tree must not be duplicated in all.npc.
+        to_add.append((name, sid, None if name in target_defs else block))
 
     print(f"referenced NPC symbols: {len(wanted)}")
     print(f"already registered: {len(wanted) - len(to_add) - len(refused) - len(no_def)}")
@@ -119,10 +131,12 @@ def main() -> int:
     with tpack.open("a") as fh:
         for name, sid, _ in to_add:
             fh.write(f"{sid}={name}\n")
-    with t_all_npc.open("a") as fh:
-        for name, _, block in to_add:
-            fh.write("\n" + block)
-    print(f"registered {len(to_add)} NPCs, appended definitions to {t_all_npc.name}")
+    new_blocks = [block for _, _, block in to_add if block is not None]
+    if new_blocks:
+        with t_all_npc.open("a") as fh:
+            for block in new_blocks:
+                fh.write("\n" + block)
+    print(f"registered {len(to_add)} NPC ids; appended {len(new_blocks)} new definitions")
     print("restart the world to repack")
     return 0
 
