@@ -1,0 +1,48 @@
+// JoshRS original dialogue - Mihail, retired boatman and Burgh de Rott's weather forecaster.
+// Voice: creaky, fond of tall tales, trusts his knees over any instrument.
+
+[opnpc1,burgh_vilager_sit2]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Ooh, my knees. Rain coming.|Tonight, I'd say. Maybe sooner. Maybe now.");
+    case 1 : ~chatnpc("<p,happy>Mihail, young one. Pull up a stump.|I'd offer you a chair, but I'm using it.");
+    case 2 : ~chatnpc("<p,neutral>Hm? Oh, a visitor. Good, good.|My knees said someone interesting was coming.|Or rain. Hard to tell the difference sometimes.");
+}
+@joshrs_mihail_menu;
+
+[label,joshrs_mihail_menu]
+def_int $option = ~p_choice5("Your knees can tell the weather?", 1, "What's the forecast?", 2, "What did you do before you retired?", 3, "Tell me a story.", 4, "Take care of those knees. Goodbye!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Your knees can really tell the weather?");
+    ~chatnpc("<p,neutral>Better than any wizard with a crystal ball.|Left knee aches: rain. Right knee aches: wind.|Both knees ache: stay indoors and make soup.");
+    ~chatplayer("<p,quiz>What if neither of them aches?");
+    ~chatnpc("<p,laugh>Then I've died and nobody's told me!|Ha! No, no. That only happened once.|Glorious day. Sunshine. I danced.");
+    @joshrs_mihail_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What's the forecast?");
+    ~chatnpc("<p,neutral>Let me consult the instruments.");
+    switch_int(random(3)) {
+        case 0 : ~chatnpc("<p,neutral>Left knee: grumbling. Right knee: quiet.|Rain by sundown. Bring the washing in.|Florin especially. He's had enough trouble.");
+        case 1 : ~chatnpc("<p,neutral>Both knees: creaking like an old gate.|Storm coming, mark my words. Big one.|Tell Grigore to have his bucket ready.");
+        case 2 : ~chatnpc("<p,happy>Hm! Hardly a twinge. Fog, as usual,|but perhaps... perhaps a little sun later.|Don't get your hopes up. But perhaps.");
+    }
+    @joshrs_mihail_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What did you do before you retired?");
+    ~chatnpc("<p,happy>Boatman! Forty years on the river.|Ferrying folk and barrels and the odd confused sheep.");
+    ~chatnpc("<p,neutral>That's where the knees came from.|Forty years of damp and kneeling to tie knots.|The river took my knees and gave me stories.");
+    ~chatnpc("<p,happy>Fair trade, I'd say. Knees don't last.|Stories do.");
+    @joshrs_mihail_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,happy>Tell me a story.");
+    ~chatnpc("<p,happy>Ah! Did I ever tell you about the fish?|No? The biggest fish in the whole river.|Big as a rowing boat. Bigger! Whiskers like ropes.");
+    ~chatnpc("<p,neutral>Every year I'd see him under the bridge.|Every year I'd try to catch him.|Every year he'd steal my bait and wink at me.");
+    ~chatplayer("<p,quiz>Did you ever catch him?");
+    ~chatnpc("<p,happy>Never! And I'm glad.|Some things are better as a story than a supper.|He's still down there, I reckon. Winking.");
+    @joshrs_mihail_menu;
+} else {
+    ~chatplayer("<p,happy>Take care of those knees. Goodbye!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Ha! They'll outlast us all, these knees.|Off you go. And take a coat. Trust me.");
+        case 1 : ~chatnpc("<p,neutral>Goodbye, young one. Mind the weather.|My knees say you'll get wet before you're home.");
+    }
+}
