@@ -35,6 +35,11 @@ const maxSeconds = maxIdx >= 0 ? Number(args[maxIdx + 1]) : 420;
 // The credential panel occupies the centre of the 765x503 canvas; cropping removes the
 // decorative background whose stray glyphs were being mistaken for field labels.
 const LOGIN_CROP = [120, 100, 650, 430];
+// Some targets have no OCR-able label: the side tab strip is icons only. A coordinate sweep turns
+// an unreadable icon into an addressable one - click, OCR, stop when the expected panel appears.
+const tabSearch = args.includes('--tab-search');
+const tabExpectIdx = args.indexOf('--tab-expect');
+const tabExpect = new RegExp(tabExpectIdx >= 0 ? args[tabExpectIdx + 1] : 'quest', 'i');
 const loginIdx = args.indexOf('--login');
 const login = loginIdx >= 0 ? args[loginIdx + 1] : null; // "user:pass"
 
@@ -165,6 +170,36 @@ for (let attempt = 1; attempt <= 6 && !formReached; attempt++) {
     }
 }
 const start = Date.now();
+if (tabSearch) {
+    const canvas = page.locator('canvas').first();
+    const box = await canvas.boundingBox();
+    const dims = await page.evaluate(() => {
+        const c = document.querySelector('canvas');
+        return c ? { w: c.width, h: c.height } : null;
+    });
+    if (box && dims) {
+        const toPage = (cx, cy) => [box.x + (cx / dims.w) * box.width, box.y + (cy / dims.h) * box.height];
+        const xs = [700, 720, 740, 755];
+        let found = null;
+        outer: for (const cx of xs) {
+            for (let cy = 150; cy <= 480; cy += 15) {
+                const [px, py] = toPage(cx, cy);
+                await page.mouse.click(px, py);
+                await page.waitForTimeout(900);
+                let text = '';
+                try { text = await snapshot(); } catch { continue; }
+                if (tabExpect.test(text)) {
+                    found = { cx, cy, text: text.replace(/\s+/g, ' ').slice(0, 160) };
+                    console.log(`TAB FOUND at canvas(${cx},${cy}): ${JSON.stringify(found.text)}`);
+                    break outer;
+                }
+            }
+        }
+        if (!found) console.log('TAB SEARCH: no coordinate produced the expected panel');
+        else console.log('TAB COORDINATE:', JSON.stringify({ x: found.cx, y: found.cy }));
+    }
+}
+
 let matched = false;
 let lastText = '';
 for (let poll = 1; Date.now() - start < maxSeconds * 1000; poll++) {
