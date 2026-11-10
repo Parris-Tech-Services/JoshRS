@@ -1,0 +1,47 @@
+// JoshRS original dialogue - Grigore, the roofer of Burgh de Rott.
+// Voice: laconic, stoic, a quiet philosopher of endless repairs.
+
+[opnpc1,burgh_vilager_4]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Grigore. Roofs.");
+    case 1 : ~chatnpc("<p,neutral>Hm. Hello. Mind the bucket.|Every house has a bucket. Every bucket has a drip.");
+    case 2 : ~chatnpc("<p,neutral>You've caught me between roofs.|It won't last. Nothing does. Especially roofs.");
+}
+@joshrs_grigore_menu;
+
+[label,joshrs_grigore_menu]
+def_int $option = ~p_choice5("Tell me about your work.", 1, "That's a nice hat.", 2, "What happened to your ladder?", 3, "Does it ever get you down?", 4, "I'll let you get on.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Tell me about your work.");
+    ~chatnpc("<p,neutral>I fix a roof. The rain unfixes it.|I fix it again. The rain comes back.");
+    ~chatplayer("<p,quiz>Doesn't that get frustrating?");
+    ~chatnpc("<p,neutral>The rain isn't my enemy. It's my colleague.|It makes the work. I do the work.|Between us, the village stays mostly dry.");
+    ~chatnpc("<p,happy>Mostly.");
+    @joshrs_grigore_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,happy>That's a nice hat.");
+    ~chatnpc("<p,neutral>Blew in with a storm. Two others came with it.|Sergiu writes about it a lot.");
+    ~chatnpc("<p,neutral>Nobody claimed it. It fitted.|Keeps the rain off while I keep the rain off.|A hat that understands the job.");
+    @joshrs_grigore_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What happened to your ladder? It's very short.");
+    ~chatnpc("<p,neutral>Goat.");
+    ~chatplayer("<p,quiz>...Margareta?");
+    ~chatnpc("<p,neutral>The same. Ate the bottom half in an afternoon.|Radu says she has a taste for craftsmanship.");
+    ~chatnpc("<p,happy>I stand on a barrel now.|Barrel, then ladder, then roof.|Taller than I've ever been. Can't complain.");
+    @joshrs_grigore_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Does it ever get you down? All the leaking?");
+    ~chatnpc("<p,neutral>Some days.");
+    ~chatnpc("<p,neutral>Then I climb up and look out across the marsh.|Fog lying on the water like a blanket.|Smoke from every chimney I've patched.");
+    ~chatnpc("<p,happy>Every one of those houses has someone warm inside.|That's not nothing. That's my work, that is.");
+    ~chatplayer("<p,happy>That sounds like a good reason to keep going.");
+    ~chatnpc("<p,neutral>Best reason there is.");
+    @joshrs_grigore_menu;
+} else {
+    ~chatplayer("<p,happy>I'll let you get on.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,neutral>Aye. Roofs won't fix themselves.|More's the pity.");
+        case 1 : ~chatnpc("<p,neutral>Go well. If your roof ever leaks,|you know where I am. On someone else's.");
+    }
+}
