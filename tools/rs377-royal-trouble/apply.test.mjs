@@ -46,9 +46,9 @@ test('refuse unmarked or active family install, wrong packs, altered target',()=
  fs.writeFileSync(path.join(root,'pack/varp.pack'),'bad');
  assert.throws(()=>install(root,{apply:true}),/Missing pinned 377 Throne varp/);
  fs.writeFileSync(path.join(root,'pack/varp.pack'),'359=misc_quest\n724=varp_724\n');
- fs.appendFileSync(path.join(root,'pack/varp.pack'),'725=another_quest\\n');
+ fs.appendFileSync(path.join(root,'pack/varp.pack'),'725=another_quest\n');
  assert.throws(()=>install(root,{apply:true}),/varp 725 already belongs/);
- fs.writeFileSync(path.join(root,'pack/varp.pack'),'359=misc_quest\\n724=varp_724\\n');
+ fs.writeFileSync(path.join(root,'pack/varp.pack'),'359=misc_quest\n724=varp_724\n');
  const target=path.join(root,'scripts/quests/quest_royal_trouble/configs/joshrs_royal_trouble.constant');
  fs.mkdirSync(path.dirname(target),{recursive:true});
  fs.writeFileSync(target,'CUSTOM\n');
