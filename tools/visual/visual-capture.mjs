@@ -153,6 +153,7 @@ for (let attempt = 1; attempt <= 6 && !formReached; attempt++) {
         await page.waitForTimeout(4000);
     }
 }
+const start = Date.now();
 for (let poll = 1; Date.now() - start < maxSeconds * 1000; poll++) {
 if (login) {
     const [user, pass] = login.split(':');
@@ -198,7 +199,6 @@ if (login) {
 
 let matched = false;
 let lastText = '';
-const start = Date.now();
 
     lastText = await snapshot();
     const flat = lastText.replace(/\s+/g, ' ').slice(0, 220);
