@@ -21,7 +21,7 @@ if ($option = 1) {
     ~chatnpc("<p,shifty>Eaten? 'Eaten' is a strong word.|She samples. She investigates.");
     ~chatnpc("<p,neutral>This month she has investigated: two shirts,|a letter for Elisabeta, a mop, most of a basket,|and the bottom half of Grigore's ladder.");
     ~chatplayer("<p,shock>A ladder?!");
-    ~chatnpc("<p,happy>He fixes roofs from the middle rungs now.|It's builds character. And arm strength.");
+    ~chatnpc("<p,happy>He fixes roofs from the middle rungs now.|It builds character. And arm strength.");
     @joshrs_radu_menu;
 } else if ($option = 3) {
     ~chatplayer("<p,quiz>Florin seems quite upset with you.");
