@@ -158,4 +158,33 @@ m54_48.jm2: 4,168 terrain tiles, 4 sections (MAP/NPC/OBJ/LOC), 9 NPCs, 1 obj, lo
 
 Not yet verified in a client: the region has not been *seen* rendered. The dev world serves it and the
 engine accepted the file, but "not black" is a visual claim that still needs a client session.
+## Login is not persistence: the account is only saved after character design
+
+A save/reload check was added to the visual pipeline: log in, count the `.sav` files written, then log
+in again as the same account and require that character design does **not** reappear.
+
+It failed immediately, and usefully:
+
+```
+saves after first login:
+total 0
+save count: 0
+::error::no save file was written after login
+```
+
+**No save file exists after a login that stops at the character-design screen.** The client has been
+accepted by the server and is holding a pending player, but the account is not persisted until
+appearance is confirmed.
+
+This matters for two reasons:
+
+1. **Login success was over-reading.** Reaching character design proves credentials were accepted, not
+   that an account exists on disk. Any statement that a quest's stage can persist depends on the
+   design step completing first.
+2. **It explains the empty player directory in clean CI runs** — not a bug in the save path, but a
+   player that never finished creation.
+
+So persistence is **not yet verified**, and the check that would verify it is now written and honest:
+it fails until the design step completes, and passes only when a returning login skips creation
+entirely.
 
