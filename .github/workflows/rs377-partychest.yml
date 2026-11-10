@@ -1,0 +1,39 @@
+name: RS377 party chest item safety
+
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-partychest/**'
+      - '.github/workflows/rs377-partychest.yml'
+  push:
+    paths:
+      - 'tools/rs377-partychest/**'
+      - '.github/workflows/rs377-partychest.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Guardrail regression tests
+        run: node --test tools/rs377-partychest/apply-tempinv-persist.test.mjs
+      - name: Fetch pinned Lost City 377 Content (CI fixture, never published)
+        shell: bash
+        run: |
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Content.git "$RUNNER_TEMP/rs377-content"
+          test "$(git -C "$RUNNER_TEMP/rs377-content" rev-parse HEAD)" = "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50"
+      - name: Apply only to disposable CI checkout and check scope
+        shell: bash
+        run: |
+          node tools/rs377-partychest/apply-tempinv-persist.mjs --content "$RUNNER_TEMP/rs377-content"
+          node tools/rs377-partychest/apply-tempinv-persist.mjs --content "$RUNNER_TEMP/rs377-content" --apply
+          awk '/^\[partyroom_tempinv\]/{f=1;next} f&&/^\[/{exit} f&&/^scope=perm$/{ok=1} END{exit ok?0:1}' \
+            "$RUNNER_TEMP/rs377-content/scripts/_unpack/727/all.inv"
+          awk '/^\[partyroom_dropinv\]/{f=1;next} f&&/^\[/{exit} f&&/^scope=shared$/{ok=1} END{exit ok?0:1}' \
+            "$RUNNER_TEMP/rs377-content/scripts/_unpack/727/all.inv"
+          git -C "$RUNNER_TEMP/rs377-content" diff --check
