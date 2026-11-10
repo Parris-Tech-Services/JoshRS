@@ -168,3 +168,34 @@ loop: click a candidate, OCR for "Quest Journal", stop when found.
 
 Until that is done, this is geometry- and packing-verified, not visually verified.
 
+### Correction: the pilot entry sits below the visible frame, and my first check lied
+
+Two problems, both found by asking the check to prove itself.
+
+**1. Placement.** The `[feud]` entry is at `y=1018`, but the game frame is only **503px tall**. The
+quest list is a **scrollable column** roughly 1018px long, so the entry is correct in list order but
+appears only after scrolling. That is not an error — but "appended after the last entry" means "at the
+bottom of a long scroll", not "visible on open", and that should have been stated.
+
+**2. The pixel check passed while the component was outside the image.** Cropping a region that lies
+past the image edge returns **all black**, and "any dark pixels?" therefore said `PASSED` for a
+component that was not on the surface at all. A check that cannot fail.
+
+### The fixed check
+
+- the renderer now auto-sizes to content (805×1072 here) instead of clamping to the 765×503 frame, so
+  a component beyond the frame is still inspectable
+- the check asserts the box is **inside the surface** and has visible ink
+- it also renders a **known-blank control region** and asserts that one has zero dark pixels, so a
+  broken measurement cannot masquerade as a pass
+
+Result: `[feud]` box `(30,1038)-(94,1052)`, **331 dark pixels**, inside the surface; control region
+**0 dark pixels**.
+
+### Still not verified visually in the client
+
+The tab-coordinate search ran for nine minutes and found no coordinate producing the quest panel, and
+the final canvas was blank. So in-game confirmation of the journal remains open; what is verified is
+that the component is present, ordered correctly, collision-free, packs, and renders with visible ink
+on a surface sized to the content.
+
