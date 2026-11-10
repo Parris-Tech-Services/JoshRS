@@ -1,0 +1,23 @@
+diff --git a/scripts/player/interfaces/questlist.if b/scripts/player/interfaces/questlist.if
+index 889428c..3e0d62e 100644
+--- a/scripts/player/interfaces/questlist.if
++++ b/scripts/player/interfaces/questlist.if
+@@ -1163,3 +1163,18 @@ y=228
+ width=36
+ height=36
+ graphic=miscgraphics,3
++
++[feud]
++layer=com_0
++type=text
++x=10
++y=1018
++buttontype=normal
++width=64
++height=14
++font=p12_full
++shadowed=yes
++text=The Feud
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=The Feud
