@@ -78,3 +78,47 @@ started against whatever cache already existed.
 3. Only then does the Lost Tribe scenario mean anything.
 
 Until step 1 is done, no statement about dev274's contents being "in the world" is trustworthy.
+
+---
+
+## The dependency chain ends at cache data that does not exist in 274
+
+Automating the chase (`tools/questops/fix-pack-deps.py`: parse the packer error, import the symbol
+under its original 377 id, retry) cleared two layers and then hit a wall:
+
+```
+all.loc  -> Invalid property value: anim=m_pyre_glow      (a seq)
+all.seq  -> Invalid property value: frame1=anim_10198     (an animation)
+```
+
+`m_pyre_glow` was imported from 377 and immediately demanded `anim_10198`–`anim_10202`.
+
+| registry | revision 274 (dev) | revision 377 (source) |
+|---|---|---|
+| `anim.pack` entries | **10,100** | **33,568** |
+
+Those animations are **not in the 274 cache**. Animations and models live in the packed config cache
+(`idx0`/`idx1`), not in content files, so they cannot be "ported" by copying a script definition — and
+they are Jagex assets that must never be committed to this repository.
+
+### What this means, precisely
+
+- Maps, NPC/loc/obj **definitions** and quest scripts can be ported as text.
+- **Animations, models and other cache assets cannot** be ported the same way. The target cache either
+  contains them or it does not.
+- Therefore any ported quest whose scenery or NPCs use 2005-era animations **cannot pack against a 274
+  cache**, however correct its scripts are.
+
+This is an architectural limit of "port 377 content into a 274 world", not a bug to grind through. It
+would need either the 377 cache data present locally (and never committed), or a decision to run the
+ported content on a 377 cache instead.
+
+### Where that leaves the harness loop
+
+```
+edit content → npm run build (MUST exit 0) → run.ts <scenario> → PASS/FAIL
+```
+
+The first gate currently fails for reasons outside the content's control. Until the cache question is
+answered, **no scenario result for these quests can be produced**, and no quest can progress past
+BLOCKED.
