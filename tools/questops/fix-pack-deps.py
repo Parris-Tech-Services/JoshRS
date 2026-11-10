@@ -15,7 +15,11 @@ import re
 import sys
 from pathlib import Path
 
-KINDS = ("obj", "loc", "npc", "anim", "seq", "spotanim", "idk", "mes", "struct", "varbit")
+# Only TEXT definitions may be imported. Registering an animation, model, seq frame or sound NAME
+# adds no data: those live in the game cache, and a name in a 274 pack gives no frames. Importing them
+# makes the build fail or the object animate wrongly, so they are refused and reported instead.
+IMPORTABLE = ("obj", "loc", "npc", "inv", "varp", "varbit", "varn", "vars", "enum", "param", "struct", "mes", "idk")
+CACHE_DATA = ("anim", "animset", "seq", "spotanim", "sound", "synth", "model")
 
 def load_pack(p):
     out = {}
@@ -58,10 +62,11 @@ def main():
     if not symbols:
         print("no symbol found in packer output"); return 3
 
-    src_packs = {k: load_pack(src / f"pack/{k}.pack") for k in KINDS}
+    src_packs = {k: load_pack(src / f"pack/{k}.pack") for k in IMPORTABLE}
+    cache_packs = {k: load_pack(src / f"pack/{k}.pack") for k in CACHE_DATA}
     imported = []
     for sym in sorted(symbols):
-        for kind in KINDS:
+        for kind in IMPORTABLE:
             if sym not in src_packs[kind]:
                 continue
             sp = src_packs[kind]
@@ -85,6 +90,12 @@ def main():
                     fh.write("\n" + defs[sym])
             imported.append((kind, sid, sym))
             break
+    # Explain anything that only exists as cache data, rather than silently importing a bare name.
+    for sym in sorted(symbols):
+        for kind in CACHE_DATA:
+            if sym in cache_packs.get(kind, {}):
+                print(f"REFUSED {kind} {sym}: cache data, not text - substitute or drop the property")
+                break
     for kind, sid, sym in imported:
         print(f"imported {kind} {sid}={sym}")
     return 0 if imported else 3

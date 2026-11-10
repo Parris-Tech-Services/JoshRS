@@ -51,3 +51,44 @@ ported quests. What remains is mechanical import work plus interface registratio
 
 **Nothing here has run in a world.** `npm run build` still fails, on animation names that the
 importer can add but has not yet been driven to completion.
+
+---
+
+## Correction 1: cosmetic gaps cannot be imported, only substituted
+
+An `anim`/`seq`/`spotanim`/`sound`/`model` name in a pack is **not the asset**. `anim_10198` is frame
+data in the 377 cache; adding its name to a 274 pack adds no frames, so the build fails or the object
+animates wrongly.
+
+`fix-pack-deps.py` now refuses those symbols and prints them as cache data rather than importing a bare
+name. It may only import text definitions (`obj/loc/npc/inv/varp/varbit/varn/vars/enum/param/struct/mes/idk`).
+
+The 11 cosmetic gaps therefore get **substituted or removed**, each recorded in
+`content-patches/rs274/SUBSTITUTIONS.md`. That work is **not started**.
+
+## Correction 2: VISIBLE is not zero — two quests name models 274 does not have
+
+Every imported `npc`/`loc`/`obj` definition names models (`model=`, `head=`, …) that must exist in the
+274 model pack, or the thing renders invisible. Checking all 117 model references made by the ported
+quests' own definitions against `~/dev274/content/pack/model.pack` (4,617 entries):
+
+| quest | missing models |
+|---|---|
+| `quest_golem` | **32** (e.g. `npc_1908`, `npc_1908i2`, `npc_1908i3`) |
+| `quest_troll_love` | **26** (e.g. `npc_1553`, `npc_1553_head`) |
+
+**24 of 26 quests reference only models the 274 cache has.** So the earlier "VISIBLE 0" was wrong, but
+narrowly: two quests, both needing **interactive** NPC models — the clay golems and the trolls — which
+under Josh's rules are **PARKED**, not substituted.
+
+## Status after both corrections
+
+| class | measured |
+|---|---|
+| COSMETIC (substitute/drop) | 11 references |
+| PORTABLE text definitions | 337 |
+| VISIBLE — quests needing models | **2** (`quest_golem`, `quest_troll_love`) → PARKED |
+| BLOCKING | 0 |
+| Clean (no gaps) | 2 |
+
+`npm run build` still does not exit 0. No quest is SCRIPT-VERIFIED.
