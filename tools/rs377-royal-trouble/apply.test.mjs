@@ -19,7 +19,7 @@ function fixture(callback){
    fs.mkdirSync(path.join(tmp,'scripts/quests'),{recursive:true});
    fs.writeFileSync(path.join(tmp,'.joshrs-disposable-content'),'TEST ONLY\n');
    fs.writeFileSync(path.join(tmp,'pack/npc.pack'),npcs.map((n,i)=>n+'='+names[i]).join('\n')+'\n');
-   fs.writeFileSync(path.join(tmp,'pack/varp.pack'),'359=misc_quest\n');
+   fs.writeFileSync(path.join(tmp,'pack/varp.pack'),'359=misc_quest\n724=varp_724\n');
    return callback(tmp);
  }finally{fs.rmSync(tmp,{recursive:true,force:true})}
 }
@@ -30,7 +30,8 @@ test('disposable installer dry-run, apply, idempotence, no other files',()=>fixt
  assert.equal(fs.existsSync(dest),false);
  const b=install(root,{apply:true});
  assert.equal(b.changed,true);
- assert.equal(b.created,3);
+ assert.equal(b.created,4);
+ assert.match(fs.readFileSync(path.join(root,'pack/varp.pack'),'utf8'),/725=joshrs_royaltrouble/);
  assert.equal(install(root,{apply:true}).changed,false);
  assert.equal(fs.readFileSync(path.join(dest,'configs/joshrs_royal_trouble.varp'),'utf8'),varp);
  assert.equal(fs.readFileSync(path.join(dest,'scripts/royal_trouble_investigation.rs2'),'utf8'),script);
@@ -44,7 +45,10 @@ test('refuse unmarked or active family install, wrong packs, altered target',()=
  assert.throws(()=>install(live,{apply:true}),/family installation/);
  fs.writeFileSync(path.join(root,'pack/varp.pack'),'bad');
  assert.throws(()=>install(root,{apply:true}),/Missing pinned 377 Throne varp/);
- fs.writeFileSync(path.join(root,'pack/varp.pack'),'359=misc_quest\n');
+ fs.writeFileSync(path.join(root,'pack/varp.pack'),'359=misc_quest\n724=varp_724\n');
+ fs.appendFileSync(path.join(root,'pack/varp.pack'),'725=another_quest\\n');
+ assert.throws(()=>install(root,{apply:true}),/varp 725 already belongs/);
+ fs.writeFileSync(path.join(root,'pack/varp.pack'),'359=misc_quest\\n724=varp_724\\n');
  const target=path.join(root,'scripts/quests/quest_royal_trouble/configs/joshrs_royal_trouble.constant');
  fs.mkdirSync(path.dirname(target),{recursive:true});
  fs.writeFileSync(target,'CUSTOM\n');
