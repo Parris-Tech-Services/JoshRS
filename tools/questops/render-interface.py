@@ -70,7 +70,13 @@ def main() -> int:
         print(f"no components parsed from {src}", file=sys.stderr)
         return 1
 
-    img = Image.new("RGB", ((CANVAS_W + 2 * MARGIN) * scale, (CANVAS_H + 2 * MARGIN) * scale), "white")
+    content_h = max(
+        [CANVAS_H] + [num(c["props"], "y") + num(c["props"], "height", 0) for c in comps]
+    )
+    content_w = max(
+        [CANVAS_W] + [num(c["props"], "x") + num(c["props"], "width", 0) for c in comps]
+    )
+    img = Image.new("RGB", ((content_w + 2 * MARGIN) * scale, (content_h + 2 * MARGIN) * scale), "white")
     draw = ImageDraw.Draw(img)
     try:
         font = ImageFont.truetype("DejaVuSans.ttf", max(7, 6 * scale))
