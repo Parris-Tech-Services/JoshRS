@@ -49,6 +49,21 @@ Note the engine argument order is `movecoord(coord, x, levelDelta, zDelta)`. The
 - After patch and isolated rebuild: up moved to `(2946, 3378, 1)`; then `oploc1 11741` moved back to `(2946, 3378, 0)`. Inventory and interface state unchanged.
 - This is source-plus-isolated-gameplay evidence, not live deployment. The live family world was not touched.
 
+### Full placement matrix and the house at 2946,3363 (Claude Code, 10 Nov 2026)
+
+`tools/rs377-climb-survey/climb_survey.ps1` (read-only) finds every placed `loc_11739`–`loc_11742`: **16 placements**, all in Falador. `isolated_ladder_test.mjs` then drives each one in an isolated world (ports 52502/8990/8991, `NODE_PROFILE=isotest`, no login/friend/logger servers, throwaway accounts). It logs in over the real 377 protocol, uses `::tele` to stand beside the ladder, sends the same `OPLOC1` packet as the Java client, decodes the server's game messages, and reads the saved level after logout. Each placement is tried from all four sides. A negative control (unwired `loc_10707`) stayed put, so the test does detect failure.
+
+| Result | Placements |
+|---|---|
+| Climbs correctly both ways | 15 of 16 (including the salon ladder at 2946,3378 and every floor of the 2954,3389 and 3050,3355 towers) |
+| Unreachable top | **2946,3363 plane 1**: `loc_11741` at angle 1 with `forceapproach=south` rotates to a west approach, which is behind the loft wall. The server answers "I can't reach that!" from all four sides. |
+
+Climbing up at 2946,3363 therefore **stranded** the player in the loft. `apply-falador-vertical.mjs` now keeps that one bottom ladder shut (`case 0_46_52_2_35`) with the message "The top of this ladder is blocked. It isn't safe to climb." This was re-verified in the isolated world: the player stays on plane 0 and gets the message. All other placements use the generic one-level climb.
+
+Re-run: start an isolated world, then
+`$env:ISO_ENGINE_DIR=...; $env:ISO_PORT=...; $env:ISO_WEB_PORT=...; node tools/rs377-climb-survey/isolated_ladder_test.mjs tools/rs377-climb-survey/falador_ladder_cases.json`
+(the script refuses port 52402, web port 8888 and any path under `JoshRS-Launcher`).
+
 ### Apply safely
 
 ```powershell
