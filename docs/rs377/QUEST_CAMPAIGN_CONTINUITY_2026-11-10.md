@@ -1,6 +1,6 @@
 # JoshRS revision-377 quest campaign — reconciled continuation (10 November 2026)
 
-**Owner issue:** [#186](../../issues/186) — full historical quest-by-quest source AND gameplay verification. This is a continuation checkpoint, **not** another campaign, new quest implementation, or proof of game completion.
+**Owner issue:** [#186](https://github.com/Parris-Tech-Services/JoshRS/issues/186) — full historical quest-by-quest source AND gameplay verification. This is a continuation checkpoint, **not** another campaign, new quest implementation, or proof of game completion.
 
 ## Required separation of worlds and evidence
 
