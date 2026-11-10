@@ -157,6 +157,28 @@ test('keys the 274 packer rejects (multivar/multiloc) are reported; digit-leadin
     assert.equal(acceptedKeys(null, 'loc'), null);                              // no engine source: not checked, not passed
 });
 
+import { stripUnsupportedKeys } from '../tools/questops/prepack-check.mjs';
+
+test('strip-keys: drops 377-only keys, keeps a base form, never touches stock definitions', () => {
+    const engine = mkdtempSync(join(tmpdir(), 'engine-'));
+    mkdirSync(join(engine, 'tools/pack/config'), { recursive: true });
+    writeFileSync(join(engine, 'tools/pack/config/LocConfig.ts'), "['name','anim','width'];\nkey.startsWith('model');\n");
+    const stock = tree({ 'scripts/stock/configs/s.loc': '[stock_door]\nname=Door\nmultiloc=0,x\n' });                  // a stock def, even with a bad key
+    const root = tree({
+        'scripts/stock/configs/s.loc': '[stock_door]\nname=Door\nmultiloc=0,x\n',
+        'scripts/quests/quest_q/configs/q.loc': '[q_door]\nname=Q door\nmultivar=q_var\nmultiloc=1,q_open\nmultiloc=0,q_closed\n\n[q_closed]\nname=Closed\nmodel1=door_closed\nwidth=1\n\n[q_open]\nname=Open\nmodel1=door_open\n',
+    });
+    const log = stripUnsupportedKeys(loadContent(root), null, engine, loadContent(stock));
+    assert.equal(log.filter((l) => l.startsWith('DROPPED_KEY')).length, 3);
+    assert.ok(log.some((l) => /^TRANSLATED loc q_door: base form taken from q_closed \(2 line/.test(l)));
+    const after = read(root, 'scripts/quests/quest_q/configs/q.loc');
+    assert.match(after, /\[q_door\]\nmodel1=door_closed\nwidth=1\nname=Q door\n\/\/ dropped \(274 packer rejects this key\): multivar=q_var/);   // lowest state wins, not file order
+    assert.match(read(root, 'scripts/stock/configs/s.loc'), /multiloc=0,x/);                                                                 // stock def untouched
+    assert.deepEqual(stripUnsupportedKeys(loadContent(root), null, engine, loadContent(stock)), []);                                         // idempotent
+    const noBase = tree({ 'scripts/quests/quest_q/configs/q.loc': '[lonely]\nname=L\nmultiloc=0,missing\n' });
+    assert.match(stripUnsupportedKeys(loadContent(noBase), null, engine, null).join('\n'), /NO_BASE_FORM loc lonely/);
+});
+
 test('selfcheck: refuses the live world, passes a clean tree, fails and names a broken one', () => {
     const run = (...a) => spawnSync(process.execPath, ['tools/questops/selfcheck.mjs', ...a], { encoding: 'utf8' });
     assert.equal(run('/home/x/lc274/content').status, 2);

@@ -22,6 +22,8 @@
 // Usage:
 //   prepack-check.mjs <target-content> [--source <377-content>] [--json] [--verify]
 //   prepack-check.mjs <target-content> --source <377-content> --apply [--copy-models] [--log file.md]
+//                     [--strip-keys]   also drop 377-only keys (multivar/multiloc...) from definitions
+//                                      the pristine tree does not have (needs --pristine and the engine source)
 //                     [--pristine <untouched 274 content>]   also removes duplicate definitions, keeping
 //                                                            the copy the pristine tree has
 // Exit: 0 clean, 1 problems found (or problems left after --apply), 2 usage.
@@ -437,6 +439,51 @@ export function dedupe(target, pristine) {
     return log;
 }
 
+/**
+ * Drop property keys the 274 packer rejects, definition by definition, and keep the object usable:
+ * a multiloc/multinpc object has no model of its own (its forms live in the targets), so after the
+ * multi* keys go, copy the model/animation lines of form 0 (the lowest state) into it.
+ * Only definitions ABSENT from `pristine` are touched: stock 274 content is never edited.
+ * Dropping a key changes behaviour (a door that should open stays in its base form): every change is
+ * logged and the caller records it in SUBSTITUTIONS.md.
+ */
+export function stripUnsupportedKeys(target, source, engineDir, pristine) {
+    const log = [];
+    const lookup = (kind, name) => target.defs[kind].get(name) ?? source?.defs[kind].get(name) ?? null;
+    const byFile = new Map();
+    for (const kind of Object.keys(KEY_FILES)) {
+        const ok = acceptedKeys(engineDir, kind);
+        if (!ok) continue;
+        for (const def of target.defs[kind].values()) {
+            if (pristine?.defs[kind].has(def.name)) continue;
+            const bad = def.props.filter((p) => !ok(p.key));
+            if (!bad.length) continue;
+            if (!byFile.has(def.file)) byFile.set(def.file, []);
+            const edits = { def, kind, bad, add: [] };
+            const multi = def.props.filter((p) => p.key === 'multiloc' || p.key === 'multinpc').map((p) => ({ n: Number(p.value.split(',')[0]), name: p.value.split(',').slice(1).join(',').trim() })).sort((a, b) => a.n - b.n);
+            const hasModel = def.props.some((p) => /^model\d*$/.test(p.key) && ok(p.key));
+            if (multi.length && !hasModel && (kind === 'loc' || kind === 'npc')) {
+                const base = lookup(kind, multi[0].name);
+                const keep = base?.props.filter((p) => /^(model|head)\d*$|^(anim|readyanim|walkanim|size|width|length|blockwalk|blockrange)$/.test(p.key) && ok(p.key)) ?? [];
+                if (keep.length) { edits.add = keep.map((p) => `${p.key}=${p.value}`); edits.base = multi[0].name; }
+                else log.push(`NO_BASE_FORM ${kind} ${def.name}: form ${multi[0].n} (${multi[0].name}) has no usable model: the quest that needs it must be PARKED`);
+            }
+            byFile.get(def.file).push(edits);
+        }
+    }
+    for (const [file, list] of byFile) {
+        const text = readFileSync(file, 'utf8').split('\n');
+        const inserts = new Map();                                   // header line -> lines to add after it
+        for (const { def, kind, bad, add, base } of list) {
+            for (const p of bad) { if (text[p.line - 1].trim().startsWith('//')) continue; text[p.line - 1] = `// dropped (274 packer rejects this key): ${text[p.line - 1].trim()}`; log.push(`DROPPED_KEY ${relative(target.root, file)}:${p.line} ${kind} ${def.name} ${p.key}=${p.value}`); }
+            if (add.length) { inserts.set(def.line, add); log.push(`TRANSLATED ${kind} ${def.name}: base form taken from ${base} (${add.length} line(s)); the object no longer changes form`); }
+        }
+        for (const [line, add] of [...inserts].sort((a, b) => b[0] - a[0])) text.splice(line, 0, ...add);
+        writeFileSync(file, text.join('\n'));
+    }
+    return log;
+}
+
 /** Apply the plan to the target tree. Returns log lines. */
 export function applyPlan(target, source, plan) {
     const log = [];
@@ -575,6 +622,13 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
             res = check(target, source, opts);
         }
         log.push(...applyPlan(target, source, res.plan));
+        if (args.includes('--strip-keys')) {
+            if (!pristinePath) { console.error('--strip-keys needs --pristine <untouched 274 content>: stock definitions must never be edited'); process.exit(2); }
+            const eng = opts.engineDir ?? (existsSync(join(targetPath, '..', 'engine')) ? join(targetPath, '..', 'engine') : null);
+            if (!eng) { console.error('--strip-keys needs the engine source (--engine <dir> or ~/dev274/engine beside the content)'); process.exit(2); }
+            target = loadContent(targetPath);
+            log.push(...stripUnsupportedKeys(target, source, eng, loadContent(pristinePath)));
+        }
         for (const l of log) console.log(l);
         const logFile = opt('--log');
         if (logFile && log.length) appendGuarded(logFile, `\n## prepack-check --apply\n\n${log.map((l) => `- ${l}`).join('\n')}\n`);
