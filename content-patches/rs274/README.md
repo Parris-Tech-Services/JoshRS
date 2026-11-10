@@ -246,3 +246,29 @@ correct id, definition and position are in place.
 `Between a Rock...` pointed at directories that do not exist, and `Icthlarin's Little Helper` was
 misspelt. Present count moved **72 → 76 of 88** on the same content.
 
+## Map-scoped id translation: identity now matches, not just existence
+
+After importing definitions, every numeric reference in the imported maps resolved — but **340 of them
+resolved to the wrong symbol**. An id like `100` may be `man` in 274 and something else in 377, so a
+map would spawn a plausible, wrong entity and nothing would error.
+
+`tools/questops/translate-map-ids.py` fixes identity:
+
+1. allocate a **new** id for the 377 symbol, above the target's maximum
+2. register the symbol and its definition at that id
+3. rewrite the reference **in the imported maps only**
+
+Existing 274 ids are never reused, so 274 meanings and player-save compatibility are preserved. Maps
+are not saved by players, so rewriting a map file cannot affect a save.
+
+Result on the dev world:
+
+```
+before: 0 dangling · 340 mismatches · 71 unresolved
+after : 0 dangling ·   0 mismatches ·  0 unresolved   (all 660 imported maps)
+```
+
+The last 71 were false: symbols such as `mmsnailpoint_red+black` contain `+`, which the index
+character class excluded. Fixed — that is the fifth check in this project that under-reported by
+failing to look properly.
+
