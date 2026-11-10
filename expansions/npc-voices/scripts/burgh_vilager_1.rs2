@@ -1,0 +1,47 @@
+// JoshRS original dialogue - Luscion, Burgh de Rott's self-appointed grumbler.
+// Voice: contrarian about everything, including good news; loves the village more than anyone.
+
+[opnpc1,burgh_vilager_1]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,angry>What? What is it? If it's about the fence,|I didn't lean on it. It fell over on its own.|Out of spite, probably.");
+    case 1 : ~chatnpc("<p,neutral>Luscion. Official village grumbler.|Unofficial, really. Nobody gave me the job.|I just do it better than anyone else.");
+    case 2 : ~chatnpc("<p,angry>Oh good, another visitor.|More boots tracking mud on our mud.");
+}
+@joshrs_luscion_menu;
+
+[label,joshrs_luscion_menu]
+def_int $option = ~p_choice5("Lovely day, isn't it?", 1, "What's your favourite thing to complain about?", 2, "Is there anything you like?", 3, "Why do you stay here?", 4, "I'll leave you to your grumbling.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,happy>Lovely day, isn't it?");
+    ~chatnpc("<p,angry>Lovely? The fog is so thick I walked into|my own house twice this morning.|The first time I was trying to leave it.");
+    ~chatplayer("<p,happy>Well, it isn't raining.");
+    ~chatnpc("<p,angry>Not YET. It's planning something.|I can tell. The sky's got that look.");
+    @joshrs_luscion_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What's your favourite thing to complain about?");
+    ~chatnpc("<p,neutral>Favourite? That's like asking a baker|which loaf is his favourite. They're all special.");
+    ~chatnpc("<p,angry>The damp. The goat. The way Emilia sings|like a kettle at six in the morning.|The way the kettle sings like Emilia, come to that.");
+    ~chatnpc("<p,neutral>But if I had to choose... people who tell me|to cheer up. As if I'd never thought of it.|I've thought of it. I've decided against it.");
+    @joshrs_luscion_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Is there anything you actually like?");
+    ~chatnpc("<p,angry>Like? Don't be ridiculous.");
+    ~chatnpc("<p,neutral>...");
+    ~chatnpc("<p,neutral>The children's mud castles are quite good.|Helena's got a proper eye for towers.|And Valeria's bread, when there's flour. That's alright.");
+    ~chatplayer("<p,happy>That sounds like quite a lot of liking.");
+    ~chatnpc("<p,angry>Don't you tell anyone I said that.|I have a reputation.");
+    @joshrs_luscion_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>If you dislike it so much, why do you stay?");
+    ~chatnpc("<p,angry>Who said I dislike it?");
+    ~chatplayer("<p,confused>You did. About eleven times.");
+    ~chatnpc("<p,neutral>Complaining isn't disliking, young one.|You only grumble this much about something|you actually care about.");
+    ~chatnpc("<p,sad>This muddy little village is home.|Somebody has to keep an eye on it.|Might as well be the one who notices everything.");
+    @joshrs_luscion_menu;
+} else {
+    ~chatplayer("<p,happy>I'll leave you to your grumbling.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,angry>Good. I've got a lot of it to get through.|...Mind how you go, mind. The bridge is slippery.");
+        case 1 : ~chatnpc("<p,neutral>Hmph. Off you go then.|...Come back sometime. If you must.");
+    }
+}
