@@ -8,7 +8,9 @@ walks every map imported from a newer revision, finds ids that do not resolve, a
 re-allocated id would spawn the wrong entity.
 
 Safety rules:
-  - an id already used in the target for a *different* symbol is refused, never overwritten
+  - only maps listed in <target>/imported-maps.txt are read (native 274 maps share names with 377 maps)
+  - a symbol the target already registers under a *different* id is refused: registering it again
+    would create a duplicate symbol, which the pack compiler rejects
   - the source definition must exist, otherwise the id is reported rather than half-registered
   - only definitions referenced by maps are imported, not whole packs
 
@@ -89,6 +91,15 @@ def block_for(all_file: Path, name: str, kind: str = "") -> str | None:
     return "".join(lines[start:end])
 
 
+def read_manifest(path: Path) -> list[str]:
+    names = []
+    for raw in path.read_text(errors="ignore").splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if line and line.split()[0].endswith(".jm2"):
+            names.append(line.split()[0])
+    return names
+
+
 def append_lines(path: Path, text: str) -> None:
     """Append without gluing onto an unterminated last line ("1357=foo" + "2079=bar" -> one bad entry)."""
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -113,8 +124,12 @@ def main() -> int:
     if "--kinds" in sys.argv:
         kinds = sys.argv[sys.argv.index("--kinds") + 1].split(",")
 
-    tmaps, smaps = target / "maps", source / "maps"
-    imported = [f for f in tmaps.glob("*.jm2") if (smaps / f.name).exists()]
+    tmaps = target / "maps"
+    manifest = target / "imported-maps.txt"
+    if not manifest.exists():
+        print(f"BLOCKED: {manifest} not found; run record-imported-maps.mjs or restore-maps.sh first", file=sys.stderr)
+        return 2
+    imported = [tmaps / n for n in read_manifest(manifest) if (tmaps / n).exists()]
     print(f"maps imported from source: {len(imported)}")
 
     rev = "274"
@@ -127,6 +142,7 @@ def main() -> int:
         tpack = target / f"pack/{kind}.pack"
         spack = source / f"pack/{kind}.pack"
         t_pack, s_pack = load_pack(tpack), load_pack(spack)
+        t_ids = {n: i for i, n in t_pack.items()}
         t_all = target / f"scripts/_unpack/{rev}/all.{kind}"
         build_index(source, kind)
         s_all = source / "scripts/_unpack" / "377" / f"all.{kind}"
@@ -143,9 +159,9 @@ def main() -> int:
             if name is None:
                 no_def.append(i)
                 continue
-            existing = t_pack.get(i)
-            if existing is not None and existing != name:
-                refused.append((i, existing, name))
+            existing_id = t_ids.get(name)
+            if existing_id is not None and existing_id != i:
+                refused.append((i, name, existing_id))
                 continue
             blk = block_for(s_all, name, kind)
             if blk is None:
@@ -156,7 +172,7 @@ def main() -> int:
         print(f"\n{kind}: referenced-but-missing {len(needed)}  register {len(add)}  "
               f"id-conflict {len(refused)}  no-definition {len(no_def)}")
         if refused:
-            print(f"  refused (id already means something else): {refused[:5]}")
+            print(f"  refused (symbol already registered under another id - needs map id translation): {refused[:5]}")
         if no_def:
             print(f"  no definition upstream: {no_def[:8]}")
 
