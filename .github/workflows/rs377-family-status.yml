@@ -1,0 +1,41 @@
+name: JoshRS Windows family status — safe read-only check
+on:
+  pull_request:
+    paths:
+      - 'JoshRS-Family-Check.cmd'
+      - 'deploy/jparris-windows/Check-Family-Status.ps1'
+      - '.github/workflows/rs377-family-status.yml'
+  push:
+    paths:
+      - 'JoshRS-Family-Check.cmd'
+      - 'deploy/jparris-windows/Check-Family-Status.ps1'
+      - '.github/workflows/rs377-family-status.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+jobs:
+  read-only:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse PowerShell and check forbidden commands
+        shell: pwsh
+        run: |
+          $file='deploy/jparris-windows/Check-Family-Status.ps1'
+          $tokens=$null;$errors=$null
+          [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file),[ref]$tokens,[ref]$errors)
+          if($errors.Count){throw ($errors | Out-String)}
+          $body=Get-Content $file -Raw
+          foreach($pattern in @('Stop-Process','Restart-','Remove-Item','Move-Item','Copy-Item','Set-Content','WriteAllBytes','npm run build','--apply','-Apply','::tele')) {
+            # Only executable lines are relevant; comments and warnings may contain these words.
+            $lines=$body -split '\r?\n' | Where-Object { $_ -notmatch '^\s*#' }
+            if($lines -match ('^\s*'+[regex]::Escape($pattern))) {throw "Unexpected mutation command: $pattern"}
+          }
+          $cmd=Get-Content 'JoshRS-Family-Check.cmd' -Raw
+          if($cmd -notmatch 'Check-Family-Status.ps1' -or $cmd -match '\b-Apply\b') {throw 'Unsafe family launcher'}
+      - name: Run checker against unconfigured disposable checkout
+        shell: powershell
+        run: |
+          $output= & '.\deploy\jparris-windows\Check-Family-Status.ps1' | Out-String
+          if($output -notmatch 'NO CHANGES MADE' -or $output -notmatch 'Configured: False') {throw "Unexpected safe status result: $output"}
