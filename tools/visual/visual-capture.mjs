@@ -14,6 +14,17 @@ import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
+// Any unexpected failure must explain itself. Without this, the process exits and the shell step
+// fails with nothing but the last log line, which is what made the post-login crash invisible.
+process.on('uncaughtException', (e) => {
+    console.error(`UNCAUGHT: ${e?.stack ?? String(e)}`);
+    process.exit(3);
+});
+process.on('unhandledRejection', (e) => {
+    console.error(`UNHANDLED: ${e?.stack ?? String(e)}`);
+    process.exit(3);
+});
+
 const args = process.argv.slice(2);
 const url = args[0] ?? 'http://127.0.0.1:8888/rs2.cgi';
 const out = args[1] ?? 'login.png';
