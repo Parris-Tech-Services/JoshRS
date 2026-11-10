@@ -78,6 +78,32 @@ jobs:
             --wait-for "design your player|public chat|private chat|inventory" \
             --max-seconds 100
 
+      - name: Prove the player save persisted (save / reload)
+        shell: bash
+        run: |
+          set -euo pipefail
+          saves="$RUNNER_TEMP/w274/engine/data/players/main"
+          echo "saves after first login:"
+          ls -l "$saves" || true
+          count=$(find "$saves" -name '*.sav' | wc -l)
+          echo "save count: $count"
+          if [ "$count" -lt 1 ]; then
+            echo "::error::no save file was written after login"
+            exit 1
+          fi
+          # Reconnect as the SAME account. A returning player must not be shown character design
+          # again, which is what proves the save was persisted and reloaded rather than rebuilt.
+          node tools/visual/visual-capture.mjs \
+            http://127.0.0.1:8888/rs2.cgi "$RUNNER_TEMP/reload.png" \
+            --login "${VISUAL_USER:-visualprobe}:${VISUAL_PASS:-visualprobe}" \
+            --wait-for "public chat|private chat|inventory|attack" \
+            --max-seconds 150 | tee "$RUNNER_TEMP/reload.log"
+          if grep -qi "character design detected" "$RUNNER_TEMP/reload.log"; then
+            echo "::error::returning player was sent to character design - the save did not reload"
+            exit 1
+          fi
+          echo "PERSISTENCE VERIFIED: returning login skipped character design"
+
       - name: Summarise pixels (no image viewing needed)
         shell: bash
         run: |
