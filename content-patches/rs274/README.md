@@ -104,3 +104,31 @@ quest-owned names (`*quest*`). Two genuine ones (`follower_uid`, `draugen_butter
 restored because they *are* in the upstream pack — the removal was too broad, and the tool re-added
 them.
 
+## Cross-registry symbolic names must be unique (a real defect, repaired)
+
+`Engine-TS` rev 274 rejects duplicate symbolic names across **all four** config registries —
+`VarpPack`, `VarbitPack`, `VarnPack` and `VarsPack` (`tools/pack/config/PackShared.ts`). A symbol may
+be registered in exactly one of them.
+
+`add-missing-varps.py` did not know this. It registered every `%name` a ported quest referenced as a
+**varp**, including names already owned by varbit, varn or vars. The result was **56 cross-registry
+collisions**, and `troll_freed_eadgar` was one:
+
+| registry | id |
+|---|---|
+| `varbit.pack` | 0 (pre-existing, `basevar=troll_varbit`, bits 0–0) |
+| `varp.pack` | 649 (**redundant allocation by this project**) |
+
+Checking `varp.pack` alone for duplicate names cannot find this — every file is internally unique.
+
+`tools/questops/repair-cross-registry-varps.py` fixes it:
+
+- audits all four registries together
+- **the pre-existing registration wins**; the added varp is the redundant one
+- only varp ids at or above `--min-id` (default 359) are considered, which are exactly the ids this
+  project appended after the stock registry, so no established player-save id is touched
+- removes the matching `all.varp` definition block, which is also invalid for a name owned elsewhere
+
+Verified on the isolated dev world: **56 → 0 collisions**, world repacked to `World ready`, 518 varp
+entries remain, and `troll_freed_eadgar` is reachable only as its varbit on `troll_varbit`.
+
