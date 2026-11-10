@@ -1,0 +1,47 @@
+// JoshRS original dialogue - Florin, Burgh de Rott's neatest (and most aggrieved) villager.
+// Voice: fussy, dignified, keeping a grudge with great ceremony; secretly misses his friend Radu.
+
+[opnpc1,burgh_vilager_8]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,angry>Have you seen a goat? White coat, one brown ear,|expression of total innocence? It's a lie.|That expression is a lie.");
+    case 1 : ~chatnpc("<p,neutral>Florin. Please wipe your boots before you|stand near me. I've only got one good shirt left.|I used to have two.");
+    case 2 : ~chatnpc("<p,angry>Good day. If you're a friend of Radu's,|it isn't a good day. If not, it's a fine one.");
+}
+@joshrs_florin_menu;
+
+[label,joshrs_florin_menu]
+def_int $option = ~p_choice5("What happened to your shirt?", 1, "You seem very tidy for a marsh village.", 2, "Were you and Radu ever friends?", 3, "Radu said he might knit you a new shirt.", 4, "Good luck with the goat. Goodbye!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>What happened to your shirt?");
+    ~chatnpc("<p,angry>I hung it on the line. My best one. Blue linen,|real buttons, the collar ironed with a hot stone.|I turned my back for the length of one sneeze.");
+    ~chatnpc("<p,sad>When I turned around there was a goat|and a sleeve. Just a sleeve.|She looked me right in the eye and ate that too.");
+    ~chatplayer("<p,shock>That's terrible!");
+    ~chatnpc("<p,angry>Thank you! Finally, someone understands.");
+    @joshrs_florin_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>You seem very tidy for someone living in a marsh.");
+    ~chatnpc("<p,neutral>The marsh doesn't get to decide|what kind of man I am.");
+    ~chatnpc("<p,happy>I brush my coat every morning. I fold my socks.|My boots are muddy, of course. But they are|muddy in a very organised way.");
+    ~chatnpc("<p,neutral>When everything around you is grey and damp,|small neat things matter. They remind you|that you're still in charge of something.");
+    @joshrs_florin_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Were you and Radu ever friends?");
+    ~chatnpc("<p,neutral>...Friends? We were more than friends.|We were chess rivals.");
+    ~chatnpc("<p,sad>Every evening for eleven years.|He'd bring the board, I'd bring the tea.|He cheated, I let him, we both knew.");
+    ~chatnpc("<p,sad>We haven't played in a fortnight.|The evenings are very long without someone|to lose to on purpose.");
+    @joshrs_florin_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,happy>Radu said he might knit you a new shirt, to make up for it.");
+    ~chatnpc("<p,shock>Radu? Knit? Radu can't even tie his own boots.|He uses a knot he calls 'the hopeful'.");
+    ~chatnpc("<p,neutral>...He really said that?");
+    ~chatplayer("<p,happy>He did. Ileana's going to teach him.");
+    ~chatnpc("<p,happy>Hmph. Well. It'll be a terrible shirt.|Lumpy. Probably one arm longer than the other.");
+    ~chatnpc("<p,happy>...I'll wear it to chess, then.|Tell him to bring the board on Friday.");
+    @joshrs_florin_menu;
+} else {
+    ~chatplayer("<p,happy>Good luck with the goat. Goodbye!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,neutral>Goodbye. Keep your sleeves close to your body|whenever you pass Radu's house. Trust me.");
+        case 1 : ~chatnpc("<p,happy>Farewell. And thank you for listening.|It's been a long fortnight.");
+    }
+}
