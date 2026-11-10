@@ -6,11 +6,11 @@ This quest is **outside** Claude's 10 November desktop audit of the 104 historic
 
 ## Scope built in this branch
 
-- New **per-player, permanent** `joshrs_royaltrouble` varp; new stage constants and story dialogue in a separate `expansions/rs377-quests/royal-trouble` subtree.
+- New **per-player, permanent** `joshrs_royaltrouble` varp (slot **725**, appended only to a disposable copy of pinned `pack/varp.pack` after verifying slot 724 is the original final entry and 725 is unallocated); new stage constants and story dialogue in a separate `expansions/rs377-quests/royal-trouble` subtree.
 - Starting conversation with Advisor Ghrim, royal children, King Vargas; Miscellania and Etceteria citizen theft interviews; Queen Sigrid; sailor; eventual king's permission to enter the dungeon.
 - Stage progression requires dialogue and actual in-world NPC interaction (no script-only stage-jump, variable edit, teleport, grant or fake quest completion). Original dialogue written specifically for JoshRS, not an exact copy.
 - Discrete, idempotent disposable-content installer with read-only default and absolute path, marker, NPC-pack, existing-dialogue collision and content-overwrite checks.
-- Local synthetic tests and pinned LostCityRS Engine-TS/Content native compile in GitHub Actions.
+- Local synthetic tests and pinned LostCityRS Engine-TS/Content native compile and temporary server boot in GitHub Actions. The CI first compiles the **unaltered pinned content with BUILD_VERIFY=true**, then applies the new varp ID and builds it with checksum matching disabled *only for the altered disposable pack*, verifying that the only tracked change is `pack/varp.pack`. Do not disable these checks in production.
 
 ## Native 377 evidence
 
