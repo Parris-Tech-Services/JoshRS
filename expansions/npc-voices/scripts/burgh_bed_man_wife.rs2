@@ -1,0 +1,44 @@
+// JoshRS original dialogue - Gabriela, who runs Burgh de Rott's one-bed guesthouse.
+// Voice: wry, affectionate, exasperated; the brains of the business while her husband Petru naps.
+
+[opnpc1,burgh_bed_man_wife]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Gabriela. If you're looking for a bed,|we have one. My husband is in it.|He's been in it since lunch.");
+    case 1 : ~chatnpc("<p,neutral>Shh. Don't wake Petru. Not because|he'll be grumpy. Because he'll want to tell you|about his dream, and it's always about cheese.");
+    case 2 : ~chatnpc("<p,happy>Welcome to the finest guesthouse in Burgh de Rott.|Also the only one. Also it's our house.");
+}
+@joshrs_gabriela_menu;
+
+[label,joshrs_gabriela_menu]
+def_int $option = ~p_choice5("Tell me about the guesthouse.", 1, "Is your husband always asleep?", 2, "Have you had many guests?", 3, "How did you two meet?", 4, "I'll let you both rest. Goodbye!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Tell me about the guesthouse.");
+    ~chatnpc("<p,neutral>One room. One bed. One very good quilt|that Ileana made before she started on the scarves.");
+    ~chatnpc("<p,happy>Guests get a hot water bottle, a candle,|and breakfast. Breakfast is turnip.|Petru calls it 'the full marsh breakfast'.");
+    @joshrs_gabriela_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Is your husband always asleep?");
+    ~chatnpc("<p,neutral>He calls it 'resting his eyes'.|His eyes must be the most rested eyes in the world.|They could run a marathon.");
+    ~chatnpc("<p,happy>He tests the bed for guests, he says.|Quality control. Very important job.|He takes it very seriously. Hours at a time.");
+    ~chatnpc("<p,neutral>Mind you, when Grigore's roof caved in last winter,|Petru was up all night holding the beams.|He sleeps when it's quiet. He wakes when it matters.");
+    @joshrs_gabriela_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Have you had many guests?");
+    ~chatnpc("<p,neutral>Three, in eleven years.");
+    ~chatnpc("<p,happy>A travelling tinker, who stayed a night.|A lost scholar, who stayed a week.|And a man who stayed four months by accident.");
+    ~chatplayer("<p,quiz>By accident?");
+    ~chatnpc("<p,laugh>Kept meaning to leave. Then it rained.|Then it was foggy. Then Valeria baked.|In the end he married the cart driver's sister.");
+    @joshrs_gabriela_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>How did you and Petru meet?");
+    ~chatnpc("<p,happy>At a harvest dance in the next valley.|Everyone was dancing. He was asleep on a hay bale.");
+    ~chatnpc("<p,neutral>I sat next to him, waiting for him to wake up|so I could tell him he was missing everything.|I ended up talking to him for three hours.");
+    ~chatnpc("<p,happy>He woke up at the end and said,|'Was I good company?' And I said yes.|I still don't fully know why. But he was.");
+    @joshrs_gabriela_menu;
+} else {
+    ~chatplayer("<p,happy>I'll let you both rest. Goodbye!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Goodbye, love. If you ever need the bed,|I'll roll him out of it for you.|He won't even notice.");
+        case 1 : ~chatnpc("<p,neutral>Farewell. Petru says goodbye.|...He will, when he wakes up. I'll pass it on.");
+    }
+}
