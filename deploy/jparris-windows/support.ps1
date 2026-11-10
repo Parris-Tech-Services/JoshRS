@@ -111,6 +111,18 @@ function New-JoshRSLocalBackup {
             note='Keep this folder private. Do not commit it to public GitHub.'
         }
         $manifest | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $temporary 'backup-info.json') -Encoding UTF8
+        # A complete snapshot is not published until all copied save and
+        # account bytes match their original source and its integrity manifest.
+        . (Join-Path $PSScriptRoot 'save-integrity.ps1')
+        $report=Write-JoshRSBackupIntegrity -BackupPath $temporary -Engine $status.Engine
+        if (-not $report.Verified) { throw 'Private snapshot failed SHA-256 verification.' }
+        foreach ($player in @('elrothiro','sylvie')) {
+            $sourceSave=Join-Path $status.Engine ('data/players/main/'+$player+'.sav')
+            $expected=if ($player -eq 'elrothiro') { $report.ContainsElrothiro } else { $report.ContainsSylvie }
+            if ((Test-Path -LiteralPath $sourceSave -PathType Leaf) -and -not $expected) {
+                throw ('Backup is missing active '+$player+' save; refusing to publish.')
+            }
+        }
         Move-Item -LiteralPath $temporary -Destination $final -ErrorAction Stop
         return $final
     } catch {

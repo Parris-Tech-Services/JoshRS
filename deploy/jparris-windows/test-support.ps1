@@ -1,5 +1,6 @@
 $ErrorActionPreference='Stop'
 . (Join-Path $PSScriptRoot 'support.ps1')
+. (Join-Path $PSScriptRoot 'save-integrity.ps1')
 
 function Assert([bool]$condition,[string]$explanation) {
     if (-not $condition) { throw "JoshRS Windows regression: $explanation" }
@@ -18,6 +19,7 @@ try {
     'mock' | Set-Content -LiteralPath (Join-Path $fakeEngine 'src\engine\World.ts')
     'mock' | Set-Content -LiteralPath (Join-Path $fakeClient 'gradlew.bat')
     'mock-save' | Set-Content -LiteralPath (Join-Path $fakeEngine 'data\players\main\elrothiro.sav')
+    'mock-sylvie-save' | Set-Content -LiteralPath (Join-Path $fakeEngine 'data\players\main\sylvie.sav')
     'mock-db' | Set-Content -LiteralPath (Join-Path $fakeEngine 'db.sqlite')
     'mock-wal' | Set-Content -LiteralPath (Join-Path $fakeEngine 'db.sqlite-wal')
     'PASSWORD=FakeSuperSecret' | Set-Content -LiteralPath (Join-Path $fakeEngine '.env')
@@ -32,7 +34,7 @@ try {
     } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $runtime 'active.json')
     $s=Get-JoshRSStatus -RepoRoot $root
     Assert $s.Configured 'a complete mock USB game should be configured'
-    Assert ($s.SaveCount -eq 1) 'player saves should be counted'
+    Assert ($s.SaveCount -eq 2) 'both player saves should be counted'
     Assert $s.DatabasePresent 'the account database should be detected'
     $diagnostics=Get-JoshRSSafeDiagnostics -RepoRoot $root
     Assert (-not $diagnostics.Contains('FakeSuperSecret')) 'diagnostics must never echo .env credentials'
@@ -41,6 +43,10 @@ try {
     Assert (Test-Path -LiteralPath (Join-Path $backup 'db.sqlite')) 'SQLite database backup missing'
     Assert (Test-Path -LiteralPath (Join-Path $backup 'db.sqlite-wal')) 'SQLite WAL backup missing'
     Assert (Test-Path -LiteralPath (Join-Path $backup 'backup-info.json')) 'backup metadata missing'
+    Assert (Test-Path -LiteralPath (Join-Path $backup 'integrity.json')) 'published backup missing integrity manifest'
+    $proof=Test-JoshRSBackupIntegrity -BackupPath $backup
+    Assert $proof.Verified 'published backup was not hash-verified'
+    Assert ($proof.ContainsElrothiro -and $proof.ContainsSylvie) 'one family save absent from verified backup'
     Assert ((Get-Content -LiteralPath (Join-Path $fakeEngine 'db.sqlite') -Raw).Contains('mock-db')) 'source database must remain unchanged'
     $listener=[System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Loopback,$gamePort)
     $listener.Start()

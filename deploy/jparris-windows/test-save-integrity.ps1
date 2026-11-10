@@ -18,6 +18,7 @@ try {
     'world' | Set-Content (Join-Path $engine 'src\engine\World.ts')
     'gradle' | Set-Content (Join-Path $client 'gradlew.bat')
     [IO.File]::WriteAllBytes((Join-Path $engine 'data\players\main\elrothiro.sav'),[Convert]::FromBase64String('IAQABwyQDR4AAAAAAAAAAAAAAAAAAAAAAABDDQAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALaEoco='))
+    'synthetic-sylvie-only' | Set-Content (Join-Path $engine 'data\players\main\sylvie.sav')
     'MOCK-DB-DO-NOT-TREAT-AS-SQLITE' | Set-Content (Join-Path $engine 'db.sqlite')
     'mock-wal' | Set-Content (Join-Path $engine 'db.sqlite-wal')
     @{engine=$engine;content=$content;client=$client;gamePort=54373;webPort=54374;source='test'} |
@@ -32,13 +33,14 @@ try {
     $valid=Test-JoshRSBackupIntegrity -BackupPath $snap[0].FullName
     Assert $valid.Verified 'backup integrity should pass'
     Assert $valid.ContainsElrothiro 'backup missing Elrothiro'
-    Assert ($valid.FileCount -eq 3) 'save, db and WAL should be included'
+    Assert $valid.ContainsSylvie 'backup missing Sylvie'
+    Assert ($valid.FileCount -eq 4) 'both saves, db and WAL should be included'
     $hash=(Get-FileHash (Join-Path $engine 'data\players\main\elrothiro.sav') -Algorithm SHA256).Hash
     Assert ($hash -eq $original) 'live character was altered'
-    'TAMPER' | Add-Content (Join-Path $snap[0].FullName 'players\main\elrothiro.sav')
+    'TAMPER' | Add-Content (Join-Path $snap[0].FullName 'players\main\sylvie.sav')
     $rejected=$false
     try{[void](Test-JoshRSBackupIntegrity -BackupPath $snap[0].FullName)}catch{$rejected=($_.Exception.Message -like '*hash or size mismatch*')}
-    Assert $rejected 'corrupted backup should be rejected'
+    Assert $rejected 'tampered Sylvie backup should be rejected'
     Write-Host 'PASS: read-only identity check, consistent offline backup, SHA256 verification, tamper rejection, untouched live save.'
 }finally {
     if(Test-Path -LiteralPath $root){Remove-Item -LiteralPath $root -Recurse -Force}

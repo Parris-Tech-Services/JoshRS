@@ -12,7 +12,7 @@ $RepoRoot=(Resolve-Path -LiteralPath $RepoRoot -ErrorAction Stop).Path
 . (Join-Path $PSScriptRoot 'save-integrity.ps1')
 if ($VerifyBackup) {
     $r=Test-JoshRSBackupIntegrity -BackupPath $VerifyBackup
-    Write-Host "VERIFIED BACKUP INTEGRITY: $($r.FileCount) files. Elrothiro present: $($r.ContainsElrothiro)"
+    Write-Host "VERIFIED BACKUP INTEGRITY: $($r.FileCount) files. Elrothiro present: $($r.ContainsElrothiro); Sylvie present: $($r.ContainsSylvie)"
     return
 }
 $status=Get-JoshRSStatus -RepoRoot $RepoRoot
@@ -79,13 +79,17 @@ if ($CreateBackup) {
         throw 'Stop the game gracefully before backup. No copy made.'
     }
     $dest=New-JoshRSLocalBackup -RepoRoot $RepoRoot
-    $report=Write-JoshRSBackupIntegrity -BackupPath $dest -Engine $status.Engine
+    $report=Test-JoshRSBackupIntegrity -BackupPath $dest
     if (-not $report.Verified -or -not $report.ContainsElrothiro) {
         throw 'The copy does not contain verified Elrothiro data. Do not restore.'
+    }
+    $sylvieSource=Join-Path $status.Engine 'data/players/main/sylvie.sav'
+    if ((Test-Path -LiteralPath $sylvieSource -PathType Leaf) -and -not $report.ContainsSylvie) {
+        throw 'Sylvie save was missing from the verified family snapshot.'
     }
     $after=(Get-FileHash -LiteralPath $savePath -Algorithm SHA256).Hash
     if ($hash -ne $after) { throw 'Elrothiro changed during backup. Snapshot must not be used.' }
     Write-Host "VERIFIED OFFLINE BACKUP CREATED: $dest"
-    Write-Host "Files checked: $($report.FileCount); Elrothiro preserved: True"
+    Write-Host "Files checked: $($report.FileCount); Elrothiro preserved: True; Sylvie included: $($report.ContainsSylvie)"
     Write-Host 'Keep one additional encrypted copy on a separate offline drive. Never publish saves in GitHub.'
 }

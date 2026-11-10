@@ -231,9 +231,12 @@ $script:BackupButton.Add_Click({
             }
         }
         $folder=New-JoshRSLocalBackup -RepoRoot $script:RepoRoot
-        $proof=Write-JoshRSBackupIntegrity -BackupPath $folder -Engine $s.Engine
+        $proof=Test-JoshRSBackupIntegrity -BackupPath $folder
         if (-not $proof.Verified) { throw 'The copied backup failed hash verification. Do not restore it.' }
         $condition=if ($proof.ContainsElrothiro) {'Elrothiro is present and CRC-validated.'} else {'WARNING: Elrothiro is missing from this active game. Check which world was selected.'}
+        $sylvieSave=Join-Path $s.Engine 'data/players/main/sylvie.sav'
+        if ((Test-Path -LiteralPath $sylvieSave -PathType Leaf) -and -not $proof.ContainsSylvie) { throw 'Sylvie backup validation failed.' }
+        $condition+=' Sylvie present: '+$proof.ContainsSylvie+'.'
         $message='VERIFIED OFFLINE SNAPSHOT: ' + $folder +
             [Environment]::NewLine + [Environment]::NewLine +
             'Files SHA-256 verified: ' + $proof.FileCount +
