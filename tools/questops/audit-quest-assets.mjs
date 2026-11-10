@@ -48,21 +48,20 @@ const varbitPack = loadPack(join(content, 'pack/varbit.pack'));
 const varnPack = loadPack(join(content, 'pack/varn.pack'));
 const varsPack = loadPack(join(content, 'pack/vars.pack'));
 
-// all.npc / all.varp carry definitions; a symbol in a pack without a definition is unusable.
-const unpack = join(content, 'scripts/_unpack');
-const revDirs = existsSync(unpack) ? readdirSync(unpack) : [];
-const npcDefs = new Set();
-const varDefs = new Set();
-for (const rev of revDirs) {
-    const npcFile = join(unpack, rev, 'all.npc');
-    if (existsSync(npcFile)) {
-        for (const m of readFileSync(npcFile, 'utf8').matchAll(/^\[([a-z0-9_]+)\]/gim)) npcDefs.add(m[1]);
+// Names are defined in BOTH _unpack and quest-local scripts/quests/*/configs/*.kind.
+// A pack symbol alone does not prove the object/NPC/location definition can compile.
+const allDefinitions = (kind) => {
+    const names = new Set();
+    for (const file of walk(join(content, 'scripts'), `.${kind}`)) {
+        for (const match of readFileSync(file, 'utf8').matchAll(/^\[([^\]\n]+)\]/gm)) {
+            names.add(match[1].trim());
+        }
     }
-    const varFile = join(unpack, rev, 'all.varp');
-    if (existsSync(varFile)) {
-        for (const m of readFileSync(varFile, 'utf8').matchAll(/^\[([a-z0-9_]+)\]/gim)) varDefs.add(m[1]);
-    }
-}
+    return names;
+};
+const npcDefs = allDefinitions('npc');
+const locDefs = allDefinitions('loc');
+const objDefs = allDefinitions('obj');
 
 const questsDir = join(content, 'scripts/quests');
 const PORTED = new Set([
@@ -89,6 +88,8 @@ for (const name of readdirSync(questsDir).filter((n) => PORTED.has(n)).sort()) {
     const missingLoc = locRefs.filter((s) => !locPack.has(s));
     const missingObj = objRefs.filter((s) => !objPack.has(s));
     const unregisteredNpc = npcRefs.filter((s) => npcPack.has(s) && !npcDefs.has(s));
+    const unregisteredLoc = locRefs.filter((s) => locPack.has(s) && !locDefs.has(s));
+    const unregisteredObj = objRefs.filter((s) => objPack.has(s) && !objDefs.has(s));
 
     // Stage variables
     const varRefs = [...new Set([...text.matchAll(/%([a-z0-9_]+)/gi)].map((m) => m[1]))]
@@ -111,15 +112,23 @@ for (const name of readdirSync(questsDir).filter((n) => PORTED.has(n)).sort()) {
     if (missingLoc.length) blockers.push(`${missingLoc.length} loc symbol(s) unregistered`);
     if (missingObj.length) blockers.push(`${missingObj.length} obj symbol(s) unregistered`);
     if (unregisteredNpc.length) blockers.push(`${unregisteredNpc.length} NPC without definition`);
+    if (unregisteredLoc.length) blockers.push(`${unregisteredLoc.length} loc without definition`);
+    if (unregisteredObj.length) blockers.push(`${unregisteredObj.length} obj without definition`);
     if (missingVars.length) blockers.push(`${missingVars.length} unregistered var(s)`);
     if (collisions.length) blockers.push(`${collisions.length} cross-registry var collision(s)`);
     if (!hasJournal) blockers.push('no journal entry');
     if (!hasComplete) blockers.push('no completion call');
     if (!hasReward) blockers.push('no reward');
 
-    const status = blockers.length === 0 ? 'STRUCTURALLY COMPLETE' : (blockers.length <= 2 ? 'PARTIALLY WORKING' : 'BLOCKED');
+    // A missing start NPC or quest item is a blocker even when it is the ONLY issue.
+    // Never call a quest partially working simply because it has few failures.
+    const critical = missingNpc.length || missingLoc.length || missingObj.length ||
+        unregisteredNpc.length || unregisteredLoc.length || unregisteredObj.length ||
+        missingVars.length || collisions.length;
+    const status = !blockers.length ? 'STRUCTURALLY COMPLETE' :
+        critical ? 'BLOCKED' : 'STRUCTURALLY INCOMPLETE';
     rows.push({ name, npcRefs: npcRefs.length, locRefs: locRefs.length, objRefs: objRefs.length,
-        missingNpc, missingLoc, missingObj, unregisteredNpc, missingVars, collisions,
+        missingNpc, missingLoc, missingObj, unregisteredNpc, unregisteredLoc, unregisteredObj, missingVars, collisions,
         hasJournal, hasComplete, hasReward, blockers, status });
 }
 
