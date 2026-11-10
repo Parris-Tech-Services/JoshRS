@@ -200,7 +200,15 @@ if (login) {
 let matched = false;
 let lastText = '';
 
-    lastText = await snapshot();
+    try {
+        lastText = await snapshot();
+    } catch (e) {
+        // The client can replace its canvas mid-transition; that is not a verification failure,
+        // so keep polling until the deadline instead of throwing.
+        console.log(`poll ${poll}: canvas unavailable during transition (${String(e).slice(0, 80)})`);
+        await page.waitForTimeout(5000);
+        continue;
+    }
     const flat = lastText.replace(/\s+/g, ' ').slice(0, 220);
     console.log(`poll ${poll} t=${Math.round((Date.now() - start) / 1000)}s: ${JSON.stringify(flat)}`);
     if (waitFor.test(lastText)) {
