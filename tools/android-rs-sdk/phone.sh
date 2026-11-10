@@ -41,7 +41,7 @@ PY
 ports_free() {
   local label p
   for label in "web:$HTTP_PORT" "game:$GAME_PORT" "gateway:$GATEWAY_PORT" "management:$MANAGEMENT_PORT" "hiscores:$HISCORES_PORT"; do
-    p="\${label##*:}"
+    p="${label##*:}"
     if port_free "$p"; then say "free: $label"; else fail "Port $label is occupied. Leaving the existing service untouched."; fi
   done
 }
@@ -206,7 +206,7 @@ start_component() {
 
 create_bot() {
   require_debian; require_checkout; export_environment
-  local name="\${1:-}"
+  local name="${1:-}"
   [[ "$name" =~ ^[a-zA-Z0-9]{1,12}$ ]] || fail 'Bot name must be 1-12 letters/numbers.'
   [[ ! -e "$WORK/bots/$name" ]] || fail 'Bot already exists; refusing to overwrite credentials.'
   (cd "$WORK" && bun bots/create-bot.ts "$name" --no-chat)
@@ -229,7 +229,7 @@ PY
 
 run_bot() {
   require_debian; require_checkout; export_environment
-  local mode="$1" name="\${2:-}"
+  local mode="$1" name="${2:-}"
   [[ "$name" =~ ^[a-zA-Z0-9]{1,12}$ ]] || fail 'Give a valid existing bot name.'
   [[ -f "$WORK/bots/$name/bot.env" ]] || fail "Create bot first: bash $0 create-bot $name"
   grep -Fxq "SERVER=localhost:$HTTP_PORT" "$WORK/bots/$name/bot.env" || fail 'Bot points to a different server; refusing.'
@@ -260,13 +260,13 @@ No server is ever auto-stopped/restarted, and no production save is imported.
 TXT
 }
 
-case "\${1:-help}" in
+case "${1:-help}" in
   install) setup ;;
   doctor) doctor ;;
   build) build ;;
   engine|gateway|web) start_component "$1" ;;
-  create-bot) create_bot "\${2:-}" ;;
-  client|bot) run_bot "$1" "\${2:-}" ;;
+  create-bot) create_bot "${2:-}" ;;
+  client|bot) run_bot "$1" "${2:-}" ;;
   help|-h|--help) usage ;;
   *) usage; fail "Unknown command: $1" ;;
 esac
