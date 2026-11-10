@@ -1,0 +1,55 @@
+// JoshRS original dialogue - Catalina, Burgh de Rott's bravest child.
+// Voice: breathless, fearless, full of questions; trains for heroism with a stick sword.
+
+[opnpc1,burgh_villager_child1]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>Halt! Who goes there?|...Oh, you're a real adventurer! Sorry!|I thought you were Ivan pretending.");
+    case 1 : ~chatnpc("<p,happy>I'm Catalina and I'm going to be a hero!|I've already got a sword. It's a stick.|But it's a very heroic stick.");
+    case 2 : ~chatnpc("<p,shock>Is that a REAL sword? Can I hold it?|No? That's okay. Can I look at it really closely?");
+}
+@joshrs_catalina_menu;
+
+[label,joshrs_catalina_menu]
+def_int $option = ~p_choice5("Have you ever seen a dragon?", 1, "Show me your sword moves!", 2, "What makes someone a hero?", 3, "Elisabeta says you should tidy your room.", 4, "Keep practising, hero! Bye!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Have you ever seen a dragon?");
+    ~chatnpc("<p,sad>No... But I've seen a really big lizard.|And a heron that looked a bit dragony from behind.");
+    def_int $choice = ~p_choice2("I've never fought one either.", 1, "I've seen loads of dragons!", 2);
+    if ($choice = 1) {
+        ~chatplayer("<p,happy>I've never fought one either.");
+        ~chatnpc("<p,happy>Really? Then we can both be scared together!|I mean, brave together. That's what I meant.");
+    } else {
+        ~chatplayer("<p,happy>I've seen loads of dragons!");
+        ~chatnpc("<p,shock>WOW! Were they big? Were they THIS big?|Bigger than the church? Did they breathe fire?|What colour were they? Did they have names?");
+        ~chatnpc("<p,happy>When I grow up, I'm going to find a dragon|and ask its name before I fight it.|It's only polite.");
+    }
+    @joshrs_catalina_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,happy>Show me your sword moves!");
+    ~chatnpc("<p,happy>Okay! Watch closely! This one's the Swoosh!|*swoosh*");
+    ~chatnpc("<p,happy>And this is the Double Swoosh!|*swoosh swoosh*");
+    ~chatnpc("<p,happy>And THIS is my secret move. The Spinning Hero!|*spins round three times*|...Hang on. The whole village is spinning.");
+    ~chatplayer("<p,laugh>That was amazing!");
+    ~chatnpc("<p,happy>I know! I just need to work on the stopping part.");
+    @joshrs_catalina_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What do you think makes someone a hero?");
+    ~chatnpc("<p,neutral>Hmm. Being strong? No, wait.|Grigore is really strong but he just fixes roofs.");
+    ~chatnpc("<p,happy>I think... a hero is someone who helps|even when they're scared.|Like when Vasile saved Pip from under the plank.");
+    ~chatnpc("<p,happy>So I don't have to wait to grow up!|I can be a little bit of a hero right now.|I helped Teodor pull up turnips this morning!");
+    ~chatplayer("<p,happy>That definitely counts.");
+    @joshrs_catalina_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,neutral>Elisabeta says you should tidy your room.");
+    ~chatnpc("<p,angry>Heroes don't tidy their rooms!|Heroes are too busy saving people!");
+    ~chatplayer("<p,neutral>Real heroes keep their gear in order,|so they can find it when there's trouble.");
+    ~chatnpc("<p,shock>...Oh. I never thought of it like that.|If a dragon came, I'd never find my good stick|under all those socks.");
+    ~chatnpc("<p,happy>Okay. I'll tidy it. Heroically.");
+    @joshrs_catalina_menu;
+} else {
+    ~chatplayer("<p,happy>Keep practising, hero! Bye!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Bye! When you meet a dragon, tell it|Catalina from Burgh de Rott is coming!|In about ten years!");
+        case 1 : ~chatnpc("<p,happy>Goodbye! Be brave! And if you get scared,|that's okay. Being scared and going anyway|is the bravest bit!");
+    }
+}
