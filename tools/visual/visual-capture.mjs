@@ -23,7 +23,7 @@ const maxIdx = args.indexOf('--max-seconds');
 const maxSeconds = maxIdx >= 0 ? Number(args[maxIdx + 1]) : 420;
 // The credential panel occupies the centre of the 765x503 canvas; cropping removes the
 // decorative background whose stray glyphs were being mistaken for field labels.
-const LOGIN_CROP = [200, 150, 560, 360];
+const LOGIN_CROP = [120, 100, 650, 430];
 const loginIdx = args.indexOf('--login');
 const login = loginIdx >= 0 ? args[loginIdx + 1] : null; // "user:pass"
 
@@ -86,7 +86,7 @@ async function clickWord(page, re) {
     });
     if (!box || !dims) return false;
 
-    const words = ocrWords(canvasPath, dims.w, dims.h, LOGIN_CROP);
+    const words = ocrWords(canvasPath, dims.w, dims.h, null);
     const norm = (w) => w.toLowerCase().replace(/[^a-z]/g, '');
     const hit = words.find((wd) => re.test(wd.word) || re.test(norm(wd.word)));
     if (!hit) {
