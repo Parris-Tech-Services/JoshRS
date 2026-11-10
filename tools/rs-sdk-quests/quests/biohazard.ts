@@ -26,7 +26,8 @@ export const biohazard: Quest = {
     const hasEthenea = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 415 || /ethenea/i.test(i.name));
     const hasLiquidHoney = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 416 || /liquid honey/i.test(i.name));
     const hasSulphuricBroline = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 417 || /sulphuric broline/i.test(i.name));
-    const wearingDoctorGown = () => (sdk.getState()?.equipment ?? []).some((e: any) => e.id === 430 || /doctor's gown/i.test(e.name));
+    const wearingDoctorGown = () => (sdk.getState()?.equipment ?? []).some((e: any) => e.id === 430 || /doctors?'?s? gown/i.test(e.name));
+    const hasDoctorGown = () => (sdk.getInventory() ?? []).some((i: any) => i.id === 430 || /doctors?'?s? gown/i.test(i.name));
     const wearingPriestTop = () => (sdk.getState()?.equipment ?? []).some((e: any) => e.id === 428);
     const wearingPriestBottom = () => (sdk.getState()?.equipment ?? []).some((e: any) => e.id === 426);
 
@@ -240,8 +241,8 @@ export const biohazard: Quest = {
           await walkShort(2535, 3332, 1);
         }
 
-        // 2. Get Doctor's gown (430) from Nurse Sarah's cupboard at (2517, 3276) and equip it
-        if (!wearingDoctorGown() && !has(sdk, /doctor's gown/i)) {
+        // 2. Get Doctors' gown (430) from Nurse Sarah's cupboard at (2517, 3276) and equip it
+        if (!wearingDoctorGown() && !hasDoctorGown()) {
           await bot.walkTo(2525, 3272, 1);
           await openNearbyDoors(c, 2525, 3272, 2);
           await bot.walkTo(2523, 3274, 1);
@@ -249,7 +250,7 @@ export const biohazard: Quest = {
           await bot.walkTo(2520, 3275, 1);
           await openNearbyDoors(c, 2519, 3275, 2);
           await bot.walkTo(2518, 3275, 0);
-          for (let i = 0; i < 6 && !has(sdk, /doctor's gown/i); i++) {
+          for (let i = 0; i < 6 && !hasDoctorGown(); i++) {
             if ((sdk.getState()?.player?.worldX ?? 9999) > 2519) {
               await openNearbyDoors(c, 2519, 3275, 2);
               await sdk.sendWalk(2518, 3275, true);
@@ -263,8 +264,8 @@ export const biohazard: Quest = {
             }
           }
         }
-        if (has(sdk, /doctor's gown/i) && !wearingDoctorGown()) {
-          await bot.equipItem(/doctor's gown/i);
+        if (hasDoctorGown() && !wearingDoctorGown()) {
+          await bot.equipItem(/doctors?'?s? gown/i);
           await sleep(600);
         }
 
@@ -367,10 +368,14 @@ export const biohazard: Quest = {
             await bot.interactLoc(innerDoor, /^open$/i);
             await sleep(800);
           }
-          await sdk.sendWalk(2551, 3321, true);
-          await sleep(1500);
-          await sdk.sendInteractLoc(2551, 3320, 2036, 1);
-          await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) <= 3320, 4000, 250);
+          await bot.walkTo(2551, 3321, 0);
+          for (let i = 0; i < 4 && (sdk.getState()?.player?.worldZ ?? 0) >= 3321; i++) {
+            await sdk.sendInteractLoc(2551, 3320, 2036, 1);
+            if (await waitCond(() => !!sdk.getState()?.dialog?.isOpen || (sdk.getState()?.player?.worldZ ?? 0) <= 3320, 3500, 250)) {
+              if (sdk.getState()?.dialog?.isOpen) await chat(c);
+            }
+            await waitCond(() => (sdk.getState()?.player?.worldZ ?? 0) <= 3320, 2500, 250);
+          }
         }
         await bot.walkTo(2556, 3266, 2);
         await talk(c, /^kilron$/i, [/yes i do/i]);

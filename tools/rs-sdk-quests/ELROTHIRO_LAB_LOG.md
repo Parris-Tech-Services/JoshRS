@@ -1418,3 +1418,90 @@
 - 2026-11-09T20:58:49.233Z STEP white-cog
 - 2026-11-09T20:58:49.233Z STEP red-and-black-cogs
 - 2026-11-09T20:58:49.234Z STEP blue-cog-and-finish
+- 2026-11-09T21:00:32.109Z DONE Clock Tower
+- 2026-11-09T21:00:32.109Z START Biohazard (attempt 1)
+- 2026-11-09T21:00:32.111Z STEP start-and-distract-watchtower
+- 2026-11-09T21:00:55.238Z STEP retrieve-distillator
+- 2026-11-09T21:02:13.647Z STEP FAILED retrieve-distillator
+- 2026-11-09T21:02:13.649Z START Biohazard (attempt 2)
+- 2026-11-09T21:02:13.649Z STEP start-and-distract-watchtower
+- 2026-11-09T21:02:39.067Z STEP retrieve-distillator
+
+
+### Quest 24 Completed: Clock Tower (`cog`, 9th P2P Quest)
+- **Quest Points Gained**: **+1 QP** (Total: **58 QP**; 24 Quests Completed: 15 F2P + 9 P2P)
+- **Rewards**: +500 Coins
+- **Key Technical Findings & Fixes**:
+  1. **Ice Queen (`id: 795`) & `Ice gloves` (`id: 1580`)**:
+     - Reached the Ice Queen's lair (`2866, 9953`) via the White Wolf Mountain rockslide (`2634` at `2838, 3517`, `op2=Mine`) and 5-ladder chain (`2845,3516` -> `2848,9912`, `2824,9908` -> `2824,3507`, `2827,3510` -> `2827,9911`, `2858,9917` -> `2857,3518`, `2859,3519` -> `2859,9920`).
+     - Avoided single-way combat target cancellation by using `bot.attack(queen, 5000)` with a 65s `waitCond` (and explicit Ice warrior clearing when `already_in_combat`), conserved Prayer points until Tunnel 2 (`2827, 9910`), and carried only `Excalibur` + `Bronze pickaxe` so `Ice gloves` was guaranteed to be kept if low HP occurred.
+     - Equipped `Ice gloves` to pick up the superheated **Black Cog** (`id: 21` at `2613, 9639`) and placed it on the basement spindle (`id: 30` at `2570, 9642`).
+  2. **Blue Cog (`id: 22`) Secret Wall Route**:
+     - The ladder at `(2566, 3227)` leads to an isolated 3x3 trap cell `(2567, 9628)`. Instead, the Blue Cog secret wall (`id: 1586`, `ctpushedwall` at `2575, 9631`, approached from `2576, 9631`) is reached by climbing down the Ardougne Zoo south entrance ladder (`id: 1754` at `2621, 3261` -> `2621, 9661`) and walking the eastern/southern dungeon corridor to `(2576, 9631)`.
+     - Pushed `1586` at `(2575, 9631)`, picked up the **Blue Cog** (`id: 22` at `2574, 9633`), climbed up `1755` at `(2572, 9631)`, placed the Blue Cog on the Level 1 spindle (`id: 32` at `2569, 3241`), and spoke to Brother Kojo (`2570, 3249`) to complete the quest!
+- 2026-11-09T21:05:17.226Z START Biohazard (attempt 1)
+- 2026-11-09T21:05:17.227Z STEP start-and-distract-watchtower
+- 2026-11-09T21:05:17.228Z STEP retrieve-distillator
+- 2026-11-09T21:07:49.422Z talkTo /^kilron$/i failed: NPC not found
+- 2026-11-09T21:08:21.627Z START Biohazard (attempt 1)
+- 2026-11-09T21:08:21.627Z STEP start-and-distract-watchtower
+- 2026-11-09T21:08:21.628Z STEP retrieve-distillator
+- 2026-11-09T21:09:49.545Z STEP FAILED retrieve-distillator
+- 2026-11-09T21:09:49.546Z START Biohazard (attempt 2)
+- 2026-11-09T21:09:49.546Z STEP start-and-distract-watchtower
+- 2026-11-09T21:09:49.546Z STEP retrieve-distillator
+- 2026-11-09T21:09:53.490Z STEP FAILED retrieve-distillator
+- 2026-11-09T21:09:53.491Z START Fishing Contest (attempt 1)
+- 2026-11-09T21:09:53.491Z STEP start-and-prep
+- 2026-11-09T21:11:01.621Z talkTo /^(vestri|austri)$/i failed: NPC not found
+- 2026-11-09T21:20:35.449Z STEP FAILED start-and-prep
+- 2026-11-09T21:20:35.450Z START Fishing Contest (attempt 2)
+- 2026-11-09T21:20:35.450Z STEP start-and-prep
+- 2026-11-09T21:20:59.423Z talkTo /^(vestri|austri)$/i failed: NPC not found
+- 2026-11-09T21:23:11.851Z STEP FAILED start-and-prep
+- 2026-11-09T21:23:11.852Z START Dwarf Cannon (attempt 1)
+- 2026-11-09T21:23:11.853Z STEP start-and-fix-railings
+- 2026-11-09T21:25:17.023Z talkTo /^dwarf commander$/i failed: NPC not found
+- 2026-11-09T21:29:11.451Z talkTo /^dwarf commander$/i failed: NPC not found
+- 2026-11-09T21:29:11.451Z STEP watch-tower-remains
+- 2026-11-09T21:30:13.730Z STEP FAILED watch-tower-remains
+- 2026-11-09T21:30:13.731Z START Dwarf Cannon (attempt 2)
+- 2026-11-09T21:30:13.731Z STEP start-and-fix-railings
+- 2026-11-09T21:32:16.255Z STEP watch-tower-remains
+- 2026-11-09T21:32:44.502Z STEP rescue-lollk
+- 2026-11-09T21:36:06.193Z STEP repair-cannon-and-nulodion
+- 2026-11-09T21:36:51.940Z talkTo /^dwarf commander$/i failed: Cannot reach Dwarf Commander: Stuck at (2576, 3461)
+- 2026-11-09T21:42:02.633Z talkTo /^nulodion$/i failed: Nulodion is not reachable from here (wall or closed door in the way) - walk closer or open the door first
+- 2026-11-09T21:42:02.633Z STEP FAILED repair-cannon-and-nulodion
+- 2026-11-09T21:42:02.634Z START Tree Gnome Village (attempt 1)
+- 2026-11-09T21:42:02.635Z STEP start-bolren
+- 2026-11-09T21:43:04.839Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
+- 2026-11-09T21:52:02.141Z talkTo /^king bolren$/i failed: Cannot reach King Bolren: Path to (2542, 3169) stops 4 tiles short at (2544, 3165) - the rest is unroutable from here (locked door or separate room?)
+- 2026-11-09T21:52:02.141Z STEP FAILED start-bolren
+- 2026-11-09T21:52:02.147Z START Tree Gnome Village (attempt 2)
+- 2026-11-09T21:52:02.147Z STEP start-bolren
+- 2026-11-09T21:56:22.215Z talkTo /^king bolren$/i failed: Cannot reach King Bolren: Path to (2542, 3170) stops 4 tiles short at (2544, 3174) - the rest is unroutable from here (locked door or separate room?)
+- 2026-11-09T21:56:22.216Z STEP FAILED start-bolren
+- 2026-11-09T21:56:22.216Z START Waterfall Quest (attempt 1)
+- 2026-11-09T21:56:22.217Z STEP almera-hudon-and-book
+- 2026-11-09T21:58:17.463Z STEP FAILED almera-hudon-and-book
+- 2026-11-09T21:58:17.464Z START Waterfall Quest (attempt 2)
+- 2026-11-09T21:58:17.464Z STEP almera-hudon-and-book
+- 2026-11-09T21:58:23.074Z STEP FAILED almera-hudon-and-book
+- 2026-11-09T21:58:23.075Z START Holy Grail (attempt 1)
+- 2026-11-09T21:58:23.075Z STEP start-camelot-and-merlin
+- 2026-11-09T21:59:39.426Z STEP FAILED start-camelot-and-merlin
+- 2026-11-09T21:59:39.426Z START Holy Grail (attempt 2)
+- 2026-11-09T21:59:39.426Z STEP start-camelot-and-merlin
+- 2026-11-09T22:00:16.264Z STEP FAILED start-camelot-and-merlin
+- 2026-11-09T22:00:16.265Z START Witch's House (attempt 1)
+- 2026-11-09T22:00:16.265Z STEP start-and-prep
+- 2026-11-09T22:05:48.787Z STEP get-magnet-and-unlock-garden
+- 2026-11-09T22:06:34.464Z STEP FAILED get-magnet-and-unlock-garden
+- 2026-11-09T22:06:34.464Z START Witch's House (attempt 2)
+- 2026-11-09T22:06:34.464Z STEP start-and-prep
+- 2026-11-09T22:10:26.058Z STEP get-magnet-and-unlock-garden
+- 2026-11-09T22:12:31.648Z STEP FAILED get-magnet-and-unlock-garden
+- 2026-11-09T22:12:31.648Z START Gertrude's Cat (attempt 1)
+- 2026-11-09T22:12:31.649Z STEP prep-items-and-start
+- 2026-11-09T22:15:46.822Z openBank -> {"success":true,"message":"Bank opened (interfaceId: 5292)"}
