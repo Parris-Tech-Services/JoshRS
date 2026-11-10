@@ -132,6 +132,32 @@ Checking `varp.pack` alone for duplicate names cannot find this — every file i
 Verified on the isolated dev world: **56 → 0 collisions**, world repacked to `World ready`, 518 varp
 entries remain, and `troll_freed_eadgar` is reachable only as its varbit on `troll_varbit`.
 
+## Missing map regions: Uzer and the rest of 2005
+
+Ported quests reference places that revision 274 never had. Uzer (region **54,48**, used by The Golem)
+had no `m54_48.jm2` at all, so teleporting there renders a **black world** — no terrain, no locations,
+no NPC spawns.
+
+The 274 content ships **483** maps; revision 377 ships **660**. The missing 177 include entire later
+areas, so ported quests cannot be played without them.
+
+`tools/questops/restore-maps.sh <377-content> <target-content>` copies the missing maps across. The
+`.jm2` format is text with a stable `==== MAP ====` header in both revisions, so files drop in
+unchanged.
+
+**Maps are game assets and are never committed to this repository** — the script is the reproducible
+record, not the data.
+
+### Verified on the isolated dev world
+
+```
+copied=193  target maps now: 677
+engine repacked -> World ready, no map parse errors
+m54_48.jm2: 4,168 terrain tiles, 4 sections (MAP/NPC/OBJ/LOC), 9 NPCs, 1 obj, location spawns
+```
+
+Not yet verified in a client: the region has not been *seen* rendered. The dev world serves it and the
+engine accepted the file, but "not black" is a visual claim that still needs a client session.
 ## Login is not persistence: the account is only saved after character design
 
 A save/reload check was added to the visual pipeline: log in, count the `.sav` files written, then log
