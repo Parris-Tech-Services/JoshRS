@@ -256,8 +256,30 @@ if (login) {
     try { afterLogin = await snapshot(); } catch { /* canvas may be mid-swap */ }
     if (/design your player|design colour|gender/i.test(afterLogin)) {
         console.log('character design detected; completing it');
+        let clicked = false;
         for (const re of [/^accept$/i, /^confirm$/i, /^continue$/i, /^done$/i, /^create$/i, /^looks good$/i]) {
-            if (await clickField(re)) { break; }
+            if (await clickField(re)) { clicked = true; break; }
+        }
+        if (!clicked) {
+            // No labelled control: try the bottom-centre band where a confirm button normally sits.
+            const cb = await page.locator('canvas').first().boundingBox();
+            const dims = await page.evaluate(() => {
+                const c = document.querySelector('canvas');
+                return c ? { w: c.width, h: c.height } : null;
+            });
+            if (cb && dims) {
+                for (const frac of [0.90, 0.84, 0.78]) {
+                    const px = cb.x + 0.5 * cb.width;
+                    const py = cb.y + frac * cb.height;
+                    await page.mouse.click(px, py);
+                    await page.waitForTimeout(2500);
+                    let t = '';
+                    try { t = await snapshot(); } catch { continue; }
+                    const stillDesign = /design your player|design colour/i.test(t);
+                    console.log(`bottom-centre click at ${frac} -> ${stillDesign ? 'still on design' : 'advanced'}`);
+                    if (!stillDesign) break;
+                }
+            }
         }
         await page.waitForTimeout(6000);
         try {

@@ -70,9 +70,9 @@ jobs:
           node tools/visual/visual-capture.mjs \
             http://127.0.0.1:8888/rs2.cgi "$RUNNER_TEMP/login.png" \
             --login "${VISUAL_USER:-visualprobe}:${VISUAL_PASS:-visualprobe}" \
-            --dump-grid --tab-search --tab-expect "quest" \
-            --wait-for "quest journal|free quests|quest points|the feud" \
-            --max-seconds 600
+            --dump-grid \
+            --wait-for "design your player|public chat|private chat|inventory" \
+            --max-seconds 100
 
       - name: Summarise pixels (no image viewing needed)
         shell: bash
