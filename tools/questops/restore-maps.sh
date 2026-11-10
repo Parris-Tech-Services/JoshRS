@@ -42,31 +42,10 @@ for f in "$smaps"/*.jm2; do
   copied=$((copied+1))
 done
 
-# Record exactly which maps came from the newer revision, with their source hashes. Without this the
-# integrity checker cannot tell an imported map from an original 274 map that happens to share a name,
-# and will report false mismatches for the originals.
-manifest="$dmaps/imported-from-377.json"
-python3 - "$smaps" "$manifest" "$copied" <<'PY'
-import hashlib, json, os, sys
-src, out, copied = sys.argv[1], sys.argv[2], int(sys.argv[3])
-data = {}
-if os.path.exists(out):
-    try:
-        data = json.load(open(out))
-    except Exception:
-        data = {}
-added = 0
-for name in sorted(os.listdir(src)):
-    if not name.endswith('.jm2'):
-        continue
-    if name in data:
-        continue
-    with open(os.path.join(src, name), 'rb') as fh:
-        data[name] = hashlib.sha256(fh.read()).hexdigest()
-    added += 1
-json.dump(data, open(out, 'w'), indent=1, sort_keys=True)
-print(f"manifest: {out} ({len(data)} maps, {added} new)")
-PY
+# imported-maps.txt above is the ONLY authoritative manifest. Never regenerate the
+# old maps/imported-from-377.json: it incorrectly included native 274 regions
+# and was written even during --dry-run.
+
 
 echo
 echo "copied=$copied skipped=$skipped"
