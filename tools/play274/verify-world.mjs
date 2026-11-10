@@ -25,9 +25,12 @@ const HOST = arg('host', '10.8.0.1');
 const PORT = Number(arg('port', '8888'));
 const USER = arg('user', 'verify274');
 const PASS = arg('pass', 'verify-pass');
-const ORIGIN = `http://${HOST}:${PORT}`;
+const SECURE = args.includes('--secure');
+const ORIGIN = SECURE ? `https://${HOST}` : `http://${HOST}:${PORT}`;
+const BASE = SECURE ? `https://${HOST}` : `http://${HOST}:${PORT}`;
+const WS_URL = SECURE ? `wss://${HOST}/` : `ws://${HOST}:${PORT}/`;
 
-const status = async (path) => (await fetch(`http://${HOST}:${PORT}${path}`)).status;
+const status = async (path) => (await fetch(`${BASE}${path}`)).status;
 const results = [];
 const check = (name, ok, detail = '') => { results.push({ name, ok, detail }); console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${detail ? ' — ' + detail : ''}`); };
 
@@ -36,7 +39,7 @@ check('browser client /client/client.js', (await status('/client/client.js')) ==
 check('cache checksums /crc', (await status('/crc')) === 200);
 
 const tryOrigin = (origin) => new Promise((resolve) => {
-    const ws = new WebSocket(`ws://${HOST}:${PORT}/`, 'binary', { origin });
+    const ws = new WebSocket(WS_URL, 'binary', { origin });
     const timer = setTimeout(() => { ws.terminate(); resolve(false); }, 5000);
     ws.on('open', () => { clearTimeout(timer); ws.close(); resolve(true); });
     ws.on('error', () => { clearTimeout(timer); resolve(false); });
@@ -47,8 +50,8 @@ check('websocket foreign origin rejected', !(await tryOrigin('http://evil.exampl
 function modPow(b, e, m) { let r = 1n; b %= m; while (e > 0n) { if (e & 1n) r = (r * b) % m; e >>= 1n; b = (b * b) % m; } return r; }
 const u32 = (v) => { const b = Buffer.alloc(4); b.writeUInt32BE(v >>> 0); return b; };
 
-const crc = Buffer.from(await (await fetch(`http://${HOST}:${PORT}/crc`)).arrayBuffer()).subarray(0, 36);
-const ws = new WebSocket(`ws://${HOST}:${PORT}/`, 'binary', { origin: ORIGIN });
+const crc = Buffer.from(await (await fetch(`${BASE}/crc`)).arrayBuffer()).subarray(0, 36);
+const ws = new WebSocket(WS_URL, 'binary', { origin: ORIGIN });
 let chunks = [];
 let waiter = null;
 ws.on('message', (d) => { chunks.push(Buffer.from(d)); if (waiter) { const w = waiter; waiter = null; w(); } });

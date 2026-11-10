@@ -134,6 +134,37 @@ PATCH
   echo "idle timeouts made configurable"
 }
 
+# The WebSocket origin check accepts a comma-separated allowlist so a LAN address and a
+# public tunnel origin can coexist. Idempotent: the upstream single-origin comparison is
+# replaced once and then left alone.
+patch_origin_allowlist() {
+  local web="$1/src/web.ts"
+  [[ -f "$web" ]] || fail "engine source not found: $web"
+  grep -q "allowedOrigin.split(',')" "$web" && return 0
+  python3 - "$web" <<'PATCH'
+import sys
+path = sys.argv[1]
+src = open(path).read()
+old = """            if (Environment.web.allowedOrigin && info.req.headers.origin !== Environment.web.allowedOrigin) {
+                next(false);
+                return;
+            }"""
+new = """            // JoshRS: allowedOrigin may be a comma-separated list so a LAN address and a
+            // public tunnel origin can both be allowed without disabling the check.
+            const allowed = Environment.web.allowedOrigin
+                ? Environment.web.allowedOrigin.split(',').map((origin) => origin.trim()).filter((origin) => origin.length > 0)
+                : [];
+            if (allowed.length > 0 && !allowed.includes(info.req.headers.origin ?? '')) {
+                next(false);
+                return;
+            }"""
+if old not in src:
+    sys.exit("origin-allowlist patch did not match upstream source; refusing to guess")
+open(path, "w").write(src.replace(old, new, 1))
+PATCH
+  echo "origin allowlist made comma-separated"
+}
+
 # Keep every listener on loopback so this world is never exposed to the LAN.
 python3 -I "$repo/tools/play274/loopback_bind.py" "$target/engine"
 
@@ -162,6 +193,7 @@ fi
 command -v termux-wake-lock >/dev/null && termux-wake-lock || true
 
 patch_idle_timeouts "$target/engine"
+patch_origin_allowlist "$target/engine"
 
 if running; then
   echo "already running: $url"
