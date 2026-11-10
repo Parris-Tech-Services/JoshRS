@@ -25,8 +25,20 @@ export function install(root,{apply=false}={}){
     throw Error('REFUSED: missing disposable marker; never mark family content');
   const npc=fs.readFileSync(path.join(real,'pack/npc.pack'),'utf8').split(/\r?\n/);
   for(const n of requiredNpcs)if(!npc.includes(n))throw Error('Wrong 377 NPC pack, missing '+n);
-  const varp=fs.readFileSync(path.join(real,'pack/varp.pack'),'utf8').split(/\r?\n/);
+  const packFile=path.join(real,'pack/varp.pack');
+  const originalPack=fs.readFileSync(packFile,'utf8');
+  const varp=originalPack.split(/\r?\n/);
   if(!varp.includes('359=misc_quest'))throw Error('Missing pinned 377 Throne varp');
+  const newId='725=joshrs_royaltrouble';
+  const alreadyRegistered=varp.includes(newId);
+  // The checked 377 pin ends at 724. Never reassign a value belonging to
+  // another quest/agent, even in the disposable test copy.
+  if(varp.some(line=>/^725=/.test(line)&&line!==newId))
+    throw Error('REFUSED: persistent varp 725 already belongs to other content');
+  if(varp.some(line=>/=(?:joshrs_royaltrouble)$/.test(line)&&line!==newId))
+    throw Error('REFUSED: royal trouble varp has a different ID');
+  if(!varp.includes('724=varp_724'))
+    throw Error('REFUSED: varp pack is not the expected immutable 377 pin');
 
   // All conflicts are checked before ANY file is written. Do not shadow
   // an existing Throne/Miscellania NPC dialogue handler.
@@ -50,8 +62,12 @@ export function install(root,{apply=false}={}){
     }
   }
   scan(scripts);
-  if(!apply)return {status:'validated-dry-run',changed:false,files:files.length};
+  if(!apply)return {status:'validated-dry-run',changed:false,files:files.length,registerVarp:!alreadyRegistered};
   let created=0;
+  if(!alreadyRegistered){
+    fs.appendFileSync(packFile,(originalPack.endsWith('\n')?'':'\n')+newId+'\n');
+    created++;
+  }
   for(const f of tgt){
     if(fs.existsSync(f.dest))continue;
     fs.mkdirSync(path.dirname(f.dest),{recursive:true});
