@@ -37,6 +37,9 @@ const maxSeconds = maxIdx >= 0 ? Number(args[maxIdx + 1]) : 420;
 const LOGIN_CROP = [120, 100, 650, 430];
 // Some targets have no OCR-able label: the side tab strip is icons only. A coordinate sweep turns
 // an unreadable icon into an addressable one - click, OCR, stop when the expected panel appears.
+// Reading the canvas as a coarse brightness grid makes UI structure visible in a text log: the tab
+// strip, chat buttons and backdrop have distinct signatures, which beats guessing coordinates.
+const dumpGrid = args.includes('--dump-grid');
 const tabSearch = args.includes('--tab-search');
 const tabExpectIdx = args.indexOf('--tab-expect');
 const tabExpect = new RegExp(tabExpectIdx >= 0 ? args[tabExpectIdx + 1] : 'quest', 'i');
@@ -179,10 +182,13 @@ if (tabSearch) {
     });
     if (box && dims) {
         const toPage = (cx, cy) => [box.x + (cx / dims.w) * box.width, box.y + (cy / dims.h) * box.height];
-        const xs = [700, 720, 740, 755];
+        // From the canvas grid the sidebar begins near x=520 and the tab icons sit in a narrow
+        // column just inside it; an earlier sweep started at x=700 and only ever clicked sidebar
+        // content, which is why it found nothing.
+        const xs = [522, 530, 538, 546];
         let found = null;
         outer: for (const cx of xs) {
-            for (let cy = 150; cy <= 480; cy += 15) {
+            for (let cy = 70; cy <= 330; cy += 10) {
                 const [px, py] = toPage(cx, cy);
                 await page.mouse.click(px, py);
                 await page.waitForTimeout(900);
@@ -243,6 +249,22 @@ if (login) {
         console.log('clicked Login');
     }
     await page.waitForTimeout(8000);
+
+    // A brand-new account lands on character design, not in the world. There is no sidebar there,
+    // so every tab click afterwards would hit nothing - which is exactly what the tab sweep saw.
+    let afterLogin = '';
+    try { afterLogin = await snapshot(); } catch { /* canvas may be mid-swap */ }
+    if (/design your player|design colour|gender/i.test(afterLogin)) {
+        console.log('character design detected; completing it');
+        for (const re of [/^accept$/i, /^confirm$/i, /^continue$/i, /^done$/i, /^create$/i, /^looks good$/i]) {
+            if (await clickField(re)) { break; }
+        }
+        await page.waitForTimeout(6000);
+        try {
+            const after = await snapshot();
+            console.log(`post-design screen: ${JSON.stringify(after.replace(/\s+/g, ' ').slice(0, 140))}`);
+        } catch { /* ignore */ }
+    }
 }
 
 
@@ -280,6 +302,41 @@ if (consoleLines.length) {
     console.log(`console lines: ${consoleLines.length}`);
     for (const l of consoleLines.slice(0, 8)) console.log(`  ${l}`);
 }
+if (dumpGrid) {
+    const grid = await page.evaluate(() => {
+        const c = document.querySelector('canvas');
+        if (!c) return null;
+        const ctx = c.getContext('2d');
+        const W = 76, H = 38;
+        const img = ctx.getImageData(0, 0, c.width, c.height);
+        const out = [];
+        for (let gy = 0; gy < H; gy++) {
+            let row = '';
+            for (let gx = 0; gx < W; gx++) {
+                const x0 = Math.floor(gx * c.width / W), x1 = Math.floor((gx + 1) * c.width / W);
+                const y0 = Math.floor(gy * c.height / H), y1 = Math.floor((gy + 1) * c.height / H);
+                let sum = 0, n = 0;
+                for (let y = y0; y < y1; y += 2) {
+                    for (let x = x0; x < x1; x += 2) {
+                        const i = (y * c.width + x) * 4;
+                        sum += (img.data[i] + img.data[i + 1] + img.data[i + 2]) / 3;
+                        n++;
+                    }
+                }
+                const v = n ? sum / n : 0;
+                row += v > 200 ? '#' : v > 150 ? '+' : v > 100 ? '-' : v > 55 ? '.' : ' ';
+            }
+            out.push(row);
+        }
+        return { rows: out, w: c.width, h: c.height };
+    });
+    if (grid) {
+        console.log(`--- canvas grid ${grid.w}x${grid.h} (76x38 cells; '#' bright, ' ' dark) ---`);
+        grid.rows.forEach((r, i) => console.log(`${String(i).padStart(2)}|${r}|`));
+        console.log('--- end grid ---');
+    }
+}
+
 await browser.close();
 
 if (!matched) {
