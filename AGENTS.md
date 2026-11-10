@@ -1,5 +1,11 @@
 # JoshRS agent integration contract (Codex, Agy and other agents)
 
+## FIRST STOP — all agents, before any task (10 November 2026)
+
+**Mandatory: read [START_HERE.md](START_HERE.md) in full, then the [owner's parity/risk decision](docs/decisions/2026-11-08-private-rune-parity-and-risk.md), and then the appropriate current machine-specific handoff.** The start guide records the owner's 8–10 November conversation decisions, three **separate** environments (Android/Termux rev274 plus experimental rev377 and Kotlin; home Windows rev377 multiplayer; work Fedora rev377/RS-SDK), legacy quest-import work, overlapping agent ownership, save protections, unverified quest-count caveats and a no-duplicate-work preflight. Do **not** transfer a path, test result, save, quest count or deployment between environments. Do **not** abandon the owner's Android rev274 quest-import track or close issue #324 merely because rev377-to-rev274 compatibility is difficult. Preserve uncommitted work and production saves, test isolated copies, verify actual gameplay and coordinate with other agents.
+
+This is an orientation guide, **not** proof of current runtime state. Refresh GitHub `main`, local worktrees and active ownership before touching anything; keep dated handoffs current. Never write private saves, passwords or protected assets to the public repository. **Do not draft or send emails.**
+
 ## Mandatory owner product decision — 8 November 2026
 
 **Read [the owner's private RuneScape parity and maximal-risk decision](docs/decisions/2026-11-08-private-rune-parity-and-risk.md) before editing parity goals or sending another agent work.** The owner explicitly wants **actual Jagex-authored historical RuneScape, OSRS and RS3 content faithfully researched and reproduced for private family-only offline play**, and personally expressed acceptance of **"maximal legal risk"**. That acceptance is a record of risk tolerance, **not legal permission, an indemnity or a waiver of Jagex's rights**. Do not claim a wholly original/inspired-by substitute, AI-invented dialogue or a stub meets the private exact-fidelity goal. The earlier rev274 lock and original Woodlands work apply to *their separate editions/projects*, not as a cap on the private OSRS/RS3 target.
