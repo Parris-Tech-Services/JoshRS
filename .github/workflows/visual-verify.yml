@@ -75,8 +75,9 @@ jobs:
             http://127.0.0.1:8888/rs2.cgi "$RUNNER_TEMP/login.png" \
             --login "${VISUAL_USER:-visualprobe}:${VISUAL_PASS:-visualprobe}" \
             --dump-grid \
-            --wait-for "design your player|public chat|private chat|inventory" \
-            --max-seconds 100
+            --wait-for "public chat|private chat|inventory" \
+            --logout \
+            --max-seconds 150
 
       - name: Prove the player save persisted (save / reload)
         shell: bash
@@ -86,7 +87,7 @@ jobs:
           echo "saves after first login:"
           ls -l "$saves" || true
           count=$(find "$saves" -name '*.sav' | wc -l)
-          echo "save count: $count"
+          echo "save count: $count (the engine autosaves every 15 min and on logout, so the capture logs out first)"
           if [ "$count" -lt 1 ]; then
             echo "::error::no save file was written after login"
             exit 1

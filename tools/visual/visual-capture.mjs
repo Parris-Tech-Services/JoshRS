@@ -39,6 +39,9 @@ const LOGIN_CROP = [120, 100, 650, 430];
 // an unreadable icon into an addressable one - click, OCR, stop when the expected panel appears.
 // Reading the canvas as a coarse brightness grid makes UI structure visible in a text log: the tab
 // strip, chat buttons and backdrop have distinct signatures, which beats guessing coordinates.
+// The engine autosaves every 1500 ticks (15 min) and on logout, so a short session leaves no file.
+// Logging out is what makes a save observable without waiting a quarter of an hour.
+const doLogout = args.includes('--logout');
 const dumpGrid = args.includes('--dump-grid');
 const tabSearch = args.includes('--tab-search');
 const tabExpectIdx = args.indexOf('--tab-expect');
@@ -362,6 +365,13 @@ if (consoleLines.length) {
     console.log(`console lines: ${consoleLines.length}`);
     for (const l of consoleLines.slice(0, 8)) console.log(`  ${l}`);
 }
+if (doLogout) {
+    // "LOG" is drawn on the game frame and is OCR-visible in the world.
+    const logged = (await clickWord(page, /^log$/i)) || (await clickWord(page, /logout/i));
+    console.log(logged ? 'clicked LOG' : 'could not locate the LOG button');
+    await page.waitForTimeout(6000);
+}
+
 if (dumpGrid) {
     const grid = await page.evaluate(() => {
         const c = document.querySelector('canvas');
