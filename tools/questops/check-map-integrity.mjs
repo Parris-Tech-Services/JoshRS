@@ -50,23 +50,9 @@ const imported = allShared ? null : parseManifest(readFileSync(manifestFile, 'ut
 const rows = [];
 const tmaps = join(target, 'maps');
 const smaps = join(source, 'maps');
-// Only maps that were actually imported can be judged against the source revision. An original 274
-// map that merely shares a filename with a 377 map is not an import and would produce false reports.
-const manifestPath = join(tmaps, 'imported-from-377.json');
-let importedSet = null;
-if (existsSync(manifestPath)) {
-    importedSet = new Set(Object.keys(JSON.parse(readFileSync(manifestPath, 'utf8'))));
-} else {
-    console.log('NOTE: no maps/imported-from-377.json; falling back to filename overlap (can produce false mismatches)');
-}
-
 for (const f of readdirSync(tmaps).filter((n) => n.endsWith('.jm2'))) {
     if (onlyMap && !f.includes(onlyMap)) continue;
-<<<<<<< HEAD
     if (imported ? !imported.has(f) : !existsSync(join(smaps, f))) continue;
-=======
-    if (importedSet ? !importedSet.has(f) : !existsSync(join(smaps, f))) continue;
->>>>>>> origin/main
     const refs = parseMap(join(tmaps, f));
     const r = { map: basename(f, '.jm2'), dangling: { npc: [], loc: [], obj: [] }, mismatch: { npc: [], loc: [], obj: [] }, noDef: { npc: [], loc: [], obj: [] } };
     for (const kind of ['npc', 'loc', 'obj']) {
