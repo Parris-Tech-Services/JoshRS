@@ -76,7 +76,8 @@ function parseMap(file) {
         const m = line.match(/^-?\d+\s+-?\d+\s+-?\d+:\s*(-?\d+)/);
         if (!m) continue;
         const id = Number(m[1]);
-        if (Number.isFinite(id) && id > 0) out[cur].add(id);
+        // 0 is a valid id in .jm2 records; filtering it silently dropped real references.
+        if (Number.isFinite(id)) out[cur].add(id);
     }
     return out;
 }
@@ -105,6 +106,8 @@ for (const f of readdirSync(tmaps).filter((n) => n.endsWith('.jm2'))) {
 
 if (asJson) {
     console.log(JSON.stringify(rows, null, 2));
+    // A machine-readable report that always exits 0 cannot gate anything.
+    process.exitCode = rows.length ? 1 : 0;
 } else {
     const total = (k1, k2) => rows.reduce((a, r) => a + r[k1][k2].length, 0);
     console.log(`maps with problems: ${rows.length}`);
