@@ -299,6 +299,20 @@ export function keyIssues(target, engineDir) {
     return out;
 }
 
+/** Detect source definitions that --apply is ABOUT TO import but the 274 engine rejects.
+ *  Checking only target configs misses this and can poison the dev world before the next build.
+ */
+export function plannedKeyIssues(plan, engineDir) {
+    const out = [];
+    for (const { kind, def } of plan.imports.values()) {
+        const accepts = acceptedKeys(engineDir, kind);
+        if (!accepts) continue;
+        for (const p of def.props) if (!accepts(p.key))
+            out.push({ file: def.file, line: p.line, kind, name: def.name, key: p.key, value: p.value });
+    }
+    return out;
+}
+
 let modelFileCache = new Map();
 function modelFiles(root) {
     if (!modelFileCache.has(root)) { const m = new Map(); for (const f of walk(join(root, 'models'), new Set(['ob2']))) m.set(basename(f, '.ob2'), f); modelFileCache.set(root, m); }
@@ -402,8 +416,9 @@ export function check(target, source = null, opts = {}) {
     const scripts = scriptIssues(target, source);
     const engineDir = opts.engineDir ?? (existsSync(join(target.root, '..', 'engine')) ? join(target.root, '..', 'engine') : null);
     const keys = keyIssues(target, engineDir);
+    const importKeys = plannedKeyIssues(plan, engineDir);
     plan.constants = new Map(scripts.filter((x) => x.fix === 'import-constant').map((x) => [x.name, x.src]));
-    return { duplicates: target.duplicates, broken, packIssues, scripts, keys, engineChecked: !!engineDir, plan };
+    return { duplicates: target.duplicates, broken, packIssues, scripts, keys, importKeys, engineChecked: !!engineDir, plan };
 }
 
 const questOf = (file) => file.match(/[\\/]scripts[\\/]quests[\\/]([^\\/]+)/)?.[1] ?? null;
@@ -577,14 +592,15 @@ function report(res, target, { verify }) {
         for (const x of list.slice(0, 25)) lines.push(`  ${rel(x.file)}:${x.line}  ${x.type} ${x.name}  (${x.why})`);
         if (list.length > 25) lines.push(`  ... ${list.length - 25} more (use --json)`);
     }
-    if (res.keys.length) {
+    if (res.keys.length || res.importKeys.length) {
         const byKey = new Map();
-        for (const k of res.keys) { const id = `${k.kind}.${k.key.replace(/\d+$/, '')}`; byKey.set(id, (byKey.get(id) ?? 0) + 1); }
-        lines.push('', `UNSUPPORTED KEYS the 274 packer rejects ("Invalid property key"): ${res.keys.length} in ${byKey.size} key type(s): ${[...byKey].map(([k, n]) => `${k} x${n}`).join(', ')}`,
+        for (const k of [...res.keys, ...res.importKeys]) { const id = `${k.kind}.${k.key.replace(/\d+$/, '')}`; byKey.set(id, (byKey.get(id) ?? 0) + 1); }
+        lines.push('', `UNSUPPORTED KEYS the 274 packer rejects ("Invalid property key"): ${res.keys.length} existing + ${res.importKeys.length} planned imports in ${byKey.size} key type(s): ${[...byKey].map(([k, n]) => `${k} x${n}`).join(', ')}`,
             '  These are 377 features with no 274 equivalent (multivar/multiloc/multinpc = one object that changes form by a variable).',
             '  Importing a definition cannot fix them. Dropping the key leaves the object in its base form, which can break the quest: park the quest unless the base form is enough.');
         for (const k of res.keys.slice(0, 15)) lines.push(`  ${rel(k.file)}:${k.line}  ${k.kind} ${k.name}  ${k.key}=${k.value}`);
-        if (res.keys.length > 15) lines.push(`  ... ${res.keys.length - 15} more (use --json)`);
+        for (const k of res.importKeys.slice(0, 15)) lines.push(`  [PLANNED IMPORT] ${k.file}:${k.line}  ${k.kind} ${k.name}  ${k.key}=${k.value}`);
+        if (res.keys.length > 15 || res.importKeys.length > 15) lines.push('  ... more (use --json)');
     } else if (!res.engineChecked) lines.push('', 'property keys: NOT CHECKED (no engine source beside the content; pass --engine <dir with tools/pack/config>)');
     const blockedQuests = new Map();
     for (const b of [...res.broken.filter((x) => !x.fixable), ...res.scripts.filter((x) => x.fix === 'blocked'), ...res.keys]) { const q = questOf(b.file); if (q) blockedQuests.set(q, (blockedQuests.get(q) ?? 0) + 1); }
@@ -614,8 +630,20 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     let res = check(target, source, opts);
     if (args.includes('--apply')) {
         if (!source) { console.error('--apply needs --source'); process.exit(2); }
-        const log = [];
+        // This preflight MUST precede dedupe() and applyPlan(), both of which write files.
+        const stripping = args.includes('--strip-keys');
         const pristinePath = opt('--pristine');
+        const eng = opts.engineDir ?? (existsSync(join(targetPath, '..', 'engine')) ? join(targetPath, '..', 'engine') : null);
+        if (stripping && (!pristinePath || !eng || !existsSync(join(eng, 'tools/pack/config')) || !existsSync(join(pristinePath, 'scripts')))) {
+            console.error('--strip-keys requires valid --pristine <untouched 274 content> and engine source (--engine <dir> or a sibling engine). No files changed.');
+            process.exit(2);
+        }
+        if (!stripping && (res.keys.length || res.importKeys.length)) {
+            console.error('BLOCKED before --apply: unsupported 274 config keys exist or would be imported. No files changed; inspect --json. Never silently strip multivar/multiloc/multinpc.');
+            console.error(report(res, target, { verify }));
+            process.exit(2);
+        }
+        const log = [];
         if (pristinePath && target.duplicates.length) {
             log.push(...dedupe(target, loadContent(pristinePath)));
             target = loadContent(targetPath);
@@ -637,8 +665,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
         res = check(target, source, opts);
         console.log(`\napplied ${log.length} change(s); re-checked:`);
     }
-    if (args.includes('--json')) console.log(JSON.stringify({ duplicates: res.duplicates.map((d) => ({ ...d, occurrences: undefined })), broken: res.broken.map((b) => ({ ...b, file: relative(target.root, b.file) })), keys: res.keys.map((k) => ({ ...k, file: relative(target.root, k.file) })), scripts: res.scripts.map((x) => ({ ...x, src: undefined, file: relative(target.root, x.file) })), packIssues: res.packIssues }, null, 2));
+    if (args.includes('--json')) console.log(JSON.stringify({ duplicates: res.duplicates.map((d) => ({ ...d, occurrences: undefined })), broken: res.broken.map((b) => ({ ...b, file: relative(target.root, b.file) })), keys: res.keys.map((k) => ({ ...k, file: relative(target.root, k.file) })), importKeys: res.importKeys.map((k) => ({ ...k, file: source ? relative(source.root, k.file) : k.file })), scripts: res.scripts.map((x) => ({ ...x, src: undefined, file: relative(target.root, x.file) })), packIssues: res.packIssues }, null, 2));
     else console.log(report(res, target, { verify }));
-    const errors = res.duplicates.length + res.broken.length + res.scripts.length + res.keys.length + (verify ? res.packIssues.length : 0);
+    const errors = res.duplicates.length + res.broken.length + res.scripts.length + res.keys.length + res.importKeys.length + (verify ? res.packIssues.length : 0);
     process.exit(errors ? 1 : 0);
 }
