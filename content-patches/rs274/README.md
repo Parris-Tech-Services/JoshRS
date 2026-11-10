@@ -15,7 +15,7 @@ world unable to start, so apply one at a time and watch for `World ready`.
 | `quest_seaslug_fishing_xp.patch` | Sea Slug awards 7,175 Fishing XP (was missing entirely) | engine repacked and reached `World ready` |
 | `quest_legends_reward.patch` | Legends' Quest gives four 7,650 XP lamps (was awarding none) | engine repacked and reached `World ready` |
 | `quest_sheep_spin_bonus.patch` | Sheep Shearer pays the extra 50 XP when you spin your own wool | engine repacked and reached `World ready` |
-| `questlist_feud_entry.patch` | The Feud gets a quest-journal entry | repacked; entry renders with ink (not yet seen in client) |
+| `questlist_ported_entries.patch` | 18 quest-journal entries for ported quests | repacked; every entry verified inside the surface with visible ink |
 | `varp_registrations.patch` | 156 stage varps the ported quests reference, with `scope=perm` | repacked; audit 70/90 structurally complete |
 | `ported-377-quests.patch` | the 26 quest directories ported from 377 | repacked; 90 quests, 0 completion failures |
 
@@ -57,4 +57,20 @@ revision still reads as "present". That happened: definitions landed in `_unpack
 the engine runs 274, and the audit reported `VARP: yes`. The tool now targets the revision named in
 `engine/data/config/world.json`, but **the audit itself is still cross-revision** and cannot be
 trusted alone for this particular check.
+
+
+
+## Journal entries for ported quests
+
+`tools/questops/add-quest-journal-entries.py` adds a quest-list component for each ported quest that
+has a journal script but no entry, so its journal is reachable.
+
+- entry text comes from an explicit table or the quest's own README title — **never invented**
+- a quest whose name cannot be established is **refused**, not defaulted
+- entries append below the last existing one; the list is a scrollable column, so this is
+  order-correct and cannot collide
+
+Verified: 18 entries added, 84 text components, **1 overlapping pair** (the pre-existing
+title/header), every sampled entry inside the render surface with visible ink, and the world repacked
+to `World ready`.
 

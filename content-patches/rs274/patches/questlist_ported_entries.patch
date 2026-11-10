@@ -1,0 +1,278 @@
+diff --git a/scripts/player/interfaces/questlist.if b/scripts/player/interfaces/questlist.if
+index 889428c..8bb2645 100644
+--- a/scripts/player/interfaces/questlist.if
++++ b/scripts/player/interfaces/questlist.if
+@@ -1163,3 +1163,273 @@ y=228
+ width=36
+ height=36
+ graphic=miscgraphics,3
++
++[feud]
++layer=com_0
++type=text
++x=10
++y=1018
++buttontype=normal
++width=64
++height=14
++font=p12_full
++shadowed=yes
++text=The Feud
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=The Feud
++
++[dwarfrock]
++layer=com_0
++type=text
++x=10
++y=1033
++buttontype=normal
++width=102
++height=14
++font=p12_full
++shadowed=yes
++text=Between a Rock...
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Between a Rock...
++
++[elid]
++layer=com_0
++type=text
++x=10
++y=1048
++buttontype=normal
++width=114
++height=14
++font=p12_full
++shadowed=yes
++text=Spirits of the Elid
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Spirits of the Elid
++
++[giantdwarf]
++layer=com_0
++type=text
++x=10
++y=1063
++buttontype=normal
++width=90
++height=14
++font=p12_full
++shadowed=yes
++text=The Giant Dwarf
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=The Giant Dwarf
++
++[handsand]
++layer=com_0
++type=text
++x=10
++y=1078
++buttontype=normal
++width=120
++height=14
++font=p12_full
++shadowed=yes
++text=The Hand in the Sand
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=The Hand in the Sand
++
++[hauntedmine]
++layer=com_0
++type=text
++x=10
++y=1093
++buttontype=normal
++width=72
++height=14
++font=p12_full
++shadowed=yes
++text=Haunted Mine
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Haunted Mine
++
++[ics]
++layer=com_0
++type=text
++x=10
++y=1108
++buttontype=normal
++width=150
++height=14
++font=p12_full
++shadowed=yes
++text=Icthlarin's Little Helper
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Icthlarin's Little Helper
++
++[losttribe]
++layer=com_0
++type=text
++x=10
++y=1123
++buttontype=normal
++width=84
++height=14
++font=p12_full
++shadowed=yes
++text=The Lost Tribe
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=The Lost Tribe
++
++[makinghistory]
++layer=com_0
++type=text
++x=10
++y=1138
++buttontype=normal
++width=84
++height=14
++font=p12_full
++shadowed=yes
++text=Making History
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Making History
++
++[mdaughter]
++layer=com_0
++type=text
++x=10
++y=1153
++buttontype=normal
++width=102
++height=14
++font=p12_full
++shadowed=yes
++text=Mountain Daughter
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Mountain Daughter
++
++[myreque]
++layer=com_0
++type=text
++x=10
++y=1168
++buttontype=normal
++width=144
++height=14
++font=p12_full
++shadowed=yes
++text=In Search of the Myreque
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=In Search of the Myreque
++
++[osf]
++layer=com_0
++type=text
++x=10
++y=1183
++buttontype=normal
++width=96
++height=14
++font=p12_full
++shadowed=yes
++text=One Small Favour
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=One Small Favour
++
++[rag]
++layer=com_0
++type=text
++x=10
++y=1198
++buttontype=normal
++width=96
++height=14
++font=p12_full
++shadowed=yes
++text=Rag and Bone Man
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Rag and Bone Man
++
++[soulbane]
++layer=com_0
++type=text
++x=10
++y=1213
++buttontype=normal
++width=78
++height=14
++font=p12_full
++shadowed=yes
++text=A Soul's Bane
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=A Soul's Bane
++
++[swansong]
++layer=com_0
++type=text
++x=10
++y=1228
++buttontype=normal
++width=54
++height=14
++font=p12_full
++shadowed=yes
++text=Swan Song
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Swan Song
++
++[tog]
++layer=com_0
++type=text
++x=10
++y=1243
++buttontype=normal
++width=90
++height=14
++font=p12_full
++shadowed=yes
++text=Tears of Guthix
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Tears of Guthix
++
++[troll_love]
++layer=com_0
++type=text
++x=10
++y=1258
++buttontype=normal
++width=78
++height=14
++font=p12_full
++shadowed=yes
++text=Troll Romance
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Troll Romance
++
++[zogre]
++layer=com_0
++type=text
++x=10
++y=1273
++buttontype=normal
++width=108
++height=14
++font=p12_full
++shadowed=yes
++text=Zogre Flesh Eaters
++colour=0xFF0000
++overcolour=0xFFFFFF
++option=Zogre Flesh Eaters
