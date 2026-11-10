@@ -211,8 +211,14 @@ let lastText = '';
     await page.waitForTimeout(10000);
 }
 
-// One extra capture at rest, so the saved PNG matches the text that was reported.
-const finalText = await snapshot();
+// One extra capture at rest, so the saved PNG matches the text that was reported. The client can
+// replace its canvas when it transitions into the game, so this must not throw after a success.
+let finalText = '';
+try {
+    finalText = await snapshot();
+} catch (e) {
+    finalText = `(final capture skipped: ${String(e).slice(0, 120)})`;
+}
 console.log('--- final OCR ---');
 console.log(finalText || '(empty)');
 console.log('--- end OCR ---');
