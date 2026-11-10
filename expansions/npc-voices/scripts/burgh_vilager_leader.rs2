@@ -1,0 +1,50 @@
+// JoshRS original dialogue - Elisabeta, leader of Burgh de Rott.
+// Voice: tired but warm, dry humour, fiercely protective of her people.
+
+[opnpc1,burgh_vilager_leader]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Another face! Come in out of the fog.|Well, there is no 'in'. Stand in the slightly|thinner fog with me.");
+    case 1 : ~chatnpc("<p,happy>A visitor! Mind the puddle.|And that one. And, well, all of them.");
+    case 2 : ~chatnpc("<p,neutral>Hello, traveller. I'm Elisabeta.|If you've come with good news, you're very welcome.|If you've come with bad news, get in the queue.");
+}
+@joshrs_elisabeta_menu;
+
+[label,joshrs_elisabeta_menu]
+def_int $option = ~p_choice5("Who are you?", 1, "Tell me about the village.", 2, "What are the people like?", 3, "If you could have one wish...", 4, "I'd better be going.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Who are you, exactly?");
+    ~chatnpc("<p,neutral>The person everyone comes to when the roof leaks,|the well is muddy, or the goat has eaten|something important.");
+    ~chatplayer("<p,quiz>So... the leader?");
+    ~chatnpc("<p,happy>That's the polite word for it, yes.|Nobody voted. I just said 'I'll sort it'|one too many times, and here I am.");
+    ~chatnpc("<p,neutral>I was a seamstress once. I still mend things.|Just bigger things now. Fences. Arguments. Spirits.");
+    @joshrs_elisabeta_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Tell me about the village.");
+    ~chatnpc("<p,neutral>Burgh de Rott. The name says most of it.|The marsh creeps in, the fog creeps in,|and some days the gloom creeps in too.");
+    ~chatplayer("<p,sad>That sounds hard.");
+    ~chatnpc("<p,happy>It is. But do you know what grows best in a marsh?|Stubborn people. And we have a bumper crop.");
+    ~chatnpc("<p,neutral>We share what we have. When Valeria has flour,|everyone gets bread. When Teodor's turnips come up,|everyone gets turnips. Whether they want them or not.");
+    @joshrs_elisabeta_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What are the people here like?");
+    ~chatnpc("<p,happy>Oh, where to start. Ileana is knitting a scarf|for every person in the village.|She's been knitting since spring. She's on her third.");
+    ~chatnpc("<p,laugh>Radu has a goat that eats everything,|and Florin has a shirt that used to exist.|Those two haven't spoken in a fortnight.");
+    ~chatnpc("<p,neutral>And the children... the children are the best of us.|Catalina wants to fight a dragon.|I've told her to start with a tidy bedroom.");
+    ~chatplayer("<p,happy>They sound wonderful.");
+    ~chatnpc("<p,happy>They're exhausting. And yes. They are.");
+    @joshrs_elisabeta_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>If you could have one wish, what would it be?");
+    ~chatnpc("<p,neutral>One wish? Hmm.");
+    ~chatnpc("<p,sad>I used to say 'sunshine'. Just one clear day,|so the children could see their shadows properly.");
+    ~chatnpc("<p,happy>But now I think I'd wish for more visitors like you.|People who ask questions and actually listen.|Sunshine is nice. Kindness lasts longer.");
+    ~chatplayer("<p,happy>I'll come back and visit, then.");
+    ~chatnpc("<p,happy>Then my wish is already halfway granted.");
+    @joshrs_elisabeta_menu;
+} else {
+    ~chatplayer("<p,happy>I'd better be going.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Safe travels. Keep to the boardwalks,|and if you meet a goat, don't let it near your bag.");
+        case 1 : ~chatnpc("<p,neutral>Go well. And come back when you can.|Burgh de Rott is better with friends in it.");
+    }
+}
