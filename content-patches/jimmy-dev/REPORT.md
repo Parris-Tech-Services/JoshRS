@@ -363,3 +363,5 @@
 - **FAIL** | `166` (Gnome banker) @ (2440, 3488, L1) — Talk-to -> "No response"
 - **OK** | `600` (Hudo) @ (2449, 3508, L1) — Talk-to ("Click here to continue") + Trade (shopOpen=true)
 - **OK** | `170` (Gnome pilot) @ (2464, 3501, L3) — Talk-to -> "Click here to continue"
+- **OK** | `696` (Caroline) @ (2716, 3301, L0) — Talk-to -> "Click here to continue"
+- **OK** | `700` (Holgart) @ (2720, 3306, L0) — Talk-to -> "Click here to continue"
