@@ -42,14 +42,30 @@ export function parseJm2Locs(fileName, text) {
   return rows;
 }
 
+export function parseLocDefinitions(text) {
+  const defs = new Map();
+  let current = null;
+  for (const rawLine of text.split(/\r?\n/)) {
+    const header = rawLine.match(/^\[(.+)\]$/);
+    if (header) { current = header[1]; defs.set(current, {}); continue; }
+    if (!current) continue;
+    const name = rawLine.match(/^name=(.*)$/);
+    if (name) defs.get(current).name = name[1].trim();
+  }
+  return defs;
+}
 export function inspect(contentDir) {
   const locPackFile = path.join(contentDir, 'pack', 'loc.pack');
   const locNames = parseLocPack(fs.readFileSync(locPackFile, 'utf8'));
+  const locDefinitions = parseLocDefinitions(fs.readFileSync(path.join(contentDir, 'scripts', '_unpack', '377', 'all.loc'), 'utf8'));
+  const displayName = id => locDefinitions.get(locNames.get(id))?.name || locNames.get(id) || 'UNREGISTERED';
   const entries = REGION_NAMES.flatMap(file => parseJm2Locs(file, fs.readFileSync(path.join(contentDir, 'maps', file), 'utf8')));
-  const nearby = entries.filter(l => l.level === 0 && l.x >= SEARCH_BOUNDS.minX && l.x <= SEARCH_BOUNDS.maxX && l.z >= SEARCH_BOUNDS.minZ && l.z <= SEARCH_BOUNDS.maxZ);
-  const namedShortcuts = nearby.map(l => ({...l, name: locNames.get(l.id) || 'UNREGISTERED'}))
+  const inBounds = entries.filter(l => l.x >= SEARCH_BOUNDS.minX && l.x <= SEARCH_BOUNDS.maxX && l.z >= SEARCH_BOUNDS.minZ && l.z <= SEARCH_BOUNDS.maxZ);
+  const nearby = inBounds.filter(l => l.level === 0);
+  const namedShortcuts = inBounds.map(l => ({...l, name: displayName(l.id), debugname: locNames.get(l.id) || 'UNREGISTERED'}))
     .filter(l => /bridge|balance|log|shortcut|cross|walkway|rope|plank|step/i.test(l.name));
-  const modernIdsOnMap = nearby.filter(l => MODERN_REFERENCE_IDS.includes(l.id));
+  const logBalanceObjects = namedShortcuts.filter(l => /^log balance$/i.test(l.name));
+  const modernIdsOnMap = inBounds.filter(l => MODERN_REFERENCE_IDS.includes(l.id));
   const modernIdsInPack = MODERN_REFERENCE_IDS.filter(id => locNames.has(id));
   const historicalOtherLocations = [...new Set(entries.map(l => l.id))].filter(id => /log.balance|bridge|shortcut/i.test(locNames.get(id) || ''));
   const file = path.join(contentDir, 'scripts', 'skill_agility', 'scripts', 'shortcuts.rs2');
@@ -61,11 +77,13 @@ export function inspect(contentDir) {
     bounds: SEARCH_BOUNDS,
     locsInBounds: nearby.length,
     candidateNamedShortcuts: namedShortcuts,
+    logBalanceObjects,
+    planeSummary: [...new Set(inBounds.map(l => l.level))].sort(),
     historicalShortcutLocationIdsInRegions: historicalOtherLocations,
     modernReferenceIdsInPack: modernIdsInPack,
     modernReferenceObjectsOnMap: modernIdsOnMap,
     scriptMentionsSinclairOrFremennik: /sinclair|fremennik/i.test(script),
-    note: 'Do not assign modern OSRS IDs or create teleports without checking the actual 377 cache object, exact tile, bank access, agility level, animation, and reciprocal traversal.',
+    note: 'Log balance locs 9322/9323/9324 are placed on level 1 at x=2722, z=3593..3595 in pinned 377. The surrounding level-0 tiles are river/overlay and there is no level-1 bank approach in this region. Do not assign modern OSRS IDs or create teleports without checking the actual 377 cache object, exact tile, bank access, agility level, animation, and reciprocal traversal.',
   };
 }
 
@@ -85,3 +103,4 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     }
   }
 }
+

@@ -38,3 +38,38 @@ Tool only reads `pack/loc.pack`, four text JM2 map files and `shortcuts.rs2`. It
 5. After independently verified tests, propose an owner-approved maintenance window with offline backup. **Do not touch active Elrothiro/Sylvie production runtime** while they're playing.
 
 **Status:** Root-cause investigation and read-only tooling; actual river crossing is **NOT fixed**. No gameplay repair claimed.
+
+## Native 377 crossing identified (10 Nov 2026)
+
+The scanner originally only inspected level 0, which missed the actual log balance. The updated inspector resolves display names from `scripts/_unpack/377/all.loc` and inspects every plane.
+
+Pinned 377 data contains:
+
+| Loc | Display | World tile | Plane | Model | Option |
+| --- | --- | --- | --- | --- | --- |
+| 9324 | Log balance | 2722, 3593 | **1** | loc_2291 | Walk-across |
+| 9323 | Log balance | 2722, 3594 | **1** | loc_2292 | Walk-across |
+| 9322 | Log balance | 2722, 3595 | **1** | loc_2293 | Walk-across |
+
+The bridge deck is also on plane 1: `/maps/m42_56.jm2` has only `x=2722..2723, z=3592..3597` as `h7 o42 f3` level-1 tiles. The adjacent level-0 banks are:
+
+- west bank candidate: `(2718..2721, 3594, plane 0)`
+- east bank candidate: `(2724..2727, 3594, plane 0)`
+
+There is **no level-1 bank approach** in the region, and no level-0 Walk-across loc on either bank. `scripts/skill_agility/scripts/shortcuts.rs2` has no handler for 9322/9323/9324. Therefore a script-only fix cannot make the object clickable from the bank: `OpLocHandler` looks up the loc at `player.level`, and the native log only exists on level 1.
+
+This is now a **map-plane/content defect**, not just a missing handler. A safe repair must either:
+
+1. Move the three log locs and the six bridge-deck tiles to level 0 and add a 48-Agility two-way handler, or
+2. Add separate authorised level-0 bank interaction locs and a script that moves the player onto the existing level-1 bridge and back down.
+
+Neither was applied. Both need an isolated map rebuild, collision/two-way gameplay tests at 47 vs 48 Agility, and owner approval. Do not substitute modern OSRS IDs 16540–16542.
+
+Run:
+
+```powershell
+node .\tools\rs377-bridge\inspect-sinclair.mjs --content "C:\JoshRS-DEV\content"
+```
+
+The JSON now includes `logBalanceObjects`, `planeSummary`, and `candidateNamedShortcuts`.
+
