@@ -1,8 +1,8 @@
 // JoshRS: log balance over the river north of Sinclair Mansion (GitHub issue #297).
 // loc_9322/9323/9324 "Log balance" (Walk-across) sit at 2722,3593-3595 over the river
 // (blocked water at z 3592-3596) but had no handler. Banks: 2722,3591 (south), 2722,3597 (north).
-// Uses the same pattern as the existing loc_2296 log shortcut. JoshRS family-world rule:
-// no Agility requirement and no falling, so every player can use the crossing.
+// Uses the same movement pattern as loc_2296; the Sinclair crossing requires 48 Agility.
+// Failure/falling mechanics are not implemented here and still need playtesting.
 
 // The logs are ground decor over blocked water, so no tile is ever adjacent to them and an
 // operate (oploc) trigger always says "I can't reach that!". An approach trigger (aploc),
@@ -14,6 +14,10 @@
 [label,joshrs_sinclair_log]
 if (distance(loc_coord, coord) > 5) {
     p_aprange(5);
+    return;
+}
+if (stat(agility) < 48) {
+    ~mesbox("You need an Agility level of 48 to balance on this log.");
     return;
 }
 def_int $dir = 1; // walking north
@@ -32,5 +36,5 @@ sound_synth(log_balance, 2, 0);
 sound_synth(log_balance, 1, 0);
 ~forcemove(movecoord(coord, 0, 0, $dir));
 ~update_bas;
-stat_advance(agility, 85);
+stat_advance(agility, 40);
 mes("...You make it safely to the other side.");
