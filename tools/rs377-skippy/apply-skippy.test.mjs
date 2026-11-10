@@ -46,11 +46,11 @@ test('source contracts: five Skippy variants and both ordinary item interaction 
     assert.ok(source.includes('[opnpc1,'+name+']'));
     assert.ok(source.includes('[opnpcu,'+name+']'));
   }
-  for(const [stage,item] of [[0,'bucket_water'],[1,'bowl_nettletea'],[2,'hangover_cure']]){
+  for(const [stage,item] of [[0,'bucket_water'],[2,'hangover_cure']]){
     assert.ok(source.includes('%skippy_state = '+stage+' & last_useitem = '+item));
   }
   for(const stage of [1,2,3])assert.ok(source.includes('%skippy_state = '+stage+';'));
-  assert.ok(source.includes('last_useitem = cup_of_nettletea'));
+  assert.ok(source.includes('%skippy_state = 1 & (last_useitem = bowl_nettletea | last_useitem = cup_of_nettletea)'));
   for(const item of ['bucket_water','bowl_nettletea','cup_of_nettletea','hangover_cure'])
     assert.ok(source.includes('inv_del(inv, '+item+', 1)'),'Expected item consumption '+item);
   assert.match(source, /inv_add\(inv, bucket_empty, 1\)/);
