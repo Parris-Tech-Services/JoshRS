@@ -14,6 +14,17 @@ import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
+// Any unexpected failure must explain itself. Without this, the process exits and the shell step
+// fails with nothing but the last log line, which is what made the post-login crash invisible.
+process.on('uncaughtException', (e) => {
+    console.error(`UNCAUGHT: ${e?.stack ?? String(e)}`);
+    process.exit(3);
+});
+process.on('unhandledRejection', (e) => {
+    console.error(`UNHANDLED: ${e?.stack ?? String(e)}`);
+    process.exit(3);
+});
+
 const args = process.argv.slice(2);
 const url = args[0] ?? 'http://127.0.0.1:8888/rs2.cgi';
 const out = args[1] ?? 'login.png';
@@ -21,6 +32,9 @@ const waitForIdx = args.indexOf('--wait-for');
 const waitFor = waitForIdx >= 0 ? new RegExp(args[waitForIdx + 1], 'i') : /username|password/i;
 const maxIdx = args.indexOf('--max-seconds');
 const maxSeconds = maxIdx >= 0 ? Number(args[maxIdx + 1]) : 420;
+// The credential panel occupies the centre of the 765x503 canvas; cropping removes the
+// decorative background whose stray glyphs were being mistaken for field labels.
+const LOGIN_CROP = [120, 100, 650, 430];
 const loginIdx = args.indexOf('--login');
 const login = loginIdx >= 0 ? args[loginIdx + 1] : null; // "user:pass"
 
@@ -43,12 +57,15 @@ function ocr(pngPath) {
 }
 
 /** OCR a PNG and return words with boxes in CANVAS pixel coordinates. */
-function ocrWords(pngPath, canvasW, canvasH) {
+function ocrWords(pngPath, canvasW, canvasH, crop) {
     try {
+        const cropArg = crop ? crop.join(',') : '';
         execFileSync('python3', ['-c',
             "import sys;from PIL import Image;img=Image.open(sys.argv[1]).convert('L');" +
+            "c=sys.argv[3];" +
+            "img=img.crop(tuple(int(v) for v in c.split(','))) if c else img;" +
             "img.resize((img.width*2,img.height*2),Image.LANCZOS).save(sys.argv[2])",
-            pngPath, ocrInput], { stdio: 'pipe' });
+            pngPath, ocrInput, cropArg], { stdio: 'pipe' });
         const tsv = execFileSync('tesseract', [ocrInput, 'stdout', '--psm', '6', 'tsv'],
             { stdio: ['ignore', 'pipe', 'pipe'] }).toString('utf8');
         const out = [];
@@ -57,7 +74,8 @@ function ocrWords(pngPath, canvasW, canvasH) {
             if (cols.length < 12) continue;
             const word = cols[11];
             if (!word || !word.trim()) continue;
-            const left = Number(cols[6]) / 2, top = Number(cols[7]) / 2;
+            const ox = crop ? crop[0] : 0, oy = crop ? crop[1] : 0;
+            const left = Number(cols[6]) / 2 + ox, top = Number(cols[7]) / 2 + oy;
             const w = Number(cols[8]) / 2, h = Number(cols[9]) / 2;
             if (!Number.isFinite(left) || !Number.isFinite(top)) continue;
             // Canvas pixels; the caller maps to page coordinates.
@@ -79,9 +97,13 @@ async function clickWord(page, re) {
     });
     if (!box || !dims) return false;
 
-    const words = ocrWords(canvasPath, dims.w, dims.h);
-    const hit = words.find((wd) => re.test(wd.word));
-    if (!hit) return false;
+    const words = ocrWords(canvasPath, dims.w, dims.h, null);
+    const norm = (w) => w.toLowerCase().replace(/[^a-z]/g, '');
+    const hit = words.find((wd) => re.test(wd.word) || re.test(norm(wd.word)));
+    if (!hit) {
+        console.log(`  (no match; words seen: ${words.slice(0, 12).map((w) => w.word).join(' ')})`);
+        return false;
+    }
 
     const px = box.x + (hit.cx / dims.w) * box.width;
     const py = box.y + (hit.cy / dims.h) * box.height;
@@ -123,6 +145,29 @@ async function snapshot() {
 
 // Log in when credentials are supplied: the client's fields are canvas-drawn, so each field is
 // located by OCR and clicked, then typed into.
+// The title screen also shows "New User | Existing User", so matching that string proves nothing.
+// Click through to the credential form first, then wait for Username/Password.
+let formReached = false;
+for (let attempt = 1; attempt <= 6 && !formReached; attempt++) {
+    await snapshot();
+    if (await clickWord(page, /^existing$/i) || await clickWord(page, /^existing user$/i)) {
+        await page.waitForTimeout(6000);
+        const check = await snapshot();
+        if (/username|password/i.test(check)) {
+            formReached = true;
+            console.log('login form reached');
+        } else {
+            console.log('clicked Existing User but form not detected yet; retrying');
+        }
+    } else {
+        console.log('could not locate an "Existing User" button in OCR output');
+        await page.waitForTimeout(4000);
+    }
+}
+const start = Date.now();
+let matched = false;
+let lastText = '';
+for (let poll = 1; Date.now() - start < maxSeconds * 1000; poll++) {
 if (login) {
     const [user, pass] = login.split(':');
     const clickField = async (re) => {
@@ -133,10 +178,15 @@ if (login) {
             return c ? { w: c.width, h: c.height } : null;
         });
         if (!box || !dims) return false;
-        const words = ocrWords(canvasPath, dims.w, dims.h);
-        const hit = words.find((wd) => re.test(wd.word));
-        if (!hit) return false;
+        const words = ocrWords(canvasPath, dims.w, dims.h, LOGIN_CROP);
+        const norm = (w) => w.toLowerCase().replace(/[^a-z]/g, '');
+        const hit = words.find((wd) => re.test(wd.word) || re.test(norm(wd.word)));
+        if (!hit) {
+            console.log(`  (field not found; saw: ${words.slice(0, 12).map((w) => w.word).join(' ')})`);
+            return false;
+        }
         await page.mouse.click(box.x + (hit.cx / dims.w) * box.width, box.y + (hit.cy / dims.h) * box.height);
+        console.log(`clicked field "${hit.word}" at canvas(${Math.round(hit.cx)},${Math.round(hit.cy)})`);
         return true;
     };
 
@@ -160,31 +210,16 @@ if (login) {
     await page.waitForTimeout(8000);
 }
 
-let matched = false;
-let lastText = '';
-const start = Date.now();
 
-// The title screen also shows "New User | Existing User", so matching that string proves nothing.
-// Click through to the credential form first, then wait for Username/Password.
-let formReached = false;
-for (let attempt = 1; attempt <= 6 && !formReached; attempt++) {
-    await snapshot();
-    if (await clickWord(page, /^existing$/i) || await clickWord(page, /^existing user$/i)) {
-        await page.waitForTimeout(6000);
-        const check = await snapshot();
-        if (/username|password/i.test(check)) {
-            formReached = true;
-            console.log('login form reached');
-        } else {
-            console.log('clicked Existing User but form not detected yet; retrying');
-        }
-    } else {
-        console.log('could not locate an "Existing User" button in OCR output');
-        await page.waitForTimeout(4000);
+    try {
+        lastText = await snapshot();
+    } catch (e) {
+        // The client can replace its canvas mid-transition; that is not a verification failure,
+        // so keep polling until the deadline instead of throwing.
+        console.log(`poll ${poll}: canvas unavailable during transition (${String(e).slice(0, 80)})`);
+        await page.waitForTimeout(5000);
+        continue;
     }
-}
-for (let poll = 1; Date.now() - start < maxSeconds * 1000; poll++) {
-    lastText = await snapshot();
     const flat = lastText.replace(/\s+/g, ' ').slice(0, 220);
     console.log(`poll ${poll} t=${Math.round((Date.now() - start) / 1000)}s: ${JSON.stringify(flat)}`);
     if (waitFor.test(lastText)) {
@@ -195,8 +230,14 @@ for (let poll = 1; Date.now() - start < maxSeconds * 1000; poll++) {
     await page.waitForTimeout(10000);
 }
 
-// One extra capture at rest, so the saved PNG matches the text that was reported.
-const finalText = await snapshot();
+// One extra capture at rest, so the saved PNG matches the text that was reported. The client can
+// replace its canvas when it transitions into the game, so this must not throw after a success.
+let finalText = '';
+try {
+    finalText = await snapshot();
+} catch (e) {
+    finalText = `(final capture skipped: ${String(e).slice(0, 120)})`;
+}
 console.log('--- final OCR ---');
 console.log(finalText || '(empty)');
 console.log('--- end OCR ---');
