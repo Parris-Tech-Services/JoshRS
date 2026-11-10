@@ -100,3 +100,21 @@ jobs:
           test -s data/pack/server/script.dat
           test -s data/pack/server/script.idx
           echo 'ROYAL_TROUBLE_INVESTIGATION_SOURCE_COMPILED: NOT A FULL QUEST PLAYTEST'
+      - name: Start compiled extended 377 content on isolated ports with fresh accounts
+        shell: bash
+        env:
+          DB_BACKEND: sqlite
+          NODE_PROFILE: joshrs_ci_377
+          NODE_PORT: '15402'
+          WEB_PORT: '18880'
+          WEB_MANAGEMENT_PORT: '18881'
+          BUILD_SRC_DIR: ../content
+          # The exact pinned baseline was checksum-verified before the overlay.
+          BUILD_VERIFY: 'false'
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/joshrs-royal-trouble-377/engine"
+          npm run sqlite:migrate
+          cd "$GITHUB_WORKSPACE"
+          python3 content-factory/smoke_377.py --engine "$RUNNER_TEMP/joshrs-royal-trouble-377/engine" --game-port 15402 --web-port 18880 --timeout 100
+          echo 'ROYAL_TROUBLE_DISPOSABLE_SERVER_BOOTED (NPC interaction NOT YET PLAYTESTED)'
