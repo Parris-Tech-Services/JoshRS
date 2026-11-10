@@ -165,6 +165,8 @@ for (let attempt = 1; attempt <= 6 && !formReached; attempt++) {
     }
 }
 const start = Date.now();
+let matched = false;
+let lastText = '';
 for (let poll = 1; Date.now() - start < maxSeconds * 1000; poll++) {
 if (login) {
     const [user, pass] = login.split(':');
@@ -208,8 +210,6 @@ if (login) {
     await page.waitForTimeout(8000);
 }
 
-let matched = false;
-let lastText = '';
 
     try {
         lastText = await snapshot();
