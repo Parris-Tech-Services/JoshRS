@@ -1,0 +1,29 @@
+name: JoshRS 377 Sinclair source contract
+
+on:
+  push:
+    paths:
+      - 'expansions/rs377-fixes/**'
+      - 'tools/rs377-climb-survey/sinclair_contract.test.mjs'
+      - '.github/workflows/rs377-sinclair-source-contract.yml'
+  pull_request:
+    paths:
+      - 'expansions/rs377-fixes/**'
+      - 'tools/rs377-climb-survey/sinclair_contract.test.mjs'
+      - '.github/workflows/rs377-sinclair-source-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify Sinclair requirements without starting a game world
+        run: node --test tools/rs377-climb-survey/sinclair_contract.test.mjs
