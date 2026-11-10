@@ -7,6 +7,7 @@ Dev world only (`~/dev274`). Never `~/lc274`. Never touch an Elrothiro save.
 | # | Check | Command (from the JoshRS checkout) | Passes when |
 |---|---|---|---|
 | 0 | Back up | `tar czf ~/joshrs-recovery/dev274-content-$(date +%H%M).tgz -C ~/dev274 content` | file exists |
+| 1-3 | All static checks at once | `node tools/questops/selfcheck.mjs ~/dev274/content --source <377 content>` | every line PASS |
 | 1 | Pre-pack (static, ~1 s) | `node tools/questops/prepack-check.mjs ~/dev274/content --source <377 content> --pristine <untouched 274 content>` | 0 duplicates, 0 broken, 0 script problems |
 | 1b | Fix what it can | same, plus `--apply --copy-models --log content-patches/rs274/SUBSTITUTIONS.md` | re-check is clean; second run changes nothing |
 | 2 | Build | `cd ~/dev274/engine && npm run build` | exit 0. "World ready" is NOT evidence |
