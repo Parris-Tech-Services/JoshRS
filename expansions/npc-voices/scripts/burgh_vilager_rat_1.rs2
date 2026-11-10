@@ -1,0 +1,43 @@
+// JoshRS original dialogue - Vasile, friend to the rats of Burgh de Rott.
+// Voice: soft-spoken, gentle, a little defensive about creatures most people shoo away.
+
+[opnpc1,burgh_vilager_rat_1]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Shh... gently. You'll startle Pip.|There, he's peeking out again. Hello, Pip.");
+    case 1 : ~chatnpc("<p,neutral>Vasile. Don't worry about the rats.|They're more frightened of you than you are of them.|Well. Most of them.");
+    case 2 : ~chatnpc("<p,happy>Oh, hello. You've got kind feet.|The rats can tell, you know. They didn't run.");
+}
+@joshrs_vasile_menu;
+
+[label,joshrs_vasile_menu]
+def_int $option = ~p_choice5("You're friends with the rats?", 1, "Tell me about them.", 2, "Don't the other villagers mind?", 3, "How did this start?", 4, "I'll leave you in peace.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>You're... friends with the rats?");
+    ~chatnpc("<p,neutral>Two of them are friends. The rest|are acquaintances. You can't rush these things.");
+    ~chatnpc("<p,happy>Rats are clever, you know. Cleverer than people think.|They remember faces. They remember kindness.|And they remember who left the cheese out.");
+    @joshrs_vasile_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,happy>Tell me about them.");
+    ~chatnpc("<p,happy>That's Pip, the little brown one.|Shy, but very brave when there are crumbs.");
+    ~chatnpc("<p,neutral>And that's Old Bartholomew, with the grey whiskers.|He's been here longer than me.|He has a certain... dignity.");
+    ~chatnpc("<p,laugh>And that one's Nibbles. Never trust Nibbles.|He's been trying to get into Valeria's flour|for three years. He'll do it one day. I believe in him.");
+    @joshrs_vasile_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Don't the other villagers mind?");
+    ~chatnpc("<p,sad>Some do. Florin chased Pip with a broom once.|I don't blame him. He's had a hard fortnight.");
+    ~chatnpc("<p,neutral>But I keep my friends out of the houses.|They live in the old woodpile, they eat the scraps,|and they keep the beetles away from Teodor's beans.");
+    ~chatnpc("<p,happy>Everyone's got a job in this village.|Even the smallest.");
+    @joshrs_vasile_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>How did this all start?");
+    ~chatnpc("<p,neutral>One winter, I found a little rat caught|under a fallen plank. Shivering. One leg hurt.");
+    ~chatnpc("<p,happy>I kept him in a box by the stove till he mended.|That was Pip. He never really left.|And then he brought his friends.");
+    ~chatnpc("<p,happy>Be careful who you're kind to, friend.|They might stay forever.");
+    @joshrs_vasile_menu;
+} else {
+    ~chatplayer("<p,happy>I'll leave you in peace.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Goodbye. Step softly on your way out.|Pip says goodbye. He's being very brave about it.");
+        case 1 : ~chatnpc("<p,neutral>Farewell, friend. Come back any time.|Bring a crumb, if you like. Not for Nibbles.");
+    }
+}

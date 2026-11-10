@@ -1,0 +1,51 @@
+// JoshRS original dialogue - Teodor, the farmer of Burgh de Rott.
+// Voice: earnest, stubborn, quietly proud; talks to his vegetables and means it.
+
+[opnpc1,burgh_farmer]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Careful where you step! That's not mud,|that's a row of carrots. Well. It will be.");
+    case 1 : ~chatnpc("<p,happy>Oh, hello! Sorry, I was just telling|the cabbages about my day. They're good listeners.");
+    case 2 : ~chatnpc("<p,neutral>Teodor. Farmer. Of a sort.|The marsh hasn't decided yet whether|it's going to let me be a good one.");
+}
+@joshrs_teodor_menu;
+
+[label,joshrs_teodor_menu]
+def_int $option = ~p_choice5("How is the farming going?", 1, "Do you really talk to your vegetables?", 2, "What's your best crop?", 3, "Any advice for a new farmer?", 4, "I'll let you get back to work.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>How is the farming going?");
+    ~chatnpc("<p,sad>Honestly? Slowly. The ground here is more water|than earth. Plant a potato in spring,|and by summer it's learned to swim.");
+    ~chatnpc("<p,neutral>But I've built raised beds out of old planks,|and I dig little channels so the water runs off.|Every season, a bit more grows than last time.");
+    ~chatplayer("<p,happy>That sounds like progress.");
+    ~chatnpc("<p,happy>It is! Slow progress is still progress.|My father taught me that. He was a very slow man.");
+    @joshrs_teodor_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Do you really talk to your vegetables?");
+    ~chatnpc("<p,happy>Every morning. Gabriela laughs at me.|Half the village laughs at me.");
+    ~chatnpc("<p,neutral>But listen. The cabbages by the fence,|the ones I talk to most? Biggest in the patch.|The ones in the far corner? Tiny. Sulky.");
+    ~chatplayer("<p,laugh>Maybe they're just lonely.");
+    ~chatnpc("<p,shock>That's exactly what I said!|You understand. You're the first one who has.|Here, you can say good morning to the leeks.");
+    ~chatplayer("<p,happy>...Good morning, leeks.");
+    ~chatnpc("<p,happy>Lovely. They'll be talking about that for weeks.");
+    @joshrs_teodor_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What's your best crop?");
+    ~chatnpc("<p,happy>Turnips! Turnips don't mind the damp.|Turnips don't mind the fog.|Turnips don't mind anything. They're heroes.");
+    ~chatnpc("<p,neutral>Mind you, everyone here has eaten so many turnips|that Radu says he's started to dream in purple.");
+    ~chatplayer("<p,quiz>What would you grow, if you could grow anything?");
+    ~chatnpc("<p,happy>Strawberries. Bright red ones, for the children.|Little Catalina has never tasted one.|One day. One day I'll find a way.");
+    @joshrs_teodor_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Any advice for someone who wants to farm?");
+    ~chatnpc("<p,neutral>Three things. Listen carefully.");
+    ~chatnpc("<p,neutral>One: know your soil. Pick it up, squeeze it,|smell it. If it smells like the bottom of a pond,|you'll be growing ducks, not dinner.");
+    ~chatnpc("<p,neutral>Two: be patient. A seed doesn't hurry|just because you're standing over it.");
+    ~chatnpc("<p,happy>Three: talk to your plants.|Laugh all you like. Big cabbages don't lie.");
+    ~chatplayer("<p,happy>Thanks, Teodor. I'll remember that.");
+    @joshrs_teodor_menu;
+} else {
+    ~chatplayer("<p,happy>I'll let you get back to work.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Right you are. Mind the carrots on your way out!|And the beans. And... just walk on the planks.");
+        case 1 : ~chatnpc("<p,happy>Come back at harvest time.|I'll have turnips. I'll always have turnips.");
+    }
+}

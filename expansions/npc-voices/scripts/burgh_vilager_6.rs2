@@ -1,0 +1,44 @@
+// JoshRS original dialogue - Valeria, the baker of Burgh de Rott.
+// Voice: warm, motherly, practical; a genius at making something out of almost nothing.
+
+[opnpc1,burgh_vilager_6]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>Hello, love. You look like you could use|a warm bun. I haven't got one. But you look like it.");
+    case 1 : ~chatnpc("<p,neutral>Valeria. I bake. Or I would,|if the flour cart ever found its way through the fog.");
+    case 2 : ~chatnpc("<p,happy>Come here, let me look at you.|Too thin. Adventurers never eat properly.|All sword and no supper.");
+}
+@joshrs_valeria_menu;
+
+[label,joshrs_valeria_menu]
+def_int $option = ~p_choice5("What do you bake?", 1, "What do you do when there's no flour?", 2, "What's your secret recipe?", 3, "Who do you bake for?", 4, "I'd better go. Thank you!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>What do you bake?");
+    ~chatnpc("<p,happy>When the flour comes? Everything.|Round loaves, plaited loaves, little rolls for the children|with a thumbprint of jam in the middle.");
+    ~chatnpc("<p,neutral>The whole village smells of it for a day.|People come out of their houses and just... breathe.|Even Luscion smiles. He says it's indigestion.");
+    @joshrs_valeria_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What do you do when there's no flour?");
+    ~chatnpc("<p,neutral>You make do. That's the whole secret of this village.");
+    ~chatnpc("<p,neutral>Mashed turnip makes a dough, of sorts.|Dried marsh reeds, ground fine, make a sort of meal.|It tastes like... well. It tastes like trying.");
+    ~chatnpc("<p,happy>But a warm thing in your hands on a cold night|doesn't have to taste like much.|It just has to say 'somebody thought of you'.");
+    @joshrs_valeria_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Do you have a secret recipe?");
+    ~chatnpc("<p,shifty>Every baker has a secret recipe, love.");
+    ~chatnpc("<p,happy>Mine's honey cake. A spoon of honey,|a pinch of salt, and you sing to the dough|while it rises. Any song. Emilia's are best.");
+    ~chatplayer("<p,laugh>Singing makes a difference?");
+    ~chatnpc("<p,happy>Makes a difference to the baker, at least.|Happy hands make better bread.|Don't you let anyone tell you otherwise.");
+    @joshrs_valeria_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Who do you bake for?");
+    ~chatnpc("<p,neutral>Everyone. Nobody pays. Not with coin, anyway.");
+    ~chatnpc("<p,happy>Grigore fixes my roof. Ileana's knitting me a scarf.|Aurel 'forgets' to charge me for salt.|The children bring me flowers. Well, weeds. Pretty weeds.");
+    ~chatnpc("<p,neutral>That's how a village works, love.|Not a shop. A circle.");
+    @joshrs_valeria_menu;
+} else {
+    ~chatplayer("<p,happy>I'd better go. Thank you, Valeria!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Off you go then. And eat something proper|on the road. Not just whatever's in your pockets.");
+        case 1 : ~chatnpc("<p,happy>Come back when the flour cart comes.|There'll be a roll with your name on it.|Well. With a thumbprint on it. Close enough.");
+    }
+}

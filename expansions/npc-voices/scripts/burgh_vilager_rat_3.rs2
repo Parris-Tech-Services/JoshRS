@@ -1,0 +1,43 @@
+// JoshRS original dialogue - Luminata, Burgh de Rott's stargazer.
+// Voice: dreamy, quietly poetic; names her own constellations and remembers stars through the fog.
+
+[opnpc1,burgh_vilager_rat_3]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Oh... hello. Sorry, I was looking up.|I'm always looking up. I walk into a lot of things.");
+    case 1 : ~chatnpc("<p,happy>Luminata. My mother named me after light.|Then she moved us to the foggiest place in the world.|She had a sense of humour.");
+    case 2 : ~chatnpc("<p,neutral>Shh. Can you hear that? That's the quiet|before evening. It's my favourite sound.");
+}
+@joshrs_luminata_menu;
+
+[label,joshrs_luminata_menu]
+def_int $option = ~p_choice5("What are you looking at?", 1, "Can you even see stars through this fog?", 2, "Do you have a favourite star?", 3, "Teach me a constellation.", 4, "Goodnight, Luminata.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>What are you looking at?");
+    ~chatnpc("<p,neutral>The sky. Well, where the sky would be,|if the fog would step aside for a moment.");
+    ~chatnpc("<p,happy>I count the stars every night.|Last clear night I counted four hundred and twelve.|Then Emilia sang and I lost my place.");
+    @joshrs_luminata_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Can you even see the stars through all this fog?");
+    ~chatnpc("<p,sad>Not often. Maybe one night a month.");
+    ~chatnpc("<p,neutral>So on foggy nights, I count the ones I remember.|I close my eyes and they're all still there.|Exactly where I left them.");
+    ~chatnpc("<p,happy>That's the thing about stars.|Even when you can't see them, they're shining.|Same as people, really.");
+    @joshrs_luminata_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Do you have a favourite star?");
+    ~chatnpc("<p,happy>The little red one, low in the east.|I call her Ember.");
+    ~chatnpc("<p,neutral>She's the first to rise and the last to set.|Even when the others are hidden,|I can sometimes see a faint pink glow where she is.");
+    ~chatnpc("<p,happy>When I was small, I thought she was|keeping watch over the village.|I still think so, a little.");
+    @joshrs_luminata_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,happy>Teach me a constellation.");
+    ~chatnpc("<p,happy>Oh! Alright. Look up there, past the church roof.|Imagine five bright stars in a crooked line.");
+    ~chatnpc("<p,neutral>That's the Leaky Bucket. I named it after Grigore.|Three stars for the bucket, two for the drip.|In spring, the drip gets brighter.");
+    ~chatnpc("<p,laugh>The real astronomers in the cities|probably have a fancier name for it.|But they've never had to fix our roofs.");
+    @joshrs_luminata_menu;
+} else {
+    ~chatplayer("<p,happy>Goodnight, Luminata.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Goodnight. Wherever you sleep tonight,|look up once before you close your eyes.");
+        case 1 : ~chatnpc("<p,neutral>Goodnight, traveller. Ember will keep watch.|She always does.");
+    }
+}

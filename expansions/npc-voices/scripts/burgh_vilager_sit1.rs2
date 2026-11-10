@@ -1,0 +1,45 @@
+// JoshRS original dialogue - Calin, Burgh de Rott's dedicated practitioner of sitting.
+// Voice: deadpan, unhurried, treats rest as a serious and demanding craft.
+
+[opnpc1,burgh_vilager_sit1]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Calin. Don't mind me. I'm in training.");
+    case 1 : ~chatnpc("<p,neutral>Ah. A visitor. I'd stand up to greet you,|but that would ruin a very good sit.");
+    case 2 : ~chatnpc("<p,neutral>Shh. I'm on minute forty of a sit.|My personal best is four hours.");
+}
+@joshrs_calin_menu;
+
+[label,joshrs_calin_menu]
+def_int $option = ~p_choice5("Training for what?", 1, "Isn't sitting easy?", 2, "What do you think about while you sit?", 3, "Can I sit with you?", 4, "I'll leave you to it.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Training for what?");
+    ~chatnpc("<p,neutral>To be the best sitter in all the land.");
+    ~chatplayer("<p,confused>Is that... a thing people compete in?");
+    ~chatnpc("<p,neutral>Not yet. Which makes me|the current champion. Undefeated.");
+    @joshrs_calin_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Isn't sitting easy?");
+    ~chatnpc("<p,neutral>Anyone can sit. Few can truly sit.");
+    ~chatnpc("<p,neutral>Most people sit while waiting for something else.|Their minds are already up and walking about.|That's not sitting. That's standing, slowly.");
+    ~chatnpc("<p,happy>A real sit is when you've nowhere|you'd rather be. It's harder than it sounds.|Took me years.");
+    @joshrs_calin_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What do you think about while you sit?");
+    ~chatnpc("<p,neutral>Today? Clouds. Whether a cloud knows|it's a cloud. Whether the fog is just|a cloud that got tired and lay down.");
+    ~chatnpc("<p,neutral>Yesterday, soup.");
+    ~chatnpc("<p,happy>Soup was a good day.");
+    @joshrs_calin_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,happy>Can I sit with you for a bit?");
+    ~chatnpc("<p,neutral>Hm. Alright. Rules: no fidgeting.|No asking what time it is. No sighing loudly.");
+    ~chatplayer("<p,neutral>...");
+    ~chatnpc("<p,neutral>...");
+    ~chatnpc("<p,happy>Not bad. Not bad at all.|You've got a natural stillness about you.|Come back and we'll work on your posture.");
+    @joshrs_calin_menu;
+} else {
+    ~chatplayer("<p,happy>I'll leave you to it.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,neutral>Mm. Off you go. Don't rush.|Nobody ever got anywhere nice by rushing.");
+        case 1 : ~chatnpc("<p,neutral>Farewell. I'll be right here.|Probably for quite some time.");
+    }
+}

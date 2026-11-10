@@ -1,0 +1,46 @@
+// JoshRS original dialogue - Ivan, Burgh de Rott's almost-acrobat.
+// Voice: bouncy, sweet, determined; always about to show you a trick that doesn't quite work.
+
+[opnpc1,burgh_villager_child2]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>Hi! I'm Ivan! Watch this!|...Okay, I didn't do it yet. Watch THIS!");
+    case 1 : ~chatnpc("<p,happy>Hello! Do you want to see a cartwheel?|It's almost a cartwheel. It's a cart-wobble.");
+    case 2 : ~chatnpc("<p,happy>You're tall! Can you see over the fog from up there?|What's on top of it?");
+}
+@joshrs_ivan_menu;
+
+[label,joshrs_ivan_menu]
+def_int $option = ~p_choice5("Show me your cartwheel!", 1, "What else can you do?", 2, "What's your favourite thing in the village?", 3, "Did you buy something special for your mum?", 4, "Bye, Ivan! Keep practising!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,happy>Go on then, show me your cartwheel!");
+    ~chatnpc("<p,happy>Okay! Hands up... lean over... GO!");
+    ~chatnpc("<p,neutral>*Ivan puts both hands on the ground,|kicks one leg in the air, and sits down|very suddenly in the mud.*");
+    ~chatnpc("<p,happy>That was the first half! The second half|is coming soon. Maybe tomorrow.");
+    ~chatplayer("<p,laugh>That was a great first half.");
+    ~chatnpc("<p,happy>Thanks! Catalina says it looks like a frog falling over.|She's just jealous.");
+    @joshrs_ivan_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What else can you do?");
+    ~chatnpc("<p,happy>I can hop on one foot for ages! Like... nine hops!|I can whistle with my fingers! ...Nearly.|And I can wiggle my ears!");
+    ~chatnpc("<p,neutral>*Ivan scrunches his face up as hard as he can.|His ears do not move at all.*");
+    ~chatnpc("<p,happy>Did you see? They wiggled on the inside.");
+    @joshrs_ivan_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What's your favourite thing in the village?");
+    ~chatnpc("<p,happy>When Valeria bakes! She puts jam in the middle|of the little rolls, with her thumb.|I always eat the jam bit first.");
+    ~chatnpc("<p,happy>And Margareta the goat! She ate my homework once.|Mum didn't believe me. But it was TRUE.|That was the best day.");
+    @joshrs_ivan_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Did you buy something special for your mum?");
+    ~chatnpc("<p,shock>How did you know?! It was a secret!");
+    ~chatnpc("<p,happy>I saved one whole copper coin. It took ages.|And Aurel at the shop had a flower brooch,|and it was on sale for EXACTLY one copper!");
+    ~chatnpc("<p,happy>Mum cried when I gave it to her. Good crying.|She wears it every day.|Wasn't I lucky it was on sale?");
+    ~chatplayer("<p,happy>...Very lucky indeed.");
+    @joshrs_ivan_menu;
+} else {
+    ~chatplayer("<p,happy>Bye, Ivan! Keep practising!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Bye! Next time you come, I'll do a WHOLE cartwheel!|Probably!");
+        case 1 : ~chatnpc("<p,happy>Bye-bye! Watch me hop away! One... two... three...|...nine! Nine hops! Did you count?");
+    }
+}

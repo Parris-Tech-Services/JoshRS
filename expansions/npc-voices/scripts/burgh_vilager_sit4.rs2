@@ -1,0 +1,47 @@
+// JoshRS original dialogue - Simona, the painter who waits for the sun.
+// Voice: patient, hopeful, sees colour where others see grey; painting a sun from memory.
+
+[opnpc1,burgh_vilager_sit4]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Simona. I'm waiting for the sun.|It's been gone a while. I don't mind.|I'm very good at waiting.");
+    case 1 : ~chatnpc("<p,happy>Oh, hello! Mind the paint pots.|The yellow one's nearly empty. Everything|in this village wants to be yellow, eventually.");
+    case 2 : ~chatnpc("<p,happy>A visitor! Tell me, what colour|was the sky where you came from?");
+}
+@joshrs_simona_menu;
+
+[label,joshrs_simona_menu]
+def_int $option = ~p_choice5("Why are you waiting for the sun?", 1, "What are you painting?", 2, "Where do you get your paint?", 3, "What colour do you see when you look at me?", 4, "Goodbye, Simona.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Why are you waiting for the sun?");
+    ~chatnpc("<p,neutral>Because it always comes back.|Not often here, I'll grant you.|But it's never once failed to come back eventually.");
+    ~chatnpc("<p,happy>When it does, I want to be right here,|ready to see exactly what colour it turns the marsh.|Last time it was gold. Pure gold, for nine minutes.");
+    @joshrs_simona_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What are you painting?");
+    ~chatnpc("<p,happy>A sun! A great big one, right across|the side of my house. From memory.");
+    ~chatnpc("<p,neutral>So on grey days, the children can walk past|and see what it looks like.|Little Helena stands in front of it to warm her hands.");
+    ~chatplayer("<p,quiz>Does that work?");
+    ~chatnpc("<p,happy>She says it does. I don't argue with Helena.|She's building a castle with twelve towers.|She knows things.");
+    @joshrs_simona_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Where do you get your paint from out here?");
+    ~chatnpc("<p,neutral>You'd be surprised what the marsh gives you|if you look properly.");
+    ~chatnpc("<p,happy>Yellow from marsh marigolds. Brown from peat.|Green from crushed reeds. A lovely blue|from a berry Teodor says I shouldn't eat.");
+    ~chatnpc("<p,neutral>Red is the hard one. For red,|I trade Aurel. He finds it somewhere.|He won't say where. I think he likes the mystery.");
+    @joshrs_simona_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>What colour do you see when you look at me?");
+    ~chatnpc("<p,neutral>Hold still. Let me look properly.");
+    switch_int(random(3)) {
+        case 0 : ~chatnpc("<p,happy>Orange. Like a lantern in a window.|You make people feel welcome. I can tell.");
+        case 1 : ~chatnpc("<p,happy>Green. Fresh, like the first shoots in spring.|You're at the start of something big.");
+        case 2 : ~chatnpc("<p,happy>Sky blue. The rare kind, after rain.|You're the sort of person who clears things up.");
+    }
+    @joshrs_simona_menu;
+} else {
+    ~chatplayer("<p,happy>Goodbye, Simona.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Goodbye! If you see the sun on your travels,|tell it we're saving it a place.");
+        case 1 : ~chatnpc("<p,neutral>Farewell. Notice the colours on your way.|Even the grey ones. Grey has a hundred kinds.");
+    }
+}

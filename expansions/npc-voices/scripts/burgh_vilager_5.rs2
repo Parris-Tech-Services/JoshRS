@@ -1,0 +1,47 @@
+// JoshRS original dialogue - Ileana, the knitter of Burgh de Rott.
+// Voice: bubbly, endlessly optimistic, hopelessly behind schedule; knows everyone's favourite colour.
+
+[opnpc1,burgh_vilager_5]
+if (%varp_724 >= 1 & %varp_724 <= 5) {
+    @joshrs_peace_shirt_ileana;
+}
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>Oh! Hello! Don't mind the wool,|it gets everywhere. I found some in my soup|this morning. Very warm soup.");
+    case 1 : ~chatnpc("<p,happy>Ileana! Knitter, scarf-maker,|and slowest needles in the marsh.|Knit one, purl one, chat to visitors!");
+    case 2 : ~chatnpc("<p,happy>Hello, hello! Stand still a moment,|I'm guessing your favourite colour.|...Is it blue? It's blue. I'm usually right.");
+}
+@joshrs_ileana_menu;
+
+[label,joshrs_ileana_menu]
+def_int $option = ~p_choice5("What are you knitting?", 1, "How many scarves have you finished?", 2, "How do you know everyone's favourite colour?", 3, "Could you teach me to knit?", 4, "I'll leave you to your needles.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>What are you knitting?");
+    ~chatnpc("<p,happy>Scarves! One for every single person|in Burgh de Rott before winter comes.|The damp gets right into your bones here.");
+    ~chatnpc("<p,happy>Each one in the colour they love best.|Green for Teodor, like his cabbages.|Grey for Grigore. He says grey is 'honest'.");
+    @joshrs_ileana_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>How many scarves have you finished?");
+    ~chatnpc("<p,happy>Two!");
+    ~chatnpc("<p,neutral>And a half. And a quarter of another one,|but I dropped a stitch and now it's|more of a long, sad sock.");
+    ~chatplayer("<p,quiz>How long until winter?");
+    ~chatnpc("<p,laugh>Not long enough! But that's alright.|If I'm late, I'll call them spring scarves.|Spring is cold here too.");
+    @joshrs_ileana_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>How do you know everyone's favourite colour?");
+    ~chatnpc("<p,happy>I watch! People's eyes go soft|when they see a colour they love.");
+    ~chatnpc("<p,neutral>Luscion pretends he doesn't have a favourite.|But I've seen him look at the sunset,|on the rare days we get one.");
+    ~chatnpc("<p,happy>Orange. Sunset orange.|He'll grumble when I give it to him.|And then he'll wear it every single day.");
+    @joshrs_ileana_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,happy>Could you teach me to knit?");
+    ~chatnpc("<p,happy>Oh, I'd love to! Right. Needles in your hands.|Wool around your finger. Now: in, around,|through, off. In, around, through, off.");
+    ~chatplayer("<p,confused>In, around... through... I think I tied my thumbs together.");
+    ~chatnpc("<p,laugh>Perfect! That's exactly how I started.|Practise a little every day and one day|you'll make a scarf. Or at least a lovely knot.");
+    @joshrs_ileana_menu;
+} else {
+    ~chatplayer("<p,happy>I'll leave you to your needles.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Bye-bye! Stay warm!|And if you're passing by in winter,|I might even have a scarf for you.");
+        case 1 : ~chatnpc("<p,happy>Goodbye! Blue, I'm telling you. Definitely blue.");
+    }
+}

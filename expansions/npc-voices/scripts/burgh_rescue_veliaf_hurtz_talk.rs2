@@ -1,0 +1,44 @@
+// JoshRS original dialogue - Veliaf Hurtz, keeper of the hidden refuge beneath Burgh de Rott.
+// Voice: guarded and watchful at first, then warm; protective of the people who shelter here.
+// Self-contained: no quest promises or story hooks, so it cannot clash with any later quest.
+
+[opnpc1,burgh_rescue_veliaf_hurtz_talk]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Stop there. ...You found your way down here.|Then you're either very brave or very lost.");
+    case 1 : ~chatnpc("<p,neutral>Easy. No sudden moves.|Not many people know this cellar is here,|and I'd like to keep it that way.");
+    case 2 : ~chatnpc("<p,neutral>Hm. A new face, in a place|that doesn't see many. Speak plainly, stranger.");
+}
+@joshrs_veliaf_menu;
+
+[label,joshrs_veliaf_menu]
+def_int $option = ~p_choice5("I mean no harm.", 1, "What is this place?", 2, "You seem to be in charge here.", 3, "How do you stay so calm?", 4, "I'll leave you be.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,neutral>I mean no harm. I promise.");
+    ~chatnpc("<p,neutral>Everyone says that. Few mean it.");
+    ~chatnpc("<p,happy>...But you said it looking me in the eye,|and your hand's nowhere near your sword.|Alright. Welcome, then. Mind the low beam.");
+    @joshrs_veliaf_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What is this place?");
+    ~chatnpc("<p,neutral>A cellar. A dry one, which is rarer than gold|in this marsh. Somewhere people can rest|when the world up there gets too heavy.");
+    ~chatnpc("<p,neutral>That's all you need to know, and all I'll say.|Some places are safe because nobody talks about them.");
+    ~chatplayer("<p,neutral>Your secret's safe with me.");
+    ~chatnpc("<p,happy>Good. I believe you. Mostly.");
+    @joshrs_veliaf_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>You seem to be the one in charge down here.");
+    ~chatnpc("<p,neutral>In charge? No. Somebody has to stay awake|while the others sleep. That's all.");
+    ~chatnpc("<p,neutral>Leading isn't giving orders, stranger.|It's being the last to eat and the first to stand up|when there's a noise at the door.");
+    @joshrs_veliaf_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>How do you stay so calm?");
+    ~chatnpc("<p,neutral>I'm not calm. I'm practised.");
+    ~chatnpc("<p,neutral>Fear is just your heart telling you something matters.|You thank it, you listen to it,|then you do the sensible thing anyway.");
+    ~chatnpc("<p,happy>And it helps to have people worth being brave for.|Find those, and courage mostly takes care of itself.");
+    @joshrs_veliaf_menu;
+} else {
+    ~chatplayer("<p,neutral>I'll leave you be.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,neutral>Go carefully. And forget the way down here|as soon as you're back in the daylight.");
+        case 1 : ~chatnpc("<p,happy>Safe travels, friend. Rest a moment first.|The best explorers know when to sit down.");
+    }
+}

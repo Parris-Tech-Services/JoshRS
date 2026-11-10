@@ -1,0 +1,48 @@
+// JoshRS original dialogue - Razvan, would-be ringmaster of the world's first rat circus.
+// Voice: loud, theatrical, endlessly ambitious about very small achievements.
+
+[opnpc1,burgh_vilager_rat_2]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>Roll up, roll up! Well, there's no tent yet.|Or a crowd. Stand roughly here and imagine it.");
+    case 1 : ~chatnpc("<p,happy>Razvan, Master of Rats, at your service!|Self-titled. All the best titles are.");
+    case 2 : ~chatnpc("<p,shock>A spectator! At last!|Don't move. Don't blink. History is about to happen.");
+}
+@joshrs_razvan_menu;
+
+[label,joshrs_razvan_menu]
+def_int $option = ~p_choice5("What's this about a rat circus?", 1, "Show me the trick!", 2, "How long did that take?", 3, "What do Vasile's rats think of this?", 4, "I'll come back for the big show. Bye!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>What's this about a rat circus?");
+    ~chatnpc("<p,happy>Razvan's Remarkable Rodent Revue!|Rats on tightropes! Rats on tiny ponies!|A rat fired from a very small cannon! Gently!");
+    ~chatnpc("<p,neutral>We'll tour every town from here to the sea.|People will travel for miles. Crowds will weep.|Kings will ask for autographs.");
+    ~chatplayer("<p,quiz>How far along is it?");
+    ~chatnpc("<p,happy>I have one rat. And he can sit.");
+    @joshrs_razvan_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,happy>Show me the trick!");
+    ~chatnpc("<p,happy>Ladies, gentlemen, adventurers!|I present... Sir Whiskerton the Magnificent!");
+    ~chatnpc("<p,neutral>Sir Whiskerton... sit!");
+    ~chatnpc("<p,neutral>...");
+    ~chatnpc("<p,neutral>Sir Whiskerton, SIT.");
+    ~chatnpc("<p,happy>THERE! Did you see that? He sat!|He was mostly sitting already, but he chose to stay sitting!|That's the hard part!");
+    ~chatplayer("<p,laugh>Bravo!");
+    @joshrs_razvan_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>How long did it take to teach him?");
+    ~chatnpc("<p,neutral>Three months. Every morning. Every evening.|Little bits of cheese. Very patient voice.");
+    ~chatnpc("<p,happy>He can also stand back up afterwards.|We're quite proud of that one.|It's not technically a trick, but it is very reliable.");
+    ~chatnpc("<p,neutral>Next, I'm teaching him to wave.|At this rate I'll be a very old ringmaster.|But a famous one.");
+    @joshrs_razvan_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>What does Vasile think of all this?");
+    ~chatnpc("<p,sad>Vasile thinks rats should just be rats.|'Let them be,' he says. 'They don't need a stage.'");
+    ~chatnpc("<p,neutral>But I've seen Sir Whiskerton's face|when I clap for him. He stands up taller.|Well, he sits up taller.");
+    ~chatnpc("<p,happy>Everyone likes being cheered for.|Even rats. Even ringmasters.");
+    @joshrs_razvan_menu;
+} else {
+    ~chatplayer("<p,happy>I'll come back for the big show. Bye!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Front row seat, reserved in your name!|The front row is a log, but it's a VIP log.");
+        case 1 : ~chatnpc("<p,happy>Farewell! Tell everyone you met|the Master of Rats before he was famous!");
+    }
+}

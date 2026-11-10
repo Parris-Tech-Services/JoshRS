@@ -1,0 +1,43 @@
+// JoshRS original dialogue - Nicoleta, Burgh de Rott's grandmother-in-chief.
+// Voice: fussing, fond village gossip and hopeful matchmaker; offers hospitality she doesn't have.
+
+[opnpc1,burgh_vilager_sit3]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>Sit, sit, dear! Oh, there's no chair.|Well, stand, stand. Can I get you anything?|I haven't got anything, but I can ask.");
+    case 1 : ~chatnpc("<p,happy>Nicoleta, dear. Everybody's grandmother.|Some of them didn't ask. Doesn't matter.");
+    case 2 : ~chatnpc("<p,quiz>Oh, a new face! Are you married, dear?|No? Never mind. I'll keep you in mind.");
+}
+@joshrs_nicoleta_menu;
+
+[label,joshrs_nicoleta_menu]
+def_int $option = ~p_choice5("Heard any good gossip?", 1, "Are you really everyone's grandmother?", 2, "Why did you ask if I was married?", 3, "What was the village like when you were young?", 4, "Lovely to meet you, Nicoleta!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Heard any good gossip lately?");
+    ~chatnpc("<p,shifty>Oh, I never gossip, dear.|I simply... share information. Lovingly.");
+    ~chatnpc("<p,happy>For instance. Radu is learning to knit.|For FLORIN. A peace shirt! After the goat business.|Ileana told me. I told everyone. Lovingly.");
+    ~chatnpc("<p,shifty>And Grigore has been fixing Valeria's roof|an awful lot this season. More than it leaks.|I'm just saying. I'm just noticing.");
+    @joshrs_nicoleta_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Are you really everyone's grandmother?");
+    ~chatnpc("<p,happy>Two of them are my real grandchildren.|The rest just needed a grandmother,|so I volunteered.");
+    ~chatnpc("<p,neutral>Children should have someone who tells them|they've grown, every single time they visit.|Even if they haven't. Especially then.");
+    @joshrs_nicoleta_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Why did you ask if I was married?");
+    ~chatnpc("<p,happy>Oh, it's just a hobby, dear.|I've made seven matches in this village.");
+    ~chatnpc("<p,neutral>Six of them are still happily together.|The seventh... well, they're happily apart,|which is its own kind of success.");
+    ~chatnpc("<p,shifty>If you ever want someone to look at|a nice young person on your behalf,|you know where to find me. Right here. Sitting.");
+    @joshrs_nicoleta_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>What was the village like when you were young?");
+    ~chatnpc("<p,happy>Oh, much the same, dear. Foggier, if anything.|We had dances on the bridge every midsummer.|Lanterns on poles. Fiddle music.");
+    ~chatnpc("<p,sad>My husband stepped on my toes all night,|the first time we danced. Every single song.");
+    ~chatnpc("<p,happy>I married him anyway. Forty-two years.|He never did learn to dance.|I never did mind.");
+    @joshrs_nicoleta_menu;
+} else {
+    ~chatplayer("<p,happy>Lovely to meet you, Nicoleta!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>And you, dear! Look at you. You've grown!|...I know, I only just met you.|But you've definitely grown.");
+        case 1 : ~chatnpc("<p,happy>Off you go then, dear. Eat something warm.|And if you meet someone nice, bring them by.");
+    }
+}

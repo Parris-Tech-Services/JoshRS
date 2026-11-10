@@ -1,0 +1,52 @@
+// JoshRS original dialogue - Radu, owner of Burgh de Rott's notorious goat.
+// Voice: cheerful, devoted to his goat Margareta, in permanent and transparent denial.
+
+[opnpc1,burgh_vilager_3]
+if (%varp_724 >= 1 & %varp_724 <= 5) {
+    @joshrs_peace_shirt_radu;
+}
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,shifty>Hello! If anyone asks, I've been here all day.|So has the goat. Wherever she is. Which I don't know.");
+    case 1 : ~chatnpc("<p,happy>Radu! Pleased to meet you.|You haven't lost anything recently, have you?|A sock? A letter? Half a hat? ...No reason.");
+    case 2 : ~chatnpc("<p,happy>Ah, a new face! Margareta will be thrilled.|She loves new people. And their pockets.");
+}
+@joshrs_radu_menu;
+
+[label,joshrs_radu_menu]
+def_int $option = ~p_choice5("Who is Margareta?", 1, "What has she eaten?", 2, "Florin seems upset with you.", 3, "Why do you love her so much?", 4, "Goodbye, Radu.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Who is Margareta?");
+    ~chatnpc("<p,happy>My goat! The finest goat in the marsh.|White coat, one brown ear,|and the most intelligent eyes you've ever seen.");
+    ~chatnpc("<p,neutral>Some people say she has a 'wicked glint'.|I say she's thoughtful. She's always planning something.|Usually lunch.");
+    @joshrs_radu_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What has Margareta eaten, exactly?");
+    ~chatnpc("<p,shifty>Eaten? 'Eaten' is a strong word.|She samples. She investigates.");
+    ~chatnpc("<p,neutral>This month she has investigated: two shirts,|a letter for Elisabeta, a mop, most of a basket,|and the bottom half of Grigore's ladder.");
+    ~chatplayer("<p,shock>A ladder?!");
+    ~chatnpc("<p,happy>He fixes roofs from the middle rungs now.|It builds character. And arm strength.");
+    @joshrs_radu_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Florin seems quite upset with you.");
+    ~chatnpc("<p,sad>Ah. Florin. Yes. The shirt business.");
+    ~chatnpc("<p,neutral>In my defence, he hung it out to dry|right next to where Margareta likes to stand.|It was practically an invitation.");
+    if (%varp_724 = 6) {
+        ~chatnpc("<p,happy>Not any more! We play every Friday.|He wears the shirt I knitted. Well, one row of it is mine.|The diagonal row. You'll know it when you see it.");
+        @joshrs_radu_menu;
+    }
+    ~chatplayer("<p,quiz>Have you thought about apologising?");
+    @joshrs_peace_shirt_radu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Why do you love her so much?");
+    ~chatnpc("<p,neutral>Hm. That's a real question, isn't it.");
+    ~chatnpc("<p,sad>When my wife passed, the house went very quiet.|Then one morning a little goat turned up at my door,|ate my doormat, and refused to leave.");
+    ~chatnpc("<p,happy>She's never once let the house be quiet since.|Trouble, yes. Lonely, never.|That's worth a few shirts, I think.");
+    ~chatplayer("<p,happy>I think so too.");
+    @joshrs_radu_menu;
+} else {
+    ~chatplayer("<p,happy>Goodbye, Radu.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Goodbye! Hold onto your bag on the way out.|Not for any particular reason.");
+        case 1 : ~chatnpc("<p,happy>Farewell, friend! If you see a goat with one brown ear,|tell her supper's ready.");
+    }
+}
