@@ -1,0 +1,43 @@
+// JoshRS original dialogue - Helena, architect of the great mud castle of Burgh de Rott.
+// Voice: imaginative, very serious about her kingdom, generous with its honours.
+
+[opnpc1,burgh_villager_child4]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Careful! You're standing in the moat.|...It's alright. The whole village is the moat.|Everyone's standing in it.");
+    case 1 : ~chatnpc("<p,happy>Welcome to Castle Helena! I'm Queen Helena.|Also the builder. Also the guard.|It's a small kingdom so far.");
+    case 2 : ~chatnpc("<p,happy>Hello! Do you want to see my castle?|It's going to have twelve towers.|It has four. Four is a good start.");
+}
+@joshrs_helena_menu;
+
+[label,joshrs_helena_menu]
+def_int $option = ~p_choice5("Tell me about your castle.", 1, "Who lives in it?", 2, "Can I name one of the towers?", 3, "Do you really warm your hands at Simona's sun?", 4, "Long live Queen Helena! Goodbye!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Tell me about your castle.");
+    ~chatnpc("<p,happy>It's made of the best mud in the marsh.|You have to mix it with reeds so it doesn't fall over.|Teodor taught me that. He knows mud.");
+    ~chatnpc("<p,neutral>This is the Tall Tower. This is the Small Tower.|This is the Leaning Tower. That one was an accident,|but now it's on purpose.");
+    ~chatnpc("<p,happy>And this is the Goat Tower. It used to be|the Big Tower. Then Margareta came.");
+    @joshrs_helena_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Who lives in your castle?");
+    ~chatnpc("<p,happy>A family of snails, in the Small Tower.|Victor wants to study them. I said only on weekends.");
+    ~chatnpc("<p,neutral>And a beetle called Sir Clicks guards the gate.|He's not very good. He keeps wandering off.|But he's loyal in his heart.");
+    @joshrs_helena_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,happy>Can I name one of the towers?");
+    ~chatnpc("<p,quiz>Hmm. You have to be a friend of the kingdom.|Are you a friend of the kingdom?");
+    ~chatplayer("<p,happy>The very best friend.");
+    ~chatnpc("<p,happy>Then you may name the next tower!|I'll call it... The Adventurer's Tower.|For you. It'll be the tallest one. Taller than the Tall one.");
+    ~chatnpc("<p,neutral>When it's finished, you have to come back|and stand next to it so I can see if it's as tall as you.");
+    @joshrs_helena_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Do you really warm your hands at Simona's painted sun?");
+    ~chatnpc("<p,happy>Yes! You hold your hands up really close,|and you close your eyes, and you remember|what the real sun felt like.");
+    ~chatnpc("<p,neutral>Victor says it can't work, because it's paint.|But my hands always feel warmer after.|So I think Victor needs to do more experiments.");
+    @joshrs_helena_menu;
+} else {
+    ~chatplayer("<p,happy>Long live Queen Helena! Goodbye!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Long live me! Goodbye, friend of the kingdom!|Don't step on the snails on your way out!");
+        case 1 : ~chatnpc("<p,happy>Farewell! The Adventurer's Tower will be|ready soon. Probably. Mud takes time.");
+    }
+}
