@@ -52,7 +52,22 @@ def main() -> int:
 
     content = world / "content"
     pack = content / "pack/varp.pack"
-    all_varp = next((content / "scripts/_unpack").glob("*/all.varp"))
+    # Which revision's override file to use matters: _unpack contains 225/244/245/254/274, and
+    # writing to the first match silently puts definitions in the wrong revision. The engine's
+    # configured revision is authoritative.
+    rev = None
+    world_json = world / "engine/data/config/world.json"
+    if world_json.exists():
+        import json
+        rev = str(json.loads(world_json.read_text()).get("engine", {}).get("revision", "")) or None
+    if rev is None:
+        rev = "274"
+        print(f"NOTE: could not read revision from {world_json}; assuming {rev}")
+    all_varp = content / "scripts/_unpack" / rev / "all.varp"
+    if not all_varp.exists():
+        print(f"BLOCKED: no such varp override: {all_varp}")
+        return 2
+    print(f"varp definitions -> {all_varp}")
     qdir = content / "scripts/quests"
     pack377 = src377 / "pack/varp.pack"
 
