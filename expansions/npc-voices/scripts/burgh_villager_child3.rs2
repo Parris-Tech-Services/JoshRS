@@ -1,0 +1,55 @@
+// JoshRS original dialogue - Victor, Burgh de Rott's tiny scientist.
+// Voice: endless questions, pockets full of 'evidence', turns every chat into an investigation.
+
+[opnpc1,burgh_villager_child3]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,quiz>Why is the sky grey? Why is the water brown?|Why do you have a sword? Why is your hat like that?|Hello. I'm Victor.");
+    case 1 : ~chatnpc("<p,quiz>Hold still! I'm doing an experiment.|...Okay, the experiment was 'will a stranger hold still'.|Result: yes. Thank you!");
+    case 2 : ~chatnpc("<p,happy>An adventurer! You're the most interesting thing|that's happened today. Except the snail.|The snail was very interesting.");
+}
+@joshrs_victor_menu;
+
+[label,joshrs_victor_menu]
+def_int $option = ~p_choice5("Why do you ask so many questions?", 1, "What's in your pockets?", 2, "Ask me a question.", 3, "What do you want to be when you grow up?", 4, "I've got to go. Bye, Victor!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Why do you ask so many questions?");
+    ~chatnpc("<p,quiz>Why do YOU ask why I ask so many questions?");
+    ~chatplayer("<p,confused>...Fair point.");
+    ~chatnpc("<p,happy>Mum says I'm curious. I think I'm just interested.|Everything's got a reason. Even the fog.|Especially the fog. I'm going to find it.");
+    @joshrs_victor_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What's in your pockets? They look very full.");
+    ~chatnpc("<p,happy>Evidence!");
+    ~chatnpc("<p,neutral>One snail shell, empty. One feather, probably heron.|A pebble that looks like a potato.|And a potato that looks like a pebble.");
+    ~chatnpc("<p,happy>I'm trying to work out which is which.|It's harder than you'd think.");
+    @joshrs_victor_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,happy>Go on then. Ask me a question.");
+    switch_int(random(3)) {
+        case 0 :
+            ~chatnpc("<p,quiz>If you dig a hole all the way down,|where do you come out?");
+            ~chatplayer("<p,confused>Er... somewhere very far away?");
+            ~chatnpc("<p,happy>I knew it! I'm going to dig one.|Teodor says not in his carrot patch.");
+        case 1 :
+            ~chatnpc("<p,quiz>Do fish know they're wet?");
+            ~chatplayer("<p,confused>...I don't think they've ever been dry,|so maybe not?");
+            ~chatnpc("<p,happy>That's the best answer anyone's ever given me!|I'm writing it down. In my head.");
+        case 2 :
+            ~chatnpc("<p,quiz>What's the bravest thing you've ever done?");
+            ~chatplayer("<p,neutral>Hmm. Maybe just setting out on my own|to see the world.");
+            ~chatnpc("<p,happy>That's what I want to do!|But I'll come back. Someone has to explain|everything to everyone here.");
+    }
+    @joshrs_victor_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>What do you want to be when you grow up?");
+    ~chatnpc("<p,happy>An explorer-scientist-inventor-wizard!|With a hat. A really good hat.");
+    ~chatnpc("<p,neutral>First I'm going to invent a fog-catcher,|so the village can see the sun again.|Then I'll invent a goat-proof washing line.");
+    ~chatnpc("<p,happy>Florin will give me a medal, probably.");
+    @joshrs_victor_menu;
+} else {
+    ~chatplayer("<p,happy>I've got to go. Bye, Victor!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,quiz>Bye! Wait - why do you have to go?|Where are you going? What's there?|...Tell me next time!");
+        case 1 : ~chatnpc("<p,happy>Goodbye! Notice three interesting things|on your way home. Then come and tell me.");
+    }
+}
