@@ -20,7 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Guardrail regression tests
-        run: node --test tools/rs377-ladders/apply-directional-middle.test.mjs
+        run: |
+          node --test tools/rs377-ladders/apply-directional-middle.test.mjs
+          node --test tools/rs377-ladders/apply-falador-vertical.test.mjs
       - name: Fetch pinned Lost City 377 Content (CI fixture, never published)
         shell: bash
         run: |
@@ -33,5 +35,14 @@ jobs:
           node tools/rs377-ladders/apply-directional-middle.mjs --content "$RUNNER_TEMP/rs377-content" --apply
           for op in 1 2 3; do
             grep -qF "[oploc${op},loc_1751]" "$RUNNER_TEMP/rs377-content/scripts/ladders+stairs/scripts/ladders.rs2"
+          done
+          git -C "$RUNNER_TEMP/rs377-content" diff --check
+      - name: Validate confirmed Falador ladder handlers against pinned content
+        shell: bash
+        run: |
+          node tools/rs377-ladders/apply-falador-vertical.mjs --content "$RUNNER_TEMP/rs377-content"
+          node tools/rs377-ladders/apply-falador-vertical.mjs --content "$RUNNER_TEMP/rs377-content" --apply
+          for id in 11739 11740 11741 11742; do
+            grep -qF "[oploc1,loc_${id}]" "$RUNNER_TEMP/rs377-content/scripts/ladders+stairs/scripts/ladders.rs2"
           done
           git -C "$RUNNER_TEMP/rs377-content" diff --check

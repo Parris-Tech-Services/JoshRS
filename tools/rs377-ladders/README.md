@@ -27,3 +27,34 @@ The first command is dry-run; `--apply` is refused for paths inside `runtime/jpa
 `node --test tools/rs377-ladders/apply-directional-middle.test.mjs` passed 3/3 in a disposable fixture. Tests cover exact id mapping guards, the three handler bodies, source-drift refusal, dry-run, backup and live-path refusal. **Not** a RuneScript compilation or actual client gameplay pass.
 
 No protected game assets, maps, models, account data or player saves are included in this commit.
+
+## Confirmed Falador ladder repair (loc 11739/11740/11741/11742)
+
+The player screenshot was from the Falador Hairdresser's Salon area. Pinned 377 map data places the salon-side ladder at `(2946, 3378, plane 0)` with loc `11739` (`Climb-up`), and its same-tile upper landing `11741` (`Climb-down`) on plane 1. The adjacent `11740`/`11742` pair is used by the multi-storey Falador ladders at `(2954, 3389)`, `(2946, 3363)` and `(2946, 3378)`.
+
+The pinned `ladders.rs2` has **no** `oploc1` handler for any of those IDs, which is why the live game returned exactly the default `Nothing interesting happens.`. `apply-falador-vertical.mjs` adds the four handlers using the existing `~climb_ladder` procedure:
+
+| Loc | Action | Destination |
+| --- | --- | --- |
+| 11739/11740 | Climb-up | same x/z, plane + 1 |
+| 11741/11742 | Climb-down | same x/z, plane - 1 |
+
+Note the engine argument order is `movecoord(coord, x, levelDelta, zDelta)`. The correct level change is therefore the **third** argument (`0, 1, 0` / `0, -1, 0`), not `0, 0, 1`.
+
+### Isolated verification (10 Nov 2026)
+
+- Disposable 377 engine/content copy on ports 60001/60002/60003, separate SQLite and profile.
+- Disposable account `testhero` (not a live account), teleported to `(2946, 3378, 0)`.
+- Before patch: `oploc1 11739` left the player at `(2946, 3378, 0)`.
+- After patch and isolated rebuild: up moved to `(2946, 3378, 1)`; then `oploc1 11741` moved back to `(2946, 3378, 0)`. Inventory and interface state unchanged.
+- This is source-plus-isolated-gameplay evidence, not live deployment. The live family world was not touched.
+
+### Apply safely
+
+```powershell
+node .\tools\rs377-ladders\apply-falador-vertical.mjs --content 'C:\JoshRS-DEV\content'
+node .\tools\rs377-ladders\apply-falador-vertical.mjs --content 'C:\JoshRS-DEV\content' --apply
+node --test .\tools\rs377-ladders\apply-falador-vertical.test.mjs
+```
+
+The tool refuses active `runtime/jparris-377` paths, refuses source/loc drift, creates a backup in the isolated clone, and is idempotent. Deployment still requires the owner's approved offline restart and backup.
