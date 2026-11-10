@@ -21,6 +21,9 @@ const waitForIdx = args.indexOf('--wait-for');
 const waitFor = waitForIdx >= 0 ? new RegExp(args[waitForIdx + 1], 'i') : /username|password/i;
 const maxIdx = args.indexOf('--max-seconds');
 const maxSeconds = maxIdx >= 0 ? Number(args[maxIdx + 1]) : 420;
+// The credential panel occupies the centre of the 765x503 canvas; cropping removes the
+// decorative background whose stray glyphs were being mistaken for field labels.
+const LOGIN_CROP = [200, 150, 560, 360];
 const loginIdx = args.indexOf('--login');
 const login = loginIdx >= 0 ? args[loginIdx + 1] : null; // "user:pass"
 
@@ -43,12 +46,15 @@ function ocr(pngPath) {
 }
 
 /** OCR a PNG and return words with boxes in CANVAS pixel coordinates. */
-function ocrWords(pngPath, canvasW, canvasH) {
+function ocrWords(pngPath, canvasW, canvasH, crop) {
     try {
+        const cropArg = crop ? crop.join(',') : '';
         execFileSync('python3', ['-c',
             "import sys;from PIL import Image;img=Image.open(sys.argv[1]).convert('L');" +
+            "c=sys.argv[3];" +
+            "img=img.crop(tuple(int(v) for v in c.split(','))) if c else img;" +
             "img.resize((img.width*2,img.height*2),Image.LANCZOS).save(sys.argv[2])",
-            pngPath, ocrInput], { stdio: 'pipe' });
+            pngPath, ocrInput, cropArg], { stdio: 'pipe' });
         const tsv = execFileSync('tesseract', [ocrInput, 'stdout', '--psm', '6', 'tsv'],
             { stdio: ['ignore', 'pipe', 'pipe'] }).toString('utf8');
         const out = [];
@@ -57,7 +63,8 @@ function ocrWords(pngPath, canvasW, canvasH) {
             if (cols.length < 12) continue;
             const word = cols[11];
             if (!word || !word.trim()) continue;
-            const left = Number(cols[6]) / 2, top = Number(cols[7]) / 2;
+            const ox = crop ? crop[0] : 0, oy = crop ? crop[1] : 0;
+            const left = Number(cols[6]) / 2 + ox, top = Number(cols[7]) / 2 + oy;
             const w = Number(cols[8]) / 2, h = Number(cols[9]) / 2;
             if (!Number.isFinite(left) || !Number.isFinite(top)) continue;
             // Canvas pixels; the caller maps to page coordinates.
@@ -79,9 +86,13 @@ async function clickWord(page, re) {
     });
     if (!box || !dims) return false;
 
-    const words = ocrWords(canvasPath, dims.w, dims.h);
-    const hit = words.find((wd) => re.test(wd.word));
-    if (!hit) return false;
+    const words = ocrWords(canvasPath, dims.w, dims.h, LOGIN_CROP);
+    const norm = (w) => w.toLowerCase().replace(/[^a-z]/g, '');
+    const hit = words.find((wd) => re.test(wd.word) || re.test(norm(wd.word)));
+    if (!hit) {
+        console.log(`  (no match; words seen: ${words.slice(0, 12).map((w) => w.word).join(' ')})`);
+        return false;
+    }
 
     const px = box.x + (hit.cx / dims.w) * box.width;
     const py = box.y + (hit.cy / dims.h) * box.height;
@@ -133,10 +144,15 @@ if (login) {
             return c ? { w: c.width, h: c.height } : null;
         });
         if (!box || !dims) return false;
-        const words = ocrWords(canvasPath, dims.w, dims.h);
-        const hit = words.find((wd) => re.test(wd.word));
-        if (!hit) return false;
+        const words = ocrWords(canvasPath, dims.w, dims.h, LOGIN_CROP);
+        const norm = (w) => w.toLowerCase().replace(/[^a-z]/g, '');
+        const hit = words.find((wd) => re.test(wd.word) || re.test(norm(wd.word)));
+        if (!hit) {
+            console.log(`  (field not found; saw: ${words.slice(0, 12).map((w) => w.word).join(' ')})`);
+            return false;
+        }
         await page.mouse.click(box.x + (hit.cx / dims.w) * box.width, box.y + (hit.cy / dims.h) * box.height);
+        console.log(`clicked field "${hit.word}" at canvas(${Math.round(hit.cx)},${Math.round(hit.cy)})`);
         return true;
     };
 
