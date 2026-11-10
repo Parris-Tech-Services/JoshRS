@@ -19,7 +19,7 @@ switch_int (%joshrs_royaltrouble) {
             ~chatnpc("<p,neutral>These matters belong to the appointed regent.|Please finish your duties for King Vargas first.");
             return;
         }
-        ~chatnpc("<p,worried>Our island and Etceteria are arguing over missing supplies.|Both courts blame one another, and neither will listen to reason.");
+        ~chatnpc("<p,neutral>Our island and Etceteria are arguing over missing supplies.|Both courts blame one another, and neither will listen to reason.");
         def_int $help = ~p_choice2("I will look into the dispute.", 1, "Not right now.", 2);
         if ($help = 1) {
             %joshrs_royaltrouble = ^rt_ghrim_briefing;
@@ -68,7 +68,7 @@ if (%joshrs_royaltrouble = ^rt_misc_worker) {
     return;
 }
 if (%joshrs_royaltrouble = ^rt_queen_report) {
-    ~chatnpc("<p,worried>Both islands are missing goods, and each blames the other?|Please ask Ghrim where to begin a proper investigation.");
+    ~chatnpc("<p,neutral>Both islands are missing goods, and each blames the other?|Please ask Ghrim where to begin a proper investigation.");
     %joshrs_royaltrouble = ^rt_king_mystery;
     return;
 }
