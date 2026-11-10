@@ -53,11 +53,14 @@ def main():
     target, src, log = Path(sys.argv[1]).expanduser(), Path(sys.argv[2]).expanduser(), Path(sys.argv[3])
     text = log.read_text(errors="ignore") if log.exists() else ""
     symbols = set()
+    for m in re.finditer(r"(?i)(?:multivar|varbit|varp|param|stat|inv)=([a-z0-9_]+)", text):
+        symbols.add(m.group(1))
     # "data=...,symbol" and "Invalid property value: anim=symbol"
     for m in re.finditer(r"data=[a-z0-9_]+,([a-z0-9_]+)", text):
         symbols.add(m.group(1))
     # Property names can contain digits (frame1=...), which an [a-z]+ class rejected.
-    for m in re.finditer(r"(?i)(?:invalid property value|unknown|missing)[^\n]*?([a-z0-9_]+)=([a-z0-9_]+)", text):
+    # Config keys reference registries by name: multivar=, varbit=, varp=, param=, anim= ...
+    for m in re.finditer(r"(?i)(?:invalid property value|invalid property key|non-unique var name|unknown|missing)[^\n]*?([a-z0-9_]+)=([a-z0-9_]+)", text):
         symbols.add(m.group(2))
     if not symbols:
         print("no symbol found in packer output"); return 3
