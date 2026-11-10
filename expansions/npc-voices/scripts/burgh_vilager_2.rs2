@@ -1,0 +1,45 @@
+// JoshRS original dialogue - Sergiu, Burgh de Rott's keeper of records.
+// Voice: eager, meticulous, delighted by any new fact; writes everything in his ledger.
+
+[opnpc1,burgh_vilager_2]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>A visitor! Hold still, hold still,|let me find a clean page. There!|Now, what time is it? Roughly?");
+    case 1 : ~chatnpc("<p,happy>Sergiu, keeper of the Burgh de Rott Ledger!|Every visitor, every rainfall,|every escaped goat. All recorded.");
+    case 2 : ~chatnpc("<p,quiz>Ah! Are you the same visitor as before,|or a new one? It makes a big difference|to my columns.");
+}
+@joshrs_sergiu_menu;
+
+[label,joshrs_sergiu_menu]
+def_int $option = ~p_choice5("What's in the ledger?", 1, "How many visitors do you get?", 2, "What's the strangest thing you've recorded?", 3, "Can you write about me?", 4, "I'll let you get back to writing.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>What do you keep in that ledger?");
+    ~chatnpc("<p,happy>Everything that matters! And quite a lot|that doesn't, just in case.");
+    ~chatnpc("<p,neutral>Rainfall: daily. Fog thickness: measured|by how many fence posts I can see.|Today it's three. Yesterday it was two.");
+    ~chatnpc("<p,happy>So things are looking up!|By one fence post. That's progress, by my figures.");
+    @joshrs_sergiu_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>How many visitors does Burgh de Rott get?");
+    ~chatnpc("<p,neutral>Let me check.");
+    ~chatnpc("<p,neutral>This year... a pedlar who got lost.|A heron, which I counted out of politeness.|And a man who asked the way and then ran.");
+    ~chatnpc("<p,happy>And now you! That's a twenty-five percent|increase on last year already.|My columns have never looked so exciting.");
+    @joshrs_sergiu_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What's the strangest thing you've ever recorded?");
+    ~chatnpc("<p,quiz>Oh, now that's a question.");
+    ~chatnpc("<p,happy>Page twelve. 'The Day of the Three Hats.'|Three hats blew into the village in one storm.|None of them belonged to anyone here.");
+    ~chatplayer("<p,quiz>Where did they come from?");
+    ~chatnpc("<p,neutral>Nobody knows! Grigore wears one now.|Sorin's fleas live in another.|The third is still unaccounted for. It haunts me.");
+    @joshrs_sergiu_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,happy>Would you write something about me?");
+    ~chatnpc("<p,shock>Would I? I already have!|'Visitor. Friendly. Asks good questions.|Boots: muddy, but in a respectable way.'");
+    ~chatplayer("<p,laugh>That's very accurate.");
+    ~chatnpc("<p,happy>Accuracy is everything, friend.|Come back with tales of your travels|and I'll give you a whole page of your own.");
+    @joshrs_sergiu_menu;
+} else {
+    ~chatplayer("<p,happy>I'll let you get back to your writing.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Visitor departed at, um... now-ish.|Recorded! Safe travels!");
+        case 1 : ~chatnpc("<p,happy>Goodbye! I'll underline your name.|I only underline the very best visitors.");
+    }
+}
