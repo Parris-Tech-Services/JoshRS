@@ -141,3 +141,30 @@ They **pack and load**, and their journals may well display, but their progress 
 persist until their varps exist. They should be treated as **demonstration content, not playable
 quests**, until the varp work is done.
 
+## Pilot: one journal entry added and geometry-verified
+
+The nine quests above need an entry in `scripts/player/interfaces/questlist.if` before their journal
+can be opened. Rather than edit nine at once, one was added as a pilot:
+
+```
+[feud]  x=10  y=1018  w=64  h=14  text=The Feud  colour=0xFF0000
+```
+
+### Evidence
+
+| Check | Result |
+|---|---|
+| Placement avoids collision | appended at `y=1018`, past the previous maximum `y=1003` |
+| Overlap scan across all 67 text components | **0 new overlaps** (the 1 existing pair, title vs header, is pre-existing and benign) |
+| Interface packs | engine repacked and reached `World ready`; client serves 200 |
+| Patch | `content-patches/rs274/patches/questlist_feud_entry.patch` |
+
+### What this does NOT prove
+
+**The entry has not been seen in the running client.** Opening the quest journal requires clicking
+the quest tab in the game frame, which has no OCR-able label — so the visual pipeline cannot find it
+by text yet. The next step is a coordinate search over the tab column using the existing capture
+loop: click a candidate, OCR for "Quest Journal", stop when found.
+
+Until that is done, this is geometry- and packing-verified, not visually verified.
+
