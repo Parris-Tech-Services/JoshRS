@@ -83,3 +83,42 @@ export function parseManifest(text) {
     return m;
 }
 export const MANIFEST = 'imported-maps.txt';
+
+/** Body of a [proc,name] script: text up to the next top-level [trigger,...] header. */
+export function procBody(text, name) {
+    const start = text.search(new RegExp(`^\\[proc,${name}\\]`, 'm'));
+    if (start < 0) return null;
+    const rest = text.slice(start + 1);
+    const next = rest.search(/^\[[a-z_]+,[^\]]+\]/m);
+    return next < 0 ? text.slice(start) : text.slice(start, start + 1 + next);
+}
+
+/** Pairs of (stage varp, complete constant) from comparisons like `%cookquest = ^cook_complete`. */
+export function completeChecks(text) {
+    return [...text.matchAll(/%([a-z0-9_]+)\s*(?:=|>=|>)\s*\^([a-z0-9_]*complete[a-z0-9_]*)/gi)].map((m) => ({ varp: m[1], constant: m[2] }));
+}
+
+/** varp definitions with their scope from .varp config text -> Map<name, 'perm'|'temp'>. */
+export function varpScopes(text) {
+    const out = new Map();
+    let cur = null;
+    for (const raw of text.split(/\r?\n/)) {
+        const h = raw.match(/^\[([^\]]+)\]\s*$/);
+        if (h) { cur = h[1]; if (!out.has(cur)) out.set(cur, 'temp'); continue; }
+        if (cur && /^scope\s*=\s*perm\s*$/.test(raw.trim())) out.set(cur, 'perm');
+    }
+    return out;
+}
+
+/** varbit definitions -> Map<varbit name, base varp name>. A varbit persists iff its base varp does. */
+export function varbitBases(text) {
+    const out = new Map();
+    let cur = null;
+    for (const raw of text.split(/\r?\n/)) {
+        const h = raw.match(/^\[([^\]]+)\]\s*$/);
+        if (h) { cur = h[1]; continue; }
+        const b = raw.trim().match(/^basevar\s*=\s*(\S+)$/);
+        if (cur && b) out.set(cur, b[1]);
+    }
+    return out;
+}

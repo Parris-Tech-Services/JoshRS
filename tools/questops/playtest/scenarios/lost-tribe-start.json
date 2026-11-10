@@ -1,0 +1,16 @@
+{
+  "name": "The Lost Tribe - Sigmund is in place, talks, and quest stage survives save/reload",
+  "notes": "Starts beside Duke Horacio (Lumbridge Castle, first floor). Stage varp and dialogue options are placeholders: run with --dump to read the real ones from dev274, then replace the TODO steps.",
+  "steps": [
+    { "do": "teleport", "x": 3210, "z": 3219, "level": 1 },
+    { "do": "expectNpcNear", "npc": "duke_of_lumbridge", "radius": 5 },
+    { "do": "expectNpcNear", "npc": "lost_tribe_sigmund", "radius": 5 },
+    { "do": "talk", "npc": "lost_tribe_sigmund" },
+    { "do": "dump" },
+    { "do": "expectDialogue", "text": "Sigmund" },
+    { "do": "expectPerm", "varp": "TODO_lost_tribe_stage_varp" },
+    { "do": "setVar", "varp": "TODO_lost_tribe_stage_varp", "value": 1 },
+    { "do": "saveReload" },
+    { "do": "expectVar", "varp": "TODO_lost_tribe_stage_varp", "value": 1 }
+  ]
+}
