@@ -72,5 +72,5 @@ function Test-JoshRSBackupIntegrity {
             throw 'Backup hash or size mismatch. Do not restore this snapshot.'
         }
     }
-    return [pscustomobject]@{Verified=$true;FileCount=$actual.Count;ContainsElrothiro=([bool](@($actual | Where-Object {$_.relativePath -ieq 'players/main/elrothiro.sav'}).Count))}
+    return [pscustomobject]@{Verified=$true;FileCount=$actual.Count;ContainsElrothiro=([bool](@($actual | Where-Object {$_.relativePath -ieq 'players/main/elrothiro.sav'}).Count));ContainsSylvie=([bool](@($actual | Where-Object {$_.relativePath -ieq 'players/main/sylvie.sav'}).Count))}
 }
