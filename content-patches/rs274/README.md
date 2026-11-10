@@ -188,3 +188,61 @@ So persistence is **not yet verified**, and the check that would verify it is no
 it fails until the design step completes, and passes only when a returning login skips creation
 entirely.
 
+## Issue #324 repairs in the isolated dev world
+
+### Reference handling fixed in both tools
+
+`opnpc`, `oploc` and `opheld` are separate namespaces, and each has a `u` variant (`opnpcu`,
+`oplocu`, `opheldu`) used heavily by quests — **384 occurrences** across the ported content. Both the
+importer and the audit previously matched only the numbered forms, which undercounted dependencies and
+let the audit treat quests as complete that were not.
+
+### Definitions are not only in the central registries
+
+`all.<kind>` is not the whole story: many definitions live in per-quest configs such as
+`scripts/quests/quest_mm/configs/mm.loc`. Indexing only `_unpack` reported ~1,000 locs as
+"no definition upstream" **that did exist**, and is the likely reason The Golem stayed blocked. Both
+`port-map-definitions.py` and `check-map-integrity.mjs` now index the whole source tree.
+
+### New: `check-map-integrity.mjs`
+
+For every map imported from the newer revision it resolves each numeric NPC/LOC/OBJ reference against
+the target packs and the **source** packs, and classifies:
+
+| class | meaning |
+|---|---|
+| `dangling` | id not registered at all — the entity cannot exist |
+| `mismatch` | id registered, but to a *different* symbol than the source intended — spawns a plausible, wrong entity |
+| `noDefinition` | symbol registered but no definition resolved |
+
+Its first version parsed `level x y: id` wrongly, matched nothing, and reported a **clean bill of
+health**. That is the fourth time this session a check silently found nothing; the parser now reads the
+id after the colon.
+
+### Measured on the dev world after importing 793 NPCs, 3,795 locs and 21 objs
+
+```
+maps with problems: 156
+  npc: dangling=0 mismatch=18  noDefinition=5
+  loc: dangling=0 mismatch=322 noDefinition=65
+  obj: dangling=0 mismatch=0   noDefinition=1
+```
+
+**Zero dangling** is real progress: every referenced id now exists. The **340 mismatches** are the
+remaining blocker — ids that already mean something else in revision 274, so an imported map would
+spawn the wrong entity. Fixing those needs a map-scoped id translation (allocate a new id for the 377
+symbol and rewrite only the imported maps), which is designed but **not implemented**.
+
+### Sigmund, correctly this time
+
+The 377 source has `2079=lost_tribe_sigmund` spawning at `1 9 19` in `m50_50` (world 3209,3219),
+beside Duke Horacio at `1 12 20`. An earlier attempt registered the wrong symbol
+(`lost_tribe_sigmund_there`, id 1359) at the wrong tile; that entry and spawn were removed and the
+correct id, definition and position are in place.
+
+### Quest presence scoreboard corrected
+
+`quest-status.mjs` had wrong aliases: `Troll Romance` mapped to `null`, `Mountain Daughter` and
+`Between a Rock...` pointed at directories that do not exist, and `Icthlarin's Little Helper` was
+misspelt. Present count moved **72 → 76 of 88** on the same content.
+
