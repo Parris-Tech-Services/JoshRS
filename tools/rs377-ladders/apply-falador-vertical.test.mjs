@@ -19,7 +19,10 @@ const pack = [11739, 11740, 11741, 11742].map(id => `${id}=loc_${id}`).join('\n'
 test('adds matching up/down handlers for the real Falador ladder pair', () => {
     const out = patchText(fixture, pack);
     assert.equal((out.match(/\[oploc1,loc_11739\]/g) || []).length, 1);
-    assert.match(out, /\[oploc1,loc_11739\]\np_arrivedelay;\n~climb_ladder\(movecoord\(coord\(\), 0, 1, 0\), true\)/);
+    assert.match(out, /\[oploc1,loc_11739\]\np_arrivedelay;\nswitch_coord \(loc_coord\) \{/);
+    // the stranding loft at 2946,3363 must stay blocked, everything else climbs normally
+    assert.match(out, /case 0_46_52_2_35 : mes\("The top of this ladder is blocked\. It isn't safe to climb\."\);/);
+    assert.match(out, /case default : ~climb_ladder\(movecoord\(coord\(\), 0, 1, 0\), true\);\n\}/);
     assert.match(out, /\[oploc1,loc_11740\]\np_arrivedelay;\n~climb_ladder\(movecoord\(coord\(\), 0, 1, 0\), true\)/);
     assert.match(out, /\[oploc1,loc_11741\]\np_arrivedelay;\n~climb_ladder\(movecoord\(coord\(\), 0, -1, 0\), false\)/);
     assert.match(out, /\[oploc1,loc_11742\]\np_arrivedelay;\n~climb_ladder\(movecoord\(coord\(\), 0, -1, 0\), false\)/);
