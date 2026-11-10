@@ -260,6 +260,18 @@ if (login) {
     if (/design your player|design colour|gender/i.test(afterLogin)) {
         console.log('character design detected; completing it');
         let clicked = false;
+        // Some clients accept the starting appearance with a key press rather than a button.
+        for (const key of ['Enter', 'Escape', 'Space']) {
+            await page.keyboard.press(key);
+            await page.waitForTimeout(1500);
+            let t = '';
+            try { t = await snapshot(); } catch { continue; }
+            if (!/design your player|design colour|gender/i.test(t)) {
+                console.log(`design advanced by key ${key}`);
+                clicked = true;
+                break;
+            }
+        }
         for (const re of [/^accept$/i, /^confirm$/i, /^continue$/i, /^done$/i, /^create$/i, /^looks good$/i]) {
             if (await clickField(re)) { clicked = true; break; }
         }
