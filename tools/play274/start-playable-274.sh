@@ -135,7 +135,7 @@ PATCH
 }
 
 # Keep every listener on loopback so this world is never exposed to the LAN.
-python3 -I "$repo/tools/android377-phone/loopback_bind.py" "$target/engine"
+python3 -I "$repo/tools/play274/loopback_bind.py" "$target/engine"
 
 if $LAN_MODE; then
   if [[ -z "$LAN_HOST" ]]; then
@@ -168,8 +168,10 @@ if running; then
   exit 0
 fi
 
-# 600ms per tick: 7200 ticks = 72 min of tab-switching without being logged out.
-export JOSHRS_IDLE_LOGOUT_TICKS="${JOSHRS_IDLE_LOGOUT_TICKS:-7200}"
+# 600ms per tick. A closed tab must release the character quickly (otherwise a reload
+# reports "already logged in"), while a backgrounded tab keeps its socket open and is
+# covered by the no-response timeout. 50 ticks = 30s after the socket actually closes.
+export JOSHRS_IDLE_LOGOUT_TICKS="${JOSHRS_IDLE_LOGOUT_TICKS:-50}"
 export JOSHRS_FORCE_LOGOUT_TICKS="${JOSHRS_FORCE_LOGOUT_TICKS:-14400}"
 
 cd "$target/engine"
