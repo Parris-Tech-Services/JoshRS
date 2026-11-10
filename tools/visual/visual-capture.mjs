@@ -269,7 +269,20 @@ if (login) {
                 return c ? { w: c.width, h: c.height } : null;
             });
             if (cbox && cdims) {
-                outerDesign: for (let fy = 0.55; fy <= 0.95; fy += 0.08) {
+                // (0.40, 0.55) is where a previous sweep advanced past design; try it first.
+                const known = [[0.40, 0.55]];
+                for (const [kx, ky] of known) {
+                    await page.mouse.click(cbox.x + kx * cbox.width, cbox.y + ky * cbox.height);
+                    await page.waitForTimeout(1800);
+                    let t = '';
+                    try { t = await snapshot(); } catch { continue; }
+                    if (!/design your player|design colour|gender/i.test(t)) {
+                        console.log(`design advanced by known click (${kx}, ${ky})`);
+                        clicked = true;
+                        break;
+                    }
+                }
+                outerDesign: for (let fy = 0.55; fy <= 0.95 && !clicked; fy += 0.08) {
                     for (let fx = 0.30; fx <= 0.70; fx += 0.10) {
                         await page.mouse.click(cbox.x + fx * cbox.width, cbox.y + fy * cbox.height);
                         await page.waitForTimeout(1200);
