@@ -1,16 +1,16 @@
 {
   "candidate_pool": 4924,
   "deduplicated_reference_versions": 1783,
-  "next_rotation_offset": 3000,
+  "next_rotation_offset": 3100,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
   "raw_reference_versions": 6707,
-  "rotation_offset": 2900,
+  "rotation_offset": 3000,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
     {
       "automatically_installed": false,
-      "candidate_id": "396ef48736762aca4f78",
+      "candidate_id": "08729794aa4aba496fe5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -18,17 +18,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/InterfaceX.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/BufferUtil.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/InterfaceX.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/BufferUtil.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-396ef48736762aca4f78"
+      "work_id": "377-08729794aa4aba496fe5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3c5e2524ea6a0537526b",
+      "candidate_id": "593e1545f8c042ba9b78",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -36,17 +36,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/ItemClick2.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/CollectionUtil.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/ItemClick2.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/CollectionUtil.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-3c5e2524ea6a0537526b"
+      "work_id": "377-593e1545f8c042ba9b78"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7db28c0e9db463fa95df",
+      "candidate_id": "d255e4f16d609bb9eef8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -54,17 +54,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/ItemClick2OnGroundItem.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/CompressionUtil.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/ItemClick2OnGroundItem.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/CompressionUtil.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-7db28c0e9db463fa95df"
+      "work_id": "377-d255e4f16d609bb9eef8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6ebad616e676a3686163",
+      "candidate_id": "30c514252fc0d9359ad5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -72,17 +72,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/ItemClick3.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/LanguageUtil.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/ItemClick3.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/LanguageUtil.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-6ebad616e676a3686163"
+      "work_id": "377-30c514252fc0d9359ad5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "545b771c9e657df05dff",
+      "candidate_id": "8c31b4139c50038bb59e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -90,17 +90,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/ItemOnGroundItem.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/NameUtil.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/ItemOnGroundItem.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/NameUtil.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-545b771c9e657df05dff"
+      "work_id": "377-8c31b4139c50038bb59e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e2dccebbcd9f4addf249",
+      "candidate_id": "0be923652671ec2ede3e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -108,17 +108,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/ItemOnItem.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/Point.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/ItemOnItem.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/Point.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e2dccebbcd9f4addf249"
+      "work_id": "377-0be923652671ec2ede3e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "553a9ca803d7ecbc1253",
+      "candidate_id": "f918d12874ee48fafcbd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -126,17 +126,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/ItemOnNpc.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/StatefulFrameDecoder.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/ItemOnNpc.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/StatefulFrameDecoder.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-553a9ca803d7ecbc1253"
+      "work_id": "377-f918d12874ee48fafcbd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e17b59aa9969b585ebbf",
+      "candidate_id": "998de6ebf12811ba13f0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -144,17 +144,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/ItemOnObject.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/StreamUtil.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/ItemOnObject.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/StreamUtil.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e17b59aa9969b585ebbf"
+      "work_id": "377-998de6ebf12811ba13f0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e7406862925b0d81cbed",
+      "candidate_id": "951e4b364cd9976ebaad",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -162,17 +162,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/ItemOnPlayer.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/TextUtil.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/ItemOnPlayer.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/TextUtil.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e7406862925b0d81cbed"
+      "work_id": "377-951e4b364cd9976ebaad"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0925db8ef245f3f8368e",
+      "candidate_id": "87165a40bd9075cf6cdd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -180,17 +180,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/MagicOnFloorItems.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/ThreadUtil.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/MagicOnFloorItems.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/ThreadUtil.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-0925db8ef245f3f8368e"
+      "work_id": "377-87165a40bd9075cf6cdd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f4055b2d144ce9aeb739",
+      "candidate_id": "7a43b9c179a6d9ba02ef",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -198,17 +198,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/MagicOnItems.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/package-info.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/MagicOnItems.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/package-info.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-f4055b2d144ce9aeb739"
+      "work_id": "377-7a43b9c179a6d9ba02ef"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "85fc492107073c3c4ddf",
+      "candidate_id": "900cf5c280cb7df0202d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -216,17 +216,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/MagicOnObject.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/security/IsaacRandom.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/MagicOnObject.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/security/IsaacRandom.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-85fc492107073c3c4ddf"
+      "work_id": "377-900cf5c280cb7df0202d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e055409d1b10b420a283",
+      "candidate_id": "c0a81a1463f68d7ae3e6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -234,17 +234,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/MoveItems.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/security/IsaacRandomPair.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/MoveItems.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/security/IsaacRandomPair.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e055409d1b10b420a283"
+      "work_id": "377-c0a81a1463f68d7ae3e6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "aea8d87794672527c475",
+      "candidate_id": "a6427978cbe8fa7736ac",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -252,17 +252,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/PickupItem.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/security/PlayerCredentials.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/PickupItem.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/security/PlayerCredentials.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-aea8d87794672527c475"
+      "work_id": "377-a6427978cbe8fa7736ac"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e8833268b83e2700d2d8",
+      "candidate_id": "63869b08d771bb769eff",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -270,17 +270,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/PrivateMessaging.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/security/package-info.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/PrivateMessaging.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/security/package-info.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-e8833268b83e2700d2d8"
+      "work_id": "377-63869b08d771bb769eff"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0549ec7f8bee4a473c11",
+      "candidate_id": "ed944391a45eb10cf61c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -288,17 +288,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/RemoveItem.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/tools/EquipmentConstants.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/RemoveItem.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/tools/EquipmentConstants.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-0549ec7f8bee4a473c11"
+      "work_id": "377-ed944391a45eb10cf61c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "68146954e7d5a13ee4c8",
+      "candidate_id": "93c8ec14977774bacd8c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -306,17 +306,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/Report.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/tools/RsaKeyGenerator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/Report.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/tools/RsaKeyGenerator.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-68146954e7d5a13ee4c8"
+      "work_id": "377-93c8ec14977774bacd8c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9da2a4fcacf7f457c7a1",
+      "candidate_id": "e8234e42766dc439930a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -324,17 +324,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/ReportHandler.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/tools/package-info.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/ReportHandler.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/tools/package-info.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-9da2a4fcacf7f457c7a1"
+      "work_id": "377-e8234e42766dc439930a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "de4bab923828a6b69ffa",
+      "candidate_id": "fc36dcd02fe7076c414e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -342,17 +342,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/SilentPacket.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/xml/XmlNode.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/SilentPacket.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/xml/XmlNode.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-de4bab923828a6b69ffa"
+      "work_id": "377-fc36dcd02fe7076c414e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3e6a14ce498b8657d5db",
+      "candidate_id": "83902097719b1c80262e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -360,17 +360,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/Trade.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/xml/XmlParser.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/Trade.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/xml/XmlParser.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-3e6a14ce498b8657d5db"
+      "work_id": "377-83902097719b1c80262e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "396ca946a40f6b36e5d4",
+      "candidate_id": "ad01ee462d4a35ee557f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -378,17 +378,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/Walking.java",
+      "path": "2006Scape Server/src/main/java/org/apollo/util/xml/package-info.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/Walking.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/util/xml/package-info.java",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-396ca946a40f6b36e5d4"
+      "work_id": "377-ad01ee462d4a35ee557f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "58fef9bf183bb5b896be",
+      "candidate_id": "73790a39e8f76913f438",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -396,17 +396,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/net/packets/impl/WearItem.java",
+      "path": "docker-compose.yml",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/net/packets/impl/WearItem.java",
+      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/docker-compose.yml",
       "source": "2006-Scape/2006Scape",
       "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
       "status": "blocked_rights_review",
-      "work_id": "377-58fef9bf183bb5b896be"
+      "work_id": "377-73790a39e8f76913f438"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "767988692e8dca63318e",
+      "candidate_id": "5f1e8de6b583a5d0e217",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -414,17 +414,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/plugin/PluginService.java",
+      "path": "ref/remap.toml",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/plugin/PluginService.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/ref/remap.toml",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-767988692e8dca63318e"
+      "work_id": "377-5f1e8de6b583a5d0e217"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a038cc0763d55b3be647",
+      "candidate_id": "9784c945e7a114e8208f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -432,17 +432,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/ClassUtils.java",
+      "path": "src/main/java/deob/ObfuscatedName.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/ClassUtils.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/deob/ObfuscatedName.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-a038cc0763d55b3be647"
+      "work_id": "377-9784c945e7a114e8208f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c8b9de98d76bd86948a8",
+      "candidate_id": "fb650d5ec9d3a97988d4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -450,17 +450,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/ConstantReplacer.java",
+      "path": "src/main/java/jagex2/client/Client.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/ConstantReplacer.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/client/Client.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-c8b9de98d76bd86948a8"
+      "work_id": "377-fb650d5ec9d3a97988d4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9e8573bd54e144bb82ad",
+      "candidate_id": "d7880b59475e4955bdcc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -468,17 +468,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/CustomPrintStream.java",
+      "path": "src/main/java/jagex2/client/GameShell.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/CustomPrintStream.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/client/GameShell.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-9e8573bd54e144bb82ad"
+      "work_id": "377-d7880b59475e4955bdcc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "30fa5cabd8bbd94238de",
+      "candidate_id": "a15e3ccac92312739b4c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -486,17 +486,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/DoorData.java",
+      "path": "src/main/java/jagex2/client/MouseTracking.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/DoorData.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/client/MouseTracking.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-30fa5cabd8bbd94238de"
+      "work_id": "377-a15e3ccac92312739b4c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d2c0576dafc2a0f2dd23",
+      "candidate_id": "6402c5216b17bef65f84",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -504,17 +504,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/GameLogger.java",
+      "path": "src/main/java/jagex2/client/Stats.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/GameLogger.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/client/Stats.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-d2c0576dafc2a0f2dd23"
+      "work_id": "377-6402c5216b17bef65f84"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ae98a26b1971928b5ce4",
+      "candidate_id": "f3e9ebd107d58682be02",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -522,17 +522,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/GlobalDropData.java",
+      "path": "src/main/java/jagex2/client/ViewBox.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/GlobalDropData.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/client/ViewBox.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-ae98a26b1971928b5ce4"
+      "work_id": "377-f3e9ebd107d58682be02"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f58f3c10b8a436634212",
+      "candidate_id": "2feab762a47290762b57",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -540,17 +540,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/HostBlacklist.java",
+      "path": "src/main/java/jagex2/config/Component.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/HostBlacklist.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/Component.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-f58f3c10b8a436634212"
+      "work_id": "377-2feab762a47290762b57"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "7ece7d53246d79e48477",
+      "candidate_id": "f18a47ec18f73a495a27",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -558,17 +558,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/LoggerUtils.java",
+      "path": "src/main/java/jagex2/config/FloType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/LoggerUtils.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/FloType.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-7ece7d53246d79e48477"
+      "work_id": "377-f18a47ec18f73a495a27"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "284e5147fbf4cc405bb4",
+      "candidate_id": "b5e169ab3ab606af9705",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -576,17 +576,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/Misc.java",
+      "path": "src/main/java/jagex2/config/IdkType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/Misc.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/IdkType.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-284e5147fbf4cc405bb4"
+      "work_id": "377-b5e169ab3ab606af9705"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "856c5fefbdbadbc61500",
+      "candidate_id": "fcf93e0b07f9271a0a0b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -594,17 +594,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/NpcData.java",
+      "path": "src/main/java/jagex2/config/LocType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/NpcData.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/LocType.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-856c5fefbdbadbc61500"
+      "work_id": "377-fcf93e0b07f9271a0a0b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e29dfc780d7335467270",
+      "candidate_id": "362ada6eddc4818fcadc",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -612,17 +612,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/NpcDrop.java",
+      "path": "src/main/java/jagex2/config/NpcType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/NpcDrop.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/NpcType.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-e29dfc780d7335467270"
+      "work_id": "377-362ada6eddc4818fcadc"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f977a0b27a19d17f94c6",
+      "candidate_id": "fa0fa0dad66a58f9f1e8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -630,17 +630,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/NpcSpawn.java",
+      "path": "src/main/java/jagex2/config/ObjType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/NpcSpawn.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/ObjType.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-f977a0b27a19d17f94c6"
+      "work_id": "377-fa0fa0dad66a58f9f1e8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a827d4559918890e6606",
+      "candidate_id": "6af838f7f31be7a86345",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -648,17 +648,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/ShopData.java",
+      "path": "src/main/java/jagex2/config/SeqType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/ShopData.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/SeqType.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-a827d4559918890e6606"
+      "work_id": "377-6af838f7f31be7a86345"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e3c3845b1a9f41037443",
+      "candidate_id": "8f9fdc281f9e2bbab679",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -666,17 +666,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/Stream.java",
+      "path": "src/main/java/jagex2/config/SpotAnimType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/Stream.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/SpotAnimType.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-e3c3845b1a9f41037443"
+      "work_id": "377-8f9fdc281f9e2bbab679"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "095da02e7831614e6c60",
+      "candidate_id": "d915f4c394b304e304e2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -684,17 +684,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/XStreamUtil.java",
+      "path": "src/main/java/jagex2/config/UnkType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/XStreamUtil.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/UnkType.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-095da02e7831614e6c60"
+      "work_id": "377-d915f4c394b304e304e2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c1a486e8049f9b7da95e",
+      "candidate_id": "0b8a3b6e3b085bbc3463",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -702,17 +702,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/util/rsa/RSAKeyGen.java",
+      "path": "src/main/java/jagex2/config/VarbitType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/util/rsa/RSAKeyGen.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/VarbitType.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-c1a486e8049f9b7da95e"
+      "work_id": "377-0b8a3b6e3b085bbc3463"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b13a1ecb29c0d4ff4da6",
+      "candidate_id": "47fe8ce21d51143b761f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -720,17 +720,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/Boundary.java",
+      "path": "src/main/java/jagex2/config/VarpType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/Boundary.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/config/VarpType.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-b13a1ecb29c0d4ff4da6"
+      "work_id": "377-47fe8ce21d51143b761f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d214390aacdc6e7fdb7f",
+      "candidate_id": "17e9187f1156a2cc0552",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -738,17 +738,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/Coordinate.java",
+      "path": "src/main/java/jagex2/dash3d/AnimBase.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/Coordinate.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/AnimBase.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-d214390aacdc6e7fdb7f"
+      "work_id": "377-17e9187f1156a2cc0552"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ea824420fea7733e47a8",
+      "candidate_id": "fe0d0a09a9934057c980",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -756,17 +756,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/GameObject.java",
+      "path": "src/main/java/jagex2/dash3d/AnimFrame.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/GameObject.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/AnimFrame.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-ea824420fea7733e47a8"
+      "work_id": "377-fe0d0a09a9934057c980"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "09568b110dec0894dde8",
+      "candidate_id": "6f421f7e6f032d19d4f0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -774,17 +774,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/GlobalDropsHandler.java",
+      "path": "src/main/java/jagex2/dash3d/ClientEntity.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/GlobalDropsHandler.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/ClientEntity.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-09568b110dec0894dde8"
+      "work_id": "377-6f421f7e6f032d19d4f0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "663f5b3f398a82e93396",
+      "candidate_id": "44167656be498d178bad",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -792,17 +792,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/ItemHandler.java",
+      "path": "src/main/java/jagex2/dash3d/ClientLocAnim.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/ItemHandler.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/ClientLocAnim.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-663f5b3f398a82e93396"
+      "work_id": "377-44167656be498d178bad"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "34d0201ca99396715a30",
+      "candidate_id": "87f3105c0cfaa0dae285",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -810,17 +810,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/ObjectHandler.java",
+      "path": "src/main/java/jagex2/dash3d/ClientNpc.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/ObjectHandler.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/ClientNpc.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-34d0201ca99396715a30"
+      "work_id": "377-87f3105c0cfaa0dae285"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1feec6ae3b94747a8561",
+      "candidate_id": "1d6809956716f589dfa1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -828,17 +828,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/ObjectManager.java",
+      "path": "src/main/java/jagex2/dash3d/ClientObj.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/ObjectManager.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/ClientObj.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-1feec6ae3b94747a8561"
+      "work_id": "377-1d6809956716f589dfa1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "195e89c1e8f5a8b53dd7",
+      "candidate_id": "c01d1c03d76465395408",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -846,17 +846,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/Tile.java",
+      "path": "src/main/java/jagex2/dash3d/ClientPlayer.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/Tile.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/ClientPlayer.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-195e89c1e8f5a8b53dd7"
+      "work_id": "377-c01d1c03d76465395408"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "755fb3332c243ab70d33",
+      "candidate_id": "83792ee2f8b7d312ef9f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -864,17 +864,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/TileControl.java",
+      "path": "src/main/java/jagex2/dash3d/ClientProj.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/TileControl.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/ClientProj.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-755fb3332c243ab70d33"
+      "work_id": "377-83792ee2f8b7d312ef9f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "eaf2f894d309d1a2d911",
+      "candidate_id": "90e7d3667072184528ab",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -882,17 +882,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/clip/ByteStream.java",
+      "path": "src/main/java/jagex2/dash3d/CollisionMap.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/clip/ByteStream.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/CollisionMap.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-eaf2f894d309d1a2d911"
+      "work_id": "377-90e7d3667072184528ab"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "cb052f649cd078750131",
+      "candidate_id": "ab2e1a1aef9fc1dbe607",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -900,17 +900,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/clip/PathFinder.java",
+      "path": "src/main/java/jagex2/dash3d/Decor.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/clip/PathFinder.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/Decor.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-cb052f649cd078750131"
+      "work_id": "377-ab2e1a1aef9fc1dbe607"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ee3c36d7615ebd6002f4",
+      "candidate_id": "51e1431467808b9fc75e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -918,17 +918,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/clip/Region.java",
+      "path": "src/main/java/jagex2/dash3d/Ground.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/clip/Region.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/Ground.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-ee3c36d7615ebd6002f4"
+      "work_id": "377-51e1431467808b9fc75e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9edaf67827e33a6e2447",
+      "candidate_id": "b8cbdf1e6aee0f9629c3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -936,17 +936,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/com/rs2/world/clip/RegionFactory.java",
+      "path": "src/main/java/jagex2/dash3d/GroundDecor.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/com/rs2/world/clip/RegionFactory.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/GroundDecor.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-9edaf67827e33a6e2447"
+      "work_id": "377-b8cbdf1e6aee0f9629c3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6f01c67825f35383f284",
+      "candidate_id": "68431510eee753d4db3f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -954,17 +954,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/game/session/ApolloHandler.java",
+      "path": "src/main/java/jagex2/dash3d/GroundObject.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/game/session/ApolloHandler.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/GroundObject.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-6f01c67825f35383f284"
+      "work_id": "377-68431510eee753d4db3f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4b2db7e27d49e0c4ab84",
+      "candidate_id": "d351d0ec816271672e0c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -972,17 +972,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/game/session/GameSession.java",
+      "path": "src/main/java/jagex2/dash3d/LocChange.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/game/session/GameSession.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/LocChange.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-4b2db7e27d49e0c4ab84"
+      "work_id": "377-d351d0ec816271672e0c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5e8769087d7938f9c943",
+      "candidate_id": "4b6e7305ad61352657e2",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -990,17 +990,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/game/session/LoginSession.java",
+      "path": "src/main/java/jagex2/dash3d/MapSpotAnim.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/game/session/LoginSession.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/MapSpotAnim.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-5e8769087d7938f9c943"
+      "work_id": "377-4b6e7305ad61352657e2"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4eff20722abf35ee3bf1",
+      "candidate_id": "b65defbd515a804d242e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1008,17 +1008,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/game/session/Session.java",
+      "path": "src/main/java/jagex2/dash3d/Metadata.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/game/session/Session.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/Metadata.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-4eff20722abf35ee3bf1"
+      "work_id": "377-b65defbd515a804d242e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b8cca07cf217ab53992c",
+      "candidate_id": "9f2fb5eb953d7c42b5d8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1026,17 +1026,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/game/session/UpdateSession.java",
+      "path": "src/main/java/jagex2/dash3d/Model.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/game/session/UpdateSession.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/Model.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-b8cca07cf217ab53992c"
+      "work_id": "377-9f2fb5eb953d7c42b5d8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c977833de94eaf46e658",
+      "candidate_id": "187b9efff58a9fd6da3b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1044,17 +1044,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/game/session/package-info.java",
+      "path": "src/main/java/jagex2/dash3d/ModelSource.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/game/session/package-info.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/ModelSource.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-c977833de94eaf46e658"
+      "work_id": "377-187b9efff58a9fd6da3b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "028e5ee5ab9d335e10cd",
+      "candidate_id": "8546b262f37a00ea1a14",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1062,17 +1062,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/jagcached/FileServer.java",
+      "path": "src/main/java/jagex2/dash3d/Occlude.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/jagcached/FileServer.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/Occlude.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-028e5ee5ab9d335e10cd"
+      "work_id": "377-8546b262f37a00ea1a14"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "178514e473ce10ebcf74",
+      "candidate_id": "d393b61b4ae96c385dd1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1080,17 +1080,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/jagcached/RequestWorkerPool.java",
+      "path": "src/main/java/jagex2/dash3d/QuickGround.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/jagcached/RequestWorkerPool.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/QuickGround.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-178514e473ce10ebcf74"
+      "work_id": "377-d393b61b4ae96c385dd1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "344ea3de73779d8e1541",
+      "candidate_id": "b2f7aeda7447eb2450e6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1098,17 +1098,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/HttpChannelInitializer.java",
+      "path": "src/main/java/jagex2/dash3d/Sprite.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/HttpChannelInitializer.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/Sprite.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-344ea3de73779d8e1541"
+      "work_id": "377-b2f7aeda7447eb2450e6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c71bbfe9bb7ab44a848b",
+      "candidate_id": "58d21099de9194228f23",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1116,17 +1116,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/JagGrabChannelInitializer.java",
+      "path": "src/main/java/jagex2/dash3d/Square.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/JagGrabChannelInitializer.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/Square.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-c71bbfe9bb7ab44a848b"
+      "work_id": "377-58d21099de9194228f23"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0be3dc0ce44b9cf475db",
+      "candidate_id": "85ff885c6283c6a8c943",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1134,17 +1134,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/NetworkConstants.java",
+      "path": "src/main/java/jagex2/dash3d/VertexNormal.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/NetworkConstants.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/VertexNormal.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-0be3dc0ce44b9cf475db"
+      "work_id": "377-85ff885c6283c6a8c943"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "175256746f62f8b6db4b",
+      "candidate_id": "8b1e6f7e798021ba56a9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1152,17 +1152,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/ServiceChannelInitializer.java",
+      "path": "src/main/java/jagex2/dash3d/Wall.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/ServiceChannelInitializer.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/Wall.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-175256746f62f8b6db4b"
+      "work_id": "377-8b1e6f7e798021ba56a9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3436b9ffd79ceecc6ea6",
+      "candidate_id": "7f75074a4566da9e35ad",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1170,17 +1170,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/handshake/HandshakeConstants.java",
+      "path": "src/main/java/jagex2/dash3d/World.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/handshake/HandshakeConstants.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/World.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-3436b9ffd79ceecc6ea6"
+      "work_id": "377-7f75074a4566da9e35ad"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "16877551502d6fe08219",
+      "candidate_id": "c3b65520f5a2abe6dc9c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1188,17 +1188,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/handshake/HandshakeDecoder.java",
+      "path": "src/main/java/jagex2/dash3d/World3D.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/handshake/HandshakeDecoder.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/World3D.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-16877551502d6fe08219"
+      "work_id": "377-c3b65520f5a2abe6dc9c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "58b84d6bd14f24b456bf",
+      "candidate_id": "4ce4daba8f67aec78860",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1206,17 +1206,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/handshake/HandshakeMessage.java",
+      "path": "src/main/java/jagex2/dash3d/WorldRegion.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/handshake/HandshakeMessage.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/dash3d/WorldRegion.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-58b84d6bd14f24b456bf"
+      "work_id": "377-4ce4daba8f67aec78860"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "22879dd374c7d2d66711",
+      "candidate_id": "475a774b83c8db5b463a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1224,17 +1224,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/handshake/package-info.java",
+      "path": "src/main/java/jagex2/datastruct/DoublyLinkList.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/handshake/package-info.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/datastruct/DoublyLinkList.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-22879dd374c7d2d66711"
+      "work_id": "377-475a774b83c8db5b463a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b4282bd559d590ec3755",
+      "candidate_id": "76776d5c67ad2ad6ee4e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1242,17 +1242,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/jaggrab/JagGrabRequest.java",
+      "path": "src/main/java/jagex2/datastruct/DoublyLinkable.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/jaggrab/JagGrabRequest.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/datastruct/DoublyLinkable.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-b4282bd559d590ec3755"
+      "work_id": "377-76776d5c67ad2ad6ee4e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "eb711cf32427b0f618f4",
+      "candidate_id": "b4f6fd893d1e3255e6b9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1260,17 +1260,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/jaggrab/JagGrabRequestDecoder.java",
+      "path": "src/main/java/jagex2/datastruct/HashTable.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/jaggrab/JagGrabRequestDecoder.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/datastruct/HashTable.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-eb711cf32427b0f618f4"
+      "work_id": "377-b4f6fd893d1e3255e6b9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "869cdb031c01c53c033a",
+      "candidate_id": "18d67479c3c6d731a2cf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1278,17 +1278,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/jaggrab/JagGrabResponse.java",
+      "path": "src/main/java/jagex2/datastruct/LinkList.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/jaggrab/JagGrabResponse.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/datastruct/LinkList.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-869cdb031c01c53c033a"
+      "work_id": "377-18d67479c3c6d731a2cf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "021f9a0b8b6ee93a05e2",
+      "candidate_id": "9178448861207e87326a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1296,17 +1296,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/jaggrab/JagGrabResponseEncoder.java",
+      "path": "src/main/java/jagex2/datastruct/Linkable.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/jaggrab/JagGrabResponseEncoder.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/datastruct/Linkable.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-021f9a0b8b6ee93a05e2"
+      "work_id": "377-9178448861207e87326a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "50f14bdeff3a378179c7",
+      "candidate_id": "209ae4100038190d72d0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1314,17 +1314,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/jaggrab/package-info.java",
+      "path": "src/main/java/jagex2/datastruct/LruCache.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/jaggrab/package-info.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/datastruct/LruCache.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-50f14bdeff3a378179c7"
+      "work_id": "377-209ae4100038190d72d0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dcc36b083f1187af49f3",
+      "candidate_id": "de2697f9af8cf5221fba",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1332,17 +1332,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/login/LoginConstants.java",
+      "path": "src/main/java/jagex2/graphics/Pix2D.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/login/LoginConstants.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/graphics/Pix2D.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-dcc36b083f1187af49f3"
+      "work_id": "377-de2697f9af8cf5221fba"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5d3538efd9bd5919ca5e",
+      "candidate_id": "32feaf9cac6bf9588bff",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1350,17 +1350,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/login/LoginDecoder.java",
+      "path": "src/main/java/jagex2/graphics/Pix32.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/login/LoginDecoder.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/graphics/Pix32.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-5d3538efd9bd5919ca5e"
+      "work_id": "377-32feaf9cac6bf9588bff"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "07f594efbe840e975bba",
+      "candidate_id": "2aa2e6ddbbb81b814493",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1368,17 +1368,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/login/LoginDecoderState.java",
+      "path": "src/main/java/jagex2/graphics/Pix3D.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/login/LoginDecoderState.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/graphics/Pix3D.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-07f594efbe840e975bba"
+      "work_id": "377-2aa2e6ddbbb81b814493"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "812e1048b0b9d00d125a",
+      "candidate_id": "2242c58e72126fb4025a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1386,17 +1386,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/login/LoginEncoder.java",
+      "path": "src/main/java/jagex2/graphics/Pix8.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/login/LoginEncoder.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/graphics/Pix8.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-812e1048b0b9d00d125a"
+      "work_id": "377-2242c58e72126fb4025a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "66918b927e705c01178b",
+      "candidate_id": "885b1e18a2b3b00f0b86",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1404,17 +1404,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/login/LoginRequest.java",
+      "path": "src/main/java/jagex2/graphics/PixFont.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/login/LoginRequest.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/graphics/PixFont.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-66918b927e705c01178b"
+      "work_id": "377-885b1e18a2b3b00f0b86"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b89b5f20ecc1f4208a72",
+      "candidate_id": "04d1640563aab55fb007",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1422,17 +1422,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/login/LoginResponse.java",
+      "path": "src/main/java/jagex2/graphics/PixMap.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/login/LoginResponse.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/graphics/PixMap.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-b89b5f20ecc1f4208a72"
+      "work_id": "377-04d1640563aab55fb007"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "aeefaa3eb24eaeacb84a",
+      "candidate_id": "61d0642c093d22e4537e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1440,17 +1440,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/login/package-info.java",
+      "path": "src/main/java/jagex2/io/BZip2.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/login/package-info.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/BZip2.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-aeefaa3eb24eaeacb84a"
+      "work_id": "377-61d0642c093d22e4537e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bc4df9c460e0cb38992d",
+      "candidate_id": "bb0f08ca027691f31822",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1458,17 +1458,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/update/OnDemandRequest.java",
+      "path": "src/main/java/jagex2/io/BZip2State.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/update/OnDemandRequest.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/BZip2State.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-bc4df9c460e0cb38992d"
+      "work_id": "377-bb0f08ca027691f31822"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a6de21f78f6aa2d26a19",
+      "candidate_id": "f044e13e99f743445cc9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1476,17 +1476,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/update/OnDemandResponse.java",
+      "path": "src/main/java/jagex2/io/ClientStream.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/update/OnDemandResponse.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/ClientStream.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-a6de21f78f6aa2d26a19"
+      "work_id": "377-f044e13e99f743445cc9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d356032a7d3b2bb6872c",
+      "candidate_id": "75172564620799e0d953",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1494,17 +1494,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/update/UpdateDecoder.java",
+      "path": "src/main/java/jagex2/io/FileStream.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/update/UpdateDecoder.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/FileStream.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-d356032a7d3b2bb6872c"
+      "work_id": "377-75172564620799e0d953"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "34b726f0b95deda08261",
+      "candidate_id": "b5642918e7e3ca968014",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1512,17 +1512,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/update/UpdateEncoder.java",
+      "path": "src/main/java/jagex2/io/Isaac.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/update/UpdateEncoder.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/Isaac.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-34b726f0b95deda08261"
+      "work_id": "377-b5642918e7e3ca968014"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a0e3646d67554d01065e",
+      "candidate_id": "168bcd28cc63bee0fb94",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1530,17 +1530,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/codec/update/package-info.java",
+      "path": "src/main/java/jagex2/io/Jagfile.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/codec/update/package-info.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/Jagfile.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-a0e3646d67554d01065e"
+      "work_id": "377-168bcd28cc63bee0fb94"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a7ad53f7efff14b64b4b",
+      "candidate_id": "d742510ef3d513347cb3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1548,17 +1548,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/package-info.java",
+      "path": "src/main/java/jagex2/io/OnDemand.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/package-info.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/OnDemand.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-a7ad53f7efff14b64b4b"
+      "work_id": "377-d742510ef3d513347cb3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0dd7c19d758586c3de74",
+      "candidate_id": "763a22d942abd267a745",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1566,17 +1566,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/ChannelRequest.java",
+      "path": "src/main/java/jagex2/io/OnDemandProvider.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/ChannelRequest.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/OnDemandProvider.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-0dd7c19d758586c3de74"
+      "work_id": "377-763a22d942abd267a745"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "16611439fd74391e826f",
+      "candidate_id": "158967131b29c32776a5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1584,17 +1584,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/ComparableChannelRequest.java",
+      "path": "src/main/java/jagex2/io/OnDemandRequest.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/ComparableChannelRequest.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/OnDemandRequest.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-16611439fd74391e826f"
+      "work_id": "377-158967131b29c32776a5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "9754abc1ea793af06392",
+      "candidate_id": "0447bef4ae8e3b25d69b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1602,17 +1602,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/HttpRequestWorker.java",
+      "path": "src/main/java/jagex2/io/Packet.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/HttpRequestWorker.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/Packet.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-9754abc1ea793af06392"
+      "work_id": "377-0447bef4ae8e3b25d69b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f04c02de2622e0978676",
+      "candidate_id": "81427b191a6ce3695e0a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1620,17 +1620,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/JagGrabRequestWorker.java",
+      "path": "src/main/java/jagex2/io/Protocol.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/JagGrabRequestWorker.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/io/Protocol.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-f04c02de2622e0978676"
+      "work_id": "377-81427b191a6ce3695e0a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f38d9ed4352d8ee66cb3",
+      "candidate_id": "df82622938c576b6f0ae",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1638,17 +1638,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/OnDemandRequestWorker.java",
+      "path": "src/main/java/jagex2/jstring/JString.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/OnDemandRequestWorker.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/jstring/JString.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-f38d9ed4352d8ee66cb3"
+      "work_id": "377-df82622938c576b6f0ae"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "707f211ca26e38f3845c",
+      "candidate_id": "a76d44a697e59a0ef7ea",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1656,17 +1656,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/RequestWorker.java",
+      "path": "src/main/java/jagex2/wordenc/WordFilter.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/RequestWorker.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/wordenc/WordFilter.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-707f211ca26e38f3845c"
+      "work_id": "377-a76d44a697e59a0ef7ea"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "63943895e0f270e30a1b",
+      "candidate_id": "ab80a8532a555eed6d53",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1674,17 +1674,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/UpdateConstants.java",
+      "path": "src/main/java/jagex2/wordenc/WordPack.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/UpdateConstants.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/jagex2/wordenc/WordPack.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-63943895e0f270e30a1b"
+      "work_id": "377-ab80a8532a555eed6d53"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3c121e91c0f3e8481e0a",
+      "candidate_id": "cbedb4ed9980483c47da",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1692,17 +1692,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/UpdateDispatcher.java",
+      "path": "src/main/java/sign/MidiPlayer.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/UpdateDispatcher.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/sign/MidiPlayer.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-3c121e91c0f3e8481e0a"
+      "work_id": "377-cbedb4ed9980483c47da"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c25b993c8d67d1023946",
+      "candidate_id": "8135f4789ab1bd84ccfe",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1710,17 +1710,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/package-info.java",
+      "path": "src/main/java/sign/signlink.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/package-info.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/LostCityRS/Client-Java/blob/327880f6de74b40c420705bc42e4b34284885087/src/main/java/sign/signlink.java",
+      "source": "LostCityRS/Client-Java",
+      "source_commit_sha": "327880f6de74b40c420705bc42e4b34284885087",
       "status": "blocked_rights_review",
-      "work_id": "377-c25b993c8d67d1023946"
+      "work_id": "377-8135f4789ab1bd84ccfe"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "38e72c2f3dfad41d5c4c",
+      "candidate_id": "4e5bbaaeabe32f1b878f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1728,17 +1728,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/resource/CombinedResourceProvider.java",
+      "path": "Android_Client/Open RSC Android Client/src/main/java/com/openrsc/android/render/InputImpl.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/resource/CombinedResourceProvider.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/Android_Client/Open%20RSC%20Android%20Client/src/main/java/com/openrsc/android/render/InputImpl.java",
+      "source": "Open-RSC/Core-Framework",
+      "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-38e72c2f3dfad41d5c4c"
+      "work_id": "377-4e5bbaaeabe32f1b878f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "caae3affe5380a790211",
+      "candidate_id": "e72cd1fcdd30a7f87b2d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1746,17 +1746,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/resource/HypertextResourceProvider.java",
+      "path": "Android_Client/Open RSC Android Client/src/main/java/com/openrsc/android/render/RSCBitmapSurfaceView.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/resource/HypertextResourceProvider.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/Android_Client/Open%20RSC%20Android%20Client/src/main/java/com/openrsc/android/render/RSCBitmapSurfaceView.java",
+      "source": "Open-RSC/Core-Framework",
+      "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-caae3affe5380a790211"
+      "work_id": "377-e72cd1fcdd30a7f87b2d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d52bf5da63678a4e6ec4",
+      "candidate_id": "36c4d951f24b209e007c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1764,17 +1764,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/resource/ResourceProvider.java",
+      "path": "Android_Client/Open RSC Android Client/src/main/java/com/openrsc/android/updater/ApplicationUpdater.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/resource/ResourceProvider.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/Android_Client/Open%20RSC%20Android%20Client/src/main/java/com/openrsc/android/updater/ApplicationUpdater.java",
+      "source": "Open-RSC/Core-Framework",
+      "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-d52bf5da63678a4e6ec4"
+      "work_id": "377-36c4d951f24b209e007c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "978549e5c21862b44d42",
+      "candidate_id": "225e5724c3a2314be96f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1782,17 +1782,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/resource/VirtualResourceProvider.java",
+      "path": "Android_Client/Open RSC Android Client/src/main/java/com/openrsc/android/updater/CacheUpdater.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/resource/VirtualResourceProvider.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/Android_Client/Open%20RSC%20Android%20Client/src/main/java/com/openrsc/android/updater/CacheUpdater.java",
+      "source": "Open-RSC/Core-Framework",
+      "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-978549e5c21862b44d42"
+      "work_id": "377-225e5724c3a2314be96f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "39343926ceaab93d2ba5",
+      "candidate_id": "d95f6963d04c5f804f56",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1800,13 +1800,13 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "2006Scape Server/src/main/java/org/apollo/net/update/resource/package-info.java",
+      "path": "Android_Client/Open RSC Android Client/src/main/java/com/openrsc/android/updater/TextProgressBar.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/2006-Scape/2006Scape/blob/ef9f8132e70b14952d6817bd26e819d50eb0a132/2006Scape%20Server/src/main/java/org/apollo/net/update/resource/package-info.java",
-      "source": "2006-Scape/2006Scape",
-      "source_commit_sha": "ef9f8132e70b14952d6817bd26e819d50eb0a132",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/Android_Client/Open%20RSC%20Android%20Client/src/main/java/com/openrsc/android/updater/TextProgressBar.java",
+      "source": "Open-RSC/Core-Framework",
+      "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-39343926ceaab93d2ba5"
+      "work_id": "377-d95f6963d04c5f804f56"
     }
   ]
 }
