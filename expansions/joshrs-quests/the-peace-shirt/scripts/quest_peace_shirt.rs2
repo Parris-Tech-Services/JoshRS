@@ -1,0 +1,142 @@
+// JoshRS original quest: THE PEACE SHIRT (Burgh de Rott)
+// Radu's goat Margareta ate Florin's best shirt, ending eleven years of evening chess.
+// Help Radu make amends: wool to Ileana, a row knitted by Radu himself, the shirt to Florin,
+// and the two old friends back at the board.
+//
+// %varp_724 stages:
+//   0 not started
+//   1 Radu wants to make a shirt; bring Ileana 3 balls of wool
+//   2 Ileana has the wool; Radu must knit a row himself
+//   3 Radu has knitted his (terrible) row; back to Ileana
+//   4 the shirt is finished; persuade Florin
+//   5 Florin has agreed to chess on Friday; tell Radu
+//   6 complete
+
+// ---------- Radu (burgh_vilager_3) ----------
+[label,joshrs_peace_shirt_radu]
+if (%varp_724 = 0) {
+    ~chatnpc("<p,sad>The truth is, I'd do anything to make it up to him.|Eleven years of chess, and now he won't even look at me.");
+    ~chatnpc("<p,neutral>I had an idea. A new shirt. Knitted by me.|Proper apology. But I can't knit,|and I haven't got any wool. Or talent.");
+    def_int $yes = ~p_choice2("I'll help you make the shirt.", 1, "Good luck with that.", 2);
+    if ($yes = 1) {
+        ~chatplayer("<p,happy>I'll help you make the shirt.");
+        ~chatnpc("<p,shock>You will? Oh, bless you!");
+        ~chatnpc("<p,happy>Ileana's the one who can teach me.|She'll need wool. Three balls of it, I'd guess.|Florin's a big lad. Well. A tall lad.");
+        ~chatnpc("<p,neutral>You can spin wool from a sheep's fleece on a spinning wheel,|or buy it from a shop. Take it to Ileana for me?");
+        %varp_724 = 1;
+        mes("Quest started: The Peace Shirt.");
+    } else {
+        ~chatplayer("<p,neutral>Good luck with that.");
+        ~chatnpc("<p,sad>Thanks. I'll need it.");
+    }
+    return;
+}
+if (%varp_724 = 1) {
+    ~chatnpc("<p,neutral>Got the wool for Ileana yet?|Three balls. Keep it away from Margareta.|She'll think it's a snack. Everything is a snack.");
+    return;
+}
+if (%varp_724 = 2) {
+    ~chatplayer("<p,happy>Ileana says you have to knit at least one row yourself,|or it isn't really your apology.");
+    ~chatnpc("<p,shock>Me? Knit? With my own hands?");
+    ~chatnpc("<p,neutral>...She's right. Of course she's right. Pass me the needles.");
+    mes("Radu takes the needles, sticks out his tongue in concentration, and begins.");
+    ~chatnpc("<p,neutral>In, around, through, off. In, around... no... through...|Why is it going diagonal? Wool doesn't go diagonal!");
+    mes("After a long time, Radu holds up one lumpy, crooked row of knitting.");
+    ~chatnpc("<p,happy>There! It's terrible! It's MY terrible!|Take it back to Ileana before I lose my nerve.");
+    %varp_724 = 3;
+    return;
+}
+if (%varp_724 = 3 | %varp_724 = 4) {
+    ~chatnpc("<p,neutral>Is it done? Has he seen it? Did he laugh?|...Don't tell me if he laughed.");
+    return;
+}
+if (%varp_724 = 5) {
+    ~chatplayer("<p,happy>Florin loves the shirt. He says to bring the chessboard on Friday.");
+    ~chatnpc("<p,shock>...He said that? Friday?");
+    ~chatnpc("<p,happy>FRIDAY! Margareta! Did you hear? We're playing chess on Friday!");
+    mes("Somewhere nearby, a goat bleats, possibly in triumph.");
+    ~chatnpc("<p,happy>I'll let him win. No. I'll cheat. He'll let me.|That's how it's always been. That's how it should be.");
+    ~chatnpc("<p,happy>Thank you, friend. Truly. Take this.|It's not much, but it's all honest.|Well. Mostly honest. Margareta found some of it.");
+    @joshrs_peace_shirt_complete;
+}
+~chatnpc("<p,happy>Chess on Friday, every Friday!|Florin wears that lumpy shirt to every game. I've never been so proud.");
+
+[label,joshrs_peace_shirt_complete]
+%varp_724 = 6;
+~update_questpoints;
+midi_jingle("quest complete 1");
+stat_advance(crafting, 4500);
+inv_add(inv, coins, 300);
+mes("Quest complete: The Peace Shirt!");
+mes("Reward: 1 Quest Point, 450 Crafting experience and 300 coins.");
+
+// ---------- Ileana (burgh_vilager_5) ----------
+[label,joshrs_peace_shirt_ileana]
+if (%varp_724 = 1) {
+    ~chatplayer("<p,happy>Radu wants to knit Florin a new shirt, to say sorry.|Can you help him?");
+    ~chatnpc("<p,shock>Radu? Knit? Oh, this is wonderful!|What colour? Blue, of course. Florin's eyes go soft at blue.");
+    if (inv_total(inv, ball_of_wool) < 3) {
+        ~chatnpc("<p,neutral>I'll need three balls of wool, though.|I've used every scrap I own on scarves.|Spin some on a wheel, or a shop might sell some.");
+        return;
+    }
+    inv_del(inv, ball_of_wool, 3);
+    mes("You give Ileana three balls of wool.");
+    ~chatnpc("<p,happy>Perfect! I'll cast it on and do most of it.|But Radu has to knit at least one row himself.|Otherwise it's my apology, not his.");
+    ~chatnpc("<p,neutral>Go and tell him. Don't let him wriggle out of it.");
+    %varp_724 = 2;
+    return;
+}
+if (%varp_724 = 2) {
+    ~chatnpc("<p,neutral>Has Radu knitted his row yet?|One row! He can't hide from one row forever.");
+    return;
+}
+if (%varp_724 = 3) {
+    ~chatplayer("<p,happy>Radu knitted his row. It's... very him.");
+    mes("You show Ileana the lumpy, diagonal row.");
+    ~chatnpc("<p,laugh>Oh my goodness. It goes uphill!|It's perfect. It's absolutely perfect.");
+    mes("Ileana's needles fly. In what seems no time at all, a blue shirt takes shape.");
+    ~chatnpc("<p,happy>Done! One arm's a little longer than the other,|because Radu's row is in the left sleeve.|Florin will know exactly who made it.");
+    ~chatnpc("<p,neutral>I'll hang it by my door. Go and fetch Florin.|And be gentle. He's a proud man in a very neat coat.");
+    %varp_724 = 4;
+    return;
+}
+if (%varp_724 >= 4 & %varp_724 < 6) {
+    ~chatnpc("<p,happy>The shirt's hanging by my door, ready for Florin.|Has he come round yet?");
+    return;
+}
+~chatnpc("<p,happy>Florin wears the blue shirt every Friday!|He pretends it's because it's warm. It IS warm. But that's not why.");
+
+// ---------- Florin (burgh_vilager_8) ----------
+[label,joshrs_peace_shirt_florin]
+if (%varp_724 < 4) {
+    ~chatnpc("<p,shock>Radu? Knit? Radu can't even tie his own boots.|He uses a knot he calls 'the hopeful'.");
+    return;
+}
+if (%varp_724 = 4) {
+    ~chatplayer("<p,happy>Radu made you a shirt. A real one. Ileana helped,|but he knitted part of it himself. It's waiting at her house.");
+    ~chatnpc("<p,neutral>...Hmph. And I suppose it's lumpy.");
+    @joshrs_peace_shirt_florin_persuade;
+}
+if (%varp_724 = 5) {
+    ~chatnpc("<p,neutral>Have you told Radu? Friday. Chessboard. Not a minute late.");
+    return;
+}
+~chatnpc("<p,happy>Friday chess, every Friday. And this shirt?|Lumpiest shirt in the marsh. Best one I own.");
+
+[label,joshrs_peace_shirt_florin_persuade]
+def_int $reply = ~p_choice3("It is lumpy. That's how you know he made it.", 1, "It's the finest shirt in the land!", 2, "You should forgive him because I said so.", 3);
+if ($reply = 1) {
+    ~chatplayer("<p,happy>It is lumpy. That's how you know he made it himself.");
+    ~chatnpc("<p,sad>...");
+    ~chatnpc("<p,neutral>He sat there with needles. Radu. For me.|He hates sitting still. He cheats at chess|because he can't wait for his turn.");
+    ~chatnpc("<p,happy>Fine. FINE. I'll wear the ridiculous shirt.|Tell him to bring the board on Friday. And the good tea.");
+    %varp_724 = 5;
+} else if ($reply = 2) {
+    ~chatplayer("<p,happy>It's the finest shirt in the whole land!");
+    ~chatnpc("<p,angry>Don't flatter me. I know Radu.|It'll have three sleeves and smell of goat.|Try again. Tell me something true.");
+    @joshrs_peace_shirt_florin_persuade;
+} else {
+    ~chatplayer("<p,neutral>You should forgive him because I said so.");
+    ~chatnpc("<p,angry>I've known you five minutes. I've known Radu thirty years.|That's not how forgiveness works, young one.|...But go on. Say something better.");
+    @joshrs_peace_shirt_florin_persuade;
+}

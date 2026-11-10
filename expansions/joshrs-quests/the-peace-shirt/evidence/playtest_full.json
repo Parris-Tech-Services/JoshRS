@@ -1,0 +1,291 @@
+{
+  "user": "pshirtsix",
+  "steps": [
+    {
+      "tele": [
+        0,
+        3484,
+        3242
+      ]
+    },
+    {
+      "wait": 4000
+    },
+    {
+      "talk": "burgh_vilager_8",
+      "choices": [
+        5
+      ]
+    },
+    {
+      "tele": [
+        0,
+        3512,
+        3224
+      ]
+    },
+    {
+      "expectVarpSent": {
+        "varp": 101,
+        "value": 0
+      }
+    },
+    {
+      "talk": "burgh_vilager_3",
+      "choices": [
+        3,
+        2
+      ]
+    },
+    {
+      "expectNoText": "Quest started"
+    },
+    {
+      "expectSaved": {
+        "varp": 724,
+        "value": 0
+      }
+    },
+    {
+      "tele": [
+        0,
+        3512,
+        3224
+      ]
+    },
+    {
+      "talk": "burgh_vilager_3",
+      "choices": [
+        3,
+        1
+      ]
+    },
+    {
+      "expectText": "Quest started: The Peace Shirt."
+    },
+    {
+      "expectSaved": {
+        "varp": 724,
+        "value": 1
+      }
+    },
+    {
+      "tele": [
+        0,
+        3515,
+        3228
+      ]
+    },
+    {
+      "talk": "burgh_vilager_5"
+    },
+    {
+      "expectText": "I'll need three balls of wool"
+    },
+    {
+      "cheat": "give ball_of_wool 2"
+    },
+    {
+      "talk": "burgh_vilager_5"
+    },
+    {
+      "expectSaved": {
+        "varp": 724,
+        "value": 1
+      }
+    },
+    {
+      "expectSavedItem": {
+        "obj": 1759,
+        "count": 2
+      }
+    },
+    {
+      "cheat": "give ball_of_wool 1"
+    },
+    {
+      "tele": [
+        0,
+        3515,
+        3228
+      ]
+    },
+    {
+      "talk": "burgh_vilager_5"
+    },
+    {
+      "expectText": "You give Ileana three balls of wool."
+    },
+    {
+      "expectSaved": {
+        "varp": 724,
+        "value": 2
+      }
+    },
+    {
+      "expectSavedItem": {
+        "obj": 1759,
+        "count": 0
+      }
+    },
+    {
+      "tele": [
+        0,
+        3484,
+        3242
+      ]
+    },
+    {
+      "talk": "burgh_vilager_8",
+      "choices": [
+        5
+      ]
+    },
+    {
+      "expectSaved": {
+        "varp": 724,
+        "value": 2
+      }
+    },
+    {
+      "tele": [
+        0,
+        3512,
+        3224
+      ]
+    },
+    {
+      "talk": "burgh_vilager_3"
+    },
+    {
+      "expectText": "Radu takes the needles"
+    },
+    {
+      "expectSaved": {
+        "varp": 724,
+        "value": 3
+      }
+    },
+    {
+      "tele": [
+        0,
+        3515,
+        3228
+      ]
+    },
+    {
+      "talk": "burgh_vilager_5"
+    },
+    {
+      "expectText": "a blue shirt takes shape"
+    },
+    {
+      "expectSaved": {
+        "varp": 724,
+        "value": 4
+      }
+    },
+    {
+      "tele": [
+        0,
+        3484,
+        3242
+      ]
+    },
+    {
+      "talk": "burgh_vilager_8",
+      "choices": [
+        2,
+        3,
+        1
+      ]
+    },
+    {
+      "expectText": "Tell me something true."
+    },
+    {
+      "expectText": "Say something better."
+    },
+    {
+      "expectText": "Tell him to bring the board on Friday."
+    },
+    {
+      "expectSaved": {
+        "varp": 724,
+        "value": 5
+      }
+    },
+    {
+      "tele": [
+        0,
+        3512,
+        3224
+      ]
+    },
+    {
+      "talk": "burgh_vilager_3"
+    },
+    {
+      "expectText": "Quest complete: The Peace Shirt!"
+    },
+    {
+      "expectVarpSent": {
+        "varp": 101,
+        "value": 1
+      }
+    },
+    {
+      "expectSaved": {
+        "varp": 724,
+        "value": 6
+      }
+    },
+    {
+      "expectSavedItem": {
+        "obj": 995,
+        "count": 300
+      }
+    },
+    {
+      "tele": [
+        0,
+        3512,
+        3224
+      ]
+    },
+    {
+      "talk": "burgh_vilager_3",
+      "choices": [
+        3,
+        5
+      ]
+    },
+    {
+      "expectText": "We play every Friday."
+    },
+    {
+      "expectSavedItem": {
+        "obj": 995,
+        "count": 300
+      }
+    },
+    {
+      "expectSaved": {
+        "varp": 724,
+        "value": 6
+      }
+    },
+    {
+      "relog": true
+    },
+    {
+      "expectVarpSent": {
+        "varp": 101,
+        "value": 1
+      }
+    },
+    {
+      "expectText": "Reward: 1 Quest Point"
+    }
+  ]
+}

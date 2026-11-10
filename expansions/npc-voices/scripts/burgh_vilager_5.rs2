@@ -2,6 +2,9 @@
 // Voice: bubbly, endlessly optimistic, hopelessly behind schedule; knows everyone's favourite colour.
 
 [opnpc1,burgh_vilager_5]
+if (%varp_724 >= 1 & %varp_724 <= 5) {
+    @joshrs_peace_shirt_ileana;
+}
 switch_int(random(3)) {
     case 0 : ~chatnpc("<p,happy>Oh! Hello! Don't mind the wool,|it gets everywhere. I found some in my soup|this morning. Very warm soup.");
     case 1 : ~chatnpc("<p,happy>Ileana! Knitter, scarf-maker,|and slowest needles in the marsh.|Knit one, purl one, chat to visitors!");

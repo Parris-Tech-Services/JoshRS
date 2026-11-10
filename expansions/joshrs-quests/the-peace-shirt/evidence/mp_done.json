@@ -1,0 +1,37 @@
+{
+  "steps": [
+    {
+      "tele": [
+        0,
+        3500,
+        3235
+      ]
+    },
+    {
+      "wait": 3000
+    },
+    {
+      "talk": "burgh_vilager_3",
+      "choices": [
+        3,
+        5
+      ]
+    },
+    {
+      "expectText": "We play every Friday."
+    },
+    {
+      "expectSaved": {
+        "value": 6,
+        "varp": 724
+      }
+    },
+    {
+      "expectVarpSent": {
+        "value": 1,
+        "varp": 101
+      }
+    }
+  ],
+  "user": "pshirtsix"
+}

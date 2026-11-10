@@ -2,6 +2,9 @@
 // Voice: fussy, dignified, keeping a grudge with great ceremony; secretly misses his friend Radu.
 
 [opnpc1,burgh_vilager_8]
+if (%varp_724 = 4 | %varp_724 = 5) {
+    @joshrs_peace_shirt_florin;
+}
 switch_int(random(3)) {
     case 0 : ~chatnpc("<p,angry>Have you seen a goat? White coat, one brown ear,|expression of total innocence? It's a lie.|That expression is a lie.");
     case 1 : ~chatnpc("<p,neutral>Florin. Please wipe your boots before you|stand near me. I've only got one good shirt left.|I used to have two.");
@@ -32,11 +35,15 @@ if ($option = 1) {
     @joshrs_florin_menu;
 } else if ($option = 4) {
     ~chatplayer("<p,happy>Radu said he might knit you a new shirt, to make up for it.");
+    if (%varp_724 = 6) {
+        ~chatnpc("<p,happy>He did! I'm wearing it. Lumpiest shirt in the marsh.|Best one I own. Don't tell him I said so.");
+        @joshrs_florin_menu;
+    }
+    if (%varp_724 >= 4) {
+        @joshrs_peace_shirt_florin;
+    }
     ~chatnpc("<p,shock>Radu? Knit? Radu can't even tie his own boots.|He uses a knot he calls 'the hopeful'.");
-    ~chatnpc("<p,neutral>...He really said that?");
-    ~chatplayer("<p,happy>He did. Ileana's going to teach him.");
-    ~chatnpc("<p,happy>Hmph. Well. It'll be a terrible shirt.|Lumpy. Probably one arm longer than the other.");
-    ~chatnpc("<p,happy>...I'll wear it to chess, then.|Tell him to bring the board on Friday.");
+    ~chatnpc("<p,neutral>...Well. If he ever actually managed it,|I suppose I'd have to wear it. Out of politeness.");
     @joshrs_florin_menu;
 } else {
     ~chatplayer("<p,happy>Good luck with the goat. Goodbye!");

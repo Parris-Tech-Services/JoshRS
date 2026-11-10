@@ -4,7 +4,8 @@ Original, handcrafted conversations for NPCs in the revision-377 world that had 
 
 - Every character is written individually: their own voice, a topic menu, and a goodbye. There are no shared line pools.
 - The writing is original. It does not reproduce RuneScape's dialogue or quest stories.
-- Dialogue only: no items, quest starts or variable changes, so it cannot interfere with quests, minigames or saves.
+- Dialogue only: no items, quest starts or variable changes, so it cannot interfere with quests, minigames or saves. **Exception:** Radu, Ileana and Florin (`burgh_vilager_3/5/8`) also host the original quest [The Peace Shirt](../joshrs-quests/the-peace-shirt/README.md), and must be installed together with it.
+- Verified in conversation: `tools/rs377-quest-playtest/burgh_voices_smoke.json` talks to all 25 Burgh de Rott characters and works through every menu topic.
 - One file per NPC in `scripts/`, named after the NPC's config id.
 - NPCs whose names tie them to quests are intentionally left alone.
 

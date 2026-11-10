@@ -1,0 +1,46 @@
+{
+  "steps": [
+    {
+      "tele": [
+        0,
+        3500,
+        3235
+      ]
+    },
+    {
+      "wait": 3000
+    },
+    {
+      "talk": "burgh_vilager_8",
+      "choices": [
+        5
+      ]
+    },
+    {
+      "talk": "burgh_vilager_3",
+      "choices": [
+        3,
+        1
+      ]
+    },
+    {
+      "expectText": "Quest started: The Peace Shirt."
+    },
+    {
+      "expectNoText": "We play every Friday."
+    },
+    {
+      "expectSaved": {
+        "value": 1,
+        "varp": 724
+      }
+    },
+    {
+      "expectVarpSent": {
+        "value": 0,
+        "varp": 101
+      }
+    }
+  ],
+  "user": "pshirtnew"
+}

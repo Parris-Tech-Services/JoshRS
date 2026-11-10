@@ -2,6 +2,9 @@
 // Voice: cheerful, devoted to his goat Margareta, in permanent and transparent denial.
 
 [opnpc1,burgh_vilager_3]
+if (%varp_724 >= 1 & %varp_724 <= 5) {
+    @joshrs_peace_shirt_radu;
+}
 switch_int(random(3)) {
     case 0 : ~chatnpc("<p,shifty>Hello! If anyone asks, I've been here all day.|So has the goat. Wherever she is. Which I don't know.");
     case 1 : ~chatnpc("<p,happy>Radu! Pleased to meet you.|You haven't lost anything recently, have you?|A sock? A letter? Half a hat? ...No reason.");
@@ -27,9 +30,12 @@ if ($option = 1) {
     ~chatplayer("<p,quiz>Florin seems quite upset with you.");
     ~chatnpc("<p,sad>Ah. Florin. Yes. The shirt business.");
     ~chatnpc("<p,neutral>In my defence, he hung it out to dry|right next to where Margareta likes to stand.|It was practically an invitation.");
+    if (%varp_724 = 6) {
+        ~chatnpc("<p,happy>Not any more! We play every Friday.|He wears the shirt I knitted. Well, one row of it is mine.|The diagonal row. You'll know it when you see it.");
+        @joshrs_radu_menu;
+    }
     ~chatplayer("<p,quiz>Have you thought about apologising?");
-    ~chatnpc("<p,neutral>...I suppose I could. I could knit him a new one.|Ileana could teach me. Margareta could... supervise.|From a safe distance.");
-    @joshrs_radu_menu;
+    @joshrs_peace_shirt_radu;
 } else if ($option = 4) {
     ~chatplayer("<p,quiz>Why do you love her so much?");
     ~chatnpc("<p,neutral>Hm. That's a real question, isn't it.");
