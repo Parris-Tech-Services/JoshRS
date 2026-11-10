@@ -200,11 +200,16 @@ if running; then
   exit 0
 fi
 
-# 600ms per tick. A closed tab must release the character quickly (otherwise a reload
-# reports "already logged in"), while a backgrounded tab keeps its socket open and is
-# covered by the no-response timeout. 50 ticks = 30s after the socket actually closes.
-export JOSHRS_IDLE_LOGOUT_TICKS="${JOSHRS_IDLE_LOGOUT_TICKS:-50}"
-export JOSHRS_FORCE_LOGOUT_TICKS="${JOSHRS_FORCE_LOGOUT_TICKS:-14400}"
+# 600ms per tick. Two different problems, two timeouts:
+#   IDLE  = socket actually closed (tab gone). Release quickly or a reload says
+#           "already logged in" and the player creates a duplicate account.
+#   FORCE = socket still open but silent (backgrounded tab, sleeping phone). Must NOT be
+#           hours: a discarded Chrome tab can leave a half-open socket, and the account
+#           then stays locked for that whole period.
+# 200 ticks = ~2 min idle, 400 ticks = ~4 min silent. Long enough for a tab switch,
+# short enough that an abandoned session frees the account.
+export JOSHRS_IDLE_LOGOUT_TICKS="${JOSHRS_IDLE_LOGOUT_TICKS:-200}"
+export JOSHRS_FORCE_LOGOUT_TICKS="${JOSHRS_FORCE_LOGOUT_TICKS:-400}"
 
 cd "$target/engine"
 setsid nohup npx tsx src/app.ts > "$log" 2>&1 < /dev/null &
