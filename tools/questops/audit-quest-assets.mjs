@@ -6,7 +6,7 @@
 // This walks each ported quest and reports what is actually resolvable.
 //
 // Usage: audit-quest-assets.mjs <content-dir> [--json]
-import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { handlerRefs, indexDefs } from './lib/rs-refs.mjs';
 
@@ -54,6 +54,29 @@ const varsPack = loadPack(join(content, 'pack/vars.pack'));
 const npcDefs = indexDefs(join(content, 'scripts'), 'npc');
 const varDefs = indexDefs(join(content, 'scripts'), 'varp');
 
+// Stage vars must be permanent or progress silently resets at logout (Player.save writes only
+// scope=perm vars). The revision matters: _unpack holds several, and comparing against the wrong one
+// has produced false results three times in this project.
+function activeRevision() {
+    const wj = join(content, '..', 'engine/data/config/world.json');
+    if (existsSync(wj)) {
+        try { return String(JSON.parse(readFileSync(wj, 'utf8')).engine?.revision ?? '274'); } catch { /* fall through */ }
+    }
+    return '274';
+}
+const REV = activeRevision();
+const varpFile = join(content, `scripts/_unpack/${REV}/all.varp`);
+const varpScope = new Map();
+if (existsSync(varpFile)) {
+    const lines = readFileSync(varpFile, 'utf8').split(/\r?\n/);
+    let cur = null;
+    for (const line of lines) {
+        if (line.startsWith('[') && line.trimEnd().endsWith(']')) { cur = line.trim().slice(1, -1); continue; }
+        if (cur && /^scope=perm\b/.test(line)) varpScope.set(cur, true);
+        if (cur && line.startsWith('[')) cur = null;
+    }
+}
+
 const questsDir = join(content, 'scripts/quests');
 const PORTED = new Set([
     'quest_agrith', 'quest_deal', 'quest_dwarfrock', 'quest_elid', 'quest_fenkenstrain', 'quest_feud',
@@ -88,6 +111,14 @@ for (const name of readdirSync(questsDir).filter((n) => PORTED.has(n)).sort()) {
         ({ varp: varpPack, varbit: varbitPack, varn: varnPack, vars: varsPack })[k].has(v));
     const collisions = varRefs.filter((v) => owned(v).length > 1);
 
+    // The stage var is the one compared against a *_complete constant, or the one the journal reads.
+    const stageVarRe = /%([a-z0-9_]+)\s*(?:=|==|===|>=|<)\s*\^([a-z0-9_]*_?(?:complete|done|finished|started|progress)[a-z0-9_]*)/gi;
+    const stageFromLogic = [...text.matchAll(stageVarRe)].map((m) => m[1]);
+    const journalText = scripts.filter((f) => /journal/i.test(f)).map((f) => readFileSync(f, 'utf8')).join('\n');
+    const stageFromJournal = [...journalText.matchAll(/%([a-z0-9_]+)/gi)].map((m) => m[1]);
+    const stageVar = (stageFromLogic.length ? stageFromLogic : stageFromJournal)[0] ?? null;
+    const stageVarPermanent = stageVar ? varpScope.get(stageVar) === true : null;
+
     const hasJournal = /questlist:/i.test(text);
     const hasComplete = /send_quest_complete/i.test(text);
     const hasReward = /stat_advance|inv_add/i.test(text);
@@ -103,11 +134,12 @@ for (const name of readdirSync(questsDir).filter((n) => PORTED.has(n)).sort()) {
     if (!hasJournal) blockers.push('no journal entry');
     if (!hasComplete) blockers.push('no completion call');
     if (!hasReward) blockers.push('no reward');
+    if (stageVar && stageVarPermanent === false) blockers.push(`stage var ${stageVar} is not scope=perm`);
 
     const status = blockers.length === 0 ? 'STRUCTURALLY COMPLETE' : (blockers.length <= 2 ? 'PARTIALLY WORKING' : 'BLOCKED');
     rows.push({ name, npcRefs: npcRefs.length, locRefs: locRefs.length, objRefs: objRefs.length,
         missingNpc, missingLoc, missingObj, unregisteredNpc, missingVars, collisions,
-        hasJournal, hasComplete, hasReward, blockers, status });
+        hasJournal, hasComplete, hasReward, stageVar, stageVarPermanent, blockers, status });
 }
 
 if (asJson) {
