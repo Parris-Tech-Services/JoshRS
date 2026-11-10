@@ -8,7 +8,7 @@ Dev world only (`~/dev274`). Never `~/lc274`. Never touch an Elrothiro save.
 |---|---|---|---|
 | 0 | Back up | `tar czf ~/joshrs-recovery/dev274-content-$(date +%H%M).tgz -C ~/dev274 content` | file exists |
 | 1 | Pre-pack (static, ~1 s) | `node tools/questops/prepack-check.mjs ~/dev274/content --source <377 content> --pristine <untouched 274 content>` | 0 duplicates, 0 broken, 0 script problems |
-| 1b | Fix what it can | same, plus `--apply --copy-models --log content-patches/rs274/SUBSTITUTIONS.md` | re-check is clean; second run changes nothing |
+| 1b | Fix what it can | same, plus `--apply --copy-models --strip-keys --log content-patches/rs274/SUBSTITUTIONS.md` (`--strip-keys` needs `--pristine` and the engine source) | re-check is clean; second run changes nothing |
 | 2 | Build | `cd ~/dev274/engine && npm run build` | exit 0. "World ready" is NOT evidence |
 | 3 | Maps and quest points | `node tools/questops/check-map-integrity.mjs ...` and `node tools/questops/check-quest-points.mjs ~/dev274/content` | no problems |
 | 4 | Server playtest (layer 1) | stop the dev server, then `cd ~/dev274/engine && npx tsx <joshrs>/tools/questops/playtest/run.ts <scenario.json>` | every step PASS |
