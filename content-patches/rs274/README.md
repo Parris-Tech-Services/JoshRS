@@ -16,7 +16,7 @@ world unable to start, so apply one at a time and watch for `World ready`.
 | `quest_legends_reward.patch` | Legends' Quest gives four 7,650 XP lamps (was awarding none) | engine repacked and reached `World ready` |
 | `quest_sheep_spin_bonus.patch` | Sheep Shearer pays the extra 50 XP when you spin your own wool | engine repacked and reached `World ready` |
 | `questlist_ported_entries.patch` | 18 quest-journal entries for ported quests | repacked; every entry verified inside the surface with visible ink |
-| `varp_registrations.patch` | 156 stage varps the ported quests reference, with `scope=perm` | repacked; audit 70/90 structurally complete |
+| `varp_registrations.patch` | stage varps the ported quests reference, with `scope=perm` | repacked; audit 89/90 structurally complete |
 | `ported-377-quests.patch` | the 26 quest directories ported from 377 | repacked; 90 quests, 0 completion failures |
 
 **Not playtested.** Both were verified only to the point of the engine packing and booting.
@@ -73,4 +73,34 @@ has a journal script but no entry, so its journal is reachable.
 Verified: 18 entries added, 84 text components, **1 overlapping pair** (the pre-existing
 title/header), every sampled entry inside the render surface with visible ink, and the world repacked
 to `World ready`.
+
+
+
+## Structural audit: 70 → 89 of 90, by fixing the measurement
+
+The audit reported 70 of 90 quests structurally complete, but most of that gap was its own
+`WIRED` heuristic: it required a reference from **outside** the quest directory. Ported quests keep
+their NPC scripts inside their own directory, so nothing external referenced them and 18 were marked
+unwired despite being complete.
+
+`WIRED` now records a mode:
+
+- `external` — something outside the quest reaches it (strongest signal)
+- `self-contained` — its own directory references its varp/labels (still proves entry points exist)
+- `n/a` — no varps or labels to wire
+
+Result: **89 of 90** structurally complete, with the mode printed per quest so the weaker signal is
+visible rather than hidden. The single remaining gap is `quest_barcrawl`, a miniquest with no journal
+entry and no reward call — which may be correct for a miniquest and is left visible rather than
+excused.
+
+### A mistake made and reverted while doing this
+
+Registering the two varps that exist in no upstream file (`lost_tribe_quest`,
+`mdaughter_quest_var`) required an opt-in. The first version of the opt-in accepted **any** unknown
+name, which registered eleven engine pseudo-variables (`npc_lastcombat`, `follower_uid`,
+`npc_combat_xp_multiplier`, …) as varps. They were removed, and the opt-in now accepts only
+quest-owned names (`*quest*`). Two genuine ones (`follower_uid`, `draugen_butterfly_uid`) were
+restored because they *are* in the upstream pack — the removal was too broad, and the tool re-added
+them.
 
