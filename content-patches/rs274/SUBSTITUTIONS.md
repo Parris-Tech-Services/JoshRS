@@ -8046,3 +8046,42 @@
 | symbol / file | original | replacement | reason |
 |---|---|---|---|
 | `scripts/_ported/configs/ported.loc` | `multivar=<varbit>` properties | property removed | `multivar` is a 377-only loc property key; the 274 packer rejects it (`Invalid property key`). Removing it makes the loc static rather than multi-state. |
+
+## prepack-check --apply
+
+- KEPT_BOTH npc [lost_tribe_sigmund_there] scripts/_unpack/274/all.npc:260 / scripts/_unpack/274/all.npc:21231: not in the pristine tree - decide by hand
+- IMPORTED seq golem_portal_spin from scripts/_unpack/377/all.seq:44290
+- IMPORTED seq golem_door_open from scripts/_unpack/377/all.seq:44310
+- IMPORTED loc golem_insidestairs_base from scripts/ladders+stairs/configs/stairs.loc:1192
+- IMPORTED loc golem_insidestairs_top from scripts/ladders+stairs/configs/stairs.loc:1203
+- IMPORTED constant ^golem_complete = 10
+- IMPORTED constant ^golem_questpoints = 1
+- DROPPED_KEY scripts/_ported/configs/ported.loc:13 loc elid_statuette_multiloc multivar=elidquest
+- DROPPED_KEY scripts/_ported/configs/ported.loc:14 loc elid_statuette_multiloc multiloc=0,elid_statuette_base
+- DROPPED_KEY scripts/_ported/configs/ported.loc:15 loc elid_statuette_multiloc multiloc=10,elid_statuette_base
+- DROPPED_KEY scripts/_ported/configs/ported.loc:16 loc elid_statuette_multiloc multiloc=20,elid_statuette_base
+- DROPPED_KEY scripts/_ported/configs/ported.loc:17 loc elid_statuette_multiloc multiloc=25,elid_statuette_base
+- DROPPED_KEY scripts/_ported/configs/ported.loc:18 loc elid_statuette_multiloc multiloc=27,elid_statuette_base
+- DROPPED_KEY scripts/_ported/configs/ported.loc:19 loc elid_statuette_multiloc multiloc=30,elid_statuette_base
+- DROPPED_KEY scripts/_ported/configs/ported.loc:20 loc elid_statuette_multiloc multiloc=35,elid_statuette_base
+- DROPPED_KEY scripts/_ported/configs/ported.loc:21 loc elid_statuette_multiloc multiloc=40,elid_statuette_base
+- DROPPED_KEY scripts/_ported/configs/ported.loc:22 loc elid_statuette_multiloc multiloc=50,elid_statuette_base
+- DROPPED_KEY scripts/_ported/configs/ported.loc:23 loc elid_statuette_multiloc multiloc=55,elid_statuette_base
+- DROPPED_KEY scripts/_ported/configs/ported.loc:24 loc elid_statuette_multiloc multiloc=60,elid_statuette_placed
+- TRANSLATED loc elid_statuette_multiloc: base form taken from elid_statuette_base (1 line(s)); the object no longer changes form
+- DROPPED_KEY scripts/_ported/configs/ported.loc:72 loc elid_waterchannel_ranged_multiloc multivar=elid_rangingchannel
+- DROPPED_KEY scripts/_ported/configs/ported.loc:73 loc elid_waterchannel_ranged_multiloc multiloc=0,elid_water_channel_ranging
+- DROPPED_KEY scripts/_ported/configs/ported.loc:74 loc elid_waterchannel_ranged_multiloc multiloc=1,elid_water_channel_ranging_done
+- TRANSLATED loc elid_waterchannel_ranged_multiloc: base form taken from elid_water_channel_ranging (4 line(s)); the object no longer changes form
+- DROPPED_KEY scripts/_ported/configs/ported.loc:78 loc elid_waterchannel_mining_multiloc multivar=elid_miningchannel
+- DROPPED_KEY scripts/_ported/configs/ported.loc:79 loc elid_waterchannel_mining_multiloc multiloc=0,elid_water_channel_blocked_rocks
+- DROPPED_KEY scripts/_ported/configs/ported.loc:80 loc elid_waterchannel_mining_multiloc multiloc=1,elid_water_channel_blocked_rocks_done
+- TRANSLATED loc elid_waterchannel_mining_multiloc: base form taken from elid_water_channel_blocked_rocks (3 line(s)); the object no longer changes form
+- DROPPED_KEY scripts/_ported/configs/ported.loc:84 loc elid_waterchannel_thieving_multiloc multivar=elid_thievingchannel
+- DROPPED_KEY scripts/_ported/configs/ported.loc:85 loc elid_waterchannel_thieving_multiloc multiloc=0,elid_water_channel_spiketrap
+- DROPPED_KEY scripts/_ported/configs/ported.loc:86 loc elid_waterchannel_thieving_multiloc multiloc=1,elid_water_channel_spiketrap_done
+- TRANSLATED loc elid_waterchannel_thieving_multiloc: base form taken from elid_water_channel_spiketrap (3 line(s)); the object no longer changes form
+- DROPPED_KEY scripts/_ported/configs/ported.loc:212 loc handsand_coffee_multiloc multivar=handsand_coffee_multi
+- DROPPED_KEY scripts/_ported/configs/ported.loc:213 loc handsand_coffee_multiloc multiloc=0,handsand_coffee
+- DROPPED_KEY scripts/_ported/configs/ported.loc:214 loc handsand_coffee_multiloc multiloc=1,handsand_table
+- TRANSLATED loc handsand_coffee_multiloc: base form taken from handsand_coffee (1 line(s)); the object no longer changes form
