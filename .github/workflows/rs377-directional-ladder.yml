@@ -1,0 +1,37 @@
+name: RS377 directional ladder patch
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-ladders/**'
+      - '.github/workflows/rs377-directional-ladder.yml'
+  push:
+    paths:
+      - 'tools/rs377-ladders/**'
+      - '.github/workflows/rs377-directional-ladder.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Guardrail regression tests
+        run: node --test tools/rs377-ladders/apply-directional-middle.test.mjs
+      - name: Fetch pinned Lost City 377 Content (CI fixture, never published)
+        shell: bash
+        run: |
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Content.git "$RUNNER_TEMP/rs377-content"
+          test "$(git -C "$RUNNER_TEMP/rs377-content" rev-parse HEAD)" = "44eab09081ef0f6c5f3eaabd1897a588ad7d9e50"
+      - name: Validate dry run and apply only to disposable CI checkout
+        shell: bash
+        run: |
+          node tools/rs377-ladders/apply-directional-middle.mjs --content "$RUNNER_TEMP/rs377-content"
+          node tools/rs377-ladders/apply-directional-middle.mjs --content "$RUNNER_TEMP/rs377-content" --apply
+          for op in 1 2 3; do
+            grep -qF "[oploc${op},loc_1751]" "$RUNNER_TEMP/rs377-content/scripts/ladders+stairs/scripts/ladders.rs2"
+          done
+          git -C "$RUNNER_TEMP/rs377-content" diff --check
