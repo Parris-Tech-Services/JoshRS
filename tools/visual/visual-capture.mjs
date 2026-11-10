@@ -182,10 +182,13 @@ if (tabSearch) {
     });
     if (box && dims) {
         const toPage = (cx, cy) => [box.x + (cx / dims.w) * box.width, box.y + (cy / dims.h) * box.height];
-        const xs = [700, 720, 740, 755];
+        // From the canvas grid the sidebar begins near x=520 and the tab icons sit in a narrow
+        // column just inside it; an earlier sweep started at x=700 and only ever clicked sidebar
+        // content, which is why it found nothing.
+        const xs = [522, 530, 538, 546];
         let found = null;
         outer: for (const cx of xs) {
-            for (let cy = 150; cy <= 480; cy += 15) {
+            for (let cy = 70; cy <= 330; cy += 10) {
                 const [px, py] = toPage(cx, cy);
                 await page.mouse.click(px, py);
                 await page.waitForTimeout(900);
