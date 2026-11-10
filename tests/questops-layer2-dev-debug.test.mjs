@@ -54,14 +54,13 @@ test('nearby lists static NPCs across region boundaries; ID 0 remains valid', (t
     assert.equal(nearby(dir,64,9,1,2,'other').status,'EXPECTED_NPC_MISSING');
 });
 
-test('only active 274 varps count; never silently read revision 225 as permanent', (t) => {
+test('a varp registered in the pack needs a definition somewhere under scripts/ (any revision folder)', (t) => {
+    // Corrected: the packer reads every _unpack/<revision> folder, so a definition in 225 is active.
     const dir=fixture(t);
     put(dir,'pack/varp.pack','17=losttribe\n');
+    assert.equal(varDefinition(dir,'losttribe').status,'NO_ACTIVE_DEFINITION');
     put(dir,'scripts/_unpack/225/all.varp','[losttribe]\nscope=perm\n');
-    let v=varDefinition(dir,'losttribe');
-    assert.equal(v.status,'NO_ACTIVE_DEFINITION');
-    put(dir,'scripts/_unpack/274/all.varp','[losttribe]\nscope=perm\n');
-    v=varDefinition(dir,'losttribe');
+    const v=varDefinition(dir,'losttribe');
     assert.equal(v.status,'REGISTERED');
     assert.equal(v.permanent,true);
     assert.equal(v.id,17);
@@ -126,10 +125,15 @@ test('stage var comes from count_questpoints when a quest has several ^..._compl
     assert.equal(s.source, 'count_questpoints');
 });
 
-test('definitions in older revisions\' _unpack folders are ignored', (t) => {
+test('every _unpack revision is live: a stock varp in 225 is found, and a second copy is a duplicate', (t) => {
     const dir = fixture(t);
     put(dir, 'pack/varp.pack', '5=qp\n');
     put(dir, 'scripts/_unpack/225/all.varp', '[qp]\ntransmit=yes\n');
+    const stock = varDefinition(dir, 'qp');
+    assert.equal(stock.status, 'REGISTERED');
+    assert.equal(stock.permanent, false);          // stock qp is recomputed at login, not saved
     put(dir, 'scripts/_unpack/274/all.varp', '[qp]\nscope=perm\n');
-    assert.equal(varDefinition(dir, 'qp').permanent, true);
+    const dup = varDefinition(dir, 'qp');
+    assert.equal(dup.status, 'DUPLICATE_DEFINITION');
+    assert.equal(dup.alsoDefinedIn.length, 1);
 });
