@@ -23,6 +23,7 @@ jobs:
         run: |
           node --test tools/rs377-ladders/apply-directional-middle.test.mjs
           node --test tools/rs377-ladders/apply-falador-vertical.test.mjs
+          node --test tools/rs377-ladders/apply-prison-ladders.test.mjs
       - name: Fetch pinned Lost City 377 Content (CI fixture, never published)
         shell: bash
         run: |
@@ -36,6 +37,14 @@ jobs:
           for op in 1 2 3; do
             grep -qF "[oploc${op},loc_1751]" "$RUNNER_TEMP/rs377-content/scripts/ladders+stairs/scripts/ladders.rs2"
           done
+          git -C "$RUNNER_TEMP/rs377-content" diff --check
+      - name: Validate prison ladder pairs against pinned content
+        shell: bash
+        run: |
+          node tools/rs377-ladders/apply-prison-ladders.mjs --content "$RUNNER_TEMP/rs377-content"
+          node tools/rs377-ladders/apply-prison-ladders.mjs --content "$RUNNER_TEMP/rs377-content" --apply
+          grep -qF "[oploc1,prison_ladder_up]" "$RUNNER_TEMP/rs377-content/scripts/ladders+stairs/scripts/ladders.rs2"
+          grep -qF "[oploc1,prison_laddertop]" "$RUNNER_TEMP/rs377-content/scripts/ladders+stairs/scripts/ladders.rs2"
           git -C "$RUNNER_TEMP/rs377-content" diff --check
       - name: Validate confirmed Falador ladder handlers against pinned content
         shell: bash
