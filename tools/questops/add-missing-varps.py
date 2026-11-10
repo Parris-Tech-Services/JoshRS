@@ -49,6 +49,11 @@ def main() -> int:
     world = Path(sys.argv[1]).expanduser()
     src377 = Path(sys.argv[2]).expanduser()
     dry = "--dry-run" in sys.argv
+    # Some quests reference symbols that the upstream revision never registers at all (verified:
+    # lost_tribe_quest and mdaughter_quest_var exist in no upstream varp.pack or .varp). The symbol
+    # is real because the quest scripts use it; only the id is missing. Allocating one is correct,
+    # but it is opt-in because it cannot be cross-checked against upstream.
+    allow_unknown = "--allow-unknown" in sys.argv
 
     content = world / "content"
     pack = content / "pack/varp.pack"
@@ -94,7 +99,11 @@ def main() -> int:
     for quest in sorted(p for p in qdir.iterdir() if p.is_dir() and p.name.startswith("quest_")):
         missing = sorted(v for v in vars_used(quest) if v not in known and not v.startswith("varp_"))
         for name in missing:
-            if name not in upstream:
+            # Engine pseudo-variables (npc_lastcombat, *_uid, *_xp_multiplier, ...) look like varp
+            # references but are not varps. Registering them is wrong and pollutes the registry -
+            # which happened once. --allow-unknown therefore accepts only quest-owned names.
+            quest_owned = "quest" in name or name.startswith("varp_")
+            if name not in upstream and not (allow_unknown and quest_owned):
                 unexplained.append(f"{quest.name}:{name}")
                 continue
             added_pack.append(f"{next_id}={name}")
@@ -105,6 +114,8 @@ def main() -> int:
 
     print()
     print(f"to register: {len(added_pack)}  unexplained: {len(unexplained)}")
+    if allow_unknown:
+        print("NOTE: --allow-unknown set; upstream-unregistered symbols will be allocated ids")
     if unexplained:
         print("  not found upstream, left alone: " + ", ".join(unexplained[:10]))
 

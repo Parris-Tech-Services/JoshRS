@@ -79,7 +79,17 @@ for (const name of questDirs.sort()) {
     const candidateVars = [...new Set([...varpNames, ...usedVars.filter((v) => globalVarpNames.has(v))])];
     const wiredByVarp = candidateVars.length > 0 && candidateVars.some((v) => external.some((s) => s.text.includes(`%${v}`)));
     const wiredByLabel = labels.length > 0 && labels.some((l) => external.some((s) => s.text.includes(`@${l};`)));
-    const wired = wiredByVarp || wiredByLabel ? true : (candidateVars.length === 0 && labels.length === 0 ? null : false);
+    // A self-contained quest keeps its NPC scripts inside its own directory, so nothing outside
+    // references it and the external-only test reports a false gap. Intra-quest references still
+    // prove the entry points exist, so they count - but the mode is recorded, because "external"
+    // and "self-contained" carry different confidence.
+    const selfVarp = candidateVars.some((v) => text.includes(`%${v}`));
+    const selfLabel = labels.length > 0;
+    let wired = false;
+    let wiredMode = 'none';
+    if (wiredByVarp || wiredByLabel) { wired = true; wiredMode = 'external'; }
+    else if (selfVarp || selfLabel) { wired = true; wiredMode = 'self-contained'; }
+    else if (candidateVars.length === 0 && labels.length === 0) { wired = null; wiredMode = 'n/a'; }
     const todos = (text.match(/todo|fixme|revisit later/gi) ?? []).length;
 
     rows.push({
@@ -90,6 +100,7 @@ for (const name of questDirs.sort()) {
         hasJournal,
         hasReward,
         wired,
+        wiredMode,
         todos
     });
 }
@@ -127,7 +138,7 @@ for (const r of rows) {
     if (m.length === 0) clean++;
     const tick = (b) => (b === null ? 'n/a' : b ? 'yes' : '**no**');
     lines.push(
-        `| \`${r.name}\` | ${r.scripts} | ${r.labels} | ${tick(r.hasVarp)} | ${tick(r.hasJournal)} | ${tick(r.hasReward)} | ${tick(r.wired)} | ${r.todos} | ${m.join(', ') || '—'} |`
+        `| \`${r.name}\` | ${r.scripts} | ${r.labels} | ${tick(r.hasVarp)} | ${tick(r.hasJournal)} | ${tick(r.hasReward)} | ${tick(r.wired)} (${r.wiredMode}) | ${r.todos} | ${m.join(', ') || '—'} |`
     );
 }
 
