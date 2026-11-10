@@ -63,3 +63,25 @@ Stock 274 content passes with no problems.
   those need the client.
 - `harness.ts` uses engine internals (`World.process*`, `removePlayer`, `logoutRequests`). If the engine
   version changes, boot fails with a message naming the missing function.
+
+## Layer 3: the real browser client
+
+`seed-account.ts` writes a dev save for a test account whose tutorial is complete. The
+character-design screen is opened by the tutorial: `[login,_]` runs `@start_tutorial` only while
+`%tutorial < 1000` on Tutorial Island. A seeded account therefore logs straight into Lumbridge. In
+dev, the login server is off and any password works for a save that's on disk.
+
+```sh
+cd ~/dev274/engine && npx tsx ~/joshrs/tools/questops/playtest/seed-account.ts qa_bot
+# start the dev world, then:
+node ~/joshrs/tools/visual/client-check.mjs ~/joshrs/tools/visual/checkpoints/ported-quest-starts.json \
+  --url http://localhost:8888/rs2.cgi --user qa_bot --out /tmp/client-check
+```
+
+`client-check.mjs` logs in by clicking the title-screen positions taken from the Client-TS 274
+source, then runs `::tele` to each checkpoint. It fails a checkpoint when the 3D view is more than 90%
+black (a missing map region) or when the page logs an error. It saves one screenshot per checkpoint
+for a person to look at.
+
+On Josh's phone screenshots, the detector rated the black Uzer view at 92% black (fail), the Lighthouse
+at 12% and Duke Horacio's room at 0% (pass). Caves that are dark by design take `"allowDark": true`.

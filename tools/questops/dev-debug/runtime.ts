@@ -59,7 +59,7 @@ try {
             const name = option('name') ?? option('varp');
             if (!name) throw new Error('var requires --name <varp-symbol>');
             const definition = varDefinition(content,name);
-            result = { ...definition, value: h.getVar(name), permanent: h.isPerm(name),
+            result = { ...definition, value: definition.type === 'varbit' ? null : h.getVar(name), permanent: definition.type === 'varbit' ? definition.permanent : h.isPerm(name),
                 runtime: true, staticOnly: false, status: 'RUNTIME_VAR' };
             break;
         }
@@ -69,8 +69,11 @@ try {
             const definition = stageDefinition(content,quest);
             const stageVar = option('varp') ?? definition.stageVar;
             if (!stageVar) throw new Error('no unique stage var inferred; pass --varp <name> explicitly');
-            result = { ...definition, stageVar, currentStage: h.getVar(stageVar),
-                permanent: h.isPerm(stageVar), runtime: true, staticOnly: false, status: 'RUNTIME_STAGE',
+            const isVarbit = (definition.variable as any)?.type === 'varbit';
+            result = { ...definition, stageVar,
+                // The harness reads varps by name; a varbit's value lives inside its base varp.
+                currentStage: isVarbit ? null : h.getVar(stageVar),
+                permanent: isVarbit ? (definition.variable as any).permanent : h.isPerm(stageVar), runtime: true, staticOnly: false, status: 'RUNTIME_STAGE',
                 note: 'Observed for the disposable playtest player only. Not your live character or proof of quest completion.' };
             break;
         }
@@ -86,3 +89,5 @@ try {
         h.World.logoutRequests.delete('playtest');
     }
 }
+// World starts worker threads that keep Node alive; exit explicitly as playtest/run.ts does.
+process.exit(process.exitCode ?? 0);
