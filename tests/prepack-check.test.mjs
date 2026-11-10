@@ -141,3 +141,18 @@ test('gen-scenarios: start NPC, its spawn tile and the stage var come from conte
     assert.deepEqual(r.scenario.steps.slice(0, 2).map((s) => s.do), ['teleport', 'expectNpcNear']);
     assert.equal(r.checkpoints.length, 2);
 });
+
+import { acceptedKeys, keyIssues } from '../tools/questops/prepack-check.mjs';
+
+test('keys the 274 packer rejects (multivar/multiloc) are reported; digit-leading and prefix keys are not', () => {
+    const engine = mkdtempSync(join(tmpdir(), 'engine-'));
+    mkdirSync(join(engine, 'tools/pack/config'), { recursive: true });
+    writeFileSync(join(engine, 'tools/pack/config/LocConfig.ts'), "const k = ['name', 'op1', 'anim', '2dxof'];\nif (key.startsWith('model')) {}\nif (key === 'category') {}\n");
+    const ok = acceptedKeys(engine, 'loc');
+    assert.ok(['name', 'op1', 'model4', 'category', '2dxof'].every(ok));      // exact, numbered, prefix, digit-leading
+    assert.equal(ok('multiloc'), false);
+    const root = tree({ 'scripts/quests/quest_x/configs/x.loc': '[door]\nname=Door\nmodel1=m\nmultivar=handsand_coffee_multi\nmultiloc=0,door_open\n' });
+    const issues = keyIssues(loadContent(root), engine);
+    assert.deepEqual(issues.map((i) => i.key), ['multivar', 'multiloc']);
+    assert.equal(acceptedKeys(null, 'loc'), null);                              // no engine source: not checked, not passed
+});
