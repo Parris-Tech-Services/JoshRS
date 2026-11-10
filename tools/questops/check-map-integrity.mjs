@@ -60,9 +60,12 @@ for (const kind of ['npc', 'loc', 'obj']) {
 
 const SECTIONS = { npc: 'NPC', loc: 'LOC', obj: 'OBJ' };
 
-/** Parse a .jm2 into { npc: Set<id>, loc: Set<id>, obj: Set<id> }. */
+/** Return every numeric spawn, retaining positions so translated IDs can be checked against
+ * their original source-map identities. A set of numeric IDs alone cannot do that. */
 function parseMap(file) {
-    const out = { npc: new Set(), loc: new Set(), obj: new Set() };
+    const ids = { npc: new Set(), loc: new Set(), obj: new Set() };
+    const entries = { npc: [], loc: [], obj: [] };
+    const occurrences = new Map();
     let cur = null;
     for (const raw of readFileSync(file, 'utf8').split('\n')) {
         const line = raw.trim();
@@ -71,30 +74,45 @@ function parseMap(file) {
             continue;
         }
         if (!cur || !line) continue;
-        // Map records are "level x y: id" - the id follows a colon. An earlier pattern treated the
-        // positional numbers as the id, matched nothing, and reported a clean bill of health.
-        const m = line.match(/^-?\d+\s+-?\d+\s+-?\d+:\s*(-?\d+)/);
-        if (!m) continue;
-        const id = Number(m[1]);
-        if (Number.isFinite(id) && id > 0) out[cur].add(id);
+        const m = line.match(/^(-?\d+)\s+(-?\d+)\s+(-?\d+):\s*(-?\d+)(?:\s|$)/);
+        if (!m) throw new Error(`Malformed ${cur} record in ${file}: ${line}`);
+        const id = Number(m[4]);
+        if (!Number.isSafeInteger(id) || id < 0) throw new Error(`Invalid ${cur} ID in ${file}: ${line}`);
+        const pos = `${cur}:${m[1]},${m[2]},${m[3]}`;
+        const sequence = occurrences.get(pos) ?? 0;
+        occurrences.set(pos, sequence + 1);
+        ids[cur].add(id); // ID 0 is valid (e.g. NPC 0 in Lumbridge)
+        entries[cur].push({ id, key: `${pos}#${sequence}` });
     }
-    return out;
+    return { ids, entries };
 }
 
 const rows = [];
+let scannedMaps = 0;
+let parsedRecords = 0;
 const tmaps = join(target, 'maps');
 const smaps = join(source, 'maps');
 for (const f of readdirSync(tmaps).filter((n) => n.endsWith('.jm2'))) {
-    if (onlyMap && !f.includes(onlyMap)) continue;
+    if (onlyMap && basename(f, '.jm2') !== onlyMap.replace(/\.jm2$/, '')) continue;
     if (!existsSync(join(smaps, f))) continue; // only maps imported from the source
-    const refs = parseMap(join(tmaps, f));
+    scannedMaps++;
+    const targetMap = parseMap(join(tmaps, f));
+    const sourceMap = parseMap(join(smaps, f));
     const r = { map: basename(f, '.jm2'), dangling: { npc: [], loc: [], obj: [] }, mismatch: { npc: [], loc: [], obj: [] }, noDef: { npc: [], loc: [], obj: [] } };
     for (const kind of ['npc', 'loc', 'obj']) {
-        for (const id of refs[kind]) {
+        parsedRecords += targetMap.entries[kind].length;
+        const sourceAt = new Map(sourceMap.entries[kind].map(({ id, key }) => [key, id]));
+        for (const { id, key } of targetMap.entries[kind]) {
             const tSym = packs[kind].t.get(id);
-            const sSym = packs[kind].s.get(id);
+            const originalId = sourceAt.get(key);
+            const expected = originalId === undefined ? packs[kind].s.get(id) : packs[kind].s.get(originalId);
             if (tSym === undefined) { r.dangling[kind].push(id); continue; }
-            if (sSym !== undefined && sSym !== tSym) { r.mismatch[kind].push(`${id}:${sSym}->${tSym}`); continue; }
+            // After translating a colliding 377 ID, the new ID is absent from the 377 pack.
+            // The original source spawn at the same position is the required identity.
+            if (expected !== undefined && expected !== tSym) {
+                r.mismatch[kind].push(`${id}:${expected}->${tSym} at ${key}`);
+                continue;
+            }
             if (!defs[kind].has(tSym)) r.noDef[kind].push(`${id}:${tSym}`);
         }
     }
@@ -103,9 +121,14 @@ for (const f of readdirSync(tmaps).filter((n) => n.endsWith('.jm2'))) {
     if (bad > 0) rows.push(r);
 }
 
+if (scannedMaps === 0 || parsedRecords === 0) {
+    console.error(`INCONCLUSIVE: scanned ${scannedMaps} map(s), parsed ${parsedRecords} spawn records; refusing a false clean result`);
+    process.exit(2);
+}
 if (asJson) {
     console.log(JSON.stringify(rows, null, 2));
 } else {
+    console.log(`scanned maps: ${scannedMaps}; parsed records: ${parsedRecords}`);
     const total = (k1, k2) => rows.reduce((a, r) => a + r[k1][k2].length, 0);
     console.log(`maps with problems: ${rows.length}`);
     for (const kind of ['npc', 'loc', 'obj']) {
@@ -121,5 +144,5 @@ if (asJson) {
         console.log(`  ${r.map}  dangling[${d.join(',') || '-'}] mismatch[${m.join(',') || '-'}]`);
         if (r.mismatch.npc.length) console.log(`     npc mismatches: ${r.mismatch.npc.slice(0, 3).join(' ')}`);
     }
-    process.exitCode = rows.length ? 1 : 0;
 }
+process.exitCode = rows.length ? 1 : 0;
