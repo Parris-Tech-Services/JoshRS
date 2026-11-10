@@ -114,19 +114,21 @@ function walk(dir, extension, files = []) {
 }
 
 function findDefinition(content, name, ext) {
-    // Active definitions: _unpack/274 plus every config under scripts/, but never older revisions'
-    // _unpack folders (225/244/245/254), which are not what the 274 engine packs.
-    const files = walk(join(content, 'scripts'), ext).filter((f) => !/[\\/]_unpack[\\/](?!274[\\/])/.test(f));
-    for (const f of files) {
+    // The packer reads EVERY file under scripts/, including every scripts/_unpack/<revision>/ folder:
+    // they are cumulative (225 holds most stock definitions, 274 only what that revision added), not
+    // alternatives. A name defined twice is the packer error "Duplicate config found", so report it.
+    const found = [];
+    for (const f of walk(join(content, 'scripts'), ext)) {
         const text = readFileSync(f, 'utf8');
         const headers = [...text.matchAll(/^\[([^\]\r\n]+)\]\s*$/gm)];
         for (let i = 0; i < headers.length; i++) {
             if (headers[i][1] !== name) continue;
             const end = i + 1 < headers.length ? headers[i + 1].index : text.length;
-            return { file: relative(content, f), body: text.slice(headers[i].index + headers[i][0].length, end) };
+            found.push({ file: relative(content, f), body: text.slice(headers[i].index + headers[i][0].length, end) });
         }
     }
-    return null;
+    if (!found.length) return null;
+    return { ...found[0], duplicates: found.slice(1).map((d) => d.file) };
 }
 
 export function varDefinition(contentInput, name) {
@@ -148,6 +150,8 @@ export function varDefinition(contentInput, name) {
     const def = findDefinition(content, name, '.varp');
     if (!def) return { kind: 'var', status: 'NO_ACTIVE_DEFINITION', type: 'varp', name, id, value: null, staticOnly: true };
     const scope = def.body.match(/^\s*scope\s*=\s*(\S+)/m)?.[1] ?? 'unspecified';
+    if (def.duplicates.length) return { kind: 'var', status: 'DUPLICATE_DEFINITION', type: 'varp', name, id, definitionFile: def.file, alsoDefinedIn: def.duplicates,
+        value: null, staticOnly: true, note: 'Defined more than once; the packer stops with "Duplicate config found". Run prepack-check.mjs.' };
     return { kind: 'var', status: 'REGISTERED', type: 'varp', name, id, scope, permanent: scope === 'perm', definitionFile: def.file,
         value: null, staticOnly: true, note: 'Current value requires a running disposable test player (runtime.ts).' };
 }
