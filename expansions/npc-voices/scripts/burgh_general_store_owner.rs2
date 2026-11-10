@@ -1,0 +1,49 @@
+// JoshRS original dialogue - Aurel, keeper of the Burgh de Rott general store.
+// Voice: gloomy, self-deprecating, startled by kindness; secretly the most generous man in town.
+
+[opnpc1,burgh_general_store_owner]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,sad>Oh. A customer. Or worse, someone who wants|to look at things and not buy them.|...Sorry. Long week. Long year.");
+    case 1 : ~chatnpc("<p,neutral>Welcome to the store. Everything's|on the shelves. Mostly dust,|but it's very good quality dust.");
+    case 2 : ~chatnpc("<p,sad>Aurel. Shopkeeper. Don't mind me,|I always look like this. I was born tired.");
+}
+@joshrs_aurel_menu;
+
+[label,joshrs_aurel_menu]
+def_int $option = ~p_choice5("How's business?", 1, "Why do you look so glum?", 2, "What's the best thing you've ever sold?", 3, "I just came to say hello.", 4, "Goodbye, Aurel.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>How's business?");
+    ~chatnpc("<p,sad>Business? I sold a ball of string on Monday.|To myself. I needed string.");
+    ~chatnpc("<p,neutral>Nobody here has much coin. So people pay|how they can. Ileana pays in scarves.|Teodor pays in turnips. I have a lot of turnips.");
+    ~chatplayer("<p,quiz>Doesn't that make it hard to run a shop?");
+    ~chatnpc("<p,neutral>It makes it hard to run a rich shop.|Running a useful one is easier than you'd think.");
+    @joshrs_aurel_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Why do you look so glum?");
+    ~chatnpc("<p,sad>Look around. Fog. Damp. Fleas that have|opinions. Would you be cheerful?");
+    ~chatplayer("<p,happy>I might try.");
+    ~chatnpc("<p,neutral>...Hm. You might, at that.");
+    ~chatnpc("<p,neutral>Truth is, the glum face is a habit.|Inside, I'm only about half as miserable|as I look. Possibly a third.");
+    @joshrs_aurel_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What's the best thing you've ever sold?");
+    ~chatnpc("<p,neutral>The best? Hmm. Not the most expensive.");
+    ~chatnpc("<p,happy>Last winter little Ivan came in with one copper coin.|He wanted a present for his mother.|I had a tin brooch shaped like a flower.");
+    ~chatnpc("<p,neutral>It cost more than a copper. Quite a lot more.|I told him it was on sale. One copper exactly.|Extraordinary coincidence.");
+    ~chatplayer("<p,happy>That was kind of you.");
+    ~chatnpc("<p,shock>Kind? It was business! Strictly business.|...Don't tell anyone.");
+    @joshrs_aurel_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,happy>I didn't come to buy anything. I just came to say hello.");
+    ~chatnpc("<p,shock>...To me?");
+    ~chatplayer("<p,happy>To you.");
+    ~chatnpc("<p,neutral>Nobody comes in just to say hello.|People come in for nails. For candles.|For directions out of here, mostly.");
+    ~chatnpc("<p,happy>Well. Hello, then. Hello yourself.|You've brightened my week, and it's only Tuesday.|Probably. I lose track of the days in the fog.");
+    @joshrs_aurel_menu;
+} else {
+    ~chatplayer("<p,happy>Goodbye, Aurel.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,neutral>Goodbye. Shut the door, the damp gets in.|...The door doesn't shut. Just pretend.");
+        case 1 : ~chatnpc("<p,happy>Come back soon. I'll dust something for you.");
+    }
+}
