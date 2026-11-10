@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseJm2Locs, parseLocPack } from './inspect-sinclair.mjs';
+import { parseJm2Locs, parseLocPack, parseLocDefinitions } from './inspect-sinclair.mjs';
 
 test('JM2 loc parser preserves level, world tile, loc type, rotation', () => {
   const jm2 = '==== MAP ====\n0 1 2: h3 u49\n==== LOC ====\n0 7 6: 16540 10 1\n1 8 9: 1751 0 3\n==== NPC ====\n';
@@ -15,6 +15,12 @@ test('LOC index parser returns numeric ID to identifier mapping', () => {
   assert.equal(names.get(16540), 'sinclair_logbalance');
   assert.equal(names.get(1751), 'loc_1751');
   assert.equal(names.has(16541), false);
+});
+
+test('loc definition parser resolves display names for numeric map IDs', () => {
+  const defs = parseLocDefinitions('[loc_9322]\nname=Log balance\ndesc=slippy\n\n[loc_9323]\nname=Log balance\n');
+  assert.equal(defs.get('loc_9322').name, 'Log balance');
+  assert.equal(defs.get('loc_9323').name, 'Log balance');
 });
 
 test('rejects bad map regions and missing LOC section', () => {
