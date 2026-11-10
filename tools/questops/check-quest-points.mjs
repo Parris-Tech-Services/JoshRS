@@ -53,7 +53,7 @@ function persistence(v) {
 // of its constants is in count_questpoints, and that counted pair names its real stage var.
 const rows = [];
 const qdir = join(scripts, 'quests');
-for (const q of readdirSync(qdir).filter((n) => statSync(join(qdir, n)).isDirectory()).sort()) {
+for (const q of (existsSync(qdir) ? readdirSync(qdir) : []).filter((n) => statSync(join(qdir, n)).isDirectory()).sort()) {
     const pairs = new Map();
     for (const f of walk(join(qdir, q), '.rs2')) for (const c of completeChecks(readFileSync(f, 'utf8'))) pairs.set(c.constant, c.varp);
     if (!pairs.size) continue;

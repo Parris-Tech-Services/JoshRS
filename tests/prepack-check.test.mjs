@@ -178,3 +178,16 @@ test('strip-keys: drops 377-only keys, keeps a base form, never touches stock de
     const noBase = tree({ 'scripts/quests/quest_q/configs/q.loc': '[lonely]\nname=L\nmultiloc=0,missing\n' });
     assert.match(stripUnsupportedKeys(loadContent(noBase), null, engine, null).join('\n'), /NO_BASE_FORM loc lonely/);
 });
+
+test('selfcheck: refuses the live world, passes a clean tree, fails and names a broken one', () => {
+    const run = (...a) => spawnSync(process.execPath, ['tools/questops/selfcheck.mjs', ...a], { encoding: 'utf8' });
+    assert.equal(run('/home/x/lc274/content').status, 2);
+    const clean = tree({ ...BASE, 'scripts/general/scripts/quests.rs2': '[proc,count_questpoints]()(int)\nreturn(0);\n' });
+    const ok = run(clean);
+    assert.equal(ok.status, 0, ok.stdout);
+    assert.match(ok.stdout, /SKIPPED imported maps\s+no --source/);
+    const broken = tree({ ...BASE, 'scripts/general/scripts/quests.rs2': '[proc,count_questpoints]()(int)\nreturn(0);\n', 'scripts/_unpack/225/all.npc': '[hans]\nmodel1=nonexistent\n' });
+    const bad = run(broken);
+    assert.equal(bad.status, 1);
+    assert.match(bad.stdout, /FAIL\s+prepack/);
+});
