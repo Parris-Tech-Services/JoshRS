@@ -1,5 +1,7 @@
 # JoshRS — Full 2004Scape launcher and Woodlands demo
 
+**New agent or contributor? Start with [START_HERE.md](START_HERE.md), then [AGENTS.md](AGENTS.md).** They explain the owner's actual private-family-game direction, the separate Android/Windows/Fedora environments, 274 versus 377 boundaries, current quest-work caveats and non-overlapping agent/safety rules. These are project-wide orientation documents, not claims that this public website hosts the private game.
+
 A **launch hub for the actual 2004Scape reconstruction** plus an original, small mobile-first browser RPG prototype (Woodlands). The full game link opens Lost City's official website. We do not self-host the full game or capture account credentials.
 
 **Open JoshRS:** https://joshrs.vercel.app/ — primary action launches the **real full 2004Scape** on the official Lost City website. The independently developed Woodlands demo is now at https://joshrs.vercel.app/woodlands.html, or run the files locally. **Source:** https://github.com/Parris-Tech-Services/JoshRS
