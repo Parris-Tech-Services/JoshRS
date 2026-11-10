@@ -79,13 +79,25 @@ if ($CreateBackup) {
         throw 'Stop the game gracefully before backup. No copy made.'
     }
     $dest=New-JoshRSLocalBackup -RepoRoot $RepoRoot
-    $report=Write-JoshRSBackupIntegrity -BackupPath $dest -Engine $status.Engine
+    $report=Test-JoshRSBackupIntegrity -BackupPath $dest
+    $sylvieSave=Join-Path $status.Engine 'data\players\main\sylvie.sav'
+    if ((Test-Path -LiteralPath $sylvieSave -PathType Leaf) -and -not $report.ContainsSylvie) {
+        throw 'Sylvie active save exists but is missing from verified backup. Do not install.'
+    }
+    if (Test-Path -LiteralPath $sylvieSave -PathType Leaf) {
+        $sylvieSnapshot=Join-Path $dest 'players\main\sylvie.sav'
+        $sylvieBefore=(Get-FileHash -LiteralPath $sylvieSnapshot -Algorithm SHA256).Hash
+        $sylvieAfter=(Get-FileHash -LiteralPath $sylvieSave -Algorithm SHA256).Hash
+        if ($sylvieBefore -ne $sylvieAfter) {
+            throw 'Sylvie active save changed during backup. Snapshot must not be used.'
+        }
+    }
     if (-not $report.Verified -or -not $report.ContainsElrothiro) {
         throw 'The copy does not contain verified Elrothiro data. Do not restore.'
     }
     $after=(Get-FileHash -LiteralPath $savePath -Algorithm SHA256).Hash
     if ($hash -ne $after) { throw 'Elrothiro changed during backup. Snapshot must not be used.' }
     Write-Host "VERIFIED OFFLINE BACKUP CREATED: $dest"
-    Write-Host "Files checked: $($report.FileCount); Elrothiro preserved: True"
+    Write-Host "Files checked: $($report.FileCount); Elrothiro preserved: True; Sylvie present in snapshot: $($report.ContainsSylvie)"
     Write-Host 'Keep one additional encrypted copy on a separate offline drive. Never publish saves in GitHub.'
 }

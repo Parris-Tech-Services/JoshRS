@@ -111,6 +111,16 @@ function New-JoshRSLocalBackup {
             note='Keep this folder private. Do not commit it to public GitHub.'
         }
         $manifest | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $temporary 'backup-info.json') -Encoding UTF8
+        # Verify the entire copy BEFORE publishing a completed backup directory.
+        $integrityHelper=Join-Path $PSScriptRoot 'save-integrity.ps1'
+        if (-not (Test-Path -LiteralPath $integrityHelper -PathType Leaf)) { throw 'Backup integrity helper missing.' }
+        . $integrityHelper
+        $report=Write-JoshRSBackupIntegrity -BackupPath $temporary -Engine $status.Engine
+        if (-not $report.Verified -or -not $report.ContainsElrothiro) { throw 'Elrothiro missing from verified snapshot.' }
+        $sylvieSource=Join-Path $status.Engine 'data/players/main/sylvie.sav'
+        if ((Test-Path -LiteralPath $sylvieSource -PathType Leaf) -and -not $report.ContainsSylvie) {
+            throw 'Sylvie missing from verified snapshot.'
+        }
         Move-Item -LiteralPath $temporary -Destination $final -ErrorAction Stop
         return $final
     } catch {
