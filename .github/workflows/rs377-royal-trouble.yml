@@ -1,0 +1,82 @@
+name: Royal Trouble — pinned 377 investigation compile, disposable only
+
+on:
+  pull_request:
+    paths:
+      - 'expansions/rs377-quests/royal-trouble/**'
+      - 'tools/rs377-royal-trouble/**'
+      - '.github/workflows/rs377-royal-trouble.yml'
+  push:
+    paths:
+      - 'expansions/rs377-quests/royal-trouble/**'
+      - 'tools/rs377-royal-trouble/**'
+      - '.github/workflows/rs377-royal-trouble.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Installer and quest-state safety tests
+        run: node --test tools/rs377-royal-trouble/apply.test.mjs
+
+  pinned-native-compile:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Clone precise pinned Lost City 377 engine and content in CI temp
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/joshrs-royal-trouble-377"
+          mkdir -p "$root"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Engine-TS.git "$root/engine"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Content.git "$root/content"
+          for spec in 'engine b5ac859b47915afb545e60e4c1208f25d43cb3fb' 'content 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50'; do
+            read -r name pin <<< "$spec"
+            actual="$(git -C "$root/$name" rev-parse HEAD)"
+            if [ "$actual" != "$pin" ]; then
+              git -C "$root/$name" fetch --depth 1 origin "$pin"
+              git -C "$root/$name" checkout --detach "$pin"
+            fi
+            test "$(git -C "$root/$name" rev-parse HEAD)" = "$pin"
+          done
+      - name: Run read-only preflight then stage only into disposable 377 content
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/joshrs-royal-trouble-377/content"
+          printf 'CI DISPOSABLE ONLY\n' > "$root/.joshrs-disposable-content"
+          node tools/rs377-royal-trouble/apply.mjs --content "$root"
+          test ! -e "$root/scripts/quests/quest_royal_trouble"
+          node tools/rs377-royal-trouble/apply.mjs --content "$root" --apply
+          node tools/rs377-royal-trouble/apply.mjs --content "$root" --apply
+          test -s "$root/scripts/quests/quest_royal_trouble/scripts/royal_trouble_investigation.rs2"
+          git -C "$root" diff --check
+      - name: Compile actual revision-377 native RuneScript and server packs
+        shell: bash
+        env:
+          BUILD_SRC_DIR: ../content
+          BUILD_VERIFY: 'true'
+          BUILD_VERIFY_PACK: 'true'
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/joshrs-royal-trouble-377/engine"
+          npm ci --no-audit --no-fund
+          npm run build
+          test -s data/pack/server/script.dat
+          test -s data/pack/server/script.idx
+          echo 'ROYAL_TROUBLE_INVESTIGATION_SOURCE_COMPILED: NOT A FULL QUEST PLAYTEST'
