@@ -5,6 +5,7 @@
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join, basename, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { procBody, completeChecks } from '../lib/rs-refs.mjs';
 
 export const REGION_SIZE = 64;
 export const mapName = (x, z) => 'm' + Math.floor(x / REGION_SIZE) + '_' + Math.floor(z / REGION_SIZE) + '.jm2';
@@ -21,13 +22,16 @@ export function parseMap(text) {
             continue;
         }
         if (!section) continue;
-        const row = line.match(/^(\d+)\s+(\d+)\s+(\d+)\s*:\s*(-?\d+)(?=\D|$)/);
+        // MAP rows carry letter-prefixed tile values ("0 0 2: h30 u48"); NPC/LOC/OBJ rows carry a numeric id.
+        const row = section === 'MAP'
+            ? line.match(/^(\d+)\s+(\d+)\s+(\d+)\s*:()/)
+            : line.match(/^(\d+)\s+(\d+)\s+(\d+)\s*:\s*(-?\d+)(?=\D|$)/);
         if (!row) {
             result.malformed.push({ section, line });
             continue;
         }
         const [, level, localX, localZ, id] = row;
-        result[section].push({ level: Number(level), localX: Number(localX), localZ: Number(localZ), id: Number(id) });
+        result[section].push({ level: Number(level), localX: Number(localX), localZ: Number(localZ), id: id === '' ? null : Number(id) });
     }
     return result;
 }
@@ -109,29 +113,43 @@ function walk(dir, extension, files = []) {
     return files;
 }
 
-export function varDefinition(contentInput, name) {
-    const content = safeContent(contentInput);
-    const pack = loadPack(join(content, 'pack/varp.pack'));
-    const id = pack.byName.get(name);
-    if (id === undefined) return { kind: 'var', status: 'UNREGISTERED_VARP', name, staticOnly: true, value: null };
-    // Do not read _unpack/225/244/245/254: those are NOT the active 274 definitions.
-    const central = join(content, 'scripts/_unpack/274/all.varp');
-    const candidates = [...walk(join(content, 'scripts/quests'), '.varp')];
-    if (existsSync(central)) candidates.unshift(central);
-    for (const f of candidates) {
+function findDefinition(content, name, ext) {
+    // Active definitions: _unpack/274 plus every config under scripts/, but never older revisions'
+    // _unpack folders (225/244/245/254), which are not what the 274 engine packs.
+    const files = walk(join(content, 'scripts'), ext).filter((f) => !/[\\/]_unpack[\\/](?!274[\\/])/.test(f));
+    for (const f of files) {
         const text = readFileSync(f, 'utf8');
         const headers = [...text.matchAll(/^\[([^\]\r\n]+)\]\s*$/gm)];
-        for (let i=0; i<headers.length; i++) {
+        for (let i = 0; i < headers.length; i++) {
             if (headers[i][1] !== name) continue;
-            const after = headers[i].index + headers[i][0].length;
-            const end = i+1 < headers.length ? headers[i+1].index : text.length;
-            const body = text.slice(after,end);
-            const scope = body.match(/^\s*scope\s*=\s*(\S+)/m)?.[1] ?? 'unspecified';
-            return { kind: 'var', status: 'REGISTERED', name, id, scope, permanent: scope === 'perm', definitionFile: relative(content, f),
-                value: null, staticOnly: true, note: 'Current value requires a running disposable test player. Use runtime.ts after Layer 1 is merged.' };
+            const end = i + 1 < headers.length ? headers[i + 1].index : text.length;
+            return { file: relative(content, f), body: text.slice(headers[i].index + headers[i][0].length, end) };
         }
     }
-    return { kind: 'var', status: 'NO_ACTIVE_DEFINITION', name, id, value: null, staticOnly: true };
+    return null;
+}
+
+export function varDefinition(contentInput, name) {
+    const content = safeContent(contentInput);
+    const varps = loadPack(join(content, 'pack/varp.pack'));
+    const id = varps.byName.get(name);
+    if (id === undefined) {
+        // A stage var can be a varbit: a bit range inside a base varp, which persists iff the base does.
+        const vbId = loadPack(join(content, 'pack/varbit.pack')).byName.get(name);
+        if (vbId === undefined) return { kind: 'var', status: 'UNREGISTERED_VAR', name, staticOnly: true, value: null };
+        const def = findDefinition(content, name, '.varbit');
+        const base = def?.body.match(/^\s*basevar\s*=\s*(\S+)/m)?.[1] ?? null;
+        if (!base) return { kind: 'var', status: 'NO_ACTIVE_DEFINITION', type: 'varbit', name, id: vbId, value: null, staticOnly: true };
+        const baseDef = varDefinition(content, base);
+        return { kind: 'var', status: baseDef.status === 'REGISTERED' ? 'REGISTERED' : baseDef.status, type: 'varbit', name, id: vbId,
+            basevar: base, scope: baseDef.scope, permanent: baseDef.permanent === true, definitionFile: def.file, value: null, staticOnly: true,
+            note: 'A varbit persists only if its base varp is scope=perm.' };
+    }
+    const def = findDefinition(content, name, '.varp');
+    if (!def) return { kind: 'var', status: 'NO_ACTIVE_DEFINITION', type: 'varp', name, id, value: null, staticOnly: true };
+    const scope = def.body.match(/^\s*scope\s*=\s*(\S+)/m)?.[1] ?? 'unspecified';
+    return { kind: 'var', status: 'REGISTERED', type: 'varp', name, id, scope, permanent: scope === 'perm', definitionFile: def.file,
+        value: null, staticOnly: true, note: 'Current value requires a running disposable test player (runtime.ts).' };
 }
 
 export function stageDefinition(contentInput, questName) {
@@ -142,12 +160,26 @@ export function stageDefinition(contentInput, questName) {
     const files = walk(join(root,'scripts'), '.rs2');
     const text = files.map((f) => readFileSync(f,'utf8')).join('\n');
     const re = /%([a-z0-9_]+)\s*(?:=|==|===|>=|<)\s*\^([a-z0-9_]*_?(?:complete|done|finished|started|progress)[a-z0-9_]*)/gi;
+    // Authoritative source: [proc,count_questpoints] pairs each counted quest's stage var with its
+    // ^..._complete constant. Use the pair whose constant this quest's scripts also compare against.
+    let counted = null;
+    for (const f of walk(join(content, 'scripts'), '.rs2')) {
+        const body = procBody(readFileSync(f, 'utf8'), 'count_questpoints');
+        if (body) { counted = completeChecks(body); break; }
+    }
+    const own = completeChecks(text);
+    const hit = counted?.find((c) => own.some((o) => o.constant === c.constant && o.varp === c.varp));
+    if (hit) {
+        return { kind: 'stage', status: 'STAGE_VAR_CANDIDATE', source: 'count_questpoints', quest: questName, stageVar: hit.varp,
+            candidates: [hit.varp], variable: varDefinition(content, hit.varp), currentStage: null, staticOnly: true,
+            note: 'From [proc,count_questpoints]; current stage requires runtime.' };
+    }
     const candidates = [...new Set([...text.matchAll(re)].map((m)=>m[1]))];
     const journalFiles = files.filter((f)=>/journal/i.test(basename(f)));
     if (!candidates.length) candidates.push(...new Set(journalFiles.flatMap((f)=>[...readFileSync(f,'utf8').matchAll(/%([a-z0-9_]+)/gi)].map((m)=>m[1]))));
     const stageVar = candidates.length === 1 ? candidates[0] : null;
     return { kind: 'stage', status: !candidates.length ? 'STAGE_VAR_UNKNOWN' : !stageVar ? 'STAGE_VAR_AMBIGUOUS' : 'STAGE_VAR_CANDIDATE',
-        quest: questName, stageVar, candidates, variable: stageVar ? varDefinition(content,stageVar) : null,
+        source: 'heuristic (quest not in count_questpoints)', quest: questName, stageVar, candidates, variable: stageVar ? varDefinition(content,stageVar) : null,
         currentStage: null, staticOnly: true, note: 'Candidate inferred from script; current stage requires runtime. Do not claim quest completed.' };
 }
 

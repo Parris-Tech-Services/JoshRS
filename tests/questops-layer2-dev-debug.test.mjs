@@ -19,7 +19,7 @@ function put(root,path,body) {
     writeFileSync(file,body);
 }
 function sample(npcRows = []) {
-    return ['==== MAP ====', '0 0 0: 5', '1 35 18: 2',
+    return ['==== MAP ====', '0 0 0: u48', '1 35 18: h30 u48', // real 274 terrain rows
         '==== NPC ====', ...npcRows,'==== LOC ====', '1 35 18: 200',
         '==== OBJ ====', ''].join('\n');
 }
@@ -90,4 +90,46 @@ test('CLI exits nonzero for black map and prints machine-readable JSON', (t) => 
     const bad=spawnSync('node',[script,'near','--content','/tmp/lc274/content','--x','1','--z','1'],{encoding:'utf8'});
     assert.equal(bad.status,2);
     assert.match(bad.stderr,/BLOCKED/);
+});
+
+// Regressions found by running against real LostCityRS 274 content.
+test('real terrain rows ("h30 u48") parse; they were all reported MALFORMED_MAP', () => {
+    const m = parseMap('==== MAP ====\n0 0 2: h30 u48\n0 0 3: u50\n==== NPC ====\n0 1 1: 7\n');
+    assert.equal(m.MAP.length, 2);
+    assert.equal(m.malformed.length, 0);
+    assert.equal(m.NPC[0].id, 7);
+});
+
+test('a varbit stage var reports persistence from its base varp', (t) => {
+    const dir = fixture(t);
+    put(dir, 'pack/varbit.pack', '34=horrorquest\n');
+    put(dir, 'pack/varp.pack', '100=deephorror\n');
+    put(dir, 'scripts/quests/quest_horror/configs/h.varbit', '[horrorquest]\nbasevar=deephorror\nstartbit=0\n');
+    put(dir, 'scripts/quests/quest_horror/configs/h.varp', '[deephorror]\nscope=perm\n');
+    const v = varDefinition(dir, 'horrorquest');
+    assert.equal(v.status, 'REGISTERED');
+    assert.equal(v.type, 'varbit');
+    assert.equal(v.basevar, 'deephorror');
+    assert.equal(v.permanent, true);
+});
+
+test('stage var comes from count_questpoints when a quest has several ^..._complete checks', (t) => {
+    const dir = fixture(t);
+    put(dir, 'pack/varp.pack', '1=elenaquest\n2=elena_side\n');
+    put(dir, 'scripts/general/configs/q.varp', '[elenaquest]\nscope=perm\n[elena_side]\nscope=perm\n');
+    put(dir, 'scripts/general/scripts/quests.rs2', '[proc,count_questpoints]()(int)\nif (%elenaquest = ^elena_complete) {}\n[proc,other]\n');
+    put(dir, 'scripts/quests/quest_elena/scripts/e.rs2',
+        'if (%elenaquest = ^elena_complete) {}\nif (%elena_side = ^elena_complete_read_scroll) {}\n');
+    const s = stageDefinition(dir, 'quest_elena');
+    assert.equal(s.status, 'STAGE_VAR_CANDIDATE');
+    assert.equal(s.stageVar, 'elenaquest');
+    assert.equal(s.source, 'count_questpoints');
+});
+
+test('definitions in older revisions\' _unpack folders are ignored', (t) => {
+    const dir = fixture(t);
+    put(dir, 'pack/varp.pack', '5=qp\n');
+    put(dir, 'scripts/_unpack/225/all.varp', '[qp]\ntransmit=yes\n');
+    put(dir, 'scripts/_unpack/274/all.varp', '[qp]\nscope=perm\n');
+    assert.equal(varDefinition(dir, 'qp').permanent, true);
 });
