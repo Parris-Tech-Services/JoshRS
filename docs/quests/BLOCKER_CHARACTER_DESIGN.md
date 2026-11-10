@@ -1,6 +1,8 @@
 # Blocker: automated login stops at character design
 
-**Status: OPEN.** This is the single thing preventing *any* quest from being marked VERIFIED
+**Status: fix available (seeded account), not yet run.** See `tools/questops/playtest/seed-account.ts`. Correction: the row below saying no `[login]` trigger exists is wrong. `scripts/login_logout/login.rs2` starts `[login,_]` and opens the tutorial (and so the design screen) only while `%tutorial < ^tutorial_complete` on Tutorial Island.
+
+**Original status: OPEN.** This is the single thing preventing *any* quest from being marked VERIFIED
 PLAYABLE. Everything else in the port is source-level coherent and measured; none of it has been seen
 running.
 
