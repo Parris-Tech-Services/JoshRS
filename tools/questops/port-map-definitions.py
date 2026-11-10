@@ -121,20 +121,27 @@ def main() -> int:
         s_all = source / "scripts/_unpack" / "377" / f"all.{kind}"
 
         needed: set[int] = set()
+        collisions: dict[int, tuple[str, str]] = {}
         for f in imported:
             for i in parse_map(f)[kind]:
                 if i not in t_pack:
                     needed.add(i)
+                elif i in s_pack and t_pack[i] != s_pack[i]:
+                    collisions[i] = (t_pack[i], s_pack[i])
 
-        add, refused, no_def = [], [], []
+        # Existing-ID conflicts must NOT silently pass. Only translate-map-ids.py can
+        # safely rewrite map references without changing established 274 IDs.
+        if collisions:
+            sample = list(sorted(collisions.items()))[:8]
+            print(f"BLOCKED: {kind} has {len(collisions)} wrong-identity IDs: {sample}")
+            print("Run translate-map-ids.py on an isolated dev copy, then re-run this check.")
+            return 1
+
+        add, no_def = [], []
         for i in sorted(needed):
             name = s_pack.get(i)
             if name is None:
                 no_def.append(i)
-                continue
-            existing = t_pack.get(i)
-            if existing is not None and existing != name:
-                refused.append((i, existing, name))
                 continue
             blk = block_for(s_all, name, kind)
             if blk is None:
@@ -143,11 +150,10 @@ def main() -> int:
             add.append((i, name, blk))
 
         print(f"\n{kind}: referenced-but-missing {len(needed)}  register {len(add)}  "
-              f"id-conflict {len(refused)}  no-definition {len(no_def)}")
-        if refused:
-            print(f"  refused (id already means something else): {refused[:5]}")
+              f"no-definition {len(no_def)}")
         if no_def:
-            print(f"  no definition upstream: {no_def[:8]}")
+            print(f"BLOCKED: no definition upstream: {no_def[:8]}")
+            return 1
 
         if dry or not add:
             continue
