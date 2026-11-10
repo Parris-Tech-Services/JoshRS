@@ -134,6 +134,26 @@ async function snapshot() {
 
 // Log in when credentials are supplied: the client's fields are canvas-drawn, so each field is
 // located by OCR and clicked, then typed into.
+// The title screen also shows "New User | Existing User", so matching that string proves nothing.
+// Click through to the credential form first, then wait for Username/Password.
+let formReached = false;
+for (let attempt = 1; attempt <= 6 && !formReached; attempt++) {
+    await snapshot();
+    if (await clickWord(page, /^existing$/i) || await clickWord(page, /^existing user$/i)) {
+        await page.waitForTimeout(6000);
+        const check = await snapshot();
+        if (/username|password/i.test(check)) {
+            formReached = true;
+            console.log('login form reached');
+        } else {
+            console.log('clicked Existing User but form not detected yet; retrying');
+        }
+    } else {
+        console.log('could not locate an "Existing User" button in OCR output');
+        await page.waitForTimeout(4000);
+    }
+}
+for (let poll = 1; Date.now() - start < maxSeconds * 1000; poll++) {
 if (login) {
     const [user, pass] = login.split(':');
     const clickField = async (re) => {
@@ -180,26 +200,6 @@ let matched = false;
 let lastText = '';
 const start = Date.now();
 
-// The title screen also shows "New User | Existing User", so matching that string proves nothing.
-// Click through to the credential form first, then wait for Username/Password.
-let formReached = false;
-for (let attempt = 1; attempt <= 6 && !formReached; attempt++) {
-    await snapshot();
-    if (await clickWord(page, /^existing$/i) || await clickWord(page, /^existing user$/i)) {
-        await page.waitForTimeout(6000);
-        const check = await snapshot();
-        if (/username|password/i.test(check)) {
-            formReached = true;
-            console.log('login form reached');
-        } else {
-            console.log('clicked Existing User but form not detected yet; retrying');
-        }
-    } else {
-        console.log('could not locate an "Existing User" button in OCR output');
-        await page.waitForTimeout(4000);
-    }
-}
-for (let poll = 1; Date.now() - start < maxSeconds * 1000; poll++) {
     lastText = await snapshot();
     const flat = lastText.replace(/\s+/g, ' ').slice(0, 220);
     console.log(`poll ${poll} t=${Math.round((Date.now() - start) / 1000)}s: ${JSON.stringify(flat)}`);
