@@ -50,7 +50,7 @@ for (const kind of ['npc', 'loc', 'obj']) {
             const p = join(dir, e.name);
             if (e.isDirectory()) walk(p);
             else if (e.name.endsWith(`.${kind}`)) {
-                for (const m of readFileSync(p, 'utf8').matchAll(/^\[([a-z0-9_]+)\]/gim)) names.add(m[1]);
+                for (const m of readFileSync(p, 'utf8').matchAll(/^\[([^\]\n]+)\]/gim)) names.add(m[1]);
             }
         }
     };
