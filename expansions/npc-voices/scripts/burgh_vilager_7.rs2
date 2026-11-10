@@ -1,0 +1,48 @@
+// JoshRS original dialogue - Emilia, the singer of Burgh de Rott.
+// Voice: joyful, unselfconscious, bursts into made-up songs; dreams of a village choir.
+
+[opnpc1,burgh_vilager_7]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>~ Hello, hello, a stranger is here,|a stranger with boots and a face full of cheer! ~|...Sorry. It just comes out.");
+    case 1 : ~chatnpc("<p,happy>Emilia! I sing while I work.|And while I rest. And while I sleep, apparently.|My neighbours have mentioned it.");
+    case 2 : ~chatnpc("<p,happy>Oh, a listener! I mean, a visitor.|But you can be both. Please be both.");
+}
+@joshrs_emilia_menu;
+
+[label,joshrs_emilia_menu]
+def_int $option = ~p_choice5("Sing me something!", 1, "People say you sound like a kettle.", 2, "Why do you sing so much?", 3, "Tell me about your choir idea.", 4, "I have to go. Bye, Emilia!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,happy>Sing me something!");
+    switch_int(random(3)) {
+        case 0 : ~chatnpc("<p,happy>~ Oh the fog rolls in and the fog rolls out,|and the goat eats a shirt and the farmers shout,|but the kettle's on and the bread's nearly done! ~");
+        case 1 : ~chatnpc("<p,happy>~ Little boots on a muddy road,|carry a hero and carry a load,|march to the marsh and march back home! ~");
+        case 2 : ~chatnpc("<p,happy>~ Turnip in the morning, turnip in the night,|turnip in the pot till it's cooked just right,|Teodor says turnips are a farmer's delight! ~");
+    }
+    ~chatplayer("<p,laugh>That was wonderful!");
+    ~chatnpc("<p,shock>Really? You liked it?|Nobody's ever said that before. Well, Valeria.|Valeria says it makes her bread rise.");
+    @joshrs_emilia_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,neutral>Some people say you sound a bit like a kettle.");
+    ~chatnpc("<p,happy>I know! Luscion says it every morning.");
+    ~chatnpc("<p,neutral>But think about it. What does a kettle do?|It sings when something warm is coming.|A cup of tea. A friend at the door.");
+    ~chatnpc("<p,happy>So if I sound like a kettle,|I must sound like good news.|I've decided to take it as a compliment.");
+    @joshrs_emilia_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Why do you sing so much?");
+    ~chatnpc("<p,neutral>My grandmother told me that fog is just|a cloud that's feeling low.|And the best thing for feeling low is a song.");
+    ~chatnpc("<p,happy>So I sing to the fog. Some days it lifts.|Probably not because of me.|But I like to think it helps a little.");
+    @joshrs_emilia_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Do you have any big plans?");
+    ~chatnpc("<p,happy>A choir! The Burgh de Rott Marsh Singers!|Everybody in the village, singing together|on the bridge at the end of every week.");
+    ~chatnpc("<p,neutral>So far I have: me. Helena, who mostly hums.|And Sorin, who says the fleas like it.|That's a start, isn't it?");
+    ~chatplayer("<p,happy>That's definitely a start. I'd come and listen.");
+    ~chatnpc("<p,happy>Then we'll have an audience too!|Oh, this is going to be marvellous.");
+    @joshrs_emilia_menu;
+} else {
+    ~chatplayer("<p,happy>I have to go. Bye, Emilia!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>~ Goodbye, goodbye, the stranger must go,|but come back soon to the marsh below! ~");
+        case 1 : ~chatnpc("<p,happy>Bye! Hum something on your travels.|It makes the road shorter. I promise.");
+    }
+}
