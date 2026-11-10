@@ -1,0 +1,23 @@
+name: JoshRS 377 Sinclair crossing diagnostic
+
+on:
+  push:
+    paths:
+      - 'tools/rs377-bridge/**'
+      - '.github/workflows/rs377-sinclair-crossing.yml'
+  pull_request:
+    paths:
+      - 'tools/rs377-bridge/**'
+      - '.github/workflows/rs377-sinclair-crossing.yml'
+  workflow_dispatch:
+
+jobs:
+  parser-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify read-only map/loc parser
+        run: node --test tools/rs377-bridge/inspect-sinclair.test.mjs
