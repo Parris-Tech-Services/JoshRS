@@ -97,7 +97,7 @@ def main() -> int:
                 m = RECORD.match(line)
                 if not m:
                     continue
-                i = int(m.group(4))
+                i = int(m.group(4))  # 0 is a valid id here
                 tsym, ssym = t_pack.get(i), s_pack.get(i)
                 if tsym is not None and ssym is not None and tsym != ssym:
                     conflicts[i] = ssym

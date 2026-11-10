@@ -41,15 +41,13 @@ def parse_map(path: Path) -> dict[str, set[int]]:
     for raw in path.read_text(errors="ignore").splitlines():
         line = raw.strip()
         if line.startswith("===="):
-            cur = next((k for k, v in SECTIONS.items() if v in line), None)
+            cur = next((k for k, v in SECTIONS.items() if re.search(rf"\b{v}\b", line)), None)
             continue
         if not cur:
             continue
-        m = re.match(r"^-?\d+\s+-?\d+\s+-?\d+:\s*(-?\d+)", line)
-        if m:
-            i = int(m.group(1))
-            if i > 0:
-                out[cur].add(i)
+        m = re.match(r"^\d+\s+\d+\s+\d+\s*:\s*(\d+)", line)
+        if m:  # id 0 is a real entity, not "empty"
+            out[cur].add(int(m.group(1)))
     return out
 
 
@@ -89,6 +87,19 @@ def block_for(all_file: Path, name: str, kind: str = "") -> str | None:
         return None
     end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("[")), len(lines))
     return "".join(lines[start:end])
+
+
+def append_lines(path: Path, text: str) -> None:
+    """Append without gluing onto an unterminated last line ("1357=foo" + "2079=bar" -> one bad entry)."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    prefix = ""
+    if path.exists() and path.stat().st_size:
+        with path.open("rb") as fh:
+            fh.seek(-1, 2)
+            if fh.read(1) != b"\n":
+                prefix = "\n"
+    with path.open("a") as fh:
+        fh.write(prefix + text)
 
 
 def main() -> int:
@@ -132,9 +143,13 @@ def main() -> int:
             if name is None:
                 no_def.append(i)
                 continue
-            existing = t_pack.get(i)
-            if existing is not None and existing != name:
-                refused.append((i, existing, name))
+            # The old check compared t_pack[i] with name, but `needed` only contains ids the target
+            # lacks - so it could never fire. The reachable hazard is a symbol that already exists in
+            # the target under a different id: registering it again at the source id would create two
+            # entries for one symbol and make map references ambiguous.
+            by_symbol = {sym: sid for sid, sym in t_pack.items()}
+            if name in by_symbol and by_symbol[name] != i:
+                refused.append((i, f"already id {by_symbol[name]}", name))
                 continue
             blk = block_for(s_all, name, kind)
             if blk is None:
@@ -151,12 +166,8 @@ def main() -> int:
 
         if dry or not add:
             continue
-        with tpack.open("a") as fh:
-            for i, name, _ in add:
-                fh.write(f"{i}={name}\n")
-        with t_all.open("a") as fh:
-            for _, _, blk in add:
-                fh.write("\n" + blk)
+        append_lines(tpack, "".join(f"{i}={name}\n" for i, name, _ in add))
+        append_lines(t_all, "".join("\n" + (blk if blk.endswith("\n") else blk + "\n") for _, _, blk in add))
         print(f"  registered {len(add)} {kind} definitions into {t_all.name}")
 
     if not dry:

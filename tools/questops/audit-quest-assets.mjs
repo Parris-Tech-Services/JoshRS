@@ -8,6 +8,7 @@
 // Usage: audit-quest-assets.mjs <content-dir> [--json]
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, basename } from 'node:path';
+import { handlerRefs, indexDefs } from './lib/rs-refs.mjs';
 
 const content = process.argv[2];
 if (!content) {
@@ -48,21 +49,10 @@ const varbitPack = loadPack(join(content, 'pack/varbit.pack'));
 const varnPack = loadPack(join(content, 'pack/varn.pack'));
 const varsPack = loadPack(join(content, 'pack/vars.pack'));
 
-// all.npc / all.varp carry definitions; a symbol in a pack without a definition is unusable.
-const unpack = join(content, 'scripts/_unpack');
-const revDirs = existsSync(unpack) ? readdirSync(unpack) : [];
-const npcDefs = new Set();
-const varDefs = new Set();
-for (const rev of revDirs) {
-    const npcFile = join(unpack, rev, 'all.npc');
-    if (existsSync(npcFile)) {
-        for (const m of readFileSync(npcFile, 'utf8').matchAll(/^\[([a-z0-9_]+)\]/gim)) npcDefs.add(m[1]);
-    }
-    const varFile = join(unpack, rev, 'all.varp');
-    if (existsSync(varFile)) {
-        for (const m of readFileSync(varFile, 'utf8').matchAll(/^\[([a-z0-9_]+)\]/gim)) varDefs.add(m[1]);
-    }
-}
+// Definitions live in _unpack/<rev>/all.<kind> and in per-quest config files; index both, or every
+// NPC defined in a quest's own configs is reported as "unregistered".
+const npcDefs = indexDefs(join(content, 'scripts'), 'npc');
+const varDefs = indexDefs(join(content, 'scripts'), 'varp');
 
 const questsDir = join(content, 'scripts/quests');
 const PORTED = new Set([
@@ -81,10 +71,7 @@ for (const name of readdirSync(questsDir).filter((n) => PORTED.has(n)).sort()) {
 
     // Interaction handlers name a symbol and a registry: opnpc -> npc, oploc -> loc, opheld -> obj.
     // Treating them as one namespace produced false "missing NPC" reports for objects and scenery.
-    const byKind = (k) => [...new Set([...text.matchAll(new RegExp(`\\[op${k}u?\\d*,\\s*([a-z0-9_]+)\\]`, 'gi'))].map((m) => m[1]))];
-    const npcRefs = byKind('npc');
-    const locRefs = byKind('loc');
-    const objRefs = byKind('held');
+    const { npc: npcRefs, loc: locRefs, obj: objRefs } = handlerRefs(text);
     const missingNpc = npcRefs.filter((s) => !npcPack.has(s));
     const missingLoc = locRefs.filter((s) => !locPack.has(s));
     const missingObj = objRefs.filter((s) => !objPack.has(s));

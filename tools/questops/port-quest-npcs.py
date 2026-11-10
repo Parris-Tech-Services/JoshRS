@@ -77,7 +77,7 @@ def main() -> int:
         print(f"BLOCKED: need {t_all_npc} and {s_all_npc}")
         return 2
 
-    known_defs = set(re.findall(r"(?m)^\[([a-z0-9_]+)\]", t_all_npc.read_text(errors="ignore")))
+    known_defs = set(re.findall(r"(?m)^\[([^\]\r\n]+)\]", t_all_npc.read_text(errors="ignore")))
 
     # Collect symbols referenced by ported quests
     wanted: set[str] = set()
@@ -88,7 +88,7 @@ def main() -> int:
         for f in (q / "scripts").glob("*.rs2"):
             text = f.read_text(errors="ignore")
             # NPC handlers only, including the "u" variants ([opnpcu,...]) used heavily by quests.
-            wanted |= set(re.findall(r"\[opnpcu?\d*,\s*([a-z0-9_]+)\]", text, re.I))
+            wanted |= set(re.findall(r"\[[oa]pnpc(?:\d+|u|t)?,\s*([^\],\s]+)\]", text, re.I))
 
     to_add, refused, no_def = [], [], []
     for name in sorted(wanted):
