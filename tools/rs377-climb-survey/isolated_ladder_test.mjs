@@ -162,14 +162,17 @@ for (const c of cases) {
     const tries = [];
     let row = { what: c.what, loc: c.loc, ladder: `${c.x},${c.z} L${c.level}`, expectLevel: c.expectLevel };
     try {
-        for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const offsets = c.standX !== undefined ? [[c.standX - c.x, c.standZ - c.z]] : [[1, 0], [-1, 0], [0, 1], [0, -1]];
+        for (const [dx, dz] of offsets) {
             const pos = await attempt(c.user, c, c.x + dx, c.z + dz);
-            tries.push(`${c.x + dx},${c.z + dz}->L${pos.level}${pos.msgs.length ? ' [' + pos.msgs.join(' | ') + ']' : ''}`);
+            tries.push(`${c.x + dx},${c.z + dz}->${pos.x},${pos.z},L${pos.level}${pos.msgs.length ? ' [' + pos.msgs.join(' | ') + ']' : ''}`);
+            if (c.expectZ !== undefined) { if (pos.z === c.expectZ && pos.level === c.expectLevel) break; else continue; }
             if (!isControl && pos.level === c.expectLevel) break;   // reached and climbed
             if (isControl && pos.level !== c.level) break;          // control moved: failure
         }
-        const last = Number(tries.at(-1).match(/->L(\d+)/)[1]);
-        row = { ...row, tries, pass: last === c.expectLevel };
+        const m = tries.at(-1).match(/->(\d+),(\d+),L(\d+)/);
+        const pass = Number(m[3]) === c.expectLevel && (c.expectZ === undefined || Number(m[2]) === c.expectZ);
+        row = { ...row, tries, pass };
     } catch (e) {
         row = { ...row, tries, error: String(e.message || e), pass: false };
     }
