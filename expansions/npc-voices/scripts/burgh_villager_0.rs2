@@ -1,0 +1,44 @@
+// JoshRS original dialogue - Sorin, Burgh de Rott's itchiest resident.
+// Voice: dramatic, long-suffering, oddly scholarly about the fleas that plague him.
+
+[opnpc1,burgh_villager_0]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,shock>Don't come any closer! For your own safety.|They're very territorial today.");
+    case 1 : ~chatnpc("<p,sad>Ah, a visitor. Forgive me if I scratch|mid-sentence. It's not rudeness. It's survival.");
+    case 2 : ~chatnpc("<p,neutral>Sorin. Villager, sufferer, and the only|scholar of fleas in all of Burgh de Rott.");
+}
+@joshrs_sorin_menu;
+
+[label,joshrs_sorin_menu]
+def_int $option = ~p_choice5("Who are 'they'?", 1, "A scholar of fleas?", 2, "Have you tried a bath?", 3, "Is there anything I can do to help?", 4, "I'll keep my distance. Goodbye!", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Who are 'they'?");
+    ~chatnpc("<p,sad>The fleas! My fleas. Well, I say 'my' fleas.|I'm not sure they'd agree. I think,|by now, they consider me THEIR human.");
+    ~chatnpc("<p,neutral>There's a big one I call the Duke.|He lives behind my left ear.|He's in charge of the others. I'm almost sure of it.");
+    ~chatplayer("<p,laugh>You've named them?");
+    ~chatnpc("<p,neutral>Only the important ones.|There are far too many to name them all.|I'm not a madman.");
+    @joshrs_sorin_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>A scholar of fleas?");
+    ~chatnpc("<p,happy>Indeed! If one must suffer, one may as well learn.|I keep a journal. Forty-one pages so far.");
+    ~chatnpc("<p,neutral>Did you know they get livelier before a storm?|And quieter when Emilia sings?|I think they find her singing soothing.");
+    ~chatplayer("<p,quiz>What are you going to do with all those notes?");
+    ~chatnpc("<p,happy>Write a book, of course!|'A Life Among the Fleas: One Man's Itch.'|It will be a masterpiece. Or at least very long.");
+    @joshrs_sorin_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Have you tried... having a bath?");
+    ~chatnpc("<p,shock>A bath? In THIS weather?|Have you felt the water here? It's colder|than the look Florin gives Radu's goat.");
+    ~chatnpc("<p,neutral>Besides, I tried once. The fleas simply|climbed onto my head and waited.|They're patient. I respect that, in a way.");
+    @joshrs_sorin_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Is there anything I can do to help?");
+    ~chatnpc("<p,happy>Help? You're helping right now.|Most people take one look at me and cross the road.|You stopped and asked. That's rare.");
+    ~chatnpc("<p,neutral>If you ever find a comb with very, very small teeth,|think of me. And the Duke. Mostly me.");
+    @joshrs_sorin_menu;
+} else {
+    ~chatplayer("<p,happy>I think I'll keep my distance. Goodbye!");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Very wise. Farewell, friend.|And check your hat when you get home. Just in case.");
+        case 1 : ~chatnpc("<p,neutral>Goodbye! The Duke says goodbye too.|...I think. He's hard to read.");
+    }
+}
