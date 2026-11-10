@@ -43,6 +43,10 @@ jobs:
           git clone --depth 1 --branch 274 https://github.com/LostCityRS/Content.git "$root/content"
           python3 tools/android377-phone/loopback_bind.py "$root/engine"
           cd "$root/engine"
+          # npm 11.19 gates install scripts behind allowScripts, which silently skips esbuild's
+          # postinstall and leaves the engine unable to boot. Pin the known-good major.
+          npm i -g npm@10 >/dev/null 2>&1 || true
+          npm --version
           npm ci --no-audit --no-fund
           nohup npx tsx src/app.ts > "$root/engine.log" 2>&1 &
           for _ in $(seq 1 120); do

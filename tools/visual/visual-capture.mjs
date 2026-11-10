@@ -261,6 +261,31 @@ if (login) {
             if (await clickField(re)) { clicked = true; break; }
         }
         if (!clicked) {
+            // Targeted sweep of the lower-centre region, where a design confirm button sits. This is
+            // a small area (not the whole canvas), so it is cheap and each click is checked.
+            const cbox = await page.locator('canvas').first().boundingBox();
+            const cdims = await page.evaluate(() => {
+                const c = document.querySelector('canvas');
+                return c ? { w: c.width, h: c.height } : null;
+            });
+            if (cbox && cdims) {
+                outerDesign: for (let fy = 0.55; fy <= 0.95; fy += 0.08) {
+                    for (let fx = 0.30; fx <= 0.70; fx += 0.10) {
+                        await page.mouse.click(cbox.x + fx * cbox.width, cbox.y + fy * cbox.height);
+                        await page.waitForTimeout(1200);
+                        let t = '';
+                        try { t = await snapshot(); } catch { continue; }
+                        if (!/design your player|design colour|gender/i.test(t)) {
+                            console.log(`design advanced by clicking (${fx.toFixed(2)}, ${fy.toFixed(2)})`);
+                            clicked = true;
+                            break outerDesign;
+                        }
+                    }
+                }
+                if (!clicked) console.log('design sweep found no confirm control');
+            }
+        }
+        if (!clicked) {
             // No labelled control: try the bottom-centre band where a confirm button normally sits.
             const cb = await page.locator('canvas').first().boundingBox();
             const dims = await page.evaluate(() => {
