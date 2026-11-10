@@ -249,6 +249,22 @@ if (login) {
         console.log('clicked Login');
     }
     await page.waitForTimeout(8000);
+
+    // A brand-new account lands on character design, not in the world. There is no sidebar there,
+    // so every tab click afterwards would hit nothing - which is exactly what the tab sweep saw.
+    let afterLogin = '';
+    try { afterLogin = await snapshot(); } catch { /* canvas may be mid-swap */ }
+    if (/design your player|design colour|gender/i.test(afterLogin)) {
+        console.log('character design detected; completing it');
+        for (const re of [/^accept$/i, /^confirm$/i, /^continue$/i, /^done$/i, /^create$/i, /^looks good$/i]) {
+            if (await clickField(re)) { break; }
+        }
+        await page.waitForTimeout(6000);
+        try {
+            const after = await snapshot();
+            console.log(`post-design screen: ${JSON.stringify(after.replace(/\s+/g, ' ').slice(0, 140))}`);
+        } catch { /* ignore */ }
+    }
 }
 
 
