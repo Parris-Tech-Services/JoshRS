@@ -2,7 +2,7 @@
 function Get-JoshRSBackupFiles {
     [CmdletBinding()]
     param([Parameter(Mandatory)][string]$Folder)
-    $root=(Resolve-Path -LiteralPath $Folder -ErrorAction Stop).Path
+    $root=(Get-Item -LiteralPath $Folder -ErrorAction Stop).FullName
     # Windows can report FileInfo.FullName with an extended-length prefix
     # (\\?\) while Resolve-Path reports the normal spelling. Compare
     # normalised absolute paths, never substring using unmatched lengths.
@@ -17,7 +17,7 @@ function Get-JoshRSBackupFiles {
         $absolute=[string]$item.FullName
         if ($absolute.StartsWith('\\?\')) { $absolute=$absolute.Substring(4) }
         if (-not $absolute.StartsWith($prefix,[StringComparison]::OrdinalIgnoreCase)) {
-            throw ('Backup root mismatch: root=' + $normalRoot.Substring([Math]::Max(0,$normalRoot.Length-115)) + '; file=' + $absolute.Substring([Math]::Max(0,$absolute.Length-120)) + '. Refusing to trust this snapshot.')
+            throw ('Backup root mismatch: root-start=' + $normalRoot.Substring(0,[Math]::Min(32,$normalRoot.Length)) + '; file-start=' + $absolute.Substring(0,[Math]::Min(32,$absolute.Length)) + '; root-end=' + $normalRoot.Substring([Math]::Max(0,$normalRoot.Length-60)) + '; file-end=' + $absolute.Substring([Math]::Max(0,$absolute.Length-60)) + '. Refusing to trust this snapshot.')
         }
         $relative=$absolute.Substring($prefix.Length).Replace('\','/')
         if ($relative.Contains('..') -or -not (
