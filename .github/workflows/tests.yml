@@ -13,6 +13,15 @@ jobs:
         with:
           node-version: "22"
       - run: npm test
+      - name: Verify isolated JoshRS 377 quest, gate and save safety modules
+        run: |
+          node --test \
+            expansions/joshrs-quests/the-peace-shirt/install.test.mjs \
+            expansions/joshrs-quests/the-peace-shirt/install-journal.test.mjs \
+            tools/rs377-peace-shirt-tab/install.test.mjs \
+            tools/rs377-burgh-gate/apply.test.mjs \
+            tools/rs377-quest-playtest/scenario-policy.test.mjs \
+            tools/rs377-saves/validate-family-world.test.mjs
       - run: docker compose -f deploy/local/compose.yaml config -q
   browser:
     # Playwright 1.57 cannot install Chromium on the new ubuntu-26.04 runner.
