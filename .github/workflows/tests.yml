@@ -49,3 +49,23 @@ jobs:
           name: joshrs-browser-screenshots
           path: joshrs-*.png
           if-no-files-found: ignore
+
+  windows-family-safety:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse family PowerShell scripts without executing them
+        shell: powershell
+        run: |
+          $paths = @('deploy/jparris-windows/family-health.ps1','deploy/jparris-windows/family-play.ps1','deploy/jparris-windows/install-tested-family-release.ps1','deploy/jparris-windows/stop-selected-world.ps1','deploy/jparris-windows/test-family-health.ps1','tools/rs377-quest-playtest/prepare-recovery-drill.ps1','tools/rs377-quest-playtest/run-journal-isolated.ps1','tools/rs377-quest-playtest/run-recovery-drill.ps1','tools/rs377-burgh-gate/run-isolated.ps1','tools/rs377-peace-shirt-tab/run-isolated.ps1')
+          foreach ($path in $paths) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tokens,[ref]$errors)
+            if ($errors.Count) { throw "$path syntax errors: $($errors | Out-String)" }
+          }
+      - name: Verify synthetic family backup, recovery and port conflict safeguards
+        shell: powershell
+        run: '& .\deploy\jparris-windows\test-family-health.ps1'
