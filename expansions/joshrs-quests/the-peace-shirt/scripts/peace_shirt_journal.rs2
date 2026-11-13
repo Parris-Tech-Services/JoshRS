@@ -1,0 +1,20 @@
+// Uses the existing journal interface and saved quest stage. No client cache changes.
+[proc,joshrs_peace_shirt_journal]
+def_string $text;
+switch_int(%varp_724) {
+    case 0 : $text = "@dbl@Speak to @dre@Radu@dbl@ in Burgh de Rott about Florin, then offer to help him make a shirt.";
+    case 1 : $text = "@dbl@Take @dre@three balls of wool@dbl@ to @dre@Ileana@dbl@ in Burgh de Rott. Raw fleece must first be spun on a spinning wheel.|";
+        if (inv_total(inv, ball_of_wool) >= 3) {
+            $text = append($text, "@str@I have enough balls of wool with me.");
+        } else {
+            $text = append($text, "@dbl@I do not yet have all three balls of wool with me. Ileana will only take them when I have all three.");
+        }
+    case 2 : $text = "@str@I gave Ileana the wool.|@dbl@Return to @dre@Radu@dbl@. He must knit one row himself to make this his apology.";
+    case 3 : $text = "@str@Radu knitted his crooked row.|@dbl@Return to @dre@Ileana@dbl@ so she can finish the shirt.";
+    case 4 : $text = "@str@Ileana finished the shirt.|@dbl@Speak to @dre@Florin@dbl@ and persuade him to accept Radu's apology. Be honest about Radu's effort.";
+    case 5 : $text = "@str@Florin has agreed to Friday chess.|@dbl@Tell @dre@Radu@dbl@ the good news to finish the quest.";
+    case 6 : $text = "@red@QUEST COMPLETE!|@dbl@Radu and Florin are friends again.|Rewards: 1 Quest Point, 450 Crafting XP and 300 coins. Rewards are given once.";
+    case default : $text = "@dbl@This quest has an unrecognised progress value. Please report it before trying to continue.";
+}
+$text = append($text, "||@dre@Playing together@dbl@|Each character accepts the quest separately, brings their own three balls of wool and collects their own reward. Helping a friend does not change your saved progress.||@dbl@The shirt and knitting are described in the story; they do not become backpack items. You can reopen this journal by talking to Radu.");
+~quest_journal("The Peace Shirt", $text);

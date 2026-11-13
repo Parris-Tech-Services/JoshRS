@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const root='C:/JoshRS-TestWorlds/family-polish-20261113';
+const file=path.join(root,'engine/tools/pack/interface/PackClient.ts');
+const original=fs.readFileSync(file,'utf8');
+const anchor='if (Environment.BUILD_VERIFY && !Packet.checkcrc(packed, 0, packed.length, 1433713710)) {';
+if(original.split(anchor).length!==2) throw new Error('Unexpected native interface verifier; refusing patch.');
+const addition="import { verifyPeaceShirtInterface } from './VerifyPeaceShirt.js';\n";
+fs.writeFileSync(file+'.pre-peace-shirt',original,{flag:'wx'});
+fs.writeFileSync(file,addition+original.replace(anchor,'if (Environment.BUILD_VERIFY && !Packet.checkcrc(packed, 0, packed.length, 1433713710) && !verifyPeaceShirtInterface(packed, Environment.BUILD_SRC_DIR)) {'));
+fs.copyFileSync(path.join(here,'verified-interface.ts'),path.join(root,'engine/tools/pack/interface/VerifyPeaceShirt.ts'),fs.constants.COPYFILE_EXCL);
+fs.writeFileSync(path.join(root,'content/.peace-shirt-interface-profile.json'),JSON.stringify({version:1,name:'peace-shirt-v1',button:18786,originalSHA256:'2eed171c79d64d994d2bbba01fd6650ac0f764b23951ea5c1c4d04ccf10e4e89'},null,2),{flag:'wx'});
+console.log('Enabled exact-hash Peace Shirt interface profile; BUILD_VERIFY remains true.');

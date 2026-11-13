@@ -2,12 +2,24 @@
 function Get-JoshRSBackupFiles {
     [CmdletBinding()]
     param([Parameter(Mandatory)][string]$Folder)
-    $root=(Resolve-Path -LiteralPath $Folder -ErrorAction Stop).Path
+    $root=(Get-Item -LiteralPath $Folder -ErrorAction Stop).FullName
+    # Windows can report FileInfo.FullName with an extended-length prefix
+    # (\\?\) while Resolve-Path reports the normal spelling. Compare
+    # normalised absolute paths, never substring using unmatched lengths.
+    $normalRoot=[string]$root
+    if ($normalRoot.StartsWith('\\?\')) { $normalRoot=$normalRoot.Substring(4) }
+    $normalRoot=$normalRoot.TrimEnd([char[]]@([char]'\',[char]'/'))
+    $prefix=$normalRoot+'\'
     $list=@(Get-ChildItem -LiteralPath $root -Recurse -File -ErrorAction Stop |
         Where-Object { $_.Name -ne 'backup-info.json' -and $_.Name -ne 'integrity.json' } |
         Sort-Object FullName)
     foreach ($item in $list) {
-        $relative=$item.FullName.Substring($root.Length).TrimStart([char[]]@([char]'\',[char]'/')).Replace('\','/')
+        $absolute=[string]$item.FullName
+        if ($absolute.StartsWith('\\?\')) { $absolute=$absolute.Substring(4) }
+        if (-not $absolute.StartsWith($prefix,[StringComparison]::OrdinalIgnoreCase)) {
+            throw 'Backup file lies outside its expected root. Refusing to trust this snapshot.'
+        }
+        $relative=$absolute.Substring($prefix.Length).Replace('\','/')
         if ($relative.Contains('..') -or -not (
           $relative.StartsWith('players/') -or $relative -in @('db.sqlite','db.sqlite-wal','db.sqlite-shm')
         )) { throw 'Unexpected backup file path. Refusing to trust this snapshot.' }

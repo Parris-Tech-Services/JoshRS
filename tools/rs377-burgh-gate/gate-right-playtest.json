@@ -1,0 +1,16 @@
+{
+  "user": "burghtest4",
+  "mode": "assisted",
+  "steps": [
+    { "tele": [0, 3484, 3244] },
+    { "loc": [3484, 3244, 12817] },
+    { "expectNoText": "Nothing interesting happens" },
+    { "expectNoText": "I can't reach that" },
+    { "expectNoText": "The other half" },
+    { "walk": [3484, 3241] },
+    { "expectSavedPosition": [0, 3484, 3241] },
+    { "walk": [3484, 3245] },
+    { "expectSavedPosition": [0, 3484, 3245] },
+    { "expectSaved": { "varp": 724, "value": 0 } }
+  ]
+}

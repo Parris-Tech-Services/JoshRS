@@ -1,12 +1,16 @@
 [CmdletBinding()]
-param([switch]$ValidateUi)
+param([switch]$ValidateUi,[string]$RepoRoot='')
 
 try {
 $ErrorActionPreference='Stop'
-$script:RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+$codeRoot=(Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+if (-not $RepoRoot) { $RepoRoot=$codeRoot }
+$script:RepoRoot=(Resolve-Path -LiteralPath $RepoRoot).Path
+$externalInstallation=($script:RepoRoot -ne $codeRoot)
 . (Join-Path $PSScriptRoot 'support.ps1')
 . (Join-Path $PSScriptRoot 'save-integrity.ps1')
 . (Join-Path $PSScriptRoot 'discovery.ps1')
+. (Join-Path $PSScriptRoot 'family-health.ps1')
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
@@ -103,6 +107,7 @@ function Start-FirstRun {
 }
 function Update-Dashboard {
     $s=Get-JoshRSStatus -RepoRoot $script:RepoRoot
+    $health=Get-JoshRSFamilyHealth -RepoRoot $script:RepoRoot
     $script:Current=$s
     $ready=$s.Configured
     $running=($s.GamePortOpen -and $s.WebPortOpen)
@@ -111,9 +116,9 @@ function Update-Dashboard {
         $script:StateLabel.ForeColor=Color '#FBC976'
         $script:DetailLabel.Text=if($s.Problem){$s.Problem}else{'Restore your Fedora USB copy or install a clean revision-377 world.'}
     } elseif($running) {
-        $script:StateLabel.Text='SERVER PORTS RESPONDING'
+        $script:StateLabel.Text=if($health.State -eq 'Ready'){'SERVER READY'}else{'CHECK SERVER IDENTITY'}
         $script:StateLabel.ForeColor=Color '#8DE6BD'
-        $script:DetailLabel.Text="Game TCP $($s.GamePort) and update HTTP $($s.WebPort) are listening locally. This does not confirm an in-game login."
+        $script:DetailLabel.Text=$health.Detail
     } elseif($s.GamePortOpen -or $s.WebPortOpen) {
         $script:StateLabel.Text='PARTIAL / PORT CONFLICT'
         $script:StateLabel.ForeColor=Color '#FBC976'
@@ -124,6 +129,7 @@ function Update-Dashboard {
         $script:DetailLabel.Text="Installed: $($s.Source). Game $($s.GamePort), HTTP $($s.WebPort)."
     }
     $script:SaveLabel.Text="Player save files: $($s.SaveCount)    Account database: $(if($s.DatabasePresent){'found'}else{'not found'})"
+    $script:BackupLabel.Text=if($health.Backup){'Last hash-verified backup: '+$health.Backup.Created}else{'No hash-verified backup found. A cold launch will create one before starting.'}
     $script:StartButton.Enabled= -not ($s.GamePortOpen -xor $s.WebPortOpen)
     $script:StartButton.Text=if($ready){'PLAY JOSHRS'}else{'SET UP AND PLAY'}
     $script:CleanButton.Text=if($ready){'CHECK / REPAIR INSTALLATION'}else{'INSTALL A CLEAN 377 WORLD'}
@@ -131,11 +137,16 @@ function Update-Dashboard {
         ($s.SavePresent -or $s.DatabasePresent))
     $script:CleanButton.Enabled= -not ($s.GamePortOpen -or $s.WebPortOpen)
     $script:ImportButton.Enabled= -not ($s.GamePortOpen -or $s.WebPortOpen)
+    if ($externalInstallation) {
+        $script:CleanButton.Enabled=$false
+        $script:ImportButton.Enabled=$false
+    }
+    if ($health.State -eq 'Conflict') { $script:StartButton.Enabled=$false }
 }
 
 $script:Form=[System.Windows.Forms.Form]::new()
 $script:Form.Text='JoshRS | JParris Desktop'
-$script:Form.ClientSize=[System.Drawing.Size]::new(850,640)
+$script:Form.ClientSize=[System.Drawing.Size]::new(850,710)
 $script:Form.StartPosition=[System.Windows.Forms.FormStartPosition]::CenterScreen
 $script:Form.FormBorderStyle=[System.Windows.Forms.FormBorderStyle]::FixedSingle
 $script:Form.MaximizeBox=$false
@@ -170,7 +181,9 @@ $openFiles=Add-Action $script:Form 'Game files' 493 492 145 47
 $openBackups=Add-Action $script:Form 'Backups' 646 492 168 47
 
 $script:SaveLabel=Add-Text $script:Form '' 36 552 775 23 10 $false '#BECFE3'
-$script:Hint=Add-Text $script:Form 'First run: Play looks for your Fedora USB copy. No paid hosting or WSL needed.' 36 582 779 32 10 $false '#96AFC9'
+$script:BackupLabel=Add-Text $script:Form '' 36 581 779 30 10 $false '#BECFE3'
+$recoveryCopy=Add-Action $script:Form 'PREPARE A RECOVERY COPY' 34 620 376 42
+$script:Hint=Add-Text $script:Form 'Play preserves this world. Recovery copies are verified separately and never replace a running game.' 36 671 779 32 10 $false '#96AFC9'
 
 $script:StartButton.Add_Click({
     try {
@@ -178,7 +191,9 @@ $script:StartButton.Add_Click({
         if (-not $s.Configured) {
             Start-FirstRun
         } else {
-            Start-GameTask (Join-Path $PSScriptRoot 'play.ps1')
+            $arguments='-NoProfile -ExecutionPolicy Bypass -File "'+(Join-Path $PSScriptRoot 'family-play.ps1')+'" -RepoRoot "'+$script:RepoRoot+'"'
+            Start-Process -FilePath 'powershell.exe' -ArgumentList $arguments -WorkingDirectory $script:RepoRoot -WindowStyle Hidden
+            $script:Hint.Text='Starting the game. Save validation and an offline backup run before a cold start. Errors appear in a dialog and startup log.'
         }
     } catch { Show-Problem $_.Exception.Message }
 })
@@ -248,6 +263,20 @@ $script:BackupButton.Add_Click({
     } catch { Show-Problem $_.Exception.Message }
 })
 $refresh.Add_Click({ Update-Dashboard; $script:Hint.Text='Updated from the actual local files and network listeners.' })
+$recoveryCopy.Add_Click({
+    try {
+        $backup=Get-JoshRSVerifiedBackup -RepoRoot $script:RepoRoot
+        if (-not $backup) { throw 'No hash-verified backup is available. Make a backup first.' }
+        $picker=[System.Windows.Forms.FolderBrowserDialog]::new()
+        try {
+            $picker.Description='Choose a private folder for a NEW recovery copy. Your installed game will not be replaced.'
+            if ($picker.ShowDialog($script:Form) -ne [System.Windows.Forms.DialogResult]::OK) { return }
+            $destination=Join-Path $picker.SelectedPath ('JoshRS-recovery-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
+        } finally { $picker.Dispose() }
+        $copy=New-JoshRSRecoveryCopy -RepoRoot $script:RepoRoot -BackupPath $backup.Path -Destination $destination
+        Show-Note ('Verified recovery copy: '+$copy.Path+[Environment]::NewLine+'The installed world was not replaced. A restored test-world login is required before using this as a playable recovery.') 'Recovery copy prepared'
+    } catch { Show-Problem $_.Exception.Message }
+})
 $diagnostics.Add_Click({
     try {
         $details=Get-JoshRSSafeDiagnostics -RepoRoot $script:RepoRoot
