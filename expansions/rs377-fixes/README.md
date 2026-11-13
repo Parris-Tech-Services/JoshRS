@@ -23,5 +23,26 @@ Small RuneScript fixes for objects that exist on the revision-377 map but had no
 
 Limitation: a bare OPLOC packet sent from 3+ tiles back on the **south** bank (2722,3590) still gets "I can't reach that!" from the server. The Java client walks to the bank edge first (client routefinder on), so normal play starts at 3591. This hasn't been confirmed with the real Java client yet.
 
+## "Nothing interesting happens", batch 1 (13 Nov 2026)
+
+The engine prints *Nothing interesting happens.* whenever an option has no script. A static audit (`tools/rs377-nothing-interesting/audit.py`) of the pinned 377 content found about 1,280 options on map-placed objects, 450 on placed NPCs and 890 inventory options with no handler. Many belong to areas and quests that aren't built yet. This batch fixes only the kinds that can copy behaviour the game already has for identical objects. Nothing here is invented content.
+
+| File | What | Evidence |
+|---|---|---|
+| `scripts/nih_ladders.rs2` | 268 ladder/trapdoor spots (103 handlers). A spot gets a handler only if a climbable object exists directly above or below it (or 6400 tiles north for dungeons), using the existing `~climb_ladder`/`@ladder_options`. The landing keeps the player's offset, or falls back to `map_findsquare` around the destination ladder. Agility-style climbs (crevices, nets, rocks, trellises) are excluded. | 270/274 passed in the isolated world. The 4 failures plus 2 possible one-way trips are listed in `tools/rs377-nothing-interesting/cases/ladder_exclude.json` and keep the default message. Every shipped ladder has a working return. |
+| `scripts/nih_search.rs2` | 12 generic crates/boxes/bookcases/cupboards (54 placements) routed to the standard search messages from `general_use` (including the `~findsomethingnice` chance). Quest-named furniture is excluded. | 54/54 passed in the isolated world. |
+| `config/nih_fishing_spots.json` | 13 fishing spots missing the `category=` and `param=whirlpool,…` lines that their working siblings have. Both fields are **server-only** (`NpcConfig.ts` packs them into the server pack), so the client cache is unchanged. | Built server pack shows the categories (verified via `NpcType`). Not fished in-world, because the harness can't target NPCs yet. |
+
+Not done yet: rocks (each needs a `mining_table` row plus its depleted-rock loc), doors/gates, NPC Talk-to (needs researched authentic dialogue), inventory options.
+
+Known gaps: the 9 middle ladders with an up/down choice were only checked to open the dialog, not to finish the climb. The 4 failed spots are unreachable from adjacent tiles by a bare packet and may need approach (`aploc`) triggers.
+
+### Installing batch 1 (server stopped, after a verified backup, owner-approved)
+```
+copy expansions\rs377-fixes\scripts\nih_*.rs2  <content>\scripts\rs377_fixes\scripts\
+node tools\rs377-nothing-interesting\apply-config-additions.mjs --content <content> --spec expansions\rs377-fixes\config\nih_fishing_spots.json --apply --allow-active
+```
+The installer refuses the live world (anything under `runtime/jparris-377`, or the content named in `active.json`), even for a dry run, unless `--allow-active` is given. **The live server hot-reloads content edits within seconds**, so never touch live content while anyone is playing.
+
 ## Installing
 Copy `scripts/*.rs2` into the active content under `scripts/skill_agility/scripts/` **only** while the server is stopped, after a backup. The server rebuilds packs on startup.
