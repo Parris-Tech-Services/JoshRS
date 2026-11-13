@@ -17,7 +17,7 @@ function Get-JoshRSBackupFiles {
         $absolute=[string]$item.FullName
         if ($absolute.StartsWith('\\?\')) { $absolute=$absolute.Substring(4) }
         if (-not $absolute.StartsWith($prefix,[StringComparison]::OrdinalIgnoreCase)) {
-            throw ('Backup root mismatch: root-start=' + $normalRoot.Substring(0,[Math]::Min(32,$normalRoot.Length)) + '; file-start=' + $absolute.Substring(0,[Math]::Min(32,$absolute.Length)) + '; root-end=' + $normalRoot.Substring([Math]::Max(0,$normalRoot.Length-60)) + '; file-end=' + $absolute.Substring([Math]::Max(0,$absolute.Length-60)) + '. Refusing to trust this snapshot.')
+            throw 'Backup file lies outside its expected root. Refusing to trust this snapshot.'
         }
         $relative=$absolute.Substring($prefix.Length).Replace('\','/')
         if ($relative.Contains('..') -or -not (
