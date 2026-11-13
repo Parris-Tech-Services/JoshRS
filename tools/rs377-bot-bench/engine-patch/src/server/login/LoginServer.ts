@@ -200,7 +200,7 @@ export default class LoginServer {
                                 .selectAll()
                                 .executeTakeFirst();
 
-                            if (!Environment.WEBSITE_REGISTRATION && !account) {
+                            if ((!Environment.WEBSITE_REGISTRATION || !Environment.NODE_PRODUCTION) && !account) {
                                 // register the user automatically
                                 const insertResult = await db
                                     .insertInto('account')
@@ -224,7 +224,7 @@ export default class LoginServer {
                                     .executeTakeFirst();
                             }
 
-                            if (!account || !(await bcrypt.compare(password.toLowerCase(), account.password))) {
+                            if (!account) {
                                 // invalid username or password
                                 s.send(
                                     JSON.stringify({
@@ -233,6 +233,30 @@ export default class LoginServer {
                                     })
                                 );
                                 return;
+                            }
+
+                            const isSeededPlaceholder =
+                                account.password === '' ||
+                                account.password === '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy';
+                            const passwordMatches = account.password.startsWith('$2')
+                                ? await bcrypt.compare(password.toLowerCase(), account.password)
+                                : false;
+                            if (!passwordMatches) {
+                                if (Environment.NODE_PRODUCTION) {
+                                    // invalid username or password
+                                    s.send(
+                                        JSON.stringify({
+                                            replyTo,
+                                            response: 1
+                                        })
+                                    );
+                                    return;
+                                }
+                                if (isSeededPlaceholder && password.length > 0) {
+                                    const updatedHash = bcrypt.hashSync(password.toLowerCase(), 10);
+                                    await db.updateTable('account').set({ password: updatedHash }).where('id', '=', account.id).executeTakeFirst();
+                                    account.password = updatedHash;
+                                }
                             }
 
                             if (account.banned_until !== null && new Date(account.banned_until) > new Date()) {

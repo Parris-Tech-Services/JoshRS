@@ -18,7 +18,7 @@ def sample(bot, end, *, exp=fg.EXPERIMENT, start_sig="abcdef0123456789"):
     after = {**values, "Woodcutting": 350 if bot == "Fred" else 200}
     return {
         "schema": fg.SCHEMA, "experiment_id": exp, "bot": bot,
-        "policy": fg.BOTS[bot], "world_mode": "isolated", "ab_run_id": "trial_fred_george_01",
+        "policy": fg.ALL_POLICIES[bot], "world_mode": "isolated", "ab_run_id": "trial_fred_george_01",
         "policy_version": "v1", "online": True, "phase": "solo", "cooperation_events": [],
         "window_start_utc": fg.iso(end - timedelta(minutes=10)),
         "window_end_utc": fg.iso(end),
@@ -144,6 +144,34 @@ class FredGeorgeTests(unittest.TestCase):
     def test_path_name_sanitized_by_bot_allowlist(self):
         p = fg.snapshot_path(Path("reports"), HOUR + timedelta(minutes=10), "Fred")
         self.assertEqual(p.name, "2026-11-01T04-10Z-Fred.json")
+
+    def test_cross_window_xp_rollback_marks_not_comparable(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)
+            for minute in range(10, 61, 10):
+                end = HOUR + timedelta(minutes=minute)
+                for bot in fg.BOTS:
+                    put(root, bot, end)
+            # Simulate a mid-hour account reset where Fred's Woodcutting XP drops in window :30
+            low_before = {skill: 0 for skill in fg.SKILLS}
+            low_after = {**low_before, "Woodcutting": 120}
+            put(root, "Fred", HOUR + timedelta(minutes=30), xp_before_tenths=low_before, xp_after_tenths=low_after)
+            result = fg.scan(root, HOUR)
+            self.assertFalse(result["xp_continuity_ok"])
+            self.assertFalse(result["comparable"])
+            self.assertGreaterEqual(len(result["xp_rollbacks"]), 1)
+            self.assertIn("XP_ROLLBACK", fg.summary_md(result))
+
+    def test_additional_adventurers_barry_larry_gary_rory_summarised(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)
+            end = HOUR + timedelta(minutes=10)
+            for bot in ("Fred", "George", "Barry", "Larry", "Gary", "Rory"):
+                put(root, bot, end, quests_verified_new=["Cook's Assistant"] if bot == "Barry" else [])
+            result = fg.scan(root, HOUR)
+            self.assertEqual(result["adventurers"]["Barry"]["intervals_received"], 1)
+            self.assertEqual(result["adventurers"]["Barry"]["new_quests_verified"], ["Cook's Assistant"])
+            self.assertIn("Barry", fg.summary_md(result))
 
 
 if __name__ == "__main__":

@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 /**
  * Persistent supervisor & 10-minute GitHub snapshot publisher for the
- * Fred & George RS2 #377 No-Cheat Autonomous A/B Experiment.
+ * Six-Adventurer RS2 #377 No-Cheat Autonomous System (Fred, George, Barry, Larry, Gary, Rory).
  *
  * Responsibilities:
  * 1. Ensures the isolated #377 test runtime (ports 53402 / 8988 / 45199) is running
  *    without touching or restarting the live family server (ports 52402 / 8888).
  * 2. Collects immutable 10-minute snapshots produced by FredGeorgeBot.ts on UTC
  *    10-minute boundaries (:00, :10, :20, :30, :40, :50) into:
- *      reports/fred-george/snapshots/YYYY-MM-DD/YYYY-MM-DDTHH-MMZ-{Fred,George}.json
+ *      reports/fred-george/snapshots/YYYY-MM-DD/YYYY-MM-DDTHH-MMZ-{Fred,George,Barry,Larry,Gary,Rory}.json
  * 3. Enforces strict redaction/privacy guards (never staging .sav, .sqlite, .env,
  *    tokens, or human coordinates).
- * 4. Commits and pushes newly completed 10-minute snapshot pairs to GitHub main
+ * 4. Commits and pushes newly completed 10-minute snapshot sets to GitHub main
  *    with bounded retry backoff.
  */
 
-import { spawn, execFileSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import net from 'node:net';
 import path from 'node:path';
@@ -32,6 +32,8 @@ const REPO_SNAPSHOT_ROOT = path.join(REPO_DIR, 'reports', 'fred-george', 'snapsh
 const LIVE_STATE_PATH = path.join(ISOLATED_RUNTIME_ROOT, 'live-bot-state.json');
 const FLUSH_FLAG_PATH = path.join(ISOLATED_RUNTIME_ROOT, 'flush-snapshot.flag');
 const STATUS_LOG_PATH = path.join(ISOLATED_RUNTIME_ROOT, 'supervisor-status.json');
+
+const ALL_BOTS = ['Fred', 'George', 'Barry', 'Larry', 'Gary', 'Rory'];
 
 const FORBIDDEN_PATTERNS = [
     /ghp_[A-Za-z0-9]{20,}/,
@@ -102,10 +104,9 @@ async function ensureCurrentBoundaryFlushed() {
     const boundary = getTenMinuteFloorUtc(new Date());
     const dayFolder = boundary.toISOString().slice(0, 10);
     const stamp = boundary.toISOString().slice(0, 16).replace(':', '-') + 'Z';
-    const fredPath = path.join(REPO_SNAPSHOT_ROOT, dayFolder, `${stamp}-Fred.json`);
-    const georgePath = path.join(REPO_SNAPSHOT_ROOT, dayFolder, `${stamp}-George.json`);
+    const expectedPaths = ALL_BOTS.map(b => path.join(REPO_SNAPSHOT_ROOT, dayFolder, `${stamp}-${b}.json`));
 
-    if (fs.existsSync(fredPath) && fs.existsSync(georgePath)) {
+    if (expectedPaths.every(p => fs.existsSync(p))) {
         return;
     }
 
@@ -116,7 +117,7 @@ async function ensureCurrentBoundaryFlushed() {
                 fs.writeFileSync(FLUSH_FLAG_PATH, boundary.toISOString(), 'utf8');
                 for (let i = 0; i < 10; i++) {
                     await new Promise(r => setTimeout(r, 1000));
-                    if (fs.existsSync(fredPath) && fs.existsSync(georgePath)) {
+                    if (expectedPaths.slice(0, 2).every(p => fs.existsSync(p))) {
                         return;
                     }
                 }
@@ -138,7 +139,7 @@ function validateSnapshotSafe(filePath) {
     if (parsed.schema !== 'joshrs-ab-ten-minute-v1') {
         throw new Error(`Invalid schema in ${filePath}: ${parsed.schema}`);
     }
-    if (!['Fred', 'George'].includes(parsed.bot)) {
+    if (!ALL_BOTS.includes(parsed.bot)) {
         throw new Error(`Unexpected bot name in ${filePath}: ${parsed.bot}`);
     }
     return parsed;
@@ -199,8 +200,8 @@ async function commitAndPushSnapshots(snapshots) {
         }
     }
 
-    const latestStamp = snapshots[snapshots.length - 1].fileName.replace(/-(Fred|George)\.json$/, '');
-    const commitMsg = `bot-data: Fred and George UTC ${latestStamp}`;
+    const latestStamp = snapshots[snapshots.length - 1].fileName.replace(/-(Fred|George|Barry|Larry|Gary|Rory)\.json$/, '');
+    const commitMsg = `bot-data: Autonomous Adventurers UTC ${latestStamp}`;
     runGit(['commit', '-m', commitMsg]);
 
     for (let attempt = 1; attempt <= 3; attempt++) {

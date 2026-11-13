@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Summarise six *actual* ten-minute Fred/George measurements in one UTC hour.
+"""Summarise six *actual* ten-minute Fred/George measurements in one UTC hour,
+plus any concurrent ten-minute snapshots for Barry, Larry, Gary, and Rory.
 
 No game connection, bots, credentials, or simulated observations. One file per
 bot per 10-minute interval. Never fill missing observations with invented values.
@@ -20,6 +21,13 @@ SKILLS = (
     "Agility", "Thieving", "Slayer", "Farming", "Runecrafting",
 )
 BOTS = {"Fred": "gather_first", "George": "quest_first"}
+ADVENTURER_BOTS = {
+    "Barry": "rs2b0t_quester",
+    "Larry": "rssdk_skiller",
+    "Gary": "progressive_planner",
+    "Rory": "luna_adventurer",
+}
+ALL_POLICIES = {**BOTS, **ADVENTURER_BOTS}
 SCHEMA = "joshrs-ab-ten-minute-v1"
 EXPERIMENT = "fred-george-v1"
 MAX_SIZE = 80_000
@@ -49,7 +57,8 @@ def positive_int(value, name: str) -> int:
 def validate(data: dict, start: datetime, end: datetime, bot: str) -> dict:
     if not isinstance(data, dict) or data.get("schema") != SCHEMA or data.get("experiment_id") != EXPERIMENT:
         raise ValueError("Wrong schema/experiment")
-    if data.get("bot") != bot or data.get("policy") != BOTS[bot]:
+    expected_policy = ALL_POLICIES.get(bot)
+    if data.get("bot") != bot or data.get("policy") != expected_policy:
         raise ValueError("Wrong bot or pre-registered AB policy")
     if data.get("world_mode") not in ("isolated", "family_world"):
         raise ValueError("Unknown world mode")
@@ -65,8 +74,8 @@ def validate(data: dict, start: datetime, end: datetime, bot: str) -> dict:
     if not isinstance(coops, list) or len(coops) > 20:
         raise ValueError("Expected bounded cooperation events")
     for event in coops:
-        if not isinstance(event, dict) or event.get("partner") not in BOTS or event["partner"] == bot:
-            raise ValueError("Cooperation partner must be the other bot")
+        if not isinstance(event, dict) or event.get("partner") not in ALL_POLICIES or event["partner"] == bot:
+            raise ValueError("Cooperation partner must be another bot")
         if event.get("type") not in ("joint_combat", "trade", "quest", "resupply", "follow"):
             raise ValueError("Unknown cooperation type")
     if data["phase"] == "solo" and coops:
@@ -124,10 +133,96 @@ def validate(data: dict, start: datetime, end: datetime, bot: str) -> dict:
     return data
 
 
+def _summarise_bot_series(bot: str, policy: str, values: list[dict], bug_counts: dict, cooperation_events: list) -> tuple[dict, list[dict]]:
+    gain = {skill: 0 for skill in SKILLS}
+    new_quests = set()
+    trace = []
+    progress = []
+    succeeded = failed = deaths = 0
+    phase_counts = {"solo": 0, "coop": 0, "mixed": 0}
+    solo_gain = {s: 0 for s in SKILLS}
+    coop_gain = {s: 0 for s in SKILLS}
+    rollbacks = []
+    for idx, snap in enumerate(values):
+        if idx > 0:
+            prev = values[idx - 1]
+            for skill in SKILLS:
+                if snap["xp_after_tenths"][skill] < prev["xp_after_tenths"][skill]:
+                    rollbacks.append({
+                        "bot": bot,
+                        "skill": skill,
+                        "prev_window_end_utc": prev["window_end_utc"],
+                        "window_end_utc": snap["window_end_utc"],
+                        "prev_xp_tenths": prev["xp_after_tenths"][skill],
+                        "curr_xp_tenths": snap["xp_after_tenths"][skill],
+                    })
+        phase_counts[snap["phase"]] += 1
+        for event in snap["cooperation_events"]:
+            cooperation_events.append({
+                "bot": bot,
+                "window_end_utc": snap["window_end_utc"],
+                "type": event["type"],
+                "partner": event["partner"],
+            })
+        for skill in SKILLS:
+            delta = snap["xp_after_tenths"][skill] - snap["xp_before_tenths"][skill]
+            gain[skill] += delta
+            if snap["phase"] == "solo":
+                solo_gain[skill] += delta
+            else:
+                coop_gain[skill] += delta
+        new_quests.update(snap["quests_verified_new"])
+        succeeded += snap["successful_actions"]
+        failed += snap["failed_actions"]
+        deaths += snap["deaths"]
+        points = snap.get("route_points", [])
+        trace.extend(points if points else [[snap["location"]["x"], snap["location"]["z"]]])
+        progress.append({
+            "end": snap["window_end_utc"],
+            "xp_gained": round(sum(gain.values()) / 10, 1),
+            "skill_xp_gained": {s: round(gain[s] / 10, 1) for s in SKILLS},
+        })
+        for bug in snap["bug_candidates"]:
+            fingerprint = bug["id"]
+            record = bug_counts.setdefault(
+                fingerprint,
+                {"id": fingerprint, "severity": bug["severity"], "count_reports": 0, "bots": set()},
+            )
+            record["count_reports"] += 1
+            record["bots"].add(bot)
+    minutes = len(values) * 10
+    latest = values[-1] if values else None
+    summary = {
+        "policy": policy,
+        "reference_project": latest.get("reference_project") if latest else None,
+        "intervals_received": len(values),
+        "minutes_observed": minutes,
+        "phase_intervals": phase_counts,
+        "solo_xp": round(sum(solo_gain.values()) / 10, 1),
+        "coop_or_mixed_xp": round(sum(coop_gain.values()) / 10, 1),
+        "total_xp_gained": round(sum(gain.values()) / 10, 1),
+        "xp_per_hour_of_observed_time": round(sum(gain.values()) / 10 * 60 / minutes, 1) if minutes else None,
+        "skill_xp_gained": {s: round(gain[s] / 10, 1) for s in SKILLS},
+        "new_quests_verified": sorted(new_quests),
+        "successful_actions": succeeded,
+        "failed_actions": failed,
+        "deaths": deaths,
+        "latest_location": latest["location"] if latest else None,
+        "last_reported_online": latest["online"] if latest else None,
+        "resources_gathered": latest.get("resources_gathered") if latest else {},
+        "banked_items_count": latest.get("banked_items_count", 0) if latest else 0,
+        "xp_continuity_ok": len(rollbacks) == 0,
+        "route_points": trace[-360:],
+        "progress": progress,
+    }
+    return summary, rollbacks
+
+
 def scan(root: Path, hour: datetime) -> dict:
     if hour.minute or hour.second or hour.microsecond:
         raise ValueError("UTC hour must be exactly on the hour")
     reports = {name: [] for name in BOTS}
+    adventurer_reports = {name: [] for name in ADVENTURER_BOTS}
     missing = []
     invalid = []
     for minute in range(10, 61, 10):
@@ -145,74 +240,67 @@ def scan(root: Path, hour: datetime) -> dict:
                 reports[bot].append(data)
             except (ValueError, KeyError, TypeError, json.JSONDecodeError, UnicodeDecodeError) as error:
                 invalid.append({"bot": bot, "window_end_utc": iso(end), "error": str(error)[:150]})
-    signatures = {(x["engine_sha"], x["content_sha"], x["tick_ms"], x["starting_signature"], x["world_mode"], x["ab_run_id"], x["policy_version"])
-                  for values in reports.values() for x in values}
+        for bot in ADVENTURER_BOTS:
+            path = snapshot_path(root, end, bot)
+            if not path.is_file():
+                continue
+            try:
+                if path.stat().st_size > MAX_SIZE:
+                    raise ValueError("Oversized snapshot")
+                data = validate(json.loads(path.read_text(encoding="utf-8")), start, end, bot)
+                adventurer_reports[bot].append(data)
+            except (ValueError, KeyError, TypeError, json.JSONDecodeError, UnicodeDecodeError) as error:
+                invalid.append({"bot": bot, "window_end_utc": iso(end), "error": str(error)[:150]})
+
+    signatures = {
+        (x["engine_sha"], x["content_sha"], x["tick_ms"], x["starting_signature"], x["world_mode"], x["ab_run_id"], x["policy_version"])
+        for values in reports.values()
+        for x in values
+    }
     all_solo = all(snap["phase"] == "solo" for values in reports.values() for snap in values)
-    comparable = len(signatures) == 1 and all(len(reports[b]) == 6 for b in BOTS) and all_solo
     detail = {}
+    adventurers_detail = {}
     bug_counts = {}
     cooperation_events = []
+    xp_rollbacks = []
     for bot, values in reports.items():
-        gain = {skill: 0 for skill in SKILLS}
-        new_quests = set()
-        trace = []
-        progress = []
-        succeeded = failed = deaths = 0
-        phase_counts = {"solo": 0, "coop": 0, "mixed": 0}
-        solo_gain = {s: 0 for s in SKILLS}
-        coop_gain = {s: 0 for s in SKILLS}
-        for snap in values:
-            phase_counts[snap["phase"]] += 1
-            for event in snap["cooperation_events"]:
-                cooperation_events.append({"bot": bot, "window_end_utc": snap["window_end_utc"],
-                                           "type": event["type"], "partner": event["partner"]})
-            for skill in SKILLS:
-                delta = snap["xp_after_tenths"][skill] - snap["xp_before_tenths"][skill]
-                gain[skill] += delta
-                if snap["phase"] == "solo":
-                    solo_gain[skill] += delta
-                else:
-                    coop_gain[skill] += delta
-            new_quests.update(snap["quests_verified_new"])
-            succeeded += snap["successful_actions"]
-            failed += snap["failed_actions"]
-            deaths += snap["deaths"]
-            points = snap.get("route_points", [])
-            trace.extend(points if points else [[snap["location"]["x"], snap["location"]["z"]]])
-            progress.append({"end": snap["window_end_utc"], "xp_gained": round(sum(gain.values()) / 10, 1),
-                             "skill_xp_gained": {s: round(gain[s] / 10, 1) for s in SKILLS}})
-            for bug in snap["bug_candidates"]:
-                fingerprint = bug["id"]
-                record = bug_counts.setdefault(fingerprint, {"id": fingerprint,
-                    "severity": bug["severity"], "count_reports": 0, "bots": set()})
-                record["count_reports"] += 1
-                record["bots"].add(bot)
-        minutes = len(values) * 10
-        detail[bot] = {
-            "policy": BOTS[bot], "intervals_received": len(values), "minutes_observed": minutes,
-            "phase_intervals": phase_counts,
-            "solo_xp": round(sum(solo_gain.values()) / 10, 1),
-            "coop_or_mixed_xp": round(sum(coop_gain.values()) / 10, 1),
-            "total_xp_gained": round(sum(gain.values()) / 10, 1),
-            "xp_per_hour_of_observed_time": round(sum(gain.values()) / 10 * 60 / minutes, 1) if minutes else None,
-            "skill_xp_gained": {s: round(gain[s] / 10, 1) for s in SKILLS},
-            "new_quests_verified": sorted(new_quests), "successful_actions": succeeded,
-            "failed_actions": failed, "deaths": deaths,
-            "latest_location": values[-1]["location"] if values else None,
-            "last_reported_online": values[-1]["online"] if values else None,
-            "route_points": trace[-360:], "progress": progress,
-        }
-    bugs = [{**{k: v for k, v in record.items() if k != "bots"},
-             "bots": sorted(record["bots"])} for record in bug_counts.values()]
+        summary, rbs = _summarise_bot_series(bot, BOTS[bot], values, bug_counts, cooperation_events)
+        detail[bot] = summary
+        xp_rollbacks.extend(rbs)
+    for bot, values in adventurer_reports.items():
+        summary, rbs = _summarise_bot_series(bot, ADVENTURER_BOTS[bot], values, bug_counts, cooperation_events)
+        adventurers_detail[bot] = summary
+        xp_rollbacks.extend(rbs)
+
+    xp_continuity_ok = len(xp_rollbacks) == 0
+    comparable = (
+        len(signatures) == 1
+        and all(len(reports[b]) == 6 for b in BOTS)
+        and all_solo
+        and xp_continuity_ok
+    )
+    bugs = [
+        {**{k: v for k, v in record.items() if k != "bots"}, "bots": sorted(record["bots"])}
+        for record in bug_counts.values()
+    ]
     bugs.sort(key=lambda v: (-{"critical": 4, "high": 3, "medium": 2, "low": 1}[v["severity"]], v["id"]))
     return {
         "schema": "joshrs-fred-george-hourly-v1",
-        "experiment_id": EXPERIMENT, "hour_start_utc": iso(hour),
+        "experiment_id": EXPERIMENT,
+        "hour_start_utc": iso(hour),
         "hour_end_utc": iso(hour + timedelta(hours=1)),
         "status": "COMPLETE" if comparable else "PARTIAL_OR_NOT_COMPARABLE",
-        "comparable": comparable, "received": sum(len(v) for v in reports.values()),
-        "expected": 12, "missing": missing, "invalid": invalid,
-        "bots": detail, "bug_candidates": bugs, "cooperation_events": cooperation_events,
+        "comparable": comparable,
+        "xp_continuity_ok": xp_continuity_ok,
+        "xp_rollbacks": xp_rollbacks,
+        "received": sum(len(v) for v in reports.values()),
+        "expected": 12,
+        "missing": missing,
+        "invalid": invalid,
+        "bots": detail,
+        "adventurers": adventurers_detail,
+        "bug_candidates": bugs,
+        "cooperation_events": cooperation_events,
         "interpretation": "Two distinct bot policies (n=1 per arm): descriptive AB data, NOT a statistically powered causal result.",
         "measurement": "1x wall-clock ten-minute windows; incomplete windows remain explicitly missing.",
     }
@@ -220,21 +308,25 @@ def scan(root: Path, hour: datetime) -> dict:
 
 def svg_chart(result: dict, metric: str) -> str:
     width, height = 780, 330
-    title = {"xp": "Total XP gained during observed windows",
-             "quest": "New verified quests reported",
-             "bugs": "Unique bug candidates (hour)",
-             "routes": "Observed bot route samples (world tiles, not a map)"}[metric]
-    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" role="img">',
-             '<rect width="100%" height="100%" fill="#101923"/>',
-             f'<text x="25" y="32" fill="#f5f7fa" font-family="sans-serif" font-size="19">{html.escape(title)}</text>',
-             '<text x="25" y="55" fill="#aab5c2" font-family="sans-serif" font-size="12">Fred: gather first   |   George: quest first   |   missing intervals never interpolated</text>']
+    title = {
+        "xp": "Total XP gained during observed windows",
+        "quest": "New verified quests reported",
+        "bugs": "Unique bug candidates (hour)",
+        "routes": "Observed bot route samples (world tiles, not a map)",
+    }[metric]
+    parts = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" role="img">',
+        '<rect width="100%" height="100%" fill="#101923"/>',
+        f'<text x="25" y="32" fill="#f5f7fa" font-family="sans-serif" font-size="19">{html.escape(title)}</text>',
+        '<text x="25" y="55" fill="#aab5c2" font-family="sans-serif" font-size="12">Fred: gather first   |   George: quest first   |   missing intervals never interpolated</text>',
+    ]
     colours = {"Fred": "#70b6f5", "George": "#efb47c"}
     if metric == "routes":
         points = [p for bot in BOTS for p in result["bots"][bot]["route_points"]]
         if points:
             minx, maxx = min(p[0] for p in points), max(p[0] for p in points)
             minz, maxz = min(p[1] for p in points), max(p[1] for p in points)
-            dx, dz = max(maxx-minx, 1), max(maxz-minz, 1)
+            dx, dz = max(maxx - minx, 1), max(maxz - minz, 1)
             for bot in BOTS:
                 route = result["bots"][bot]["route_points"]
                 if not route:
@@ -252,6 +344,7 @@ def svg_chart(result: dict, metric: str) -> str:
             if metric == "quest":
                 return [len(data["new_quests_verified"])]
             return [sum(bot in b["bots"] for b in result["bug_candidates"])]
+
         values = [value for bot in BOTS for value in series(bot)]
         ceiling = max(values + [1])
         for bot in BOTS:
@@ -259,13 +352,15 @@ def svg_chart(result: dict, metric: str) -> str:
             if not vals:
                 continue
             if metric == "xp":
-                # Each point marks a real 10-minute completed report, not a fabricated hour.
                 start_hour = utc(result["hour_start_utc"])
-                coords = " ".join(f'{80+((utc(point["end"])-start_hour).total_seconds()/3600)*650:.1f},{285-point["xp_gained"]/ceiling*195:.1f}' for point in result["bots"][bot]["progress"])
+                coords = " ".join(
+                    f'{80+((utc(point["end"])-start_hour).total_seconds()/3600)*650:.1f},{285-point["xp_gained"]/ceiling*195:.1f}'
+                    for point in result["bots"][bot]["progress"]
+                )
                 if len(vals) > 1:
                     parts.append(f'<polyline points="{coords}" fill="none" stroke="{colours[bot]}" stroke-width="2.5"/>')
                 for point in result["bots"][bot]["progress"]:
-                    x = 80 + ((utc(point["end"])-start_hour).total_seconds()/3600)*650
+                    x = 80 + ((utc(point["end"]) - start_hour).total_seconds() / 3600) * 650
                     parts.append(f'<circle cx="{x:.1f}" cy="{285-point["xp_gained"]/ceiling*195:.1f}" r="5" fill="{colours[bot]}"/>')
             else:
                 idx = 0 if bot == "Fred" else 1
@@ -278,61 +373,111 @@ def svg_chart(result: dict, metric: str) -> str:
 
 
 def summary_md(result: dict) -> str:
-    lines = ["# Fred vs George — real-action 377 AB report", "",
-             "UTC hour: " + result["hour_start_utc"] + " to " + result["hour_end_utc"],
-             "Status: **" + result["status"] + "**; " + str(result["received"]) + "/12 bot intervals valid.",
-             result["interpretation"], "",
-             "## Outcomes", "",
-             "| Metric | Fred (gather first) | George (quest first) |",
-             "|---|---:|---:|"]
-    labels = [("intervals_received", "10-minute reports"), ("total_xp_gained", "XP gained"),
-              ("xp_per_hour_of_observed_time", "Observed XP/hour"), ("successful_actions", "Successful actions"),
-              ("failed_actions", "Failed actions"), ("deaths", "Deaths"),
-              ("solo_xp", "Solo-only XP"), ("coop_or_mixed_xp", "Coop/mixed XP")]
+    lines = [
+        "# Fred vs George — real-action 377 AB report",
+        "",
+        "UTC hour: " + result["hour_start_utc"] + " to " + result["hour_end_utc"],
+        "Status: **" + result["status"] + "**; " + str(result["received"]) + "/12 bot intervals valid.",
+        result["interpretation"],
+        "",
+        "## Outcomes",
+        "",
+        "| Metric | Fred (gather first) | George (quest first) |",
+        "|---|---:|---:|",
+    ]
+    labels = [
+        ("intervals_received", "10-minute reports"),
+        ("total_xp_gained", "XP gained"),
+        ("xp_per_hour_of_observed_time", "Observed XP/hour"),
+        ("successful_actions", "Successful actions"),
+        ("failed_actions", "Failed actions"),
+        ("deaths", "Deaths"),
+        ("solo_xp", "Solo-only XP"),
+        ("coop_or_mixed_xp", "Coop/mixed XP"),
+    ]
     for key, label in labels:
         lines.append("| " + label + " | " + str(result["bots"]["Fred"][key]) + " | " + str(result["bots"]["George"][key]) + " |")
     lines += ["", "## Last reported positions (at most ten-minute resolution)", ""]
     for bot in BOTS:
         location = result["bots"][bot]["latest_location"]
         if location:
-            lines.append("- " + bot + ": " + html.escape(location["region"]) +
-                         " (x=" + str(location["x"]) + ", z=" + str(location["z"]) +
-                         ", plane=" + str(location["plane"]) + "); online at last sample: " +
-                         str(result["bots"][bot]["last_reported_online"]))
+            lines.append(
+                "- " + bot + ": " + html.escape(location["region"]) +
+                " (x=" + str(location["x"]) + ", z=" + str(location["z"]) +
+                ", plane=" + str(location["plane"]) + "); online at last sample: " +
+                str(result["bots"][bot]["last_reported_online"])
+            )
         else:
             lines.append("- " + bot + ": UNKNOWN (no sample received)")
-    lines += ["", "## Skill XP earned this hour", "",
-              "| Skill | Fred | George |", "|---|---:|---:|"]
+    lines += ["", "## Skill XP earned this hour", "", "| Skill | Fred | George |", "|---|---:|---:|"]
     for skill in SKILLS:
-        lines.append("| " + skill + " | " + str(result["bots"]["Fred"]["skill_xp_gained"][skill]) +
-                     " | " + str(result["bots"]["George"]["skill_xp_gained"][skill]) + " |")
+        lines.append(
+            "| " + skill + " | " + str(result["bots"]["Fred"]["skill_xp_gained"][skill]) +
+            " | " + str(result["bots"]["George"]["skill_xp_gained"][skill]) + " |"
+        )
     lines += ["", "## Newly verified quest completions", ""]
     for bot in BOTS:
         names = result["bots"][bot]["new_quests_verified"]
         lines.append("- " + bot + ": " + (", ".join(html.escape(x) for x in names) if names else "none observed"))
+
+    adv = result.get("adventurers", {})
+    if any(adv.get(b, {}).get("intervals_received", 0) > 0 for b in ADVENTURER_BOTS):
+        lines += [
+            "",
+            "## Additional Autonomous Adventurers (Barry, Larry, Gary, Rory)",
+            "",
+            "| Adventurer | Policy | Intervals | XP Gained | Quests Verified | Banked Items | Latest Location |",
+            "|---|---|---:|---:|---|---:|---|",
+        ]
+        for b in ADVENTURER_BOTS:
+            info = adv.get(b, {})
+            loc = info.get("latest_location")
+            loc_str = f'{loc["region"]} ({loc["x"]},{loc["z"]},{loc["plane"]})' if loc else "UNKNOWN"
+            quests_str = ", ".join(info.get("new_quests_verified", [])) or "none"
+            lines.append(
+                f'| {b} | `{info.get("policy")}` | {info.get("intervals_received", 0)} | '
+                f'{info.get("total_xp_gained", 0)} | {html.escape(quests_str)} | '
+                f'{info.get("banked_items_count", 0)} | {html.escape(loc_str)} |'
+            )
+
     lines += ["", "## Bugs requiring investigation", ""]
     if not result["bug_candidates"]:
         lines.append("No structured bug candidates received. This **does not** prove a bug-free world.")
     for bug in result["bug_candidates"]:
-        lines.append("- " + bug["id"] + " (" + bug["severity"] + "): " + ",".join(bug["bots"]) +
-                     " reported in " + str(bug["count_reports"]) + " interval(s)")
+        lines.append(
+            "- " + bug["id"] + " (" + bug["severity"] + "): " + ",".join(bug["bots"]) +
+            " reported in " + str(bug["count_reports"]) + " interval(s)"
+        )
     lines += ["", "## Team cooperation", ""]
     if not result["cooperation_events"]:
         lines.append("No cooperation events reported.")
     for event in result["cooperation_events"]:
-        lines.append("- " + event["bot"] + " and " + event["partner"] + ": " +
-                     event["type"] + " (" + event["window_end_utc"] + ")")
+        lines.append("- " + event["bot"] + " and " + event["partner"] + ": " + event["type"] + " (" + event["window_end_utc"] + ")")
     lines += ["", "## Tracking gaps", ""]
-    if not result["missing"] and not result["invalid"]:
+    if not result["missing"] and not result["invalid"] and not result.get("xp_rollbacks"):
         lines.append("All 12 expected bot-interval records received.")
     for miss in result["missing"]:
         lines.append("- MISSING: " + miss["bot"] + " " + miss["window_end_utc"])
     for bad in result["invalid"]:
         lines.append("- INVALID: " + bad["bot"] + " " + bad["window_end_utc"] + ": " + html.escape(bad["error"]))
-    lines += ["", "## Charts", "",
-              "![Observed XP](xp.svg)", "![Quests](quest.svg)",
-              "![Bugs](bugs.svg)", "![Coarse routes](routes.svg)", "",
-              "No screenshots, credentials or family player telemetry are collected. Do not claim the bot is online from this report alone.", ""]
+    for rb in result.get("xp_rollbacks", []):
+        lines.append(
+            "- XP_ROLLBACK: " + rb["bot"] + " " + rb["skill"] + " dropped from " +
+            str(rb["prev_xp_tenths"] / 10) + " (" + rb["prev_window_end_utc"] + ") to " +
+            str(rb["curr_xp_tenths"] / 10) + " (" + rb["window_end_utc"] + ")"
+        )
+    lines += [
+        "",
+        "## Charts",
+        "",
+        "![Observed XP](xp.svg)",
+        "![Quests](quest.svg)",
+        "![Bugs](bugs.svg)",
+        "![Coarse routes](routes.svg)",
+        "",
+        "No screenshots, credentials or family player telemetry are collected. Do not claim the bot is online from this report alone.",
+        "",
+    ]
     return "\n".join(lines)
 
 
@@ -341,8 +486,11 @@ def main() -> None:
     parser.add_argument("--root", type=Path, default=Path("reports/fred-george"))
     parser.add_argument("--hour", help="UTC hour YYYY-MM-DDTHH; defaults to preceding complete hour")
     args = parser.parse_args()
-    hour = datetime.strptime(args.hour, "%Y-%m-%dT%H").replace(tzinfo=timezone.utc) if args.hour else (
-        datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0) - timedelta(hours=1))
+    hour = (
+        datetime.strptime(args.hour, "%Y-%m-%dT%H").replace(tzinfo=timezone.utc)
+        if args.hour
+        else (datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0) - timedelta(hours=1))
+    )
     result = scan(args.root, hour)
     directory = args.root / "hourly" / hour.strftime("%Y-%m-%dT%HZ")
     directory.mkdir(parents=True, exist_ok=True)
