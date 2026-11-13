@@ -10,7 +10,7 @@ function Get-JoshRSBackupFiles {
         $relative=$item.FullName.Substring($root.Length).TrimStart([char[]]@([char]'\',[char]'/')).Replace('\','/')
         if ($relative.Contains('..') -or -not (
           $relative.StartsWith('players/') -or $relative -in @('db.sqlite','db.sqlite-wal','db.sqlite-shm')
-        )) { throw ('Unexpected backup file path: ' + $relative + '; root directory: ' + (Split-Path $root -Leaf) + '; item parent: ' + $item.Directory.Name + '. Refusing to trust this snapshot.') }
+        )) { throw ('Unexpected backup file path: ' + $relative + '; root directory: ' + (Split-Path $root -Leaf) + '; item path suffix: ' + $item.FullName.Substring([Math]::Max(0,$item.FullName.Length-90)) + '; file type: ' + $item.GetType().Name + '. Refusing to trust this snapshot.') }
         [pscustomobject]@{
             relativePath=$relative
             bytes=[long]$item.Length
