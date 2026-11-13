@@ -127,16 +127,42 @@ async function where(s) { const n = s.messages.length; cheat(s, 'getcoord'); for
 const user = process.env.ISO_USER || 'nihtest1';
 const s = await login(user); setInterval(() => s.send(40, Buffer.alloc(0), 'fixed'), 3000).unref();
 await sleep(2500); for (const st of ['hitpoints','defence','attack','strength','agility']) { cheat(s, 'setstat ' + st + ' 99'); await sleep(300); }
+for (const c of (process.env.ISO_INIT || '').split(';').filter(Boolean)) { cheat(s, c.trim()); await sleep(400); }
+// MOVE_GAMECLICK (28): x g2_alt3, ctrl g1, z g2_alt3; a single waypoint, the server finds the route.
+function walk(s, x, z) { s.send(28, Buffer.from([((x & 255) + 128) & 255, x >> 8, 0, ((z & 255) + 128) & 255, z >> 8]), 'var'); }
+// Door case: closed, try to walk through (control); open it; walk through again; must arrive on the far tile.
+async function doorCase(c) {
+  const [fx, fz] = c.door.from, [tx, tz] = c.door.to;
+  cheat(s, teleArg(c.level, fx, fz)); await sleep(1300);
+  walk(s, tx, tz); await sleep(1800);
+  const ctl = await where(s);
+  const controlBlocked = !(ctl && ctl.x === tx && ctl.z === tz);
+  cheat(s, teleArg(c.level, fx, fz)); await sleep(1300);
+  const n0 = s.messages.length;
+  oploc(s, c.op, c.x, c.z, c.loc); await sleep(2500);
+  walk(s, tx, tz); await sleep(2500);
+  const p = await where(s);
+  const msgs = s.messages.slice(n0).filter(m => !/^\d+,\d+,\d+,\d+,\d+$/.test(m));
+  const through = p && p.x === tx && p.z === tz && p.level === c.level;
+  // reset the world: walk back out and close it if it is still open (door respawns on its own anyway)
+  return { ok: through && !msgs.some(m => /Nothing interesting|can't reach/.test(m)), note: `control ${controlBlocked ? 'blocked' : 'NOT blocked'}${msgs.length ? ' [' + msgs.join('|') + ']' : ''}`, tries: [`${fx},${fz}->${p ? `${p.x},${p.z},L${p.level}` : '?'}`] };
+}
+
 let pass = 0; const rows = [];
 for (const c of cases) {
+  if (c.door) { const r = await doorCase(c); if (r.ok) pass++; const row = { name: c.name, at: `${c.x},${c.z},L${c.level}`, pass: r.ok, note: r.note, tries: r.tries }; rows.push(row); console.log(JSON.stringify(row)); continue; }
   const tries = []; let ok = false, note = '';
-  for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1], [2, 0], [0, 2], [-1, -1], [1, 1]]) {
+  for (const [dx, dz] of (c.offsets || [[1, 0], [-1, 0], [0, 1], [0, -1], [2, 0], [0, 2], [-1, -1], [1, 1]])) {
     cheat(s, teleArg(c.level, c.x + dx, c.z + dz)); await sleep(1300);
     const n0 = s.messages.length;
-    oploc(s, c.op, c.x, c.z, c.loc); await sleep(3200);
+    oploc(s, c.op, c.x, c.z, c.loc);
+    if (c.expectMsg) { const t0 = Date.now(); const re = new RegExp(c.expectMsg, 'i'); while (Date.now() - t0 < (c.wait || 3200) && !s.messages.slice(n0).some(m => re.test(m) || /Nothing interesting|can't reach/.test(m))) await sleep(150); await sleep(300); }
+    else await sleep(c.wait || 3200);
+    let emptyOk = null;
+    if (c.thenEmpty && s.messages.slice(n0).some(m => new RegExp(c.expectMsg, 'i').test(m))) { const n1 = s.messages.length; oploc(s, c.op, c.x, c.z, c.emptyLoc ?? c.loc); await sleep(1500); emptyOk = s.messages.slice(n1).some(m => /no ore currently available/.test(m)); }
     const p = await where(s); const msgs = s.messages.slice(n0).filter(m => !/^\d+,\d+,\d+,\d+,\d+$/.test(m));
     tries.push(`${dx},${dz}->${p ? `${p.x},${p.z},L${p.level}` : '?'}${msgs.length ? ' [' + msgs.join('|') + ']' : ''}`);
-    if (c.expectMsg) { if (msgs.some(m => new RegExp(c.expectMsg, 'i').test(m)) && !msgs.some(m => /Nothing interesting happens/.test(m))) { ok = true; note = msgs.join(' | '); break; } if (msgs.some(m => /Nothing interesting happens/.test(m))) break; continue; }
+    if (c.expectMsg) { if (msgs.some(m => new RegExp(c.expectMsg, 'i').test(m)) && !msgs.some(m => /Nothing interesting happens/.test(m)) && emptyOk !== false) { ok = true; note = msgs.join(' | ') + (emptyOk ? ' | then: no ore currently available' : ''); break; } if (emptyOk === false) { note = 'mined, but rock did not deplete'; break; } if (msgs.some(m => /Nothing interesting happens/.test(m))) break; continue; }
     if (c.choice) { if (p && p.level === c.level && !msgs.some(m => /Nothing interesting|reach/.test(m))) { ok = true; note = 'choice dialog (not auto-checked)'; break; } continue; }
     const [el, ex, ez] = c.expect;
     if (p && p.level === el && Math.abs(p.x - ex) <= 3 && Math.abs(p.z - ez) <= 3) { ok = true; break; }

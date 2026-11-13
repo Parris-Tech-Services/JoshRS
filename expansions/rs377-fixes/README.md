@@ -37,6 +37,16 @@ Not done yet: rocks (each needs a `mining_table` row plus its depleted-rock loc)
 
 Known gaps: the 9 middle ladders with an up/down choice were only checked to open the dialog, not to finish the climb. The 4 failed spots are unreachable from adjacent tiles by a bare packet and may need approach (`aploc`) triggers.
 
+## Batch 2: rocks, doors and the combat sound bug (13 Nov 2026)
+
+| File | What | Evidence |
+|---|---|---|
+| `config/nih_rocks.json` | 40 rock types on the map with no mining handler. The ore comes from the rock's ore colour (a `recolNd` value that only one ore uses among working rocks; leave-one-out check: 74/74 correct, 0 wrong). The empty version has the same model and source colours, no ore colour, and the nearest id. Adds `category`, `next_loc_stage_mining` and a `mining_table` row, all server-only. | Prospect gave the right ore everywhere these rocks were reachable. Mining gave the right ore (copper, tin, iron, coal, clay, silver, gold, mithril, adamantite, runite) and the rock depleted to its empty twin ("no ore currently available"). The runite/adamantite depletion check was confirmed only indirectly (the rock was still empty minutes later). Excluded: 18 "Mineral vein" types around x2700–2800/z4400–4500 (unreachable from every side) and `misc_dummy_coalrock1` (it has its own Miscellania script). |
+| `config/nih_doors.json` | 17 ordinary closed doors (Keldagrim houses, Rellekka houses, Port Phasmatys harbour, Wilderness, Fenkenstrain, 4 generic) get the standard `door_closed`/`door_opened` categories and their existing open twin. Quest-gated, locked, magic and double doors are excluded. | **142/142** placements: walking through is blocked while closed, and after Open the character walks through. The hinge direction isn't checked visually; `fenk_door_open` already had `reverse_door_opened`, which agrees with using reverse there. |
+| `config/nih_combat_sound.json` | Guards `sound_synth(%com_attacksound …)` against null in 7 combat scripts, the same guard upstream uses in `castlewars_maindoor.rs2`. It fixes the `player_melee.rs2:51 sound_synth An input number was null` script error. | Before: 9 errors in a test session. After: 0. |
+
+Install the same way as batch 1: `apply-config-additions.mjs --spec <each json>`. Each spec is idempotent and refuses the live world without `--allow-active`.
+
 ### Installing batch 1 (server stopped, after a verified backup, owner-approved)
 ```
 copy expansions\rs377-fixes\scripts\nih_*.rs2  <content>\scripts\rs377_fixes\scripts\

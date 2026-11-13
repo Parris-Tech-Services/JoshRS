@@ -22,6 +22,20 @@ export function isActiveWorld(dir) {
     return false;
 }
 
+// Exact text edits: each [find, replace] must match exactly once, or already be applied (replace present, find absent).
+export function planReplace(text, pairs) {
+    const changes = [];
+    const count = (s, sub) => s.split(sub).length - 1;
+    for (const [find, repl] of pairs) {
+        const n = count(text, find);
+        if (n === 0 && text.includes(repl)) continue; // already applied
+        if (n !== 1) throw new Error(`expected exactly one match, found ${n}: ${find}`);
+        text = text.replace(find, () => repl);
+        changes.push(`~ ${find.trim()}  =>  ${repl.trim()}`);
+    }
+    return { text, changes };
+}
+
 export function plan(text, add) {
     const lines = text.split(/\r?\n/);
     const eol = text.includes('\r\n') ? '\r\n' : '\n';
@@ -56,14 +70,20 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     if (!content || !specPath) throw new Error('Provide --content <dir> --spec <json>');
     const abs = path.resolve(content);
     if (isActiveWorld(abs) && !args.includes('--allow-active')) throw new Error('REFUSED: this is the active family world. Use --allow-active only for an approved offline install after a verified backup.');
-    const spec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
-    const file = path.join(abs, spec.file);
-    const { text, changes } = plan(fs.readFileSync(file, 'utf8'), spec.add);
-    console.log(changes.join('\n') || 'nothing to change');
+    const raw = JSON.parse(fs.readFileSync(specPath, 'utf8'));
+    const parts = Array.isArray(raw.files) ? raw.files : [raw];
+    // plan every file first so nothing is written unless all files are valid
+    const planned = parts.map(spec => {
+        const file = path.join(abs, spec.file);
+        const text = fs.readFileSync(file, 'utf8');
+        return { spec, file, ...(spec.replace ? planReplace(text, spec.replace) : plan(text, spec.add)) };
+    });
+    for (const p of planned) console.log(`${p.spec.file}:\n  ` + (p.changes.join('\n  ') || 'nothing to change'));
     if (!args.includes('--apply')) { console.log('DRY RUN: nothing changed.'); process.exit(0); }
-    if (changes.length) {
-        if (!fs.existsSync(file + '.nih.original')) fs.copyFileSync(file, file + '.nih.original');
-        fs.writeFileSync(file, text);
+    for (const p of planned) {
+        if (!p.changes.length) continue;
+        if (!fs.existsSync(p.file + '.nih.original')) fs.copyFileSync(p.file, p.file + '.nih.original');
+        fs.writeFileSync(p.file, p.text);
+        console.log(`Applied ${p.changes.length} line(s) to ${p.spec.file}.`);
     }
-    console.log(`Applied ${changes.length} line(s) to ${spec.file}.`);
 }
