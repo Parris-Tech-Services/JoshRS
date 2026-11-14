@@ -1,0 +1,45 @@
+// JoshRS original dialogue - Grall, the swamp caves' self-taught (and wildly confident) mushroom chef.
+// Voice: boisterous, proud, generous; describes every questionable dish like a feast for kings.
+
+[opnpc1,cave_goblin3]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>A guest! You're just in time.|The stew has been bubbling for three days.|It's nearly almost ready.");
+    case 1 : ~chatnpc("<p,happy>Grall's the name, cooking's the game!|Best chef in the whole cave. Also the only one.|But still the best.");
+    case 2 : ~chatnpc("<p,neutral>Sniff that air. Smell it? That's my|famous slime-mushroom broth.|...Or the swamp. Hard to tell sometimes.");
+}
+@joshrs_grall_menu;
+
+[label,joshrs_grall_menu]
+def_int $option = ~p_choice5("What's in the stew?", 1, "Where did you learn to cook?", 2, "What's your favourite dish?", 3, "Can I try some?", 4, "I'm not hungry, thanks.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>What's in the stew?");
+    ~chatnpc("<p,happy>Ah, the secret recipe! Three kinds of mushroom.|Grey ones, for flavour. Spotty ones, for texture.|And the glowy ones, for... surprise.");
+    ~chatnpc("<p,neutral>Then some cave moss, a splash of drip water,|and one beetle. For luck.");
+    ~chatplayer("<p,confused>For luck?");
+    ~chatnpc("<p,happy>Not for the beetle, obviously.");
+    @joshrs_grall_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Where did you learn to cook?");
+    ~chatnpc("<p,neutral>Nowhere! Nobody taught me. One day|I was very hungry, and all I had was|a mushroom and a hot rock.");
+    ~chatnpc("<p,happy>I put the mushroom on the rock, and it went|sizzle. And I thought: Grall, this is your destiny.");
+    ~chatnpc("<p,sad>Then I burned my thumb on the rock.|But destiny always costs something.");
+    @joshrs_grall_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What's your favourite dish?");
+    ~chatnpc("<p,happy>Mushroom-on-a-stick! Simple. Elegant.|You put a mushroom on a stick.|Then you eat it off the stick.");
+    ~chatplayer("<p,laugh>That's it?");
+    ~chatnpc("<p,angry>That's it? THAT'S IT? It's perfect!|The stick is the plate, the spoon AND the handle.|No washing up. Pure genius.");
+    @joshrs_grall_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Can I try some?");
+    ~chatnpc("<p,shock>You want to try it? Nobody ever asks!");
+    ~chatnpc("<p,neutral>...Hmm. Maybe not today. Surface tummies|are delicate, and the glowy mushrooms|can make your ears whistle for a week.");
+    ~chatnpc("<p,happy>But I'm working on a surface recipe.|No beetles. Hardly any glowing.|Come back and try it when it's ready!");
+    @joshrs_grall_menu;
+} else {
+    ~chatplayer("<p,neutral>I'm not hungry, thanks.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,sad>Not hungry? Nobody is ever 'not hungry'|near Grall's cooking. You'll be back.|They always come back.");
+        case 1 : ~chatnpc("<p,happy>Fair enough! The stew will still be here.|The stew is always here.|I'm not sure it could leave if it wanted to.");
+    }
+}
