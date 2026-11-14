@@ -9,7 +9,7 @@
 - Controllers: Jimmy, Bob, `qb154433`, `qb162829`. Do not assume other `qb` clients have currently active SDK controllers. No assignment metadata loaded yet (`0 Jobs labelled`).
 - Screenshot evidence supplied by Josh shows named `qb...` bots moving and some receiving in-game quest-complete messages, XP and item rewards. Do not promote screenshots alone to authoritative all-quest completion proof.
 - Earlier snapshot had 24 active and 10 dead; most recent snapshot reported **34 active**. Values are point-in-time, not guaranteed after leaving.
-- The local tracker `fleet_dashboard.py` and supporting files were generated in this chat and tested in a simulated Python environment. It has been demonstrated live by the user at `localhost:8790`.
+- The local tracker [`fleet_dashboard.py`](../../tools/rs-sdk-fleet-dashboard/fleet_dashboard.py) and supporting files were generated in this chat and tested in a simulated Python environment. It has been demonstrated live by the user at `localhost:8790`.
 - **Safety:** browser URLs in shared screenshots contain bot passwords, requiring future rotation. The repository is **public**, so no `bot.env`, private saves, credentials, service dumps, raw logs or full browser URLs should be committed.
 
 ## Uncommitted Fedora work cannot be saved by this GitHub connector
