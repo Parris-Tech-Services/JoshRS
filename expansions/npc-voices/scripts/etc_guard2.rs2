@@ -1,0 +1,43 @@
+// JoshRS original dialogue - Hild, the younger Skraeling on market watch at Etceteria.
+// Voice: bright, restless, dramatic; composes poetry about everything, mostly badly, always sincerely.
+
+[opnpc1,etc_guard2]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>Oh! A traveller! Hold still, I'm going|to put you in a poem.");
+    case 1 : ~chatnpc("<p,neutral>Hild, shield of the market, at your service.|I'm going to be a famous poet one day.|For now, I'm mostly guarding crates.");
+    case 2 : ~chatnpc("<p,happy>'The waves are grey, the wind is cold,|a stranger comes, both brave and bold.'|...That's you. Do you like it?");
+}
+@joshrs_hild_menu;
+
+[label,joshrs_hild_menu]
+def_int $option = ~p_choice5("Tell me one of your poems.", 1, "Why do you want to be a poet?", 2, "What's Brosa like?", 3, "Does anything exciting ever happen here?", 4, "Keep writing, Hild.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Tell me one of your poems.");
+    ~chatnpc("<p,happy>This is my best one. It's called 'Ode to a Crate'.");
+    ~chatnpc("<p,neutral>'O crate, so square, so brown, so wide,|what treasures do you hold inside?|Is it turnips? Is it rope?|I'll never know, but still I hope.'");
+    ~chatplayer("<p,laugh>What was actually inside it?");
+    ~chatnpc("<p,sad>Turnips. It's always turnips.|But the poem doesn't need to know that.");
+    @joshrs_hild_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Why do you want to be a poet?");
+    ~chatnpc("<p,neutral>My grandmother told stories by the fire every night.|Storms, sea monsters, heroes in little boats.|Everyone would go quiet to listen.");
+    ~chatnpc("<p,happy>I want to make people go quiet like that.|Well, quiet in a good way.|Not the way they go quiet after 'Ode to a Crate'.");
+    @joshrs_hild_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What's Brosa like?");
+    ~chatnpc("<p,happy>Grumpy outside, porridge inside.|He pretends to hate everything,|but he saves crusts in his pocket for the gulls.");
+    ~chatplayer("<p,shock>I thought he was at war with the gulls!");
+    ~chatnpc("<p,laugh>He is! He feeds them, then shouts at them|for taking the fish. I don't think he's noticed.|I'm not going to tell him.");
+    @joshrs_hild_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Does anything exciting ever happen here?");
+    ~chatnpc("<p,neutral>Hmm. Last spring a seal got into the fish stall.|It took four of us to carry it back to the sea.|It barked at us the whole way.");
+    ~chatnpc("<p,happy>I wrote an epic about it.|Eleven verses. 'The Seal Who Would Be King.'|Brosa fell asleep around verse six.");
+    @joshrs_hild_menu;
+} else {
+    ~chatplayer("<p,happy>Keep writing, Hild.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>I will! Come back one day,|and I'll have a poem about you. A good one.|Probably. Maybe.");
+        case 1 : ~chatnpc("<p,happy>'A friend departs across the sand...'|Hmm, there's no sand here.|I'll work on it.");
+    }
+}
