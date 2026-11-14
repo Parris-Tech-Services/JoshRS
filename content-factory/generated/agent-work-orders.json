@@ -1,13 +1,31 @@
 {
-  "candidate_pool": 4835,
+  "candidate_pool": 4936,
   "deduplicated_reference_versions": 1783,
-  "next_rotation_offset": 3400,
+  "next_rotation_offset": 3500,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
-  "raw_reference_versions": 6618,
-  "rotation_offset": 3300,
+  "raw_reference_versions": 6719,
+  "rotation_offset": 3400,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
+    {
+      "automatically_installed": false,
+      "candidate_id": "885abd46795cd47b93ad",
+      "implementation_instructions": [
+        "Verify licence and provenance; do not import Jagex-owned assets",
+        "Compare pinned 377 engine/content/client and local user customisations",
+        "Create or port only rights-cleared 377-compatible source scripts and configs",
+        "Repack and compile; test gameplay and save safety in the local client",
+        "Record verified proof or mark blocked; never claim untested work as ready"
+      ],
+      "path": "server/plugins/com/openrsc/server/plugins/authentic/misc/Sheep.java",
+      "playable_in_377": false,
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/plugins/com/openrsc/server/plugins/authentic/misc/Sheep.java",
+      "source": "Open-RSC/Core-Framework",
+      "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
+      "status": "blocked_rights_review",
+      "work_id": "377-885abd46795cd47b93ad"
+    },
     {
       "automatically_installed": false,
       "candidate_id": "9dd130b4cc29b7d736ac",
@@ -1789,24 +1807,6 @@
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
       "work_id": "377-c4cdeb76b33a0e89c530"
-    },
-    {
-      "automatically_installed": false,
-      "candidate_id": "eafb939ac1c8f47281c7",
-      "implementation_instructions": [
-        "Verify licence and provenance; do not import Jagex-owned assets",
-        "Compare pinned 377 engine/content/client and local user customisations",
-        "Create or port only rights-cleared 377-compatible source scripts and configs",
-        "Repack and compile; test gameplay and save safety in the local client",
-        "Record verified proof or mark blocked; never claim untested work as ready"
-      ],
-      "path": "server/plugins/com/openrsc/server/plugins/authentic/npcs/lumbridge/Priest.java",
-      "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/plugins/com/openrsc/server/plugins/authentic/npcs/lumbridge/Priest.java",
-      "source": "Open-RSC/Core-Framework",
-      "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
-      "status": "blocked_rights_review",
-      "work_id": "377-eafb939ac1c8f47281c7"
     }
   ]
 }
