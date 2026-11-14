@@ -32,9 +32,21 @@ if ($stage = 0) {
 }
 if ($stage = 10) {
     %canoe_startfrom = $station;
-    if_sethide(canoeing:com_6, stat(woodcutting) < 27);
-    if_sethide(canoeing:com_3, stat(woodcutting) < 42);
-    if_sethide(canoeing:com_14, stat(woodcutting) < 57);
+    if (stat(woodcutting) < 27) {
+        if_sethide(canoeing:com_6, true);
+    } else {
+        if_sethide(canoeing:com_6, false);
+    }
+    if (stat(woodcutting) < 42) {
+        if_sethide(canoeing:com_3, true);
+    } else {
+        if_sethide(canoeing:com_3, false);
+    }
+    if (stat(woodcutting) < 57) {
+        if_sethide(canoeing:com_14, true);
+    } else {
+        if_sethide(canoeing:com_14, false);
+    }
     if_openmain(canoeing);
     return;
 }
@@ -76,10 +88,22 @@ if (coordy(coord) ! 0) {
     return(false);
 }
 switch_int($station) {
-    case 1 : return(coordx(coord) >= 3236 & coordx(coord) <= 3249 & coordz(coord) >= 3230 & coordz(coord) <= 3243);
-    case 2 : return(coordx(coord) >= 3195 & coordx(coord) <= 3210 & coordz(coord) >= 3336 & coordz(coord) <= 3350);
-    case 3 : return(coordx(coord) >= 3105 & coordx(coord) <= 3120 & coordz(coord) >= 3404 & coordz(coord) <= 3420);
-    case 4 : return(coordx(coord) >= 3125 & coordx(coord) <= 3140 & coordz(coord) >= 3503 & coordz(coord) <= 3517);
+    case 1 :
+        if (coordx(coord) >= 3236 & coordx(coord) <= 3249 & coordz(coord) >= 3230 & coordz(coord) <= 3243) {
+            return(true);
+        }
+    case 2 :
+        if (coordx(coord) >= 3195 & coordx(coord) <= 3210 & coordz(coord) >= 3336 & coordz(coord) <= 3350) {
+            return(true);
+        }
+    case 3 :
+        if (coordx(coord) >= 3105 & coordx(coord) <= 3120 & coordz(coord) >= 3404 & coordz(coord) <= 3420) {
+            return(true);
+        }
+    case 4 :
+        if (coordx(coord) >= 3125 & coordx(coord) <= 3140 & coordz(coord) >= 3503 & coordz(coord) <= 3517) {
+            return(true);
+        }
 }
 return(false);
 
@@ -131,10 +155,26 @@ if (~joshrs_canoe_near($station) = false | ~joshrs_canoe_stage($station) ! calc(
 }
 // The river map is present in the pinned 377 client. Only show routes the
 // selected canoe can actually take; server also validates every button below.
-if_sethide(canoe_map:com_13, $station = 1 | ~joshrs_canoe_distance($station, 1) > $type);
-if_sethide(canoe_map:com_15, $station = 2 | ~joshrs_canoe_distance($station, 2) > $type);
-if_sethide(canoe_map:com_17, $station = 3 | ~joshrs_canoe_distance($station, 3) > $type);
-if_sethide(canoe_map:com_40, $station = 4 | ~joshrs_canoe_distance($station, 4) > $type);
+if ($station = 1 | ~joshrs_canoe_distance($station, 1) > $type) {
+    if_sethide(canoe_map:com_13, true);
+} else {
+    if_sethide(canoe_map:com_13, false);
+}
+if ($station = 2 | ~joshrs_canoe_distance($station, 2) > $type) {
+    if_sethide(canoe_map:com_15, true);
+} else {
+    if_sethide(canoe_map:com_15, false);
+}
+if ($station = 3 | ~joshrs_canoe_distance($station, 3) > $type) {
+    if_sethide(canoe_map:com_17, true);
+} else {
+    if_sethide(canoe_map:com_17, false);
+}
+if ($station = 4 | ~joshrs_canoe_distance($station, 4) > $type) {
+    if_sethide(canoe_map:com_40, true);
+} else {
+    if_sethide(canoe_map:com_40, false);
+}
 // The Wilderness landing is deliberately blocked until its collision and
 // one-way arrival have been verified in a real disposable game.
 if_sethide(canoe_map:com_33, true);
