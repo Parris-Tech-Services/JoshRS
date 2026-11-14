@@ -1,0 +1,188 @@
+// JoshRS revision-377 River Lum canoe interactions.
+// Overlay only into a verified disposable clone of pinned LostCityRS/Content.
+// Station locs 12163..12166 are multilocs: the server trigger is the PARENT ID,
+// even when the client displays "Chop-down" from the child canoe tree.
+// Per-player varbits prevent one family member changing another's canoe.
+// No new cache, protected assets, server ports, accounts or save data.
+
+[oploc1,canoeing_canoestation_lumbridge] @joshrs_canoe_station(1);
+[oploc1,canoeing_canoestation_championsguild] @joshrs_canoe_station(2);
+[oploc1,canoeing_canoestation_barbarianvillage] @joshrs_canoe_station(3);
+[oploc1,canoeing_canoestation_edgeville] @joshrs_canoe_station(4);
+
+[label,joshrs_canoe_station](int $station)
+p_arrivedelay;
+def_int $stage = ~joshrs_canoe_stage($station);
+if ($stage = 0) {
+    if (stat(woodcutting) < 12) {
+        mes("You need a Woodcutting level of 12 to make a canoe.");
+        return;
+    }
+    def_obj $axe = ~woodcutting_axe_checker(true);
+    if ($axe = null) {
+        return;
+    }
+    anim(struct_param(oc_param($axe, woodcutting_struct), skill_anim), 0);
+    sound_synth(woodchop1, 1, 0);
+    mes("You swing your axe at the canoe station tree.");
+    p_delay(2);
+    ~joshrs_canoe_setstage($station, 10);
+    mes("The tree falls. You can now shape a canoe.");
+    return;
+}
+if ($stage = 10) {
+    %canoe_startfrom = $station;
+    if_sethide(canoeing:com_6, stat(woodcutting) < 27);
+    if_sethide(canoeing:com_3, stat(woodcutting) < 42);
+    if_sethide(canoeing:com_14, stat(woodcutting) < 57);
+    if_openmain(canoeing);
+    return;
+}
+if ($stage >= 1 & $stage <= 4) {
+    ~joshrs_canoe_setstage($station, calc($stage + 4));
+    mes("You push your canoe into the river.");
+    return;
+}
+if ($stage >= 5 & $stage <= 8) {
+    %canoe_startfrom = $station;
+    %canoe_type = calc($stage - 4);
+    @joshrs_canoe_map;
+    return;
+}
+mes("The canoe station is busy. Try again in a moment.");
+
+[proc,joshrs_canoe_stage](int $station)(int)
+switch_int($station) {
+    case 1 : return(%canoestation_state_lumbridge);
+    case 2 : return(%canoestation_state_championsguild);
+    case 3 : return(%canoestation_state_barbarianvillage);
+    case 4 : return(%canoestation_state_edgeville);
+}
+return(0);
+
+[proc,joshrs_canoe_setstage](int $station, int $stage)
+switch_int($station) {
+    case 1 : %canoestation_state_lumbridge = $stage;
+    case 2 : %canoestation_state_championsguild = $stage;
+    case 3 : %canoestation_state_barbarianvillage = $stage;
+    case 4 : %canoestation_state_edgeville = $stage;
+}
+
+// Require the account to still be on foot beside the station whose menu
+// was opened. This prevents stale/forged interface clicks teleporting a
+// player from an unrelated part of the map.
+[proc,joshrs_canoe_near](int $station)(boolean)
+if (coordlevel(coord) ! 0) {
+    return(false);
+}
+switch_int($station) {
+    case 1 : return(coordx(coord) >= 3236 & coordx(coord) <= 3249 & coordz(coord) >= 3230 & coordz(coord) <= 3243);
+    case 2 : return(coordx(coord) >= 3195 & coordx(coord) <= 3210 & coordz(coord) >= 3336 & coordz(coord) <= 3350);
+    case 3 : return(coordx(coord) >= 3105 & coordx(coord) <= 3120 & coordz(coord) >= 3404 & coordz(coord) <= 3420);
+    case 4 : return(coordx(coord) >= 3125 & coordx(coord) <= 3140 & coordz(coord) >= 3503 & coordz(coord) <= 3517);
+}
+return(false);
+
+// Both the image and overlaid text in the original 377 interface are clickable.
+[if_button,canoeing:com_8] @joshrs_canoe_shape(1);
+[if_button,canoeing:com_25] @joshrs_canoe_shape(1);
+[if_button,canoeing:com_6] @joshrs_canoe_shape(2);
+[if_button,canoeing:com_26] @joshrs_canoe_shape(2);
+[if_button,canoeing:com_3] @joshrs_canoe_shape(3);
+[if_button,canoeing:com_27] @joshrs_canoe_shape(3);
+[if_button,canoeing:com_14] @joshrs_canoe_shape(4);
+[if_button,canoeing:com_28] @joshrs_canoe_shape(4);
+
+[label,joshrs_canoe_shape](int $shape)
+if_close;
+def_int $station = %canoe_startfrom;
+if (~joshrs_canoe_near($station) = false | ~joshrs_canoe_stage($station) ! 10) {
+    mes("You must be at the fallen canoe tree to shape it.");
+    return;
+}
+def_int $level = 12;
+def_int $xp = 300;
+switch_int($shape) {
+    case 1 : $level = 12; $xp = 300;
+    case 2 : $level = 27; $xp = 600;
+    case 3 : $level = 42; $xp = 900;
+    case 4 : $level = 57; $xp = 1500;
+    case default : return;
+}
+if (stat(woodcutting) < $level) {
+    mes("You need a higher Woodcutting level to shape that canoe.");
+    return;
+}
+def_obj $axe = ~woodcutting_axe_checker(true);
+if ($axe = null) {
+    return;
+}
+anim(struct_param(oc_param($axe, woodcutting_struct), skill_anim), 0);
+mes("You shape the fallen tree into a canoe.");
+stat_advance(woodcutting, $xp);
+~joshrs_canoe_setstage($station, $shape);
+
+[label,joshrs_canoe_map]
+def_int $station = %canoe_startfrom;
+def_int $type = %canoe_type;
+if (~joshrs_canoe_near($station) = false | ~joshrs_canoe_stage($station) ! calc($type + 4)) {
+    mes("You need a canoe in the water to travel.");
+    return;
+}
+// The river map is present in the pinned 377 client. Only show routes the
+// selected canoe can actually take; server also validates every button below.
+if_sethide(canoe_map:com_13, $station = 1 | ~joshrs_canoe_distance($station, 1) > $type);
+if_sethide(canoe_map:com_15, $station = 2 | ~joshrs_canoe_distance($station, 2) > $type);
+if_sethide(canoe_map:com_17, $station = 3 | ~joshrs_canoe_distance($station, 3) > $type);
+if_sethide(canoe_map:com_40, $station = 4 | ~joshrs_canoe_distance($station, 4) > $type);
+// The Wilderness landing is deliberately blocked until its collision and
+// one-way arrival have been verified in a real disposable game.
+if_sethide(canoe_map:com_33, true);
+if_openmain(canoe_map);
+
+[proc,joshrs_canoe_distance](int $a, int $b)(int)
+def_int $distance = calc($a - $b);
+if ($distance < 0) {
+    $distance = calc(0 - $distance);
+}
+return($distance);
+
+[if_button,canoe_map:com_13] @joshrs_canoe_travel(1);
+[if_button,canoe_map:com_34] @joshrs_canoe_travel(1);
+[if_button,canoe_map:com_15] @joshrs_canoe_travel(2);
+[if_button,canoe_map:com_35] @joshrs_canoe_travel(2);
+[if_button,canoe_map:com_17] @joshrs_canoe_travel(3);
+[if_button,canoe_map:com_36] @joshrs_canoe_travel(3);
+[if_button,canoe_map:com_40] @joshrs_canoe_travel(4);
+[if_button,canoe_map:com_41] @joshrs_canoe_travel(4);
+[if_button,canoe_map:com_33] @joshrs_canoe_wilderness;
+[if_button,canoe_map:com_37] @joshrs_canoe_wilderness;
+
+[label,joshrs_canoe_wilderness]
+if_close;
+mes("The Wilderness canoe landing is not yet safe to use.");
+
+[label,joshrs_canoe_travel](int $destination)
+if_close;
+def_int $from = %canoe_startfrom;
+def_int $type = %canoe_type;
+if ($from < 1 | $from > 4 | $destination < 1 | $destination > 4 | $destination = $from) {
+    mes("That canoe destination is unavailable.");
+    return;
+}
+if (~joshrs_canoe_near($from) = false | ~joshrs_canoe_stage($from) ! calc($type + 4) | $type < 1 | $type > 4 | ~joshrs_canoe_distance($from, $destination) > $type) {
+    mes("Your canoe cannot make that journey.");
+    return;
+}
+// Reset the departure tree for this player only. Other family members' station
+// states, characters, inventory and saves are never modified.
+~joshrs_canoe_setstage($from, 0);
+mes("You paddle along the River Lum.");
+// Conservative landward arrival candidates alongside the four station tutors.
+// Collision and the return journey MUST still be confirmed in disposable game.
+switch_int($destination) {
+    case 1 : p_telejump(0_50_50_43_37);
+    case 2 : p_telejump(0_50_52_3_15);
+    case 3 : p_telejump(0_48_53_41_20);
+    case 4 : p_telejump(0_48_54_60_54);
+}
