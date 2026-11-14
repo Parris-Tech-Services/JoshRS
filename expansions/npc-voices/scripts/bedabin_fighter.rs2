@@ -1,0 +1,46 @@
+// JoshRS original dialogue - the fighters who guard the Bedabin camp (six share this post, and this voice).
+// Voice: watchful, spare with words, dry humour; treats water as sacred and names as something you earn.
+
+[opnpc1,bedabin_fighter]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Stranger. Your feet are loud on the sand.|I heard you coming from the last dune.");
+    case 1 : ~chatnpc("<p,neutral>Peace, traveller. Keep your hands where|I can see them, and your water where|you can reach it.");
+    case 2 : ~chatnpc("<p,neutral>You have the look of someone who thought|the desert would be smaller.");
+}
+@joshrs_bedabin_fighter_menu;
+
+[label,joshrs_bedabin_fighter_menu]
+def_int $option = ~p_choice5("What's your name?", 1, "What are you guarding against?", 2, "Any tips for crossing the desert?", 3, "Don't you get bored standing here?", 4, "I'll be on my way.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>What's your name?");
+    ~chatnpc("<p,neutral>Out here, names are given to friends.|You are not a friend yet. You are|a stranger with interesting boots.");
+    ~chatplayer("<p,quiz>How do I become a friend?");
+    ~chatnpc("<p,neutral>Share water with someone when you have little.|Walk beside them when the sun is cruel.");
+    ~chatnpc("<p,happy>Or bring dates. Dates help a great deal.");
+    @joshrs_bedabin_fighter_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What are you guarding against?");
+    ~chatnpc("<p,neutral>Bandits, sometimes. Scorpions, often.|Sandstorms, always.");
+    ~chatnpc("<p,neutral>But mostly we guard against the night.|When the sun goes down the desert turns cold,|and lost people walk towards any fire they see.");
+    ~chatnpc("<p,neutral>We keep the fires burning so they find us,|and we keep our spears ready in case|they are not the kind of lost we hoped.");
+    @joshrs_bedabin_fighter_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Any tips for crossing the desert?");
+    ~chatnpc("<p,neutral>Travel at dawn or dusk. At midday, rest|in whatever shade you can find.|Even a rock's shadow is better than nothing.");
+    ~chatnpc("<p,neutral>Carry more water than you think you need.|Then carry a little more.");
+    ~chatnpc("<p,neutral>And if you see a lake shimmering ahead|where no lake should be, do not run to it.|The desert loves that joke.");
+    @joshrs_bedabin_fighter_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Don't you get bored standing here all day?");
+    ~chatnpc("<p,neutral>Bored? I am counting the dunes.|They move, you know. Slowly, with the wind.");
+    ~chatnpc("<p,happy>That one has walked three paces east|since the last full moon.|One day it will be on top of my tent.");
+    ~chatplayer("<p,laugh>What will you do then?");
+    ~chatnpc("<p,neutral>Move my tent. The desert does not argue,|so neither do I.");
+    @joshrs_bedabin_fighter_menu;
+} else {
+    ~chatplayer("<p,neutral>I'll be on my way.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,neutral>Go carefully. Keep the sun on your shoulder,|not in your eyes.");
+        case 1 : ~chatnpc("<p,neutral>May your waterskin be heavy|and your boots be light.");
+    }
+}
