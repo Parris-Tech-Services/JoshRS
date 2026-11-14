@@ -1,0 +1,45 @@
+// JoshRS original dialogue - Mennik, a cave goblin who counts the drips in the swamp caves.
+// Voice: anxious, precise, kind-hearted; finds comfort in numbers and worries about everything else.
+
+[opnpc1,cave_goblin2]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Four thousand and six... four thousand and seven...|Oh! Sorry. Hello. I'm Mennik.|Please wait, I mustn't lose count.");
+    case 1 : ~chatnpc("<p,shock>Ah! Oh. You're a person. I thought|you were a very tall, very quiet bear.");
+    case 2 : ~chatnpc("<p,sad>Do you hear that drip? It's slower than yesterday.|I'm sure that means something.|I'm sure it's probably nothing. Probably.");
+}
+@joshrs_mennik_menu;
+
+[label,joshrs_mennik_menu]
+def_int $option = ~p_choice5("Why are you counting drips?", 1, "What are you worried about?", 2, "Do you have any friends down here?", 3, "Is there anything that makes you happy?", 4, "I'll let you get back to counting.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Why are you counting drips?");
+    ~chatnpc("<p,neutral>The drips tell you things. Fast drips mean rain|on the surface. Slow drips mean dry weather.|No drips at all means... I don't like to think about it.");
+    ~chatnpc("<p,happy>And counting is calming. When my head|is full of worries, I fill it with numbers instead.|Numbers never surprise you.");
+    @joshrs_mennik_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What are you worried about?");
+    ~chatnpc("<p,sad>The roof falling in. The water rising.|Running out of mushrooms. Running out|of numbers to count with.");
+    ~chatplayer("<p,quiz>You can't run out of numbers.");
+    ~chatnpc("<p,shock>...Really? Never?");
+    ~chatplayer("<p,happy>Never. There's always one more.");
+    ~chatnpc("<p,happy>Oh! Oh, that's wonderful. That's one whole worry gone.|Thank you. Now I only have about two hundred left.");
+    @joshrs_mennik_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Do you have any friends down here?");
+    ~chatnpc("<p,happy>Zub is my friend. He collects pebbles|and talks very loudly. He makes me nervous,|but in a good way.");
+    ~chatnpc("<p,neutral>And Grall cooks for us. And Pell gives directions,|though I'd never follow them.|Last time I did, I ended up in a puddle.");
+    @joshrs_mennik_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Is there anything that makes you happy?");
+    ~chatnpc("<p,neutral>Hmm. When it rains on the surface,|the drips all speed up together.|It sounds like a crowd of tiny people clapping.");
+    ~chatnpc("<p,happy>I like to pretend they're clapping for me.|For being brave enough to get up in the morning.|Some mornings that's quite a lot.");
+    ~chatplayer("<p,happy>That definitely deserves a round of applause.");
+    ~chatnpc("<p,happy>...Thank you. That's very kind.");
+    @joshrs_mennik_menu;
+} else {
+    ~chatplayer("<p,happy>I'll let you get back to counting.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Thank you. Mind your head on the way out.|The ceiling dips by the third stalactite.|I worry about it every day.");
+        case 1 : ~chatnpc("<p,neutral>Four thousand and eight...|Oh! Goodbye! Four thousand and nine...");
+    }
+}
