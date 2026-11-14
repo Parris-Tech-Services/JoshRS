@@ -1,0 +1,45 @@
+// JoshRS original dialogue - Zub, a cave goblin who collects shiny pebbles in the swamp caves.
+// Voice: excitable, squinting, generous; thinks everything from the surface is dazzling, especially lamps.
+
+[opnpc1,cave_goblin]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,shock>Ooh! Surface-person! You're so bright!|...Oh, no, that's just your lamp. Still impressive.");
+    case 1 : ~chatnpc("<p,happy>Zub! I'm Zub. Do you like pebbles?|Say yes. Everybody should like pebbles.");
+    case 2 : ~chatnpc("<p,neutral>Shh, shh. Don't move. There's a shiny one|near your foot. ...No, it's a beetle.|Never mind.");
+}
+@joshrs_zub_menu;
+
+[label,joshrs_zub_menu]
+def_int $option = ~p_choice5("Why do you collect pebbles?", 1, "What's your best pebble?", 2, "What's it like living in a cave?", 3, "Have you ever been to the surface?", 4, "Goodbye, Zub.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Why do you collect pebbles?");
+    ~chatnpc("<p,happy>Because they're all different! Everyone thinks|a pebble is a pebble. But look closely.|Stripes, speckles, sparkly bits...");
+    ~chatnpc("<p,neutral>Every pebble has been somewhere.|Rolled down rivers, squashed under mountains.|They've had big adventures, being small.");
+    ~chatplayer("<p,happy>That's a lovely way to look at it.");
+    ~chatnpc("<p,happy>I know! Nobody else down here thinks so.|They just say, 'Zub, stop putting rocks|in the soup.'");
+    @joshrs_zub_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What's your best pebble?");
+    ~chatnpc("<p,shifty>...Can you keep a secret?");
+    ~chatplayer("<p,quiz>Of course.");
+    ~chatnpc("<p,happy>It's round. Perfectly round. And when you hold it|up to the light, it glows a little bit green.|I keep it under my pillow.");
+    ~chatnpc("<p,neutral>I've named it Dennis.");
+    @joshrs_zub_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What's it like living in a cave?");
+    ~chatnpc("<p,happy>Cosy! Dark, cool, quiet. Drip, drip, drip|all day long, like a little song.");
+    ~chatnpc("<p,neutral>Sometimes the swamp water gets in|and everything smells like old socks.|But you stop noticing that after a year or two.");
+    @joshrs_zub_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Have you ever been to the surface?");
+    ~chatnpc("<p,shock>Once! I poked my head out of a hole.|Everything was SO big and SO bright.|The ceiling was blue, and it went on forever!");
+    ~chatnpc("<p,sad>Then a big shiny ball came out from behind|a cloud and I couldn't see anything for an hour.|I came straight back down.");
+    ~chatnpc("<p,happy>I'm going to try again one day. With a hat.");
+    @joshrs_zub_menu;
+} else {
+    ~chatplayer("<p,happy>Goodbye, Zub.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Bye! If you find any good pebbles,|you know where I live. In here. Always in here.");
+        case 1 : ~chatnpc("<p,happy>Bye, bright friend! Dennis says bye too.|...He's very shy.");
+    }
+}
