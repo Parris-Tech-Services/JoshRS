@@ -1,0 +1,45 @@
+// JoshRS original dialogue - Brosa, the older of the two Skraelings guarding the Etceteria market.
+// Voice: gruff, sea-weathered, secretly soft; has a long and personal feud with the seagulls.
+
+[opnpc1,etc_guard1]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,angry>Keep moving, keep moving.|Unless you're a seagull. Then keep flying,|and don't come back.");
+    case 1 : ~chatnpc("<p,neutral>Brosa. I guard the market.|The fish, mostly. From the gulls, mostly.");
+    case 2 : ~chatnpc("<p,neutral>Hmph. You're not carrying a sack of stolen herring.|Good. That's already better than most mornings.");
+}
+@joshrs_brosa_menu;
+
+[label,joshrs_brosa_menu]
+def_int $option = ~p_choice5("What's the trouble with seagulls?", 1, "Is guarding a market hard work?", 2, "What's it like living out here?", 3, "Who's your partner on watch?", 4, "Good luck with the gulls.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>What's the trouble with seagulls?");
+    ~chatnpc("<p,angry>Trouble? They're thieves with wings.|They wait until you look away,|then whoosh! There goes a whole mackerel.");
+    ~chatnpc("<p,angry>There's one in particular. Big grey fellow,|bent foot. I call him the Admiral.|He's stolen more fish than the whole island has caught.");
+    ~chatplayer("<p,laugh>You've named him?");
+    ~chatnpc("<p,shifty>You name your enemies, so you know them.|...Also he's a bit handsome. Don't tell anyone.");
+    @joshrs_brosa_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Is guarding a market hard work?");
+    ~chatnpc("<p,neutral>Folk think it's easy. Stand here, look fierce.|But you've got to watch the stalls, the crowd,|the sky and the tide, all at once.");
+    ~chatnpc("<p,neutral>Then somebody's cart loses a wheel,|and suddenly you're chasing cabbages|down the hill in your best armour.");
+    ~chatnpc("<p,happy>Best day of the year, that was.|Never seen the greengrocer run so fast.");
+    @joshrs_brosa_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What's it like living out here?");
+    ~chatnpc("<p,neutral>Cold. Wet. Windy. The sea tries to|climb into your boots every winter.");
+    ~chatnpc("<p,happy>But in the evenings, when the boats come in|and everyone's lamps are lit along the shore...|there's no prettier place in the world.");
+    ~chatnpc("<p,angry>Don't repeat that either.|I have a reputation for being miserable.");
+    @joshrs_brosa_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Who's your partner on watch?");
+    ~chatnpc("<p,neutral>That's Hild. Young. Keen. Talks a lot.|Thinks she's going to be a great poet.");
+    ~chatnpc("<p,sad>She wrote one about me last week.|Rhymed 'Brosa' with 'grows a nose-a'.|I'm still not sure if it was a compliment.");
+    ~chatnpc("<p,happy>Good lass, though. Fast on her feet.|The Admiral's scared of her. Wish he was scared of me.");
+    @joshrs_brosa_menu;
+} else {
+    ~chatplayer("<p,happy>Good luck with the gulls.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,neutral>Luck's got nothing to do with it.|It's a war of patience. And I'm very patient.");
+        case 1 : ~chatnpc("<p,angry>If you see a big grey gull with a bent foot,|tell him Brosa's watching. Always watching.");
+    }
+}
