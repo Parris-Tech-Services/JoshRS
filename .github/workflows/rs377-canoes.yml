@@ -66,3 +66,48 @@ jobs:
           test -s data/pack/server/script.dat
           test -s data/pack/server/script.idx
           echo 'NATIVE_377_CANOE_COMPILE_PASSED — not yet a client-playtest'
+
+      - name: Boot disposable native 377 world; send actual OPLOC1 packets at all 4 canoe stations
+        shell: bash
+        env:
+          EASY_STARTUP: 'true'
+          DB_BACKEND: sqlite
+          NODE_PROFILE: joshrs_ci_377
+          NODE_PORT: '15402'
+          WEB_PORT: '18880'
+          WEB_MANAGEMENT_PORT: '18881'
+          NODE_PRODUCTION: 'false'
+          LOGIN_SERVER: 'true'
+          FRIEND_SERVER: 'true'
+          LOGGER_SERVER: 'true'
+          WEBSITE_REGISTRATION: 'false'
+          BUILD_SRC_DIR: ../content
+        run: |
+          set -euo pipefail
+          engine="$RUNNER_TEMP/joshrs-canoe-377/engine"
+          cd "$engine"
+          npm run sqlite:migrate
+          npm run quickstart > "$RUNNER_TEMP/joshrs-canoe-377/server.log" 2>&1 &
+          server_pid=$!
+          cleanup() {
+            kill "$server_pid" 2>/dev/null || true
+            pkill -P "$server_pid" 2>/dev/null || true
+            if [[ -f "$RUNNER_TEMP/joshrs-canoe-377/server.log" ]]; then
+              tail -n 35 "$RUNNER_TEMP/joshrs-canoe-377/server.log"
+            fi
+          }
+          trap cleanup EXIT
+          ready=0
+          for attempt in $(seq 1 100); do
+            kill -0 "$server_pid"
+            if curl -fsS 'http://127.0.0.1:18880/crc' -o /dev/null; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          test "$ready" = 1 || { echo 'Disposable world failed to start'; exit 1; }
+          sleep 3
+          cd "$GITHUB_WORKSPACE"
+          ISO_ENGINE_DIR="$engine" ISO_PORT=15402 ISO_WEB_PORT=18880 ISO_PROFILE=joshrs_ci_377 node tools/rs377-canoes/probe-isolated-oploc1.mjs tools/rs377-canoes/oploc1-cases.json
+          echo 'CANOE_OPLOC1_DISPOSABLE_GAME_PROBE_PASSED'
