@@ -1,0 +1,43 @@
+// Generated: generic searchable furniture that had no handler. Reuses the game's standard search
+// behaviour for that furniture type (crates/crates/boxes from general_use/scripts/crates.rs2,
+// bookcases and cupboards from their general_use handlers).
+
+[oploc1,bookcase_polybooks] @search_bookcase; // Bookcase
+[oploc1,bookshelf_old_tall_double] @search_bookcase; // Old Bookshelf
+[oploc1,loc_10783] @search_cupboard; // Cupboard
+[oploc1,loc_10785] @search_cupboard; // Cupboard
+[oploc1,loc_10787] @search_cupboard; // Cupboard
+[oploc1,loc_10789] @search_cupboard; // Cupboard
+[oploc1,loc_10791] @search_cupboard; // Cupboard
+[oploc1,loc_10793] @search_cupboard; // Cupboard
+[oploc1,loc_10795] @search_cupboard; // Cupboard
+[oploc1,loc_10797] @search_cupboard; // Cupboard
+[oploc1,loc_11744] @nih_search_boxes; // Boxes
+[oploc1,loc_11745] @nih_search_crates; // Crates
+
+[label,nih_search_crate]
+if (random(^findsomethingnice_chance) = 0 & ~in_tutorial_island(coord) = false) {
+    mes("You search the crate...");
+    p_delay(2);
+    ~findsomethingnice;
+    return;
+}
+mes("You search the crate but find nothing.");
+
+[label,nih_search_crates]
+if (random(^findsomethingnice_chance) = 0 & ~in_tutorial_island(coord) = false) {
+    mes("You search the crates...");
+    p_delay(2);
+    ~findsomethingnice;
+    return;
+}
+mes("You search the crates but find nothing of value.");
+
+[label,nih_search_boxes]
+if (random(^findsomethingnice_chance) = 0 & ~in_tutorial_island(coord) = false) {
+    mes("You search the boxes...");
+    p_delay(2);
+    ~findsomethingnice;
+    return;
+}
+mes("There is nothing interesting in these boxes.");

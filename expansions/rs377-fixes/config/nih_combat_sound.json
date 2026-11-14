@@ -1,0 +1,76 @@
+{
+ "note": "Guard attack sounds against a null %com_attacksound (weapons without a sound param, or players whose combat stats were never computed). Same guard upstream already uses in game_castlewars/castlewars_maindoor.rs2.",
+ "files": [
+  {
+   "file": "scripts/areas/area_combat_training/scripts/combat_training_camp.rs2",
+   "replace": [
+    [
+     "\nsound_synth(%com_attacksound, 0, 0);",
+     "\nif (%com_attacksound ! null) sound_synth(%com_attacksound, 0, 0);"
+    ]
+   ]
+  },
+  {
+   "file": "scripts/areas/area_varrock/scripts/attack_dummy.rs2",
+   "replace": [
+    [
+     "\nsound_synth(%com_attacksound, 0, 0);",
+     "\nif (%com_attacksound ! null) sound_synth(%com_attacksound, 0, 0);"
+    ]
+   ]
+  },
+  {
+   "file": "scripts/quests/quest_chompybird/scripts/chompy_bird.rs2",
+   "replace": [
+    [
+     "\nsound_synth(%com_attacksound, 0, 0);",
+     "\nif (%com_attacksound ! null) sound_synth(%com_attacksound, 0, 0);"
+    ]
+   ]
+  },
+  {
+   "file": "scripts/skill_combat/scripts/player/player_melee.rs2",
+   "replace": [
+    [
+     "\nsound_synth(%com_attacksound, 0, 0);",
+     "\nif (%com_attacksound ! null) sound_synth(%com_attacksound, 0, 0);"
+    ]
+   ]
+  },
+  {
+   "file": "scripts/skill_combat/scripts/player/player_ranged.rs2",
+   "replace": [
+    [
+     "\nsound_synth(%com_attacksound, 0, 0);",
+     "\nif (%com_attacksound ! null) sound_synth(%com_attacksound, 0, 0);"
+    ]
+   ]
+  },
+  {
+   "file": "scripts/skill_combat/scripts/pvp/pvp_melee.rs2",
+   "replace": [
+    [
+     "\nsound_synth(%com_attacksound, 0, 0);",
+     "\nif (%com_attacksound ! null) sound_synth(%com_attacksound, 0, 0);"
+    ],
+    [
+     "\n.sound_synth(%com_attacksound, 0, 0);",
+     "\nif (%com_attacksound ! null) .sound_synth(%com_attacksound, 0, 0);"
+    ]
+   ]
+  },
+  {
+   "file": "scripts/skill_combat/scripts/pvp/pvp_ranged.rs2",
+   "replace": [
+    [
+     "\nsound_synth(%com_attacksound, 0, 0);",
+     "\nif (%com_attacksound ! null) sound_synth(%com_attacksound, 0, 0);"
+    ],
+    [
+     "\n.sound_synth(%com_attacksound, 0, 0);",
+     "\nif (%com_attacksound ! null) .sound_synth(%com_attacksound, 0, 0);"
+    ]
+   ]
+  }
+ ]
+}
