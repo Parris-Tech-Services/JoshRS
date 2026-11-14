@@ -193,6 +193,54 @@ test('4. Elrothiro social locator commands (::wherefred, ::wheregeorge, ::whereb
     assert.equal(snap.starting_signature.length, 32);
 });
 
-test.after(() => {
-    setTimeout(() => process.exit(0), 100);
+test("5. Multi-floor & cellar recovery: Fred stranded at Wizards' Tower plane 2 (3113, 3160) opens interior door and climbs down L2 -> L1 -> L0, and climbs up from cellar", async () => {
+    await ensureWorld();
+    const fred = World.getPlayerByUsername('Fred');
+    assert.ok(fred, 'Fred should be online');
+
+    // Place Fred on Wizards' Tower 2nd floor (3113, 3160, plane 2) inside the room behind fai_wiztower_poor_door (3107, 3162)
+    fred.clearPendingAction();
+    fred.clearWaypoints();
+    fred.teleport(3113, 3160, 2);
+    assert.equal(fred.level, 2);
+
+    const states = getFredGeorgeBotStates();
+    states.Fred.nextDecisionTick = 0;
+
+    let sawRecoveryTask = false;
+    let sawMidFloor = false;
+    for (let i = 0; i < 80 && fred.level > 0; i++) {
+        World.cycle(false);
+        if (states.Fred.currentTask.startsWith('Recovery: descending')) {
+            sawRecoveryTask = true;
+        }
+        if (fred.level === 1) {
+            sawMidFloor = true;
+        }
+    }
+
+    assert.equal(sawRecoveryTask, true, 'Fred should enter staircase descent recovery instead of stalling on Woodcutting');
+    assert.equal(sawMidFloor, true, 'Fred must descend legitimately through plane 1 via spiral stairs (not teleport directly to plane 0)');
+    assert.equal(fred.level, 0, 'Fred must reach ground floor (plane 0)');
+
+    // Also verify underground cellar ladder recovery from Wizards' Tower basement (3104, 9576, plane 0)
+    fred.clearPendingAction();
+    fred.clearWaypoints();
+    fred.teleport(3104, 9576, 0);
+    states.Fred.nextDecisionTick = 0;
+
+    for (let i = 0; i < 40 && fred.z >= 9500; i++) {
+        World.cycle(false);
+    }
+    assert.equal(fred.z < 9500, true, 'Fred must climb Wizards Tower basement ladder back to surface');
+});
+
+test.after(async () => {
+    const w = World as any;
+    await Promise.allSettled([
+        w.loginThread?.terminate?.(),
+        w.friendThread?.terminate?.(),
+        w.loggerThread?.terminate?.(),
+        w.devThread?.terminate?.()
+    ]);
 });
