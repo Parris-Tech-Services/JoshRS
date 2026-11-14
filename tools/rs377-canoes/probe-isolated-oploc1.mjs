@@ -139,14 +139,23 @@ for (const c of cases) {
         const keep = setInterval(() => s.send(40, Buffer.alloc(0), 'fixed'), 3000);
         try {
             await sleep(2500);
-            cheat(s, teleArg(0, c.standX, c.standZ));
-            await sleep(3000);
-            oploc1(s, c.x, c.z, c.loc);
-            await sleep(6000);
-            const relevant = s.messages.filter(m => /canoe|woodcutting|nothing interesting|can't reach/i.test(m)).slice(-8);
-            const pass = relevant.some(m => m.includes('You need a Woodcutting level of 12 to make a canoe.')) &&
-                !relevant.some(m => /nothing interesting happens/i.test(m)) && s.decodeOk();
-            const result = { station: c.station, loc: c.loc, pass, messages: relevant, decoderOk: s.decodeOk() };
+            let relevant = [];
+            let pass = false;
+            const tried = [];
+            const positions = c.stands || [[c.standX, c.standZ]];
+            for (const [sx, sz] of positions) {
+                const messageOffset = s.messages.length;
+                cheat(s, teleArg(0, sx, sz));
+                await sleep(2300);
+                oploc1(s, c.x, c.z, c.loc);
+                await sleep(4400);
+                relevant = s.messages.slice(messageOffset).filter(m => /canoe|woodcutting|nothing interesting|can't reach/i.test(m)).slice(-8);
+                pass = relevant.some(m => m.includes('You need a Woodcutting level of 12 to make a canoe.')) &&
+                    !relevant.some(m => /nothing interesting happens/i.test(m)) && s.decodeOk();
+                tried.push({ x: sx, z: sz, messages: relevant });
+                if (pass) break;
+            }
+            const result = { station: c.station, loc: c.loc, pass, positionsTried: tried, decoderOk: s.decodeOk() };
             results.push(result);
             console.log(JSON.stringify(result));
         } finally {
