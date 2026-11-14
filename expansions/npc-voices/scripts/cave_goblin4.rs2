@@ -1,0 +1,45 @@
+// JoshRS original dialogue - Pell, the swamp caves' self-appointed tour guide, who has never once given correct directions.
+// Voice: confident, chatty, cheerfully wrong; always certain, rarely right, never discouraged.
+
+[opnpc1,cave_goblin4]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>Lost? Don't worry! Pell knows these caves|like the back of his hand. And the front of his hand.|Mostly the front.");
+    case 1 : ~chatnpc("<p,happy>Welcome to the caves! I'm Pell, official guide.|Well. Unofficial. Self-official.|But very experienced!");
+    case 2 : ~chatnpc("<p,neutral>Ah, a visitor! You look like someone|who needs directions. Everyone does,|eventually. Usually after asking me.");
+}
+@joshrs_pell_menu;
+
+[label,joshrs_pell_menu]
+def_int $option = ~p_choice5("Which way is the exit?", 1, "How long have you been a guide?", 2, "What's the most interesting thing down here?", 3, "Have you ever got lost?", 4, "I think I'll find my own way.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>Which way is the exit?");
+    ~chatnpc("<p,happy>Easy! Go left at the big rock, right at the|other big rock, then straight on until|you see the rock that looks like a duck.");
+    ~chatplayer("<p,confused>Aren't all the rocks big?");
+    ~chatnpc("<p,neutral>...Yes. That is the main flaw in my directions.");
+    ~chatnpc("<p,happy>Just follow the fresh air. Fresh air|always knows the way out.|I can't tell it apart from swamp air, myself.");
+    @joshrs_pell_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>How long have you been a guide?");
+    ~chatnpc("<p,happy>Oh, years! I've given directions to,|let's see... six people. And a bat.");
+    ~chatplayer("<p,quiz>How many of them found where they were going?");
+    ~chatnpc("<p,neutral>The bat did. Eventually.|But bats are very forgiving.");
+    @joshrs_pell_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>What's the most interesting thing down here?");
+    ~chatnpc("<p,happy>The Echo Chamber! You shout your name,|and it shouts it back to you|five times. Like having friends.");
+    ~chatnpc("<p,neutral>It's just past the Very Slippery Bit,|and just before the Other Very Slippery Bit.");
+    ~chatnpc("<p,shifty>Also, it might be the other way.|I'll know it when I hear it.");
+    @joshrs_pell_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Have you ever got lost?");
+    ~chatnpc("<p,angry>Lost? Me? Never! Sometimes I'm in a place|I didn't plan to be. For a few days.|But that's called exploring.");
+    ~chatnpc("<p,happy>Last time, I explored for nearly a week.|Mennik sent Zub to find me. Zub got lost too.|Then Grall found us both by the smell of his stew.");
+    ~chatnpc("<p,neutral>Grall says his stew 'brings people together'.|He's not wrong.");
+    @joshrs_pell_menu;
+} else {
+    ~chatplayer("<p,neutral>I think I'll find my own way.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Very wise! That's exactly what I'd recommend.|...That's what I recommend to everyone, actually.|It's been my most successful direction.");
+        case 1 : ~chatnpc("<p,happy>Good luck! Remember: duck-shaped rock.|You can't miss it. Well, you can.|I do, all the time.");
+    }
+}
