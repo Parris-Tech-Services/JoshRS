@@ -1,0 +1,68 @@
+name: RS377 River Lum canoe stations — isolated native build
+
+on:
+  pull_request:
+    paths:
+      - 'tools/rs377-canoes/**'
+      - 'content-patches/rs377/scripts/skill_woodcutting/scripts/joshrs_canoes_377.rs2'
+      - '.github/workflows/rs377-canoes.yml'
+  push:
+    paths:
+      - 'tools/rs377-canoes/**'
+      - 'content-patches/rs377/scripts/skill_woodcutting/scripts/joshrs_canoes_377.rs2'
+      - '.github/workflows/rs377-canoes.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-canoe-compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install guardrails and source-contract tests
+        run: node --test tools/rs377-canoes/install.test.mjs
+      - name: Clone exact pinned Content and Engine-TS to disposable runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/joshrs-canoe-377"
+          mkdir -p "$root"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Content.git "$root/content"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Engine-TS.git "$root/engine"
+          for spec in 'content 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50' 'engine b5ac859b47915afb545e60e4c1208f25d43cb3fb'; do
+            read -r part pin <<< "$spec"
+            if [ "$(git -C "$root/$part" rev-parse HEAD)" != "$pin" ]; then
+              git -C "$root/$part" fetch --depth 1 origin "$pin"
+              git -C "$root/$part" checkout --detach "$pin"
+            fi
+            test "$(git -C "$root/$part" rev-parse HEAD)" = "$pin"
+          done
+      - name: Test dry-run, install only into disposable Content, check syntax diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          content="$RUNNER_TEMP/joshrs-canoe-377/content"
+          node tools/rs377-canoes/install.mjs --content "$content"
+          node tools/rs377-canoes/install.mjs --content "$content" --apply
+          test -s "$content/scripts/skill_woodcutting/scripts/joshrs_canoes_377.rs2"
+          git -C "$content" diff --check
+      - name: Compile actual rev377 RuneScript with pinned native packer
+        shell: bash
+        env:
+          BUILD_SRC_DIR: ../content
+          BUILD_VERIFY: 'true'
+          BUILD_VERIFY_PACK: 'true'
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/joshrs-canoe-377/engine"
+          npm ci --no-audit --no-fund
+          npm run build
+          test -s data/pack/server/script.dat
+          test -s data/pack/server/script.idx
+          echo 'NATIVE_377_CANOE_COMPILE_PASSED — not yet a client-playtest'
