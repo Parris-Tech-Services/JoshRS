@@ -31,12 +31,12 @@ node .\tools\rs377-canoes\install.mjs --content "C:\JoshRS-DEV\content" --apply
 ```
 Compile the **disposable** engine with `BUILD_SRC_DIR` pointing to that Content. Then test a disposable account at each of the four stations: no axe; Woodcutting 11/12; low-level canoe choices; axe handling; shape XP; floating; stage morph; travel one/two/three stops in both directions; safe landings; menu spoofing; two players' separate states; logout/relogin; quest and woodcutting regressions. Do not use Elrothiro or Sylvie as test accounts. Verify rollback and both real save checksums before any future live deployment.
 
-## Acceptance status
-- Source implementation present on branch: inspect GitHub commit.
-- Unit tests: pending a completed runner result.
-- **Native 377 compile:** pending completed CI result.
-- **Disposable real-client/bot in-game gameplay:** not yet verified.
-- **JParrisDesktop production install and real Elrothiro interaction:** not performed.
-- **Wilderness leg:** deliberately unimplemented.
+## Acceptance status (verified on 14 November 2026)
+- Native RuneScript 377 build and packing: **PASS** in isolated pinned engine/content.
+- Guarded installer dry-run and apply: **PASS**, isolated checkout only.
+- Genuine native 377 game world / client OPLOC1 packet tests: **4/4 PASS**. A newly created level-1 account stood on reachable land and interacted with each of the four parent canoe locs; the server responded `You need a Woodcutting level of 12 to make a canoe.` rather than `Nothing interesting happens.` See [successful workflow run 43557411417](https://github.com/Parris-Tech-Services/JoshRS/actions/runs/43557411417).
+- Actual **level-12 axe chop, shaping, floating, map-interface click, travel landing and return journeys:** **NOT YET IN-GAME TESTED**. Source compiles, but this must not be called complete gameplay parity.
+- **JParrisDesktop production install and real Elrothiro interaction:** **NOT PERFORMED**.
+- **Wilderness leg:** deliberately blocked until safe arrival and one-way travel are verified.
 
 Do not report **VERIFIED COMPLETE** until all gates pass and a single runtime owner authorises a backed-up offline installation with actual player-visible checks. This patch must not be described as fully playable solely because it exists on GitHub.
