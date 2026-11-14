@@ -718,10 +718,12 @@ function walkToward(world: WorldRuntime, player: Player, targetX: number, target
         world,
         player,
         (_loc, type) => {
+            const debugname = (type.debugname ?? '').toLowerCase();
+            if (debugname.startsWith('hundred_lumbridge_')) return false;
             const name = (type.name ?? '').toLowerCase();
             return (name.includes('door') || name.includes('gate')) && type.op?.[0]?.toLowerCase() === 'open';
         },
-        6
+        12
     );
     if (closedDoor) {
         return engageTarget(player, closedDoor, ServerTriggerType.APLOC1);
@@ -1263,6 +1265,63 @@ function tickTutorialIsland(world: WorldRuntime, state: BotRuntimeState, player:
 }
 
 /**
+ * Ground-floor & basement recovery. Surface gathering and mainland quest targets live on
+ * plane 0 (z < 9500), and walkToward/findPath only path on the bot's current plane, so a
+ * bot left on an upper floor (e.g. Wizards' Tower plane 2) or in a basement cellar cannot
+ * path to surface trees/NPCs directly. These helpers walk to the nearest real staircase or
+ * ladder (opening interior doors along the way via engageTarget) and invoke its native
+ * APLOC option rather than teleporting.
+ */
+function descendTowardGroundFloor(world: WorldRuntime, state: BotRuntimeState, player: Player): boolean {
+    if (player.level <= 0) return false;
+
+    state.currentTask = `Recovery: descending to ground floor (plane ${player.level} -> 0)`;
+
+    const isDownOption = (op: string | undefined): boolean => {
+        const o = (op ?? '').toLowerCase().trim();
+        return o.includes('climb-down') || o.includes('climb down') || o === 'down';
+    };
+
+    const stairs =
+        findNearestLoc(world, player, (_loc, type) => (type.op ?? []).some(op => isDownOption(op ?? undefined)), 32) ??
+        findNearestLoc(world, player, (_loc, type) => (type.op ?? []).some(op => (op ?? '').toLowerCase().trim() === 'climb'), 32);
+    if (!stairs) return false;
+
+    const type = player.resolveLocType(stairs);
+    let opIndex = (type.op ?? []).findIndex(op => isDownOption(op ?? undefined));
+    if (opIndex === -1) {
+        opIndex = (type.op ?? []).findIndex(op => (op ?? '').toLowerCase().trim() === 'climb');
+    }
+    if (opIndex !== -1 && engageTarget(player, stairs, ServerTriggerType.APLOC1 + opIndex)) {
+        state.successfulActions++;
+        return true;
+    }
+    return walkToward(world, player, stairs.x, stairs.z);
+}
+
+function ascendFromUndergroundToSurface(world: WorldRuntime, state: BotRuntimeState, player: Player): boolean {
+    if (player.z < 9500) return false;
+
+    state.currentTask = 'Recovery: climbing up from basement to surface';
+
+    const isUpOption = (op: string | undefined): boolean => {
+        const o = (op ?? '').toLowerCase().trim();
+        return o.includes('climb-up') || o.includes('climb up') || o === 'up';
+    };
+
+    const ladder = findNearestLoc(world, player, (_loc, type) => (type.op ?? []).some(op => isUpOption(op ?? undefined)), 32);
+    if (!ladder) return false;
+
+    const type = player.resolveLocType(ladder);
+    const opIndex = (type.op ?? []).findIndex(op => isUpOption(op ?? undefined));
+    if (opIndex !== -1 && engageTarget(player, ladder, ServerTriggerType.APLOC1 + opIndex)) {
+        state.successfulActions++;
+        return true;
+    }
+    return walkToward(world, player, ladder.x, ladder.z);
+}
+
+/**
  * Fred (Policy A: gather_first) autonomous decision loop.
  * Prioritises gathering resources with starter tools, production, combat across styles,
  * burying bones, banking, and attempting all 21 historical skills.
@@ -1270,6 +1329,26 @@ function tickTutorialIsland(world: WorldRuntime, state: BotRuntimeState, player:
 function tickFredGatherFirst(world: WorldRuntime, state: BotRuntimeState, player: Player): void {
     const inv = player.getInventory(InvType.INV);
     if (!inv) return;
+
+    // Handle active modal/staircase prompts (e.g. generic Climb up / Climb down menu)
+    if (player.activeScript && player.activeScript.execution === ScriptState.PAUSEBUTTON) {
+        const pref = player.level > 0 ? 'down' : player.z >= 9500 ? 'up' : undefined;
+        if (resumeDialogueOrModal(player, pref)) {
+            state.successfulActions++;
+            return;
+        }
+    }
+
+    // 0. If stranded on an upper floor or in a cellar, return to surface ground floor first
+    //    instead of trying to pathfind to plane-0 gathering coordinates on an upper plane.
+    if (player.level > 0) {
+        descendTowardGroundFloor(world, state, player);
+        return;
+    }
+    if (player.z >= 9500) {
+        ascendFromUndergroundToSurface(world, state, player);
+        return;
+    }
 
     // 1. If we have bones in inventory, bury them for genuine Prayer XP
     if (findItemSlot(player, 'bones')) {
@@ -1589,6 +1668,14 @@ function tickGeorgeQuestFirst(world: WorldRuntime, state: BotRuntimeState, playe
 
     // Quest 1: Cook's Assistant (%cookquest: 0 = unstarted, 1 = in progress, 2 = complete)
     if (cookStage === 0) {
+        if (player.level > 0) {
+            descendTowardGroundFloor(world, state, player);
+            return;
+        }
+        if (player.z >= 9500) {
+            ascendFromUndergroundToSurface(world, state, player);
+            return;
+        }
         state.currentTask = "Quest: Cook's Assistant (start with Cook)";
         talkToLumbridgeCook(world, state, player);
         return;
@@ -1599,6 +1686,11 @@ function tickGeorgeQuestFirst(world: WorldRuntime, state: BotRuntimeState, playe
         const hasEgg = findItemSlot(player, 'egg') !== null;
         const hasFlour = findItemSlot(player, 'pot_flour') !== null;
 
+        if (player.z >= 9500) {
+            ascendFromUndergroundToSurface(world, state, player);
+            return;
+        }
+
         // If inside the kitchen or castle courtyard and needing to exit to gather ingredients, step out first
         if ((!hasMilk || !hasEgg || !hasFlour) && exitLumbridgeCastleIfInside(world, state, player)) {
             return;
@@ -1606,6 +1698,10 @@ function tickGeorgeQuestFirst(world: WorldRuntime, state: BotRuntimeState, playe
 
         // Step 1a: Obtain bucket_milk from fat_cow (3253, 3272) using starter bucket_empty
         if (!hasMilk) {
+            if (player.level > 0) {
+                descendTowardGroundFloor(world, state, player);
+                return;
+            }
             state.currentTask = "Quest: Cook's Assistant (milk dairy cow)";
             const fatCow = findNearestLoc(world, player, (_l, t) => t.debugname === 'fat_cow', 20);
             if (fatCow) {
@@ -1620,6 +1716,10 @@ function tickGeorgeQuestFirst(world: WorldRuntime, state: BotRuntimeState, playe
 
         // Step 1b: Obtain egg from Lumbridge chicken coop (3230, 3299)
         if (!hasEgg) {
+            if (player.level > 0) {
+                descendTowardGroundFloor(world, state, player);
+                return;
+            }
             state.currentTask = "Quest: Cook's Assistant (take egg)";
             const eggObj = findNearestObj(world, player, 'egg', 18);
             if (eggObj) {
@@ -1642,12 +1742,11 @@ function tickGeorgeQuestFirst(world: WorldRuntime, state: BotRuntimeState, playe
             const emptyPot = findItemSlot(player, 'pot_empty');
 
             if (flourCount > 0 && emptyPot) {
-                state.currentTask = "Quest: Cook's Assistant (collect flour from bin)";
                 if (player.level > 0) {
-                    const downLadder = findNearestLoc(world, player, (_l, t) => (t.op ?? []).some(op => op?.toLowerCase().includes('climb-down')), 12);
-                    if (downLadder) engageTarget(player, downLadder, ServerTriggerType.APLOC1);
+                    descendTowardGroundFloor(world, state, player);
                     return;
                 }
+                state.currentTask = "Quest: Cook's Assistant (collect flour from bin)";
                 const millbase = findNearestLoc(world, player, (_l, t) => (t.debugname ?? '').startsWith('millbase'), 16);
                 if (millbase) {
                     player.lastUseItem = emptyPot.id;
@@ -1665,8 +1764,12 @@ function tickGeorgeQuestFirst(world: WorldRuntime, state: BotRuntimeState, playe
                 state.currentTask = "Quest: Cook's Assistant (operate hopper controls)";
                 if (player.level < 2) {
                     const upLadder = findNearestLoc(world, player, (_l, t) => (t.op ?? []).some(op => op?.toLowerCase().includes('climb-up')), 14);
-                    if (upLadder) engageTarget(player, upLadder, ServerTriggerType.APLOC1);
-                    else walkToward(world, player, 3166, 3303);
+                    if (upLadder) {
+                        const upIdx = (player.resolveLocType(upLadder).op ?? []).findIndex(op => op?.toLowerCase().includes('climb-up'));
+                        engageTarget(player, upLadder, ServerTriggerType.APLOC1 + Math.max(0, upIdx));
+                    } else {
+                        walkToward(world, player, 3166, 3303);
+                    }
                     return;
                 }
                 const controls = findNearestLoc(world, player, (_l, t) => (t.debugname ?? '').includes('hoppercontrol'), 12);
@@ -1680,8 +1783,12 @@ function tickGeorgeQuestFirst(world: WorldRuntime, state: BotRuntimeState, playe
                 state.currentTask = "Quest: Cook's Assistant (put grain in hopper)";
                 if (player.level < 2) {
                     const upLadder = findNearestLoc(world, player, (_l, t) => (t.op ?? []).some(op => op?.toLowerCase().includes('climb-up')), 14);
-                    if (upLadder) engageTarget(player, upLadder, ServerTriggerType.APLOC1);
-                    else walkToward(world, player, 3166, 3303);
+                    if (upLadder) {
+                        const upIdx = (player.resolveLocType(upLadder).op ?? []).findIndex(op => op?.toLowerCase().includes('climb-up'));
+                        engageTarget(player, upLadder, ServerTriggerType.APLOC1 + Math.max(0, upIdx));
+                    } else {
+                        walkToward(world, player, 3166, 3303);
+                    }
                     return;
                 }
                 const hopper = findNearestLoc(world, player, (_l, t) => (t.debugname ?? '').includes('hopper'), 12);
@@ -1696,6 +1803,10 @@ function tickGeorgeQuestFirst(world: WorldRuntime, state: BotRuntimeState, playe
             }
 
             state.currentTask = "Quest: Cook's Assistant (pick wheat)";
+            if (player.level > 0) {
+                descendTowardGroundFloor(world, state, player);
+                return;
+            }
             const wheat = findNearestLoc(world, player, (_l, t) => (t.name ?? '').toLowerCase() === 'wheat', 20);
             if (wheat) {
                 const type = player.resolveLocType(wheat);
@@ -1712,8 +1823,7 @@ function tickGeorgeQuestFirst(world: WorldRuntime, state: BotRuntimeState, playe
         // All 3 ingredients collected -> return to Cook in Lumbridge Kitchen (3208, 3214)
         state.currentTask = "Quest: Cook's Assistant (hand in ingredients to Cook)";
         if (player.level > 0) {
-            const downLadder = findNearestLoc(world, player, (_l, t) => (t.op ?? []).some(op => op?.toLowerCase().includes('climb-down')), 12);
-            if (downLadder) engageTarget(player, downLadder, ServerTriggerType.APLOC1);
+            descendTowardGroundFloor(world, state, player);
             return;
         }
         talkToLumbridgeCook(world, state, player);
@@ -1732,6 +1842,15 @@ function tickGeorgeQuestFirst(world: WorldRuntime, state: BotRuntimeState, playe
             state.currentTask = "Quest: Cook's Assistant (logout persistence verification)";
             return;
         }
+    }
+
+    if (player.level > 0) {
+        descendTowardGroundFloor(world, state, player);
+        return;
+    }
+    if (player.z >= 9500) {
+        ascendFromUndergroundToSurface(world, state, player);
+        return;
     }
 
     if (exitLumbridgeCastleIfInside(world, state, player)) {
