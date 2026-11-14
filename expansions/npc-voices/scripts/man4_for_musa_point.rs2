@@ -1,0 +1,46 @@
+// JoshRS original dialogue - Tomas Reed, the man who stepped off a boat at Musa Point and never got back on.
+// Voice: sunburnt, unhurried, cheerfully lost; measures time in bananas and tides.
+
+[opnpc1,man4_for_musa_point]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,happy>Afternoon! Or morning. One of the two.|Out here they mostly blur together.");
+    case 1 : ~chatnpc("<p,neutral>Tomas Reed. Don't ask how long I've been here.|I stopped counting at nine years,|or roughly forty thousand bananas.");
+    case 2 : ~chatnpc("<p,happy>Another one off the boat, eh?|Mind the planks. They're older than I am,|and I'm getting on a bit myself.");
+}
+@joshrs_tomas_menu;
+
+[label,joshrs_tomas_menu]
+def_int $option = ~p_choice5("How did you end up here?", 1, "Doesn't the heat bother you?", 2, "Forty thousand bananas?", 3, "Any advice for a visitor?", 4, "Enjoy the sunshine, Tomas.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,quiz>How did you end up here?");
+    ~chatnpc("<p,neutral>I was a deckhand out of Port Sarim.|We stopped here for one afternoon|to take on water.");
+    ~chatnpc("<p,happy>I sat down under that palm tree for a minute.|When I opened my eyes, the boat was a dot|on the horizon, and I felt... fine about it.");
+    ~chatplayer("<p,laugh>You just stayed?");
+    ~chatnpc("<p,happy>I kept meaning to go back. Every day|I'd think, tomorrow. Turns out tomorrow|is a very comfortable place to keep a plan.");
+    @joshrs_tomas_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>Doesn't the heat bother you?");
+    ~chatnpc("<p,sad>The first year, it was dreadful.|I went as red as a boiled crab.|The crabs were very offended.");
+    ~chatnpc("<p,neutral>Now I've got it worked out. Hat. Shade.|Stand still around midday.|Move about when the sea breeze comes in.");
+    ~chatnpc("<p,happy>Back home, I was always cold.|I don't think I've shivered once in nine years.|That's worth a lot of sunburn.");
+    @joshrs_tomas_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Forty thousand bananas? Really?");
+    ~chatnpc("<p,neutral>Give or take. I did the sums once,|on a bit of driftwood. About twelve a day.|It's mostly what grows here.");
+    ~chatnpc("<p,happy>Fried bananas. Baked bananas. Banana on toast,|when I can get toast. Banana soup,|which I don't recommend.");
+    ~chatplayer("<p,quiz>Aren't you sick of them?");
+    ~chatnpc("<p,shock>Sick of them? I've only just started|to understand them.");
+    @joshrs_tomas_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,quiz>Any advice for someone visiting Karamja?");
+    ~chatnpc("<p,neutral>Three things. First, drink plenty of water.|The island doesn't care how tough you are.");
+    ~chatnpc("<p,neutral>Second, the big mountain in the middle|is hot on the inside, not just the outside.|Respect it, and keep your distance.");
+    ~chatnpc("<p,happy>Third, sit down under a palm tree now and then.|Only for a minute, mind.|Or you'll end up like me.");
+    @joshrs_tomas_menu;
+} else {
+    ~chatplayer("<p,happy>Enjoy the sunshine, Tomas.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Always do! If you're ever heading back|to Port Sarim, tell them I said hello.|Tell them I'll be back tomorrow.");
+        case 1 : ~chatnpc("<p,happy>Safe travels, friend.|Mind the boat doesn't leave without you.|They do that.");
+    }
+}
