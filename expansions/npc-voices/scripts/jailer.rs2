@@ -1,0 +1,46 @@
+// JoshRS original dialogue - Mortimer Kell, the Jailer, who runs his dungeon cells like a struggling inn.
+// Voice: fussy, put-upon, oddly proud; treats prisoners as guests and complaints as personal insults.
+
+[opnpc1,jailer]
+switch_int(random(3)) {
+    case 0 : ~chatnpc("<p,neutral>Welcome, welcome. Mortimer Kell, Jailer.|Are you checking in, or just visiting?");
+    case 1 : ~chatnpc("<p,sad>If you're here to complain about the cells,|please join the queue. The queue is|currently one rat long.");
+    case 2 : ~chatnpc("<p,shifty>Don't look at the damp patch on the wall.|I'm calling it a 'feature'.");
+}
+@joshrs_mortimer_menu;
+
+[label,joshrs_mortimer_menu]
+def_int $option = ~p_choice5("Checking in?", 1, "What's it like being a jailer?", 2, "Are the prisoners treated well?", 3, "Can I have the keys?", 4, "I'll be going now.", 5);
+if ($option = 1) {
+    ~chatplayer("<p,confused>Checking in? It's a jail.");
+    ~chatnpc("<p,neutral>I prefer to think of it as|very secure accommodation.");
+    ~chatnpc("<p,happy>Every cell comes with a stone bench,|a lovely view of a stone wall,|and a free bowl of gruel each morning.");
+    ~chatplayer("<p,quiz>Do people actually choose to stay?");
+    ~chatnpc("<p,sad>Not as such, no. But they never leave|early either. I like to think that says something.");
+    @joshrs_mortimer_menu;
+} else if ($option = 2) {
+    ~chatplayer("<p,quiz>What's it like being a jailer?");
+    ~chatnpc("<p,neutral>Lonely, mostly. You'd be surprised|how few people come down here for a chat.");
+    ~chatnpc("<p,sad>And it's damp. Everything is damp.|My boots are damp. My bread is damp.|I'm fairly sure my thoughts are a bit damp.");
+    ~chatnpc("<p,happy>But I do take pride in it. Keys polished,|locks oiled, register kept in my best handwriting.|Somebody has to do it properly.");
+    @joshrs_mortimer_menu;
+} else if ($option = 3) {
+    ~chatplayer("<p,quiz>Are the prisoners treated well?");
+    ~chatnpc("<p,shock>Of course! What sort of establishment|do you think I'm running?");
+    ~chatnpc("<p,neutral>Clean straw every week. Gruel every morning.|Stories on Tuesdays, if they behave.|I do all the voices.");
+    ~chatplayer("<p,laugh>What sort of stories?");
+    ~chatnpc("<p,happy>Escape stories, mostly. They seem to like those.|Odd, really. You'd think they'd want|something a bit more relaxing.");
+    @joshrs_mortimer_menu;
+} else if ($option = 4) {
+    ~chatplayer("<p,shifty>Can I have the keys?");
+    ~chatnpc("<p,angry>Absolutely not! Do you know how many people|ask me that? Every single one.|Not one of them has ever said please.");
+    ~chatplayer("<p,quiz>...Please?");
+    ~chatnpc("<p,neutral>That's very nice of you. Still no.|But I appreciate the manners.");
+    @joshrs_mortimer_menu;
+} else {
+    ~chatplayer("<p,neutral>I'll be going now.");
+    switch_int(random(2)) {
+        case 0 : ~chatnpc("<p,happy>Thank you for visiting! If you enjoyed yourself,|do tell your friends. Just not the ones|who keep breaking into places.");
+        case 1 : ~chatnpc("<p,sad>Oh. Already? Well. Mind the step.|And the puddle. And the other puddle.");
+    }
+}
