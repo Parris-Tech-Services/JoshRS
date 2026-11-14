@@ -72,7 +72,7 @@ switch_int($station) {
 // was opened. This prevents stale/forged interface clicks teleporting a
 // player from an unrelated part of the map.
 [proc,joshrs_canoe_near](int $station)(boolean)
-if (coordlevel(coord) ! 0) {
+if (coordy(coord) ! 0) {
     return(false);
 }
 switch_int($station) {
