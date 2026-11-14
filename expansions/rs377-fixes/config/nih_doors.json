@@ -1,0 +1,161 @@
+{
+ "note": "Ordinary closed doors placed on the 377 map with no handler, given the standard door categories and their existing open twin (same name, model and colours, op1 Close, adjacent id). Quest-gated, locked, magic and double doors are excluded. Hinge direction is not verified visually.",
+ "files": [
+  {
+   "file": "scripts/_unpack/377/all.loc",
+   "add": {
+    "loc_10527": [
+     "category=door_closed",
+     "param=next_loc_stage,loc_10528"
+    ],
+    "loc_10528": [
+     "category=door_opened",
+     "param=next_loc_stage,loc_10527"
+    ],
+    "loc_10529": [
+     "category=door_closed",
+     "param=next_loc_stage,loc_10530"
+    ],
+    "loc_10530": [
+     "category=door_opened",
+     "param=next_loc_stage,loc_10529"
+    ],
+    "loc_14923": [
+     "category=door_closed",
+     "param=next_loc_stage,loc_14924"
+    ],
+    "loc_14924": [
+     "category=door_opened",
+     "param=next_loc_stage,loc_14923"
+    ],
+    "loc_5126": [
+     "category=door_closed",
+     "param=next_loc_stage,loc_5128"
+    ],
+    "loc_5128": [
+     "category=door_opened",
+     "param=next_loc_stage,loc_5126"
+    ],
+    "misc_viking_abode_door_low": [
+     "category=door_closed",
+     "param=next_loc_stage,misc_viking_abode_door_low_open"
+    ],
+    "misc_viking_abode_door_low_open": [
+     "category=door_opened",
+     "param=next_loc_stage,misc_viking_abode_door_low"
+    ],
+    "ahoy_harbour_door": [
+     "category=door_closed",
+     "param=next_loc_stage,ahoy_harbour_door_open"
+    ],
+    "ahoy_harbour_door_open": [
+     "category=door_opened",
+     "param=next_loc_stage,ahoy_harbour_door"
+    ],
+    "fenk_door_mirror": [
+     "category=reverse_door_closed",
+     "param=next_loc_stage,fenk_door_open"
+    ],
+    "fenk_door_open": [
+     "category=reverse_door_opened",
+     "param=next_loc_stage,fenk_door_mirror"
+    ]
+   }
+  },
+  {
+   "file": "scripts/areas/area_relleka/configs/relleka.loc",
+   "add": {
+    "viking_abode_door": [
+     "category=door_closed",
+     "param=next_loc_stage,viking_abode_door_open"
+    ],
+    "viking_abode_door_open": [
+     "category=door_opened",
+     "param=next_loc_stage,viking_abode_door"
+    ]
+   }
+  },
+  {
+   "file": "scripts/areas/area_wilderness/configs/wilderness.loc",
+   "add": {
+    "wild_door": [
+     "category=door_closed",
+     "param=next_loc_stage,wild_door_open"
+    ],
+    "wild_door_open": [
+     "category=door_opened",
+     "param=next_loc_stage,wild_door"
+    ]
+   }
+  },
+  {
+   "file": "scripts/areas/area_keldagrim/configs/keldagrim.loc",
+   "add": {
+    "dwarf_keldagrim_door": [
+     "category=door_closed",
+     "param=next_loc_stage,dwarf_keldagrim_door_open"
+    ],
+    "dwarf_keldagrim_door_open": [
+     "category=door_opened",
+     "param=next_loc_stage,dwarf_keldagrim_door"
+    ],
+    "dwarf_keldagrim_door_interior": [
+     "category=door_closed",
+     "param=next_loc_stage,dwarf_keldagrim_door_interior_open"
+    ],
+    "dwarf_keldagrim_door_interior_open": [
+     "category=door_opened",
+     "param=next_loc_stage,dwarf_keldagrim_door_interior"
+    ],
+    "dwarf_keldagrim_door_interior_factory": [
+     "category=door_closed",
+     "param=next_loc_stage,dwarf_keldagrim_door_interior_factory_open"
+    ],
+    "dwarf_keldagrim_door_interior_factory_open": [
+     "category=door_opened",
+     "param=next_loc_stage,dwarf_keldagrim_door_interior_factory"
+    ],
+    "dwarf_keldagrim_door_interior_palace": [
+     "category=door_closed",
+     "param=next_loc_stage,dwarf_keldagrim_door_interior_palace_open"
+    ],
+    "dwarf_keldagrim_door_interior_palace_open": [
+     "category=door_opened",
+     "param=next_loc_stage,dwarf_keldagrim_door_interior_palace"
+    ],
+    "dwarf_keldagrim_door_interior_poor": [
+     "category=door_closed",
+     "param=next_loc_stage,dwarf_keldagrim_door_interior_poor_open"
+    ],
+    "dwarf_keldagrim_door_interior_poor_open": [
+     "category=door_opened",
+     "param=next_loc_stage,dwarf_keldagrim_door_interior_poor"
+    ],
+    "dwarf_keldagrim_door_ornate": [
+     "category=door_closed",
+     "param=next_loc_stage,dwarf_keldagrim_door_ornate_open"
+    ],
+    "dwarf_keldagrim_door_ornate_open": [
+     "category=door_opened",
+     "param=next_loc_stage,dwarf_keldagrim_door_ornate"
+    ],
+    "dwarf_keldagrim_door_palace": [
+     "category=door_closed",
+     "param=next_loc_stage,dwarf_keldagrim_door_palace_open"
+    ],
+    "dwarf_keldagrim_door_palace_open": [
+     "category=door_opened",
+     "param=next_loc_stage,dwarf_keldagrim_door_palace"
+    ],
+    "dwarf_keldagrim_door_poor": [
+     "category=door_closed",
+     "param=next_loc_stage,dwarf_keldagrim_door_poor_open"
+    ],
+    "dwarf_keldagrim_door_poor_open": [
+     "category=door_opened",
+     "param=next_loc_stage,dwarf_keldagrim_door_poor"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,291 @@
+{
+ "note": "Rocks placed on the 377 map with no mining handler. Ore identified by its ore colour (recolNd unique to one ore among working rocks; 74/74 leave-one-out correct). Depleted version = same model + same source colours, no ore colour, nearest id. All fields are server-only.",
+ "files": [
+  {
+   "file": "scripts/_unpack/377/all.loc",
+   "add": {
+    "loc_10948": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_10946"
+    ],
+    "loc_10949": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_10947"
+    ],
+    "loc_11946": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11949"
+    ],
+    "loc_11947": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11950"
+    ],
+    "loc_11951": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11948"
+    ],
+    "loc_11952": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11949"
+    ],
+    "loc_11953": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11950"
+    ],
+    "loc_11954": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11948"
+    ],
+    "loc_11955": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11949"
+    ],
+    "loc_11956": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11950"
+    ],
+    "loc_11957": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11948"
+    ],
+    "loc_11958": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11949"
+    ],
+    "loc_11959": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11950"
+    ],
+    "loc_11960": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11948"
+    ],
+    "loc_11962": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11950"
+    ],
+    "loc_11963": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11948"
+    ],
+    "loc_11964": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_11949"
+    ],
+    "loc_14092": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14898"
+    ],
+    "loc_14093": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14899"
+    ],
+    "loc_14853": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14850"
+    ],
+    "loc_14854": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14851"
+    ],
+    "loc_14855": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14852"
+    ],
+    "loc_14856": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14850"
+    ],
+    "loc_14857": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14851"
+    ],
+    "loc_14858": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14852"
+    ],
+    "loc_14859": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14850"
+    ],
+    "loc_14860": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14851"
+    ],
+    "loc_14862": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14850"
+    ],
+    "loc_14863": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14851"
+    ],
+    "loc_14864": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14852"
+    ],
+    "loc_14904": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14898"
+    ],
+    "loc_14905": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14899"
+    ],
+    "loc_14906": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14898"
+    ],
+    "loc_14907": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14899"
+    ],
+    "loc_14913": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14915"
+    ],
+    "loc_14914": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_14916"
+    ],
+    "loc_6943": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_6947"
+    ],
+    "loc_6944": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_6948"
+    ],
+    "loc_6945": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_6947"
+    ],
+    "loc_6946": [
+     "category=mining_rock_normal",
+     "param=next_loc_stage_mining,loc_6948"
+    ],
+    "loc_10946": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_10947": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_11948": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_11949": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_11950": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_14850": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_14851": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_14852": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_14898": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_14899": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_14915": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_14916": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_6947": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ],
+    "loc_6948": [
+     "category=mining_rock_normal",
+     "param=mining_rock_empty,1"
+    ]
+   }
+  },
+  {
+   "file": "scripts/skill_mining/configs/mine.dbrow",
+   "add": {
+    "coal_rock_table": [
+     "data=rock,loc_10948",
+     "data=rock,loc_11963",
+     "data=rock,loc_11964"
+    ],
+    "clay_rock_table": [
+     "data=rock,loc_10949",
+     "data=rock,loc_14904",
+     "data=rock,loc_14905"
+    ],
+    "mithril_rock_table": [
+     "data=rock,loc_11946",
+     "data=rock,loc_11947",
+     "data=rock,loc_14853",
+     "data=rock,loc_14854",
+     "data=rock,loc_14855"
+    ],
+    "gold_rock_table": [
+     "data=rock,loc_11951",
+     "data=rock,loc_11952",
+     "data=rock,loc_11953"
+    ],
+    "iron_rock_table": [
+     "data=rock,loc_11954",
+     "data=rock,loc_11955",
+     "data=rock,loc_11956",
+     "data=rock,loc_14856",
+     "data=rock,loc_14857",
+     "data=rock,loc_14858",
+     "data=rock,loc_14913",
+     "data=rock,loc_14914",
+     "data=rock,loc_6943",
+     "data=rock,loc_6944"
+    ],
+    "tin_rock_table": [
+     "data=rock,loc_11957",
+     "data=rock,loc_11958",
+     "data=rock,loc_11959",
+     "data=rock,loc_14092",
+     "data=rock,loc_14093"
+    ],
+    "copper_rock_table": [
+     "data=rock,loc_11960",
+     "data=rock,loc_11962",
+     "data=rock,loc_14906",
+     "data=rock,loc_14907"
+    ],
+    "runite_rock_table": [
+     "data=rock,loc_14859",
+     "data=rock,loc_14860"
+    ],
+    "adamantite_rock_table": [
+     "data=rock,loc_14862",
+     "data=rock,loc_14863",
+     "data=rock,loc_14864"
+    ],
+    "silver_rock_table": [
+     "data=rock,loc_6945",
+     "data=rock,loc_6946"
+    ]
+   }
+  }
+ ]
+}
