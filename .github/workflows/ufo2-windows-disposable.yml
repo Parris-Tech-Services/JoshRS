@@ -62,7 +62,7 @@ jobs:
         run: |
           python tools/rs377-ufo2/java377_client_probe.py
       - name: Save redacted native-Java UFO2 evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: ufo2-native-java377-window-evidence
@@ -70,7 +70,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
       - name: Preserve redacted UFO2 desktop capability evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: ufo2-windows-desktop-disposable-evidence
