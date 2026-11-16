@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -35,7 +35,7 @@ jobs:
           bun build tools/rs377-live-quest-bridge/run-fedora.mjs --target=bun --outfile="$RUNNER_TEMP/family-bot-quest-runner.js"
           node --check tools/rs377-live-quest-bridge/run-fedora.mjs
       - name: Checkout the exact upstream RS-SDK for real BotSDK class test
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: MaxBittker/rs-sdk
           ref: db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb

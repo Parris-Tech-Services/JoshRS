@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -23,7 +23,7 @@ jobs:
         with:
           bun-version: '1.3.0'
       - name: Checkout immutable upstream RS-SDK for native gameplay acceptance
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: MaxBittker/rs-sdk
           ref: db0cc51e0a8f9f0d6a7d60c44e534412bb0601bb

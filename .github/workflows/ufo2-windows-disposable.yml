@@ -14,9 +14,9 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 35
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Clone immutable Microsoft UFO2 Desktop AgentOS
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: microsoft/UFO
           ref: eae3c0a8d168c47cb10df0652e293e092eda1078
@@ -37,7 +37,7 @@ jobs:
         run: |
           python tools/rs377-ufo2/windows_probe.py
       - name: Checkout pinned revision-377 Java client source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: LostCityRS/Client-Java
           ref: 327880f6de74b40c420705bc42e4b34284885087

@@ -18,7 +18,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Verify read-only and fail-closed Luna repair in PowerShell 5.1
         shell: powershell
         run: '& .\deploy\jparris-windows\tests\Repair-LunaPlaytime.test.ps1'
