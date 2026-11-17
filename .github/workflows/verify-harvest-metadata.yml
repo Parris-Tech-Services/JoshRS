@@ -32,7 +32,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Restore most recent read-only metadata snapshot
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: /tmp/joshrs-rev377-metadata
           key: joshrs-metadata-${{ github.run_id }}
@@ -64,7 +64,7 @@ jobs:
           PY
       - name: Save resumable public metadata snapshot
         if: success()
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: /tmp/joshrs-rev377-metadata
           key: joshrs-metadata-${{ github.run_id }}
