@@ -15,9 +15,9 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Clone immutable Microsoft UFO2 source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: microsoft/UFO
           ref: eae3c0a8d168c47cb10df0652e293e092eda1078

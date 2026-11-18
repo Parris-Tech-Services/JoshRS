@@ -22,7 +22,7 @@ jobs:
     timeout-minutes: 25
     steps:
       - name: Check out JoshRS bot source and installer
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Install Node 24
         uses: actions/setup-node@v4
         with:

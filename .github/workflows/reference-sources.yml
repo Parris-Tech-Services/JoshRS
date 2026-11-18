@@ -17,7 +17,7 @@ jobs:
   gitlinks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Validate all pinned source directories
         shell: bash
         run: |
@@ -43,7 +43,7 @@ jobs:
   windows-script:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Parse helper without executing it
         shell: pwsh
         run: |

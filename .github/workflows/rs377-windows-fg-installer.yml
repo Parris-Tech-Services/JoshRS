@@ -18,7 +18,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 7
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Validate fail-closed source update (PowerShell 5.1)
         shell: powershell
         run: '& .\deploy\jparris-windows\tests\Install-FredGeorgeRelogFix.test.ps1'

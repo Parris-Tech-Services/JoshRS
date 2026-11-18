@@ -18,7 +18,7 @@ jobs:
   read-only:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Parse PowerShell and check forbidden commands
         shell: pwsh
         run: |
