@@ -34,7 +34,7 @@ jobs:
       - name: Summarise classifications
         run: |
           node -e "const r=require('./rs-sdk-compatibility-report.json'); console.log(JSON.stringify({sourceCommit:r.sourceCommit,sdkCommit:r.sdkCommit,patchCounts:r.counts,bundleCounts:r.bundleCounts},null,2));"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: rs-sdk-compatibility-report
           path: rs-sdk-compatibility-report.json

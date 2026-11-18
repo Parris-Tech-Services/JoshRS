@@ -89,7 +89,7 @@ jobs:
           script: bash tools/android377-phone/run-emulator-real377.sh "$RUNNER_TEMP/joshrs-batch-377/engine"
       - name: Retain emulator screenshot and status
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: android-377-real-server-evidence
           path: reports/android377/
