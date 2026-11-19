@@ -9,8 +9,8 @@ class GradleCdnSafety(unittest.TestCase):
         self.assertIn("distributionUrl=https\\://downloads.gradle.org/distributions/gradle-8.11.1-bin.zip",s)
         self.assertIn("$env:GITHUB_ACTIONS -eq 'true'",s)
     def test_changes_only_the_exact_pinned_wrapper_and_restores_on_failure(self):
-        self.assertIn("$defaultGradle = 'distributionUrl=https\\\\://services.gradle.org/distributions/gradle-8.11.1-bin.zip'",s)
-        self.assertIn("$directGradle = 'distributionUrl=https\\\\://downloads.gradle.org/distributions/gradle-8.11.1-bin.zip'",s)
+        self.assertIn("$defaultGradle = 'distributionUrl=https\\://services.gradle.org/distributions/gradle-8.11.1-bin.zip'",s)
+        self.assertIn("$directGradle = 'distributionUrl=https\\://downloads.gradle.org/distributions/gradle-8.11.1-bin.zip'",s)
         self.assertIn("$expectedGradleHash = 'f397b287023acdba1e9f6fc5ea72d22dd63669d59ed4a289a29b1a76eee151c6'",s)
         self.assertIn("if ($hasPinned)",s)
         self.assertIn("if ($wrapperBefore -match",s)
