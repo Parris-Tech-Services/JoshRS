@@ -99,6 +99,23 @@ export function createLocalNativeAgentFactory({repoRoot}={}){
   });
   const sdk=createSdk377Runtime({session,observer,botName:name,expectedWorld:cfg.world});
   let authenticated=false;
+  const action=async(a)=>{
+    if(!authenticated||!session.status().authenticated)
+      throw new Error('native_377_account_not_authenticated');
+    // A previous observe() may have consumed this world's 600ms tick.
+    // Retrying a replay/stale-read is safe ONLY before any packet is sent.
+    for(let attempt=0;attempt<3;attempt++){
+      try{return await sdk.action(a)}
+      catch(error){
+        if(attempt<2&&/replayed_native_observation|sdk_action_replay_or_stale_tick/.test(String(error?.message??error))){
+          await sleep(720);
+          continue;
+        }
+        throw error;
+      }
+    }
+    throw new Error('fresh_native_sdk_tick_unavailable');
+  };
   return Object.freeze({
    async connect(){
     const result=await session.connect();
@@ -120,10 +137,18 @@ export function createLocalNativeAgentFactory({repoRoot}={}){
     throw new Error('native_observer_not_ready');
    },
    async move({x,z}){
-    if(!authenticated)throw new Error('native_377_account_not_authenticated');
-    // A typed SDK walk action becomes actual rev377 ISAAC TCP input.
-    // The Fleet separately waits for the native observer to VERIFY position.
-    return await sdk.action({type:'walkTo',x,z,running:false,reason:'Agent Manager exploration'});
+    return action({type:'walkTo',x,z,running:false,
+      reason:'Agent Manager exploration'});
+   },
+   async interactLoc({x,z,locId,optionIndex}){
+    // No direct world edits: the real rev377 OPLOC packet is validated
+    // against the CURRENT per-bot visible location in mapSdkAction.
+    return action({type:'interactLoc',x,z,locId,optionIndex,
+      reason:'Agent Manager observed skill target'});
+   },
+   async interactNpc({npcIndex,optionIndex}){
+    return action({type:'interactNpc',npcIndex,optionIndex,
+      reason:'Agent Manager observed native NPC dialogue'});
    },
    async close(){authenticated=false;return session.close()}
   });

@@ -12,7 +12,7 @@ From a full JoshRS source checkout, double-click JoshRS-Agent-Manager.cmd, or ru
 
 Open http://127.0.0.1:18886 on the same desktop. The web server is strictly loopback-only and validates a same-origin anti-CSRF secret.
 
-Create a HarnessA-style profile. Goals available now are Idle and Explore. Starting a bot requests its separate disposable account password. The password is used only in memory for that session; it is not written to the profile, log or GitHub. A profile is not a game account: the server must accept a normal login or account registration.
+Create a HarnessA-style profile. Goals available now are Idle, Explore, Woodcut and Talk. **Woodcut** requires an actual axe already in the bot's observed inventory/equipment and a choppable tree within four tiles; XP must increase on the real server before the action is counted. **Talk** interacts only with a currently visible talkable NPC and pauses when a real dialogue opens. A packet write alone never counts as success. Starting a bot requests its separate disposable account password. The original revision-377 login supports only 8–20 printable ASCII characters in the manager; longer or Unicode passwords are rejected before an invalid connection attempt. The password is used only in memory for that session; it is not written to the profile, log or GitHub. A profile is not a game account: the server must accept a normal login or account registration.
 
 Explore moves via an authenticated, legal rev377 ISAAC game packet and counts a successful move only if the real engine observer later reports the matching coordinates. Pause stops new actions. Stop requests an orderly TCP disconnect, not a server kill. The manager reports save verification as incomplete until a normal relog.
 
