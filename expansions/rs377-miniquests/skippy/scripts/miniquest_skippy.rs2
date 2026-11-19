@@ -1,0 +1,73 @@
+// JoshRS 377: original miniquest implementation for Skippy and the Mogres.
+// New, independently authored text. No verbatim Jagex dialogue or cache assets.
+// Skippy's existing NPC morph and player varbit (skippy_state) are in pinned
+// LostCityRS/Content 377-wip. Does not mutate the world or other player saves.
+// THIS IS THE STORY/ITEM-HANDIN SLICE. Mogre-spawn/Slayer mechanics are separate,
+// unimplemented and must not be represented as playable or finished.
+
+[opnpc1,multi_skippy] @joshrs_skippy_talk;
+[opnpc1,skippy] @joshrs_skippy_talk;
+[opnpc1,damp_skippy] @joshrs_skippy_talk;
+[opnpc1,hungover_skippy] @joshrs_skippy_talk;
+[opnpc1,sober_skippy] @joshrs_skippy_talk;
+
+[label,joshrs_skippy_talk]
+if (map_members = ^false) {
+    mes(^mes_members_feature);
+    return;
+}
+switch_int (%skippy_state) {
+    case 0 :
+        ~chatnpc("<p,neutral>My head's spinning. I could do with a bucket of water to wake me up.");
+    case 1 :
+        ~chatnpc("<p,neutral>That's a little better. Something warm would help. Have you got any nettle tea?");
+    case 2 :
+        ~chatnpc("<p,neutral>The tea helped, but this headache is dreadful. I need a proper hangover cure.");
+    case default :
+        ~chatnpc("<p,neutral>It all came back to me after that cure. Those strange creatures in the water were mogres. Be careful at the fishing spots.");
+}
+
+[opnpcu,multi_skippy] @joshrs_skippy_item;
+[opnpcu,skippy] @joshrs_skippy_item;
+[opnpcu,damp_skippy] @joshrs_skippy_item;
+[opnpcu,hungover_skippy] @joshrs_skippy_item;
+[opnpcu,sober_skippy] @joshrs_skippy_item;
+
+[label,joshrs_skippy_item]
+if (map_members = ^false) {
+    mes(^mes_members_feature);
+    return;
+}
+if (%skippy_state = 0 & last_useitem = bucket_water & inv_total(inv, bucket_water) > 0) {
+    // The empty bucket replaces the full one; the player's inventory size is unchanged.
+    inv_del(inv, bucket_water, 1);
+    inv_add(inv, bucket_empty, 1);
+    %skippy_state = 1;
+    mes("You splash Skippy with water and hand back the empty bucket.");
+    ~chatnpc("<p,neutral>Oh! That certainly woke me up. Now I'd really like something warm.");
+    return;
+}
+if (%skippy_state = 1 & (last_useitem = bowl_nettletea | last_useitem = cup_of_nettletea)) {
+    if (last_useitem = bowl_nettletea & inv_total(inv, bowl_nettletea) > 0) {
+        inv_del(inv, bowl_nettletea, 1);
+        inv_add(inv, bowl_empty, 1);
+    } else if (last_useitem = cup_of_nettletea & inv_total(inv, cup_of_nettletea) > 0) {
+        inv_del(inv, cup_of_nettletea, 1);
+        inv_add(inv, cup_empty, 1);
+    } else {
+        mes("You don't have any nettle tea to offer.");
+        return;
+    }
+    %skippy_state = 2;
+    ~chatnpc("<p,neutral>That's helped settle my nerves. But my head still aches something fierce.");
+    return;
+}
+if (%skippy_state = 2 & last_useitem = hangover_cure & inv_total(inv, hangover_cure) > 0) {
+    inv_del(inv, hangover_cure, 1);
+    %skippy_state = 3;
+    ~chatnpc("<p,happy>Much better! I remember now. I was fishing when something enormous rose from the water.");
+    ~chatnpc("<p,neutral>They call them mogres. Keep your distance until you know what you're doing.");
+    mes("Skippy has recovered. You have learned about the mogres.");
+    return;
+}
+mes("Skippy doesn't need that item right now.");

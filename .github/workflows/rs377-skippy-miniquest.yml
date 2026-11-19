@@ -1,0 +1,81 @@
+name: RS377 Skippy miniquest isolated source and native compile
+
+on:
+  pull_request:
+    paths:
+      - 'expansions/rs377-miniquests/skippy/**'
+      - 'tools/rs377-skippy/**'
+      - '.github/workflows/rs377-skippy-miniquest.yml'
+  push:
+    paths:
+      - 'expansions/rs377-miniquests/skippy/**'
+      - 'tools/rs377-skippy/**'
+      - '.github/workflows/rs377-skippy-miniquest.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check installer, stages, item conservation and runtime refusal
+        run: node --test tools/rs377-skippy/apply-skippy.test.mjs
+
+  pinned-native-compile:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Fetch both pinned 377 sources into disposable runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/joshrs-skippy-377"
+          mkdir -p "$root"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Engine-TS.git "$root/engine"
+          git clone --depth 1 --branch 377-wip https://github.com/LostCityRS/Content.git "$root/content"
+          for spec in 'engine b5ac859b47915afb545e60e4c1208f25d43cb3fb' 'content 44eab09081ef0f6c5f3eaabd1897a588ad7d9e50'; do
+            read -r name pin <<< "$spec"
+            actual="$(git -C "$root/$name" rev-parse HEAD)"
+            if [ "$actual" != "$pin" ]; then
+              git -C "$root/$name" fetch --depth 1 origin "$pin"
+              git -C "$root/$name" checkout --detach "$pin"
+            fi
+            test "$(git -C "$root/$name" rev-parse HEAD)" = "$pin"
+          done
+      - name: Validate and stage only to disposable content
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/joshrs-skippy-377/content"
+          node tools/rs377-skippy/apply-skippy.mjs --content "$root"
+          test ! -e "$root/scripts/quests/miniquest_skippy/scripts/miniquest_skippy.rs2"
+          node tools/rs377-skippy/apply-skippy.mjs --content "$root" --apply
+          node tools/rs377-skippy/apply-skippy.mjs --content "$root" --apply
+          test -s "$root/scripts/quests/miniquest_skippy/scripts/miniquest_skippy.rs2"
+          git -C "$root" diff --check
+      - name: Native pinned engine/content RuneScript compile and pack
+        shell: bash
+        env:
+          BUILD_SRC_DIR: ../content
+          BUILD_VERIFY: 'true'
+          BUILD_VERIFY_PACK: 'true'
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/joshrs-skippy-377/engine"
+          npm ci --no-audit --no-fund
+          npm run build
+          test -s data/pack/server/script.dat
+          test -s data/pack/server/script.idx
+          echo 'SKIPPY_NATIVE_SOURCE_COMPILE_PASSED (not gameplay tested)'
