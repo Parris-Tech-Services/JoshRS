@@ -1,0 +1,23 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
+import { validateFamilyWorld } from './validate-family-world.mjs';
+const valid=Buffer.from('IAQABwyQDR4AAAAAAAAAAAAAAAAAAAAAAABDDQAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALaEoco=','base64');
+test('both family saves and SQLite accounts are validated; missing login or corrupt second save fails',t=>{
+    const root=fs.mkdtempSync(path.join(os.tmpdir(),'joshrs-family-valid-'));
+    t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
+    fs.mkdirSync(path.join(root,'data/players/main'),{recursive:true});
+    for(const user of ['elrothiro','sylvie']) fs.writeFileSync(path.join(root,'data/players/main',user+'.sav'),valid);
+    assert.throws(()=>validateFamilyWorld(root),/without their account/);
+    const db=new DatabaseSync(path.join(root,'db.sqlite'));
+    db.exec("CREATE TABLE account(username TEXT); INSERT INTO account VALUES ('elrothiro');");
+    assert.throws(()=>validateFamilyWorld(root),/no matching login/);
+    db.exec("INSERT INTO account VALUES ('sylvie');");db.close();
+    assert.deepEqual(validateFamilyWorld(root),{valid:true,savesVerified:2,sqliteVerified:true,familyAccountsVerified:2});
+    const damaged=Buffer.from(valid); damaged[20]^=1;
+    fs.writeFileSync(path.join(root,'data/players/main/sylvie.sav'),damaged);
+    assert.throws(()=>validateFamilyWorld(root),/CRC/);
+});

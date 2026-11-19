@@ -1,0 +1,38 @@
+// Runs only in the disposable Windows family-polish engine. Original interface
+// verification is proved before a separately fingerprinted authored extension.
+import fs from 'node:fs';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { createHash } from 'node:crypto';
+const engine='C:/JoshRS-TestWorlds/family-polish-20261113/engine';
+process.chdir(engine);
+const load=async (p:string)=>import(pathToFileURL(path.join(engine,p)).href);
+const {default:Packet}=await load('src/io/Packet.ts');
+const {default:Jagfile}=await load('src/io/Jagfile.ts');
+const {default:Component}=await load('src/cache/config/Component.ts');
+const {default:Environment}=await load('src/util/Environment.ts');
+if(!Environment.BUILD_VERIFY) throw new Error('Original verification must remain enabled.');
+const {revalidatePack}=await load('tools/pack/PackFile.ts');
+const {packInterface}=await load('tools/pack/interface/PackShared.ts');
+await revalidatePack();
+const {client,server}=packInterface([]);
+const folder=path.join(engine,'quest-tab-candidate');
+fs.mkdirSync(folder,{recursive:true});
+const mode=process.argv[2]??'baseline';
+if(!['baseline','custom'].includes(mode)) throw new Error('Unknown candidate mode.');
+const filename=path.join(folder,mode+'-interface');
+const jag=Jagfile.new(true);
+jag.write('data',client);jag.save(filename);
+server.save(path.join(folder,mode+'-server-interface.dat'));
+const packed=fs.readFileSync(filename);
+const originalVerified=Packet.checkcrc(packed,0,packed.length,1433713710);
+const sha256=createHash('sha256').update(packed).digest('hex');
+if(mode==='baseline' && !originalVerified) throw new Error('Current source does not regenerate the original verified interface. No custom interface accepted.');
+const decoded=new Jagfile(Packet.load(filename));
+Component.decode(decoded.read('data'));
+Component.decodeExtra(Packet.load(path.join(folder,mode+'-server-interface.dat')));
+const components=(Component as any).components;
+const snapshot=components.map((c:any)=>c?JSON.parse(JSON.stringify(c)):null);
+fs.writeFileSync(path.join(folder,mode+'-components.json'),JSON.stringify(snapshot));
+fs.writeFileSync(path.join(folder,mode+'-summary.json'),JSON.stringify({mode,sha256,originalVerified,components:snapshot.filter(Boolean).length},null,2));
+console.log(JSON.stringify({mode,sha256,originalVerified,components:snapshot.filter(Boolean).length}));

@@ -44,7 +44,7 @@ export function checkVarpUnused(scriptsDir) {
     const hits = [];
     const walk = d => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (p.endsWith('.rs2') && fs.readFileSync(p, 'utf8').includes('%varp_724')) hits.push(p); } };
     walk(scriptsDir);
-    const ours = new Set(['quest_peace_shirt.rs2', 'burgh_vilager_3.rs2', 'burgh_vilager_5.rs2', 'burgh_vilager_8.rs2', 'quests.rs2']);
+    const ours = new Set(['quest_peace_shirt.rs2', 'peace_shirt_journal.rs2', 'burgh_vilager_3.rs2', 'burgh_vilager_5.rs2', 'burgh_vilager_8.rs2', 'quests.rs2']);
     const foreign = hits.filter(h => !ours.has(path.basename(h)));
     if (foreign.length) throw new Error('varp_724 is already used by: ' + foreign.join(', '));
 }

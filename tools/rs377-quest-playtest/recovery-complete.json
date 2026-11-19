@@ -1,0 +1,15 @@
+{
+  "user": "journaltest1",
+  "mode": "assisted",
+  "steps": [
+    { "expectSaved": { "varp": 724, "value": 6 } },
+    { "expectSavedItem": { "obj": 995, "count": 300 } },
+    { "tele": [0, 3512, 3224] },
+    { "talk": "burgh_vilager_3", "choices": [2] },
+    { "expectInLastTalk": "QUEST COMPLETE" },
+    { "expectInLastTalk": "Playing together" },
+    { "wait": 10000 },
+    { "expectSaved": { "varp": 724, "value": 6 } },
+    { "expectSavedItem": { "obj": 995, "count": 300 } }
+  ]
+}

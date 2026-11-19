@@ -1,0 +1,17 @@
+{
+  "user": "burghtest3",
+  "mode": "assisted",
+  "steps": [
+    { "cheat": "reload" },
+    { "tele": [0, 3485, 3244] },
+    { "loc": [3485, 3244, 12816] },
+    { "expectNoText": "Nothing interesting happens" },
+    { "expectNoText": "I can't reach that" },
+    { "walk": [3485, 3241] },
+    { "expectSavedPosition": [0, 3485, 3241] },
+    { "walk": [3485, 3245] },
+    { "expectSavedPosition": [0, 3485, 3245] },
+    { "expectSaved": { "varp": 724, "value": 0 } },
+    { "expectSavedItem": { "obj": 995, "count": 0 } }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "user": "recoverynew",
+  "mode": "assisted",
+  "steps": [
+    { "tele": [0, 3512, 3224] },
+    { "talk": "burgh_vilager_3", "choices": [2] },
+    { "expectInLastTalk": "Speak to" },
+    { "expectSaved": { "varp": 724, "value": 0 } },
+    { "talk": "burgh_vilager_3", "choices": [1, 3, 1] },
+    { "expectInLastTalk": "Quest started" },
+    { "expectSaved": { "varp": 724, "value": 1 } },
+    { "expectSavedItem": { "obj": 995, "count": 0 } }
+  ]
+}

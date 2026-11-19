@@ -13,6 +13,11 @@ import fs from 'node:fs';
 import net from 'node:net';
 import path from 'node:path';
 import { createPublicKey } from 'node:crypto';
+import { validateScenario, locClick, walkClick } from './scenario-policy.mjs';
+import { inspectSave } from '../rs377-saves/inspect-save.mjs';
+
+const scen = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const evidenceMode = validateScenario(scen);
 
 const ENGINE_DIR = process.env.ISO_ENGINE_DIR, PORT = Number(process.env.ISO_PORT), WEB_PORT = Number(process.env.ISO_WEB_PORT);
 const PROFILE = process.env.ISO_PROFILE || 'isotest';
@@ -70,11 +75,12 @@ function connect(user) {
     return new Promise((resolve, reject) => {
         const seed = [11, 22, 33, 44];
         const sock = net.connect(PORT, '127.0.0.1', () => sock.write(Buffer.from([14, 0])));
-        const s = { sock, npcs: [], npcType: new Map(), npcPos: new Map(), pos: null, chat: null, closedAt: 0, log: [], broken: false, varpsSent: {} };
+        const s = { sock, npcs: [], npcType: new Map(), npcPos: new Map(), pos: null, chat: null, closedAt: 0, log: [], broken: false, varpsSent: {}, componentColours: {} };
         let buf = Buffer.alloc(0), stage = 0, isaacIn, isaacOut, inBuf = Buffer.alloc(0), op = -1, len = -1;
         const text = b => b.subarray(0, b.indexOf(10) >= 0 ? b.indexOf(10) : b.length).toString('latin1');
         const handle = (op, body) => {
             if (op === 63) s.log.push('[game] ' + text(body));
+            else if (op === 218) s.componentColours[body.readUInt16BE(0)] = (body[2] << 8) | ((body[3] - 128) & 255);
             else if (op === 232) { const t = text(body.subarray(2)); if (t.trim()) s.log.push(t); }
             else if (op === 182) s.varpsSent[(body[0] << 8) | ((body[1] - 128) & 0xff)] = (128 - body[2]) & 0xff; // VARP_SMALL
             else if (op === 115) s.varpsSent[body[4] | (body[5] << 8)] = ((body[1] << 24) | (body[0] << 16) | (body[3] << 8) | body[2]) >>> 0; // VARP_LARGE
@@ -162,8 +168,10 @@ async function talk(s, npcName, choices = []) {
     if (!s.pos) throw new Error('tester position unknown; teleport before talking');
     // Wandering villagers end up behind fences, so spawn a temporary copy of this NPC on our
     // tile (dev cheat ::npcadd, despawns by itself). It runs exactly the same talk scripts.
-    cheat(s, `npcadd ${npcName}`);
-    await sleep(2500);
+    if (evidenceMode === 'assisted') {
+        cheat(s, `npcadd ${npcName}`);
+        await sleep(2500);
+    }
     let nid = nearest(s, npcName);
     if (nid === undefined) throw new Error(`NPC ${npcName} not in view (have: ${[...new Set(s.npcs.map(n => npcNames.get(s.npcType.get(n))))].join(', ')})`);
     const queue = [...choices];
@@ -202,7 +210,7 @@ function readSave(user) {
     for (let i = 0; i < vc; i++) { const id = (b[p] << 8) | b[p + 1]; p += 2; let x = b[p++], r = 0; while (x & 0x80) { r = (r | (x & 0x7f)) << 7; x = b[p++]; } varps[id] = (r | x) >>> 0; }
     const items = {}; const ic = b[p++];
     for (let i = 0; i < ic; i++) { p += 2; const size = (b[p] << 8) | b[p + 1]; p += 2; for (let k = 0; k < size; k++) { const id = ((b[p] << 8) | b[p + 1]) - 1; p += 2; if (id >= 0) { let c = b[p++]; if (c === 255) { c = b.readInt32BE(p); p += 4; } items[id] = (items[id] || 0) + c; } } }
-    return { varps, items, mtime: fs.statSync(path.join(ENGINE_DIR, 'data/players', PROFILE, user.toLowerCase() + '.sav')).mtimeMs };
+    return { varps, items, position: inspectSave(b).position, mtime: fs.statSync(path.join(ENGINE_DIR, 'data/players', PROFILE, user.toLowerCase() + '.sav')).mtimeMs };
 }
 
 async function logout(s, user) {
@@ -213,31 +221,40 @@ async function logout(s, user) {
     await sleep(1200);
 }
 
-const scen = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 let s = await connect(scen.user); await sleep(2500);
+if (evidenceMode === 'normal') {
+    const pos = readSave(scen.user).position;
+    s.pos = { x: pos.x, z: pos.z };
+}
 let failures = 0, lastTalkAt = 0; const transcript = [];
 const flush = () => { transcript.push(...s.log); s.log = []; };
 for (const step of scen.steps) {
     try {
         if (step.cheat) { cheat(s, step.cheat); await sleep(1000); }
         else if (step.tele) { const [l, x, z] = step.tele; await tele(s, l, x, z); }
+        else if (step.loc) { const [x, z, id] = step.loc; flush(); transcript.push(`>> normal Oploc1 ${id} at ${x},${z}`); s.send(181, locClick(x, z, id)); await sleep(3500); }
+        else if (step.walk) { const [x, z] = step.walk; flush(); transcript.push(`>> normal Walk ${x},${z}`); s.send(28, walkClick(x, z), true); await sleep(5000); }
         else if (step.talk) { flush(); lastTalkAt = transcript.length; await talk(s, step.talk, step.choices || []); }
+        else if (step.button) { flush(); lastTalkAt = transcript.length; const b=Buffer.alloc(2); b.writeUInt16BE(step.button); s.send(79,b); await sleep(3000); }
+        else if (step.expectColour) { flush(); const actual=s.componentColours[step.expectColour.component]; const ok=actual===step.expectColour.value; transcript.push(`${ok?'PASS':'FAIL'} component ${step.expectColour.component} colour ${actual} (want ${step.expectColour.value})`); if(!ok) failures++; }
         else if (step.expectInLastTalk) { flush(); const ok = transcript.slice(lastTalkAt).some(t => t.includes(step.expectInLastTalk)); transcript.push(`${ok ? 'PASS' : 'FAIL'} last conversation contains "${step.expectInLastTalk}"`); if (!ok) failures++; }
         else if (step.wait) await sleep(step.wait);
         else if (step.relog) { flush(); transcript.push('>> logout / login'); const pos = s.pos; await logout(s, scen.user); s = await connect(scen.user); s.pos = pos; await sleep(3000); }
         else if (step.expectText) { flush(); const ok = transcript.some(t => t.includes(step.expectText)); transcript.push(`${ok ? 'PASS' : 'FAIL'} text contains "${step.expectText}"`); if (!ok) failures++; }
         else if (step.expectVarpSent) { flush(); await sleep(1000); const v = s.varpsSent[step.expectVarpSent.varp] ?? 0; const ok = v === step.expectVarpSent.value; transcript.push(`${ok ? 'PASS' : 'FAIL'} client told varp ${step.expectVarpSent.varp} = ${v} (want ${step.expectVarpSent.value})`); if (!ok) failures++; }
         else if (step.expectNoText) { flush(); const ok = !transcript.some(t => t.includes(step.expectNoText)); transcript.push(`${ok ? 'PASS' : 'FAIL'} text never contains "${step.expectNoText}"`); if (!ok) failures++; }
-        else if (step.expectSaved || step.expectSavedItem) {
+        else if (step.expectSaved || step.expectSavedItem || step.expectSavedPosition) {
             flush(); const pos = s.pos; await logout(s, scen.user); const sv = readSave(scen.user);
             if (step.expectSaved) { const v = sv.varps[step.expectSaved.varp] ?? 0; const ok = v === step.expectSaved.value; transcript.push(`${ok ? 'PASS' : 'FAIL'} saved varp ${step.expectSaved.varp} = ${v} (want ${step.expectSaved.value})`); if (!ok) failures++; }
             if (step.expectSavedItem) { const v = sv.items[step.expectSavedItem.obj] ?? 0; const ok = v === step.expectSavedItem.count; transcript.push(`${ok ? 'PASS' : 'FAIL'} saved item ${step.expectSavedItem.obj} x${v} (want ${step.expectSavedItem.count})`); if (!ok) failures++; }
-            s = await connect(scen.user); s.pos = pos; await sleep(3000);
+            if (step.expectSavedPosition) { const [plane, x, z] = step.expectSavedPosition; const ok = sv.position.plane === plane && sv.position.x === x && sv.position.z === z; transcript.push(`${ok ? 'PASS' : 'FAIL'} saved position ${JSON.stringify(sv.position)} (want ${plane},${x},${z})`); if (!ok) failures++; }
+            s = await connect(scen.user); s.pos = { x: sv.position.x, z: sv.position.z }; await sleep(3000);
         }
-        if (s.broken) transcript.push('!! packet decoder lost sync');
+        if (s.broken) throw new Error('Packet decoder lost sync; evidence is invalid.');
     } catch (e) { flush(); transcript.push(`FAIL ${JSON.stringify(step)}: ${e.message}`); failures++; }
 }
 flush(); clearInterval(s.keep); s.sock.end();
 console.log(transcript.join('\n'));
+console.log(`EVIDENCE MODE: ${evidenceMode} (normal protocol clicks do not by themselves prove Java-client rendering)`);
 console.log(`RESULT ${failures === 0 ? 'ALL PASS' : failures + ' FAILURE(S)'}`);
 process.exit(failures ? 1 : 0);

@@ -1,0 +1,32 @@
+// JoshRS: 377 Burgh de Rott entrance, closed pair 12816/12817.
+// Reuses existing gate geometry without changing any loc/cache definition.
+[oploc1,burgh_fencegate_l]
+~joshrs_burgh_open_gate;
+
+[oploc1,burgh_fencegate_r]
+def_coord $main = ~get_pair_coord(loc_coord, loc_angle, true);
+if (loc_find($main, burgh_fencegate_l) = true) {
+    ~joshrs_burgh_open_gate;
+} else {
+    mes("The other half of the gate is moving. Please try again in a moment.");
+}
+
+[proc,joshrs_burgh_open_gate]
+def_coord $main_coord = loc_coord;
+def_int $angle = loc_angle;
+def_coord $pair = ~get_pair_coord($main_coord, $angle, false);
+def_coord $main_open = ~movecoord_loc_return(~gate_set_close($angle, 1));
+def_coord $outer_open = ~movecoord_loc_return(~gate_set_close($angle, 2));
+// Preflight the partner before touching either wall, so a missing pair cannot
+// create an invisible one-sided barrier. loc_find changes the active loc.
+if (loc_find($pair, burgh_fencegate_r) = false) {
+    mes("The other half of the gate is moving. Please try again in a moment.");
+    return;
+}
+sound_synth(door_open, 0, 0);
+loc_del(500);
+loc_add($outer_open, burgh_openfencegate_r, modulo(add($angle, 3), 4), wall_straight, 500);
+if (loc_find($main_coord, burgh_fencegate_l) = true) {
+    loc_del(500);
+    loc_add($main_open, burgh_openfencegate_l, modulo(add($angle, 3), 4), wall_straight, 500);
+}
