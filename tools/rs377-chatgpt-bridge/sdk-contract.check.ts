@@ -21,7 +21,7 @@ checkedAction(walk,{} as Parameters<typeof mapSdkAction>[1]);
 // The *actual* state produced by toBotWorldState must be assignable to
 // upstream BotWorldState, not an independently hand-written substitute.
 export function checkedState(raw:Parameters<typeof toBotWorldState>[0]):BotWorldState {
-  const actual=toBotWorldState(raw,{botName:'HarnessBot',expectedWorld:'isolated-test'});
+  const actual=toBotWorldState(raw,{approvedFamily:false});
   const state:BotWorldState=actual.state;
   return state;
 }
