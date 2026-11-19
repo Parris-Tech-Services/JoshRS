@@ -29,6 +29,8 @@ so the tool never overwrites it.
 - Step 1 says `drop-property`: the 274 cache lacks the animation frames. Cosmetic: it is commented out and logged.
 - Step 1 says `blocked`: park the quest (needs a model or engine command 274 lacks) and tell Josh.
 - Step 1 says `UNSUPPORTED KEYS` (`multivar`, `multiloc`, `multinpc`, `ldmodel`...): the 274 packer has no such key, so `npm run build` stops with "Invalid property key". These are 377 features (one object that changes form by a variable); importing a varbit does not help. Dropping them leaves the base form, which can break the quest, so park it unless the base form is enough. Needs the engine source beside the content (`~/dev274/engine`) or `--engine <dir>`.
+- Before using `prepack-check --apply`, the tool also checks **source definitions scheduled for import** for unsupported 274 properties, not just files already in the dev world. By default it blocks any such import **before writing files**, reporting `[PLANNED IMPORT]` and detailed `importKeys` in `--json`. Do not treat a clean target-only key report as clearance to import the next batch.
+- Explicit `--apply --strip-keys` retains the existing opt-in fallback, but now refuses a missing/invalid `--pristine` or `--engine` **before any writes**. This option can disable state-changing objects; treat `multivar`/`multiloc`/`multinpc` as structural changes requiring manual review, not automatic cosmetic substitutions.
 - Step 1 clean but step 2 fails: the checker missed a rule. Paste the packer's message, fix the checker, add a test.
 - Step 4 can't find the NPC but step 1 and 2 pass: it is placed by script or its map was not imported (`imported-maps.txt`).
 - Step 5 black view: missing map region. Step 5 invisible NPC: model not packed.
