@@ -44,14 +44,18 @@ def load_pack(path: Path) -> dict[str, int]:
     return out
 
 
-def npc_block(all_npc: Path, name: str) -> str | None:
-    lines = all_npc.read_text(errors="ignore").splitlines(True)
-    try:
-        start = next(i for i, l in enumerate(lines) if l.strip() == f"[{name}]")
-    except StopIteration:
-        return None
-    end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("[")), len(lines))
-    return "".join(lines[start:end])
+def npc_definitions(scripts: Path) -> dict[str, str]:
+    """Read both unpacked and per-quest NPC definitions, preferring quest-local configs."""
+    found: dict[str, str] = {}
+    files = sorted(scripts.rglob("*.npc"), key=lambda p: (0 if "quests" in p.parts else 1, str(p)))
+    for file in files:
+        lines = file.read_text(errors="ignore").splitlines(keepends=True)
+        headers = [(i, line.strip()[1:-1]) for i, line in enumerate(lines)
+                   if re.fullmatch(r"\[[^\]\r\n]+\]", line.strip())]
+        for n, (start, name) in enumerate(headers):
+            end = headers[n + 1][0] if n + 1 < len(headers) else len(lines)
+            found.setdefault(name, "".join(lines[start:end]))
+    return found
 
 
 def main() -> int:
@@ -72,12 +76,14 @@ def main() -> int:
         import json
         rev = str(json.loads(world_json.read_text()).get("engine", {}).get("revision", rev)) or rev
     t_all_npc = target / f"scripts/_unpack/{rev}/all.npc"
-    s_all_npc = src / "scripts/_unpack/377/all.npc"
-    if not t_all_npc.exists() or not s_all_npc.exists():
-        print(f"BLOCKED: need {t_all_npc} and {s_all_npc}")
+    if not t_all_npc.exists():
+        print(f"BLOCKED: need {t_all_npc}")
         return 2
-
-    known_defs = set(re.findall(r"(?m)^\[([^\]\r\n]+)\]", t_all_npc.read_text(errors="ignore")))
+    source_defs = npc_definitions(src / "scripts")
+    target_defs = npc_definitions(target / "scripts")
+    if not source_defs:
+        print("BLOCKED: no source NPC definitions")
+        return 2
 
     # Collect symbols referenced by ported quests
     wanted: set[str] = set()
@@ -101,11 +107,11 @@ def main() -> int:
         if sid in set(ref_pack.values()):
             refused.append((name, sid))
             continue
-        block = npc_block(s_all_npc, name)
+        block = target_defs.get(name) or source_defs.get(name)
         if block is None:
             no_def.append(name)
             continue
-        to_add.append((name, sid, block))
+        to_add.append((name, sid, None if name in target_defs else block))
 
     print(f"referenced NPC symbols: {len(wanted)}")
     print(f"already registered: {len(wanted) - len(to_add) - len(refused) - len(no_def)}")
@@ -113,17 +119,21 @@ def main() -> int:
     print(f"refused (id already used in target): {len(refused)}  {refused[:5]}")
     print(f"no definition upstream: {len(no_def)}  {no_def[:5]}")
 
-    if dry or not to_add:
-        return 0
-
-    with tpack.open("a") as fh:
-        for name, sid, _ in to_add:
-            fh.write(f"{sid}={name}\n")
-    with t_all_npc.open("a") as fh:
-        for name, _, block in to_add:
-            fh.write("\n" + block)
-    print(f"registered {len(to_add)} NPCs, appended definitions to {t_all_npc.name}")
-    print("restart the world to repack")
+    if dry:
+        return 1 if refused or no_def else 0
+    if to_add:
+        with tpack.open("a") as fh:
+            for name, sid, _ in to_add:
+                fh.write(f"{sid}={name}\n")
+        new_blocks = [block for _, _, block in to_add if block is not None]
+        if new_blocks:
+            with t_all_npc.open("a") as fh:
+                for block in new_blocks:
+                    fh.write("\n" + block)
+        print(f"registered {len(to_add)} NPC IDs; added {len(new_blocks)} definitions")
+    if refused or no_def:
+        print(f"BLOCKED: {len(refused)} ID collisions, {len(no_def)} unresolved definitions")
+        return 1
     return 0
 
 
