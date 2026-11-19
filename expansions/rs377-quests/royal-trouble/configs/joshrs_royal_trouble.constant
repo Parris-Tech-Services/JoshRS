@@ -1,0 +1,21 @@
+// Original JoshRS stage IDs for the post-Throne Royal Trouble investigation.
+// No pre-2006 cache quest ID: do not invent a 377 questlist component.
+^rt_unstarted = 0
+^rt_ghrim_briefing = 1
+^rt_royal_children = 2
+^rt_king_investigation = 3
+^rt_misc_worker = 4
+^rt_king_queen_referral = 5
+^rt_queen_investigation = 6
+^rt_etc_worker = 7
+^rt_queen_report = 8
+^rt_king_mystery = 9
+^rt_ghrim_docks_referral = 10
+^rt_sailor_report = 11
+^rt_king_dungeon_permission = 12
+
+// HOLD: exact %misc_quest Throne completion stage is not established.
+// This conservative threshold is NOT independently verified. No live install
+// until local progress and full Throne quest parity are confirmed. Do NOT
+// bypass the gate by altering saves or setting a fake quest variable.
+^rt_throne_completion_hold = 10
