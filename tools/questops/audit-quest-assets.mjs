@@ -52,7 +52,8 @@ const varsPack = loadPack(join(content, 'pack/vars.pack'));
 // Definitions live in _unpack/<rev>/all.<kind> and in per-quest config files; index both, or every
 // NPC defined in a quest's own configs is reported as "unregistered".
 const npcDefs = indexDefs(join(content, 'scripts'), 'npc');
-const varDefs = indexDefs(join(content, 'scripts'), 'varp');
+const locDefs = indexDefs(join(content, 'scripts'), 'loc');
+const objDefs = indexDefs(join(content, 'scripts'), 'obj');
 
 // Stage vars must be permanent or progress silently resets at logout (Player.save writes only
 // scope=perm vars). The revision matters: _unpack holds several, and comparing against the wrong one
@@ -99,6 +100,8 @@ for (const name of readdirSync(questsDir).filter((n) => PORTED.has(n)).sort()) {
     const missingLoc = locRefs.filter((s) => !locPack.has(s));
     const missingObj = objRefs.filter((s) => !objPack.has(s));
     const unregisteredNpc = npcRefs.filter((s) => npcPack.has(s) && !npcDefs.has(s));
+    const unregisteredLoc = locRefs.filter((s) => locPack.has(s) && !locDefs.has(s));
+    const unregisteredObj = objRefs.filter((s) => objPack.has(s) && !objDefs.has(s));
 
     // Stage variables
     const varRefs = [...new Set([...text.matchAll(/%([a-z0-9_]+)/gi)].map((m) => m[1]))]
@@ -129,6 +132,8 @@ for (const name of readdirSync(questsDir).filter((n) => PORTED.has(n)).sort()) {
     if (missingLoc.length) blockers.push(`${missingLoc.length} loc symbol(s) unregistered`);
     if (missingObj.length) blockers.push(`${missingObj.length} obj symbol(s) unregistered`);
     if (unregisteredNpc.length) blockers.push(`${unregisteredNpc.length} NPC without definition`);
+    if (unregisteredLoc.length) blockers.push(`${unregisteredLoc.length} location without definition`);
+    if (unregisteredObj.length) blockers.push(`${unregisteredObj.length} item without definition`);
     if (missingVars.length) blockers.push(`${missingVars.length} unregistered var(s)`);
     if (collisions.length) blockers.push(`${collisions.length} cross-registry var collision(s)`);
     if (!hasJournal) blockers.push('no journal entry');
@@ -136,9 +141,14 @@ for (const name of readdirSync(questsDir).filter((n) => PORTED.has(n)).sort()) {
     if (!hasReward) blockers.push('no reward');
     if (stageVar && stageVarPermanent === false) blockers.push(`stage var ${stageVar} is not scope=perm`);
 
-    const status = blockers.length === 0 ? 'STRUCTURALLY COMPLETE' : (blockers.length <= 2 ? 'PARTIALLY WORKING' : 'BLOCKED');
+    // Any missing core dependency blocks the structural verdict; a low blocker count is not proof.
+    const critical = missingNpc.length || missingLoc.length || missingObj.length ||
+        unregisteredNpc.length || unregisteredLoc.length || unregisteredObj.length ||
+        missingVars.length || collisions.length || (stageVar && stageVarPermanent === false);
+    const status = !blockers.length ? 'STRUCTURALLY COMPLETE' :
+        critical ? 'BLOCKED' : 'STRUCTURALLY INCOMPLETE';
     rows.push({ name, npcRefs: npcRefs.length, locRefs: locRefs.length, objRefs: objRefs.length,
-        missingNpc, missingLoc, missingObj, unregisteredNpc, missingVars, collisions,
+        missingNpc, missingLoc, missingObj, unregisteredNpc, unregisteredLoc, unregisteredObj, missingVars, collisions,
         hasJournal, hasComplete, hasReward, stageVar, stageVarPermanent, blockers, status });
 }
 
