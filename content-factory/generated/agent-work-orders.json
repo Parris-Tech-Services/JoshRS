@@ -1,16 +1,16 @@
 {
-  "candidate_pool": 5446,
+  "candidate_pool": 4946,
   "deduplicated_reference_versions": 1783,
-  "next_rotation_offset": 4100,
+  "next_rotation_offset": 4200,
   "note": "Work orders only. Agents must implement and test; zero third-party assets copied.",
-  "raw_reference_versions": 7229,
-  "rotation_offset": 4000,
+  "raw_reference_versions": 6729,
+  "rotation_offset": 4100,
   "schema": 1,
   "target": "JoshRS local 377-wip",
   "tasks": [
     {
       "automatically_installed": false,
-      "candidate_id": "ea12d1e2aaa5f5f28ece",
+      "candidate_id": "96538911d9324c57cc5d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -18,17 +18,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/event/rsc/impl/projectile/RangeEventNpc.java",
+      "path": "server/src/com/openrsc/server/model/entity/WildernessLocation.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/event/rsc/impl/projectile/RangeEventNpc.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/WildernessLocation.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-ea12d1e2aaa5f5f28ece"
+      "work_id": "377-96538911d9324c57cc5d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "91dface681cbacd16936",
+      "candidate_id": "20be926c29b701d8826c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -36,17 +36,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/event/rsc/impl/projectile/RangeUtils.java",
+      "path": "server/src/com/openrsc/server/model/entity/npc/Npc.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/event/rsc/impl/projectile/RangeUtils.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/npc/Npc.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-91dface681cbacd16936"
+      "work_id": "377-20be926c29b701d8826c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e064fc4e70d0a74c56c1",
+      "candidate_id": "1b5a637427533b5ce123",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -54,17 +54,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/event/rsc/impl/projectile/ThrowingEvent.java",
+      "path": "server/src/com/openrsc/server/model/entity/npc/NpcBehavior.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/event/rsc/impl/projectile/ThrowingEvent.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/npc/NpcBehavior.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-e064fc4e70d0a74c56c1"
+      "work_id": "377-1b5a637427533b5ce123"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "694ebd01d75fe6b73c06",
+      "candidate_id": "68afa38603a9c192cf3f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -72,17 +72,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/CertDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/npc/NpcInteraction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/CertDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/npc/NpcInteraction.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-694ebd01d75fe6b73c06"
+      "work_id": "377-68afa38603a9c192cf3f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e7d83dcc1a1f66b605b5",
+      "candidate_id": "061d83e1fd6625cfec55",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -90,17 +90,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/CerterDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/player/Duel.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/CerterDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/player/Duel.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-e7d83dcc1a1f66b605b5"
+      "work_id": "377-061d83e1fd6625cfec55"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "5a8497390e90987df423",
+      "candidate_id": "418e990920b5cc78de83",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -108,17 +108,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/DoorDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/player/Group.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/DoorDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/player/Group.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-5a8497390e90987df423"
+      "work_id": "377-418e990920b5cc78de83"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4941a859c57ddafa560a",
+      "candidate_id": "a0083463427100e8d336",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -126,17 +126,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/EntityDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/player/Player.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/EntityDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/player/Player.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-4941a859c57ddafa560a"
+      "work_id": "377-a0083463427100e8d336"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "731d1412a5ae16d9515b",
+      "candidate_id": "22ff3a225c2fd5422655",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -144,17 +144,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/EntityHandler.java",
+      "path": "server/src/com/openrsc/server/model/entity/player/PlayerSettings.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/EntityHandler.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/player/PlayerSettings.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-731d1412a5ae16d9515b"
+      "work_id": "377-22ff3a225c2fd5422655"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3ab28c594b43cbc007e7",
+      "candidate_id": "841f1549f642a23841e6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -162,17 +162,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/FiremakingDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/player/Prayers.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/FiremakingDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/player/Prayers.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-3ab28c594b43cbc007e7"
+      "work_id": "377-841f1549f642a23841e6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a753ceaada3dfbc4cff0",
+      "candidate_id": "3a7b0051b8d3bfc63d44",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -180,17 +180,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/GameObjectDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/player/ScriptContext.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/GameObjectDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/player/ScriptContext.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-a753ceaada3dfbc4cff0"
+      "work_id": "377-3a7b0051b8d3bfc63d44"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bc6b499d14b236b26d90",
+      "candidate_id": "c42d1a269dec147a3ee3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -198,17 +198,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/GameObjectLoc.java",
+      "path": "server/src/com/openrsc/server/model/entity/player/Social.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/GameObjectLoc.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/player/Social.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-bc6b499d14b236b26d90"
+      "work_id": "377-c42d1a269dec147a3ee3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d227adee0e818ec50e83",
+      "candidate_id": "5d934dbb57d21d4192cf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -216,17 +216,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/Gauntlets.java",
+      "path": "server/src/com/openrsc/server/model/entity/player/Trade.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/Gauntlets.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/player/Trade.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-d227adee0e818ec50e83"
+      "work_id": "377-5d934dbb57d21d4192cf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "711e18c73a106225692b",
+      "candidate_id": "df699c63fe6c77bce9b5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -234,17 +234,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemArrowHeadDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/update/Bubble.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemArrowHeadDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/update/Bubble.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-711e18c73a106225692b"
+      "work_id": "377-df699c63fe6c77bce9b5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "82d0ef70d2f994e6c223",
+      "candidate_id": "cbf080ea7bd7bc5b8dcf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -252,17 +252,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemBowStringDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/update/BubbleNpc.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemBowStringDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/update/BubbleNpc.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-82d0ef70d2f994e6c223"
+      "work_id": "377-cbf080ea7bd7bc5b8dcf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "09a4d9df4a9a7288d84d",
+      "candidate_id": "1757bcc6e764b66842d4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -270,17 +270,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemCookingDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/update/ChatMessage.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemCookingDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/update/ChatMessage.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-09a4d9df4a9a7288d84d"
+      "work_id": "377-1757bcc6e764b66842d4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "47cd7503bd5d430195b6",
+      "candidate_id": "e0ba533e619afc64c838",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -288,17 +288,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemCraftingDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/update/Damage.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemCraftingDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/update/Damage.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-47cd7503bd5d430195b6"
+      "work_id": "377-e0ba533e619afc64c838"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "502d2a64ebd7eb3a198e",
+      "candidate_id": "cf72098c634dee3d8d18",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -306,17 +306,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemDartTipDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/update/Heal.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemDartTipDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/update/Heal.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-502d2a64ebd7eb3a198e"
+      "work_id": "377-cf72098c634dee3d8d18"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "80d763809138bff0b98b",
+      "candidate_id": "f7ebb8caa351221d9106",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -324,17 +324,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemDefinition.java",
+      "path": "server/src/com/openrsc/server/model/entity/update/HpUpdate.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemDefinition.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/update/HpUpdate.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-80d763809138bff0b98b"
+      "work_id": "377-f7ebb8caa351221d9106"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2a291feeadda96e6c1e2",
+      "candidate_id": "b02ee3be4b0bc853f71e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -342,17 +342,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemDropDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/update/Projectile.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemDropDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/update/Projectile.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-2a291feeadda96e6c1e2"
+      "work_id": "377-b02ee3be4b0bc853f71e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8ea5550071020096fff6",
+      "candidate_id": "bd5a685e761747d2349a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -360,17 +360,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemGemDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/update/Skull.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemGemDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/update/Skull.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-8ea5550071020096fff6"
+      "work_id": "377-bd5a685e761747d2349a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "379c032eb61b6b0f3148",
+      "candidate_id": "291c15542bb25eb2e94d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -378,17 +378,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemHerbDef.java",
+      "path": "server/src/com/openrsc/server/model/entity/update/UpdateFlags.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemHerbDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/update/UpdateFlags.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-379c032eb61b6b0f3148"
+      "work_id": "377-291c15542bb25eb2e94d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "94e78965daed96ccfb64",
+      "candidate_id": "95e04945e6b5622a584e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -396,17 +396,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemHerbSecond.java",
+      "path": "server/src/com/openrsc/server/model/entity/update/Wield.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemHerbSecond.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/update/Wield.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-94e78965daed96ccfb64"
+      "work_id": "377-95e04945e6b5622a584e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "62c0f3c3f24aa0cccc87",
+      "candidate_id": "fa667f4a8ebc275fb1b3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -414,17 +414,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemLoc.java",
+      "path": "server/src/com/openrsc/server/model/snapshot/Activity.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemLoc.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/snapshot/Activity.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-62c0f3c3f24aa0cccc87"
+      "work_id": "377-fa667f4a8ebc275fb1b3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6c0db94c1f56149f9ee7",
+      "candidate_id": "d97e56f379a71be480d6",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -432,17 +432,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemLogCutDef.java",
+      "path": "server/src/com/openrsc/server/model/snapshot/Chatlog.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemLogCutDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/snapshot/Chatlog.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-6c0db94c1f56149f9ee7"
+      "work_id": "377-d97e56f379a71be480d6"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "358cac5363980990d030",
+      "candidate_id": "d00aaeeec31996f524d0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -450,17 +450,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemPerfectCookingDef.java",
+      "path": "server/src/com/openrsc/server/model/snapshot/Snapshot.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemPerfectCookingDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/snapshot/Snapshot.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-358cac5363980990d030"
+      "work_id": "377-d00aaeeec31996f524d0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "65216c38b13364580757",
+      "candidate_id": "7e62199e47c3b4698d6b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -468,17 +468,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemSmeltingDef.java",
+      "path": "server/src/com/openrsc/server/model/states/Action.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemSmeltingDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/states/Action.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-65216c38b13364580757"
+      "work_id": "377-7e62199e47c3b4698d6b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "57cd35998f8a5946224c",
+      "candidate_id": "6c5af0b665d495150ebf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -486,17 +486,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemSmithingDef.java",
+      "path": "server/src/com/openrsc/server/model/states/CombatState.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemSmithingDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/states/CombatState.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-57cd35998f8a5946224c"
+      "work_id": "377-6c5af0b665d495150ebf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3f45db8b43a8a6d10db1",
+      "candidate_id": "4b799b5accf2687ae58d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -504,17 +504,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemUnIdentHerbDef.java",
+      "path": "server/src/com/openrsc/server/model/states/EntityType.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemUnIdentHerbDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/states/EntityType.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-3f45db8b43a8a6d10db1"
+      "work_id": "377-4b799b5accf2687ae58d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "62a6d0f9dc26af6521d7",
+      "candidate_id": "af80c6af89a4f8bd4789",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -522,17 +522,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ItemWieldableDef.java",
+      "path": "server/src/com/openrsc/server/model/struct/EquipRequest.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ItemWieldableDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/struct/EquipRequest.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-62a6d0f9dc26af6521d7"
+      "work_id": "377-af80c6af89a4f8bd4789"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f8c97ecfe9d18093a46d",
+      "candidate_id": "68a5572907cd7e0a5288",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -540,17 +540,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/NPCDef.java",
+      "path": "server/src/com/openrsc/server/model/struct/UnequipRequest.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/NPCDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/struct/UnequipRequest.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-f8c97ecfe9d18093a46d"
+      "work_id": "377-68a5572907cd7e0a5288"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "752640bd8de0980f0516",
+      "candidate_id": "01ad71e095a449e28d8c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -558,17 +558,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/NPCLoc.java",
+      "path": "server/src/com/openrsc/server/model/world/Area.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/NPCLoc.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/world/Area.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-752640bd8de0980f0516"
+      "work_id": "377-01ad71e095a449e28d8c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8f15ef4583ed52156ef9",
+      "candidate_id": "89d5667bc467b181985a",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -576,17 +576,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ObjectFishDef.java",
+      "path": "server/src/com/openrsc/server/model/world/Areas.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ObjectFishDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/world/Areas.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-8f15ef4583ed52156ef9"
+      "work_id": "377-89d5667bc467b181985a"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8351a1874c07537b8ce5",
+      "candidate_id": "89294e751b931c558a27",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -594,17 +594,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ObjectFishingDef.java",
+      "path": "server/src/com/openrsc/server/model/world/World.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ObjectFishingDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/world/World.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-8351a1874c07537b8ce5"
+      "work_id": "377-89294e751b931c558a27"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "61192ff5934f38627c84",
+      "candidate_id": "5c9af5e18fbeefc2db2f",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -612,17 +612,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ObjectHarvestingDef.java",
+      "path": "server/src/com/openrsc/server/model/world/region/Region.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ObjectHarvestingDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/world/region/Region.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-61192ff5934f38627c84"
+      "work_id": "377-5c9af5e18fbeefc2db2f"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "10fb75507f8a1b33591a",
+      "candidate_id": "2dfcc608df934a1c1702",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -630,17 +630,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ObjectMiningDef.java",
+      "path": "server/src/com/openrsc/server/model/world/region/RegionManager.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ObjectMiningDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/world/region/RegionManager.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-10fb75507f8a1b33591a"
+      "work_id": "377-2dfcc608df934a1c1702"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ff5b9b2faaf86a206a7a",
+      "candidate_id": "37fc2ab44f980c9cb888",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -648,17 +648,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ObjectRunecraftDef.java",
+      "path": "server/src/com/openrsc/server/model/world/region/TileValue.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ObjectRunecraftDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/world/region/TileValue.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-ff5b9b2faaf86a206a7a"
+      "work_id": "377-37fc2ab44f980c9cb888"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "0b811573b3713b44375d",
+      "candidate_id": "97d53d526887603d6936",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -666,17 +666,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ObjectWoodcuttingDef.java",
+      "path": "server/src/com/openrsc/server/net/ConnectionAttachment.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ObjectWoodcuttingDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/ConnectionAttachment.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-0b811573b3713b44375d"
+      "work_id": "377-97d53d526887603d6936"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "54f90cc4d1b399de2619",
+      "candidate_id": "51f8c17d019536867348",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -684,17 +684,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/PrayerDef.java",
+      "path": "server/src/com/openrsc/server/net/DiscordEmbed.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/PrayerDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/DiscordEmbed.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-54f90cc4d1b399de2619"
+      "work_id": "377-51f8c17d019536867348"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "86d35d1fb6a0e77982dc",
+      "candidate_id": "46043de4272000712cef",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -702,17 +702,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/ReqOreDef.java",
+      "path": "server/src/com/openrsc/server/net/DiscordService.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/ReqOreDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/DiscordService.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-86d35d1fb6a0e77982dc"
+      "work_id": "377-46043de4272000712cef"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "80106c11cb273f6ab2ec",
+      "candidate_id": "be49674e37bd83678ae9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -720,17 +720,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/SkillDef.java",
+      "path": "server/src/com/openrsc/server/net/HttpRequestHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/SkillDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/HttpRequestHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-80106c11cb273f6ab2ec"
+      "work_id": "377-be49674e37bd83678ae9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a88f35a401c4ba798959",
+      "candidate_id": "7bb17e4ff4618df5e028",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -738,17 +738,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/SkillSuccessRate.java",
+      "path": "server/src/com/openrsc/server/net/Packet.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/SkillSuccessRate.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/Packet.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-a88f35a401c4ba798959"
+      "work_id": "377-7bb17e4ff4618df5e028"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c7ba45c49bae261fea39",
+      "candidate_id": "1c32f5b6e0783d4c07cd",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -756,17 +756,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/SpellDef.java",
+      "path": "server/src/com/openrsc/server/net/PacketBuilder.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/SpellDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/PacketBuilder.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-c7ba45c49bae261fea39"
+      "work_id": "377-1c32f5b6e0783d4c07cd"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "efc7d6cea8be5cc0f029",
+      "candidate_id": "d86334c5f4ca98811686",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -774,17 +774,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/external/TileDef.java",
+      "path": "server/src/com/openrsc/server/net/PcapLogger.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/external/TileDef.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/PcapLogger.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-efc7d6cea8be5cc0f029"
+      "work_id": "377-d86334c5f4ca98811686"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "72aa13434d6d70d2311c",
+      "candidate_id": "3163a96dbedc51def30d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -792,17 +792,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/io/JContent.java",
+      "path": "server/src/com/openrsc/server/net/RSCConnectionHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/io/JContent.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/RSCConnectionHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-72aa13434d6d70d2311c"
+      "work_id": "377-3163a96dbedc51def30d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fede0634e6dfae2b5303",
+      "candidate_id": "b67638fa2bff79287da7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -810,17 +810,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/io/JContentFile.java",
+      "path": "server/src/com/openrsc/server/net/RSCMultiPortDecoder.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/io/JContentFile.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/RSCMultiPortDecoder.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-fede0634e6dfae2b5303"
+      "work_id": "377-b67638fa2bff79287da7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8199ee9ce30db1e477fc",
+      "candidate_id": "47fd9c621e459f45418c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -828,17 +828,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/io/Sector.java",
+      "path": "server/src/com/openrsc/server/net/RSCPacketFilter.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/io/Sector.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/RSCPacketFilter.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-8199ee9ce30db1e477fc"
+      "work_id": "377-47fd9c621e459f45418c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "602eea8ac3c70a95fa70",
+      "candidate_id": "25d83e3fe9a8c7826ed1",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -846,17 +846,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/io/Tile.java",
+      "path": "server/src/com/openrsc/server/net/RSCProtocolDecoder.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/io/Tile.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/RSCProtocolDecoder.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-602eea8ac3c70a95fa70"
+      "work_id": "377-25d83e3fe9a8c7826ed1"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "901a8c2ca81b807a95cd",
+      "candidate_id": "4cd1c41ebd7947e61d6d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -864,17 +864,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/io/WorldLoader.java",
+      "path": "server/src/com/openrsc/server/net/RSCProtocolEncoder.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/io/WorldLoader.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/RSCProtocolEncoder.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-901a8c2ca81b807a95cd"
+      "work_id": "377-4cd1c41ebd7947e61d6d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fe558a86d01f6f6f1c49",
+      "candidate_id": "98b2e3f1934a9967030c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -882,17 +882,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/BankPinChangeRequest.java",
+      "path": "server/src/com/openrsc/server/net/RSCProtocolEncoderMain.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/BankPinChangeRequest.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/RSCProtocolEncoderMain.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-fe558a86d01f6f6f1c49"
+      "work_id": "377-98b2e3f1934a9967030c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2670cbfa1ed788cf17bd",
+      "candidate_id": "b38e85d94d2a850474d0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -900,17 +900,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/BankPinVerifyRequest.java",
+      "path": "server/src/com/openrsc/server/net/RSCProtocolWebEncoder.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/BankPinVerifyRequest.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/RSCProtocolWebEncoder.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-2670cbfa1ed788cf17bd"
+      "work_id": "377-b38e85d94d2a850474d0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4cd11f2e5add1995fd31",
+      "candidate_id": "f597b36de751f085b889",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -918,17 +918,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/CharacterCreateRequest.java",
+      "path": "server/src/com/openrsc/server/net/RSCSessionIdSender.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/CharacterCreateRequest.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/RSCSessionIdSender.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-4cd11f2e5add1995fd31"
+      "work_id": "377-f597b36de751f085b889"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "68fb1059764626c8d296",
+      "candidate_id": "5a1da795d77d81b186b0",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -936,17 +936,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/ISAACCipher.java",
+      "path": "server/src/com/openrsc/server/net/WebSocketFrameHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/ISAACCipher.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/WebSocketFrameHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-68fb1059764626c8d296"
+      "work_id": "377-5a1da795d77d81b186b0"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8dae0b839a2b01b10649",
+      "candidate_id": "df44ff6e806d9d82c859",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -954,17 +954,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/LoginExecutorProcess.java",
+      "path": "server/src/com/openrsc/server/net/rsc/ActionSender.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/LoginExecutorProcess.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/ActionSender.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-8dae0b839a2b01b10649"
+      "work_id": "377-df44ff6e806d9d82c859"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "1b15e3a8b1d1ee088eea",
+      "candidate_id": "57662beab87668ad9939",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -972,17 +972,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/LoginInfo.java",
+      "path": "server/src/com/openrsc/server/net/rsc/ClientLimitations.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/LoginInfo.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/ClientLimitations.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-1b15e3a8b1d1ee088eea"
+      "work_id": "377-57662beab87668ad9939"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4ea828454eb55b7f786e",
+      "candidate_id": "f354b66408656ec1c349",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -990,17 +990,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/LoginRequest.java",
+      "path": "server/src/com/openrsc/server/net/rsc/Crypto.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/LoginRequest.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/Crypto.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-4ea828454eb55b7f786e"
+      "work_id": "377-f354b66408656ec1c349"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "caa40c235ff7546b2e9f",
+      "candidate_id": "7fe8a6ab73b42e0891fa",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1008,17 +1008,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/PasswordChangeRequest.java",
+      "path": "server/src/com/openrsc/server/net/rsc/GameNetworkException.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/PasswordChangeRequest.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/GameNetworkException.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-caa40c235ff7546b2e9f"
+      "work_id": "377-7fe8a6ab73b42e0891fa"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4a4498ec2a4f9c28e4d4",
+      "candidate_id": "9a62e770e79056228c50",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1026,17 +1026,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/PlayerSaveRequest.java",
+      "path": "server/src/com/openrsc/server/net/rsc/ISAACContainer.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/PlayerSaveRequest.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/ISAACContainer.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-4a4498ec2a4f9c28e4d4"
+      "work_id": "377-9a62e770e79056228c50"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "50a9690da816de029e84",
+      "candidate_id": "60c6c634a14c0a8e03e7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1044,17 +1044,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/RecoveryAttemptRequest.java",
+      "path": "server/src/com/openrsc/server/net/rsc/LoginPacketHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/RecoveryAttemptRequest.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/LoginPacketHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-50a9690da816de029e84"
+      "work_id": "377-60c6c634a14c0a8e03e7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "54807eb1aab1284b5f96",
+      "candidate_id": "81bd65c9d9670c41c820",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1062,17 +1062,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/RecoveryChangeRequest.java",
+      "path": "server/src/com/openrsc/server/net/rsc/PayloadProcessor.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/RecoveryChangeRequest.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/PayloadProcessor.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-54807eb1aab1284b5f96"
+      "work_id": "377-81bd65c9d9670c41c820"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ed4ab40fc061dcd1287d",
+      "candidate_id": "692eba1b139ea23b7e47",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1080,17 +1080,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/login/ValidatedLogin.java",
+      "path": "server/src/com/openrsc/server/net/rsc/PayloadProcessorManager.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/login/ValidatedLogin.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/PayloadProcessorManager.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-ed4ab40fc061dcd1287d"
+      "work_id": "377-692eba1b139ea23b7e47"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "4569b32ad53cc0dbcd33",
+      "candidate_id": "a6a489bcccb120ca3691",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1098,17 +1098,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/AStarPathfinder.java",
+      "path": "server/src/com/openrsc/server/net/rsc/PayloadValidator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/AStarPathfinder.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/PayloadValidator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-4569b32ad53cc0dbcd33"
+      "work_id": "377-a6a489bcccb120ca3691"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "15515da26770ad358fed",
+      "candidate_id": "35ffcc3d5b00d258c0c4",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1116,17 +1116,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/Cache.java",
+      "path": "server/src/com/openrsc/server/net/rsc/ReverseOpcodeLookup.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/Cache.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/ReverseOpcodeLookup.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-15515da26770ad358fed"
+      "work_id": "377-35ffcc3d5b00d258c0c4"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6e4fb9fb0d1221528d57",
+      "candidate_id": "3bf54da1c8a9681e355d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1134,17 +1134,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/Either.java",
+      "path": "server/src/com/openrsc/server/net/rsc/enums/OpcodeIn.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/Either.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/enums/OpcodeIn.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-6e4fb9fb0d1221528d57"
+      "work_id": "377-3bf54da1c8a9681e355d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "63ba82eda352aa2c682b",
+      "candidate_id": "d1f807e8d99cef5d1a0d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1152,17 +1152,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/GlobalMessage.java",
+      "path": "server/src/com/openrsc/server/net/rsc/enums/OpcodeOut.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/GlobalMessage.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/enums/OpcodeOut.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-63ba82eda352aa2c682b"
+      "work_id": "377-d1f807e8d99cef5d1a0d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e65a1526faf45524e3d0",
+      "candidate_id": "db5818372bdc82e67f41",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1170,17 +1170,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/MenuOptionListener.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/PayloadGenerator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/MenuOptionListener.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/PayloadGenerator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-e65a1526faf45524e3d0"
+      "work_id": "377-db5818372bdc82e67f41"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8bed158468bf5a8ba776",
+      "candidate_id": "5cefb26f8634d3913eb3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1188,17 +1188,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/Path.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload115Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/Path.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload115Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-8bed158468bf5a8ba776"
+      "work_id": "377-5cefb26f8634d3913eb3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6b371ec21c8df3c97be1",
+      "candidate_id": "8edb168ad3d5e6f0a7bb",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1206,17 +1206,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/PathValidation.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload140Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/PathValidation.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload140Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-6b371ec21c8df3c97be1"
+      "work_id": "377-8edb168ad3d5e6f0a7bb"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "e0df696b4902dcef0a00",
+      "candidate_id": "2f47e145c40e4a192425",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1224,17 +1224,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/PlayerAppearance.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload177Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/PlayerAppearance.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload177Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-e0df696b4902dcef0a00"
+      "work_id": "377-2f47e145c40e4a192425"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "99d993b01b2738a06e9e",
+      "candidate_id": "487a23ad7718247ebb59",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1242,17 +1242,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/Point.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload196Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/Point.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload196Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-99d993b01b2738a06e9e"
+      "work_id": "377-487a23ad7718247ebb59"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ad3a480a23ec798c81c5",
+      "candidate_id": "49f8f2802123cf7e2aa5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1260,17 +1260,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/PrivateMessage.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload198Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/PrivateMessage.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload198Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-ad3a480a23ec798c81c5"
+      "work_id": "377-49f8f2802123cf7e2aa5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b73c7672bfad5c14c6be",
+      "candidate_id": "5f5b557e7d60b1879be8",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1278,17 +1278,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/RSCString.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload199Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/RSCString.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload199Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-b73c7672bfad5c14c6be"
+      "work_id": "377-5f5b557e7d60b1879be8"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "527197ad642daed44185",
+      "candidate_id": "175407b5565757ec0976",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1296,17 +1296,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/Shop.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload201Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/Shop.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload201Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-527197ad642daed44185"
+      "work_id": "377-175407b5565757ec0976"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "a23d8fd26b2af7561576",
+      "candidate_id": "e4c800df922ca981419c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1314,17 +1314,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/Skills.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload202Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/Skills.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload202Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-a23d8fd26b2af7561576"
+      "work_id": "377-e4c800df922ca981419c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "14e01b906f04e8d33ca0",
+      "candidate_id": "16ebc29775e524a9e514",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1332,17 +1332,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/TelePoint.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload203Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/TelePoint.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload203Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-14e01b906f04e8d33ca0"
+      "work_id": "377-16ebc29775e524a9e514"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2bfca05c7c29d5d7350e",
+      "candidate_id": "745b42ed6d6c3533111c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1350,17 +1350,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/TimePoint.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload235Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/TimePoint.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload235Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-2bfca05c7c29d5d7350e"
+      "work_id": "377-745b42ed6d6c3533111c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "2012101a1193cee79501",
+      "candidate_id": "ba333e425db945a9a917",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1368,17 +1368,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/ViewArea.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload38Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/ViewArea.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload38Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-2012101a1193cee79501"
+      "work_id": "377-ba333e425db945a9a917"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "32298ddc067b4e864f43",
+      "candidate_id": "fc3a68c26deae3b415b9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1386,17 +1386,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/WalkingQueue.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/Payload69Generator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/WalkingQueue.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/Payload69Generator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-32298ddc067b4e864f43"
+      "work_id": "377-fc3a68c26deae3b415b9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3e9ac5bfdabb0b10886b",
+      "candidate_id": "bba1fd3a795bc6dfe143",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1404,17 +1404,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/action/ActionType.java",
+      "path": "server/src/com/openrsc/server/net/rsc/generators/impl/PayloadCustomGenerator.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/action/ActionType.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/generators/impl/PayloadCustomGenerator.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-3e9ac5bfdabb0b10886b"
+      "work_id": "377-bba1fd3a795bc6dfe143"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "21032352cd24c822982f",
+      "candidate_id": "8dadaba46cc1abcd38ca",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1422,17 +1422,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/action/WalkToAction.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/AttackHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/action/WalkToAction.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/AttackHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-21032352cd24c822982f"
+      "work_id": "377-8dadaba46cc1abcd38ca"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c355bc81989d484beb30",
+      "candidate_id": "3f76f5dad70bb8838b1b",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1440,17 +1440,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/action/WalkToMobAction.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/BankHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/action/WalkToMobAction.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/BankHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-c355bc81989d484beb30"
+      "work_id": "377-3f76f5dad70bb8838b1b"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "f1d4bbd4745ad0428b11",
+      "candidate_id": "0c44e968e07505b9c2bf",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1458,17 +1458,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/action/WalkToObjectAction.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/BlackHoleHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/action/WalkToObjectAction.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/BlackHoleHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-f1d4bbd4745ad0428b11"
+      "work_id": "377-0c44e968e07505b9c2bf"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bb9c523a8b5eaab0e141",
+      "candidate_id": "bcd2c5696eef69729e1c",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1476,17 +1476,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/action/WalkToPointAction.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/BlinkHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/action/WalkToPointAction.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/BlinkHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-bb9c523a8b5eaab0e141"
+      "work_id": "377-bcd2c5696eef69729e1c"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "b2d9e0a1ce85f98a75a7",
+      "candidate_id": "fe2f6ca4a7334687a402",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1494,17 +1494,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/container/Bank.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/ChatHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/container/Bank.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/ChatHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-b2d9e0a1ce85f98a75a7"
+      "work_id": "377-fe2f6ca4a7334687a402"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8a992b330ca0d064810e",
+      "candidate_id": "d276d4d387e8f0d1b30d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1512,17 +1512,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/container/BankPreset.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/ClientDebugHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/container/BankPreset.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/ClientDebugHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-8a992b330ca0d064810e"
+      "work_id": "377-d276d4d387e8f0d1b30d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dd8ff2ae4175028d9f05",
+      "candidate_id": "42f0223d6f3acbe7374d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1530,17 +1530,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/container/CarriedItems.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/CombatStyleHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/container/CarriedItems.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/CombatStyleHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-dd8ff2ae4175028d9f05"
+      "work_id": "377-42f0223d6f3acbe7374d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "82f59c7c70a4612fbbb6",
+      "candidate_id": "bde35f9118b43eb0f040",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1548,17 +1548,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/container/ContainerListener.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/CommandHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/container/ContainerListener.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/CommandHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-82f59c7c70a4612fbbb6"
+      "work_id": "377-bde35f9118b43eb0f040"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "28dc6774042b18ba0a98",
+      "candidate_id": "a3878f6f79b3933b1073",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1566,17 +1566,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/container/Equipment.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/FriendHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/container/Equipment.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/FriendHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-28dc6774042b18ba0a98"
+      "work_id": "377-a3878f6f79b3933b1073"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "223c32214eb484698d36",
+      "candidate_id": "227f36e46f42ce1a57a7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1584,17 +1584,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/container/Inventory.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/GameObjectAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/container/Inventory.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/GameObjectAction.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-223c32214eb484698d36"
+      "work_id": "377-227f36e46f42ce1a57a7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "132ebc44cc0286cbbf82",
+      "candidate_id": "97874e64dee2488723de",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1602,17 +1602,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/container/Item.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/GameObjectWallAction.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/container/Item.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/GameObjectWallAction.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-132ebc44cc0286cbbf82"
+      "work_id": "377-97874e64dee2488723de"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "943eb4cbce53875606b8",
+      "candidate_id": "adbaa0701312491fb0b7",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1620,17 +1620,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/container/ItemContainer.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/GameSettingHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/container/ItemContainer.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/GameSettingHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-943eb4cbce53875606b8"
+      "work_id": "377-adbaa0701312491fb0b7"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c9d4cfe37f8474e3c9ae",
+      "candidate_id": "36064869e3ef977d1b48",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1638,17 +1638,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/container/ItemStatus.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/GroundItemTake.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/container/ItemStatus.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/GroundItemTake.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-c9d4cfe37f8474e3c9ae"
+      "work_id": "377-36064869e3ef977d1b48"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "dff95446b263f4b86401",
+      "candidate_id": "e691b09dc2c36d4db99d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1656,17 +1656,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/entity/Entity.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/Heartbeat.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/Entity.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/Heartbeat.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-dff95446b263f4b86401"
+      "work_id": "377-e691b09dc2c36d4db99d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "fe3611705899f3ce1aed",
+      "candidate_id": "82aaf703b93fc4b598a9",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1674,17 +1674,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/entity/EntityType.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/InterfaceOptionHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/EntityType.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/InterfaceOptionHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-fe3611705899f3ce1aed"
+      "work_id": "377-82aaf703b93fc4b598a9"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "6e95b5af1a5e66f64225",
+      "candidate_id": "fcee9076bb261dc51d89",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1692,17 +1692,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/entity/GameObject.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/InterfaceShopHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/GameObject.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/InterfaceShopHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-6e95b5af1a5e66f64225"
+      "work_id": "377-fcee9076bb261dc51d89"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "c992a306847df0eefdc0",
+      "candidate_id": "c70d7328155e3d3d4a8e",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1710,17 +1710,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/entity/GameObjectType.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/ItemActionHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/GameObjectType.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/ItemActionHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-c992a306847df0eefdc0"
+      "work_id": "377-c70d7328155e3d3d4a8e"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "3d877cbd6f700cc58223",
+      "candidate_id": "177008ec90edc1db947d",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1728,17 +1728,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/entity/GroundItem.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/ItemDropHandler.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/GroundItem.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/ItemDropHandler.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-3d877cbd6f700cc58223"
+      "work_id": "377-177008ec90edc1db947d"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "ec8f623e68eed0b29cfe",
+      "candidate_id": "732b7ab8ecb596e6e1b5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1746,17 +1746,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/entity/KillType.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/ItemEquip.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/KillType.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/ItemEquip.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-ec8f623e68eed0b29cfe"
+      "work_id": "377-732b7ab8ecb596e6e1b5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "d0cbdc867c1562497642",
+      "candidate_id": "6ea2ef658250797e07e3",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1764,17 +1764,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/entity/Mob.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/ItemUnequip.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/Mob.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/ItemUnequip.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-d0cbdc867c1562497642"
+      "work_id": "377-6ea2ef658250797e07e3"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "bdd555ac7fb620e18fad",
+      "candidate_id": "2f3b5876dd606517fcc5",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1782,17 +1782,17 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/entity/UnregisterForcefulness.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/ItemUseOnGroundItem.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/UnregisterForcefulness.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/ItemUseOnGroundItem.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-bdd555ac7fb620e18fad"
+      "work_id": "377-2f3b5876dd606517fcc5"
     },
     {
       "automatically_installed": false,
-      "candidate_id": "8d4ad8defe32ccc8763c",
+      "candidate_id": "b12f16a668d7ea608a93",
       "implementation_instructions": [
         "Verify licence and provenance; do not import Jagex-owned assets",
         "Compare pinned 377 engine/content/client and local user customisations",
@@ -1800,13 +1800,13 @@
         "Repack and compile; test gameplay and save safety in the local client",
         "Record verified proof or mark blocked; never claim untested work as ready"
       ],
-      "path": "server/src/com/openrsc/server/model/entity/UnregisterRequest.java",
+      "path": "server/src/com/openrsc/server/net/rsc/handlers/ItemUseOnItem.java",
       "playable_in_377": false,
-      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/model/entity/UnregisterRequest.java",
+      "reference_url": "https://github.com/Open-RSC/Core-Framework/blob/273e630b6ab0e875878038ea4cf60d5c7c89a839/server/src/com/openrsc/server/net/rsc/handlers/ItemUseOnItem.java",
       "source": "Open-RSC/Core-Framework",
       "source_commit_sha": "273e630b6ab0e875878038ea4cf60d5c7c89a839",
       "status": "blocked_rights_review",
-      "work_id": "377-8d4ad8defe32ccc8763c"
+      "work_id": "377-b12f16a668d7ea608a93"
     }
   ]
 }
