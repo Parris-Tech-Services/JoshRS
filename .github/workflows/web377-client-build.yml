@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Fetch only pinned browser 377 source submodule
@@ -24,7 +24,7 @@ jobs:
         run: |
           grep -F 'this.client.send(bytes.slice());' runtime/web377-build-test/osrs/net/Socket.ts
           test ! -e runtime/web377-build-test/test-rsa.pem
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '18'
       - name: Install legacy pinned dependencies without lifecycle scripts
