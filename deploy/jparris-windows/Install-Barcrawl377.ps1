@@ -159,12 +159,28 @@ if($changed.Count -eq 0) {
     return
 }
 if(-not (Get-Command npm.cmd -ErrorAction SilentlyContinue)) { throw 'npm.cmd missing.' }
-$protect=Join-Path $PSScriptRoot 'Protect-Elrothiro.ps1'
-if(-not (Test-Path -LiteralPath $protect)) { throw 'Verified family backup tool missing.' }
-& $protect -RepoRoot $root -CreateBackup
-if(-not $?) { throw 'Verified family backup failed; no source changed.' }
+# Back up any existing accounts and player saves before altering script source.
+# Fresh clean installations have no Elrothiro save and may not have a pack yet.
+. (Join-Path $PSScriptRoot 'support.ps1')
+. (Join-Path $PSScriptRoot 'save-integrity.ps1')
+$status=Get-JoshRSStatus -RepoRoot $root
+if(-not $status.Configured) { throw 'Selected Windows runtime is incomplete.' }
+$elrothiro=Join-Path $engine 'data/players/main/elrothiro.sav'
+if(Test-Path -LiteralPath $elrothiro -PathType Leaf) {
+    $protect=Join-Path $PSScriptRoot 'Protect-Elrothiro.ps1'
+    if(-not (Test-Path -LiteralPath $protect)) { throw 'Verified family backup tool missing.' }
+    & $protect -RepoRoot $root -CreateBackup
+    if(-not $?) { throw 'Verified family backup failed; no source changed.' }
+} elseif($status.SavePresent -or $status.DatabasePresent) {
+    $saveBackup=New-JoshRSLocalBackup -RepoRoot $root
+    $proof=Write-JoshRSBackupIntegrity -BackupPath $saveBackup -Engine $engine
+    if(-not $proof.Verified) { throw 'Player/account backup integrity failed.' }
+    Write-Host "VERIFIED PLAYER/ACCOUNT BACKUP: $saveBackup"
+} else {
+    Write-Host 'FRESH WORLD: no accounts or player saves to back up.'
+}
 $pack=Join-Path $engine 'data/pack'
-if(-not (Test-Path -LiteralPath $pack -PathType Container)) { throw 'Original compiled pack missing.' }
+$hadPack=Test-Path -LiteralPath $pack -PathType Container
 $backup=Join-Path $runtime ('barcrawl377-backups/install-' + (Get-Date -Format 'yyyyMMdd-HHmmss-fffffff'))
 New-Item -ItemType Directory -Path $backup -Force | Out-Null
 $names=@{}
@@ -179,7 +195,9 @@ foreach($p in $files.Keys) {
     }
     $names[$p]=$name
 }
-Copy-Item -LiteralPath $pack -Destination (Join-Path $backup 'compiled-pack') -Recurse -Force
+if($hadPack) {
+    Copy-Item -LiteralPath $pack -Destination (Join-Path $backup 'compiled-pack') -Recurse -Force
+}
 $compiled=$false
 try {
     foreach($p in $changed) {
@@ -208,7 +226,9 @@ try {
             Copy-Item -LiteralPath (Join-Path $backup $names[$p]) -Destination $p -Force
         }
         if(Test-Path -LiteralPath $pack) { Remove-Item -LiteralPath $pack -Recurse -Force }
-        Copy-Item -LiteralPath (Join-Path $backup 'compiled-pack') -Destination $pack -Recurse -Force
+        if($hadPack) {
+            Copy-Item -LiteralPath (Join-Path $backup 'compiled-pack') -Destination $pack -Recurse -Force
+        }
         Write-Host "BUILD_FAILED_AND_ROLLED_BACK: $backup"
     }
 }
