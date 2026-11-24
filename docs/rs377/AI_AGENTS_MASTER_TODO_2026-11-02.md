@@ -57,7 +57,7 @@
 9. [ ] **[G+D]** Persist bot goals and progress safely across logout/relogin/restarts.
 10. [ ] **[G+D]** Detect and resolve stalled paths, NPCs, missing resources and unexpected dialogue.
 11. [ ] **[G+D]** Operate at the ordinary **600 ms world tick and 1x XP**, not accelerated benchmark rules.
-12. [ ] **[G]** Add tests/guards prohibiting bot-controller `invAdd`, XP granting, quest-variable writes, unauthorised teleports and admin cheats.
+12. [x] **[G]** Add tests/guards prohibiting bot-controller `invAdd`, XP granting, quest-variable writes, unauthorised teleports and admin cheats.
 13. [ ] **[G+D]** Measure and bound planner latency so reasoning cannot block the game world tick.
 
 ## 4. End-to-end full quest proof without scripted item grants
